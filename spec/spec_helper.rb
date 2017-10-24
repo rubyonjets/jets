@@ -1,4 +1,5 @@
 ENV["TEST"] = "1"
+ENV["PROJECT_ROOT"] = "./spec/fixtures/project"
 
 require "simplecov"
 SimpleCov.start

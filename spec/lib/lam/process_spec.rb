@@ -14,4 +14,3 @@ describe Lam::Process do
     end
   end
 end
-

@@ -5,4 +5,5 @@ module Lam
   autoload :Command, "lam/command"
   autoload :CLI, "lam/cli"
   autoload :Process, 'lam/process'
+  autoload :BaseController, 'lam/base_controller'
 end

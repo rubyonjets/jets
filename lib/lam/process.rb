@@ -2,6 +2,9 @@ require "thor"
 
 class Lam::Process < Lam::Command
   autoload :Help, 'lam/process/help'
+  autoload :Infer, 'lam/process/infer'
+  autoload :BaseProcessor, 'lam/process/base_processor'
+  autoload :ControllerProcessor, 'lam/process/controller_processor'
 
   class_option :verbose, type: :boolean
   class_option :noop, type: :boolean
@@ -12,7 +15,6 @@ class Lam::Process < Lam::Command
   option :randomize_stack_name, type: :boolean, desc: "tack on random string at the end of the stack name", default: nil
   long_desc Help.controller
   def controller(event, context, handler)
-    puts "event"
-    # Create.new(name, options).run
+    ControllerProcessor.new(event, context, handler).run
   end
 end
