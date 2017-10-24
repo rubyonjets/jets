@@ -4,4 +4,5 @@ require "lam/version"
 module Lam
   autoload :Command, "lam/command"
   autoload :CLI, "lam/cli"
+  autoload :Process, 'lam/process'
 end

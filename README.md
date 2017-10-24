@@ -12,28 +12,52 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem "lam"
+```sh
+gem "lam"
+```
 
 And then execute:
 
-    $ bundle
+```sh
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install lam
+```
+$ gem install lam
+```
+
+## Project Structure
+
+TODO: make this a table
+
+```sh
+app/controllers
+app/workers
+app/functions
+config/project.yml
+config/events.yml
+config/routes.rb
+```
+
 
 ## Usage
 
-<pre>
-git clone https://github.com/tongueroo/lam.git
-mv lam <project_name>
-cd <project_name>
-rake rename
-rm -rf .git
-git init
-git add .
-git commit -m "init commit"
-</pre>
+```sh
+lam build
+lam deploy
+```
+
+```
+lam process controller '{ "we" : "love", "using" : "Lambda" }' '{"test": "1"}' "handlers/controllers/posts.create"
+```
+
+VS
+
+```sh
+processors/controller_processor.rb '{ "we" : "love", "using" : "Lambda" }' '{"test": "1"}' "handlers/controllers/posts.create" | jq '.'
+```
 
 ## Contributing
 

@@ -7,6 +7,12 @@ module Lam
 Hello world example
 EOL
         end
+
+        def process
+<<-EOL
+TODO: update process help menu
+EOL
+        end
       end
     end
   end

@@ -15,5 +15,8 @@ module Lam
       puts "Hello #{name}"
     end
 
+    desc "process TYPE", "process subcommand tasks"
+    long_desc Help.process
+    subcommand "process", Lam::Process
   end
 end
