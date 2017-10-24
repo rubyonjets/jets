@@ -9,8 +9,10 @@ describe Lam::Process do
   describe "lam process" do
     it "controller [event] [context] [handler]" do
       out = execute("bin/lam process controller #{@args}")
-      pp out
-      # expect(out).to include("Creating")
+      # pp out # uncomment to debug
+      data = JSON.parse(out)
+      expect(data["statusCode"]).to eq 200
+      expect(data["body"]).to eq("mytestdata" => "value2")
     end
   end
 end
