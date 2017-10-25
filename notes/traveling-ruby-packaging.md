@@ -30,7 +30,11 @@ BUNDLE_IGNORE_CONFIG=1 bundle install --path ../vendor --without development
 # IMPORTANT: Think I'll make the user switch to 2.2.0 and error the build proccess.
 
 ##############
-I can call ruby bin files directly
+I can call ruby bin files directly.
+I was WRONG. Cannot call gem bin files directly because I need to make sure that
+bundler/setup gets loaded before calling the gem bin.
+Tried moving bundler/setup into the lam library itself but get all sorts of warnings.
+
 hello-1.0.0-linux-x86_64/lib/vendor/ruby/2.2.0/bin/lam help
 BUT the shabang line has: #!/usr/bin/env ruby2.0 .. but only on linux..
 Simply cannot rename the darn ruby version folder.
@@ -46,6 +50,7 @@ rm -f packaging/vendor/*/*/cache/*
 
 Now we can copy over the generated vendored files
 
+##################################
 # clean
 rm -rf packaging/vendor/
 
