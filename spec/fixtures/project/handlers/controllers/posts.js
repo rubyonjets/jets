@@ -83,8 +83,8 @@ module.exports.create = (event, context, callback) => {
     JSON.stringify(context),
     "handlers/controllers/posts.create"
   ]
-  console.log("processor_command %o", processor_command)
-  console.log("args %o", args)
+  // console.log("processor_command %o", processor_command)
+  // console.log("args %o", args)
 
   // var ruby = spawn(ruby_bin, ["foo.rb"]); // works
 
@@ -148,15 +148,15 @@ module.exports.create = (event, context, callback) => {
 if (process.platform == "darwin") {
   // fake event and context
   var event = {"hello": "world"}
-  // var event = {"body": {"hello": "world"}} // API Gateway wraps this structure
+  // var event = {"body": {"hello": "world"}} // API Gateway wrapper structure
   var context = {"fake": "context"}
   module.exports.create(event, context, (error, message) => {
-    console.error("\n\nLOCAL TESTING OUTPUT")
+    console.error("\nLOCAL TESTING OUTPUT")
     if (error) {
       console.error("error message: %o", error)
     } else {
       console.error("success message %o", message)
-      console.log(JSON.stringify(message)) // stringify
+      // console.log(JSON.stringify(message)) // stringify
     }
   })
 }
