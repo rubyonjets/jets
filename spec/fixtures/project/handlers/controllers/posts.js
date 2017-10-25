@@ -84,7 +84,8 @@ module.exports.create = (event, context, callback) => {
   // console.log("processor_command %o", processor_command)
   // console.log("args %o", args)
 
-  var ruby = spawn("/Users/tung/src/tongueroo/lam/bin/lam", args);
+  // var ruby = spawn("/Users/tung/src/tongueroo/lam/bin/lam", args);
+  var ruby = spawn("bin/lam", args);
 
   // string concatation in javascript is faster than array concatation
   // http://bit.ly/2gBMDs6

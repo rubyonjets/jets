@@ -1,5 +1,10 @@
 require_relative "base_processor"
 
+# ENV['BUNDLE_GEMFILE'] = "/Users/tung/src/tongueroo/lam/spec/fixtures/project/Gemfile"
+puts $:
+# require 'bundler/setup' # ensures all the user's dependencies will be available
+
+
 class Lam::Process
   class ControllerProcessor < Lam::Process::BaseProcessor
     def run

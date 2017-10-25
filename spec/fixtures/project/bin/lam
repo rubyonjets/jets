@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+# Figure out where this script is located.
+SELFDIR="`dirname \"$0\"`"
+SELFDIR="`cd \"$SELFDIR\" && pwd`"
+
+# Tell Bundler where the Gemfile and gems are.
+export BUNDLE_GEMFILE="$SELFDIR/Gemfile"
+unset BUNDLE_IGNORE_CONFIG
+
+# The structure that bundler creates with running
+#   BUNDLE_IGNORE_CONFIG=1 bundle install --path gems
+# is:
+#
+# gems/ruby/2.2.0/bin/lam
+#
+# Then it gets move it to the bundled folder:
+# bundled/gems/ruby/2.2.0/bin/lam
+#
+# The ruby bin is also in the bundled folder:
+# bundled/ruby/bin/ruby
+
+# Run the actual app using the bundled Ruby interpreter, with Bundler activated.
+exec "$SELFDIR/bundled/ruby/bin/ruby" -rbundler/setup "$SELFDIR/bundled/gems/ruby/2.2.0/bin/lam" "$@"
+# exec "$SELFDIR/vendor/ruby/bin/ruby" -rbundler/setup "$SELFDIR/lib/app/hello.rb"
