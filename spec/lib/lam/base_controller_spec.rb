@@ -11,7 +11,7 @@ describe Lam::BaseController do
     it "should only list public user defined methods" do
       controller = FakeController.new(nil, nil)
       expect(controller.lambda_functions).to eq(
-        ["FakeController#handler1", "FakeController#handler2"]
+        [:handler1, :handler2]
       )
     end
   end

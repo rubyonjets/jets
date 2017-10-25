@@ -1,7 +1,6 @@
 class Lam::Process::Infer
   def initialize(handler)
     @handler = handler
-    @project_root = ENV['PROJECT_ROOT'] || '.'
   end
 
   # Infers the path and method from the handler. Example:
@@ -20,7 +19,7 @@ class Lam::Process::Infer
   # Returns: {path: path, code: code}
   def function
     path, meth = @handler.split('.')
-    path = "#{@project_root}/" + path.sub("handlers", "app") + ".rb"
+    path = Lam::Util.project_root + path.sub("handlers", "app") + ".rb"
     code = "#{meth}(event, context)"
     {path: path, code: code}
   end
@@ -42,7 +41,7 @@ class Lam::Process::Infer
   def controller
     handler_path, meth = @handler.split('.')
 
-    path = "#{@project_root}/" + handler_path.sub("handlers", "app") + "_controller.rb"
+    path = Lam::Util.project_root + handler_path.sub("handlers", "app") + "_controller.rb"
 
     controller_name = handler_path.sub(%r{.*handlers/controllers/}, "") + "_controller" # posts_controller
     controller_class = controller_name.split('_').collect(&:capitalize).join # PostsController

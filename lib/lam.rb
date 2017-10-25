@@ -4,6 +4,7 @@ require "attr_extras"
 require 'active_support/core_ext/string'
 
 module Lam
+  autoload :Util, "lam/util"
   autoload :Command, "lam/command"
   autoload :CLI, "lam/cli"
   autoload :Build, 'lam/build'

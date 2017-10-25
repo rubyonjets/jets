@@ -10,12 +10,16 @@ class Lam::Build
     end
 
     def deduce
-      # Example: require "app/controllers/posts_controller.rb"
-      require "#{ENV['PROJECT_ROOT']}/#{@path}"
+      # Example: require "./app/controllers/posts_controller.rb"
+      root = Lam::Util.project_root == '' ? './' : Lam::Util.project_root
+      require_path = "#{root}#{@path}"
+      require require_path
+
       # Example: @klass_name = "PostsController"
       @klass_name = File.basename(@path, '.rb').classify
       klass = @klass_name.constantize
       @handlers = klass.lambda_functions.map { |fn| handler_info(fn) }
+      self
     end
 
     # Transform the method to the handler info
