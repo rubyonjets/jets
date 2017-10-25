@@ -1,5 +1,5 @@
 require 'json'
-require_relative 'infer'
+require_relative 'processor_deducer'
 
 # Global overrides for Lambda processing
 $stdout.sync = true

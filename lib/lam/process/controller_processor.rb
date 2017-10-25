@@ -3,11 +3,11 @@ require_relative "base_processor"
 class Lam::Process
   class ControllerProcessor < Lam::Process::BaseProcessor
     def run
-      # Use the handler value (ie: posts.create) to infer the user's business
+      # Use the handler value (ie: posts.create) to deduce the user's business
       # code to require and run.
-      infer = Infer.new(handler)
-      path = infer.controller[:path]
-      code = infer.controller[:code]
+      deducer = ProcessorDeducer.new(handler)
+      path = deducer.controller[:path]
+      code = deducer.controller[:code]
 
       begin
         require path  # require "app/controllers/posts_controller.rb"

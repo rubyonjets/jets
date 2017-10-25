@@ -1,6 +1,6 @@
 class Lam::Process < Lam::Command
   autoload :Help, 'lam/process/help'
-  autoload :Infer, 'lam/process/infer'
+  autoload :ProcessorDeducer, 'lam/process/processor_deducer'
   autoload :BaseProcessor, 'lam/process/base_processor'
   autoload :ControllerProcessor, 'lam/process/controller_processor'
 

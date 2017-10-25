@@ -1,11 +1,11 @@
-class Lam::Process::Infer
+class Lam::Process::ProcessorDeducer
   def initialize(handler)
     @handler = handler
   end
 
-  # Infers the path and method from the handler. Example:
+  # Deduces the path and method from the handler. Example:
   #
-  #   InferCode.new("handlers/functions/posts.create").function
+  #   ProcessorDeducer.new("handlers/functions/posts.create").function
   #     => {path: "app/functions/posts.rb", code: "create(event, context)"}
   #
   # Summary:
@@ -24,9 +24,9 @@ class Lam::Process::Infer
     {path: path, code: code}
   end
 
-  # Infers the path and method from the handler. Example:
+  # Deduces the path and method from the handler. Example:
   #
-  #   InferCode.new("handlers/controllers/posts.create").controller
+  #   ProcessorDeducer.new("handlers/controllers/posts.create").controller
   #     => {path: "controllers/posts_controller.rb", code: "create"}
   #
   # Summary:
