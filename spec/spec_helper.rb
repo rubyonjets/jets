@@ -6,6 +6,7 @@ ENV["PROJECT_ROOT"] = "./spec/fixtures/project"
 
 require "pp"
 require "byebug"
+require "fileutils"
 
 root = File.expand_path("../../", __FILE__)
 require "#{root}/lib/lam"

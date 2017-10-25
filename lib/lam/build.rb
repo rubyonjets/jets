@@ -2,6 +2,7 @@ require 'pp'
 
 class Lam::Build
   autoload :LambdaDeducer, "lam/build/lambda_deducer"
+  autoload :HandlerGenerator, "lam/build/handler_generator"
 
   def initialize(options)
     @options = options
@@ -13,27 +14,26 @@ class Lam::Build
   end
 
   def build
-    handlers
+    handlers.each do |handler|
+      HandlerGenerator.new(handler).generate
+    end
   end
 
   def handlers
     handlers = []
-    puts "Lam.root #{Lam.root.inspect}"
     expression = "#{Lam.root}app/controllers/**/*.rb"
-    puts "expression #{expression}"
     Dir.glob(expression).each do |path|
-      puts "build path #{path.inspect}"
       next unless File.file?(path)
       next if path.include?("application_controller.rb")
 
       path = relative_path(path)
       handlers += LambdaDeducer.new(path).deduce.handlers
     end
-    pp handlers
+    # pp handlers
     handlers
   end
 
-  # Gets rid of the Lam.root
+  # Rids of the Lam.root at beginning
   def relative_path(path)
     path.sub(Lam.root, '')
   end

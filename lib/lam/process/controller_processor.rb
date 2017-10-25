@@ -10,6 +10,8 @@ class Lam::Process
       code = deducer.controller[:code]
 
       begin
+        puts "Dir.pwd #{Dir.pwd.inspect}"
+        puts "require path: #{path}"
         require path  # require "app/controllers/posts_controller.rb"
         # Puts the return value of user's code to stdout because this is
         # what eventually gets used by API Gateway.

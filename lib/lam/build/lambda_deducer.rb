@@ -11,8 +11,7 @@ class Lam::Build
 
     def deduce
       # Example: require "./app/controllers/posts_controller.rb"
-      root = Lam.root == '' ? './' : Lam.root
-      require_path = "#{root}#{@path}"
+      require_path = @path.starts_with?('/') ? @path : "#{Lam.root}#{@path}"
       require require_path
 
       # Example: @klass_name = "PostsController"
