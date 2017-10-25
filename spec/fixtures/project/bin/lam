@@ -4,12 +4,12 @@ set -e
 
 # Figure out where this script is located.
 SELFDIR="`dirname \"$0\"`"
-SELFDIR="`cd \"$SELFDIR/..\" && pwd`"
+PROJECTDIR="`cd \"$PROJECTDIR/..\" && pwd`"
 
 # Tell Bundler where the Gemfile and gems are.
 # IMPORTANT: the Gemfile must be in the same bundled/gems folder
-export BUNDLE_GEMFILE="$SELFDIR/Gemfile"
+export BUNDLE_GEMFILE="$PROJECTDIR/Gemfile"
 unset BUNDLE_IGNORE_CONFIG
 
 # Run the actual app using the bundled Ruby interpreter, with Bundler activated.
-exec "$SELFDIR/bundled/ruby/bin/ruby" -rbundler/setup "$SELFDIR/bundled/gems/ruby/2.2.0/bin/lam" "$@"
+exec "$PROJECTDIR/bundled/ruby/bin/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.2.0/bin/lam" "$@"
