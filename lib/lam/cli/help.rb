@@ -2,9 +2,9 @@ module Lam
   class CLI < Command
     class Help
       class << self
-        def hello
+        def build
 <<-EOL
-Hello world example
+Builds and prepares project for AWS Lambda.  Generates a node shim and vendors Traveling Ruby.  Creates a zip file to be uploaded to Lambda for each handler.
 EOL
         end
 

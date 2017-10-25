@@ -1,5 +1,3 @@
-require "thor"
-
 class Lam::Process < Lam::Command
   autoload :Help, 'lam/process/help'
   autoload :Infer, 'lam/process/infer'

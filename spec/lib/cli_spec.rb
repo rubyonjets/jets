@@ -11,9 +11,9 @@ describe Lam::CLI do
   end
 
   describe "lam" do
-    # it "should hello world" do
-    #   out = execute("bin/lam hello world #{@args}")
-    #   expect(out).to include("from: Tung\nHello world")
-    # end
+    it "build" do
+      out = execute("bin/lam build")
+      expect(out).to include("Building project")
+    end
   end
 end
