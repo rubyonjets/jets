@@ -1,1 +1,0 @@
-# processors/controller_processor.rb '{ "we" : "love", "using" : "Lambda" }' '{"test": "1"}' "handlers/controllers/posts.create" | jq '.'

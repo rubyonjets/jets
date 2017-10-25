@@ -5,6 +5,7 @@ require "simplecov"
 SimpleCov.start
 
 require "pp"
+require "byebug"
 
 root = File.expand_path("../../", __FILE__)
 require "#{root}/lib/lam"

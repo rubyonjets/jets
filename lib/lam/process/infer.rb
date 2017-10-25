@@ -48,6 +48,6 @@ class Lam::Process::Infer
     controller_class = controller_name.split('_').collect(&:capitalize).join # PostsController
     code = "#{controller_class}.new(event, context).#{meth}" # PostsController.new(event, context).create
 
-    {path: path, code: code}
+    {path: path, code: code, class_name: controller_class}
   end
 end

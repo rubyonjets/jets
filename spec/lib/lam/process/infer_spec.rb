@@ -1,11 +1,6 @@
 require "spec_helper"
 
-
 describe Lam::Process::Infer do
-  before(:all) do
-    # @args = "--from Tung"
-  end
-
   describe "lam" do
     let(:infer) { Lam::Process::Infer.new(handle) }
 

@@ -1,7 +1,21 @@
+require 'json'
+
 module Lam
   class BaseController
+    attr_reader :event, :context
     def initialize(event, context)
-      @event, @context = event, context
+      @event = event
+      @context = context
+    end
+
+    # The public methods defined in the user's custom class will become
+    # lambda functions.
+    # Returns Example:
+    #   ["FakeController#handler1", "FakeController#handler2"]
+    def lambda_functions
+      # public_instance_methods(false) - to not include inherited methods
+      names = self.class.public_instance_methods(false) - Object.public_instance_methods
+      names.map {|method_name| "#{self.class.name}##{method_name}"}
     end
 
   private

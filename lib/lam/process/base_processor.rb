@@ -15,6 +15,9 @@ end
 class Lam::Process::BaseProcessor
   attr_reader :event, :context, :handler
   def initialize(event, context, handler)
-    @event, @context, @handler = event, context, handler
+    # assume valid json from Lambda
+    @event = JSON.parse(event)
+    @context = JSON.parse(context)
+    @handler = handler
   end
 end

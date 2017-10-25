@@ -1,5 +1,6 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "lam/version"
+require "attr_extras"
 
 module Lam
   autoload :Command, "lam/command"

@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     lam (0.0.1)
+      attr_extras
       colorize
       hashie
       thor
@@ -9,6 +10,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    attr_extras (5.2.0)
     byebug (9.1.0)
     codeclimate-test-reporter (1.0.8)
       simplecov (<= 0.13)

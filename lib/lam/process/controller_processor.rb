@@ -14,7 +14,10 @@ class Lam::Process
         # Puts the return value of user's code to stdout because this is
         # what eventually gets used by API Gateway.
         # Explicitly using $stdout since puts redirected to $stderr.
-        result = instance_eval(code, path) # result = PostsController.new(event, context).create
+
+        byebug
+        # result = PostsController.new(event, context).create
+        result = instance_eval(code, path)
 
         # JSON.dump is pretty robust.  If it cannot dump the structure into a
         # json string, it just dumps it to a plain text string.

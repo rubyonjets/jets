@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor"
   spec.add_dependency "hashie"
   spec.add_dependency "colorize"
+  spec.add_dependency "attr_extras"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
