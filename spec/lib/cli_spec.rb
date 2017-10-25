@@ -13,6 +13,7 @@ describe Lam::CLI do
   describe "lam" do
     it "build" do
       out = execute("bin/lam build")
+      # puts out
       expect(out).to include("Building project")
     end
   end

@@ -14,8 +14,11 @@ module Lam
     #   ["FakeController#handler1", "FakeController#handler2"]
     def lambda_functions
       # public_instance_methods(false) - to not include inherited methods
-      names = self.class.public_instance_methods(false) - Object.public_instance_methods
-      names.map {|method_name| "#{self.class.name}##{method_name}"}
+      self.class.public_instance_methods(false) - Object.public_instance_methods
+    end
+
+    def self.lambda_functions
+      new(nil, nil).lambda_functions
     end
 
   private

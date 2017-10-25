@@ -1,6 +1,7 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "lam/version"
 require "attr_extras"
+require 'active_support/core_ext/string'
 
 module Lam
   autoload :Command, "lam/command"
