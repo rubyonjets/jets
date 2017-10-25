@@ -3,7 +3,7 @@
 set -e
 
 # Figure out where this script is located.
-SELFDIR="`dirname \"$0\"`"
+PROJECTDIR="`dirname \"$0\"`"
 PROJECTDIR="`cd \"$PROJECTDIR/..\" && pwd`"
 
 # Tell Bundler where the Gemfile and gems are.
