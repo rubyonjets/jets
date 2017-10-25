@@ -13,17 +13,15 @@ class Lam::Build
       # Example: require "app/controllers/posts_controller.rb"
       require "#{ENV['PROJECT_ROOT']}/#{@path}"
       # Example: @klass_name = "PostsController"
-      klass_name = File.basename(@path, '.rb').classify
-      klass = klass_name.constantize
-
-      functions = klass.lambda_functions
-      @handlers = functions.map { |fn| handler_data(klass_name, fn) }
+      @klass_name = File.basename(@path, '.rb').classify
+      klass = @klass_name.constantize
+      @handlers = klass.lambda_functions.map { |fn| handler_info(fn) }
     end
 
-    # Transform the method to the
-    def handler_data(klass_name, function_name)
-      handler = compute_handler(klass_name, function_name)
-      js_path = compute_js_path(klass_name, function_name)
+    # Transform the method to the handler info
+    def handler_info(function_name)
+      handler = get_handler(function_name)
+      js_path = get_js_path(function_name)
       {
         handler: handler,
         js_path: js_path,
@@ -31,14 +29,16 @@ class Lam::Build
       }
     end
 
-    def compute_handler(klass_name, function_name)
-      module_name = klass_name.sub(/Controller$/,'').underscore
+    def get_handler(function_name)
       "handlers/controllers/#{module_name}.create"
     end
 
-    def compute_js_path(klass_name, function_name)
-      module_name = klass_name.sub(/Controller$/,'').underscore
+    def get_js_path(function_name)
       "handlers/controllers/#{module_name}.js"
+    end
+
+    def module_name
+      @klass_name.sub(/Controller$/,'').underscore
     end
   end
 end
