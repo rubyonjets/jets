@@ -10,4 +10,6 @@ module Lam
   autoload :Build, 'lam/build'
   autoload :Process, 'lam/process'
   autoload :BaseController, 'lam/base_controller'
+
+  extend Util
 end

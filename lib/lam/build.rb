@@ -18,8 +18,8 @@ class Lam::Build
 
   def handlers
     handlers = []
-    puts "Lam::Util.project_root #{Lam::Util.project_root.inspect}"
-    expression = "#{Lam::Util.project_root}app/controllers/**/*.rb"
+    puts "Lam.project_root #{Lam.project_root.inspect}"
+    expression = "#{Lam.project_root}app/controllers/**/*.rb"
     puts "expression #{expression}"
     Dir.glob(expression).each do |path|
       puts "build path #{path.inspect}"
@@ -33,8 +33,8 @@ class Lam::Build
     handlers
   end
 
-  # Gets rid of the Lam::Util.project_root
+  # Gets rid of the Lam.project_root
   def relative_path(path)
-    path.sub(Lam::Util.project_root, '')
+    path.sub(Lam.project_root, '')
   end
 end

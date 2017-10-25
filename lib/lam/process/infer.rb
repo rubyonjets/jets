@@ -19,7 +19,7 @@ class Lam::Process::Infer
   # Returns: {path: path, code: code}
   def function
     path, meth = @handler.split('.')
-    path = Lam::Util.project_root + path.sub("handlers", "app") + ".rb"
+    path = Lam.project_root + path.sub("handlers", "app") + ".rb"
     code = "#{meth}(event, context)"
     {path: path, code: code}
   end
@@ -41,7 +41,7 @@ class Lam::Process::Infer
   def controller
     handler_path, meth = @handler.split('.')
 
-    path = Lam::Util.project_root + handler_path.sub("handlers", "app") + "_controller.rb"
+    path = Lam.project_root + handler_path.sub("handlers", "app") + "_controller.rb"
 
     controller_name = handler_path.sub(%r{.*handlers/controllers/}, "") + "_controller" # posts_controller
     controller_class = controller_name.split('_').collect(&:capitalize).join # PostsController

@@ -8,7 +8,6 @@ module Lam::Util
     @@project_root = ENV['PROJECT_ROOT'].to_s
     @@project_root = '.' if @@project_root == ''
     @@project_root = "#{@@project_root}/" if @@project_root[-1] != '/'
+    @@project_root
   end
-
-  extend self
 end
