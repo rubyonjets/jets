@@ -10,7 +10,7 @@ There are 2 things to point out:
 * When lambda runs it will call `lam` with ruby 2.2.0. The gems will be installed in 2.2.0
 	* Hope all works
 
-## Download commands
+## Download ruby commands
 
 ```sh
 # linux 64bit
@@ -80,4 +80,59 @@ lib/
 ```
 
 * [Full tree](https://gist.github.com/tongueroo/c42f9d35b15b06eb810802243f4e2f6d)
+
+
+
+## Packaging Gems
+
+```
+mkdir packaging/tmp
+cp Gemfile Gemfile.lock packaging/tmp/ # this are from the user's project
+cd packaging/tmp
+
+# here's where the gems are instaleld into packaging/vendor/
+BUNDLE_IGNORE_CONFIG=1 bundle install --path ../vendor --without development
+# IMPORTANT: I'm going to hack it so that it renames the ruby version folder from
+# user's ruby version to the one I'm using with traveling ruby: 2.2.0
+
+##############
+look ma, I can call lono directly
+hello-1.0.0-linux-x86_64/lib/vendor/ruby/2.2.0/bin/lono help
+BUT the shabang line has: #!/usr/bin/env ruby2.0 .. but only on linux..
+# Think I'll make the user switch to 2.2.0 and error the build proccess.
+#############
+
+Simply cannot rename the darn ruby version
+
+
+cd ../..
+rm -rf packaging/tmp # remove working space
+
+
+# reduce the zip package size!
+rm -f packaging/vendor/*/*/cache/*
+```
+
+
+Now we can copy over the generated vendored files
+
+cp -pR packaging/vendor hello-1.0.0-linux-x86_64/lib/
+cp Gemfile Gemfile.lock hello-1.0.0-linux-x86_64/lib/vendor/
+cp packaging/bundler-config hello-1.0.0-linux-x86_64/lib/vendor/.bundle/config
+
+# Wrapper script `lam`
+
+#!/bin/bash
+set -e
+
+# Figure out where this script is located.
+SELFDIR="`dirname \"$0\"`"
+SELFDIR="`cd \"$SELFDIR\" && pwd`"
+
+# Tell Bundler where the Gemfile and gems are.
+export BUNDLE_GEMFILE="$SELFDIR/lib/vendor/Gemfile"
+unset BUNDLE_IGNORE_CONFIG
+
+# Run the actual app using the bundled Ruby interpreter, with Bundler activated.
+exec "$SELFDIR/lib/ruby/bin/ruby" -rbundler/setup "$SELFDIR/lib/app/hello.rb"
 
