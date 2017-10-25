@@ -3,6 +3,6 @@ class PostsController < Lam::BaseController
     # render text: "test2" # more consistent for web controllers
 
     # render returns Lamba Proxy struture for web requests
-    render json: {"mytestdata": "value2"}, status: 200
+    render json: event, status: 200
   end
 end

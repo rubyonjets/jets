@@ -15,7 +15,6 @@ class Lam::Process
         # what eventually gets used by API Gateway.
         # Explicitly using $stdout since puts redirected to $stderr.
 
-        byebug
         # result = PostsController.new(event, context).create
         result = instance_eval(code, path)
 
