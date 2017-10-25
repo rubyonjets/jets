@@ -7,7 +7,7 @@ module Lam::Util
     return @@root if @@root
     @@root = ENV['PROJECT_ROOT'].to_s
     @@root = '.' if @@root == ''
-    @@root = "#{@@root}/" if @@root[-1] != '/'
+    @@root = "#{@@root}/" unless @@root.ends_with?('/')
     @@root
   end
 end
