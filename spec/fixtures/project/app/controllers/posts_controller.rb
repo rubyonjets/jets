@@ -6,7 +6,7 @@ class PostsController < Lam::BaseController
     render json: event, status: 200
   end
 
-  # def update
-  #   render json: event, status: 200
-  # end
+  def update
+    render json: event, status: 200
+  end
 end

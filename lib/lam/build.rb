@@ -15,25 +15,25 @@ class Lam::Build
   end
 
   def build
-    handlers.each do |handler|
-      HandlerGenerator.new(handler).generate
+    controller_paths.each do |path|
+      deducer = LambdaDeducer.new(path)
+      generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
+      generator.run
     end
 
     TravelingRuby.new.build unless @options[:noop]
   end
 
-  def handlers
-    handlers = []
+  def controller_paths
+    paths = []
     expression = "#{Lam.root}app/controllers/**/*.rb"
     Dir.glob(expression).each do |path|
       next unless File.file?(path)
       next if path.include?("application_controller.rb")
 
-      path = relative_path(path)
-      handlers += LambdaDeducer.new(path).deduce.handlers
+      paths << relative_path(path)
     end
-    # pp handlers
-    handlers
+    paths
   end
 
   # Rids of the Lam.root at beginning

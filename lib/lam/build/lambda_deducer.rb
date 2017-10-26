@@ -9,39 +9,18 @@ class Lam::Build
       deduce
     end
 
-    def deduce
+    def class_name
+      @path.sub(%r{app/(\w+)/},'').sub('.rb','').classify
+    end
+
+    def functions
       # Example: require "./app/controllers/posts_controller.rb"
       require_path = @path.starts_with?('/') ? @path : "#{Lam.root}#{@path}"
       require require_path
 
-      # Example: @klass_name = "PostsController"
-      @klass_name = File.basename(@path, '.rb').classify
-      klass = @klass_name.constantize
-      @handlers = klass.lambda_functions.map { |fn| handler_info(fn) }
-      self
-    end
-
-    # Transform the method to the handler info
-    def handler_info(function_name)
-      handler = get_handler(function_name)
-      js_path = get_js_path(function_name)
-      {
-        handler: handler,
-        js_path: js_path,
-        js_method: function_name.to_s
-      }
-    end
-
-    def get_handler(function_name)
-      "handlers/controllers/#{module_name}.create"
-    end
-
-    def get_js_path(function_name)
-      "handlers/controllers/#{module_name}.js"
-    end
-
-    def module_name
-      @klass_name.sub(/Controller$/,'').underscore
+      class_name
+      klass = class_name.constantize
+      klass.lambda_functions
     end
   end
 end

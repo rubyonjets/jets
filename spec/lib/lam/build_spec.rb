@@ -9,14 +9,8 @@ describe Lam::Build do
   end
 
   describe "Build" do
-    it "#handlers" do
-      expect(build.handlers).to eq([
-        {
-          handler: "handlers/controllers/posts.create",
-          js_path: "handlers/controllers/posts.js",
-          js_method: "create"
-        }
-      ])
+    it "#controller_paths" do
+      expect(build.controller_paths).to eq(["app/controllers/posts_controller.rb"])
     end
 
     it "builds handlers javascript files" do

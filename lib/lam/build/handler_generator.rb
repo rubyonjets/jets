@@ -27,7 +27,6 @@ class Lam::Build
           handler: handler(m)
         }
       end
-      puts "generating #{js_path}"
       result = ERB.new(template, nil, "-").result(binding)
       IO.write(js_path, result)
     end

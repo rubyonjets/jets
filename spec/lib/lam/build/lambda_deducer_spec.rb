@@ -7,14 +7,9 @@ describe Lam::Build::LambdaDeducer do
 
   describe "LambdaDeducer" do
     it "deduces lambda js info" do
-      deducer.run
-      expect(deducer.handlers).to eq([
-        {
-          handler: "handlers/controllers/posts.create",
-          js_path: "handlers/controllers/posts.js",
-          js_method: "create"
-        }
-      ])
+      expect(deducer.class_name).to eq("PostsController")
+      expect(deducer.functions).to eq([:create, :update])
     end
   end
 end
+

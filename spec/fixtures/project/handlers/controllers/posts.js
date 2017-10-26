@@ -71,7 +71,7 @@ module.exports.create = (event, context, callback) => {
   // Command: bin/lam process controller [event] [context] [handler]
   var args = [
     "process",
-    "controllers",     // controller
+    "controllers",     // controllers
     JSON.stringify(event),      // event
     JSON.stringify(context),    // context
     "handlers/controllers/posts.create" // IE: handlers/controllers/posts.update
@@ -134,7 +134,7 @@ module.exports.update = (event, context, callback) => {
   // Command: bin/lam process controller [event] [context] [handler]
   var args = [
     "process",
-    "controllers",     // controller
+    "controllers",     // controllers
     JSON.stringify(event),      // event
     JSON.stringify(context),    // context
     "handlers/controllers/posts.update" // IE: handlers/controllers/posts.update

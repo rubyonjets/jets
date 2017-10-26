@@ -12,10 +12,9 @@ describe Lam::Build::HandlerGenerator do
     it "generates a node shim for lambda" do
       generator.run
       content = IO.read("#{Lam.root}handlers/controllers/posts.js")
-      puts content
-      # expect(content).to include("handlers/controllers/posts.create") # handler
-      # expect(content).to include("exports.create") # function
-      # expect(content).to include("exports.update") # function
+      expect(content).to include("handlers/controllers/posts.create") # handler
+      expect(content).to include("exports.create") # function
+      expect(content).to include("exports.update") # function
     end
   end
 end
