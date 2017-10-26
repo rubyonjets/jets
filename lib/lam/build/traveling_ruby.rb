@@ -23,6 +23,7 @@ class Lam::Build
         download_traveling_ruby
         unpack_traveling_ruby
         bundle_install
+        vendor_gemfiles
       end
 
       move_bundled_to_project
@@ -84,6 +85,26 @@ class Lam::Build
       puts 'Bundle install success.'
     end
 
+    # The wrapper script doesnt work unless you move the gem files in the
+    # bundled/gems folder and export it to BUNDLE_GEMFILE in the
+    # wrapper script.
+    def vendor_gemfiles
+      puts "Moving gemfiles into #{bundled_gems_dest}/"
+      FileUtils.mv("Gemfile", "#{bundled_gems_dest}/")
+      FileUtils.mv("Gemfile.lock", "#{bundled_gems_dest}/")
+
+      bundle_config_path = "#{bundled_gems_dest}/.bundle/config"
+      puts "Generating #{bundle_config_path}"
+      FileUtils.mkdir_p(File.dirname(bundle_config_path))
+      bundle_config =<<-EOL
+BUNDLE_PATH: .
+BUNDLE_WITHOUT: development
+BUNDLE_DISABLE_SHARED_GEMS: '1'
+EOL
+      IO.write(bundle_config_path, bundle_config)
+
+    end
+
     def move_bundled_to_project
       if File.exist?("#{Lam.root}bundled")
         puts "Removing current bundled folder"
@@ -95,6 +116,10 @@ class Lam::Build
 
     def bundled_ruby_dest
       "bundled/ruby"
+    end
+
+    def bundled_gems_dest
+      "bundled/gems"
     end
 
     def traveling_ruby_url
