@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
-gem "lam", path: "/Users/tung/src/tongueroo/lam"
+gem "lam"
 gem "print_ruby_info" # test
