@@ -5,4 +5,8 @@ class PostsController < Lam::BaseController
     # render returns Lamba Proxy struture for web requests
     render json: event, status: 200
   end
+
+  # def update
+  #   render json: event, status: 200
+  # end
 end

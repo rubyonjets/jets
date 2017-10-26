@@ -26,6 +26,7 @@ class Lam::Build
       #   @process_type - controller
       @process_type = @handler.split('/')[1].singularize
       result = ERB.new(template, nil, "-").result(binding)
+      puts "generating #{js_path}"
       IO.write(js_path, result)
       # FileUtils.cp(template_path, js_path)
     end
