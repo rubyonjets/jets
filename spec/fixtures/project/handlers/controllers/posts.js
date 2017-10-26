@@ -1,6 +1,6 @@
 'use strict';
 
-// handler: <%= @handler %>
+// handler: handlers/controllers/posts.create
 const spawn = require('child_process').spawn;
 
 // Once hooked up to API Gateway can use the curl command to test:
