@@ -7,12 +7,12 @@ require "spec_helper"
 #   $ rake clean:vcr ; time rake
 describe Lam::CLI do
   before(:all) do
-    @args = "--from Tung"
+    @args = "--noop"
   end
 
   describe "lam" do
     it "build" do
-      out = execute("bin/lam build")
+      out = execute("bin/lam build #{@args}")
       # puts out
       expect(out).to include("Building project")
     end

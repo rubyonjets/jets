@@ -19,7 +19,7 @@ class Lam::Build
       HandlerGenerator.new(handler).generate
     end
 
-    TravelingRuby.new.build
+    TravelingRuby.new.build unless @options[:noop]
   end
 
   def handlers

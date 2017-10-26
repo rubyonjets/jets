@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Lam::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.description   = %q{Ruby Lambda Framework}
-  spec.summary       = %q{Ruby Lambda Framework}
+  spec.description   = %q{Test}
+  spec.summary       = %q{Test}
   spec.homepage      = "https://github.com/tongueroo/lam"
   spec.license       = "MIT"
 
@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "rake"
-  # spec.add_development_dependency "guard"
-  # spec.add_development_dependency "guard-bundler"
-  # spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "guard-bundler"
+  spec.add_development_dependency "guard-rspec"
 end

@@ -14,7 +14,8 @@ class Lam::Build
       copy_gemfiles
 
       Dir.chdir(TEMP_BUILD_DIR) do
-        download_and_unpack_traveling_ruby(true)
+        download_traveling_ruby
+        unpack_traveling_ruby
         bundle_install
       end
 
@@ -22,6 +23,7 @@ class Lam::Build
     end
 
     def check_ruby_version
+      return if ENV['LAM_SKIP_RUBY_CHECK'] # only use if you absolutely need to
       traveling_version = TRAVELING_RUBY_VERSION.match(/-((\d+)\.(\d+)\.(\d+))-/)[1]
       if RUBY_VERSION != traveling_version
         puts "You are using ruby version #{RUBY_VERSION}."
@@ -34,21 +36,10 @@ class Lam::Build
       FileUtils.cp("#{Lam.root}Gemfile.lock", "#{TEMP_BUILD_DIR}/")
     end
 
-    def download_and_unpack_traveling_ruby(force=false)
-      if force or !File.exist?(bundled_ruby_dest)
-        # provide full path for safety
-        FileUtils.rm_rf("#{TEMP_BUILD_DIR}/#{bundled_ruby_dest}")
-        download_traveling_ruby
-        unpack_traveling_ruby
-      else
-        puts "Found traveling ruby in #{bundled_ruby_dest}, skipping download."
-        return
-      end
-    end
-
     def download_traveling_ruby
       puts "Downloading traveling ruby from #{traveling_ruby_url}."
 
+      FileUtils.rm_rf("#{TEMP_BUILD_DIR}/#{bundled_ruby_dest}")
       File.open(traveling_ruby_tar_file, 'wb') do |saved_file|
         # the following "open" is provided by open-uri
         open(traveling_ruby_url, 'rb') do |read_file|

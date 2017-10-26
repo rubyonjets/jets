@@ -5,7 +5,7 @@ describe Lam::Build do
     FileUtils.rm_f("spec/fixtures/project/handlers/controllers/posts.js")
   end
   let(:build) do
-    Lam::Build.new({})
+    Lam::Build.new(noop: true)
   end
 
   describe "Build" do
