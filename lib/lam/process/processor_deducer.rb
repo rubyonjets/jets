@@ -42,7 +42,6 @@ class Lam::Process::ProcessorDeducer
     handler_path, meth = @handler.split('.')
 
     path = Lam.root + handler_path.sub("handlers", "app") + "_controller.rb"
-
     controller_name = handler_path.sub(%r{.*handlers/controllers/}, "") + "_controller" # posts_controller
     controller_class = controller_name.split('_').collect(&:capitalize).join # PostsController
     code = "#{controller_class}.new(event, context).#{meth}" # PostsController.new(event, context).create

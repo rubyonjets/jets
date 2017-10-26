@@ -12,7 +12,7 @@ describe Lam::Process do
       # pp out # uncomment to debug
       data = JSON.parse(out)
       expect(data["statusCode"]).to eq 200
-      expect(data["body"]).to eq({"we"=>"love", "using"=>"Lambda"})
+      expect(data["body"]).to eq({"we"=>"love", "using"=>"Lambda","a"=>"create"})
     end
   end
 end
