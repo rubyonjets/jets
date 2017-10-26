@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Jets::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{}
+  spec.summary       = %q{}
   spec.homepage      = ""
   spec.license       = "MIT"
 
