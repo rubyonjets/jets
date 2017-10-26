@@ -10,12 +10,12 @@ PROJECT/lib/ruby/bin/ruby -> PROJECT/lib/ruby/bin.real/ruby
 PROJECT/lib/vendor/ruby/2.2.0/bin/print_ruby_info # the gem binaries are here
 ```
 
-* Instead calling the ruby binary `lam process` command directly.
-* Lam will require 'bundler/setup' so the user's gems will be required properly
+* Instead calling the ruby binary `jets process` command directly.
+* Jets will require 'bundler/setup' so the user's gems will be required properly
 * Skip the overhead of having another wrapper
 
 ```sh
-PROJECT/vendor/ruby/2.2.0/bin/lam # the gem binaries are here
+PROJECT/vendor/ruby/2.2.0/bin/jets # the gem binaries are here
 ```
 
 ### Packaging Gems Commands
@@ -33,9 +33,9 @@ BUNDLE_IGNORE_CONFIG=1 bundle install --path ../vendor --without development
 I can call ruby bin files directly.
 I was WRONG. Cannot call gem bin files directly because I need to make sure that
 bundler/setup gets loaded before calling the gem bin.
-Tried moving bundler/setup into the lam library itself but get all sorts of warnings.
+Tried moving bundler/setup into the jets library itself but get all sorts of warnings.
 
-hello-1.0.0-linux-x86_64/lib/vendor/ruby/2.2.0/bin/lam help
+hello-1.0.0-linux-x86_64/lib/vendor/ruby/2.2.0/bin/jets help
 BUT the shabang line has: #!/usr/bin/env ruby2.0 .. but only on linux..
 Simply cannot rename the darn ruby version folder.
 #############
@@ -71,7 +71,7 @@ cp packaging/bundler-config hello-1.0.0-linux-x86_64/lib/vendor/.bundle/config
 find . -name print_ruby_info
 
 
-# Wrapper script `lam`
+# Wrapper script `jets`
 
 ```bash
 #!/bin/bash

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lam (0.0.1)
+    jets (0.0.1)
       activesupport
       colorize
       hashie
@@ -100,7 +100,7 @@ DEPENDENCIES
   guard
   guard-bundler
   guard-rspec
-  lam!
+  jets!
   rake
 
 BUNDLED WITH

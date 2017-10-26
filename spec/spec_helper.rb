@@ -9,7 +9,7 @@ require "byebug"
 require "fileutils"
 
 root = File.expand_path("../../", __FILE__)
-require "#{root}/lib/lam"
+require "#{root}/lib/jets"
 
 module Helpers
   def execute(cmd)

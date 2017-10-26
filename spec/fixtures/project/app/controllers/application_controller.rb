@@ -1,2 +1,2 @@
-class ApplicationController < Lam::BaseController
+class ApplicationController < Jets::BaseController
 end

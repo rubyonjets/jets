@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+# Trap ^C
+Signal.trap("INT") {
+  puts "\nCtrl-C detected. Exiting..."
+  sleep 1
+  exit
+}
+
+$:.unshift(File.expand_path("../../lib", __FILE__))
+require "jets"
+require "jets/cli"
+
+Jets::CLI.start(ARGV)

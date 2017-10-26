@@ -3,7 +3,7 @@ RUBY_VERSION 2.2.2
 /var/task/bundled/gems/ruby/2.2.0/gems/bin/print_ruby_info
 LOAD_PATH:
 /var/task/bundled/gems/ruby/2.2.0/gems/print_ruby_info-0.0.3/lib
-/var/task/bundled/gems/ruby/2.2.0/gems/lam-0.1.1/lib
+/var/task/bundled/gems/ruby/2.2.0/gems/jets-0.1.1/lib
 /var/task/bundled/gems/ruby/2.2.0/gems/thor-0.20.0/lib
 /var/task/bundled/gems/ruby/2.2.0/gems/hashie-3.5.6/lib
 /var/task/bundled/gems/ruby/2.2.0/gems/colorize-0.8.1/lib

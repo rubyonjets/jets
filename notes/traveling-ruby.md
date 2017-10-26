@@ -6,8 +6,8 @@ There are 2 things to point out:
 2. What the lambda environment contains - can fully control this
 
 * User can develop with ruby 2.4 and bundle gems and test and be happy. Hopefully they eventually learn to test with ruby 2.2.0 (when they run into bugs).
-* When `lam build` runs it will bundle it in ruby 2.2.0 though.
-* When lambda runs it will call `lam` with ruby 2.2.0. The gems will be installed in 2.2.0
+* When `jets build` runs it will bundle it in ruby 2.2.0 though.
+* When lambda runs it will call `jets` with ruby 2.2.0. The gems will be installed in 2.2.0
 	* Hope all works
 
 ## Download ruby commands

@@ -1,10 +1,10 @@
-# Lam
+# Jets
 
 [![Build Status](https://magnum.travis-ci.com/)](https://magnum.travis-ci.com/)
 [![Code Climate](https://codeclimate.com/)](https://codeclimate.com/)
 [![Code Climate](https://codeclimate.com/)](https://codeclimate.com/)
 
-To these the lam, run these commands:
+To these the jets, run these commands:
 
 TODO: Write a gem description
 
@@ -13,7 +13,7 @@ TODO: Write a gem description
 Add this line to your application's Gemfile:
 
 ```sh
-gem "lam"
+gem "jets"
 ```
 
 And then execute:
@@ -25,7 +25,7 @@ $ bundle
 Or install it yourself as:
 
 ```
-$ gem install lam
+$ gem install jets
 ```
 
 ## Contributing

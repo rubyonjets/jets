@@ -5,14 +5,14 @@ require "spec_helper"
 #
 # to run specs with new fresh data from aws api calls
 #   $ rake clean:vcr ; time rake
-describe Lam::CLI do
+describe Jets::CLI do
   before(:all) do
     @args = "--noop"
   end
 
-  describe "lam" do
+  describe "jets" do
     it "build" do
-      out = execute("bin/lam build #{@args}")
+      out = execute("bin/jets build #{@args}")
       # puts out
       expect(out).to include("Building project")
     end

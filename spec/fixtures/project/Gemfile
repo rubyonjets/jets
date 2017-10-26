@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
-gem "lam"
+gem "jets"
 gem "print_ruby_info" # test
