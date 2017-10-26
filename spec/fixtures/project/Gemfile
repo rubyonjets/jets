@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
-gem "jets"
+gem "jets", git: "git@github.com:tongueroo/jets.git"
 gem "print_ruby_info" # test
