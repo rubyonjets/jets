@@ -8,7 +8,7 @@ class Jets::Build
   end
 
   def run
-    puts "Building project for Jetsbda..."
+    puts "Building project for Lambda..."
     build
   end
 

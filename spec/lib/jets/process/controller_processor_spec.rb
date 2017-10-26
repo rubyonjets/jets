@@ -2,7 +2,7 @@ require_relative "../../../spec_helper"
 
 describe Jets::Process::ControllerProcessor do
   before(:all) do
-    @event = { "we" => "love", "using" => "Jetsbda" }
+    @event = { "we" => "love", "using" => "Lambda" }
     @context = {"test" => "1"}
   end
   let(:processor) do

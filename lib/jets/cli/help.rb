@@ -4,7 +4,7 @@ module Jets
       class << self
         def build
 <<-EOL
-Builds and prepares project for AWS Jetsbda.  Generates a node shim and vendors Traveling Ruby.  Creates a zip file to be uploaded to Jetsbda for each handler.
+Builds and prepares project for AWS Lambda.  Generates a node shim and vendors Traveling Ruby.  Creates a zip file to be uploaded to Lambda for each handler.
 EOL
         end
 

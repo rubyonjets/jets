@@ -95,7 +95,7 @@ Lambda does not yet support ruby. So Jets uses a node shim and a bundled version
 Testing controller processing without node shim.
 
 ```
-jets process controller '{ "we" : "love", "using" : "Jetsbda" }' '{"test": "1"}' "handlers/controllers/posts.create"
+jets process controller '{ "we" : "love", "using" : "Lambda" }' '{"test": "1"}' "handlers/controllers/posts.create"
 ```
 
 Testing the generated node shim handler and the controller processing.

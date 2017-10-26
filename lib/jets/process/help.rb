@@ -4,7 +4,7 @@ class Jets::Process::Help
 <<-EOL
 Examples:
 
-jets process controller '{ "we" : "love", "using" : "Jetsbda" }' '{"test": "1"}' "handlers/controllers/posts.create"
+jets process controller '{ "we" : "love", "using" : "Lambda" }' '{"test": "1"}' "handlers/controllers/posts.create"
 EOL
     end
   end

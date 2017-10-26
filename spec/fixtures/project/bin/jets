@@ -17,6 +17,6 @@ if [[ "$os" == 'Darwin' ]]; then
   # macosx ruby for development
   exec jets "$@"
 else
-  # bundled ruby for Jetsbda
+  # bundled ruby for Lambda
   exec "$PROJECTDIR/bundled/ruby/bin/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.2.0/bin/jets" "$@"
 fi
