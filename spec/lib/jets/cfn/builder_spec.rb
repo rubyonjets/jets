@@ -12,6 +12,7 @@ describe Jets::Cfn::Builder do
         ["CommentsControllerCreate", "CommentsControllerUpdate"]
       )
       puts cfn.text
+      IO.write("tmp/template.yml", cfn.text)
     end
   end
 end

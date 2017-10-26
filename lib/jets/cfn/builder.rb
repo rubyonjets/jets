@@ -2,17 +2,23 @@ require 'active_support/core_ext/hash'
 require 'yaml'
 
 class Jets::Cfn
-  class Builder
+  class Builder < Base
     def initialize(controller_class)
       @controller_class = controller_class
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
     def compose!
-      build_functions
+      add_iam
+      add_functions
     end
 
-    def build_functions
+    # Adds LambdaIamRole as a parameter
+    def add_iam
+      add_parameter("LambdaIamRole", Description: "Iam Role that Lambda function uses.")
+    end
+
+    def add_functions
       @controller_class.lambda_functions.each do |name|
         add_function(name)
       end
@@ -28,20 +34,11 @@ class Jets::Cfn
         },
         FunctionName: namer.function_name,
         Handler: namer.handler,
-        Role: {
-          "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
-        },
+        Role: { Ref: "LambdaIamRole" },
         MemorySize: Jets::Project.memory_size,
         Runtime: Jets::Project.runtime,
         Timeout: Jets::Project.timeout
       )
-    end
-
-    def add_resource(logical_id, type, properties)
-      @template[:Resources][logical_id] = {
-        Type: type,
-        Properties: properties
-      }
     end
 
     def template
