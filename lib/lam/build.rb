@@ -3,6 +3,7 @@ require 'pp'
 class Lam::Build
   autoload :LambdaDeducer, "lam/build/lambda_deducer"
   autoload :HandlerGenerator, "lam/build/handler_generator"
+  autoload :TravelingRuby, "lam/build/traveling_ruby"
 
   def initialize(options)
     @options = options
@@ -17,6 +18,8 @@ class Lam::Build
     handlers.each do |handler|
       HandlerGenerator.new(handler).generate
     end
+
+    TravelingRuby.new.build
   end
 
   def handlers
