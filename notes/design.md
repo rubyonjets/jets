@@ -34,10 +34,3 @@ cd spec/fixtures/project
 lam build # generates the handlers
 node handlers/controllers/posts.js
 ```
-
-VS
-
-```sh
-processors/controller_processor.rb '{ "we" : "love", "using" : "Lambda" }' '{"test": "1"}' "handlers/controllers/posts.create" | jq '.'
-```
-
