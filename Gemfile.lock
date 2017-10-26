@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jets (0.1.0)
+    jets (0.2.0)
       activesupport
       colorize
       hashie
