@@ -1,5 +1,6 @@
 require "fileutils"
 require "open-uri"
+require "colorize"
 
 class Lam::Build
   TRAVELING_RUBY_VERSION = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
@@ -7,6 +8,8 @@ class Lam::Build
 
   class TravelingRuby
     def build
+      check_ruby_version
+
       FileUtils.mkdir_p(TEMP_BUILD_DIR)
       copy_gemfiles
 
@@ -16,6 +19,14 @@ class Lam::Build
       end
 
       move_bundled_to_project
+    end
+
+    def check_ruby_version
+      traveling_version = TRAVELING_RUBY_VERSION.match(/-((\d+)\.(\d+)\.(\d+))-/)[1]
+      if RUBY_VERSION != traveling_version
+        puts "You are using ruby version #{RUBY_VERSION}."
+        abort("You must use ruby #{traveling_version} to build the project because it's what Traveling Ruby uses.".colorize(:red))
+      end
     end
 
     def copy_gemfiles

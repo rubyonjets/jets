@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-puts "bin/lam RUBY_VERSION #{RUBY_VERSION}"
-
 # Trap ^C
 Signal.trap("INT") {
   puts "\nCtrl-C detected. Exiting..."
