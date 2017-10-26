@@ -13,7 +13,7 @@ class Lam::Build
     end
 
     def run
-      js_path = "#{Lam.root}handlers/#{process_type}/#{module_name}.js"
+      js_path = "#{Lam.root}handlers/#{process_type.pluralize}/#{module_name}.js"
       FileUtils.mkdir_p(File.dirname(js_path))
 
       template_path = File.expand_path('../templates/handler.js', __FILE__)
@@ -32,11 +32,11 @@ class Lam::Build
     end
 
     def process_type
-      @class_name.underscore.split('_').last.pluralize
+      @class_name.underscore.split('_').last
     end
 
     def handler(method)
-      "handlers/#{process_type}/#{module_name}.#{method}"
+      "handlers/#{process_type.pluralize}/#{module_name}.#{method}"
     end
 
     def module_name

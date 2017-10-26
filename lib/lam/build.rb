@@ -15,12 +15,14 @@ class Lam::Build
   end
 
   def build
+    puts "Building node shim handlers..."
     controller_paths.each do |path|
       deducer = LambdaDeducer.new(path)
       generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
       generator.run
     end
 
+    puts "Building TravelingRuby..."
     TravelingRuby.new.build unless @options[:noop]
   end
 
