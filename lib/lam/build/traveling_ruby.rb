@@ -8,6 +8,12 @@ class Lam::Build
 
   class TravelingRuby
     def build
+      if File.exist?("#{Lam.root}bundled")
+        puts "Ruby bundled already exists."
+        puts "To force rebundling: rm -rf bundled"
+        return
+      end
+
       check_ruby_version
 
       FileUtils.mkdir_p(TEMP_BUILD_DIR)

@@ -12,4 +12,11 @@ export BUNDLE_GEMFILE="$PROJECTDIR/Gemfile"
 unset BUNDLE_IGNORE_CONFIG
 
 # Run the actual app using the bundled Ruby interpreter, with Bundler activated.
-exec "$PROJECTDIR/bundled/ruby/bin/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.2.0/bin/lam" "$@"
+os=$(uname)
+if [[ "$os" == 'Darwin' ]]; then
+  # used macosx ruby for development
+  exec lam "$@"
+else
+  # used bundled ruby for Lambda
+  exec "$PROJECTDIR/bundled/ruby/bin/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.2.0/bin/lam" "$@"
+fi
