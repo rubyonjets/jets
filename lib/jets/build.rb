@@ -1,5 +1,3 @@
-require 'pp'
-
 class Jets::Build
   autoload :LambdaDeducer, "jets/build/lambda_deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
@@ -24,6 +22,9 @@ class Jets::Build
 
     puts "Building TravelingRuby..."
     TravelingRuby.new.build unless @options[:noop]
+
+    puts "Building Lambda functions as CloudFormation templates"
+
   end
 
   def controller_paths

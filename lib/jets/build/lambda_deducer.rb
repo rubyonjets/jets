@@ -1,12 +1,9 @@
+# TODO: move the handler_generator.rb deducing methods into here
 class Jets::Build
   class LambdaDeducer
     attr_reader :handlers
     def initialize(path)
       @path = path
-    end
-
-    def run
-      deduce
     end
 
     def class_name

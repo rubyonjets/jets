@@ -88,7 +88,7 @@ jets deploy worker xxx
 
 ## Under the hood
 
-Lambda does not yet support ruby, so Jets uses a node shim and a bundled version of ruby to add ruby support.  You should configure your functions to use at least 1.5GB of memory in order to keep the latency low.  The overhead is of the node shim is about 500ms. If your application requires faster response times than than then you will have to wait for official ruby support from AWS.
+Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of ruby to add support.
 
 ## Test
 

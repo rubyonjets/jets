@@ -1,6 +1,8 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "jets/version"
-require 'active_support/core_ext/string'
+require "active_support/core_ext/string"
+require "colorize"
+require 'pp'
 
 module Jets
   autoload :Util, "jets/util"
@@ -9,6 +11,8 @@ module Jets
   autoload :Build, 'jets/build'
   autoload :Process, 'jets/process'
   autoload :BaseController, 'jets/base_controller'
+  autoload :Project, 'jets/project'
+  autoload :Cfn, 'jets/cfn'
 
   extend Util
 end
