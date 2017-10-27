@@ -18,10 +18,14 @@ class Jets::Cfn::Builder
     end
 
     def add_resource(logical_id, type, properties)
-      @template[:Resources][logical_id] = {
+      options = {
         Type: type,
         Properties: properties
       }
+      depends_on = properties.delete(:DependsOn)
+      options[:DependsOn] = depends_on if depends_on
+
+      @template[:Resources][logical_id] = options
     end
 
     def add_parameter(name, options={})
