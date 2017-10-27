@@ -27,8 +27,9 @@ class Jets::Build
     puts "Building Lambda functions as CloudFormation templates.."
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.cfn_path}"
-      build_cfn_templates(deducer)
+      build_class_cfn_template(deducer)
     end
+    build_parent_cfn_template
   end
 
   def build_shims(deducer)
@@ -36,10 +37,15 @@ class Jets::Build
     generator.run
   end
 
-  def build_cfn_templates(deducer)
+  def build_class_cfn_template(deducer)
     klass = deducer.class_name.constantize # IE: PostsController
     cfn = Jets::Cfn::Builder.new(klass)
     cfn.compose!
+  end
+
+  def build_parent_cfn_template
+    parent = Jets::Cfn::Builder::Parent.new
+    parent.compose!
   end
 
   def each_deducer

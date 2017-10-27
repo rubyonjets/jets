@@ -7,6 +7,8 @@ class Jets::Cfn
   class Builder
     include Helpers
 
+    autoload :Parent, "jets/cfn/builder/parent"
+
     def initialize(controller_class)
       @controller_class = controller_class
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
