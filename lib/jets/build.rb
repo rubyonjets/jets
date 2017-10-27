@@ -17,28 +17,41 @@ class Jets::Build
     TravelingRuby.new.build unless @options[:noop]
 
     clean_start
+
     puts "Building node shims..."
+    each_deducer do |deducer|
+      puts "  #{deducer.path} => #{deducer.js_path}"
+      build_shims(deducer)
+    end
+
+    puts "Building Lambda functions as CloudFormation templates.."
+    each_deducer do |deducer|
+      puts "  #{deducer.path} => #{deducer.cfn_path}"
+      build_cfn_templates(deducer)
+    end
+  end
+
+  def build_shims(deducer)
+    generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
+    generator.run
+  end
+
+  def build_cfn_templates(deducer)
+    klass = deducer.class_name.constantize # IE: PostsController
+    cfn = Jets::Cfn::Builder.new(klass)
+    cfn.compose!
+  end
+
+  def each_deducer
     controller_paths.each do |path|
-      build_for(path)
+      deducer = LambdaDeducer.new(path)
+      yield(deducer)
     end
   end
 
   # Remove any current templates in the tmp build folder for a clean start
   def clean_start
     FileUtils.rm_rf("/tmp/jets_build/templates")
-  end
-
-  def build_for(path)
-    puts "For: #{path.colorize(:blue)}"
-    puts "Building node shim handlers..."
-    deducer = LambdaDeducer.new(path)
-    generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
-    generator.run
-
-    puts "Building Lambda functions as CloudFormation templates"
-    klass = deducer.class_name.constantize # IE: PostsController
-    cfn = Jets::Cfn::Builder.new(klass)
-    cfn.compose!
   end
 
   def controller_paths
