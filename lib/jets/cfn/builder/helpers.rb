@@ -1,4 +1,4 @@
-class Jets::Cfn
+class Jets::Cfn::Builder
   module Helpers
     def add_resource(logical_id, type, properties)
       @template[:Resources][logical_id] = {
