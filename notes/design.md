@@ -105,3 +105,7 @@ cd spec/fixtures/project
 jets build # generates the handlers
 node handlers/controllers/posts.js
 ```
+
+Test CloudFormation commands
+```sh
+aws cloudformation create-stack --stack-name test-stack-$(date +%s) --template-body file://lib/jets/cfn/builder/templates/base-stack.yml --capabilities CAPABILITY_NAMED_IAM

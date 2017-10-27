@@ -1,0 +1,44 @@
+---
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+  IamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: "lamdba-proj-dev" # TODO: remove hard code
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogStream
+            Resource: '*'
+          - Effect: Allow
+            Action:
+            - logs:PutLogEvents
+            Resource: '*'
+            # TODO: make more fine grain
+            # - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/quiz-dev-hello:*:*
+            # - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/quiz-dev-quiz:*:*
+            # TODO: allow hook so user can configure this themselves
+          - Effect: Allow
+            Action:
+            - dynamodb:*
+            Resource: "*"
+      Path: "/"
+      RoleName: "lamdba-proj-dev-role-us-east-1" # TODO: remove hard code
+Outputs:
+  S3Bucket:
+    Value: !Ref S3Bucket
+  IamRole:
+    Value: !Ref IamRole

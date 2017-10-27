@@ -29,7 +29,8 @@ class Jets::Build
       puts "  #{deducer.path} => #{deducer.cfn_path}"
       build_child_template(deducer)
     end
-    build_parent_cfn_template
+    build_base_stack
+    build_parent_template
   end
 
   def build_shims(deducer)
@@ -43,7 +44,12 @@ class Jets::Build
     cfn.compose!
   end
 
-  def build_parent_cfn_template
+  def build_base_template
+    parent = Jets::Cfn::Builder::BaseStack.new
+    parent.compose!
+  end
+
+  def build_parent_template
     parent = Jets::Cfn::Builder::Parent.new
     parent.compose!
   end

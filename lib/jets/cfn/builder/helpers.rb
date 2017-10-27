@@ -1,5 +1,9 @@
 class Jets::Cfn::Builder
   module Helpers
+    def compose
+      # meant to be overridden by the concrete class
+    end
+
     def compose!
       compose
       write
