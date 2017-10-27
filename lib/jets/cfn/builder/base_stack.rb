@@ -5,8 +5,6 @@ class Jets::Cfn::Builder
     include Helpers
 
     def text
-      path = File.expand_path("../templates/base-stack.yml", __FILE__)
-      IO.read(path)
     end
 
     # TODO: very duplicated logic, refactor so we only have a template_name method

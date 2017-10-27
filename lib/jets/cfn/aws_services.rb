@@ -6,7 +6,7 @@ module Jets::Cfn::AwsServices
   end
 
   def stack_exists?(stack_name)
-    return false if @options[:noop]
+    return false if ENV['TEST']
 
     exist = nil
     begin

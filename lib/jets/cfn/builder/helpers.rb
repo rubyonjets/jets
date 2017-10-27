@@ -14,7 +14,23 @@ class Jets::Cfn::Builder
     end
 
     def text
-      YAML.dump(@template.to_hash)
+      text = YAML.dump(@template.to_hash)
+      post_process_template(text)
+    end
+
+    # post process the text so that
+    # "!Ref IamRole" => !Ref IamRole
+    # We strip the surrounding quotes
+    def post_process_template(text)
+      results = text.split("\n").map do |line|
+        if line.include?(': "!') # IE: IamRole: "!Ref IamRole",
+           # IamRole: "!Ref IamRole" => IamRole: !Ref IamRole
+          line.sub(/: "(.*)"/, ': \1')
+        else
+          line
+        end
+      end
+      results.join("\n") + "\n"
     end
 
     def add_resource(logical_id, type, properties)

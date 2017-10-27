@@ -3,7 +3,8 @@ require "jets/version"
 require "active_support/core_ext/string"
 require "colorize"
 require "fileutils"
-require 'pp'
+require "pp"
+require "byebug"
 
 module Jets
   autoload :Util, "jets/util"

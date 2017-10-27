@@ -25,8 +25,11 @@ class Jets::Cfn::Builder
     # Parameters that are common to all stacks
     def parameters
       {
-        S3Bucket: "boltops-jets",
-        IamRole: "arn:aws:iam::160619113767:role/service-role/lambda-test-harness"
+        # YAML.dump converts it to a string
+        # !GetAtt Base.Outputs.IamRole => "!GetAtt Base.Outputs.IamRole"
+        # But post processing of the template fixes this
+        IamRole: "!Ref IamRole",
+        S3Bucket: "!Ref S3Bucket",
       }
     end
 

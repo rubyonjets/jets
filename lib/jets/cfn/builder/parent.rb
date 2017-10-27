@@ -1,6 +1,7 @@
 class Jets::Cfn::Builder
   class Parent
     include Helpers
+    include Jets::Cfn::AwsServices
 
     def initialize
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
@@ -8,9 +9,25 @@ class Jets::Cfn::Builder
 
     def compose
       puts "Building parent template"
-      add_output("S3Bucket")
-      add_output("IamRole")
-      add_child_resources
+
+      add_minimal_resources
+      add_child_resources unless first_run
+    end
+
+    @@first_run = nil
+    def first_run
+      return false
+      @@first_run ||= !stack_exists?(parent_stack_name)
+    end
+
+    def parent_stack_name
+      "#{Jets::Project.project_name}-#{Jets::Project.env}"
+    end
+
+    def add_minimal_resources
+      path = File.expand_path("../templates/minimal-stack.yml", __FILE__)
+      minimal_template = YAML.load(IO.read(path))
+      @template.deep_merge!(minimal_template)
     end
 
     def add_child_resources
@@ -29,12 +46,6 @@ class Jets::Cfn::Builder
           DependsOn: ["Base"]
         )
       end
-
-      base = BaseInfo.new
-      add_resource(base.logical_id, "AWS::CloudFormation::Stack",
-          TemplateURL: base.template_url,
-          Parameters: base.parameters
-        )
     end
 
     def write

@@ -29,7 +29,6 @@ class Jets::Build
       puts "  #{deducer.path} => #{deducer.cfn_path}"
       build_app_child_template(deducer) #
     end
-    build_base_child_template
     build_parent_template
   end
 
@@ -42,11 +41,6 @@ class Jets::Build
     klass = deducer.class_name.constantize # IE: PostsController
     cfn = Jets::Cfn::Builder::AppStack.new(klass)
     cfn.compose!
-  end
-
-  def build_base_child_template
-    parent = Jets::Cfn::Builder::BaseStack.new
-    parent.compose!
   end
 
   def build_parent_template
