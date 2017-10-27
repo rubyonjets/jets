@@ -40,12 +40,12 @@ class Jets::Build
   def build_app_child_template(deducer)
     klass = deducer.class_name.constantize # IE: PostsController
     cfn = Jets::Cfn::Builder::AppStack.new(klass)
-    cfn.compose!
+    cfn.build
   end
 
   def build_parent_template
     parent = Jets::Cfn::Builder::Parent.new
-    parent.compose!
+    parent.build
   end
 
   def each_deducer

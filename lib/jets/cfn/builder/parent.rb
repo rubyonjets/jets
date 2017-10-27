@@ -14,9 +14,13 @@ class Jets::Cfn::Builder
       add_child_resources unless first_run
     end
 
+    def template_path
+      Jets::Cfn::Namer.parent_template_path
+    end
+
     @@first_run = nil
     def first_run
-      return false
+      return true
       @@first_run ||= !stack_exists?(parent_stack_name)
     end
 
@@ -46,13 +50,6 @@ class Jets::Cfn::Builder
           DependsOn: ["Base"]
         )
       end
-    end
-
-    def write
-      template_path = Jets::Cfn::Namer.parent_template_path
-      puts "writing parent stack template #{template_path}"
-      FileUtils.mkdir_p(File.dirname(template_path))
-      IO.write(template_path, text)
     end
   end
 end

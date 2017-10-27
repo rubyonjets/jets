@@ -1,12 +1,18 @@
+# The class including this module should implement these methods:
+#
+#   * compose
+#   * template_path
 class Jets::Cfn::Builder
   module Helpers
-    def compose
-      # meant to be overridden by the concrete class
+    def build
+      compose # must be implemented by subclass
+      write
     end
 
-    def compose!
-      compose
-      write
+    def write
+      puts "writing parent stack template #{template_path}"
+      FileUtils.mkdir_p(File.dirname(template_path))
+      IO.write(template_path, text)
     end
 
     def template

@@ -12,6 +12,10 @@ class Jets::Cfn::Builder
       add_functions
     end
 
+    def template_path
+      Jets::Cfn::Namer.template_path(@controller_class)
+    end
+
     def add_parameters
       add_parameter("IamRole", Description: "Iam Role that Lambda function uses.")
       add_parameter("S3Bucket", Description: "S3 Bucket for source code.")
@@ -38,12 +42,6 @@ class Jets::Cfn::Builder
         Runtime: Jets::Project.runtime,
         Timeout: 10 #Jets::Project.timeout
       )
-    end
-
-    def write
-      template_path = Jets::Cfn::Namer.template_path(@controller_class)
-      FileUtils.mkdir_p(File.dirname(template_path))
-      IO.write(template_path, text)
     end
   end
 end
