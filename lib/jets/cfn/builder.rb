@@ -16,7 +16,6 @@ class Jets::Cfn
     def add_parameters
       add_parameter("LambdaIamRole", Description: "Iam Role that Lambda function uses.")
       add_parameter("S3Bucket", Description: "S3 Bucket for source code.")
-      add_s3_bucket
     end
 
     def add_functions

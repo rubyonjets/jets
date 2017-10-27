@@ -22,7 +22,7 @@ class Jets::Cfn
     end
 
     # @@s3_key = "jets/cfn-templates/dev/#{Time.now.strftime("%Y%m%dT%H%M%S")}/jets-app-code.zip"
-    @@s3_key = "jets/cfn-templates/code.zip" # hardcode to test
+    @@s3_key = "jets/cfn-templates/jets.zip" # hardcode to test
     def self.s3_key
       @@s3_key
     end
