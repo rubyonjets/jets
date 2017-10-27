@@ -39,6 +39,6 @@ Resources:
       RoleName: "lamdba-proj-dev-role-us-east-1" # TODO: remove hard code
 Outputs:
   S3Bucket:
-    Value: !Ref S3Bucket
+    Value: "!Ref S3Bucket" # not a valid cfn notation, surrounding double quotes is handled by post processing.
   IamRole:
-    Value: !Ref IamRole
+    Value: "!Ref IamRole"
