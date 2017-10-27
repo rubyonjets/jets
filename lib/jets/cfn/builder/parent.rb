@@ -25,9 +25,16 @@ class Jets::Cfn::Builder
         # app.logical_id - PostsController
         add_resource(app.logical_id, "AWS::CloudFormation::Stack",
           TemplateURL: app.template_url,
-          Parameters: app.parameters
+          Parameters: app.parameters,
+          DependsOn: ["Base"]
         )
       end
+
+      base = BaseInfo.new
+      add_resource(base.logical_id, "AWS::CloudFormation::Stack",
+          TemplateURL: base.template_url,
+          Parameters: base.parameters
+        )
     end
 
     def write

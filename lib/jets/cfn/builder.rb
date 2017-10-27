@@ -8,5 +8,6 @@ class Jets::Cfn
     autoload :AppStack, "jets/cfn/builder/app_stack"
     autoload :AppInfo, "jets/cfn/builder/app_info"
     autoload :BaseStack, "jets/cfn/builder/base_stack"
+    autoload :BaseInfo, "jets/cfn/builder/base_info"
   end
 end
