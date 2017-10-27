@@ -1,2 +1,3 @@
 --color
 --format documentation
+--exclude-pattern spec/fixtures/project/**/*

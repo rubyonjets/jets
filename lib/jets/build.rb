@@ -16,9 +16,15 @@ class Jets::Build
     puts "Building TravelingRuby..."
     TravelingRuby.new.build unless @options[:noop]
 
+    clean_start
     controller_paths.each do |path|
       build_for(path)
     end
+  end
+
+  # TODO: improve this, it's a quick hack for now
+  def clean_start
+    FileUtils.rm_rf("/tmp/jets_build/templates")
   end
 
   def build_for(path)

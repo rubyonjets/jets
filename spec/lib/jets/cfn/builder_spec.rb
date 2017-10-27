@@ -11,8 +11,8 @@ describe Jets::Cfn::Builder do
       expect(cfn.template[:Resources].keys).to eq(
         ["PostsControllerCreate", "PostsControllerUpdate"]
       )
-      puts cfn.text
-      IO.write("tmp/template.yml", cfn.text)
+      file_exist = File.exist?("/tmp/jets_build/templates/posts-controller.yml")
+      expect(file_exist).to be true
     end
   end
 end
