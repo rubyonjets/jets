@@ -1,6 +1,6 @@
 ## What is Jets?
 
-Jet's is a Lambda Framework that allows you to create AWS Lambda serverless applications with ruby.  It includes everything required to build a web application and deploy it to AWS Lambda.  It also can be used as a cost-effective worker system. For example, it can be used to write "cron" jobs.
+Jets is a Ruby Lambda Framework that allows you to create AWS Lambda serverless applications with ruby.  It includes everything required to build a web application and deploy it to AWS Lambda.  It also can be used as a cost-effective worker system. For example, it can be used to write "cron" jobs.
 
 It is key to conceptually understand AWS Lambda and API Gateway to understand Jets.  Jets maps your code to Lambda functions and API Gatway.
 

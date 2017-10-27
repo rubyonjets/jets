@@ -42,7 +42,7 @@ class Jets::Cfn
         Role: { Ref: "LambdaIamRole" },
         MemorySize: Jets::Project.memory_size,
         Runtime: Jets::Project.runtime,
-        Timeout: Jets::Project.timeout
+        Timeout: 10 #Jets::Project.timeout
       )
     end
 
