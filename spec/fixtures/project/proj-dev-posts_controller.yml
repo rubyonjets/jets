@@ -1,0 +1,37 @@
+---
+Resources:
+  PostsControllerCreate:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: S3Bucket
+        S3Key: jets/cfn-templates/jets.zip
+      FunctionName: proj-dev-posts-controller-create
+      Handler: handlers/controllers/posts.create
+      Role:
+        Ref: LambdaIamRole
+      MemorySize: 1536
+      Runtime: nodejs6.10
+      Timeout: 10
+  PostsControllerUpdate:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: S3Bucket
+        S3Key: jets/cfn-templates/jets.zip
+      FunctionName: proj-dev-posts-controller-update
+      Handler: handlers/controllers/posts.update
+      Role:
+        Ref: LambdaIamRole
+      MemorySize: 1536
+      Runtime: nodejs6.10
+      Timeout: 10
+Parameters:
+  LambdaIamRole:
+    Type: String
+    Description: Iam Role that Lambda function uses.
+  S3Bucket:
+    Type: String
+    Description: S3 Bucket for source code.

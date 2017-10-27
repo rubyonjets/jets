@@ -16,7 +16,6 @@ class Jets::Project
     # project name or validate a project name is configured in config/project.yml
     OpenStruct.new(
       project_name: default_project_name,
-      name: default_project_name, # alias to project_name
       env: ENV['JETS_ENV'] || 'dev', # shouldnt really be a default here
       timeout: 30,
       runtime: "nodejs6.10",

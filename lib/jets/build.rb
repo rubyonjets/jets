@@ -17,18 +17,19 @@ class Jets::Build
     TravelingRuby.new.build unless @options[:noop]
 
     clean_start
+    puts "Building node shims..."
     controller_paths.each do |path|
       build_for(path)
     end
   end
 
-  # TODO: improve this, it's a quick hack for now
+  # Remove any current templates in the tmp build folder for a clean start
   def clean_start
     FileUtils.rm_rf("/tmp/jets_build/templates")
   end
 
   def build_for(path)
-    puts "For: #{path}"
+    puts "For: #{path.colorize(:blue)}"
     puts "Building node shim handlers..."
     deducer = LambdaDeducer.new(path)
     generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)

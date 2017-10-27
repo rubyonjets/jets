@@ -15,6 +15,8 @@ module Jets
 
     desc "deploy", "Deploys project to Lambda"
     long_desc Help.deploy
+    option :capabilities, type: :array, desc: "iam capabilities. Ex: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
+    option :iam, type: :boolean, desc: "Shortcut for common IAM capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
     def deploy
       Jets::Deploy.new(options).run
     end

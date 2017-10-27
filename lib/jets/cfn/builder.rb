@@ -55,8 +55,7 @@ class Jets::Cfn
     end
 
     def write
-      template_name = @controller_class.to_s.underscore.dasherize
-      template_path = "/tmp/jets_build/templates/#{template_name}.yml"
+      template_path = Namer.template_path(@controller_class)
       FileUtils.mkdir_p(File.dirname(template_path))
       IO.write(template_path, text)
     end
