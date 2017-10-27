@@ -36,7 +36,15 @@ class Jets::Cfn
 
     def self.template_path(controller_class)
       underscored_controller = controller_class.to_s.underscore.dasherize
-      "/tmp/jets_build/templates/#{Jets::Project.project_name}-#{Jets::Project.env}-#{underscored_controller}.yml"
+      "#{template_path_base}-#{underscored_controller}.yml"
+    end
+
+    def self.parent_template_path
+      "#{template_path_base}-parent.yml"
+    end
+
+    def self.template_path_base
+      "/tmp/jets_build/templates/#{Jets::Project.project_name}-#{Jets::Project.env}"
     end
   end
 end

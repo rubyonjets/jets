@@ -7,10 +7,9 @@ class Jets::Cfn::Builder
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
-    def compose!
+    def compose
       add_parameters
       add_functions
-      write
     end
 
     def add_parameters
@@ -39,14 +38,6 @@ class Jets::Cfn::Builder
         Runtime: Jets::Project.runtime,
         Timeout: 10 #Jets::Project.timeout
       )
-    end
-
-    def template
-      @template
-    end
-
-    def text
-      YAML.dump(@template.to_hash)
     end
 
     def write
