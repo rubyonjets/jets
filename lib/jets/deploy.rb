@@ -1,3 +1,5 @@
+require "aws-sdk"
+
 class Jets::Deploy
   def initialize(options)
     @options = options
@@ -10,5 +12,6 @@ class Jets::Deploy
 
   def deploy
     Jets::Build.new(@options).run
+    Jets::Cfn::Deploy.new(@options).run
   end
 end

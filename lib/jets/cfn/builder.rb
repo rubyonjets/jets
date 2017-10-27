@@ -2,7 +2,11 @@ require 'active_support/core_ext/hash'
 require 'yaml'
 
 class Jets::Cfn
-  class Builder < Base
+  autoload :Helpers, "jets/cfn/helpers"
+
+  class Builder
+    include Helpers
+
     def initialize(controller_class)
       @controller_class = controller_class
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
