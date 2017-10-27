@@ -29,7 +29,7 @@ class Jets::Build
       puts "  #{deducer.path} => #{deducer.cfn_path}"
       build_child_template(deducer)
     end
-    build_base_stack
+    build_base_template
     build_parent_template
   end
 

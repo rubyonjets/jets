@@ -7,5 +7,6 @@ class Jets::Cfn
     autoload :Parent, "jets/cfn/builder/parent"
     autoload :Child, "jets/cfn/builder/child"
     autoload :ChildInfo, "jets/cfn/builder/child_info"
+    autoload :BaseStack, "jets/cfn/builder/base_stack"
   end
 end

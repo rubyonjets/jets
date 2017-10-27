@@ -36,14 +36,19 @@ class Jets::Cfn
 
     def self.template_path(controller_class)
       underscored_controller = controller_class.to_s.underscore.dasherize
-      "#{template_path_base}-#{underscored_controller}.yml"
+      "#{template_prefix}-#{underscored_controller}.yml"
     end
 
+    # consdier moving these methods into cfn/builder/helpers.rb or that area.
     def self.parent_template_path
-      "#{template_path_base}-parent.yml"
+      "#{template_prefix}-parent.yml"
     end
 
-    def self.template_path_base
+    def self.base_template_path
+      "#{template_prefix}-base.yml"
+    end
+
+    def self.template_prefix
       "/tmp/jets_build/templates/#{Jets::Project.project_name}-#{Jets::Project.env}"
     end
   end

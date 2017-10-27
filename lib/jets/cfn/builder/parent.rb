@@ -14,12 +14,13 @@ class Jets::Cfn::Builder
     end
 
     def add_child_resources
-      expression = "#{Jets::Cfn::Namer.template_path_base}-*"
+      expression = "#{Jets::Cfn::Namer.template_prefix}-*"
       puts "expression #{expression.inspect}"
       Dir.glob(expression).each do |path|
         # next unless File.file?(path)
         puts "path #{path}".colorize(:red)
 
+        # Child app stacks
         child = ChildInfo.new(path)
         # child.logical_id - PostsController
         add_resource(child.logical_id, "AWS::CloudFormation::Stack",
