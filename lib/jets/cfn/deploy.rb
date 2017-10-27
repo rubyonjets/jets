@@ -62,7 +62,7 @@ class Jets::Cfn
     def params
       [
         {
-          parameter_key: "LambdaIamRole",
+          parameter_key: "IamRole",
           parameter_value: "arn:aws:iam::160619113767:role/service-role/lambda-test-harness"
         },
         {

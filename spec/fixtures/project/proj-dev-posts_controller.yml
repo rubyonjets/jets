@@ -10,7 +10,7 @@ Resources:
       FunctionName: proj-dev-posts-controller-create
       Handler: handlers/controllers/posts.create
       Role:
-        Ref: LambdaIamRole
+        Ref: IamRole
       MemorySize: 1536
       Runtime: nodejs6.10
       Timeout: 10
@@ -24,12 +24,12 @@ Resources:
       FunctionName: proj-dev-posts-controller-update
       Handler: handlers/controllers/posts.update
       Role:
-        Ref: LambdaIamRole
+        Ref: IamRole
       MemorySize: 1536
       Runtime: nodejs6.10
       Timeout: 10
 Parameters:
-  LambdaIamRole:
+  IamRole:
     Type: String
     Description: Iam Role that Lambda function uses.
   S3Bucket:

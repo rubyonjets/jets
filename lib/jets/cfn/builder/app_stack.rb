@@ -13,7 +13,7 @@ class Jets::Cfn::Builder
     end
 
     def add_parameters
-      add_parameter("LambdaIamRole", Description: "Iam Role that Lambda function uses.")
+      add_parameter("IamRole", Description: "Iam Role that Lambda function uses.")
       add_parameter("S3Bucket", Description: "S3 Bucket for source code.")
     end
 
@@ -33,7 +33,7 @@ class Jets::Cfn::Builder
         },
         FunctionName: namer.function_name,
         Handler: namer.handler,
-        Role: { Ref: "LambdaIamRole" },
+        Role: { Ref: "IamRole" },
         MemorySize: Jets::Project.memory_size,
         Runtime: Jets::Project.runtime,
         Timeout: 10 #Jets::Project.timeout

@@ -10,7 +10,7 @@ describe Jets::Cfn::Builder::AppInfo do
       expect(app.path).to eq "/tmp/jets_build/templates/proj-dev-posts-controller.yml"
       expect(app.logical_id).to eq "PostsController"
       expect(app.template_url).to eq "s3://[region].s3.amazonaws.com/[bucket]/cfn-templates/dev/proj-dev-posts-controller.yml"
-      expect(app.parameters).to eq(S3Bucket: "[bucket]", IamRole: "LambdaIamRole")
+      expect(app.parameters).to eq(S3Bucket: "[bucket]", IamRole: "IamRole")
     end
   end
 end
