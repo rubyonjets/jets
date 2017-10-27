@@ -16,5 +16,11 @@ describe Jets::CLI do
       # puts out
       expect(out).to include("Building project")
     end
+
+    it "deploy" do
+      out = execute("bin/jets deploy #{@args}")
+      # puts out
+      expect(out).to include("Deploying project")
+    end
   end
 end
