@@ -27,9 +27,9 @@ class Jets::Build
     puts "Building Lambda functions as CloudFormation templates.."
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.cfn_path}"
-      build_child_template(deducer)
+      build_app_child_template(deducer) #
     end
-    build_base_template
+    build_base_child_template
     build_parent_template
   end
 
@@ -38,13 +38,13 @@ class Jets::Build
     generator.run
   end
 
-  def build_child_template(deducer)
+  def build_app_child_template(deducer)
     klass = deducer.class_name.constantize # IE: PostsController
-    cfn = Jets::Cfn::Builder::Child.new(klass)
+    cfn = Jets::Cfn::Builder::AppStack.new(klass)
     cfn.compose!
   end
 
-  def build_base_template
+  def build_base_child_template
     parent = Jets::Cfn::Builder::BaseStack.new
     parent.compose!
   end

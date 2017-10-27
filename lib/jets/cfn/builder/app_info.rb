@@ -1,5 +1,5 @@
 class Jets::Cfn::Builder
-  class ChildInfo
+  class AppInfo
     attr_reader :path
     def initialize(path)
       # "/tmp/jets_build/templates/proj-dev-posts-controller.yml"

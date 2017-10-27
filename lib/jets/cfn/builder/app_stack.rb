@@ -1,5 +1,5 @@
 class Jets::Cfn::Builder
-  class Child
+  class AppStack
     include Helpers
 
     def initialize(controller_class)

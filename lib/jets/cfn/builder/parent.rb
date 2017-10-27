@@ -21,11 +21,11 @@ class Jets::Cfn::Builder
         puts "path #{path}".colorize(:red)
 
         # Child app stacks
-        child = ChildInfo.new(path)
-        # child.logical_id - PostsController
-        add_resource(child.logical_id, "AWS::CloudFormation::Stack",
-          TemplateURL: child.template_url,
-          Parameters: child.parameters
+        app = AppInfo.new(path)
+        # app.logical_id - PostsController
+        add_resource(app.logical_id, "AWS::CloudFormation::Stack",
+          TemplateURL: app.template_url,
+          Parameters: app.parameters
         )
       end
     end
