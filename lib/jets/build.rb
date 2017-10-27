@@ -13,18 +13,25 @@ class Jets::Build
   end
 
   def build
-    puts "Building node shim handlers..."
-    controller_paths.each do |path|
-      deducer = LambdaDeducer.new(path)
-      generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
-      generator.run
-    end
-
     puts "Building TravelingRuby..."
     TravelingRuby.new.build unless @options[:noop]
 
-    puts "Building Lambda functions as CloudFormation templates"
+    controller_paths.each do |path|
+      build_for(path)
+    end
+  end
 
+  def build_for(path)
+    puts "For: #{path}"
+    puts "Building node shim handlers..."
+    deducer = LambdaDeducer.new(path)
+    generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
+    generator.run
+
+    puts "Building Lambda functions as CloudFormation templates"
+    klass = deducer.class_name.constantize # IE: PostsController
+    cfn = Jets::Cfn::Builder.new(klass)
+    cfn.compose!
   end
 
   def controller_paths

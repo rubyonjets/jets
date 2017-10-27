@@ -11,6 +11,7 @@ class Jets::Cfn
     def compose!
       add_parameters
       add_functions
+      write
     end
 
     def add_parameters
@@ -47,6 +48,13 @@ class Jets::Cfn
 
     def text
       YAML.dump(@template.to_hash)
+    end
+
+    def write
+      template_name = @controller_class.to_s.underscore.dasherize
+      template_path = "/tmp/jets_build/templates/#{template_name}.yml"
+      FileUtils.mkdir_p(File.dirname(template_path))
+      IO.write(template_path, text)
     end
   end
 end
