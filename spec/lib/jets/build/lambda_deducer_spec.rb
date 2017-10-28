@@ -12,4 +12,3 @@ describe Jets::Build::LambdaDeducer do
     end
   end
 end
-

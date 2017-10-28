@@ -10,6 +10,7 @@ class Jets::Cfn::Builder
     def compose
       add_parameters
       add_functions
+      add_routes
     end
 
     def template_path
@@ -42,6 +43,20 @@ class Jets::Cfn::Builder
         Runtime: Jets::Project.runtime,
         Timeout: 10 #Jets::Project.timeout
       )
+    end
+
+    def add_routes
+      puts "ADDING ROUTES"
+      routes.each do |route|
+        pp route
+      end
+    end
+
+    # "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:123412341234:function:My_Function/invocations"
+    def routes
+      @routes ||= Jets::Build::RoutesBuilder.routes.select do |route|
+        route.controller_name == @controller_class.to_s
+      end
     end
   end
 end
