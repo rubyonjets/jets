@@ -1,6 +1,9 @@
+require 'action_view'
+
 class Jets::Cfn
   class Deploy
     include AwsServices
+    include ActionView::Helpers::NumberHelper # number_to_human_size
 
     def initialize(options)
       @options = options
@@ -37,7 +40,8 @@ class Jets::Cfn
       end
 
       zip_path = Jets::Build.code_zip_file_path
-      puts "Uploading #{zip_path} to S3"
+      file_size = number_to_human_size(File.size(zip_path))
+      puts "Uploading #{zip_path} (#{file_size}) to S3"
       key = Jets::Cfn::Namer.code_s3_key
       obj = s3_resource.bucket(bucket_name).object(key)
       obj.upload_file(zip_path)

@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hashie"
   spec.add_dependency "colorize"
   spec.add_dependency "activesupport"
+  spec.add_dependency "actionview"
 
   # for now
   spec.add_dependency "byebug"
