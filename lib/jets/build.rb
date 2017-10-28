@@ -47,6 +47,8 @@ class Jets::Build
     Dir.chdir(Jets.root) do
       # TODO: this adds unnecessary files like log files. clean the directory first?
       success = system("zip -rq #{File.basename(temp_code_zipfile)} .")
+      dir = File.dirname(md5_code_zipfile)
+      FileUtils.mkdir_p(dir) unless File.exist?(dir)
       FileUtils.mv(temp_code_zipfile, md5_code_zipfile)
       abort('Creating zip failed, exiting.') unless success
     end
