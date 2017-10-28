@@ -1,0 +1,4 @@
+{
+  "statusCode": 200,
+  "body": "must be a string, even if it is json, it should be a string"
+}

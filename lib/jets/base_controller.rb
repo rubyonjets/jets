@@ -4,8 +4,8 @@ module Jets
   class BaseController
     attr_reader :event, :context
     def initialize(event, context)
-      @event = event
-      @context = context
+      @event = event # Hash, JSON.parse(event) ran BaseProcessor
+      @context = context # Hash. JSON.parse(context) ran in BaseProcessor
     end
 
     # The public methods defined in the user's custom class will become
@@ -25,22 +25,27 @@ module Jets
     def render(options={})
       # render json: {"mytestdata": "value1"}, status: 200, headers: {...}
       if options.has_key?(:json)
-        # Transform the structure to Lambda Proxy structure
-        # {statusCode: ..., body: ..., headers: }
-        status = options.delete(:status) || 200 # TEST
-        body = options.delete(:json)
-        result = options.merge(
-          statusCode: status,
-          body: JSON.dump(body)
-        )
-      # render text: "text"
+        result = render_aws_proxy(options)
       elsif options.has_key?(:text)
         result = options.delete(:text)
       else
         raise "Unsupported render option. Only :text and :json supported.  options #{options.inspect}"
       end
-
       result
+    end
+
+    # render json: {my: data}, status: 200
+    def render_aws_proxy(options)
+      # Transform the structure to AWS_PROXY compatiable structure
+      # AWS Docs Output Format of a Lambda Function for Proxy Integration
+      # http://amzn.to/2gSdMan
+      # {statusCode: ..., body: ..., headers: }
+      status = options.delete(:status) || 200
+      body = options.delete(:json)
+      result = options.merge(
+        statusCode: status,
+        body: JSON.dump(body) # change Hash to String
+      )
     end
 
     # API Gateway LAMBDA_PROXY wraps the event in its own structure.
