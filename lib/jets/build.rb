@@ -1,3 +1,5 @@
+require 'digest'
+
 class Jets::Build
   autoload :LambdaDeducer, "jets/build/lambda_deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
@@ -43,17 +45,29 @@ class Jets::Build
   def create_zip_file
     puts 'Creating zip file.'
     Dir.chdir(Jets.root) do
-      success = system("zip -rq #{File.basename(code_zip_file_path)} .")
+      # TODO: this adds unnecessary files like log files. clean the directory first?
+      success = system("zip -rq #{File.basename(temp_code_zipfile)} .")
+      FileUtils.mv(temp_code_zipfile, md5_code_zipfile)
       abort('Creating zip failed, exiting.') unless success
     end
   end
 
-  def code_zip_file_path
-    self.class.code_zip_file_path
+  def temp_code_zipfile
+    self.class.temp_code_zipfile
   end
 
-  def self.code_zip_file_path
+  def self.temp_code_zipfile
     "#{Jets.root}code.zip"
+  end
+
+  def md5_code_zipfile
+    self.class.md5_code_zipfile
+  end
+
+  @@md5 = nil # need to store the md5 in memory because the file gets renamed
+  def self.md5_code_zipfile
+    @@md5 ||= Digest::MD5.file(temp_code_zipfile).to_s[0..7]
+    File.dirname(temp_code_zipfile) + "/code-#{@@md5}.zip"
   end
 
   def build_app_child_template(deducer)

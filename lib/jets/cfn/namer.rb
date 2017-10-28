@@ -26,9 +26,13 @@ class Jets::Cfn
     end
 
   public
-    # Class methods
+    # Mainly build related
+
+
+    # Mainly CloudFormation related
     def self.code_s3_key
-      "jets/code2.zip"
+      md5_zipfile = File.basename(Jets::Build.md5_code_zipfile)
+      "jets/#{md5_zipfile}"
     end
 
     def self.template_path(controller_class)

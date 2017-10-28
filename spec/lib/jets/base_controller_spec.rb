@@ -7,12 +7,23 @@ class FakeController < Jets::BaseController
 end
 
 describe Jets::BaseController do
-  describe "lambda_functions" do
-    it "should only list public user defined methods" do
-      controller = FakeController.new(nil, nil)
+  let(:controller) { FakeController.new(event, context) }
+
+  context "general" do
+    let(:event) { nil }
+    let(:context) { nil }
+    it "#lambda_functions returns public user-defined methods" do
       expect(controller.lambda_functions).to eq(
         [:handler1, :handler2]
       )
     end
+  end
+
+  context "normal lambda function integration request" do
+    let(:event) { {"key1" => "value1", "key2" => "value2"} }
+    let(:context) {"" }
+  end
+
+  context "normal lambda proxy integration request for api gateway" do
   end
 end

@@ -39,7 +39,7 @@ class Jets::Cfn
         obj.upload_file(path)
       end
 
-      zip_path = Jets::Build.code_zip_file_path
+      zip_path = Jets::Build.md5_code_zipfile
       file_size = number_to_human_size(File.size(zip_path))
 
       if ENV['SKIP_S3_UPLOAD']
