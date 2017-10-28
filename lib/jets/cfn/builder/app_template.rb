@@ -7,12 +7,14 @@ class Jets::Cfn::Builder
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
+    # compose is an interface method
     def compose
       add_parameters
       add_functions
       add_routes
     end
 
+    # template_path is an interface method
     def template_path
       Jets::Naming.template_path(@controller_class)
     end

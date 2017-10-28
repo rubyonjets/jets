@@ -60,10 +60,6 @@ public
     File.basename(parent_template_path, ".yml")
   end
 
-  def self.base_template_path
-    "#{template_prefix}-base.yml"
-  end
-
   def self.template_prefix
     "/tmp/jets_build/templates/#{Jets::Project.project_name}-#{Jets::Project.env}"
   end

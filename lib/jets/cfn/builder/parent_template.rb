@@ -8,6 +8,7 @@ class Jets::Cfn::Builder
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
+    # compose is an interface method
     def compose
       puts "Building parent template"
 
@@ -28,7 +29,6 @@ class Jets::Cfn::Builder
 
     def add_child_resources
       expression = "#{Jets::Naming.template_prefix}-*"
-      puts "expression #{expression.inspect}"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
         puts "path #{path}".colorize(:red)

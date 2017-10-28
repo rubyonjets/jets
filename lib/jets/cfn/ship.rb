@@ -119,7 +119,6 @@ class Jets::Cfn
 
       puts "Uploading child CloudFormation templates to S3"
       expression = "#{Jets::Naming.template_prefix}-*"
-      puts "expression #{expression.inspect}"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
