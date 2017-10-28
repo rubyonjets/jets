@@ -52,5 +52,9 @@ class Jets::Cfn
     def self.template_prefix
       "/tmp/jets_build/templates/#{Jets::Project.project_name}-#{Jets::Project.env}"
     end
+
+    def self.gateway_api_name
+      "#{Jets::Project.project_name}-#{Jets::Project.env}"
+    end
   end
 end

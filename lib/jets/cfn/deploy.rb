@@ -41,6 +41,12 @@ class Jets::Cfn
 
       zip_path = Jets::Build.code_zip_file_path
       file_size = number_to_human_size(File.size(zip_path))
+
+      if ENV['SKIP_S3_UPLOAD']
+        puts "Skipping uploading of #{zip_path} (#{file_size}) to S3 for quick testing"
+        return
+      end
+
       puts "Uploading #{zip_path} (#{file_size}) to S3"
       key = Jets::Cfn::Namer.code_s3_key
       obj = s3_resource.bucket(bucket_name).object(key)

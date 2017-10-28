@@ -31,7 +31,7 @@ module Jets
         body = options.delete(:json)
         result = options.merge(
           statusCode: status,
-          body: body
+          body: JSON.dump(body)
         )
       # render text: "text"
       elsif options.has_key?(:text)

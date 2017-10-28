@@ -39,13 +39,36 @@ class Jets::Cfn::Builder
       results.join("\n") + "\n"
     end
 
-    def add_resource(logical_id, type, properties)
-      options = {
-        Type: type,
-        Properties: properties
-      }
-      depends_on = properties.delete(:DependsOn)
-      options[:DependsOn] = depends_on if depends_on
+
+    # add_resource handles an options Hash with both only Rroperties
+    # and also one with a nested Properties.
+
+    # Example:
+    #
+    # Simple options with properties only:
+    # add_resource("MyId", "AWS::CloudFormationStack",
+    #   TemplateURL: "template_url",
+    #   Parameters: {},
+    # )
+    #
+    # More complicated options:
+    # add_resource("MyId", "AWS::ApiGateway::RestApi",
+    #   Properties: {
+    #     Name: "my-api"
+    #   },
+    #   DependsOn: ["AnotherResource"]
+    # )
+    def add_resource(logical_id, type, options)
+      base = { Type: type }
+
+      options = if options.include?(:Properties)
+                  base.merge(options)
+                else
+                  {
+                    Type: type,
+                    Properties: options # options are properties
+                  }
+                end
 
       @template[:Resources][logical_id] = options
     end

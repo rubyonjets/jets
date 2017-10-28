@@ -13,6 +13,7 @@ class Jets::Cfn::Builder
 
       add_minimal_resources
       add_child_resources unless @options[:stack_type] == 'minimal'
+      add_gateway_api
     end
 
     def template_path
@@ -40,6 +41,15 @@ class Jets::Cfn::Builder
           Parameters: app.parameters,
         )
       end
+    end
+
+    # If the are routes in config/routes.rb add Gateway API in parent stack
+    def add_gateway_api
+      return unless Jets::Build::RoutesBuilder.routes.size > 0
+
+      add_resource("GatewayRestApi", "AWS::ApiGateway::RestApi",
+        Name: Jets::Cfn::Namer.gateway_api_name
+      )
     end
   end
 end

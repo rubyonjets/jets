@@ -11,7 +11,8 @@ class Jets::Build
       instance_eval(code, path)
     end
 
-    %w[get post put delete any].each do |method_name|
+    # Methods supported by API Gateway
+    %w[any delete get head options patch post put].each do |method_name|
       define_method method_name do |path, options|
         create_route(options.merge(path: path, method: __method__))
       end
