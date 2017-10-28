@@ -1,5 +1,5 @@
 class Jets::Cfn::Builder
-  class Parent
+  class ParentTemplate
     include Helpers
     include Jets::Cfn::AwsServices
 
