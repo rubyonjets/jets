@@ -1,7 +1,7 @@
 require "aws-sdk"
 
 class Jets::Deploy
-  include Jets::Cfn::AwsServices
+  include Jets::AwsServices
 
   def initialize(options)
     @options = options
@@ -18,7 +18,7 @@ class Jets::Deploy
     options = @options.merge(stack_options)
 
     Jets::Build.new(options).run
-    Jets::Cfn::Bake.new(options).run
+    Jets::Cfn::Ship.new(options).run
 
     deploy if first_run # re-deploy again
   end

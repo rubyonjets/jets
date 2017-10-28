@@ -1,7 +1,7 @@
 class Jets::Cfn::Builder
   class ParentTemplate
     include Helpers
-    include Jets::Cfn::AwsServices
+    include Jets::AwsServices
 
     def initialize(options={})
       @options = options

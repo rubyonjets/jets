@@ -1,6 +1,6 @@
 require "aws-sdk"
 
-module Jets::Cfn::AwsServices
+module Jets::AwsServices
   def s3
     @s3 ||= Aws::S3::Client.new
   end

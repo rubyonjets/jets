@@ -18,6 +18,7 @@ module Jets
   autoload :Deploy, 'jets/deploy'
   autoload :Delete, 'jets/delete'
   autoload :Naming, 'jets/naming'
+  autoload :AwsServices, "jets/aws_services"
 
   extend Util
 end
