@@ -33,7 +33,7 @@ class Jets::Cfn::Builder
       add_resource(namer.logical_id, "AWS::Lambda::Function",
         Code: {
           S3Bucket: {Ref: "S3Bucket"}, # from child stack
-          S3Key: namer.s3_key
+          S3Key: namer.code_s3_key
         },
         FunctionName: namer.function_name,
         Handler: namer.handler,

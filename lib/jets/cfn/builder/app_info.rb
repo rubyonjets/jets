@@ -32,8 +32,7 @@ class Jets::Cfn::Builder
         # !GetAtt Base.Outputs.IamRole => "!GetAtt Base.Outputs.IamRole"
         # But post processing of the template fixes this
         IamRole: "!GetAtt IamRole.Arn",
-        # S3Bucket: "!Ref S3Bucket",
-        S3Bucket: "boltops-jets",
+        S3Bucket: "!Ref S3Bucket",
       }
     end
 

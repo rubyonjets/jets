@@ -17,8 +17,8 @@ class Jets::Cfn
       "#{Jets::Project.project_name}-#{Jets::Project.env}-#{logical_id.underscore.dasherize}"
     end
 
-    def s3_key
-      self.class.s3_key
+    def code_s3_key
+      self.class.code_s3_key
     end
 
     def template_path
@@ -27,11 +27,8 @@ class Jets::Cfn
 
   public
     # Class methods
-
-    # @@s3_key = "jets/cfn-templates/dev/#{Time.now.strftime("%Y%m%dT%H%M%S")}/jets-app-code.zip"
-    @@s3_key = "jets/cfn-templates/jets.zip" # hardcode to test
-    def self.s3_key
-      @@s3_key
+    def self.code_s3_key
+      "jets/code.zip"
     end
 
     def self.template_path(controller_class)

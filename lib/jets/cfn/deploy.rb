@@ -38,7 +38,7 @@ class Jets::Cfn
 
       zip_path = Jets::Build.code_zip_file_path
       puts "Uploading #{zip_path} to S3"
-      key = "jets/#{File.basename(zip_path)}"
+      key = Jets::Cfn::Namer.code_s3_key
       obj = s3_resource.bucket(bucket_name).object(key)
       obj.upload_file(zip_path)
     end
@@ -74,7 +74,7 @@ class Jets::Cfn
     # check for _COMPLETE or _FAILED
     def wait_for_stack
       status = ''
-      while status !~ /(_COMPLETE|_FAILED)/
+      while status !~ /(_COMPLETE|_FAILED)$/
         resp = cfn.describe_stacks(stack_name: @stack_name)
         status = resp.stacks[0].stack_status
         sleep 5
