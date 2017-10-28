@@ -16,7 +16,7 @@ class Jets::Build
       js_path = "#{Jets.root}handlers/#{process_type.pluralize}/#{module_name}.js"
       FileUtils.mkdir_p(File.dirname(js_path))
 
-      template_path = File.expand_path('../templates/handler.js', __FILE__)
+      template_path = File.expand_path('../node-shim-handler.js', __FILE__)
       template = IO.read(template_path)
 
       # Set used ERB variables:
