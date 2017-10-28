@@ -29,11 +29,11 @@ class Jets::Cfn::Builder
       expression = "#{Jets::Cfn::Namer.template_prefix}-*"
       puts "expression #{expression.inspect}"
       Dir.glob(expression).each do |path|
-        # next unless File.file?(path)
+        next unless File.file?(path)
         puts "path #{path}".colorize(:red)
 
         # Child app stacks
-        app = AppInfo.new(path)
+        app = AppInfo.new(path, @options[:s3_bucket])
         # app.logical_id - PostsController
         add_resource(app.logical_id, "AWS::CloudFormation::Stack",
           TemplateURL: app.template_url,

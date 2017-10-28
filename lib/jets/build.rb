@@ -16,14 +16,15 @@ class Jets::Build
     puts "Building TravelingRuby..."
     TravelingRuby.new.build unless @options[:noop]
 
-    clean_start
-
     puts "Building node shims..."
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.js_path}"
       build_shims(deducer)
     end
+    create_zip_file
 
+    ## CloudFormation templates
+    clean_start # cleans out /tmp/jets_build/templates
     puts "Building Lambda functions as CloudFormation templates.."
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.cfn_path}"
@@ -35,6 +36,22 @@ class Jets::Build
   def build_shims(deducer)
     generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
     generator.run
+  end
+
+  def create_zip_file
+    puts 'Creating zip file.'
+    Dir.chdir(Jets.root) do
+      success = system("zip -rq #{File.basename(code_zip_file_path)} .")
+      abort('Creating zip failed, exiting.') unless success
+    end
+  end
+
+  def code_zip_file_path
+    self.class.code_zip_file_path
+  end
+
+  def self.code_zip_file_path
+    "#{Jets.root}code.zip"
   end
 
   def build_app_child_template(deducer)

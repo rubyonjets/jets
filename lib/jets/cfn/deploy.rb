@@ -9,13 +9,38 @@ class Jets::Cfn
     end
 
     def run
+      upload_to_s3 if @options[:s3_bucket] # available when stack_type is not minimal
+
       puts "Deploying CloudFormation stack!"
+      puts "TEST TEST TEST"
       if stack_exists?(@stack_name)
         update_stack
       else
         create_stack
       end
       wait_for_stack
+    end
+
+    # Upload both code and child templates to s3
+    def upload_to_s3
+      bucket_name = @options[:s3_bucket]
+
+      puts "Uploading child CloudFormation templates to S3"
+      expression = "#{Jets::Cfn::Namer.template_prefix}-*"
+      puts "expression #{expression.inspect}"
+      Dir.glob(expression).each do |path|
+        next unless File.file?(path)
+
+        key = "jets/cfn-templates/#{File.basename(path)}"
+        obj = s3_resource.bucket(bucket_name).object(key)
+        obj.upload_file(path)
+      end
+
+      zip_path = Jets::Build.code_zip_file_path
+      puts "Uploading #{zip_path} to S3"
+      key = "jets/#{File.basename(zip_path)}"
+      obj = s3_resource.bucket(bucket_name).object(key)
+      obj.upload_file(zip_path)
     end
 
     # TODO: move this all into create.rb class

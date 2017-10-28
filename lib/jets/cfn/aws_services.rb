@@ -1,6 +1,10 @@
 require "aws-sdk"
 
 module Jets::Cfn::AwsServices
+  def s3_resource
+    @s3_resource ||= Aws::S3::Resource.new
+  end
+
   def cfn
     @cfn ||= Aws::CloudFormation::Client.new
   end

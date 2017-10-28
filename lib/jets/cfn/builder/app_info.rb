@@ -1,9 +1,10 @@
 class Jets::Cfn::Builder
   class AppInfo
     attr_reader :path
-    def initialize(path)
+    def initialize(path, s3_bucket)
       # "/tmp/jets_build/templates/proj-dev-posts-controller.yml"
       @path = path
+      @s3_bucket = s3_bucket
     end
 
     def logical_id
@@ -18,9 +19,10 @@ class Jets::Cfn::Builder
       # has been first launched.  We can create the bucket in a separate stack
       # And then grab it and then store it in a cache file.
       basename = File.basename(@path)
-      # "s3://[region].s3.amazonaws.com/[bucket]/cfn-templates/#{env}/#{basename}"
-      "https://s3.amazonaws.com/boltops-jets/jets/cfn-templates/#{env}/#{basename}"
-      # s3://boltops-jets/jets/cfn-templates/jets.zip
+      # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/proj-dev-posts-controller.yml"
+      url = "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
+      puts "url #{url}".colorize(:blue)
+      url
     end
 
     # Parameters that are common to all stacks
