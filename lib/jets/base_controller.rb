@@ -27,7 +27,7 @@ module Jets
       if options.has_key?(:json)
         # Transform the structure to Lambda Proxy structure
         # {statusCode: ..., body: ..., headers: }
-        status = options.delete(:status) || 201 # TEST
+        status = options.delete(:status) || 200 # TEST
         body = options.delete(:json)
         result = options.merge(
           statusCode: status,

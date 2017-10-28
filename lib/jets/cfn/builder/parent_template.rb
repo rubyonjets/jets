@@ -17,6 +17,7 @@ class Jets::Cfn::Builder
       add_gateway_api
     end
 
+    # template_path is an interface method
     def template_path
       Jets::Naming.parent_template_path
     end
