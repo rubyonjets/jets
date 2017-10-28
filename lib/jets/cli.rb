@@ -18,7 +18,7 @@ module Jets
     option :capabilities, type: :array, desc: "iam capabilities. Ex: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
     option :iam, type: :boolean, desc: "Shortcut for common IAM capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
     def deploy
-      Jets::Deploy.new(options).run
+      Jets::Fly.new(options).run
     end
 
     desc "process TYPE", "process subcommand tasks"

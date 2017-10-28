@@ -18,7 +18,8 @@ class Jets::Cfn::Builder
       # has been first launched.  We can create the bucket in a separate stack
       # And then grab it and then store it in a cache file.
       basename = File.basename(@path)
-      "s3://[region].s3.amazonaws.com/[bucket]/cfn-templates/#{env}/#{basename}"
+      # "s3://[region].s3.amazonaws.com/[bucket]/cfn-templates/#{env}/#{basename}"
+      "https://s3.amazonaws.com/boltops-jets/jets/cfn-templates/#{env}/#{basename}"
       # s3://boltops-jets/jets/cfn-templates/jets.zip
     end
 
@@ -28,8 +29,9 @@ class Jets::Cfn::Builder
         # YAML.dump converts it to a string
         # !GetAtt Base.Outputs.IamRole => "!GetAtt Base.Outputs.IamRole"
         # But post processing of the template fixes this
-        IamRole: "!Ref IamRole",
-        S3Bucket: "!Ref S3Bucket",
+        IamRole: "!GetAtt IamRole.Arn",
+        # S3Bucket: "!Ref S3Bucket",
+        S3Bucket: "boltops-jets",
       }
     end
 

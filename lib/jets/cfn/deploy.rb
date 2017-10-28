@@ -4,8 +4,8 @@ class Jets::Cfn
 
     def initialize(options)
       @options = options
-      @stack_name = stack_name
-      @template_path = "/tmp/jets_build/templates/#{@stack_name}.yml"
+      @stack_name = Namer.parent_stack_name
+      @template_path = Namer.parent_template_path
     end
 
     def run
@@ -15,15 +15,16 @@ class Jets::Cfn
       else
         create_stack
       end
+      wait_for_stack
     end
 
     # TODO: move this all into create.rb class
     def create_stack
-      template_body = IO.read(@template_path) # TODO: read from s3 only
+      # parent stack from file system, child stacks from s3
+      template_body = IO.read(@template_path)
       cfn.create_stack(
         stack_name: @stack_name,
         template_body: template_body,
-        parameters: params,
         capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
         # disable_rollback: !@options[:rollback],
       )
@@ -36,7 +37,6 @@ class Jets::Cfn
         cfn.update_stack(
           stack_name: @stack_name,
           template_body: template_body,
-          parameters: params,
           capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
           # disable_rollback: !@options[:rollback],
         )
@@ -46,10 +46,22 @@ class Jets::Cfn
       end
     end
 
-    def stack_name
-      # hard code "posts-controller" for testing
-      # TODO: @stack_name.  Will eventually be the parent stack only, generate the stack name using the Jets::Project.name
-      "#{Jets::Project.project_name}-#{Jets::Project.env}-posts-controller"
+    # check for _COMPLETE or _FAILED
+    def wait_for_stack
+      status = ''
+      while status !~ /(_COMPLETE|_FAILED)/
+        resp = cfn.describe_stacks(stack_name: @stack_name)
+        status = resp.stacks[0].stack_status
+        sleep 5
+        print '.'
+      end
+      puts
+      if status =~ /_FAILED/
+        puts "Stack status: #{status}".colorize(:red)
+        puts "Stack reason #{resp.stacks[0].stack_reason}".colorize(:red)
+      else
+        puts "Stack status: #{status}".colorize(:green)
+      end
     end
 
     def capabilities
@@ -57,19 +69,6 @@ class Jets::Cfn
       if @options[:iam]
         ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
       end
-    end
-
-    def params
-      [
-        {
-          parameter_key: "IamRole",
-          parameter_value: "arn:aws:iam::160619113767:role/service-role/lambda-test-harness"
-        },
-        {
-          parameter_key: "S3Bucket",
-          parameter_value: "boltops-jets"
-        }
-      ]
     end
   end
 end

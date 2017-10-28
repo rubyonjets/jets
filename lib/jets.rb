@@ -15,7 +15,7 @@ module Jets
   autoload :BaseController, 'jets/base_controller'
   autoload :Project, 'jets/project'
   autoload :Cfn, 'jets/cfn'
-  autoload :Deploy, 'jets/deploy'
+  autoload :Fly, 'jets/fly'
 
   extend Util
 end

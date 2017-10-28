@@ -44,6 +44,10 @@ class Jets::Cfn
       "#{template_prefix}-parent.yml"
     end
 
+    def self.parent_stack_name
+      File.basename(parent_template_path, ".yml")
+    end
+
     def self.base_template_path
       "#{template_prefix}-base.yml"
     end

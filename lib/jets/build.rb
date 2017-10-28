@@ -44,7 +44,7 @@ class Jets::Build
   end
 
   def build_parent_template
-    parent = Jets::Cfn::Builder::Parent.new
+    parent = Jets::Cfn::Builder::Parent.new(@options)
     parent.build
   end
 
