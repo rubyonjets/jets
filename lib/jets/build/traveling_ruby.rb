@@ -3,53 +3,59 @@ require "open-uri"
 require "colorize"
 
 class Jets::Build
-  TRAVELING_RUBY_VERSION = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
+  TRAVELING_RUBY_URL = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
   TEMP_BUILD_DIR = '/tmp/jets_build'.freeze
 
   class TravelingRuby
+    attr_reader :full_project_path
+    def initialize
+      # Expanding to the full path and store at the beginning because this class
+      # Users Dir.chdir and that changes possibility of capturing the project root
+      # later.
+      @full_project_path = File.expand_path(Jets.root) + "/"
+    end
+
     def build
-      if File.exist?("#{Jets.root}bundled")
-        puts "Ruby bundled already exists."
-        puts "To force rebundling: rm -rf bundled"
-        return
+      if File.exist?("#{TEMP_BUILD_DIR}/bundled")
+        puts "The #{TEMP_BUILD_DIR}/bundled folder exists. Incrementally re-building the bundle.  To fully rebundle: rm -rf #{TEMP_BUILD_DIR}/bundled"
       end
 
       check_ruby_version
 
       FileUtils.mkdir_p(TEMP_BUILD_DIR)
-      copy_gemfiles
-
       Dir.chdir(TEMP_BUILD_DIR) do
-        download_traveling_ruby
-        unpack_traveling_ruby
+        # These commands run from TEMP_BUILD_DIR
+        get_traveling_ruby
+        copy_gemfiles
         bundle_install
-        vendor_gemfiles
+        configure_bundler
+        copy_bundled_to_project
       end
-
-      move_bundled_to_project
     end
 
     def check_ruby_version
-      return if ENV['LAM_SKIP_RUBY_CHECK'] # only use if you absolutely need to
-      traveling_version = TRAVELING_RUBY_VERSION.match(/-((\d+)\.(\d+)\.(\d+))-/)[1]
+      traveling_version = TRAVELING_RUBY_URL.match(/-((\d+)\.(\d+)\.(\d+))-/)[1]
       if RUBY_VERSION != traveling_version
         puts "You are using ruby version #{RUBY_VERSION}."
         abort("You must use ruby #{traveling_version} to build the project because it's what Traveling Ruby uses.".colorize(:red))
       end
     end
 
-    def copy_gemfiles
-      FileUtils.cp("#{Jets.root}Gemfile", "#{TEMP_BUILD_DIR}/")
-      FileUtils.cp("#{Jets.root}Gemfile.lock", "#{TEMP_BUILD_DIR}/")
+    def get_traveling_ruby
+      if File.exist?(bundled_ruby_dest)
+        puts "Traveling Ruby already downloaded at #{bundled_ruby_dest}."
+      else
+        download_traveling_ruby
+        unpack_traveling_ruby
+      end
     end
 
     def download_traveling_ruby
-      puts "Downloading traveling ruby from #{traveling_ruby_url}."
+      puts "Downloading traveling ruby from #{TRAVELING_RUBY_URL}."
 
-      FileUtils.rm_rf("#{TEMP_BUILD_DIR}/#{bundled_ruby_dest}")
       File.open(traveling_ruby_tar_file, 'wb') do |saved_file|
         # the following "open" is provided by open-uri
-        open(traveling_ruby_url, 'rb') do |read_file|
+        open(TRAVELING_RUBY_URL, 'rb') do |read_file|
           saved_file.write(read_file.read)
         end
       end
@@ -67,7 +73,12 @@ class Jets::Build
       puts 'Unpacking traveling ruby successful.'
 
       puts 'Removing tar.'
-      FileUtils.rm_rf(traveling_ruby_tar_file)
+      FileUtils.rm_f(traveling_ruby_tar_file)
+    end
+
+    def copy_gemfiles
+      FileUtils.cp("#{full_project_path}Gemfile", "#{TEMP_BUILD_DIR}/")
+      FileUtils.cp("#{full_project_path}Gemfile.lock", "#{TEMP_BUILD_DIR}/")
     end
 
     def bundle_install
@@ -88,7 +99,7 @@ class Jets::Build
     # The wrapper script doesnt work unless you move the gem files in the
     # bundled/gems folder and export it to BUNDLE_GEMFILE in the
     # wrapper script.
-    def vendor_gemfiles
+    def configure_bundler
       puts "Moving gemfiles into #{bundled_gems_dest}/"
       FileUtils.mv("Gemfile", "#{bundled_gems_dest}/")
       FileUtils.mv("Gemfile.lock", "#{bundled_gems_dest}/")
@@ -102,16 +113,15 @@ BUNDLE_WITHOUT: development
 BUNDLE_DISABLE_SHARED_GEMS: '1'
 EOL
       IO.write(bundle_config_path, bundle_config)
-
     end
 
-    def move_bundled_to_project
-      if File.exist?("#{Jets.root}bundled")
-        puts "Removing current bundled folder"
-        FileUtils.rm_rf("#{Jets.root}bundled")
+    def copy_bundled_to_project
+      if File.exist?("#{full_project_path}bundled")
+        puts "Removing current #{full_project_path}bundled from project"
+        FileUtils.rm_rf("#{full_project_path}bundled")
       end
-      puts "Moving bundled ruby to your project."
-      FileUtils.mv("#{TEMP_BUILD_DIR}/bundled", Jets.root)
+      puts "Copying #{TEMP_BUILD_DIR}/bundled folder to your project."
+      FileUtils.cp_r("#{TEMP_BUILD_DIR}/bundled", full_project_path)
     end
 
     def bundled_ruby_dest
@@ -122,12 +132,8 @@ EOL
       "bundled/gems"
     end
 
-    def traveling_ruby_url
-      TRAVELING_RUBY_VERSION
-    end
-
     def traveling_ruby_tar_file
-      File.basename(traveling_ruby_url)
+      File.basename(TRAVELING_RUBY_URL)
     end
   end
 end

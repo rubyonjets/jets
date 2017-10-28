@@ -17,7 +17,6 @@ class Jets::Build
   end
 
   def build
-    puts "Building TravelingRuby..."
     TravelingRuby.new.build unless @options[:noop]
 
     clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
