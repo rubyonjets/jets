@@ -3,7 +3,7 @@ class PostsController < Jets::BaseController
     # render text: "test2" # more consistent for web controllers
 
     # render returns Lambda Proxy struture for web requests
-    render json: event.merge(a: "post index2"), status: 200
+    render json: event.merge(a: "post index3"), status: 200
   end
 
   def create

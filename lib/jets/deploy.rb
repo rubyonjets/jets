@@ -1,6 +1,6 @@
 require "aws-sdk"
 
-class Jets::Fly
+class Jets::Deploy
   include Jets::Cfn::AwsServices
 
   def initialize(options)

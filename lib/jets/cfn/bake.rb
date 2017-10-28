@@ -1,7 +1,7 @@
 require 'action_view'
 
 class Jets::Cfn
-  class Deploy
+  class Bake
     include AwsServices
     include ActionView::Helpers::NumberHelper # number_to_human_size
 
@@ -14,7 +14,7 @@ class Jets::Cfn
     def run
       upload_to_s3 if @options[:s3_bucket] # available when stack_type is not minimal
 
-      puts "Deploying CloudFormation stack!"
+      puts "Baking CloudFormation stack!"
       puts "TEST TEST TEST"
       if stack_exists?(@stack_name)
         update_stack
