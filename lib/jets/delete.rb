@@ -26,7 +26,7 @@ class Jets::Delete
   end
 
   def empty_bucket(bucket_name)
-    resp = s3.list_objects(bucket: bucket_name, max_keys: 3)
+    resp = s3.list_objects(bucket: bucket_name)
     if resp.contents.size > 0
       # IE: objects = [{key: "objectkey1"}, {key: "objectkey2"}]
       objects = resp.contents.map { |item| {key: item.key} }
