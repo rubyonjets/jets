@@ -53,6 +53,11 @@ class Jets::Cfn
       obj.upload_file(zip_path)
     end
 
+    # TODO: remove this hardcode
+    def capabilities
+      ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
+    end
+
     # TODO: move this all into create.rb class
     def create_stack
       # parent stack from file system, child stacks from s3

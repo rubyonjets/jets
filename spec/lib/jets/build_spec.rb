@@ -10,7 +10,10 @@ describe Jets::Build do
 
   describe "Build" do
     it "#controller_paths" do
-      expect(build.controller_paths).to eq(["app/controllers/posts_controller.rb"])
+      expect(build.controller_paths).to eq([
+        "app/controllers/comments_controller.rb",
+        "app/controllers/posts_controller.rb",
+      ])
     end
 
     it "builds handlers javascript files" do

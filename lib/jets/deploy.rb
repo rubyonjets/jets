@@ -18,7 +18,7 @@ class Jets::Deploy
     options = @options.merge(stack_options)
 
     Jets::Build.new(options).run
-    Jets::Cfn::Deploy.new(options).run
+    Jets::Cfn::Bake.new(options).run
 
     deploy if first_run # re-deploy again
   end

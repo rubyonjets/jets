@@ -9,6 +9,7 @@ ENV['HOME'] = "spec/fixtures/home"
 require "pp"
 require "byebug"
 require "fileutils"
+require "aws-sdk"
 
 # require "bundler"
 # Bundler.require(:development)
