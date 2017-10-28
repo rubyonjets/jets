@@ -28,7 +28,7 @@ class Jets::Cfn
   public
     # Class methods
     def self.code_s3_key
-      "jets/code.zip"
+      "jets/code2.zip"
     end
 
     def self.template_path(controller_class)

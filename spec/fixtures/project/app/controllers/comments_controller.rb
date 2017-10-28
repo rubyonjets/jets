@@ -1,6 +1,7 @@
 class CommentsController < Jets::BaseController
   def index
-    render json: event.merge(a: "index")
+    puts "event #{event.inspect}"
+    render json: event.merge(a: "index3"), status: 200
   end
 
   def edit
