@@ -27,11 +27,19 @@ class Jets::Cfn
 
   public
     # Mainly build related
+    def self.temp_code_zipfile
+      "#{Jets.root}code-temp.zip"
+    end
 
+    @@md5 = nil # need to store the md5 in memory because the file gets renamed
+    def self.md5_code_zipfile
+      @@md5 ||= Digest::MD5.file(temp_code_zipfile).to_s[0..7]
+      "/tmp/jets_build/code-#{@@md5}.zip"
+    end
 
     # Mainly CloudFormation related
     def self.code_s3_key
-      md5_zipfile = File.basename(Jets::Build.md5_code_zipfile)
+      md5_zipfile = File.basename(md5_code_zipfile)
       "jets/#{md5_zipfile}"
     end
 

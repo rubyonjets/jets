@@ -20,6 +20,8 @@ class Jets::Build
     puts "Building TravelingRuby..."
     TravelingRuby.new.build unless @options[:noop]
 
+    clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
+
     puts "Building node shims..."
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.js_path}"
@@ -28,7 +30,6 @@ class Jets::Build
     create_zip_file
 
     ## CloudFormation templates
-    clean_start # cleans out /tmp/jets_build/templates
     puts "Building Lambda functions as CloudFormation templates.."
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.cfn_path}"
@@ -53,21 +54,11 @@ class Jets::Build
   end
 
   def temp_code_zipfile
-    self.class.temp_code_zipfile
-  end
-
-  def self.temp_code_zipfile
-    "#{Jets.root}code.zip"
+    Jets::Cfn::Namer.temp_code_zipfile
   end
 
   def md5_code_zipfile
-    self.class.md5_code_zipfile
-  end
-
-  @@md5 = nil # need to store the md5 in memory because the file gets renamed
-  def self.md5_code_zipfile
-    @@md5 ||= Digest::MD5.file(temp_code_zipfile).to_s[0..7]
-    File.dirname(temp_code_zipfile) + "/code-#{@@md5}.zip"
+    Jets::Cfn::Namer.md5_code_zipfile
   end
 
   def build_app_child_template(deducer)
@@ -91,6 +82,7 @@ class Jets::Build
   # Remove any current templates in the tmp build folder for a clean start
   def clean_start
     FileUtils.rm_rf("/tmp/jets_build/templates")
+    Dir.glob("/tmp/jets_build/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
   def controller_paths
