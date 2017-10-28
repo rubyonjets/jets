@@ -21,6 +21,12 @@ module Jets
       Jets::Fly.new(options).run
     end
 
+    desc "deploy", "Deploys project to Lambda"
+    long_desc Help.deploy
+    def delete
+      Jets::Delete.new(options).run
+    end
+
     desc "process TYPE", "process subcommand tasks"
     subcommand "process", Jets::Process
   end

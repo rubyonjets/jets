@@ -16,6 +16,7 @@ module Jets
   autoload :Project, 'jets/project'
   autoload :Cfn, 'jets/cfn'
   autoload :Fly, 'jets/fly'
+  autoload :Delete, 'jets/delete'
 
   extend Util
 end

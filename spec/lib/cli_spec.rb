@@ -22,5 +22,11 @@ describe Jets::CLI do
       # puts out
       expect(out).to include("Deploying project")
     end
+
+    it "delete" do
+      out = execute("bin/jets delete #{@args}")
+      # puts out
+      expect(out).to include("Deleting project")
+    end
   end
 end
