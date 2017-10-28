@@ -17,7 +17,7 @@ class Jets::Cfn::Builder
     end
 
     def template_path
-      Jets::Cfn::Namer.parent_template_path
+      Jets::Naming.parent_template_path
     end
 
     def add_minimal_resources
@@ -27,7 +27,7 @@ class Jets::Cfn::Builder
     end
 
     def add_child_resources
-      expression = "#{Jets::Cfn::Namer.template_prefix}-*"
+      expression = "#{Jets::Naming.template_prefix}-*"
       puts "expression #{expression.inspect}"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
@@ -48,7 +48,7 @@ class Jets::Cfn::Builder
       return unless Jets::Build::RoutesBuilder.routes.size > 0
 
       add_resource("GatewayRestApi", "AWS::ApiGateway::RestApi",
-        Name: Jets::Cfn::Namer.gateway_api_name
+        Name: Jets::Naming.gateway_api_name
       )
     end
   end

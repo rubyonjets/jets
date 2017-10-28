@@ -7,8 +7,8 @@ class Jets::Cfn
 
     def initialize(options)
       @options = options
-      @stack_name = Namer.parent_stack_name
-      @template_path = Namer.parent_template_path
+      @stack_name = Jets::Naming.parent_stack_name
+      @template_path = Jets::Naming.parent_template_path
     end
 
     def run
@@ -29,7 +29,7 @@ class Jets::Cfn
       bucket_name = @options[:s3_bucket]
 
       puts "Uploading child CloudFormation templates to S3"
-      expression = "#{Jets::Cfn::Namer.template_prefix}-*"
+      expression = "#{Jets::Naming.template_prefix}-*"
       puts "expression #{expression.inspect}"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
@@ -39,7 +39,7 @@ class Jets::Cfn
         obj.upload_file(path)
       end
 
-      zip_path = Jets::Cfn::Namer.md5_code_zipfile
+      zip_path = Jets::Naming.md5_code_zipfile
       file_size = number_to_human_size(File.size(zip_path))
 
       if ENV['SKIP_S3_UPLOAD']
@@ -48,7 +48,7 @@ class Jets::Cfn
       end
 
       puts "Uploading #{zip_path} (#{file_size}) to S3"
-      key = Jets::Cfn::Namer.code_s3_key
+      key = Jets::Naming.code_s3_key
       obj = s3_resource.bucket(bucket_name).object(key)
       obj.upload_file(zip_path)
     end

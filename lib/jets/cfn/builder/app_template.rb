@@ -14,7 +14,7 @@ class Jets::Cfn::Builder
     end
 
     def template_path
-      Jets::Cfn::Namer.template_path(@controller_class)
+      Jets::Naming.template_path(@controller_class)
     end
 
     def add_parameters
@@ -29,15 +29,15 @@ class Jets::Cfn::Builder
     end
 
     def add_function(name)
-      namer = Jets::Cfn::Namer.new(@controller_class, name)
+      names = Jets::Naming.new(@controller_class, name)
 
-      add_resource(namer.logical_id, "AWS::Lambda::Function",
+      add_resource(names.logical_id, "AWS::Lambda::Function",
         Code: {
           S3Bucket: {Ref: "S3Bucket"}, # from child stack
-          S3Key: namer.code_s3_key
+          S3Key: names.code_s3_key
         },
-        FunctionName: namer.function_name,
-        Handler: namer.handler,
+        FunctionName: names.function_name,
+        Handler: names.handler,
         Role: { Ref: "IamRole" },
         MemorySize: Jets::Project.memory_size,
         Runtime: Jets::Project.runtime,

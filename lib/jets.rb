@@ -17,6 +17,7 @@ module Jets
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'
   autoload :Delete, 'jets/delete'
+  autoload :Naming, 'jets/naming'
 
   extend Util
 end

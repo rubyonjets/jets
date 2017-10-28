@@ -54,11 +54,11 @@ class Jets::Build
   end
 
   def temp_code_zipfile
-    Jets::Cfn::Namer.temp_code_zipfile
+    Jets::Naming.temp_code_zipfile
   end
 
   def md5_code_zipfile
-    Jets::Cfn::Namer.md5_code_zipfile
+    Jets::Naming.md5_code_zipfile
   end
 
   def build_app_child_template(deducer)

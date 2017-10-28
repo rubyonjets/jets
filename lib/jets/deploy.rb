@@ -43,6 +43,6 @@ private
   end
 
   def parent_stack_name
-    Jets::Cfn::Namer.parent_stack_name
+    Jets::Naming.parent_stack_name
   end
 end

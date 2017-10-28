@@ -22,7 +22,7 @@ class Jets::Delete
   end
 
   def parent_stack_name
-    Jets::Cfn::Namer.parent_stack_name
+    Jets::Naming.parent_stack_name
   end
 
   def empty_bucket(bucket_name)
