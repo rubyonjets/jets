@@ -28,7 +28,7 @@ class Jets::Cfn::Builder
         puts "path #{path}".colorize(:red)
         map = GatewayResourceMapper.new(path)
         add_resource(map.gateway_resource_logical_id, "AWS::ApiGateway::Resource",
-          ParentId: "!GetAtt ApiGatewayRestApi.RootResourceId", # This changes
+          ParentId: map.parent_id,
           PathPart: map.path_part,
           RestApiId: "!Ref ApiGatewayRestApi"
         )

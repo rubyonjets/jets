@@ -11,6 +11,7 @@ describe Jets::Cfn::Builder::GatewayResourceMapper do
       it "contains info for CloudFormation API Gateway Resources" do
         expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePostsIdEdit"
         expect(map.path_part).to eq "edit"
+        expect(map.parent_id).to eq "!Ref ApiGatewayResourceId"
       end
     end
 
@@ -19,6 +20,14 @@ describe Jets::Cfn::Builder::GatewayResourceMapper do
       it "contains info for CloudFormation API Gateway Resources" do
         expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePostsId"
         expect(map.path_part).to eq "{id}"
+        expect(map.parent_id).to eq "!Ref ApiGatewayResourcePosts"
+      end
+    end
+
+    context("posts index is a root level path") do
+      let(:path) { "posts" }
+      it "contains info for CloudFormation API Gateway Resources" do
+        expect(map.parent_id).to eq "!GetAtt ApiGatewayRestApi.RootResourceId"
       end
     end
   end

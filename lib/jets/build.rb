@@ -17,9 +17,9 @@ class Jets::Build
   end
 
   def build
-    TravelingRuby.new.build unless @options[:noop]
+    # TravelingRuby.new.build unless @options[:noop]
 
-    clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
+    # clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
 
     puts "Building node shims..."
     each_deducer do |deducer|
@@ -28,6 +28,7 @@ class Jets::Build
     end
     create_zip_file
 
+    # TODO: move this Cfn::Builder
     ## CloudFormation templates
     puts "Building Lambda functions as CloudFormation templates.."
     each_deducer do |deducer|
@@ -35,6 +36,7 @@ class Jets::Build
       build_app_child_template(deducer) #
     end
     build_parent_template
+    build_api_gateway_template
   end
 
   def build_shims(deducer)
@@ -63,6 +65,7 @@ class Jets::Build
   end
 
   def build_app_child_template(deducer)
+    # require "#{Jets.root}#{deducer.path}" # "app/controllers/posts_controller.rb"
     klass = deducer.class_name.constantize # IE: PostsController
     cfn = Jets::Cfn::Builder::AppTemplate.new(klass)
     cfn.build
@@ -70,6 +73,11 @@ class Jets::Build
 
   def build_parent_template
     parent = Jets::Cfn::Builder::ParentTemplate.new(@options)
+    parent.build
+  end
+
+  def build_api_gateway_template
+    parent = Jets::Cfn::Builder::ApiGatewayTemplate.new(@options)
     parent.build
   end
 
