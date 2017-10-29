@@ -31,18 +31,13 @@ class Jets::Cfn::Builder
       expression = "#{Jets::Naming.template_prefix}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
-        puts "path #{path}".colorize(:blue)
 
-        # Child app stacks
-        app = ChildMapper.new(path, @options[:s3_bucket])
-        # app.logical_id - PostsController
-
-        parameters = app.parameters
-        if path =~ /api-gateway/  # TODO: remove this hack and generalized this
-          parameters = {}
-        end
-        add_resource(app.logical_id, "AWS::CloudFormation::Stack",
-          TemplateURL: app.template_url,
+        map = ChildMapper.new(path, @options[:s3_bucket])
+        # map.logical_id - PostsController
+        parameters = {}
+        parameters = map.parameters unless shared_stacks?(path)
+        add_resource(map.logical_id, "AWS::CloudFormation::Stack",
+          TemplateURL: map.template_url,
           Parameters: parameters,
         )
       end
