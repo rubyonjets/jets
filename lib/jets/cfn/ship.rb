@@ -107,10 +107,11 @@ class Jets::Cfn
     end
 
     def capabilities
-      return @options[:capabilities] if @options[:capabilities]
-      if @options[:iam]
-        ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
-      end
+      ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"] # TODO: remove hardcode
+      # return @options[:capabilities] if @options[:capabilities]
+      # if @options[:iam]
+      #   ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
+      # end
     end
 
     # Upload both code and child templates to s3

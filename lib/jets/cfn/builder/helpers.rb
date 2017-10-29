@@ -80,8 +80,6 @@ class Jets::Cfn::Builder
     end
 
     def add_output(name, options={})
-      defaults = { Type: "String" }
-      options = defaults.merge(options)
       @template[:Outputs] ||= {}
       @template[:Outputs][name.camelize] = options
     end

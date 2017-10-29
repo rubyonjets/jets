@@ -14,7 +14,6 @@ class Jets::Cfn::Builder
 
       add_minimal_resources
       add_child_resources unless @options[:stack_type] == 'minimal'
-      add_gateway_api
     end
 
     # template_path is an interface method
@@ -36,20 +35,16 @@ class Jets::Cfn::Builder
         # Child app stacks
         app = AppInfo.new(path, @options[:s3_bucket])
         # app.logical_id - PostsController
+
+        parameters = app.parameters
+        if path =~ /api-gateway/  # TODO: remove this hack and generalized this
+          parameters = {}
+        end
         add_resource(app.logical_id, "AWS::CloudFormation::Stack",
           TemplateURL: app.template_url,
-          Parameters: app.parameters,
+          Parameters: parameters,
         )
       end
-    end
-
-    # If the are routes in config/routes.rb add Gateway API in parent stack
-    def add_gateway_api
-      return unless Jets::Build::RoutesBuilder.routes.size > 0
-
-      add_resource("ApiGatewayRestApi", "AWS::ApiGateway::RestApi",
-        Name: Jets::Naming.gateway_api_name
-      )
     end
   end
 end

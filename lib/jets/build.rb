@@ -17,9 +17,9 @@ class Jets::Build
   end
 
   def build
-    # TravelingRuby.new.build unless @options[:noop]
+    TravelingRuby.new.build unless @options[:noop]
 
-    # clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
+    clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
 
     puts "Building node shims..."
     each_deducer do |deducer|
