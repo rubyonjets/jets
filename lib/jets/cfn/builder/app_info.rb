@@ -20,9 +20,7 @@ class Jets::Cfn::Builder
       # And then grab it and then store it in a cache file.
       basename = File.basename(@path)
       # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/proj-dev-posts-controller.yml"
-      url = "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
-      puts "url #{url}".colorize(:blue)
-      url
+      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
     end
 
     # Parameters that are common to all stacks

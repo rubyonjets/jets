@@ -10,7 +10,6 @@ class Jets::Cfn::Builder
     end
 
     def write
-      puts "writing parent stack template #{template_path}"
       FileUtils.mkdir_p(File.dirname(template_path))
       IO.write(template_path, text)
     end

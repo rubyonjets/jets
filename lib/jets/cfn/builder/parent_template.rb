@@ -32,7 +32,6 @@ class Jets::Cfn::Builder
       expression = "#{Jets::Naming.template_prefix}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
-        puts "path #{path}".colorize(:red)
 
         # Child app stacks
         app = AppInfo.new(path, @options[:s3_bucket])
@@ -48,7 +47,7 @@ class Jets::Cfn::Builder
     def add_gateway_api
       return unless Jets::Build::RoutesBuilder.routes.size > 0
 
-      add_resource("GatewayRestApi", "AWS::ApiGateway::RestApi",
+      add_resource("ApiGatewayRestApi", "AWS::ApiGateway::RestApi",
         Name: Jets::Naming.gateway_api_name
       )
     end

@@ -130,6 +130,69 @@ module.exports.index = (event, context, callback) => {
   });
 }
 
+module.exports.show = (event, context, callback) => {
+  // Command: bin/jets process controller [event] [context] [handler]
+  var args = [
+    "process",
+    "controller",     // controller (singular)
+    JSON.stringify(event),      // event
+    JSON.stringify(context),    // context
+    "handlers/controllers/posts.show" // IE: handlers/controllers/posts.update
+  ]
+  var ruby = spawn("bin/jets", args);
+
+  // string concatation in javascript is faster than array concatation
+  // http://bit.ly/2gBMDs6
+  var stdout_buffer = ""; // stdout buffer
+  // In the processor_command we do NOT call puts directly and write to stdout
+  // because it will mess up the eventual response that we want API Gateway to
+  // process.
+  // The Lambda prints out function to whatever the return value the ruby method
+  ruby.stdout.on('data', function(data) {
+    // Not using console.log because it decorates output with a newline.
+    //
+    // Uncomment process.stdout.write to see stdout streamed for debugging.
+    // process.stdout.write(data)
+    stdout_buffer += data;
+  });
+
+  // react to potential errors
+  var stderr_buffer = "";
+  ruby.stderr.on('data', function(data) {
+    // not using console.error because it decorates output with a newline
+    stderr_buffer += data
+    process.stderr.write(data)
+  });
+
+  //finalize when ruby process is done.
+  ruby.on('close', function(exit_code) {
+    // http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html#nodejs-prog-model-handler-callback
+
+    // succcess
+    if (exit_code == 0) {
+      var result
+      try {
+        result = JSON.parse(stdout_buffer)
+      } catch(e) {
+        // if json cannot be parse assume simple text output intended
+        process.stderr.write("WARN: error parsing json, assuming plain text is desired.")
+        result = stdout_buffer
+      }
+      callback(null, result);
+
+      // callback(null, stdout_buffer);
+    } else {
+
+      // TODO: if this works, allow a way to not decorate the error in case
+      // it actually errors in javascript land
+      // Customize error object with ruby error info
+      var error = customError(stderr_buffer)
+      callback(error);
+      // console.log("error!")
+    }
+  });
+}
+
 module.exports.create = (event, context, callback) => {
   // Command: bin/jets process controller [event] [context] [handler]
   var args = [
@@ -193,6 +256,69 @@ module.exports.create = (event, context, callback) => {
   });
 }
 
+module.exports.edit = (event, context, callback) => {
+  // Command: bin/jets process controller [event] [context] [handler]
+  var args = [
+    "process",
+    "controller",     // controller (singular)
+    JSON.stringify(event),      // event
+    JSON.stringify(context),    // context
+    "handlers/controllers/posts.edit" // IE: handlers/controllers/posts.update
+  ]
+  var ruby = spawn("bin/jets", args);
+
+  // string concatation in javascript is faster than array concatation
+  // http://bit.ly/2gBMDs6
+  var stdout_buffer = ""; // stdout buffer
+  // In the processor_command we do NOT call puts directly and write to stdout
+  // because it will mess up the eventual response that we want API Gateway to
+  // process.
+  // The Lambda prints out function to whatever the return value the ruby method
+  ruby.stdout.on('data', function(data) {
+    // Not using console.log because it decorates output with a newline.
+    //
+    // Uncomment process.stdout.write to see stdout streamed for debugging.
+    // process.stdout.write(data)
+    stdout_buffer += data;
+  });
+
+  // react to potential errors
+  var stderr_buffer = "";
+  ruby.stderr.on('data', function(data) {
+    // not using console.error because it decorates output with a newline
+    stderr_buffer += data
+    process.stderr.write(data)
+  });
+
+  //finalize when ruby process is done.
+  ruby.on('close', function(exit_code) {
+    // http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html#nodejs-prog-model-handler-callback
+
+    // succcess
+    if (exit_code == 0) {
+      var result
+      try {
+        result = JSON.parse(stdout_buffer)
+      } catch(e) {
+        // if json cannot be parse assume simple text output intended
+        process.stderr.write("WARN: error parsing json, assuming plain text is desired.")
+        result = stdout_buffer
+      }
+      callback(null, result);
+
+      // callback(null, stdout_buffer);
+    } else {
+
+      // TODO: if this works, allow a way to not decorate the error in case
+      // it actually errors in javascript land
+      // Customize error object with ruby error info
+      var error = customError(stderr_buffer)
+      callback(error);
+      // console.log("error!")
+    }
+  });
+}
+
 module.exports.update = (event, context, callback) => {
   // Command: bin/jets process controller [event] [context] [handler]
   var args = [
@@ -201,6 +327,69 @@ module.exports.update = (event, context, callback) => {
     JSON.stringify(event),      // event
     JSON.stringify(context),    // context
     "handlers/controllers/posts.update" // IE: handlers/controllers/posts.update
+  ]
+  var ruby = spawn("bin/jets", args);
+
+  // string concatation in javascript is faster than array concatation
+  // http://bit.ly/2gBMDs6
+  var stdout_buffer = ""; // stdout buffer
+  // In the processor_command we do NOT call puts directly and write to stdout
+  // because it will mess up the eventual response that we want API Gateway to
+  // process.
+  // The Lambda prints out function to whatever the return value the ruby method
+  ruby.stdout.on('data', function(data) {
+    // Not using console.log because it decorates output with a newline.
+    //
+    // Uncomment process.stdout.write to see stdout streamed for debugging.
+    // process.stdout.write(data)
+    stdout_buffer += data;
+  });
+
+  // react to potential errors
+  var stderr_buffer = "";
+  ruby.stderr.on('data', function(data) {
+    // not using console.error because it decorates output with a newline
+    stderr_buffer += data
+    process.stderr.write(data)
+  });
+
+  //finalize when ruby process is done.
+  ruby.on('close', function(exit_code) {
+    // http://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html#nodejs-prog-model-handler-callback
+
+    // succcess
+    if (exit_code == 0) {
+      var result
+      try {
+        result = JSON.parse(stdout_buffer)
+      } catch(e) {
+        // if json cannot be parse assume simple text output intended
+        process.stderr.write("WARN: error parsing json, assuming plain text is desired.")
+        result = stdout_buffer
+      }
+      callback(null, result);
+
+      // callback(null, stdout_buffer);
+    } else {
+
+      // TODO: if this works, allow a way to not decorate the error in case
+      // it actually errors in javascript land
+      // Customize error object with ruby error info
+      var error = customError(stderr_buffer)
+      callback(error);
+      // console.log("error!")
+    }
+  });
+}
+
+module.exports.delete = (event, context, callback) => {
+  // Command: bin/jets process controller [event] [context] [handler]
+  var args = [
+    "process",
+    "controller",     // controller (singular)
+    JSON.stringify(event),      // event
+    JSON.stringify(context),    // context
+    "handlers/controllers/posts.delete" // IE: handlers/controllers/posts.update
   ]
   var ruby = spawn("bin/jets", args);
 

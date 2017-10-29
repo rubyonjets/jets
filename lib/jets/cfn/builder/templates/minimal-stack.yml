@@ -21,11 +21,7 @@ Resources:
           Statement:
           - Effect: Allow
             Action:
-            - logs:CreateLogStream
-            Resource: '*'
-          - Effect: Allow
-            Action:
-            - logs:PutLogEvents
+            - logs:*
             Resource: '*'
             # TODO: make more fine grain
             # - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/quiz-dev-hello:*:*

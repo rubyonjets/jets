@@ -7,9 +7,10 @@ class Jets::Build
     end
 
     def class_name
-      @path.sub(%r{app/(\w+)/},'').sub('.rb','').classify
+      @path.sub(%r{app/(\w+)/},'').sub('.rb','').classify # PostsController
     end
 
+    # Returns: [:create, :update]
     def functions
       # Example: require "./app/controllers/posts_controller.rb"
       require_path = @path.starts_with?('/') ? @path : "#{Jets.root}#{@path}"
@@ -20,10 +21,13 @@ class Jets::Build
       klass.lambda_functions
     end
 
+    # Returns: "handlers/controllers/posts.js"
     def js_path
       @path.sub("app", "handlers").sub("_controller.rb", ".js")
     end
 
+    # Used to show user where the generated files gets written to.
+    # Returns: "/tmp/jets_build/templates/proj-dev-posts-controller.yml"
     def cfn_path
       controller_name = @path.sub(/.*controllers\//, '').sub('.rb','')
                           .underscore.dasherize

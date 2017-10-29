@@ -8,7 +8,8 @@ describe Jets::Build::LambdaDeducer do
   describe "LambdaDeducer" do
     it "deduces lambda js info" do
       expect(deducer.class_name).to eq("PostsController")
-      expect(deducer.functions).to eq([:create, :update])
+      expect(deducer.functions).to eq(
+        [:create, :update, :index, :show, :edit, :delete])
     end
   end
 end
