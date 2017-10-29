@@ -22,6 +22,16 @@ class Jets::Cfn::Builder
     def add_parameters
       add_parameter("IamRole", Description: "Iam Role that Lambda function uses.")
       add_parameter("S3Bucket", Description: "S3 Bucket for source code.")
+      add_api_gateway_parameters
+    end
+
+    def add_api_gateway_parameters
+      puts "add_api_gateway_parameters"
+      add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
+      Jets::Build::RoutesBuilder.all_paths.each do |path|
+        map = GatewayResourceMapper.new(path)
+        add_parameter(map.gateway_resource_logical_id, Description: map.path)
+      end
     end
 
     def add_functions
@@ -51,29 +61,25 @@ class Jets::Cfn::Builder
     def add_routes
       puts "ADDING ROUTES"
 
-      scoped_routes.each do |route|
+      scoped_routes.each_with_index do |route, i|
          # {:to=>"posts#index", :path=>"posts", :method=>:get}
         map = GatewayMethodMapper.new(route)
         # IE: map.gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
         add_resource(map.gateway_method_logical_id, "AWS::ApiGateway::Method",
-          HttpMethod: route.method.upcase,
-          RequestParameters: {},
-          ResourceId: "!Ref #{map.gateway_resource_logical_id}",
-          RestApiId: "!Ref ApiGatewayRestApi",
-          AuthorizationType: "NONE",
-          Integration: {
-            IntegrationHttpMethod: route.method.upcase,
-            Type: "AWS_PROXY",
-            Uri: {
-              "Fn:Join": ["", [
-                "arn:aws:apigateway:",
-                {Ref:"AWS::Region"},
-                ":lambda:path/2015-03-31/functions/",
-                {"Fn:GetAtt": [map.lambda_function_logical_id, "Arn"]}, # IE: PostsControllerIndexLambdaFunction
-                "/invocations"]]
-            }
-          },
-          MethodResponses:[]
+          DependsOn: map.lambda_function_logical_id,
+          Properties: {
+            HttpMethod: route.method,
+            RequestParameters: {},
+            ResourceId: "!Ref #{map.gateway_resource_logical_id}",
+            RestApiId: "!Ref ApiGatewayRestApi",
+            AuthorizationType: "NONE",
+            Integration: {
+              IntegrationHttpMethod: route.method,
+              Type: "AWS_PROXY",
+              Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.lambda_function_logical_id}.Arn}/invocations"
+            },
+            MethodResponses:[]
+          }
         )
       end
     end

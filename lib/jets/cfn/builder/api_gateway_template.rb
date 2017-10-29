@@ -33,8 +33,8 @@ class Jets::Cfn::Builder
 
     def add_api_gateway_resources
       # The routes required a Gateway Resource to contain them.
-      paths = all_routes.map(&:path)
-      all_paths(paths).each do |path|
+      add_output("ApiGatewayRestApi", Value: "!Ref ApiGatewayRestApi")
+      Jets::Build::RoutesBuilder.all_paths.each do |path|
         puts "path #{path}".colorize(:red)
         map = GatewayResourceMapper.new(path)
         add_resource(map.gateway_resource_logical_id, "AWS::ApiGateway::Resource",
@@ -46,29 +46,6 @@ class Jets::Cfn::Builder
           Value: "!Ref #{map.gateway_resource_logical_id}"
         )
       end
-    end
-
-    # Returns all paths including subpaths.
-    # Example:
-    # Input: ["posts/:id/edit"]
-    # Output: ["posts", "posts/:id", "posts/:id/edit"]
-    def all_paths(paths)
-      results = []
-      paths.each do |p|
-        sub_paths = []
-        parts = p.split('/')
-        until parts.empty?
-          parts.pop
-          sub_path = parts.join('/')
-          sub_paths << sub_path unless sub_path == ''
-        end
-        results += sub_paths
-      end
-      (results + paths).sort.uniq
-    end
-
-    def all_routes
-      @all_routes ||= Jets::Build::RoutesBuilder.routes
     end
   end
 end

@@ -9,7 +9,7 @@ class Jets::Build
     end
 
     def method
-      @options[:method]
+      @options[:method].to_s.upcase
     end
 
     # IE: posts#create

@@ -48,7 +48,7 @@ class Jets::Cfn::Builder
     end
 
     def shared_stack?(path)
-      shared_stacks.find { |p| p.include?(path) }
+      !!shared_stacks.find { |p| path.include?(p) }
     end
   end
 end

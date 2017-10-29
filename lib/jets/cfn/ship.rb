@@ -131,8 +131,8 @@ class Jets::Cfn
       zip_path = Jets::Naming.md5_code_zipfile
       file_size = number_to_human_size(File.size(zip_path))
 
-      if ENV['SKIP_S3_UPLOAD']
-        puts "Skipping uploading of #{zip_path} (#{file_size}) to S3 for quick testing"
+      if ENV['SKIP_CODE_UPLOAD'] # only use if you are testing mainly cloudformatino only
+        puts "Skipping uploading of #{zip_path} (#{file_size}) to S3 for quick testing".colorize(:red)
         return
       end
 
