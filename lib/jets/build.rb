@@ -31,11 +31,14 @@ class Jets::Build
     # TODO: move this Cfn::Builder
     ## CloudFormation templates
     puts "Building Lambda functions as CloudFormation templates.."
+    # 1. Shared templates - child templates needs them
+    build_api_gateway_template
+    # 2. Child templates - parent template needs them
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.cfn_path}"
-      build_app_child_template(deducer) #
+      build_child_template(deducer) #
     end
-    build_api_gateway_template
+    # 3. Finally parent template
     build_parent_template # must be called at the end
   end
 
@@ -44,27 +47,12 @@ class Jets::Build
     generator.run
   end
 
-  def create_zip_file
-    puts 'Creating zip file.'
-    Dir.chdir(Jets.root) do
-      # TODO: this adds unnecessary files like log files. clean the directory first?
-      success = system("zip -rq #{File.basename(temp_code_zipfile)} .")
-      dir = File.dirname(md5_code_zipfile)
-      FileUtils.mkdir_p(dir) unless File.exist?(dir)
-      FileUtils.mv(temp_code_zipfile, md5_code_zipfile)
-      abort('Creating zip failed, exiting.') unless success
-    end
+  def build_api_gateway_template
+    parent = Jets::Cfn::Builder::ApiGatewayTemplate.new(@options)
+    parent.build
   end
 
-  def temp_code_zipfile
-    Jets::Naming.temp_code_zipfile
-  end
-
-  def md5_code_zipfile
-    Jets::Naming.md5_code_zipfile
-  end
-
-  def build_app_child_template(deducer)
+  def build_child_template(deducer)
     # require "#{Jets.root}#{deducer.path}" # "app/controllers/posts_controller.rb"
     klass = deducer.class_name.constantize # IE: PostsController
     cfn = Jets::Cfn::Builder::ChildTemplate.new(klass)
@@ -73,11 +61,6 @@ class Jets::Build
 
   def build_parent_template
     parent = Jets::Cfn::Builder::ParentTemplate.new(@options)
-    parent.build
-  end
-
-  def build_api_gateway_template
-    parent = Jets::Cfn::Builder::ApiGatewayTemplate.new(@options)
     parent.build
   end
 
@@ -109,5 +92,25 @@ class Jets::Build
   # Rids of the Jets.root at beginning
   def relative_path(path)
     path.sub(Jets.root, '')
+  end
+
+  def create_zip_file
+    puts 'Creating zip file.'
+    Dir.chdir(Jets.root) do
+      # TODO: this adds unnecessary files like log files. clean the directory first?
+      success = system("zip -rq #{File.basename(temp_code_zipfile)} .")
+      dir = File.dirname(md5_code_zipfile)
+      FileUtils.mkdir_p(dir) unless File.exist?(dir)
+      FileUtils.mv(temp_code_zipfile, md5_code_zipfile)
+      abort('Creating zip failed, exiting.') unless success
+    end
+  end
+
+  def temp_code_zipfile
+    Jets::Naming.temp_code_zipfile
+  end
+
+  def md5_code_zipfile
+    Jets::Naming.md5_code_zipfile
   end
 end
