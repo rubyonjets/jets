@@ -53,12 +53,13 @@ class Jets::Cfn::Builder
 
       scoped_routes.each do |route|
          # {:to=>"posts#index", :path=>"posts", :method=>:get}
-        map = GatewayMapper.new(route)
+        map = GatewayMethodMapper.new(route)
         # IE: map.gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
         add_resource(map.gateway_method_logical_id, "AWS::ApiGateway::Method",
           HttpMethod: route.method.upcase,
           RequestParameters: {},
-          ResourceId: "!Ref #{map.gateway_resource_logical_id}",
+          ResourceId: "!Ref #{map.gateway_resource_logical_id}", # This is crazy, it will map to a different APIGatewayResource depending on the 1. path itself 2. method, the APIGatewayResource's will be in another template and passed in as nested parameter
+          # This is a problem because CloudFormation has a limit of 60 parameters
           RestApiId: "!Ref ApiGatewayRestApi",
           AuthorizationType: "NONE",
           Integration: {
@@ -76,17 +77,6 @@ class Jets::Cfn::Builder
           MethodResponses:[]
         )
       end
-
-      # Easier to add the Gateway method and then figure out from the methods
-      # The resources that need to be added
-      # unless routes.size.empty?
-      #   gateway_resource_name = "#{@controller_class.to_s}Resource"
-      #   add_resource(gateway_resource_name, "AWS::ApiGateway::Resource"
-      #     ParentId: "!GetAtt ApiGatewayRestApi.RootResourceId",
-      #     PathPart: "hello",
-      #     RestApiId: "!Ref ApiGatewayRestApi"
-      #   )
-      # end
     end
 
     # "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:123412341234:function:My_Function/invocations"

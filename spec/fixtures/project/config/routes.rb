@@ -6,9 +6,16 @@ get  "posts/:id", to: "posts#show"
 # function_name_logical_id: PostsControllerShowLambdaFunction
 
 # post "posts", to: "posts#create"
-# put  "posts", to: "posts#edit"
+get  "posts/:id/edit", to: "posts#edit"
 # put  "posts", to: "posts#update"
 # delete  "posts", to: "posts#delete"
 
 # any "comments/hot", to: "comments#hot"
 # resources :posts
+
+get  "landing/posts", to: "posts#landing" # posts/:id
+# ApiGatewayResource at /landing
+# ApiGatewayMethod that maps PostsControllerLanding to the resource
+
+get  "landing/comments", to: "comments#landing" # posts/:id
+

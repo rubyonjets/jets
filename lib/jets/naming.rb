@@ -51,9 +51,14 @@ public
     "#{template_prefix}-#{underscored_controller}.yml"
   end
 
-  # consdier moving these methods into cfn/builder/helpers.rb or that area.
+  # consider moving these methods into cfn/builder/helpers.rb or that area.
   def self.parent_template_path
     "#{template_prefix}-parent.yml"
+  end
+
+  # consider moving these methods into cfn/builder/helpers.rb or that area.
+  def self.api_gateway_template_path
+    "#{template_prefix}-api-gateway.yml"
   end
 
   def self.parent_stack_name

@@ -1,11 +1,12 @@
 class Jets::Cfn::Builder
-  class GatewayMapper
+  class GatewayMethodMapper
     def initialize(route)
       @route = route # {:to=>"posts#index", :path=>"posts", :method=>:get}
     end
 
+    # Returns: "ApiGatewayResourcePostsController"
     def gateway_resource_logical_id
-      "ApiGatewayResource#{controller}"
+      "ApiGatewayResource#{path_logical_id}"
     end
 
     def gateway_method_logical_id
@@ -25,6 +26,10 @@ class Jets::Cfn::Builder
     def controller
       controller, action = @route.to.split('#')
       "#{controller}_controller".camelize
+    end
+
+    def path_logical_id
+      @route.path.gsub('/','_').gsub(':','').camelize
     end
   end
 end
