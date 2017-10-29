@@ -1,11 +1,11 @@
 require_relative "../../../../spec_helper"
 
-describe Jets::Cfn::Builder::AppInfo do
+describe Jets::Cfn::Builder::ChildMapper do
   let(:app) do
-    Jets::Cfn::Builder::AppInfo.new("/tmp/jets_build/templates/proj-dev-posts-controller.yml")
+    Jets::Cfn::Builder::ChildMapper.new("/tmp/jets_build/templates/proj-dev-posts-controller.yml")
   end
 
-  describe "AppInfo" do
+  describe "ChildMapper" do
     it "contains info for app stack resource" do
       expect(app.path).to eq "/tmp/jets_build/templates/proj-dev-posts-controller.yml"
       expect(app.logical_id).to eq "PostsController"

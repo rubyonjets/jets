@@ -34,7 +34,7 @@ class Jets::Cfn::Builder
         puts "path #{path}".colorize(:blue)
 
         # Child app stacks
-        app = AppInfo.new(path, @options[:s3_bucket])
+        app = ChildMapper.new(path, @options[:s3_bucket])
         # app.logical_id - PostsController
 
         parameters = app.parameters
@@ -45,6 +45,14 @@ class Jets::Cfn::Builder
           TemplateURL: app.template_url,
           Parameters: parameters,
         )
+      end
+
+      def shared_stacks
+        %w[api-gateway]
+      end
+
+      def shared_stacks?(path)
+        shared_stacks.find { |p| p.include?(path) }
       end
     end
   end

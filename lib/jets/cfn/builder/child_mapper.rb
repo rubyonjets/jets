@@ -1,5 +1,5 @@
 class Jets::Cfn::Builder
-  class AppInfo
+  class ChildMapper
     attr_reader :path
     def initialize(path, s3_bucket)
       # "/tmp/jets_build/templates/proj-dev-posts-controller.yml"

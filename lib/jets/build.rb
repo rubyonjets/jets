@@ -67,7 +67,7 @@ class Jets::Build
   def build_app_child_template(deducer)
     # require "#{Jets.root}#{deducer.path}" # "app/controllers/posts_controller.rb"
     klass = deducer.class_name.constantize # IE: PostsController
-    cfn = Jets::Cfn::Builder::AppTemplate.new(klass)
+    cfn = Jets::Cfn::Builder::ChildTemplate.new(klass)
     cfn.build
   end
 

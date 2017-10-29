@@ -1,5 +1,5 @@
 class Jets::Cfn::Builder
-  class AppTemplate
+  class ChildTemplate
     include Helpers
 
     def initialize(controller_class)
