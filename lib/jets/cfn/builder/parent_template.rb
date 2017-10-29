@@ -31,6 +31,7 @@ class Jets::Cfn::Builder
       expression = "#{Jets::Naming.template_prefix}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
+        puts "path #{path}".colorize(:blue)
 
         # Child app stacks
         app = AppInfo.new(path, @options[:s3_bucket])

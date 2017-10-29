@@ -35,8 +35,8 @@ class Jets::Build
       puts "  #{deducer.path} => #{deducer.cfn_path}"
       build_app_child_template(deducer) #
     end
-    build_parent_template
     build_api_gateway_template
+    build_parent_template # must be called at the end
   end
 
   def build_shims(deducer)
