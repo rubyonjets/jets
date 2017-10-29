@@ -11,7 +11,7 @@ class Jets::Cfn::Builder
     def compose
       add_parameters
       add_functions
-      # add_routes
+      add_routes
     end
 
     # template_path is an interface method

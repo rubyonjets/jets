@@ -35,20 +35,20 @@ class Jets::Cfn::Builder
         map = ChildMapper.new(path, @options[:s3_bucket])
         # map.logical_id - PostsController
         parameters = {}
-        parameters = map.parameters unless shared_stacks?(path)
+        parameters = map.parameters unless shared_stack?(path)
         add_resource(map.logical_id, "AWS::CloudFormation::Stack",
           TemplateURL: map.template_url,
           Parameters: parameters,
         )
       end
+    end
 
-      def shared_stacks
-        %w[api-gateway]
-      end
+    def shared_stacks
+      %w[api-gateway]
+    end
 
-      def shared_stacks?(path)
-        shared_stacks.find { |p| p.include?(path) }
-      end
+    def shared_stack?(path)
+      shared_stacks.find { |p| p.include?(path) }
     end
   end
 end
