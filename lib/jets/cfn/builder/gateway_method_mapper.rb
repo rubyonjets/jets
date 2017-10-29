@@ -4,9 +4,13 @@ class Jets::Cfn::Builder
       @route = route # {:to=>"posts#index", :path=>"posts", :method=>:get}
     end
 
-    # Returns: "ApiGatewayResourcePostsController"
+    # Example returns:
+    #   ApiGatewayResourcePostsIdEdit or
+    #   ApiGatewayResourcePostsId or
+    #   ApiGatewayResourcePosts
     def gateway_resource_logical_id
-      "ApiGatewayResource#{path_logical_id}"
+      resource_map = GatewayResourceMapper.new(@route.path)
+      resource_map.gateway_resource_logical_id
     end
 
     def gateway_method_logical_id
@@ -28,7 +32,7 @@ class Jets::Cfn::Builder
       "#{controller}_controller".camelize
     end
 
-    def path_logical_id
+    def common_logical_id
       @route.path.gsub('/','_').gsub(':','').camelize
     end
   end

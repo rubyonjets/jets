@@ -58,8 +58,7 @@ class Jets::Cfn::Builder
         add_resource(map.gateway_method_logical_id, "AWS::ApiGateway::Method",
           HttpMethod: route.method.upcase,
           RequestParameters: {},
-          ResourceId: "!Ref #{map.gateway_resource_logical_id}", # This is crazy, it will map to a different APIGatewayResource depending on the 1. path itself 2. method, the APIGatewayResource's will be in another template and passed in as nested parameter
-          # This is a problem because CloudFormation has a limit of 60 parameters
+          ResourceId: "!Ref #{map.gateway_resource_logical_id}",
           RestApiId: "!Ref ApiGatewayRestApi",
           AuthorizationType: "NONE",
           Integration: {
