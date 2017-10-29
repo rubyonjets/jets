@@ -21,6 +21,10 @@ class Jets::Cfn::Builder
       "#{controller_action}LambdaFunction"
     end
 
+    def permission_logical_id
+      "#{controller_action}PermissionApiGateway"
+    end
+
     # Example: PostsControllerIndex
     def controller_action
       controller, action = @route.to.split('#')
