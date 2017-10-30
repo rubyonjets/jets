@@ -38,7 +38,7 @@ class Jets::Cfn::Builder
     end
 
     def add_child_resources
-      expression = "#{Jets::Config.project_namespace}-*"
+      expression = "#{Jets::Naming.template_path_prefix}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 

@@ -51,24 +51,24 @@ public
 
   def self.template_path(controller_class)
     underscored_controller = controller_class.to_s.underscore.dasherize
-    "#{template_prefix}-#{underscored_controller}.yml"
+    "#{template_path_prefix}-#{underscored_controller}.yml"
   end
 
   # consider moving these methods into cfn/builder/helpers.rb or that area.
   def self.parent_template_path
-    "#{template_prefix}-parent.yml"
+    "#{template_path_prefix}-parent.yml"
   end
 
   # consider moving these methods into cfn/builder/helpers.rb or that area.
   def self.api_gateway_template_path
-    "#{template_prefix}-api-gateway.yml"
+    "#{template_path_prefix}-api-gateway.yml"
   end
 
   def self.parent_stack_name
     File.basename(parent_template_path, ".yml")
   end
 
-  def self.template_prefix
+  def self.template_path_prefix
     "/tmp/jets_build/templates/#{Jets::Config.project_namespace}"
   end
 

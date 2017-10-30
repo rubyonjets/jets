@@ -116,7 +116,7 @@ class Jets::Cfn
       bucket_name = @options[:s3_bucket]
 
       puts "Uploading child CloudFormation templates to S3"
-      expression = "#{Jets::Config.project_namespace}-*"
+      expression = "#{Jets::Naming.template_path_prefix}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
