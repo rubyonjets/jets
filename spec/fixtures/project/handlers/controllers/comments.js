@@ -120,8 +120,7 @@ module.exports.hot = (event, context, callback) => {
       // callback(null, stdout_buffer);
     } else {
 
-      // TODO: if this works, allow a way to not decorate the error in case
-      // it actually errors in javascript land
+      // TODO: node shim: Allow bypassing the decorated ruby error stack just in case actually error is in javascript land
       // Customize error object with ruby error info
       var error = customError(stderr_buffer)
       callback(error);

@@ -47,8 +47,9 @@ class Jets::Config
     # Merge it all together
     settings = defaults.deep_merge(user.deep_merge(project))
 
-    # JETS_ENV takes highest precedence
+    # JETS_ENV and JETS_ENV_INSTANCE takes highest precedence over files
     settings['env'] = ENV['JETS_ENV'] if ENV['JETS_ENV']
+    settings['env_instance'] = ENV['JETS_ENV_INSTANCE'] if ENV['JETS_ENV_INSTANCE']
     # Extra helpful aliases
     set_aliases!(settings)
 
