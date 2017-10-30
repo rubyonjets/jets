@@ -25,12 +25,11 @@ class Jets::Deploy
 
 private
   def get_stack_options(first_run)
-    puts "parent_stack_name #{parent_stack_name}".colorize(:red)
     if first_run
-      puts "FIRST RUN"
+      puts "FIRST RUN".colorize(:cyan)
       {stack_type: "minimal"}
     else
-      puts "SECOND RUN"
+      puts "SECOND RUN".colorize(:cyan)
       resp = check_updatable_status # exit if stack status is not in an updated able state
       output = resp.stacks[0].outputs.find {|o| o.output_key == 'S3Bucket'}
       s3_bucket = output.output_value

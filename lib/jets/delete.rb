@@ -45,7 +45,7 @@ class Jets::Delete
           quiet: false,
         }
       )
-      empty_s3_bucket(s3_bucket_name) # keep deleting objects until bucket is empty
+      empty_s3_bucket # keep deleting objects until bucket is empty
     end
   end
 
