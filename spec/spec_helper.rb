@@ -17,8 +17,6 @@ require "aws-sdk"
 root = File.expand_path("../../", __FILE__)
 require "#{root}/lib/jets"
 
-require "#{root}/spec/fixtures/classes"
-
 module Helpers
   def execute(cmd)
     puts "Running: #{cmd}" if ENV["DEBUG"]

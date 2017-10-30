@@ -20,12 +20,12 @@ A Jets controller handles a web request and renders a response back to the user.
 ```ruby
 class PostsController < ApplicationController
   def create
+    # render returns Lambda Proxy struture for web requests
     render json: {hello: "world"}
   end
 
   def update
-    # event and context is automatically available as a Hash
-    # render returns Lambda Proxy struture for web requests
+    # event and context are available as a Hash
     render json: event.merge(a: "update"), status: 200
   end
 end
@@ -60,8 +60,8 @@ Here's an overview of a Jets project structure.
 File / Directory  | Description
 ------------- | -------------
 app/controllers  | Contains controller code that handles web requests.  The controller code renders API Gateway Lambda Proxy compatible responses.
-app/workers  | Worker code for background jobs.
-app/functions  | Generic function code.  Code here look more like the traditional Lambda function handler format.
+app/jobs  | Job code for background jobs.  The jobs are performed as Lambda functions, so they are subject to Lambda limits.
+app/functions  | Generic function code that look more like the traditional Lambda function handler format.
 config/application.yml  | Application wide configurations.  Where you can globally configure things like project_name, env, timeout, memory size.
 config/events.yml  | Where you specify events to trigger worker or function code.
 config/routes.rb  | Where you set up routes for your application.

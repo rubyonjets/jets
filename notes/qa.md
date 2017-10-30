@@ -1,9 +1,11 @@
 ## QA
 
-Testing controller processing without node shim.
+Testing controller and jobs processing without node shim.
 
 ```
-jets process controller '{ "we" : "love", "using" : "Lambda" }' '{"test": "1"}' "handlers/controllers/posts.create"
+jets process controller '{"we":"love","using":"Lambda"}' '{"test": "1"}' "handlers/controllers/posts.create"
+
+jets process job '{"we":"love", "using":"Lambda"}' '{"test": "1"}' "handlers/jobs/sleep.perform"
 ```
 
 Testing the generated node shim handler and the controller processing.

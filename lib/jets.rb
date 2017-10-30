@@ -12,7 +12,9 @@ module Jets
   autoload :CLI, "jets/cli"
   autoload :Build, 'jets/build'
   autoload :Process, 'jets/process'
+  autoload :BaseModel, 'jets/base_model'
   autoload :BaseController, 'jets/base_controller'
+  autoload :BaseJob, 'jets/base_job'
   autoload :Config, 'jets/config'
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'
