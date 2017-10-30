@@ -1,4 +1,4 @@
 # just for specs
 level1:
   level2: test
-env_suffix: 1
+env_instance: 1

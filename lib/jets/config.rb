@@ -58,6 +58,6 @@ class Jets::Config
   def set_aliases!(s)
     # IE: With suffix: project-dev-1
     #     Without suffix: project-dev
-    s['full_project_name'] = [s['project_name'], s['env'], s['env_suffix']].compact.join('-')
+    s['project_namespace'] = [s['project_name'], s['env'], s['env_instance']].compact.join('-')
   end
 end

@@ -14,7 +14,7 @@ describe Jets::Config do
     end
 
     it "project_env alias" do
-      expect(Jets::Config.full_project_name).to eq "proj-dev-1"
+      expect(#{Jets::Config.project_namespace}).to eq "proj-dev-1"
     end
   end
 end

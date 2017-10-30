@@ -1,7 +1,7 @@
 ---
 project_name: proj
 env: dev
-env_suffix: # Allows creation of multiple env with same value
+env_instance: # Optional. Allows creation of multiple instances of env. Any random identifer. IE: 1,2,abc,xzy
 timeout: 10
 runtime: nodejs6.10
 memory_size: 1536
