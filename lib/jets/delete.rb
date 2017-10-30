@@ -34,23 +34,23 @@ class Jets::Delete
     return unless s3_bucket_name # Happens when minimal stack fails to build
 
     puts "First, deleting objects in s3 bucket #{s3_bucket_name}"
-    resp = s3.list_objects(bucket: bucket_name)
+    resp = s3.list_objects(bucket: s3_bucket_name)
     if resp.contents.size > 0
       # IE: objects = [{key: "objectkey1"}, {key: "objectkey2"}]
       objects = resp.contents.map { |item| {key: item.key} }
       s3.delete_objects(
-        bucket: bucket_name,
+        bucket: s3_bucket_name,
         delete: {
           objects: objects,
           quiet: false,
         }
       )
-      empty_bucket(bucket_name) # keep deleting objects until bucket is empty
+      empty_s3_bucket(s3_bucket_name) # keep deleting objects until bucket is empty
     end
   end
 
   def s3_bucket_name
-    return @s3_bucket_name if defined?(@s3_bucket_name) != "nil"
+    return @s3_bucket_name if defined?(@s3_bucket_name)
 
     resp = cfn.describe_stacks(stack_name: parent_stack_name)
     outputs = resp.stacks[0].outputs

@@ -8,7 +8,7 @@ class Jets::Cfn::Builder
     end
 
     def logical_id
-      regexp = Regexp.new(".*#{project_name}-#{env}-")
+      regexp = Regexp.new(".*#{Jets::Config.project_namespace}-")
       contoller_name = @path.sub(regexp, '').sub('.yml', '')
       contoller_name.underscore.camelize
     end
