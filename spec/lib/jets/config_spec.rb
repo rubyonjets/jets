@@ -1,4 +1,4 @@
-require_relative "../../spec_helper"
+require "spec_helper"
 
 describe Jets::Config do
   describe "jets project config settings" do

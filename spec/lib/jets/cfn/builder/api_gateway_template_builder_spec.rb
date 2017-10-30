@@ -1,4 +1,4 @@
-require_relative "../../../../spec_helper"
+require "spec_helper"
 
 describe Jets::Cfn::Builder::ApiGatewayTemplate do
   let(:builder) do

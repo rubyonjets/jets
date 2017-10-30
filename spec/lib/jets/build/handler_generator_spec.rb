@@ -1,4 +1,4 @@
-require_relative "../../../spec_helper"
+require "spec_helper"
 
 describe Jets::Build::HandlerGenerator do
   let(:generator) do
