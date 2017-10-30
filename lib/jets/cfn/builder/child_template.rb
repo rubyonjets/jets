@@ -66,20 +66,17 @@ class Jets::Cfn::Builder
         map = GatewayMethodMapper.new(route)
         # IE: map.gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
         add_resource(map.gateway_method_logical_id, "AWS::ApiGateway::Method",
-          DependsOn: map.lambda_function_logical_id,
-          Properties: {
-            HttpMethod: route.method,
-            RequestParameters: {},
-            ResourceId: "!Ref #{map.gateway_resource_logical_id}",
-            RestApiId: "!Ref ApiGatewayRestApi",
-            AuthorizationType: "NONE",
-            Integration: {
-              IntegrationHttpMethod: route.method,
-              Type: "AWS_PROXY",
-              Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.lambda_function_logical_id}.Arn}/invocations"
-            },
-            MethodResponses:[]
-          }
+          HttpMethod: route.method,
+          RequestParameters: {},
+          ResourceId: "!Ref #{map.gateway_resource_logical_id}",
+          RestApiId: "!Ref ApiGatewayRestApi",
+          AuthorizationType: "NONE",
+          Integration: {
+            IntegrationHttpMethod: route.method,
+            Type: "AWS_PROXY",
+            Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.lambda_function_logical_id}.Arn}/invocations"
+          },
+          MethodResponses:[]
         )
 
         add_resource(map.permission_logical_id, "AWS::Lambda::Permission",
