@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:tongueroo/jets.git
-  revision: 1e35fd8bf87c9fcdbc3b84f9e4782d072fda18bb
+  revision: 1b4d5d0e49b57611998e04d47070c542664127ec
   specs:
     jets (0.2.0)
       actionview
@@ -8,6 +8,7 @@ GIT
       byebug
       colorize
       hashie
+      recursive-open-struct
       thor
 
 GEM
@@ -46,6 +47,7 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    recursive-open-struct (1.0.5)
     thor (0.20.0)
     thread_safe (0.3.6)
     tzinfo (1.2.4)
