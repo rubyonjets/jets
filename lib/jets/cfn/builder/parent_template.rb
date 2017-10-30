@@ -68,7 +68,10 @@ class Jets::Cfn::Builder
       when /api-gateway-deployment\.yml$/
         map = ApiGatewayDeploymentMapper.new(path, @options[:s3_bucket])
         add_resource(map.logical_id, "AWS::CloudFormation::Stack",
-          Properties: { TemplateURL: map.template_url },
+          Properties: {
+            TemplateURL: map.template_url,
+            Parameters: map.parameters
+          },
           DependsOn: map.depends_on
         )
       end

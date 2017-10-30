@@ -4,6 +4,12 @@ class Jets::Cfn::Builder
       self.class.gateway_deployment_logical_id
     end
 
+    def parameters
+      {
+        ApiGatewayRestApi: "!GetAtt ApiGateway.Outputs.ApiGatewayRestApi"
+      }
+    end
+
     def depends_on
       expression = "#{Jets::Naming.template_path_prefix}-*-controller*"
       controller_logical_ids = []
@@ -21,12 +27,13 @@ class Jets::Cfn::Builder
     end
 
     # Returns: "ApiGatewayDeployment[timestamp]"
-    @@gateway_deployment_logical_id = nil
     def self.gateway_deployment_logical_id
-      return @@gateway_deployment_logical_id if @@gateway_deployment_logical_id
+      "ApiGatewayDeployment#{timestamp}"
+    end
 
-      timestamp = Time.now.strftime("%Y%m%d%H%M%S")
-      @@gateway_resource_logical_id = "ApiGatewayDeployment#{timestamp}"
+    @@timestamp = nil
+    def self.timestamp
+      @@timestamp ||= Time.now.strftime("%Y%m%d%H%M%S")
     end
   end
 end
