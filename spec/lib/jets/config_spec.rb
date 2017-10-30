@@ -12,5 +12,9 @@ describe Jets::Config do
       expect(Jets::Config.runtime).to eq "nodejs6.10"
       expect(Jets::Config.level1.level2).to eq "test"
     end
+
+    it "project_env alias" do
+      expect(Jets::Config.project_env).to eq "proj-dev"
+    end
   end
 end

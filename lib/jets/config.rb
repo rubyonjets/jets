@@ -44,6 +44,8 @@ class Jets::Config
 
     # JETS_ENV takes highest precedence
     settings['env'] = ENV['JETS_ENV'] if ENV['JETS_ENV']
+    # Extra helpful aliases
+    settings['project_env'] = settings['project_name']+'-'+settings['env'] # IE: project-dev
 
     @@settings = RecursiveOpenStruct.new(settings)
   end
