@@ -32,7 +32,7 @@ class Jets::Build
     ## CloudFormation templates
     puts "Building Lambda functions as CloudFormation templates.."
     # 1. Shared templates - child templates needs them
-    build_api_gateway_template
+    build_api_gateway_templates
     # 2. Child templates - parent template needs them
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.cfn_path}"
@@ -47,9 +47,11 @@ class Jets::Build
     generator.run
   end
 
-  def build_api_gateway_template
-    parent = Jets::Cfn::Builder::ApiGatewayTemplate.new(@options)
-    parent.build
+  def build_api_gateway_templates
+    gateway = Jets::Cfn::Builder::ApiGatewayTemplate.new(@options)
+    gateway.build
+    deployment = Jets::Cfn::Builder::ApiGatewayDeploymentTemplate.new(@options)
+    deployment.build
   end
 
   def build_child_template(deducer)

@@ -43,12 +43,7 @@ class Jets::Cfn::Builder
         next unless File.file?(path)
 
         if shared_stack?(path)
-          # Right now the only shared stack is the ApiGateway
-          map = ApiGatewayMapper.new(path, @options[:s3_bucket])
-          add_resource(map.logical_id, "AWS::CloudFormation::Stack",
-            Properties: { TemplateURL: map.template_url },
-            DependsOn: map.depends_on
-          )
+          add_shared_stack(path)
         else
           map = ChildMapper.new(path, @options[:s3_bucket])
           # map.logical_id - PostsController
@@ -60,8 +55,27 @@ class Jets::Cfn::Builder
       end
     end
 
+    # Each shared stacks has different logic.
+    # Handle in ugly case statement until we see the common patterns between them.
+    # TODO: clean up the add_shared_stack logical after we figure out the common interface pattern
+    def add_shared_stack(path)
+      case path
+      when /api-gateway\.yml$/
+        map = ApiGatewayMapper.new(path, @options[:s3_bucket])
+        add_resource(map.logical_id, "AWS::CloudFormation::Stack",
+          Properties: { TemplateURL: map.template_url }
+        )
+      when /api-gateway-deployment\.yml$/
+        map = ApiGatewayDeploymentMapper.new(path, @options[:s3_bucket])
+        add_resource(map.logical_id, "AWS::CloudFormation::Stack",
+          Properties: { TemplateURL: map.template_url },
+          DependsOn: map.depends_on
+        )
+      end
+    end
+
     def shared_stacks
-      %w[api-gateway]
+      %w[api-gateway api-gateway-deployment]
     end
 
     def shared_stack?(path)

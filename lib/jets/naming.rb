@@ -64,6 +64,10 @@ public
     "#{template_path_prefix}-api-gateway.yml"
   end
 
+  def self.api_gateway_deployment_template_path
+    "#{template_path_prefix}-api-gateway-deployment.yml"
+  end
+
   def self.parent_stack_name
     File.basename(parent_template_path, ".yml")
   end

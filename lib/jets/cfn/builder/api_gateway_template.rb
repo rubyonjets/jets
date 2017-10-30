@@ -15,7 +15,6 @@ class Jets::Cfn::Builder
       puts "Building API Gateway Resources template"
       add_gateway_rest_api
       add_gateway_routes
-      add_gateway_deployment
     end
 
     # template_path is an interface method
@@ -48,14 +47,5 @@ class Jets::Cfn::Builder
         )
       end
     end
-
-    def add_gateway_deployment
-      map = GatewayDeploymentMapper.new
-      add_resource(map.gateway_deployment_logical_id, "AWS::ApiGateway::Deployment",
-        RestApiId: "!Ref ApiGatewayRestApi",
-        StageName: Jets::Config.env,
-      )
-    end
-
   end
 end
