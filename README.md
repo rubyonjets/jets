@@ -98,7 +98,12 @@ Next, deploy the app.
 jets deploy
 ```
 
+## Install
+
+```sh
+gem install jets
+```
+
 ## Under the hood
 
 Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of ruby to add support.
-
