@@ -22,9 +22,9 @@ class Jets::Project
   # default - The default settings bundled with the jets tool takes the lowest precedence.
   #
   # More info: http://rubyonjets.com/docs/settings/
-  @options = nil
+  @@options = nil
   def options
-    return @options if @options
+    return @@options if @@options
 
     project_settings = "#{Jets.root}/config/application.yml"
     project = File.exist?(project_settings) ? YAML.load_file(project_settings) : {}
@@ -41,6 +41,6 @@ class Jets::Project
     # over the settings file.
     options['env'] = ENV['JETS_ENV'] if ENV['JETS_ENV']
 
-    @options = RecursiveOpenStruct.new(options)
+    @@options = RecursiveOpenStruct.new(options)
   end
 end
