@@ -11,7 +11,12 @@ class Jets::Config
     # Jets::Config.level1_option.level2_option
     # Jets::Config.level1_option.level2_option.level3_option
     def method_missing(method_name)
-      Jets::Config.new.settings.send(method_name)
+      settings = Jets::Config.new.settings
+      if settings.to_h.has_key?(method_name)
+        settings[method_name]
+      else
+        super
+      end
     end
   end
 
@@ -45,8 +50,14 @@ class Jets::Config
     # JETS_ENV takes highest precedence
     settings['env'] = ENV['JETS_ENV'] if ENV['JETS_ENV']
     # Extra helpful aliases
-    settings['project_env'] = settings['project_name']+'-'+settings['env'] # IE: project-dev
+    set_aliases!(settings)
 
     @@settings = RecursiveOpenStruct.new(settings)
+  end
+
+  def set_aliases!(s)
+    # IE: With suffix: project-dev-1
+    #     Without suffix: project-dev
+    s['full_project_name'] = [s['project_name'], s['env'], s['env_suffix']].compact.join('-')
   end
 end

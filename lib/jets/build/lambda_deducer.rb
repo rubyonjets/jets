@@ -31,7 +31,7 @@ class Jets::Build
     def cfn_path
       controller_name = @path.sub(/.*controllers\//, '').sub('.rb','')
                           .underscore.dasherize
-      stack_name = "#{Jets::Config.project_env}-#{controller_name}"
+      stack_name = "#{Jets::Config.full_project_name}-#{controller_name}"
       "/tmp/jets_build/templates/#{stack_name}.yml"
     end
   end
