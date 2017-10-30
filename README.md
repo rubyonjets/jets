@@ -59,7 +59,7 @@ Here's an overview of a Jets project structure.
 
 File / Directory  | Description
 ------------- | -------------
-app/controllers  | Contains controller code that handles web requests through Gateway API.  The controller code renders  Lambda Proxy compatible responses.
+app/controllers  | Contains controller code that handles web requests.  The controller code renders API Gateway Lambda Proxy compatible responses.
 app/workers  | Worker code for background jobs.
 app/functions  | Generic function code.  Code here look more like the traditional Lambda function handler format.
 config/application.yml  | Application wide configurations.  Where you can globally configure things like project_name, env, timeout, memory size.
