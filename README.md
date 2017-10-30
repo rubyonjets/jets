@@ -1,19 +1,19 @@
 ## What is Jets?
 
-Jets is a Lambda Framework that allows you to create serverless applications with ruby.  It includes everything required to build a application and deploy it to AWS Lambda.  It also can be used as a cost-effective worker system. For example, it can be used to write serverless "cron" jobs.
+Jets is an AWS Lambda Framework that allows you to create serverless applications with ruby.  It includes everything required to build an application and deploy it to AWS Lambda.  It also can be used as a cost-effective worker system. For example, it can be used to write serverless "cron" jobs.
 
-It is key to conceptually understand AWS Lambda and API Gateway to understand Jets.  Jets maps your code to Lambda functions and API Gatway.
+It is key to conceptually understand AWS Lambda and API Gateway to understand Jets.  Jets maps your code to Lambda functions and API Gateway resources.
 
 * **AWS Lambda** is Functions as a Service. It allows you to upload and run functions without worrying about the underlying infrastructure.
-* **API Gateway** is a routing layer for Lambda. You can use it to route REST URL endpoints to your Lambda functions.
+* **API Gateway** is the routing layer for Lambda. You can use it to route REST URL endpoints to your Lambda functions.
 
 ## How It Works
 
-With Jets, you focus on your business logic and Jet's does the mechanical work. You write controllers, workers and functions and Jets automatically wire these up to Lambda and API Gateway for you.
+With Jets, you focus on your business logic and Jets does the mundane work. You write controllers, workers and functions and Jets automatically uploads this to Lambda and API Gateway for you.
 
-### What is a Jets controller?
+### Jets Controllers
 
-A Jets controller handles a web request and rendering a response back to the user.  Here's an example
+A Jets controller handles a web request and renders a response back to the user.  Here's an example
 
 `app/controllers/posts_controller.rb`:
 
@@ -31,11 +31,11 @@ class PostsController < Jets::BaseController
 end
 ```
 
-Jets creates lambda functions for the controller public methods when you run the `jets deploy` command.
+Jets creates Lambda functions for the public methods in your controller when you run the `jets deploy` command.
 
-### How do I connect API Gateway to the Lambda functions?
+### Jets Routing
 
-You can hook the Lambda functions to URL endpoints via API Gateway Resources.  To route an API Gateway Resource to a controller action you use a `config/routes.rb` file:
+You hook Lambda functions up to API Gateway URL endpoints.  To route a controller action you use a `config/routes.rb` file:
 
 ```ruby
 # API Gateway resources are only created if the controller action exists.
@@ -55,14 +55,14 @@ Running `jets deploy` adds the routes to API Gateway.
 
 ### Config Structure
 
-Here's an overview of the project structure.
+Here's an overview of a Jets project structure.
 
 File / Directory  | Description
 ------------- | -------------
-app/controllers  | Contians controller code that handle web requests from Gateway API.  The controller code renders Lambda proxy compatiable responses back.
-app/workers  | Worker code that can be use for background jobs.
-app/functions  | Generic function code.  Traditional function handler format.
-config/application.yml  | Application wide configurations.  Globally configure things like project_name, env, timeout, memmory size.
+app/controllers  | Contains controller code that handles web requests through Gateway API.  The controller code renders  Lambda Proxy compatible responses.
+app/workers  | Worker code for background jobs.
+app/functions  | Generic function code.  Code here look more like the traditional Lambda function handler format.
+config/application.yml  | Application wide configurations.  Where you can globally configure things like project_name, env, timeout, memory size.
 config/events.yml  | Where you specify events to trigger worker or function code.
 config/routes.rb  | Where you set up routes for your application.
 
@@ -70,7 +70,7 @@ config/routes.rb  | Where you set up routes for your application.
 
 ### Quick Start
 
-Want to quickly try jets out?  You can generate a starter project and deploy to AWS Lambda with:
+You can generate a starter project and deploy to AWS Lambda with:
 
 ```sh
 jets new proj --starter
@@ -80,19 +80,19 @@ jets deploy
 
 ### Scaffolding
 
-You can also use `jets scaffold` to quickly generate some basic CRUD.
+You can also use `jets scaffold` to quickly generate basic CRUD code.  Example:
 
 ```sh
 jets scaffold Post name:string title:string content:text
 ```
 
-The scaffold created a migration in `db/migrate` for DynamoDB. You'll need to migrate to create the DynamoDB table.
+The scaffold creates a migration in `db/migrate` for DynamoDB. You'll need to run migrations to create the DynamoDB table.
 
 ```
 jets db:migrate
 ```
 
-Next deploy the app.
+Next, deploy the app.
 
 ```sh
 jets deploy
