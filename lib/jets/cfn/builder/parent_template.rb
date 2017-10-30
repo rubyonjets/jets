@@ -42,14 +42,21 @@ class Jets::Cfn::Builder
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
-        map = ChildMapper.new(path, @options[:s3_bucket])
-        # map.logical_id - PostsController
-        parameters = {}
-        parameters = map.parameters unless shared_stack?(path)
-        add_resource(map.logical_id, "AWS::CloudFormation::Stack",
-          TemplateURL: map.template_url,
-          Parameters: parameters,
-        )
+        if shared_stack?(path)
+          # Right now the only shared stack is the ApiGateway
+          map = ApiGatewayMapper.new(path, @options[:s3_bucket])
+          add_resource(map.logical_id, "AWS::CloudFormation::Stack",
+            Properties: { TemplateURL: map.template_url },
+            DependsOn: map.depends_on
+          )
+        else
+          map = ChildMapper.new(path, @options[:s3_bucket])
+          # map.logical_id - PostsController
+          add_resource(map.logical_id, "AWS::CloudFormation::Stack",
+            TemplateURL: map.template_url,
+            Parameters: map.parameters,
+          )
+        end
       end
     end
 

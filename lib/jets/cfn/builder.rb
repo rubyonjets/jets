@@ -9,7 +9,10 @@ class Jets::Cfn
     autoload :ChildTemplate, "jets/cfn/builder/child_template"
     autoload :ApiGatewayTemplate, "jets/cfn/builder/api_gateway_template"
 
+    # used in the parent_template.rb
     autoload :ChildMapper, "jets/cfn/builder/child_mapper"
+    autoload :ApiGatewayMapper, "jets/cfn/builder/api_gateway_mapper"
+    # used in the child_template.rb
     autoload :GatewayMethodMapper, "jets/cfn/builder/gateway_method_mapper"
     autoload :GatewayResourceMapper, "jets/cfn/builder/gateway_resource_mapper"
     autoload :GatewayDeploymentMapper, "jets/cfn/builder/gateway_deployment_mapper"

@@ -7,8 +7,10 @@ class Jets::Cfn::Builder
       @s3_bucket = s3_bucket
     end
 
+    # Example: PostsController
     def logical_id
       regexp = Regexp.new(".*#{Jets::Config.project_namespace}-")
+      # byebug
       contoller_name = @path.sub(regexp, '').sub('.yml', '')
       contoller_name.underscore.camelize
     end
