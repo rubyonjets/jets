@@ -52,9 +52,9 @@ class Jets::Cfn::Builder
         FunctionName: names.function_name,
         Handler: names.handler,
         Role: { Ref: "IamRole" },
-        MemorySize: Jets::Project.memory_size,
-        Runtime: Jets::Project.runtime,
-        Timeout: 10 #Jets::Project.timeout
+        MemorySize: Jets::Config.memory_size,
+        Runtime: Jets::Config.runtime,
+        Timeout: 10 #Jets::Config.timeout
       )
     end
 

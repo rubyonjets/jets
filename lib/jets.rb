@@ -13,7 +13,7 @@ module Jets
   autoload :Build, 'jets/build'
   autoload :Process, 'jets/process'
   autoload :BaseController, 'jets/base_controller'
-  autoload :Project, 'jets/project'
+  autoload :Config, 'jets/config'
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'
   autoload :Delete, 'jets/delete'

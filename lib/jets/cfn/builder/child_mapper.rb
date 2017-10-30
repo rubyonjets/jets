@@ -45,11 +45,11 @@ class Jets::Cfn::Builder
 
   private
     def project_name
-      Jets::Project.project_name
+      Jets::Config.project_name
     end
 
     def env
-      Jets::Project.env
+      Jets::Config.env
     end
   end
 end

@@ -55,7 +55,7 @@ any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 
 Run the `jets deploy` command to add the routes to API Gateway.
 
-### Project Structure
+### Config Structure
 
 Here's an overview of the project structure.
 

@@ -17,7 +17,7 @@ class Jets::Naming
   end
 
   def function_name
-    "#{Jets::Project.project_name}-#{Jets::Project.env}-#{logical_id.underscore.dasherize}"
+    "#{Jets::Config.project_name}-#{Jets::Config.env}-#{logical_id.underscore.dasherize}"
   end
 
   def code_s3_key
@@ -69,10 +69,10 @@ public
   end
 
   def self.template_prefix
-    "/tmp/jets_build/templates/#{Jets::Project.project_name}-#{Jets::Project.env}"
+    "/tmp/jets_build/templates/#{Jets::Config.project_name}-#{Jets::Config.env}"
   end
 
   def self.gateway_api_name
-    "#{Jets::Project.project_name}-#{Jets::Project.env}"
+    "#{Jets::Config.project_name}-#{Jets::Config.env}"
   end
 end
