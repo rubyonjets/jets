@@ -10,6 +10,7 @@ class Jets::Process
       code = deducer.controller[:code]
 
       begin
+        require "#{Jets.root}app/controllers/application_controller"
         require path  # require "app/controllers/posts_controller.rb"
         # Puts the return value of user's code to stdout because this is
         # what eventually gets used by API Gateway.

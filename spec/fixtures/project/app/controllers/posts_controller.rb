@@ -1,4 +1,4 @@
-class PostsController < Jets::BaseController
+class PostsController < ApplicationController
   def index
     # render returns Lambda Proxy struture for web requests
     render json: {a: "index"}, status: 200
