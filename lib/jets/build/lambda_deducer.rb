@@ -12,6 +12,8 @@ class Jets::Build
 
     # Returns: [:create, :update]
     def functions
+      require "#{Jets.root}app/controllers/application_controller"
+
       # Example: require "./app/controllers/posts_controller.rb"
       require_path = @path.starts_with?('/') ? @path : "#{Jets.root}#{@path}"
       require require_path
