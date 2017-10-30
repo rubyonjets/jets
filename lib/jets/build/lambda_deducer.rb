@@ -1,4 +1,4 @@
-# TODO: move the handler_generator.rb deducing methods into here
+# TODO: move the handler_generator.rb deducing methods into lambda_deducer.rb
 class Jets::Build
   class LambdaDeducer
     attr_reader :path, :handlers

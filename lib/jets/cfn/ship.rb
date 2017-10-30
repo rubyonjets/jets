@@ -41,35 +41,32 @@ class Jets::Cfn
       end
     end
 
-    # TODO: move this all into create.rb class
     def create_stack
-      # parent stack from file system, child stacks from s3
+      # parent stack template is on filesystem and child stacks templates is on s3
       template_body = IO.read(@template_path)
-      cfn.create_stack(
-        stack_name: @stack_name,
-        template_body: template_body,
-        capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
-        # disable_rollback: !@options[:rollback],
-      )
+      cfn.create_stack(stack_options)
     end
 
-    # TODO: move this all into update.rb class and use changesets as default
     def update_stack
-      template_body = IO.read(@template_path)
       begin
-        cfn.update_stack(
-          stack_name: @stack_name,
-          template_body: template_body,
-          capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
-          # disable_rollback: !@options[:rollback],
-        )
+        cfn.update_stack(stack_options)
       rescue Aws::CloudFormation::Errors::ValidationError => e
         puts "ERROR: #{e.message}".red
         error = true
       end
     end
 
-    # check for _COMPLETE or _FAILED
+    # options common to both create_stack and update_stack
+    def stack_options
+      {
+        stack_name: @stack_name,
+        template_body: IO.read(@template_path),
+        capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
+        # disable_rollback: !@options[:rollback],
+      }
+    end
+
+    # check for /(_COMPLETE|_FAILED)$/ status
     def wait_for_stack
       status = ''
       while status !~ /(_COMPLETE|_FAILED)$/
@@ -107,7 +104,7 @@ class Jets::Cfn
     end
 
     def capabilities
-      ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"] # TODO: remove hardcode
+      ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"] # TODO: remove capabilities hardcode
       # return @options[:capabilities] if @options[:capabilities]
       # if @options[:iam]
       #   ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]

@@ -28,8 +28,8 @@ class Jets::Cfn::Builder
       template = IO.read(path)
 
       # variables for minimal-stack.yml
-      @policy_name = "lamdba-#{Jets::Config.project_namespace}"
-      @role_name = "lamdba-proj-dev-role-us-east-1"
+      @policy_name = "lamdba-#{Jets::Config.project_namespace}-policy"
+      @role_name = "lamdba-#{Jets::Config.project_namespace}-role"
       rendered_result = erb_result(path, template)
       minimal_template = YAML.load(rendered_result)
 

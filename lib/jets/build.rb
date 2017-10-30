@@ -28,7 +28,7 @@ class Jets::Build
     end
     create_zip_file
 
-    # TODO: move this Cfn::Builder
+    # TODO: move this build.rb logic to cfn/builder.rb
     ## CloudFormation templates
     puts "Building Lambda functions as CloudFormation templates.."
     # 1. Shared templates - child templates needs them
@@ -97,7 +97,7 @@ class Jets::Build
   def create_zip_file
     puts 'Creating zip file.'
     Dir.chdir(Jets.root) do
-      # TODO: this adds unnecessary files like log files. clean the directory first?
+      # TODO: create_zip_file adds unnecessary files like log files. cp and into temp directory and clean the directory up first.
       success = system("zip -rq #{File.basename(temp_code_zipfile)} .")
       dir = File.dirname(md5_code_zipfile)
       FileUtils.mkdir_p(dir) unless File.exist?(dir)

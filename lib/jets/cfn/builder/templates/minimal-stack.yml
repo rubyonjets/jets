@@ -26,7 +26,7 @@ Resources:
             # TODO: Make IAM permissions more fine grain for mimimal stack
             # - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/quiz-dev-hello:*:*
             # - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/quiz-dev-quiz:*:*
-            # TODO: Allow hook  so user can configure IAM themselves and support managed polices
+            # TODO: Allow hook so user can configure IAM themselves and support managed polices
           - Effect: Allow
             Action:
             - dynamodb:*

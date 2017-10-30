@@ -41,7 +41,7 @@ class Jets::Cfn::Builder
     end
 
     def add_function(name)
-      names = Jets::Naming.new(@controller_class, name) # TODO: clean this up and remove Naming from here
+      names = Jets::Naming.new(@controller_class, name) # TODO: child_template.rb add_function uses both Naming and LambdaFunctionMapper.  Decide on one.
       map = LambdaFunctionMapper.new(@controller_class, name)
 
       add_resource(map.lambda_function_logical_id, "AWS::Lambda::Function",
