@@ -5,7 +5,7 @@ Jets is an AWS Lambda Framework that allows you to create serverless application
 It is key to conceptually understand AWS Lambda and API Gateway to understand Jets.  Jets maps your code to Lambda functions and API Gateway resources.
 
 * **AWS Lambda** is Functions as a Service. It allows you to upload and run functions without worrying about the underlying infrastructure.
-* **API Gateway** is the routing layer for Lambda. You can use it to route REST URL endpoints to your Lambda functions.
+* **API Gateway** is the routing layer for Lambda. It is used to route REST URL endpoints to Lambda functions.
 
 ## How It Works
 
@@ -53,7 +53,7 @@ any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 
 Running `jets deploy` adds the routes to API Gateway.
 
-### Config Structure
+### Project Structure
 
 Here's an overview of a Jets project structure.
 
