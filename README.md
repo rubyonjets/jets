@@ -18,7 +18,7 @@ A Jets controller handles a web request and renders a response back to the user.
 `app/controllers/posts_controller.rb`:
 
 ```ruby
-class PostsController < Jets::BaseController
+class PostsController < ApplicationController
   def create
     render json: {hello: "world"}
   end
