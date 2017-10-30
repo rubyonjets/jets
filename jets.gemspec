@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "colorize"
   spec.add_dependency "activesupport"
   spec.add_dependency "actionview"
+  spec.add_dependency "recursive-open-struct"
 
   # for now
   spec.add_dependency "byebug"

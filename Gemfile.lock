@@ -7,6 +7,7 @@ PATH
       byebug
       colorize
       hashie
+      recursive-open-struct
       thor
 
 GEM
@@ -50,6 +51,7 @@ GEM
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
     rake (12.2.1)
+    recursive-open-struct (1.0.5)
     rspec (3.7.0)
       rspec-core (~> 3.7.0)
       rspec-expectations (~> 3.7.0)

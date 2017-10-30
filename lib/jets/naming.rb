@@ -43,7 +43,10 @@ public
   # Mainly CloudFormation related
   def self.code_s3_key
     md5_zipfile = File.basename(md5_code_zipfile)
-    "jets/code/#{md5_zipfile}"
+    if ENV['SKIP_CODE_UPLOAD']
+      puts "Using jets/code/code.zip code in s3. Assumes this was manually uploaded!".colorize(:red)
+    end
+    ENV['SKIP_CODE_UPLOAD'] ? "jets/code/code.zip" : "jets/code/#{md5_zipfile}"
   end
 
   def self.template_path(controller_class)
