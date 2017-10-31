@@ -1,17 +1,35 @@
 require "spec_helper"
 
 describe Jets::Cfn::Builder::LambdaFunctionMapper do
-  let(:map) do
-    Jets::Cfn::Builder::LambdaFunctionMapper.new("PostsController", :index)
+  context "controller" do
+    let(:map) do
+      Jets::Cfn::Builder::LambdaFunctionMapper.new("PostsController", :index)
+    end
+
+    describe "ControllerFunctionMapper" do
+      it "contains info for CloudFormation Controller Function Resources" do
+        expect(map.lambda_function_logical_id).to eq "PostsControllerIndexLambdaFunction"
+        expect(map.class_action).to eq "PostsControllerIndex"
+        expect(map.function_name).to eq "#{Jets::Config.project_namespace}-posts-controller-index"
+        expect(map.handler).to eq "handlers/controllers/posts.index"
+        expect(map.code_s3_key).to include("jets/code")
+      end
+    end
   end
 
-  describe "LambdaFunctionMapper" do
-    it "contains info for CloudFormation Lambda Function Resources" do
-      expect(map.lambda_function_logical_id).to eq "PostsControllerIndexLambdaFunction"
-      expect(map.controller_action).to eq "PostsControllerIndex"
-      expect(map.function_name).to eq "#{Jets::Config.project_namespace}-posts-controller-index"
-      expect(map.handler).to eq "handlers/controllers/posts.index"
-      expect(map.code_s3_key).to include("jets/code")
+  context("job") do
+    let(:map) do
+      Jets::Cfn::Builder::LambdaFunctionMapper.new("SleepJob", :perform)
+    end
+
+    describe "JobFunctionMapper" do
+      it "contains info for CloudFormation Job Function Resources" do
+        expect(map.lambda_function_logical_id).to eq "SleepJobPerformLambdaFunction"
+        expect(map.class_action).to eq "SleepJobPerform"
+        expect(map.function_name).to eq "#{Jets::Config.project_namespace}-sleep-job-perform"
+        expect(map.handler).to eq "handlers/jobs/sleep.perform"
+        expect(map.code_s3_key).to include("jets/code")
+      end
     end
   end
 end

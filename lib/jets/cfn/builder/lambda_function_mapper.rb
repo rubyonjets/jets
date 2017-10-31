@@ -1,31 +1,33 @@
 class Jets::Cfn::Builder
   class LambdaFunctionMapper
-    attr_reader :controller # Example: PostsController
-    def initialize(controller, method_name)
-      @controller, @method_name = controller.to_s, method_name
+    attr_reader :process_type_class # Example: PostsController or SleepJob
+    def initialize(process_type_class, method_name)
+      @process_type_class, @method_name = process_type_class.to_s, method_name
     end
 
     def lambda_function_logical_id
-      "#{controller_action}LambdaFunction"
+      "#{class_action}LambdaFunction"
     end
 
-    # Example: PostsControllerIndex
-    def controller_action
-      "#{@controller}_#{@method_name}".camelize
+    # Example: PostsControllerIndex or SleepJobPerform
+    def class_action
+      "#{@process_type_class}_#{@method_name}".camelize
     end
 
     ###############################
     def function_name
-      method = "#{@controller}_#{@method_name}".underscore.dasherize
+      method = "#{@process_type_class}_#{@method_name}".underscore.dasherize
       "#{Jets::Config.project_namespace}-#{method}"
     end
 
     def handler
-      underscored = @controller.to_s
-                      .sub('Controller', '')
-                      .sub('Job', '')
-                      .underscore
-      "handlers/controllers/#{underscored}.#{@method_name}"
+      regexp = Regexp.new(process_type.camelize) # IE: Controller or Job
+      underscored = @process_type_class.to_s.sub(regexp,'').underscore
+      "handlers/#{process_type.pluralize}/#{underscored}.#{@method_name}"
+    end
+
+    def process_type
+      process_type_class.underscore.split('_').last
     end
 
     def code_s3_key
