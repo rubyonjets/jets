@@ -1,12 +1,12 @@
 class Jets::Build
   class RoutesBuilder
-    attr_reader :routes
-    def initialize
+    attr_reader :path, :routes
+    def initialize(path=nil)
+      @path = path || "#{Jets.root}/config/routes.rb"
       @routes = []
     end
 
     def evaluate
-      path = "#{Jets.root}/config/routes.rb"
       code = IO.read(path)
       instance_eval(code, path)
     end
@@ -16,6 +16,16 @@ class Jets::Build
       define_method method_name do |path, options|
         create_route(options.merge(path: path, method: __method__))
       end
+    end
+
+    # resources macro expands to all the routes
+    def resources(name)
+      get "#{name}", to: "#{name}#index"
+      get "#{name}/:id", to: "#{name}#show"
+      post "#{name}", to: "#{name}#create"
+      get "#{name}/:id/edit", to: "#{name}#edit"
+      put "#{name}", to: "#{name}#update"
+      delete "#{name}", to: "#{name}#delete"
     end
 
     def create_route(options)

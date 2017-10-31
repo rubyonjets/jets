@@ -38,13 +38,12 @@ Jets creates Lambda functions for the public methods in your controller when you
 You hook Lambda functions up to API Gateway URL endpoints.  To route a controller action you use a `config/routes.rb` file:
 
 ```ruby
-# API Gateway resources are only created if the controller action exists.
 get  "posts", to: "posts#index"
 get  "posts/:id", to: "posts#show"
 post "posts", to: "posts#create"
 get  "posts/:id/edit", to: "posts#edit"
 put  "posts", to: "posts#update"
-delete  "posts", to: "posts#destroy"
+delete  "posts", to: "posts#delete"
 
 # resources :posts # resources macro can be used to all the routes above
 
