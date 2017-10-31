@@ -14,6 +14,8 @@ class Jets::Cfn
 
     # used in the parent_template.rb
     autoload :ChildMapper, "jets/cfn/builder/child_mapper"
+    autoload :ControllerMapper, "jets/cfn/builder/controller_mapper"
+    autoload :JobMapper, "jets/cfn/builder/job_mapper"
     autoload :ApiGatewayMapper, "jets/cfn/builder/api_gateway_mapper"
     autoload :ApiGatewayDeploymentMapper, "jets/cfn/builder/api_gateway_deployment_mapper"
     # used in the child_template.rb

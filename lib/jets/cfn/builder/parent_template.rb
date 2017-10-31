@@ -39,13 +39,17 @@ class Jets::Cfn::Builder
 
     def add_child_resources
       expression = "#{Jets::Naming.template_path_prefix}-*"
+      # IE: path: /tmp/jets_build/templates/proj-dev-2-comments-controller.yml
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
         if shared_stack?(path)
           add_shared_stack(path)
         else
-          map = ChildMapper.new(path, @options[:s3_bucket])
+          mapper_class_name = File.basename(path, '.yml').split('-').last.classify # Controller or Job
+          mapper_class = "Jets::Cfn::Builder::#{mapper_class_name}Mapper".constantize # ControllerMapper or JobMapper
+          map = mapper_class.new(path, @options[:s3_bucket])
+
           # map.logical_id - PostsController
           add_resource(map.logical_id, "AWS::CloudFormation::Stack",
             TemplateURL: map.template_url,

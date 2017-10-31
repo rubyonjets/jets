@@ -7,6 +7,17 @@ class Jets::Cfn::Builder
       @s3_bucket = s3_bucket
     end
 
+    # common parameters to all child stacks
+    def parameters
+      parameters = {
+        # YAML.dump converts it to a string
+        # !GetAtt Base.Outputs.IamRole => "!GetAtt Base.Outputs.IamRole"
+        # But post processing of the template fixes this
+        IamRole: "!GetAtt IamRole.Arn",
+        S3Bucket: "!Ref S3Bucket",
+      }
+    end
+
     # Example: PostsController
     def logical_id
       regexp = Regexp.new(".*#{Jets::Config.project_namespace}-")
@@ -23,26 +34,6 @@ class Jets::Cfn::Builder
       basename = File.basename(@path)
       # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/proj-dev-posts-controller.yml"
       "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
-    end
-
-    # Parameters that are common to all stacks
-    def parameters
-      parameters = {
-        # YAML.dump converts it to a string
-        # !GetAtt Base.Outputs.IamRole => "!GetAtt Base.Outputs.IamRole"
-        # But post processing of the template fixes this
-        IamRole: "!GetAtt IamRole.Arn",
-        S3Bucket: "!Ref S3Bucket",
-      }
-
-      # Add the API Gateway parameters
-      parameters[:ApiGatewayRestApi] = "!GetAtt ApiGateway.Outputs.ApiGatewayRestApi"
-      Jets::Build::RoutesBuilder.all_paths.each do |path|
-        map = GatewayResourceMapper.new(path)
-        parameters[map.gateway_resource_logical_id] = "!GetAtt ApiGateway.Outputs.#{map.gateway_resource_logical_id}"
-      end
-
-      parameters
     end
 
   private
