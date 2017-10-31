@@ -19,19 +19,35 @@ A Jets controller handles a web request and renders a response back to the user.
 
 ```ruby
 class PostsController < ApplicationController
-  def create
+  def index
     # render returns Lambda Proxy struture for web requests
     render json: {hello: "world"}
   end
 
-  def update
-    # event and context are available as a Hash
-    render json: event.merge(a: "update"), status: 200
+  def create
+    # render returns Lambda Proxy struture for web requests
+    render json: {hello: "world"}
   end
 end
 ```
 
 Jets creates Lambda functions for the public methods in your controller when you run the `jets deploy` command.
+
+You can invoke the function with the AWS Lambda console or with the jets cli.
+
+```
+jets invoke posts-controller-index '{"test":1}'
+jets invoke posts-controller-index file://event.json
+jets invoke help # for more info
+```
+
+The examples above show how to pass the event payload inline and via a file.  The corresponding aws cli commands are:
+
+```
+aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}'
+aws lambda invoke --function-name proj-dev-posts-controller-index --payload file://event.json
+aws lambda invoke help
+```
 
 ### Jets Routing
 
@@ -51,6 +67,12 @@ any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 ```
 
 Running `jets deploy` adds the routes to API Gateway.
+
+View using the endpoint outputted, below is an example. Note you'll have replace the URL endpoint with the one that was created for you:
+
+```sh
+curl -s https://1oin4qq7ag.execute-api.us-east-1.amazonaws.com/dev/posts
+```
 
 ### Project Structure
 
