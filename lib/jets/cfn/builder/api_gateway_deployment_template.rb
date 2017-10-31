@@ -18,7 +18,7 @@ class Jets::Cfn::Builder
       logical_id = ApiGatewayDeploymentMapper.gateway_deployment_logical_id
       timestamp = ApiGatewayDeploymentMapper.timestamp
       add_resource(logical_id, "AWS::ApiGateway::Deployment",
-        Description: "Version #{timestamp} deployed",
+        Description: "Version #{timestamp} deployed by jets",
         RestApiId: "!Ref ApiGatewayRestApi",
         StageName: Jets::Config.env,
       )
