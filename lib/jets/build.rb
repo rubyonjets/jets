@@ -22,8 +22,9 @@ class Jets::Build
     clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
 
     puts "Building node shims..."
-    each_deducer do |deducer|
-      puts "  #{deducer.path} => #{deducer.js_path}"
+    app_code_paths.each do |path|
+      # TODO: print out #{deducer.path} => #{deducer.js_path}" as part of building
+      # puts "  #{deducer.path} => #{deducer.js_path}"
       generate_node_shim(path)
     end
     create_zip_file
@@ -34,9 +35,9 @@ class Jets::Build
     # 1. Shared templates - child templates needs them
     build_api_gateway_templates
     # 2. Child templates - parent template needs them
-    each_deducer do |deducer|
-      puts "  #{deducer.path} => #{deducer.cfn_path}"
-      build_child_template(deducer) #
+    app_code_paths.each do |path|
+      # TODO: print out #{deducer.path} => #{deducer.cfn_path}" as part of building
+      build_child_template(path)
     end
     # 3. Finally parent template
     build_parent_template # must be called at the end
@@ -54,9 +55,9 @@ class Jets::Build
     deployment.build
   end
 
-  def build_child_template(deducer)
-    # require "#{Jets.root}#{deducer.path}" # "app/controllers/posts_controller.rb"
-    klass = deducer.class_name.constantize # IE: PostsController
+  # path: app/controllers/comments_controller.rb
+  def build_child_template(path)
+    klass = File.basename(path, ".rb").classify.constantize
     cfn = Jets::Cfn::Builder::ChildTemplate.new(klass)
     cfn.build
   end
@@ -67,7 +68,7 @@ class Jets::Build
   end
 
   def each_deducer
-    controller_paths.each do |path|
+    app_code_paths.each do |path|
       deducer = LambdaDeducer.new(path)
       yield(deducer)
     end
@@ -79,12 +80,12 @@ class Jets::Build
     Dir.glob("/tmp/jets_build/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
-  def controller_paths
+  def app_code_paths
     paths = []
     expression = "#{Jets.root}app/controllers/**/*.rb"
     Dir.glob(expression).each do |path|
       next unless File.file?(path)
-      next if path.include?("application_controller.rb")
+      next if path =~ /application_(controller|job).rb/
 
       paths << relative_path(path)
     end
