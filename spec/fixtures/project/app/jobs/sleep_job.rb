@@ -1,9 +1,9 @@
 class SleepJob < ApplicationJob
-  def perform(seconds=5, message="test message")
-    seconds = 0 if ENV['TEST']
-    # puts("SleepJob started.  Will sleep for #{seconds} seconds.")
+  def perform
+    seconds = ENV['TEST'] ? 0 : 5
+    puts("SleepJob started.  Will sleep for #{seconds} seconds.") unless ENV['TEST']
     sleep seconds
-    # puts("SleepJob message: #{message}")
+    puts("SleepJob event: #{event.inspect}") unless ENV['TEST']
     {work: "done"}
   end
 end
