@@ -14,7 +14,6 @@ class Jets::Cfn::Builder
       "#{@process_type_class}_#{@method_name}".camelize
     end
 
-    ###############################
     def function_name
       method = "#{@process_type_class}_#{@method_name}".underscore.dasherize
       "#{Jets::Config.project_namespace}-#{method}"
@@ -26,6 +25,7 @@ class Jets::Cfn::Builder
       "handlers/#{process_type.pluralize}/#{underscored}.#{@method_name}"
     end
 
+    # controller or job
     def process_type
       process_type_class.underscore.split('_').last
     end
