@@ -45,7 +45,7 @@ get  "posts/:id/edit", to: "posts#edit"
 put  "posts", to: "posts#update"
 delete  "posts", to: "posts#delete"
 
-# resources :posts # resources macro can be used to all the routes above
+# resources :posts # expands to all the routes above
 
 any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 ```
@@ -106,3 +106,13 @@ gem install jets
 ## Under the hood
 
 Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of ruby to add support.
+
+## Contributing
+
+Love pull requests!
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
