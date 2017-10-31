@@ -7,6 +7,8 @@ class Jets::Cfn
 
     autoload :ParentTemplate, "jets/cfn/builder/parent_template"
     autoload :ChildTemplate, "jets/cfn/builder/child_template"
+    autoload :ControllerTemplate, "jets/cfn/builder/controller_template"
+    autoload :JobTemplate, "jets/cfn/builder/job_template"
     autoload :ApiGatewayTemplate, "jets/cfn/builder/api_gateway_template"
     autoload :ApiGatewayDeploymentTemplate, "jets/cfn/builder/api_gateway_deployment_template"
 

@@ -58,9 +58,14 @@ class Jets::Build
   # path: app/controllers/comments_controller.rb
   # path: app/jobs/sleep_job.rb
   def build_child_template(path)
-    require "#{Jets.root}#{path}" #
-    klass = File.basename(path, ".rb").classify.constantize
-    cfn = Jets::Cfn::Builder::ChildTemplate.new(klass)
+    require "#{Jets.root}#{path}" # require "app/jobs/sleep_job.rb"
+    app_klass = File.basename(path, ".rb").classify.constantize # SleepJob
+
+    process_class = path.split('/')[1].singularize.classify # Controller or Job
+    builder_class = "Jets::Cfn::Builder::#{process_class}Template".constantize
+
+    # Jets::Cfn::Builder::JobTemplate.new(SleepJob)
+    cfn = builder_class.new(app_klass)
     cfn.build
   end
 
