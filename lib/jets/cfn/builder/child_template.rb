@@ -26,11 +26,11 @@ class Jets::Cfn::Builder
           S3Key: map.code_s3_key
         },
         FunctionName: map.function_name,
-        Handler: names.handler,
+        Handler: map.handler,
         Role: { Ref: "IamRole" },
         MemorySize: Jets::Config.memory_size,
         Runtime: Jets::Config.runtime,
-        Timeout: 10 #Jets::Config.timeout
+        Timeout: Jets::Config.timeout
       )
     end
   end

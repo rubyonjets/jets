@@ -38,5 +38,19 @@ class Jets::Naming
     def gateway_api_name
       "#{Jets::Config.project_namespace}"
     end
+
+    @@md5 = nil # need to store the md5 in memory because the file gets renamed
+    def md5_code_zipfile
+      @@md5 ||= ENV['TEST'] ? 'TEST' : Digest::MD5.file(Jets::Naming.temp_code_zipfile).to_s[0..7]
+      "/tmp/jets_build/code/code-#{@@md5}.zip"
+    end
+
+    def code_s3_key
+      md5_zipfile = File.basename(Jets::Naming.md5_code_zipfile)
+      if ENV['SKIP_CODE_UPLOAD']
+        puts "Using jets/code/code.zip code in s3. Assumes this was manually uploaded!".colorize(:red)
+      end
+      ENV['SKIP_CODE_UPLOAD'] ? "jets/code/code.zip" : "jets/code/#{md5_zipfile}"
+    end
   end
 end
