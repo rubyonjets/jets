@@ -9,15 +9,15 @@ describe Jets::Process do
       # pp out # uncomment to debug
       data = JSON.parse(out)
       expect(data["statusCode"]).to eq 200
-      expect(data["body"]).to eq('{"a":"create"}')
+      expect(data["body"]).to eq('{"a":"create"}') # body is JSON encoded String
     end
 
     it "job [event] [context] [handler]" do
       args = '\'{"we":"love","using":"Lambda"}\' \'{"test":"1"}\' "handlers/jobs/sleep.perform"'
-      out = execute("bin/jets process job #{@args}")
-      # pp out # uncomment to debug
+      out = execute("bin/jets process job #{args}")
+      pp out # uncomment to debug
       data = JSON.parse(out)
-      expect(data).to eq('{"work":"done"}')
+      expect(data).to eq("work"=>"done") # data returned is Hash
     end
   end
 end
