@@ -56,7 +56,9 @@ class Jets::Build
   end
 
   # path: app/controllers/comments_controller.rb
+  # path: app/jobs/sleep_job.rb
   def build_child_template(path)
+    require "#{Jets.root}#{path}" #
     klass = File.basename(path, ".rb").classify.constantize
     cfn = Jets::Cfn::Builder::ChildTemplate.new(klass)
     cfn.build
@@ -82,10 +84,12 @@ class Jets::Build
 
   def app_code_paths
     paths = []
-    expression = "#{Jets.root}app/controllers/**/*.rb"
+    expression = "#{Jets.root}app/**/**/*.rb"
     Dir.glob(expression).each do |path|
+      puts "build.rb: path: #{path}".colorize(:cyan)
       next unless File.file?(path)
       next if path =~ /application_(controller|job).rb/
+      next if path !~ %r{app/(controller|job)}
 
       paths << relative_path(path)
     end
