@@ -18,15 +18,14 @@ class Jets::Cfn::Builder
     end
 
     def add_function(name)
-      names = Jets::Naming.new(@controller_class, name)
       map = LambdaFunctionMapper.new(@controller_class, name)
 
       add_resource(map.lambda_function_logical_id, "AWS::Lambda::Function",
         Code: {
           S3Bucket: {Ref: "S3Bucket"}, # from child stack
-          S3Key: names.code_s3_key
+          S3Key: map.code_s3_key
         },
-        FunctionName: names.function_name,
+        FunctionName: map.function_name,
         Handler: names.handler,
         Role: { Ref: "IamRole" },
         MemorySize: Jets::Config.memory_size,
