@@ -1,4 +1,6 @@
 # TODO: move the handler_generator.rb deducing methods into lambda_deducer.rb
+# This deducer is used for more than just the node shim generation.
+# It is also used by the child_template
 class Jets::Build
   class LambdaDeducer
     attr_reader :path, :handlers

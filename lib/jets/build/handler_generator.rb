@@ -7,40 +7,62 @@ class Jets::Build
     #   "PostsController",
     #   :create, :update
     # )
-    def initialize(class_name, *methods)
-      @class_name = class_name
-      @methods = methods
+    def initialize(path)
+      @path = path
     end
 
-    def run
-      js_path = "#{Jets.root}handlers/#{process_type.pluralize}/#{module_name}.js"
-      FileUtils.mkdir_p(File.dirname(js_path))
+    def generate
+      deducer_class = find_deducer_class
+      deducer = deducer_class.new(@path)
+
+      FileUtils.mkdir_p(File.dirname(deducer.js_path))
 
       template_path = File.expand_path('../node-shim-handler.js', __FILE__)
       template = IO.read(template_path)
 
-      # Set used ERB variables:
-      @process_type = process_type
-      @functions = @methods.map do |m|
-        {
-          name: m,
-          handler: handler(m)
-        }
+      @deducer = deducer # Only ERB variable required
+      result = erb_result(template_path, template)
+
+      IO.write(deducer.js_path, result)
+    end
+
+    # base on the path a different deducer will be used
+    def find_deducer_class
+      process_class = @path.split('/')[1].classify # controller or job
+      "Jets::Build::Deducer::#{process_class}Deducer".constantize
+      # Example: Jets::Build::Deducer::ControllerDeducer
+    end
+
+    def erb_result(path, template)
+      begin
+        ERB.new(template, nil, "-").result(binding)
+      rescue Exception => e
+        puts e
+        puts e.backtrace if ENV['DEBUG']
+
+        # how to know where ERB stopped? - https://www.ruby-forum.com/topic/182051
+        # syntax errors have the (erb):xxx info in e.message
+        # undefined variables have (erb):xxx info in e.backtrac
+        error_info = e.message.split("\n").grep(/\(erb\)/)[0]
+        error_info ||= e.backtrace.grep(/\(erb\)/)[0]
+        raise unless error_info # unable to find the (erb):xxx: error line
+        line = error_info.split(':')[1].to_i
+        puts "Error evaluating ERB template on line #{line.to_s.colorize(:red)} of: #{path.sub(/^\.\//, '').colorize(:green)}"
+
+        template_lines = template.split("\n")
+        context = 5 # lines of context
+        top, bottom = [line-context-1, 0].max, line+context-1
+        spacing = template_lines.size.to_s.size
+        template_lines[top..bottom].each_with_index do |line_content, index|
+          line_number = top+index+1
+          if line_number == line
+            printf("%#{spacing}d %s\n".colorize(:red), line_number, line_content)
+          else
+            printf("%#{spacing}d %s\n", line_number, line_content)
+          end
+        end
+        exit 1 unless ENV['TEST']
       end
-      result = ERB.new(template, nil, "-").result(binding)
-      IO.write(js_path, result)
-    end
-
-    def process_type
-      @class_name.underscore.split('_').last
-    end
-
-    def handler(method)
-      "handlers/#{process_type.pluralize}/#{module_name}.#{method}"
-    end
-
-    def module_name
-      @class_name.sub(/Controller$/,'').underscore
     end
   end
 end

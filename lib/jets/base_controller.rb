@@ -9,7 +9,8 @@ module Jets
     #   ["FakeController#handler1", "FakeController#handler2"]
     def lambda_functions
       # public_instance_methods(false) - to not include inherited methods
-      self.class.public_instance_methods(false) - Object.public_instance_methods
+      functions = self.class.public_instance_methods(false) - Object.public_instance_methods
+      functions.sort
     end
 
     def self.lambda_functions

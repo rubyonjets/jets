@@ -1,7 +1,7 @@
 require 'digest'
 
 class Jets::Build
-  autoload :LambdaDeducer, "jets/build/lambda_deducer"
+  autoload :Deducer, "jets/build/deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
   autoload :TravelingRuby, "jets/build/traveling_ruby"
   autoload :RoutesBuilder, "jets/build/routes_builder"
@@ -24,7 +24,7 @@ class Jets::Build
     puts "Building node shims..."
     each_deducer do |deducer|
       puts "  #{deducer.path} => #{deducer.js_path}"
-      build_shims(deducer)
+      generate_node_shim(path)
     end
     create_zip_file
 
@@ -42,9 +42,9 @@ class Jets::Build
     build_parent_template # must be called at the end
   end
 
-  def build_shims(deducer)
-    generator = HandlerGenerator.new(deducer.class_name, *deducer.functions)
-    generator.run
+  def generate_node_shim(path)
+    handler = Jets::Build::HandlerGenerator.new(path)
+    handler.generate
   end
 
   def build_api_gateway_templates
