@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Mappers
   class GatewayResourceMapper
     def initialize(path)
       @path = path # Examples: "posts/:id/edit" or "posts"

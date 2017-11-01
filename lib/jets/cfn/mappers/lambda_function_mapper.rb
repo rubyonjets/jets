@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Mappers
   class LambdaFunctionMapper
     attr_reader :process_type_class # Example: PostsController or SleepJob
     def initialize(process_type_class, method_name)

@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe Jets::Cfn::Builder::LambdaFunctionMapper do
+describe Jets::Cfn::Mappers::LambdaFunctionMapper do
   context "controller" do
     let(:map) do
-      Jets::Cfn::Builder::LambdaFunctionMapper.new("PostsController", :index)
+      Jets::Cfn::Mappers::LambdaFunctionMapper.new("PostsController", :index)
     end
 
     describe "ControllerFunctionMapper" do
@@ -19,7 +19,7 @@ describe Jets::Cfn::Builder::LambdaFunctionMapper do
 
   context("job") do
     let(:map) do
-      Jets::Cfn::Builder::LambdaFunctionMapper.new("SleepJob", :perform)
+      Jets::Cfn::Mappers::LambdaFunctionMapper.new("SleepJob", :perform)
     end
 
     describe "JobFunctionMapper" do

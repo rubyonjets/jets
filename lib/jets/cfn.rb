@@ -1,4 +1,5 @@
 class Jets::Cfn
-  autoload :Builder, "jets/cfn/builder"
+  autoload :Mappers, "jets/cfn/mappers"
+  autoload :Builders, "jets/cfn/builders"
   autoload :Ship, "jets/cfn/ship"
 end

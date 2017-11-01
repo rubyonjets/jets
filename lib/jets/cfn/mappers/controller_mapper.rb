@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Mappers
   class ControllerMapper < ChildMapper
     # Parameters that are common to all controller stacks
     def parameters

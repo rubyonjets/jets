@@ -2,7 +2,7 @@
 #
 #   * compose
 #   * template_path
-class Jets::Cfn::Builder
+class Jets::Cfn::Builders
   module Helpers
     def build
       compose # must be implemented by subclass

@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Jets::Cfn::Builder::ApiGatewayTemplate do
+describe Jets::Cfn::Builders::ApiGatewayTemplate do
   let(:builder) do
-    Jets::Cfn::Builder::ApiGatewayTemplate.new({})
+    Jets::Cfn::Builders::ApiGatewayTemplate.new({})
   end
 
   describe "ApiGatewayTemplate" do

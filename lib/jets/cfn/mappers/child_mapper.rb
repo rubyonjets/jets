@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Mappers
   class ChildMapper
     attr_reader :path
     def initialize(path, s3_bucket)

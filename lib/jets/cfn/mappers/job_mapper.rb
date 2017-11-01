@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Mappers
   class JobMapper < ChildMapper
   end
 end

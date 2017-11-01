@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Mappers
   class ApiGatewayDeploymentMapper < ChildMapper
     def gateway_deployment_logical_id
       self.class.gateway_deployment_logical_id

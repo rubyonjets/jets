@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Jets::Cfn::Builder::GatewayResourceMapper do
+describe Jets::Cfn::Mappers::GatewayResourceMapper do
   let(:map) do
-    Jets::Cfn::Builder::GatewayResourceMapper.new(path)
+    Jets::Cfn::Mappers::GatewayResourceMapper.new(path)
   end
 
   describe "GatewayResourceMapper" do

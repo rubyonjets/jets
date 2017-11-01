@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Jets::Cfn::Builder::ChildMapper do
+describe Jets::Cfn::Mappers::ChildMapper do
   let(:app) do
-    Jets::Cfn::Builder::ChildMapper.new("/tmp/jets_build/templates/#{Jets::Config.project_namespace}-posts-controller.yml", "s3-bucket")
+    Jets::Cfn::Mappers::ChildMapper.new("/tmp/jets_build/templates/#{Jets::Config.project_namespace}-posts-controller.yml", "s3-bucket")
   end
 
   describe "ChildMapper" do

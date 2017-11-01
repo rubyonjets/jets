@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Builders
   class ControllerTemplate < ChildTemplate
     # compose is an interface method for Helpers module
     def compose

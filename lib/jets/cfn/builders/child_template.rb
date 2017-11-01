@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Builders
   class ChildTemplate
     include Helpers
 

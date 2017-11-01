@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Jets::Cfn::Builder::ApiGatewayMapper do
+describe Jets::Cfn::Mappers::ApiGatewayMapper do
   let(:app) do
-    Jets::Cfn::Builder::ApiGatewayMapper.new("/tmp/jets_build/templates/#{Jets::Config.project_namespace}-api-gateway.yml", "s3-bucket")
+    Jets::Cfn::Mappers::ApiGatewayMapper.new("/tmp/jets_build/templates/#{Jets::Config.project_namespace}-api-gateway.yml", "s3-bucket")
   end
 
   describe "ApiGatewayMapper" do

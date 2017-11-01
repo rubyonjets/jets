@@ -1,4 +1,4 @@
-class Jets::Cfn::Builder
+class Jets::Cfn::Mappers
   class GatewayMethodMapper
     def initialize(route)
       @route = route # {:to=>"posts#index", :path=>"posts", :method=>:get}

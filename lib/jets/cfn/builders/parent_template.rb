@@ -1,6 +1,6 @@
 require 'erb'
 
-class Jets::Cfn::Builder
+class Jets::Cfn::Builders
   class ParentTemplate
     include Helpers
     include Jets::AwsServices
@@ -47,7 +47,7 @@ class Jets::Cfn::Builder
           add_shared_stack(path)
         else
           mapper_class_name = File.basename(path, '.yml').split('-').last.classify # Controller or Job
-          mapper_class = "Jets::Cfn::Builder::#{mapper_class_name}Mapper".constantize # ControllerMapper or JobMapper
+          mapper_class = "Jets::Cfn::Mappers::#{mapper_class_name}Mapper".constantize # ControllerMapper or JobMapper
           map = mapper_class.new(path, @options[:s3_bucket])
 
           # map.logical_id - PostsController
