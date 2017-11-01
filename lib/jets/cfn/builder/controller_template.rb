@@ -34,7 +34,7 @@ class Jets::Cfn::Builder
           RestApiId: "!Ref ApiGatewayRestApi",
           AuthorizationType: "NONE",
           Integration: {
-            IntegrationHttpMethod: route.method,
+            IntegrationHttpMethod: "POST",
             Type: "AWS_PROXY",
             Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.lambda_function_logical_id}.Arn}/invocations"
           },
@@ -46,19 +46,6 @@ class Jets::Cfn::Builder
           Action: "lambda:InvokeFunction",
           Principal: "apigateway.amazonaws.com",
           SourceArn: "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*"
-
-          # SourceArn: {
-          #   "Fn::Join": ["", [
-          #     "arn:aws:execute-api:",
-          #     {Ref:"AWS::Region"},
-          #     ":",
-          #     {Ref:"AWS::AccountId"},
-          #     ":",
-          #     {Ref:"ApiGatewayRestApi"},
-          #     "/*/*"
-          #   ]]
-          # }
-
         )
       end
     end
