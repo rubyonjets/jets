@@ -29,7 +29,7 @@ class Jets::Cfn::Builders
         add_resource(map.logical_id, "AWS::ApiGateway::Method",
           HttpMethod: route.method,
           RequestParameters: {},
-          ResourceId: "!Ref #{map.logical_id}",
+          ResourceId: "!Ref #{map.gateway_resource_logical_id}",
           RestApiId: "!Ref ApiGatewayRestApi",
           AuthorizationType: "NONE",
           Integration: {
