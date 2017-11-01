@@ -35,13 +35,13 @@ class Jets::Cfn::Builders
           Integration: {
             IntegrationHttpMethod: "POST",
             Type: "AWS_PROXY",
-            Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.lambda_function_logical_id}.Arn}/invocations"
+            Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.logical_id}.Arn}/invocations"
           },
           MethodResponses:[]
         )
 
         add_resource(map.permission_logical_id, "AWS::Lambda::Permission",
-          FunctionName: "!GetAtt #{map.lambda_function_logical_id}.Arn",
+          FunctionName: "!GetAtt #{map.logical_id}.Arn",
           Action: "lambda:InvokeFunction",
           Principal: "apigateway.amazonaws.com",
           SourceArn: "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*"

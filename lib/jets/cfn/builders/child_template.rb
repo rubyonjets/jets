@@ -20,7 +20,7 @@ class Jets::Cfn::Builders
     def add_function(name)
       map = Jets::Cfn::Mappers::LambdaFunctionMapper.new(@controller_class, name)
 
-      add_resource(map.lambda_function_logical_id, "AWS::Lambda::Function",
+      add_resource(map.logical_id, "AWS::Lambda::Function",
         Code: {
           S3Bucket: {Ref: "S3Bucket"}, # from child stack
           S3Key: map.code_s3_key

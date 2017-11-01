@@ -5,7 +5,7 @@ class Jets::Cfn::Mappers
       @process_type_class, @method_name = process_type_class.to_s, method_name
     end
 
-    def lambda_function_logical_id
+    def logical_id
       "#{class_action}LambdaFunction"
     end
 
