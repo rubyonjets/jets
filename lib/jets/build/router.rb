@@ -1,5 +1,5 @@
 class Jets::Build
-  class Routes
+  class Router
     attr_reader :path, :routes
     def initialize(path=nil)
       @path = path || "#{Jets.root}/config/routes.rb"
@@ -32,6 +32,22 @@ class Jets::Build
       @routes << Route.new(options)
     end
 
+    def all_paths
+      results = []
+      paths = routes.map(&:path)
+      paths.each do |p|
+        sub_paths = []
+        parts = p.split('/')
+        until parts.empty?
+          parts.pop
+          sub_path = parts.join('/')
+          sub_paths << sub_path unless sub_path == ''
+        end
+        results += sub_paths
+      end
+      @all_paths = (results + paths).sort.uniq
+    end
+
     # Class methods
     def self.draw
       builder = new
@@ -52,19 +68,9 @@ class Jets::Build
     def self.all_paths
       return @@all_paths if @@all_paths
 
-      results = []
-      paths = routes.map(&:path)
-      paths.each do |p|
-        sub_paths = []
-        parts = p.split('/')
-        until parts.empty?
-          parts.pop
-          sub_path = parts.join('/')
-          sub_paths << sub_path unless sub_path == ''
-        end
-        results += sub_paths
-      end
-      @@all_paths = (results + paths).sort.uniq
+      builder = new
+      builder.evaluate
+      @@all_paths = builder.all_paths
     end
   end
 end

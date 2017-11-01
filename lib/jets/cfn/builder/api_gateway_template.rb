@@ -24,7 +24,7 @@ class Jets::Cfn::Builder
 
     # If the are routes in config/routes.rb add Gateway API in parent stack
     def add_gateway_rest_api
-      return unless Jets::Build::Routes.routes.size > 0
+      return unless Jets::Build::Router.routes.size > 0
 
       add_resource("ApiGatewayRestApi", "AWS::ApiGateway::RestApi",
         Name: Jets::Naming.gateway_api_name
@@ -35,7 +35,7 @@ class Jets::Cfn::Builder
     # Adds route related Resources and Outputs
     def add_gateway_routes
       # The routes required a Gateway Resource to contain them.
-      Jets::Build::Routes.all_paths.each do |path|
+      Jets::Build::Router.all_paths.each do |path|
         map = GatewayResourceMapper.new(path)
         add_resource(map.gateway_resource_logical_id, "AWS::ApiGateway::Resource",
           ParentId: map.parent_id,

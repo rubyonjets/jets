@@ -6,7 +6,7 @@ class Jets::Cfn::Builder
 
       # Add the API Gateway parameters
       parameters[:ApiGatewayRestApi] = "!GetAtt ApiGateway.Outputs.ApiGatewayRestApi"
-      Jets::Build::Routes.all_paths.each do |path|
+      Jets::Build::Router.all_paths.each do |path|
         map = GatewayResourceMapper.new(path)
         parameters[map.gateway_resource_logical_id] = "!GetAtt ApiGateway.Outputs.#{map.gateway_resource_logical_id}"
       end

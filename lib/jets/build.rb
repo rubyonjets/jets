@@ -5,7 +5,7 @@ class Jets::Build
   autoload :HandlerGenerator, "jets/build/handler_generator"
   autoload :TravelingRuby, "jets/build/traveling_ruby"
   autoload :Route, "jets/build/route"
-  autoload :Routes, "jets/build/routes"
+  autoload :Router, "jets/build/router"
 
   def initialize(options)
     @options = options
