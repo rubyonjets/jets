@@ -35,9 +35,5 @@ class Jets::Cfn::Mappers
       controller, action = @route.to.split('#')
       "#{controller}_controller".camelize
     end
-
-    def common_logical_id
-      @route.path.gsub('/','_').gsub(':','').camelize
-    end
   end
 end

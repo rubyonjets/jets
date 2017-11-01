@@ -22,10 +22,6 @@ class Jets::Cfn::Mappers
       controller_logical_ids
     end
 
-    def common_logical_id
-      path_logical_id(@path)
-    end
-
     # Returns: "ApiGatewayDeployment[timestamp]"
     def self.gateway_deployment_logical_id
       "ApiGatewayDeployment#{timestamp}"

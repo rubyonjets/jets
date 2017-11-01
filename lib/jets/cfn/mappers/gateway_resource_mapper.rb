@@ -19,7 +19,7 @@ class Jets::Cfn::Mappers
 
     # Returns: "ApiGatewayResourcePostsController"
     def gateway_resource_logical_id
-      "ApiGatewayResource#{common_logical_id}"
+      "ApiGatewayResource#{path_logical_id(@path)}"
     end
 
     def parent_id
@@ -37,10 +37,6 @@ class Jets::Cfn::Mappers
     end
 
   private
-    def common_logical_id
-      path_logical_id(@path)
-    end
-
     def path_logical_id(path)
       path.gsub('/','_').gsub(':','').camelize
     end
