@@ -23,7 +23,7 @@ class Jets::Cfn::Builder
     end
 
     def parent_id
-      if @path.include?('/')
+      if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')
         parent_logical_id = path_logical_id(parent_path)
         "!Ref ApiGatewayResource#{parent_logical_id}"

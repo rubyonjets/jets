@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Jets::Cfn::Builder::ApiGatewayDeploymentMapper do
   let(:map) do
-    Jets::Cfn::Builder::ApiGatewayDeploymentMapper.new
+    Jets::Cfn::Builder::ApiGatewayDeploymentMapper.new("path", "s3-bucket")
   end
 
   describe "ApiGatewayDeploymentMapper" do
