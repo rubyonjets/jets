@@ -41,7 +41,7 @@ class Jets::Cfn::Builders
         )
 
         add_resource(map.permission_logical_id, "AWS::Lambda::Permission",
-          FunctionName: "!GetAtt #{map.logical_id}.Arn",
+          FunctionName: "!GetAtt #{map.lambda_function_logical_id}.Arn",
           Action: "lambda:InvokeFunction",
           Principal: "apigateway.amazonaws.com",
           SourceArn: "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*"
