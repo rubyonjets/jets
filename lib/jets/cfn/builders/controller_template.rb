@@ -24,7 +24,6 @@ class Jets::Cfn::Builders
 
     def add_routes
       scoped_routes.each_with_index do |route, i|
-         # {:to=>"posts#index", :path=>"posts", :method=>:get}
         map = Jets::Cfn::Mappers::GatewayMethodMapper.new(route)
         # IE: map.gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
         add_resource(map.gateway_method_logical_id, "AWS::ApiGateway::Method",
@@ -50,7 +49,7 @@ class Jets::Cfn::Builders
       end
     end
 
-    # "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:123412341234:function:My_Function/invocations"
+    # routes scoped to this controller template.
     def scoped_routes
       @routes ||= Jets::Build::Router.routes.select do |route|
         route.controller_name == @controller_class.to_s

@@ -9,9 +9,8 @@ class Jets::Build
   class TravelingRuby
     attr_reader :full_project_path
     def initialize
-      # Expanding to the full path and store at the beginning because this class
-      # Users Dir.chdir and that changes possibility of capturing the project root
-      # later.
+      # Expanding to the full path and capture now.
+      # Dir.chdir gets called later and we'll lose this info.
       @full_project_path = File.expand_path(Jets.root) + "/"
     end
 
