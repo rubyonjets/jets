@@ -34,7 +34,8 @@ class Jets::Build::Deducer
 
     # Returns: "handlers/controllers/posts.js"
     def js_path
-      @path.sub("app", "handlers").sub("_#{process_type}.rb", ".js")
+      path = @path.sub("app", "handlers").sub("_#{process_type}.rb", ".js")
+      "#{Jets.root}#{path}"
     end
 
     # Used to show user where the generated files gets written to.

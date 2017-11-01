@@ -29,6 +29,7 @@ end
 RSpec.configure do |c|
   c.before(:suite) do
     Aws.config.update(stub_responses: true)
+    FileUtils.rm_rf("spec/fixtures/project/handlers")
   end
 
   c.include Helpers

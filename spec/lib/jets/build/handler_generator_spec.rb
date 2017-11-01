@@ -10,7 +10,7 @@ describe "HandlerGenerator" do
       expect(generator.find_deducer_class).to eq Jets::Build::Deducer::ControllerDeducer
     end
 
-    it "generates a controller node shim for lambda" do
+    it "generates a node shim" do
       generator.generate
       content = IO.read("#{Jets.root}handlers/controllers/posts.js")
       expect(content).to include("handlers/controllers/posts.create") # handler
@@ -28,7 +28,7 @@ describe "HandlerGenerator" do
       expect(generator.find_deducer_class).to eq Jets::Build::Deducer::JobDeducer
     end
 
-    it "generates a controller node shim for lambda" do
+    it "generates a node shim" do
       generator.generate
       content = IO.read("#{Jets.root}handlers/jobs/sleep.js")
       expect(content).to include("handlers/jobs/sleep.perform") # handler
