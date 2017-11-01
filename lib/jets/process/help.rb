@@ -2,7 +2,7 @@ class Jets::Process::Help
   class << self
     def controller
 <<-EOL
-Processes node shim controller handler. This is the command that the node shim spawns out to.
+Processes node shim controller handler. The node shim spawns out to this command.
 
 Example:
 
@@ -12,7 +12,7 @@ EOL
 
     def job
 <<-EOL
-Processes node shim job handler. This is the command that the node shim spawns out to.
+Processes node shim job handler. The node shim spawns out to this command.
 
 Example:
 

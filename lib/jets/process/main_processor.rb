@@ -1,6 +1,8 @@
 require 'json'
 require_relative 'deducer'
 
+# Node shim calls this class to process both controllers and jobs
+
 # Global overrides for Lambda processing
 $stdout.sync = true
 # This might seem weird but we want puts to write to stderr which is set in

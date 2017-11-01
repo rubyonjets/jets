@@ -9,6 +9,9 @@ class Jets::Process
       @handler = handler
     end
 
+    # Figures out the right deducer class to delegate to:
+    # IE: Jets::Process::Deducer::ControllerDeducer or
+    #     Jets::Process::Deducer::JobDeducer
     def delegate_class
       md = @handler.match(%r{handlers/(.*?)/})
       class_name = md[1] # controllers
