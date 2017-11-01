@@ -12,7 +12,7 @@ class Jets::Cfn::Builder
 
     # compose is an interface method
     def compose
-      puts "Building parent template"
+      puts "Building parent template."
 
       add_minimal_resources
       add_child_resources unless @options[:stack_type] == 'minimal'

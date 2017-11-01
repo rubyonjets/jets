@@ -12,7 +12,7 @@ class Jets::Cfn::Builder
     def compose
       return if @options[:stack_type] == 'minimal'
 
-      puts "Building API Gateway Deployment template"
+      puts "Building API Gateway Deployment template."
       add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
 
       logical_id = ApiGatewayDeploymentMapper.gateway_deployment_logical_id

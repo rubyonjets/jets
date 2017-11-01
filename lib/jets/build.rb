@@ -24,7 +24,7 @@ class Jets::Build
 
     clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
 
-    puts "Building node shims..."
+    puts "Building node shims."
     app_code_paths.each do |path|
       # TODO: print out #{deducer.path} => #{deducer.js_path}" as part of building
       # puts "  #{deducer.path} => #{deducer.js_path}"
@@ -34,7 +34,7 @@ class Jets::Build
 
     # TODO: move this build.rb logic to cfn/builder.rb
     ## CloudFormation templates
-    puts "Building Lambda functions as CloudFormation templates.."
+    puts "Building Lambda functions as CloudFormation templates."
     # 1. Shared templates - child templates needs them
     build_api_gateway_templates
     # 2. Child templates - parent template needs them
@@ -94,7 +94,6 @@ class Jets::Build
     paths = []
     expression = "#{Jets.root}app/**/**/*.rb"
     Dir.glob(expression).each do |path|
-      puts "build.rb: path: #{path}".colorize(:cyan)
       next unless File.file?(path)
       next if path =~ /application_(controller|job).rb/
       next if path !~ %r{app/(controller|job)}

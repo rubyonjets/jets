@@ -43,7 +43,7 @@ class Jets::Build
 
     def get_traveling_ruby
       if File.exist?(bundled_ruby_dest)
-        puts "Traveling Ruby already downloaded at #{bundled_ruby_dest}."
+        puts "Traveling Ruby already downloaded at #{TEMP_BUILD_DIR}/#{bundled_ruby_dest}."
       else
         download_traveling_ruby
         unpack_traveling_ruby
@@ -117,7 +117,7 @@ EOL
 
     def copy_bundled_to_project
       if File.exist?("#{full_project_path}bundled")
-        puts "Removing current #{full_project_path}bundled from project"
+        puts "Removing current bundled from project"
         FileUtils.rm_rf("#{full_project_path}bundled")
       end
       puts "Copying #{TEMP_BUILD_DIR}/bundled folder to your project."

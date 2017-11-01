@@ -9,7 +9,6 @@ class Jets::Cfn::Builder
     end
 
     def add_api_gateway_parameters
-      puts "add_api_gateway_parameters"
       add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
       Jets::Build::RoutesBuilder.all_paths.each do |path|
         map = GatewayResourceMapper.new(path)
@@ -24,8 +23,6 @@ class Jets::Cfn::Builder
     end
 
     def add_routes
-      puts "ADDING ROUTES"
-
       scoped_routes.each_with_index do |route, i|
          # {:to=>"posts#index", :path=>"posts", :method=>:get}
         map = GatewayMethodMapper.new(route)
