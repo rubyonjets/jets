@@ -21,8 +21,8 @@ module Jets
       Jets::Deploy.new(options).run
     end
 
-    desc "deploy", "Deploys project to Lambda"
-    long_desc Help.deploy
+    desc "delete", "Delete project and all its resources"
+    long_desc Help.delete
     option :sure, type: :boolean, desc: "Skip are you sure prompt."
     def delete
       Jets::Delete.new(options).run

@@ -118,6 +118,7 @@ class Jets::Build
       FileUtils.mkdir_p(dir) unless File.exist?(dir)
       FileUtils.mv(temp_code_zipfile, md5_code_zipfile)
       abort('Creating zip failed, exiting.') unless success
+      puts "Zip file created at: #{md5_code_zipfile.colorize(:green)}"
     end
   end
 
