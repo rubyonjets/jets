@@ -4,8 +4,8 @@ class Jets::Build
   autoload :Deducer, "jets/build/deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
   autoload :TravelingRuby, "jets/build/traveling_ruby"
-  autoload :RoutesBuilder, "jets/build/routes_builder"
   autoload :Route, "jets/build/route"
+  autoload :Routes, "jets/build/routes"
 
   def initialize(options)
     @options = options

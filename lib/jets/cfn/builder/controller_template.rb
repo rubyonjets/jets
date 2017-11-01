@@ -10,7 +10,7 @@ class Jets::Cfn::Builder
 
     def add_api_gateway_parameters
       add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
-      Jets::Build::RoutesBuilder.all_paths.each do |path|
+      Jets::Build::Routes.all_paths.each do |path|
         map = GatewayResourceMapper.new(path)
         add_parameter(map.gateway_resource_logical_id, Description: map.path)
       end
@@ -65,7 +65,7 @@ class Jets::Cfn::Builder
 
     # "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:123412341234:function:My_Function/invocations"
     def scoped_routes
-      @routes ||= Jets::Build::RoutesBuilder.routes.select do |route|
+      @routes ||= Jets::Build::Routes.routes.select do |route|
         route.controller_name == @controller_class.to_s
       end
     end

@@ -1,5 +1,5 @@
 class Jets::Build
-  class RoutesBuilder
+  class Routes
     attr_reader :path, :routes
     def initialize(path=nil)
       @path = path || "#{Jets.root}/config/routes.rb"
