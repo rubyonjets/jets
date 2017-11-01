@@ -23,6 +23,14 @@ Deletes project and all its resources. You can bypass the are you sure prompt wi
 $ jets delete --sure
 EOL
         end
+
+        def new_long_desc
+<<-EOL
+Creates a new starter jets project.  You can use the `--template` flag to use different templates.  2 supported templates: starter and barebones.  The default is a barebones starter project.
+
+$ jets new proj
+EOL
+        end
       end
     end
   end

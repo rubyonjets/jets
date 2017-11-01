@@ -28,5 +28,11 @@ describe Jets::CLI do
       # puts out
       expect(out).to include("Deleting project")
     end
+
+    it "new" do
+      out = execute("bin/jets new demo #{@args}")
+      # puts out
+      expect(out).to include("Creating new project called demo.")
+    end
   end
 end

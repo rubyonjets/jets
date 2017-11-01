@@ -28,6 +28,13 @@ module Jets
       Jets::Delete.new(options).run
     end
 
+    desc "new", "Creates new starter project"
+    long_desc Help.new_long_desc
+    option :template, default: "barebones", desc: "Starter template to use."
+    def new(project_name)
+      Jets::New.new(project_name, options).run
+    end
+
     desc "process TYPE", "process subcommand tasks"
     subcommand "process", Jets::Process
   end

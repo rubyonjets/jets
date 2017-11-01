@@ -21,6 +21,7 @@ module Jets
   autoload :Delete, 'jets/delete'
   autoload :Naming, 'jets/naming'
   autoload :AwsServices, "jets/aws_services"
+  autoload :New, "jets/new"
 
   extend Root
 end
