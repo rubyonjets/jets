@@ -18,29 +18,27 @@ describe Jets::Build::Router do
         # end
         # pp Jets::Build::Router.routes
       end
-
-      it "all_paths has all subpaths" do
-        pp Jets::Build::Router.all_paths
-      end
     end
 
     context("routes.rb with resources macro") do
-      let(:routes_path) { "fixtures/routes/resources.rb" }
+      let(:routes_path) { "spec/fixtures/routes/resources.rb" }
+
       it "expands macro to all the REST routes" do
         router = Jets::Build::Router.new(routes_path)
         router.resources("posts")
-        # pp router.routes
-        route_tos = router.routes.map(&:to).sort
-        expect(route_tos).to eq(
+        tos = router.routes.map(&:to).sort
+        expect(tos).to eq(
           %w[posts#index posts#show posts#create posts#edit posts#update posts#delete].sort
         )
       end
 
-      # it "#all_paths list all subpaths" do
-      #   router = Jets::Build::Router.new(routes_path)
-      #   pp router.evaluate
-      #   pp router.all_paths
-      # end
+      it "#all_paths list all subpaths" do
+        router = Jets::Build::Router.new(routes_path)
+        router.evaluate
+        expect(router.all_paths).to eq(
+          ["landing", "posts", "posts/:id", "posts/:id/edit"]
+        )
+      end
     end
   end
 end
