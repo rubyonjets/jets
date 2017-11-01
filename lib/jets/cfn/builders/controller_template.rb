@@ -25,8 +25,8 @@ class Jets::Cfn::Builders
     def add_routes
       scoped_routes.each_with_index do |route, i|
         map = Jets::Cfn::Mappers::GatewayMethodMapper.new(route)
-        # IE: map.gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
-        add_resource(map.gateway_method_logical_id, "AWS::ApiGateway::Method",
+        # IE: map.logical_id: ApiGatewayMethodPostsControllerIndex
+        add_resource(map.logical_id, "AWS::ApiGateway::Method",
           HttpMethod: route.method,
           RequestParameters: {},
           ResourceId: "!Ref #{map.gateway_resource_logical_id}",

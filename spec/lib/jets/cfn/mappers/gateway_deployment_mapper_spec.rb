@@ -7,7 +7,7 @@ describe Jets::Cfn::Mappers::ApiGatewayDeploymentMapper do
 
   describe "ApiGatewayDeploymentMapper" do
     it "contains info for CloudFormation API Gateway Resources" do
-      expect(map.gateway_deployment_logical_id).to include("ApiGatewayDeployment")
+      expect(map.logical_id).to include("ApiGatewayDeployment")
     end
   end
 end

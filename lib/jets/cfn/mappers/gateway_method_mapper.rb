@@ -4,6 +4,10 @@ class Jets::Cfn::Mappers
       @route = route # {:to=>"posts#index", :path=>"posts", :method=>:get}
     end
 
+    def logical_id
+      "ApiGatewayMethod#{controller_action}"
+    end
+
     # Example returns:
     #   ApiGatewayResourcePostsIdEdit or
     #   ApiGatewayResourcePostsId or
@@ -11,10 +15,6 @@ class Jets::Cfn::Mappers
     def gateway_resource_logical_id
       resource_map = GatewayResourceMapper.new(@route.path)
       resource_map.gateway_resource_logical_id
-    end
-
-    def gateway_method_logical_id
-      "ApiGatewayMethod#{controller_action}"
     end
 
     def lambda_function_logical_id

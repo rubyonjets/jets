@@ -4,6 +4,11 @@ class Jets::Cfn::Mappers
       @path = path # Examples: "posts/:id/edit" or "posts"
     end
 
+    # Returns: "ApiGatewayResourcePostsController"
+    def gateway_resource_logical_id
+      "ApiGatewayResource#{path_logical_id(@path)}"
+    end
+
     # Modify the path to confirm to API Gateway capture expressions
     def path
       @path.split('/').map {|s| transform_capture(s) }.join('/')
@@ -15,11 +20,6 @@ class Jets::Cfn::Mappers
         text = "{#{text}}"
       end
       text
-    end
-
-    # Returns: "ApiGatewayResourcePostsController"
-    def gateway_resource_logical_id
-      "ApiGatewayResource#{path_logical_id(@path)}"
     end
 
     def parent_id

@@ -1,7 +1,7 @@
 class Jets::Cfn::Mappers
   class ApiGatewayDeploymentMapper < ChildMapper
-    def gateway_deployment_logical_id
-      self.class.gateway_deployment_logical_id
+    def logical_id
+      self.class.logical_id
     end
 
     def parameters
@@ -23,7 +23,7 @@ class Jets::Cfn::Mappers
     end
 
     # Returns: "ApiGatewayDeployment[timestamp]"
-    def self.gateway_deployment_logical_id
+    def self.logical_id
       "ApiGatewayDeployment#{timestamp}"
     end
 
