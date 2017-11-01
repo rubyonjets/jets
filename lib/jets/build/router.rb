@@ -50,27 +50,27 @@ class Jets::Build
 
     # Class methods
     def self.draw
-      builder = new
-      builder.evaluate
-      builder
+      drawn_router
     end
 
-    @@routes = nil
     def self.routes
-      @@routes ||= draw.routes
+      drawn_router.routes
     end
 
     # Returns all paths including subpaths.
     # Example:
     # Input: ["posts/:id/edit"]
     # Output: ["posts", "posts/:id", "posts/:id/edit"]
-    @@all_paths = nil
     def self.all_paths
-      return @@all_paths if @@all_paths
+      drawn_router.all_paths
+    end
 
+    @@drawn_router = nil
+    def self.drawn_router
+      return @@drawn_router if @@drawn_router
       builder = new
       builder.evaluate
-      @@all_paths = builder.all_paths
+      @@drawn_router = builder
     end
   end
 end

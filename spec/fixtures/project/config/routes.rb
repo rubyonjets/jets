@@ -1,14 +1,16 @@
-get "posts", to: "posts#index"
-# # # gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
-# # # function_name_logical_id: PostsControllerIndexLambdaFunction
-get  "posts/:id", to: "posts#show"
-# # # gateway_method_logical_id: ApiGatewayMethodPostsControllerShow
-# # # function_name_logical_id: PostsControllerShowLambdaFunction
+# get "posts", to: "posts#index"
+# # gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
+# # function_name_logical_id: PostsControllerIndexLambdaFunction
+# get  "posts/:id", to: "posts#show"
+# gateway_method_logical_id: ApiGatewayMethodPostsControllerShow
+# function_name_logical_id: PostsControllerShowLambdaFunction
 
-post "posts", to: "posts#create"
-get  "posts/:id/edit", to: "posts#edit"
-put  "posts", to: "posts#update"
-delete  "posts", to: "posts#delete"
+# post "posts", to: "posts#create"
+# get  "posts/:id/edit", to: "posts#edit"
+# put  "posts", to: "posts#update"
+# delete  "posts", to: "posts#delete"
+
+resources :posts
 
 any "comments/hot", to: "comments#hot"
 
@@ -18,4 +20,3 @@ get  "landing/posts", to: "posts#index" # posts/:id
 
 get  "landing/comments", to: "comments#hot" # posts/:id
 
-# resources :posts
