@@ -35,14 +35,5 @@ class Jets::Cfn::Mappers
       # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/proj-dev-posts-controller.yml"
       "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
     end
-
-  private
-    def project_name
-      Jets::Config.project_name
-    end
-
-    def env
-      Jets::Config.env
-    end
   end
 end
