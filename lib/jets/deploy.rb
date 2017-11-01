@@ -9,6 +9,7 @@ class Jets::Deploy
 
   def run
     puts "Deploying project to Lambda..."
+    return if @options[:noop]
     deploy
   end
 

@@ -6,7 +6,8 @@ class Jets::Delete
   end
 
   def run
-    puts("Deleting project...") && return if @options[:noop]
+    puts("Deleting project...")
+    return if @options[:noop]
 
     are_you_sure?
 

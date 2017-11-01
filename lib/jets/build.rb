@@ -13,6 +13,7 @@ class Jets::Build
 
   def run
     puts "Building project for Lambda..."
+    return if @options[:noop]
     build
   end
 
