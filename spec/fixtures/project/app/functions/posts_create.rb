@@ -1,4 +1,4 @@
-def create(event, context)
+def posts_create(event, context)
   puts "event #{event.inspect}"
   puts "context #{context.inspect}"
 

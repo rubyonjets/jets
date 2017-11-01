@@ -35,7 +35,7 @@ class Jets::Cfn::Builders
           Integration: {
             IntegrationHttpMethod: "POST",
             Type: "AWS_PROXY",
-            Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.logical_id}.Arn}/invocations"
+            Uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${#{map.lambda_function_logical_id}.Arn}/invocations"
           },
           MethodResponses:[]
         )
