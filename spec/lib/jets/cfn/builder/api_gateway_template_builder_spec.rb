@@ -7,11 +7,7 @@ describe Jets::Cfn::Builder::ApiGatewayTemplate do
 
   describe "ApiGatewayTemplate" do
     it "builds a child stack with the shared api gateway resources" do
-      expect(builder.template_path).to eq "/tmp/jets_build/templates/proj-dev-api-gateway.yml"
-
-
-        paths = ["posts", "posts/:id", "landing/posts", "posts/:id/edit", "landing/comments"]
-        pp builder.all_paths(paths)
+      expect(builder.template_path).to eq "/tmp/jets_build/templates/proj-dev-2-api-gateway.yml"
     end
   end
 end
