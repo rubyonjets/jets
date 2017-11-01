@@ -18,6 +18,8 @@ class Jets::Build
   end
 
   def build
+    confirm_jets_project
+
     TravelingRuby.new.build unless @options[:noop]
 
     clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
@@ -125,5 +127,13 @@ class Jets::Build
 
   def md5_code_zipfile
     Jets::Naming.md5_code_zipfile
+  end
+
+  # Make sure that this command is ran within a jets project
+  def confirm_jets_project
+    unless File.exist?("#{Jets.root}config/application.yml")
+      puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
+      exit
+    end
   end
 end
