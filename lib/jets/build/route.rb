@@ -16,5 +16,10 @@ class Jets::Build
     def to
       @options[:to]
     end
+
+    # PostsController
+    def controller_name
+      to.sub(/#.*/,'').camelize + "Controller"
+    end
   end
 end

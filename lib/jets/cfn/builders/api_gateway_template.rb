@@ -36,7 +36,7 @@ class Jets::Cfn::Builders
     def add_gateway_routes
       # The routes required a Gateway Resource to contain them.
       Jets::Build::Router.all_paths.each do |path|
-        map = GatewayResourceMapper.new(path)
+        map = Jets::Cfn::Mappers::GatewayResourceMapper.new(path)
         add_resource(map.gateway_resource_logical_id, "AWS::ApiGateway::Resource",
           ParentId: map.parent_id,
           PathPart: map.path_part,

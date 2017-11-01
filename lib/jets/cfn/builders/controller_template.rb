@@ -11,7 +11,7 @@ class Jets::Cfn::Builders
     def add_api_gateway_parameters
       add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
       Jets::Build::Router.all_paths.each do |path|
-        map = GatewayResourceMapper.new(path)
+        map = Jets::Cfn::Mappers::GatewayResourceMapper.new(path)
         add_parameter(map.gateway_resource_logical_id, Description: map.path)
       end
     end
@@ -25,7 +25,7 @@ class Jets::Cfn::Builders
     def add_routes
       scoped_routes.each_with_index do |route, i|
          # {:to=>"posts#index", :path=>"posts", :method=>:get}
-        map = GatewayMethodMapper.new(route)
+        map = Jets::Cfn::Mappers::GatewayMethodMapper.new(route)
         # IE: map.gateway_method_logical_id: ApiGatewayMethodPostsControllerIndex
         add_resource(map.gateway_method_logical_id, "AWS::ApiGateway::Method",
           HttpMethod: route.method,

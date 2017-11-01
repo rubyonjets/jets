@@ -18,7 +18,7 @@ class Jets::Cfn::Builders
     end
 
     def add_function(name)
-      map = LambdaFunctionMapper.new(@controller_class, name)
+      map = Jets::Cfn::Mappers::LambdaFunctionMapper.new(@controller_class, name)
 
       add_resource(map.lambda_function_logical_id, "AWS::Lambda::Function",
         Code: {

@@ -15,8 +15,8 @@ class Jets::Cfn::Builders
       puts "Building API Gateway Deployment template."
       add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
 
-      logical_id = ApiGatewayDeploymentMapper.gateway_deployment_logical_id
-      timestamp = ApiGatewayDeploymentMapper.timestamp
+      logical_id = Jets::Cfn::Mappers::ApiGatewayDeploymentMapper.gateway_deployment_logical_id
+      timestamp = Jets::Cfn::Mappers::ApiGatewayDeploymentMapper.timestamp
       add_resource(logical_id, "AWS::ApiGateway::Deployment",
         Description: "Version #{timestamp} deployed by jets",
         RestApiId: "!Ref ApiGatewayRestApi",

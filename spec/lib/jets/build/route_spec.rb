@@ -6,5 +6,6 @@ describe "Route" do
     expect(route.path).to eq "/posts"
     expect(route.to).to eq "posts#index"
     expect(route.method).to eq "GET"
+    expect(route.controller_name).to eq "PostsController"
   end
 end

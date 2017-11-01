@@ -65,12 +65,12 @@ class Jets::Cfn::Builders
     def add_shared_stack(path)
       case path
       when /api-gateway\.yml$/
-        map = ApiGatewayMapper.new(path, @options[:s3_bucket])
+        map = Jets::Cfn::Mappers::ApiGatewayMapper.new(path, @options[:s3_bucket])
         add_resource(map.logical_id, "AWS::CloudFormation::Stack",
           Properties: { TemplateURL: map.template_url }
         )
       when /api-gateway-deployment\.yml$/
-        map = ApiGatewayDeploymentMapper.new(path, @options[:s3_bucket])
+        map = Jets::Cfn::Mappers::ApiGatewayDeploymentMapper.new(path, @options[:s3_bucket])
         add_resource(map.logical_id, "AWS::CloudFormation::Stack",
           Properties: {
             TemplateURL: map.template_url,
