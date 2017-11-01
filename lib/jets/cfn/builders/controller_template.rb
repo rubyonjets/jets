@@ -23,7 +23,9 @@ class Jets::Cfn::Builders
     end
 
     def add_routes
+      puts "add_routes".colorize(:cyan)
       scoped_routes.each_with_index do |route, i|
+        puts "route #{route.inspect}"
         map = Jets::Cfn::Mappers::GatewayMethodMapper.new(route)
         # IE: map.logical_id: ApiGatewayMethodPostsControllerIndex
         add_resource(map.logical_id, "AWS::ApiGateway::Method",

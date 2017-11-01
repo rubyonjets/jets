@@ -1,11 +1,17 @@
 class Jets::Cfn::Mappers
   class GatewayMethodMapper
     def initialize(route)
-      @route = route # {:to=>"posts#index", :path=>"posts", :method=>:get}
+      @route = route # {to: "posts#index", path: "posts", method: :get}
     end
 
     def logical_id
-      "ApiGatewayMethod#{controller_action}"
+      "ApiGatewayMethod#{path_method_id}"
+    end
+
+    def path_method_id
+      path = @route.path.gsub(':','_').gsub('/','_')
+      method = @route.method.downcase
+      "#{path}_#{method}".camelize
     end
 
     # Example returns:
