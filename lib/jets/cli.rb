@@ -30,7 +30,7 @@ module Jets
 
     desc "new", "Creates new starter project"
     long_desc Help.new_long_desc
-    option :template, default: "barebones", desc: "Starter template to use."
+    option :template, default: "starter", desc: "Starter template to use."
     def new(project_name)
       Jets::New.new(project_name, options).run
     end

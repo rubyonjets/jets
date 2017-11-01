@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+# Figure out where this script is located.
+PROJECTDIR="`dirname \"$0\"`"
+PROJECTDIR="`cd \"$PROJECTDIR/..\" && pwd`"
+
+# Tell Bundler where the Gemfile and gems are.
+# IMPORTANT: the Gemfile must be in the same bundled/gems folder
+export BUNDLE_GEMFILE="$PROJECTDIR/bundled/gems/Gemfile"
+unset BUNDLE_IGNORE_CONFIG
+
+# Run the actual app using the bundled Ruby interpreter, with Bundler activated.
+os=$(uname)
+if [[ "$os" == 'Darwin' ]]; then
+  # macosx ruby for development
+  exec jets "$@"
+else
+  # bundled ruby for Lambda
+  exec "$PROJECTDIR/bundled/ruby/bin/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.2.0/bin/jets" "$@"
+fi
