@@ -14,6 +14,7 @@ class Jets::Delete
     confirm_project_exists
 
     # Must first remove all objects from s3 bucket in order to delete stack
+    puts "First, deleting objects in s3 bucket #{s3_bucket_name}" if s3_bucket_name
     empty_s3_bucket
 
     cfn.delete_stack(stack_name: parent_stack_name)
@@ -34,7 +35,6 @@ class Jets::Delete
   def empty_s3_bucket
     return unless s3_bucket_name # Happens when minimal stack fails to build
 
-    puts "First, deleting objects in s3 bucket #{s3_bucket_name}"
     resp = s3.list_objects(bucket: s3_bucket_name)
     if resp.contents.size > 0
       # IE: objects = [{key: "objectkey1"}, {key: "objectkey2"}]
