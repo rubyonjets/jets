@@ -77,13 +77,6 @@ class Jets::Build
     parent.build
   end
 
-  def each_deducer
-    app_code_paths.each do |path|
-      deducer = LambdaDeducer.new(path)
-      yield(deducer)
-    end
-  end
-
   # Remove any current templates in the tmp build folder for a clean start
   def clean_start
     FileUtils.rm_rf("/tmp/jets_build/templates")
