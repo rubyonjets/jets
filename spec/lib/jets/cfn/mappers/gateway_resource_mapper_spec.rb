@@ -10,6 +10,7 @@ describe Jets::Cfn::Mappers::GatewayResourceMapper do
       let(:path) { "posts/:id/edit" }
       it "contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "ApiGatewayResourcePostsIdEdit"
+        expect(map.cors_logical_id).to eq "ApiGatewayResourcePostsIdEditCors"
         expect(map.path_part).to eq "edit"
         expect(map.parent_id).to eq "!Ref ApiGatewayResourcePostsId"
       end

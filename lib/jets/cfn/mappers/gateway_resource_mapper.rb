@@ -9,6 +9,10 @@ class Jets::Cfn::Mappers
       "ApiGatewayResource#{path_logical_id(@path)}"
     end
 
+    def cors_logical_id
+      "#{logical_id}Cors"
+    end
+
     # Modify the path to confirm to API Gateway capture expressions
     def path
       @path.split('/').map {|s| transform_capture(s) }.join('/')
