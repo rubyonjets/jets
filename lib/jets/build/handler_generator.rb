@@ -15,7 +15,8 @@ class Jets::Build
       deducer_class = find_deducer_class
       deducer = deducer_class.new(@path)
 
-      FileUtils.mkdir_p(File.dirname(deducer.js_path))
+      js_path = "#{Jets.root}#{deducer.js_path}"
+      FileUtils.mkdir_p(File.dirname(js_path))
 
       template_path = File.expand_path('../node-shim-handler.js', __FILE__)
       template = IO.read(template_path)
@@ -23,7 +24,7 @@ class Jets::Build
       @deducer = deducer # Only ERB variable required
       result = erb_result(template_path, template)
 
-      IO.write(deducer.js_path, result)
+      IO.write(js_path, result)
     end
 
     # base on the path a different deducer will be used
