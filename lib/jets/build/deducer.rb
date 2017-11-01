@@ -1,3 +1,4 @@
+# Build::Deducers figure out required values to process the node shim
 class Jets::Build
   class Deducer
     autoload :BaseDeducer, "jets/build/deducer/base_deducer"

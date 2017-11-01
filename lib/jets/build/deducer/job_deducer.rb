@@ -5,6 +5,7 @@ class Jets::Build::Deducer
       "job"
     end
 
+    # interface method
     def functions
       [:perform]
     end

@@ -5,6 +5,7 @@ class Jets::Build::Deducer
       "controller"
     end
 
+    # interface method
     # Returns: [:create, :update]
     def functions
       # Example: require "./app/controllers/posts_controller.rb"

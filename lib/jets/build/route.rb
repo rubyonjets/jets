@@ -16,18 +16,5 @@ class Jets::Build
     def to
       @options[:to]
     end
-
-    # for CloudFormation
-    def logical_id
-      "ApiMethod#{controller_method}"
-    end
-
-    def controller_method
-      to.gsub('/','_').sub('#','_').camelize
-    end
-
-    def controller_name
-      to.sub(/#.*/,'').camelize + "Controller"
-    end
   end
 end
