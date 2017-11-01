@@ -5,7 +5,7 @@ class Jets::Cfn::Mappers
     end
 
     # Returns: "ApiGatewayResourcePostsController"
-    def gateway_resource_logical_id
+    def logical_id
       "ApiGatewayResource#{path_logical_id(@path)}"
     end
 

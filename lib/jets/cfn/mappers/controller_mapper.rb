@@ -8,7 +8,7 @@ class Jets::Cfn::Mappers
       parameters[:ApiGatewayRestApi] = "!GetAtt ApiGateway.Outputs.ApiGatewayRestApi"
       Jets::Build::Router.all_paths.each do |path|
         map = GatewayResourceMapper.new(path)
-        parameters[map.gateway_resource_logical_id] = "!GetAtt ApiGateway.Outputs.#{map.gateway_resource_logical_id}"
+        parameters[map.logical_id] = "!GetAtt ApiGateway.Outputs.#{map.logical_id}"
       end
 
       parameters

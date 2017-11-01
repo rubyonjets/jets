@@ -12,7 +12,7 @@ class Jets::Cfn::Builders
       add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
       Jets::Build::Router.all_paths.each do |path|
         map = Jets::Cfn::Mappers::GatewayResourceMapper.new(path)
-        add_parameter(map.gateway_resource_logical_id, Description: map.path)
+        add_parameter(map.logical_id, Description: map.path)
       end
     end
 
@@ -29,7 +29,7 @@ class Jets::Cfn::Builders
         add_resource(map.logical_id, "AWS::ApiGateway::Method",
           HttpMethod: route.method,
           RequestParameters: {},
-          ResourceId: "!Ref #{map.gateway_resource_logical_id}",
+          ResourceId: "!Ref #{map.logical_id}",
           RestApiId: "!Ref ApiGatewayRestApi",
           AuthorizationType: "NONE",
           Integration: {

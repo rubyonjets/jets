@@ -14,7 +14,7 @@ class Jets::Cfn::Mappers
     #   ApiGatewayResourcePosts
     def gateway_resource_logical_id
       resource_map = GatewayResourceMapper.new(@route.path)
-      resource_map.gateway_resource_logical_id
+      resource_map.logical_id
     end
 
     def lambda_function_logical_id

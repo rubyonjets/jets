@@ -9,7 +9,7 @@ describe Jets::Cfn::Mappers::GatewayResourceMapper do
     context("edit path") do
       let(:path) { "posts/:id/edit" }
       it "contains info for CloudFormation API Gateway Resources" do
-        expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePostsIdEdit"
+        expect(map.logical_id).to eq "ApiGatewayResourcePostsIdEdit"
         expect(map.path_part).to eq "edit"
         expect(map.parent_id).to eq "!Ref ApiGatewayResourcePostsId"
       end
@@ -18,7 +18,7 @@ describe Jets::Cfn::Mappers::GatewayResourceMapper do
     context("show path with path_part that has the capture") do
       let(:path) { "posts/:id" }
       it "contains info for CloudFormation API Gateway Resources" do
-        expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePostsId"
+        expect(map.logical_id).to eq "ApiGatewayResourcePostsId"
         expect(map.path_part).to eq "{id}"
         expect(map.parent_id).to eq "!Ref ApiGatewayResourcePosts"
       end
