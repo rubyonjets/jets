@@ -1,13 +1,13 @@
 class Jets::Cfn::Builders
   class ChildTemplate
-    include Helpers
+    include Interface
 
     def initialize(controller_class)
       @controller_class = controller_class
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
-    # template_path is an interface method for Helpers module
+    # template_path is an interface method for Interface module
     def template_path
       Jets::Naming.template_path(@controller_class)
     end

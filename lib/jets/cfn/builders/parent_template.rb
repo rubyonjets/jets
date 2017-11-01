@@ -2,7 +2,7 @@ require 'erb'
 
 class Jets::Cfn::Builders
   class ParentTemplate
-    include Helpers
+    include Interface
     include Jets::AwsServices
 
     def initialize(options={})

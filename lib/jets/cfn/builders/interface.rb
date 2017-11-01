@@ -3,7 +3,7 @@
 #   * compose
 #   * template_path
 class Jets::Cfn::Builders
-  module Helpers
+  module Interface
     def build
       compose # must be implemented by subclass
       write

@@ -1,6 +1,6 @@
 class Jets::Cfn::Builders
   class ApiGatewayDeploymentTemplate
-    include Helpers
+    include Interface
     include Jets::AwsServices
 
     def initialize(options={})

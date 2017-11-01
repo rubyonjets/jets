@@ -1,6 +1,6 @@
 class Jets::Cfn::Builders
   class ControllerTemplate < ChildTemplate
-    # compose is an interface method for Helpers module
+    # compose is an interface method for Interface module
     def compose
       add_common_parameters
       add_api_gateway_parameters

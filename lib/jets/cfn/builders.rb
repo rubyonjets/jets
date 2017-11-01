@@ -3,7 +3,7 @@ require 'yaml'
 
 class Jets::Cfn
   class Builders
-    autoload :Helpers, "jets/cfn/builders/helpers"
+    autoload :Interface, "jets/cfn/builders/interface"
     autoload :ParentTemplate, "jets/cfn/builders/parent_template"
     autoload :ChildTemplate, "jets/cfn/builders/child_template"
     autoload :ControllerTemplate, "jets/cfn/builders/controller_template"
