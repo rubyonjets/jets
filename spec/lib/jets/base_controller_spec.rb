@@ -62,6 +62,12 @@ describe Jets::BaseController do
       expect(event["body"]).to be_a(String)
       expect(event["isBase64Encoded"]).to eq false
     end
+
+    it "adds cors headers" do
+      resp = controller.send(:render, json: {"my": "data"})
+      expect(resp[:headers].keys).to include("Access-Control-Allow-Origin")
+      expect(resp[:headers].keys).to include("Access-Control-Allow-Credentials")
+    end
   end
 
   def json_file(path)

@@ -38,10 +38,18 @@ module Jets
       # {statusCode: ..., body: ..., headers: }
       status = options.delete(:status) || 200
       body = options.delete(:json)
-      result = options.merge(
+      resp = options.merge(
         statusCode: status,
         body: JSON.dump(body) # change Hash to String
       )
+
+      # add cors headers if enabled
+      resp[:headers] = {
+        "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
+        "Access-Control-Allow-Credentials" => true # Required for cookies, authorization headers with HTTPS
+      } if Jets::Config.cors
+
+      resp
     end
 
     # API Gateway LAMBDA_PROXY wraps the event in its own structure.
