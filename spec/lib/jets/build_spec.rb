@@ -9,18 +9,12 @@ describe Jets::Build do
   end
 
   describe "Build" do
-    it "#controller_paths" do
-      expect(build.controller_paths).to eq([
-        "app/controllers/comments_controller.rb",
-        "app/controllers/posts_controller.rb",
-      ])
-    end
-
-    it "builds handlers javascript files" do
-      build.build
-      file_exist = File.exist?("#{Jets.root}handlers/controllers/posts.js")
-      expect(file_exist).to be true
-    end
+    # TODO: figure out way to test build.rb fast
+    # it "builds handlers javascript files" do
+    #   build.build
+    #   file_exist = File.exist?("#{Jets.root}handlers/controllers/posts.js")
+    #   expect(file_exist).to be true
+    # end
 
     # Would be nice to be able to automate testing the shim
     # context "node shim" do

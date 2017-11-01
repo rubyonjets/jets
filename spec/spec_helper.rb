@@ -17,6 +17,13 @@ require "aws-sdk"
 root = File.expand_path("../../", __FILE__)
 require "#{root}/lib/jets"
 
+# Eager load classes for specs.
+# TODO: automatically lazy load project's app code
+require "#{Jets.root}app/controllers/application_controller"
+Dir.glob("#{Jets.root}app/controllers/**/*").each { |p| require p }
+require "#{Jets.root}app/jobs/application_job"
+Dir.glob("#{Jets.root}app/jobs/**/*").each { |p| require p }
+
 module Helpers
   def execute(cmd)
     puts "Running: #{cmd}" if ENV["DEBUG"]
