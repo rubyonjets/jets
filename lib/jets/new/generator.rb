@@ -11,6 +11,7 @@ class Jets::New
     end
 
     def run
+      return if @options[:noop]
       copy
       bundle_install
       git_init

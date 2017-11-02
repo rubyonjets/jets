@@ -35,7 +35,10 @@ module Jets
       Jets::New.new(project_name, options).run
     end
 
-    desc "process TYPE", "process subcommand tasks"
+    desc "process TYPE", "process subtasks"
     subcommand "process", Jets::Process
+
+    desc "generate TYPE", "generate subtasks"
+    subcommand "generate", Jets::Generate
   end
 end

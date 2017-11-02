@@ -9,9 +9,12 @@ require "byebug"
 module Jets
   autoload :Root, "jets/root"
   autoload :Command, "jets/command"
+  # sub commands
+  autoload :Process, 'jets/process'
+  autoload :Generate, 'jets/generate'
+
   autoload :CLI, "jets/cli"
   autoload :Build, 'jets/build'
-  autoload :Process, 'jets/process'
   autoload :BaseModel, 'jets/base_model'
   autoload :BaseController, 'jets/base_controller'
   autoload :BaseJob, 'jets/base_job'
