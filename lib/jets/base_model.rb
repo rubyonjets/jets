@@ -204,7 +204,7 @@ module Jets
     def self.table_namespace
       return @table_namespace if @table_namespace
 
-      config = YAML.load_file("#{Jets.root}config/database.yml")[Jets.env]
+      config = database_config
       @table_namespace = config['table_namespace'] || Jets::Config.table_namespace
     end
 
@@ -221,11 +221,15 @@ module Jets
     def self.db
       return @@db if @@db
 
-      config = YAML.load_file("#{Jets.root}config/database.yml") || {}
+      config = database_config
       endpoint = config['endpoint']
       Aws.config.update(endpoint: endpoint) if endpoint
 
       @@db ||= Aws::DynamoDB::Client.new
+    end
+
+    def self.database_config
+      YAML.load_file("#{Jets.root}config/database.yml")[Jets.env] || {}
     end
 
   end
