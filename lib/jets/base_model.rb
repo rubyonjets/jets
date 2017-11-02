@@ -91,7 +91,7 @@ module Jets
     #     "Id": { "N": "123" }
     # }
 
-    def self.scan()
+    def self.scan(params={})
       Jets.logger.error("Should not use scan for production.  It's slow and expensive.  You should create either a LSI or GSI and use query the index instead.")
 
       params = {

@@ -18,4 +18,20 @@ module Jets::Util
     return @@logger if @@logger
     @@logger = Logger.new($stderr)
   end
+
+  # TODO: Jets.boot: lazy load project classes instead of eager loading
+  # Especially since Lambda functions will usually only require some of the
+  # classes most of the time.
+  def boot
+    %w[
+      app/controllers/application_controller
+      app/jobs/application_job
+      app/models/application_record
+    ].each { |p| require "#{Jets.root}#{p}" }
+
+    Dir.glob("#{Jets.root}app/**/*").each do |path|
+      next unless File.file?(path)
+      require path
+    end
+  end
 end

@@ -17,6 +17,8 @@ def print(text)
   $stderr.print(text)
 end
 
+Jets.boot
+
 class Jets::Process::MainProcessor
   attr_reader :event, :context, :handler
   def initialize(event, context, handler)
@@ -32,8 +34,6 @@ class Jets::Process::MainProcessor
     delegate_class = Jets::Process::Deducer.new(handler).delegate_class
     deducer = delegate_class.new(handler) # IE: PostDeducer.new(handler)
     begin
-      require deducer.application_path
-      require deducer.path
       # Example of generated code:
       # Controllers:
       #   require "app/controllers/application_controller"
