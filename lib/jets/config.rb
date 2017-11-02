@@ -56,9 +56,21 @@ class Jets::Config
     @@settings = RecursiveOpenStruct.new(settings)
   end
 
+  # Use the shorter name in stack names, but use the full name when it
+  # comes to checking for the env.
+  #
+  #   Jets::Config.env == 'development'
+  #   Jets::Config.project_namespace == 'proj-dev'
+  ENV_MAP = {
+    development: 'dev',
+    production: 'prod',
+    staging: 'stag',
+  }
   def set_aliases!(s)
     # IE: With env_instance: project-dev-1
     #     Without env_instance: project-dev
-    s['project_namespace'] = [s['project_name'], s['env'], s['env_instance']].compact.join('-')
+    mapped_env = ENV_MAP[s['env'].to_sym] || s['env']
+    s['project_namespace'] = [s['project_name'], mapped_env, s['env_instance']].compact.join('-')
   end
+
 end

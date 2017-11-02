@@ -5,6 +5,7 @@ require "colorize"
 require "fileutils"
 require "pp"
 require "byebug"
+require "aws-sdk"
 
 module Jets
   autoload :Util, "jets/util"

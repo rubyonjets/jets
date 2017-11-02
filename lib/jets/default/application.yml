@@ -1,6 +1,6 @@
 ---
 project_name: proj
-env: dev
+env: development
 env_instance: # Optional. Allows creation of multiple instances of env. Any random identifer. IE: 1,2,abc,xzy
 timeout: 10
 runtime: nodejs6.10

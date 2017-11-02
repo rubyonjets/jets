@@ -21,11 +21,12 @@ class Jets::Build
     # resources macro expands to all the routes
     def resources(name)
       get "#{name}", to: "#{name}#index"
+      get "#{name}/new", to: "#{name}#new"
       get "#{name}/:id", to: "#{name}#show"
       post "#{name}", to: "#{name}#create"
       get "#{name}/:id/edit", to: "#{name}#edit"
-      put "#{name}", to: "#{name}#update"
-      delete "#{name}", to: "#{name}#delete"
+      put "#{name}/:id", to: "#{name}#update"
+      delete "#{name}/:id", to: "#{name}#delete"
     end
 
     def create_route(options)

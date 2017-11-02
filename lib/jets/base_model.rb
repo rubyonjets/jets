@@ -1,5 +1,6 @@
 require "aws-sdk"
 require "digest"
+require "yaml"
 
 # The modeling is ActiveRecord-ish but not exactly because DynamoDB is a
 # different type of database.
@@ -92,7 +93,7 @@ module Jets
     # }
 
     def self.scan(params={})
-      Jets.logger.error("Should not use scan for production.  It's slow and expensive.  You should create either a LSI or GSI and use query the index instead.")
+      Jets.logger.error("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets::Config.env}.")
 
       params = {
         expression_attribute_names: {
@@ -206,6 +207,23 @@ module Jets
 
     @@db = nil
     def self.db
+      return @@db if @@db
+
+      config = YAML.load_file("#{Jets.root}config/database.yml") || {}
+      endpoint = config['endpoint']
+      # TODO: Jets::Config.config['dynamodb_local']
+      if Jets::Config.env == 'development' # && !Jets::Config.config['dynamodb_local']
+        endpoint ||= 'http://localhost:8000' # default to local dynamod
+        # TODO: if dynamodb-local is not available print message to use with instructions that is was not found and how to install it
+        #
+        # For normal production mode it is fine to leave the endpoint as nil
+        # The Aws::DynamoDB::Client is smart enough to figure out the endpoint.
+        # TODO: If in production mode and user has accidentally configured the endpoint, warn the user.
+      end
+      if endpoint
+        Aws.config.update(endpoint: endpoint)
+      end
+
       @@db ||= Aws::DynamoDB::Client.new
     end
 

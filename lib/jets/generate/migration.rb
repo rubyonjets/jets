@@ -114,10 +114,11 @@ class Jets::Generate::Migration
     <<-EOL
 # TODO: Use a nicer DSL for migrations. This works for now. Would love pull requests :)
 # TODO: Add migration support for more than just creating tables.
-require 'aws-sdk-dynamodb'  # v2: require 'aws-sdk'
 
-# Create dynamodb client
-dynamodb = Aws::DynamoDB::Client.new
+require "jets"
+
+db = Jets::BaseModel.db # uses the appropriate dynamodb endpoint
+  # so we can test with local DynamoDB or a live on on AWS
 
 # Create table params
 params = {
