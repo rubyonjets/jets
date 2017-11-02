@@ -1,6 +1,6 @@
 ## What is Jets?
 
-Jets is an Serverless Framework that allows you to create applications with ruby on AWS Lambda.  It includes everything required to build an application and deploy it to AWS.
+Jets is an Serverless Framework that allows you to create applications with ruby on AWS Lambda.  It includes everything required to build an application and deploy it.
 
 It is key to conceptually understand AWS Lambda and API Gateway to understand Jets.  Jets maps your code to Lambda functions and API Gateway resources.
 
@@ -31,27 +31,37 @@ class PostsController < ApplicationController
 end
 ```
 
-Jets creates Lambda functions for the public methods in your controller when you run the `jets deploy` command.
+Jets creates Lambda functions for the public methods in your controller. You deploy the code with:
 
-You can invoke the function with the AWS Lambda console or with the jets cli.
+```sh
+jets deploy
+```
+
+After deployment, you can test the Lambda functions with the AWS Lambda console or with the jets cli.
+
+### AWS Lambda Console test
 
 [SCREENSHOT OF LAMBDA CONSOLE]
 
+### Jets CLI test
+
 ```
 jets invoke posts-controller-index '{"test":1}'
-jets invoke help # for more info
+jets invoke help # for more info like passing the payload via a file
 ```
 
 The corresponding aws cli commands are:
 
 ```
 aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}'
-aws lambda invoke help # for more info like passing the payload via a file
+aws lambda invoke help
 ```
 
 ### Jets Routing
 
-You hook Lambda functions up to API Gateway URL endpoints.  To route a controller action you use a `config/routes.rb` file:
+You connect Lambda functions to API Gateway URL endpoints with a routes file:
+
+`config/routes.rb`:
 
 ```ruby
 get  "posts", to: "posts#index"
@@ -61,7 +71,7 @@ get  "posts/:id/edit", to: "posts#edit"
 put  "posts", to: "posts#update"
 delete  "posts", to: "posts#delete"
 
-# resources :posts # expands to all the routes above
+resources :comments # expands to all the RESTful routes above
 
 any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 ```
@@ -101,7 +111,7 @@ ruby db/migrate/posts.rb # to create the posts table
 jets deploy
 ```
 
-This creates and deploys a simple CRUD application to AWS so you can get a feel of how Jets works.
+This creates and deploys a simple CRUD application to AWS so you can get a feel for how Jets works.
 
 ### Testing locally
 
@@ -121,9 +131,11 @@ gem install jets
 
 Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of ruby to add support.
 
+Jets deploys the Lambda and API Gateway resources as a CloudFormation template.
+
 ## Contributing
 
-Love pull requests!
+I love pull requests! Happy to answer any questions to help.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
