@@ -2,7 +2,7 @@
 project_name: proj
 env: development
 env_instance: # Optional. Allows creation of multiple instances of env. Any random identifer. IE: 1,2,abc,xzy
-timeout: 10
+timeout: 30
 runtime: nodejs6.10
 memory_size: 1536
 cors: true

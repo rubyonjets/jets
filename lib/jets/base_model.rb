@@ -93,7 +93,7 @@ module Jets
     # }
 
     def self.scan(params={})
-      Jets.logger.error("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets::Config.env}.")
+      # Jets.logger.info("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets::Config.env}.")
 
       params = {
         expression_attribute_names: {
@@ -221,7 +221,10 @@ module Jets
         # TODO: If in production mode and user has accidentally configured the endpoint, warn the user.
       end
       if endpoint
-        Aws.config.update(endpoint: endpoint)
+        Aws.config.update(
+          # region: 'us-east-1',
+          endpoint: endpoint,
+        )
       end
 
       @@db ||= Aws::DynamoDB::Client.new

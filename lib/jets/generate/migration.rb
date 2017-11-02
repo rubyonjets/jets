@@ -118,7 +118,7 @@ class Jets::Generate::Migration
 require "jets"
 
 db = Jets::BaseModel.db # uses the appropriate dynamodb endpoint
-  # so we can test with local DynamoDB or a live on on AWS
+  # so we can test with local DynamoDB or with live AWS DynamoDB
 
 # Create table params
 params = {
