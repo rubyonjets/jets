@@ -69,8 +69,9 @@ class Jets::Config
   def set_aliases!(s)
     # IE: With env_instance: project-dev-1
     #     Without env_instance: project-dev
-    mapped_env = ENV_MAP[s['env'].to_sym] || s['env']
-    s['project_namespace'] = [s['project_name'], mapped_env, s['env_instance']].compact.join('-')
+    short_env = ENV_MAP[s['env'].to_sym] || s['env']
+    s['short_env'] = short_env
+    s['project_namespace'] = [s['project_name'], s['short_env'], s['env_instance']].compact.join('-')
   end
 
 end

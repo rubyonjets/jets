@@ -24,7 +24,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport"
   spec.add_dependency "actionview"
   spec.add_dependency "recursive-open-struct"
-  spec.add_dependency "aws-sdk"
+  spec.add_dependency "aws-sdk-s3"
+  spec.add_dependency "aws-sdk-cloudformation"
+  spec.add_dependency "aws-sdk-dynamodb"
+
 
   # for now
   spec.add_dependency "byebug"
