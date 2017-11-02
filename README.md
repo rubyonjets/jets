@@ -125,6 +125,12 @@ To improve the speed of development, you can run a local server which mimics the
 jets serve
 ```
 
+You can test your app at [http://localhost:8888](http://localhost:8888).  Example:
+
+```
+curl -sv http://localhost:8888/posts
+```
+
 ## Install
 
 ```sh
@@ -139,7 +145,7 @@ Jets deploys the Lambda and API Gateway resources as a CloudFormation stack.
 
 ## Contributing
 
-I love pull requests! Happy to answer any questions to help.
+I love pull requests! Happy to answer questions to help.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
