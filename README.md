@@ -1,6 +1,6 @@
 ## What is Jets?
 
-Jets is an AWS Lambda Framework that allows you to create serverless applications with ruby.  It includes everything required to build an application and deploy it to AWS Lambda.
+Jets is an Serverless Framework that allows you to create applications with ruby on AWS Lambda.  It includes everything required to build an application and deploy it to AWS.
 
 It is key to conceptually understand AWS Lambda and API Gateway to understand Jets.  Jets maps your code to Lambda functions and API Gateway resources.
 
@@ -9,7 +9,7 @@ It is key to conceptually understand AWS Lambda and API Gateway to understand Je
 
 ## How It Works
 
-With Jets, you focus on your business logic and Jets does the mundane work. You write controllers, workers and functions and Jets automatically uploads this to Lambda and API Gateway for you.
+With Jets, you focus on your business logic and Jets does the mundane work. You write controllers, workers and functions and Jets uploads them to Lambda and API Gateway.
 
 ### Jets Controllers
 
@@ -35,18 +35,18 @@ Jets creates Lambda functions for the public methods in your controller when you
 
 You can invoke the function with the AWS Lambda console or with the jets cli.
 
+[SCREENSHOT OF LAMBDA CONSOLE]
+
 ```
 jets invoke posts-controller-index '{"test":1}'
-jets invoke posts-controller-index file://event.json
 jets invoke help # for more info
 ```
 
-The examples above show how to pass the event payload inline and via a file.  The corresponding aws cli commands are:
+The corresponding aws cli commands are:
 
 ```
 aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}'
-aws lambda invoke --function-name proj-dev-posts-controller-index --payload file://event.json
-aws lambda invoke help
+aws lambda invoke help # for more info like passing the payload via a file
 ```
 
 ### Jets Routing
@@ -68,10 +68,11 @@ any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 
 Running `jets deploy` adds the routes to API Gateway.
 
-View using the endpoint outputted, below is an example. Note you'll have replace the URL endpoint with the one that was created for you:
+You can test any of the generated endpoints via curl. Note, you will have to replace the URL endpoint with the one that was created for you:
 
 ```sh
-curl -s https://1oin4qq7ag.execute-api.us-east-1.amazonaws.com/dev/posts
+$ curl -s https://1oin4qq7ag.execute-api.us-east-1.amazonaws.com/dev/posts
+[EXAMPLE RESPONSE]
 ```
 
 ### Project Structure
@@ -91,32 +92,23 @@ config/routes.rb  | Where you set up routes for your application.
 
 ### Quick Start
 
-You can generate a starter project and deploy to AWS Lambda with:
+You can generate a starter project and deploy it to AWS Lambda with:
 
 ```sh
-jets new proj --starter
+jets new proj
 cd proj
+ruby db/migrate/posts.rb # to create the posts table
 jets deploy
 ```
 
-### Scaffolding
+This creates and deploys a simple CRUD application to AWS so you can get a feel of how Jets works.
 
-You can also use `jets generate scaffold` to quickly generate basic CRUD code.  Example:
+### Testing locally
 
-```sh
-jets generate scaffold Post name:string title:string content:text
-```
-
-The scaffold creates a migration in `db/migrate` for DynamoDB. You'll need to run migrations to create the DynamoDB table.
-
-```
-jets db:migrate
-```
-
-Next, deploy the app.
+To improve the speed of development, you can run a local server which mimics the API Gateway routes. So you can test your application code locally and then deploy to AWS Gateway and Lambda when you are ready.
 
 ```sh
-jets deploy
+jets serve
 ```
 
 ## Install

@@ -11,12 +11,12 @@ class Jets::Generate < Jets::Command
   option :partition_key, default: "id:string:hash", desc: "table's partition key"
   option :sort_key, default: nil, desc: "table's sort key"
   def migration(name)
-    Migration.new(name, options).run
+    Migration.new(name, options).create
   end
 
   desc "scaffold [name]", "Creates a CRUD scaffold"
   long_desc Help.scaffold
   def scaffold(name)
-    Scaffold.new(name, options).run
+    Scaffold.new(name, options).create
   end
 end

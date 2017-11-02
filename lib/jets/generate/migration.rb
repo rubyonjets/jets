@@ -3,20 +3,20 @@ require 'erb'
 
 # bin/jets generate migration exam_problems --partition-key id:string
 class Jets::Generate::Migration
+  attr_reader :table_name
   def initialize(table_name, options)
     @table_name = table_name
     @options = options
   end
 
-  def run
-    puts "Creating migration"
+  def create
+    puts "Creating migration" unless @options[:quiet]
     return if @options[:noop]
-    # pp @options
     create_migration
   end
 
   def create_migration
-    migation_file = "timestamp-#{@table_name}.rb"
+    migation_file = "#{@table_name}.rb"
     migration_path = "#{Jets.root}db/migrate/#{migation_file}"
     dir = File.dirname(migration_path)
     FileUtils.mkdir_p(dir) unless File.exist?(dir)
@@ -31,8 +31,7 @@ class Jets::Generate::Migration
   end
 
   def table_name
-    random = (0...3).map { (65 + rand(26)).chr }.join.downcase # for testing
-    [Jets::Config.project_namespace, @table_name, random].join('-')
+    [Jets::Config.project_namespace, @table_name].join('-')
   end
 
   # http://docs.aws.amazon.com/sdkforruby/api/Aws/DynamoDB/Types/KeySchemaElement.html
@@ -94,7 +93,6 @@ class Jets::Generate::Migration
 
     # sort_key is optional
     sort_key_option = @options[:sort_key]
-    puts "sort_key_option #{sort_key_option.inspect}"
     if sort_key_option
       sort_key_name, sort_attribute_type,  = sort_key_option.split(':')
       sort_key = {
@@ -104,14 +102,14 @@ class Jets::Generate::Migration
       attribute_definitions << sort_key
     end
 
-    pp attribute_definitions
-
     attribute_definitions
   end
 
   # http://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/dynamo-example-create-table.html
   def template
     <<-EOL
+# TODO: Use a nicer DSL for migrations. This works for now. Would love pull requests :)
+# TODO: Add migration support for more than just creating tables.
 require 'aws-sdk-dynamodb'  # v2: require 'aws-sdk'
 
 # Create dynamodb client

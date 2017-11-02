@@ -1,3 +1,4 @@
 vendor
 bundled
 code*.zip
+db/migrate
