@@ -31,7 +31,11 @@ class Jets::Generate::Migration
   end
 
   def table_name
-    [Jets::Config.project_namespace, @table_name].join('-')
+    [table_namespace, @table_name].reject { |s| s.empty? }.join('-')
+  end
+
+  def table_namespace
+    @options[:namespace] || Jets::Config.project_namespace
   end
 
   # http://docs.aws.amazon.com/sdkforruby/api/Aws/DynamoDB/Types/KeySchemaElement.html
@@ -117,12 +121,12 @@ dynamodb = Aws::DynamoDB::Client.new
 
 # Create table Movies with year (integer) and title (string)
 params = {
-    table_name: '<%= @table_name %>',
-    key_schema: <%= @key_schema %>,
-    attribute_definitions: <%= @attribute_definitions %>,
-    provisioned_throughput: {
-        read_capacity_units: 5,
-        write_capacity_units: 5
+  table_name: '<%= @table_name %>',
+  key_schema: <%= @key_schema %>,
+  attribute_definitions: <%= @attribute_definitions %>,
+  provisioned_throughput: {
+    read_capacity_units: 5,
+    write_capacity_units: 5
   }
 }
 

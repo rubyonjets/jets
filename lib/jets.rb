@@ -15,7 +15,7 @@ module Jets
 
   autoload :CLI, "jets/cli"
   autoload :Build, 'jets/build'
-  autoload :BaseModel, 'jets/base_model'
+  autoload :BaseLambdaFunction, 'jets/base_lambda_function'
   autoload :BaseController, 'jets/base_controller'
   autoload :BaseJob, 'jets/base_job'
   autoload :Config, 'jets/config'

@@ -2,7 +2,7 @@ require 'json'
 
 module Jets
   # All controller public methods will result in corresponding Lambda functions created.
-  class BaseController < BaseModel
+  class BaseController < BaseLambdaFunction
     # The public methods defined in the user's custom class will become
     # lambda functions.
     # Returns Example:
