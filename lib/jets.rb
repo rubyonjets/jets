@@ -18,6 +18,7 @@ module Jets
   autoload :BaseLambdaFunction, 'jets/base_lambda_function'
   autoload :BaseController, 'jets/base_controller'
   autoload :BaseJob, 'jets/base_job'
+  autoload :BaseModel, 'jets/base_model'
   autoload :Config, 'jets/config'
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'
