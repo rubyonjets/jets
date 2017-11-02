@@ -59,7 +59,7 @@ class Jets::Config
   # Use the shorter name in stack names, but use the full name when it
   # comes to checking for the env.
   #
-  #   Jets::Config.env == 'development'
+  #   Jets.env == 'development'
   #   Jets::Config.project_namespace == 'proj-dev'
   ENV_MAP = {
     development: 'dev',

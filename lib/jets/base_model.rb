@@ -93,7 +93,7 @@ module Jets
     # }
 
     def self.scan(params={})
-      # Jets.logger.info("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets::Config.env}.")
+      # Jets.logger.info("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets.env}.")
 
       params = {
         expression_attribute_names: {
@@ -153,7 +153,7 @@ module Jets
         }
       }
 
-      Jets.logger.info("BaseModel Jets::Config.env #{Jets::Config.env.inspect}")
+      Jets.logger.info("BaseModel Jets.env #{Jets.env.inspect}")
       Jets.logger.info("BaseModel params #{params.inspect}")
 
       # AWS Docs examples: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Ruby.04.html
@@ -200,8 +200,12 @@ module Jets
       [table_namespace, @table_name].join('-')
     end
 
+    @table_namespace = nil
     def self.table_namespace
-      @table_namespace || Jets::Config.project_namespace
+      return @table_namespace if @table_namespace
+
+      config = YAML.load_file("#{Jets.root}config/database.yml")[Jets.env]
+      @table_namespace = config['table_namespace'] || Jets::Config.project_namespace
     end
 
     # TODO: if dynamodb-local is not available print message to use with instructions that is was not found and how to install it

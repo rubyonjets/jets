@@ -36,7 +36,7 @@ class Jets::Generate::Migration
   end
 
   def table_namespace
-    config = YAML.load_file("#{Jets.root}config/database.yml")[Jets::Config.env]
+    config = YAML.load_file("#{Jets.root}config/database.yml")[Jets.env]
     config['table_namespace'] || Jets::Config.project_namespace
   end
 

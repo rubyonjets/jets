@@ -99,12 +99,12 @@ class Jets::Build
     # bundled/gems folder and export it to BUNDLE_GEMFILE in the
     # wrapper script.
     def configure_bundler
-      puts "Moving gemfiles into #{bundled_gems_dest}/"
+      puts "Moving gemfiles into #{TEMP_BUILD_DIR}/#{bundled_gems_dest}/"
       FileUtils.mv("Gemfile", "#{bundled_gems_dest}/")
       FileUtils.mv("Gemfile.lock", "#{bundled_gems_dest}/")
 
       bundle_config_path = "#{bundled_gems_dest}/.bundle/config"
-      puts "Generating #{bundle_config_path}"
+      puts "Generating #{TEMP_BUILD_DIR}/#{bundle_config_path}"
       FileUtils.mkdir_p(File.dirname(bundle_config_path))
       bundle_config =<<-EOL
 BUNDLE_PATH: .

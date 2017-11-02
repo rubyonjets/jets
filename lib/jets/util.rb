@@ -34,4 +34,8 @@ module Jets::Util
       require path
     end
   end
+
+  def env
+    Jets.env
+  end
 end
