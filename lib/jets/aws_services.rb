@@ -1,4 +1,5 @@
-require "aws-sdk"
+require "aws-sdk-s3"
+require "aws-sdk-cloudformation"
 
 module Jets::AwsServices
   def s3

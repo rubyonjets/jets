@@ -1,5 +1,3 @@
-require "aws-sdk"
-
 class Jets::Deploy
   include Jets::AwsServices
 
