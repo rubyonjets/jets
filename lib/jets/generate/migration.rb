@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'erb'
+require 'yaml'
 
 # bin/jets generate migration exam_problems --partition-key id:string
 class Jets::Generate::Migration
@@ -35,7 +36,8 @@ class Jets::Generate::Migration
   end
 
   def table_namespace
-    @options[:namespace] || Jets::Config.project_namespace
+    config = YAML.load_file("#{Jets.root}config/database.yml")[Jets::Config.env]
+    config['table_namespace'] || Jets::Config.project_namespace
   end
 
   # http://docs.aws.amazon.com/sdkforruby/api/Aws/DynamoDB/Types/KeySchemaElement.html
@@ -132,7 +134,7 @@ params = {
 }
 
 begin
-  result = dynamodb.create_table(params)
+  result = db.create_table(params)
 
   puts 'DynamoDB Table: <%= @table_name %> Status: ' +
         result.table_description.table_status;

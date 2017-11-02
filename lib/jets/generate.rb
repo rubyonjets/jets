@@ -10,7 +10,6 @@ class Jets::Generate < Jets::Command
   long_desc Help.migration
   option :partition_key, default: "id:string:hash", desc: "table's partition key"
   option :sort_key, default: nil, desc: "table's sort key"
-  option :namespace, default: nil, desc: "namespace that gets prepended to table names"
   def migration(name)
     Migration.new(name, options).create
   end

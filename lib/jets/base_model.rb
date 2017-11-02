@@ -153,6 +153,9 @@ module Jets
         }
       }
 
+      Jets.logger.info("BaseModel Jets::Config.env #{Jets::Config.env.inspect}")
+      Jets.logger.info("BaseModel params #{params.inspect}")
+
       # AWS Docs examples: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Ruby.04.html
       resp = db.scan(params)
     end
@@ -201,6 +204,11 @@ module Jets
       @table_namespace || Jets::Config.project_namespace
     end
 
+    # TODO: if dynamodb-local is not available print message to use with instructions that is was not found and how to install it
+    #
+    # For normal production mode it is fine to leave the endpoint as nil
+    # The Aws::DynamoDB::Client is smart enough to figure out the endpoint.
+    # TODO: If in production mode and user has accidentally configured the endpoint, warn the user.
     def db
       self.class.db
     end
@@ -211,21 +219,7 @@ module Jets
 
       config = YAML.load_file("#{Jets.root}config/database.yml") || {}
       endpoint = config['endpoint']
-      # TODO: Jets::Config.config['dynamodb_local']
-      if Jets::Config.env == 'development' # && !Jets::Config.config['dynamodb_local']
-        endpoint ||= 'http://localhost:8000' # default to local dynamod
-        # TODO: if dynamodb-local is not available print message to use with instructions that is was not found and how to install it
-        #
-        # For normal production mode it is fine to leave the endpoint as nil
-        # The Aws::DynamoDB::Client is smart enough to figure out the endpoint.
-        # TODO: If in production mode and user has accidentally configured the endpoint, warn the user.
-      end
-      if endpoint
-        Aws.config.update(
-          # region: 'us-east-1',
-          endpoint: endpoint,
-        )
-      end
+      Aws.config.update(endpoint: endpoint) if endpoint
 
       @@db ||= Aws::DynamoDB::Client.new
     end
