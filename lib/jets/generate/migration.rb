@@ -37,7 +37,7 @@ class Jets::Generate::Migration
 
   def table_namespace
     config = YAML.load_file("#{Jets.root}config/database.yml")[Jets.env]
-    config['table_namespace'] || Jets::Config.project_namespace
+    config['table_namespace'] || Jets::Config.table_namespace
   end
 
   # http://docs.aws.amazon.com/sdkforruby/api/Aws/DynamoDB/Types/KeySchemaElement.html
