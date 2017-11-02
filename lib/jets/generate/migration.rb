@@ -11,12 +11,11 @@ class Jets::Generate::Migration
   def run
     puts "Creating migration"
     return if @options[:noop]
-    pp @options
+    # pp @options
     create_migration
   end
 
   def create_migration
-    puts "TODO: implement create_migration"
     migation_file = "timestamp-#{@table_name}.rb"
     migration_path = "#{Jets.root}db/migrate/#{migation_file}"
     dir = File.dirname(migration_path)
@@ -26,8 +25,8 @@ class Jets::Generate::Migration
 
   def migration_code
     @table_name = table_name
-    @key_schema = pp(key_schema)
-    @attribute_definitions = pp(attribute_definitions)
+    @key_schema = key_schema.inspect
+    @attribute_definitions = attribute_definitions.inspect
     result = ERB.new(template, nil, "-").result(binding)
   end
 
@@ -36,30 +35,78 @@ class Jets::Generate::Migration
     [Jets::Config.project_namespace, @table_name, random].join('-')
   end
 
+  # http://docs.aws.amazon.com/sdkforruby/api/Aws/DynamoDB/Types/KeySchemaElement.html
+  # Valid key types:
+  # {
+  #   attribute_name: "KeySchemaAttributeName", # required
+  #   key_type: "HASH", # required, accepts HASH, RANGE
+  # }
   def key_schema
-    [
-      {
-        attribute_name: 'year',
-        key_type: 'HASH'  #Partition key
-      },
-      {
-        attribute_name: 'title',
-        key_type: 'RANGE' #Sort key
+    partition_key_name, _, partition_key_type = @options[:partition_key].split(':')
+    partition_key_type = "hash" if partition_key_type.nil?
+    partition_key_type = partition_key_type.downcase
+
+    partition_key = {
+      attribute_name: partition_key_name,
+      key_type: partition_key_type.upcase
+    }
+
+    key_schema = [partition_key] # partition_key is required
+
+    # sort_key is optional
+    sort_key_option = @options[:sort_key]
+    if sort_key_option
+      sort_key_name, _, sort_key_type = sort_key_option.split(':')
+      sort_key = {
+        attribute_name: sort_key_name,
+        key_type: sort_key_type.upcase # Valid Sort key: HASH or RANGE
       }
-    ]
+      key_schema << sort_key
+    end
+
+    key_schema
   end
 
+  # http://docs.aws.amazon.com/sdkforruby/api/Aws/DynamoDB/Types/AttributeDefinition.html
+  # {
+  #   attribute_name: "KeySchemaAttributeName", # required
+  #   attribute_type: "S", # required, accepts S, N, B
+  # }
+  ATTRIBUTE_TYPE_MAP = {
+    'string' => 'S',
+    'number' => 'N',
+    'binary' => 'B',
+    's' => 'S',
+    'n' => 'N',
+    'b' => 'B',
+  }
   def attribute_definitions
-    [
+    partition_key_name, attribute_type, _ = @options[:partition_key].split(':')
+    attribute_type = "string" if attribute_type.nil?
+    attribute_type = ATTRIBUTE_TYPE_MAP[attribute_type]
+
+    attribute_definitions = [
       {
-        attribute_name: 'year',
-        attribute_type: 'N'
-      },
-      {
-        attribute_name: 'title',
-        attribute_type: 'S'
-      },
+        attribute_name: partition_key_name,
+        attribute_type: attribute_type
+      }
     ]
+
+    # sort_key is optional
+    sort_key_option = @options[:sort_key]
+    puts "sort_key_option #{sort_key_option.inspect}"
+    if sort_key_option
+      sort_key_name, sort_attribute_type,  = sort_key_option.split(':')
+      sort_key = {
+        attribute_name: sort_key_name,
+        attribute_type: ATTRIBUTE_TYPE_MAP[sort_attribute_type]
+      }
+      attribute_definitions << sort_key
+    end
+
+    pp attribute_definitions
+
+    attribute_definitions
   end
 
   # http://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/dynamo-example-create-table.html
@@ -76,15 +123,15 @@ params = {
     key_schema: <%= @key_schema %>,
     attribute_definitions: <%= @attribute_definitions %>,
     provisioned_throughput: {
-        read_capacity_units: 10,
-        write_capacity_units: 10
+        read_capacity_units: 5,
+        write_capacity_units: 5
   }
 }
 
 begin
   result = dynamodb.create_table(params)
 
-  puts 'Created table. Status: ' +
+  puts 'DynamoDB Table: <%= @table_name %> Status: ' +
         result.table_description.table_status;
 rescue  Aws::DynamoDB::Errors::ServiceError => error
   puts 'Unable to create table:'
