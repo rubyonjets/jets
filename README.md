@@ -131,7 +131,7 @@ gem install jets
 
 Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of ruby to add support.
 
-Jets deploys the Lambda and API Gateway resources as a CloudFormation template.
+Jets deploys the Lambda and API Gateway resources as a CloudFormation stack.
 
 ## Contributing
 
