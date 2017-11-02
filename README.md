@@ -9,11 +9,11 @@ It is key to conceptually understand AWS Lambda and API Gateway to understand Je
 
 ## How It Works
 
-With Jets, you focus on your business logic and Jets does the mundane work. You write controllers, workers and functions and Jets uploads them to Lambda and API Gateway.
+With Jets, you focus on your business logic and Jets does the mundane work. You write application code called controllers, workers and functions, and Jets uploads them to Lambda and API Gateway.
 
 ### Jets Controllers
 
-A Jets controller handles a web request and renders a response back to the user.  Here's an example
+A Jets controller handles a web request and renders a response back.  Here's an example
 
 `app/controllers/posts_controller.rb`:
 
@@ -50,7 +50,7 @@ jets invoke posts-controller-index '{"test":1}'
 jets invoke help # for more info like passing the payload via a file
 ```
 
-The corresponding aws cli commands are:
+The corresponding `aws lambda` cli commands are:
 
 ```
 aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}'
@@ -76,7 +76,11 @@ resources :comments # expands to all the RESTful routes above
 any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 ```
 
-Running `jets deploy` adds the routes to API Gateway.
+Deploying again will add the routes to API Gateway.
+
+```sh
+jets deploy
+```
 
 You can test any of the generated endpoints via curl. Note, you will have to replace the URL endpoint with the one that was created for you:
 
