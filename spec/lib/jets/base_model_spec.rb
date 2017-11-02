@@ -12,6 +12,9 @@ describe Jets::BaseModel do
   end
 
   it "#create" do
+    user.create(
+      name: "tung"
+    )
   end
 
   it "#find" do

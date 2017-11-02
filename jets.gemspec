@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activesupport"
   spec.add_dependency "actionview"
   spec.add_dependency "recursive-open-struct"
+  spec.add_dependency "aws-sdk"
 
   # for now
   spec.add_dependency "byebug"
