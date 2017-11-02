@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
   def index
     # render returns Lambda Proxy structure for web requests
+
+
     render json: {a: "index"}, status: 200
   end
 

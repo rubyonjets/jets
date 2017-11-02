@@ -1,4 +1,6 @@
-module Jets::Root
+require 'logger'
+
+module Jets::Util
   # Ensures trailing slash
   # Useful for appending a './' in front of a path or leaving it alone.
   # Returns: '/path/with/trailing/slash/' or './'
@@ -9,5 +11,11 @@ module Jets::Root
     @@root = '.' if @@root == ''
     @@root = "#{@@root}/" unless @@root.ends_with?('/')
     @@root
+  end
+
+  @@logger = nil
+  def logger
+    return @@logger if @@logger
+    @@logger = Logger.new($stderr)
   end
 end

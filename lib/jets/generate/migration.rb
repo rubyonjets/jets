@@ -119,7 +119,7 @@ require 'aws-sdk-dynamodb'  # v2: require 'aws-sdk'
 # Create dynamodb client
 dynamodb = Aws::DynamoDB::Client.new
 
-# Create table Movies with year (integer) and title (string)
+# Create table params
 params = {
   table_name: '<%= @table_name %>',
   key_schema: <%= @key_schema %>,

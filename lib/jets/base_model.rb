@@ -38,11 +38,11 @@ module Jets
     end
 
     # Defining our own reader so we can do a deep merge if user passes in attrs
-    def attrs(attrs={})
-      if attrs.empty?
+    def attrs(attributes={})
+      if attributes.empty?
         @attrs
       else
-        @attrs.deep_merge(attrs)
+        @attrs.deep_merge!(attributes)
       end
     end
 
@@ -57,35 +57,8 @@ module Jets
       self.class.replace(@attrs)
     end
 
-    def self.replace(attrs)
-      # Automatically generate a random value for the parition key if one was
-      # not provided.
-      defaults = {
-        "#{partition_key}": Digest::SHA1.hexdigest([Time.now, rand].join)
-      }
-      item = defaults.merge(attrs)
-
-      # put_item full replaces the item
-      resp = db.put_item(
-        table_name: table_name,
-        item: item
-      )
-
-      # The resp does not contain the attrs. So might as well return
-      # the original item with the generated partition_key value
-      item
-    end
-
     def find(id)
       self.class.find(id)
-    end
-
-    def self.find(id)
-      resp = db.get_item(
-        table_name: table_name,
-        key: {"#{partition_key}" => id}
-      )
-      resp.item # wraps the item
     end
 
     def table_name
@@ -104,6 +77,114 @@ module Jets
 
     def attributes
       @attributes
+    end
+
+    # If the total number of scanned items exceeds the maximum data set size limit of 1 MB, the scan stops and results are returned to the user as a LastEvaluatedKey value to continue the scan in a subsequent operation.
+
+    # aws dynamodb get-item \
+    #     --table-name ProductCatalog \
+    #     --key file://key.json \
+    #     --projection-expression "Description, RelatedItems[0], ProductReviews.FiveStar"
+    #
+    # `key.json`:
+    # {
+    #     "Id": { "N": "123" }
+    # }
+
+    def self.scan()
+      Jets.logger.error("Should not use scan for production.  It's slow and expensive.  You should create either a LSI or GSI and use query the index instead.")
+
+      params = {
+        expression_attribute_names: {
+          "T" => "title",
+          "D" => "desc",
+        },
+        expression_attribute_values: {
+          ":a" => {
+            s: "my title",
+          },
+        },
+        filter_expression: "title = :a",
+        projection_expression: "#T, #D",
+        table_name: table_name,
+      }
+
+      params = {
+        table_name: table_name,
+        projection_expression: "title",
+      }
+
+      params = {
+        table_name: table_name,
+        expression_attribute_names: {"#t"=>"title", "#d"=>"desc"},
+        projection_expression: "#t, #d",
+      }
+
+      params = {
+        table_name: table_name,
+        # desc is a keyword
+        # since we can run into keywords we should always map attribute names
+        # and values
+        expression_attribute_values: {
+          ":desc" => "my desc"
+        },
+        expression_attribute_names: {"#desc"=>"desc"},
+        filter_expression: "#desc = :desc",
+      }
+
+      params = {
+        table_name: table_name,
+        filter_expression: "updated_at between :start_time and :end_time",
+        expression_attribute_values: {
+          ":start_time" => "2010-01-01T00:00:00",
+          ":end_time" => "2020-01-01T00:00:00"
+        }
+      }
+
+      params = {
+        table_name: table_name,
+        # projection_expression: "#t, #d",
+        expression_attribute_names: {"#updated_at"=>"updated_at"},
+        filter_expression: "#updated_at between :start_time and :end_time",
+        expression_attribute_values: {
+          ":start_time" => "2010-01-01T00:00:00",
+          ":end_time" => "2020-01-01T00:00:00"
+        }
+      }
+
+      # AWS Docs examples: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Ruby.04.html
+      resp = db.scan(params)
+    end
+
+    def self.replace(attrs)
+      # Automatically adds some attributes:
+      #   partition key unique id
+      #   created_at and updated_at timestamps. Timestamp format from AWS docs: http://amzn.to/2z98Bdc
+      defaults = {
+        "#{partition_key}" => Digest::SHA1.hexdigest([Time.now, rand].join)
+      }
+      item = defaults.merge(attrs)
+      item["created_at"] ||= Time.now.utc.strftime('%Y-%m-%dT%TZ')
+      item["updated_at"] = Time.now.utc.strftime('%Y-%m-%dT%TZ')
+
+      # put_item full replaces the item
+      resp = db.put_item(
+        table_name: table_name,
+        item: item
+      )
+
+      # The resp does not contain the attrs. So might as well return
+      # the original item with the generated partition_key value
+      item
+    end
+
+    def self.find(id)
+      resp = db.get_item(
+        table_name: table_name,
+        key: {"#{partition_key}" => id}
+      )
+      attributes = resp.item # unwraps the item's attributes
+      Post.new(attributes) if attributes
     end
 
     def self.partition_key

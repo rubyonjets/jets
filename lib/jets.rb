@@ -7,7 +7,7 @@ require "pp"
 require "byebug"
 
 module Jets
-  autoload :Root, "jets/root"
+  autoload :Util, "jets/util"
   autoload :Command, "jets/command"
   # sub commands
   autoload :Process, 'jets/process'
@@ -27,5 +27,5 @@ module Jets
   autoload :AwsServices, "jets/aws_services"
   autoload :New, "jets/new"
 
-  extend Root
+  extend Util # root, logger, etc
 end
