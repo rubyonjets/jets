@@ -21,15 +21,29 @@ require "digest"
 #   post.attrs = post.attrs.deep_merge("desc": "my desc") # keeps title field
 #   post.replace
 #
+#   # Convenience attrs() method does a deep_merge
+#   post = Post.find("myid")
+#   post.attrs("desc": "my desc") # <= does a deep_merge
+#   post.replace
+#
 #   # Note, a race condition can exist using replace when there are several
 #   # concurrent replace calls. Doing it this way for now because it's quick.
 #   # TODO: implement post.update with db.update_item in a Ruby-ish way
 #
 module Jets
   class BaseModel
-    attr_accessor :attrs
+    attr_writer :attrs
     def initialize(attrs={})
       @attrs = attrs
+    end
+
+    # Defining our own reader so we can do a deep merge if user passes in attrs
+    def attrs(attrs={})
+      if attrs.empty?
+        @attrs
+      else
+        @attrs.deep_merge(attrs)
+      end
     end
 
     # Not using method_missing to allow usage of dot notation and assign

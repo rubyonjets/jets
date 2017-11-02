@@ -20,12 +20,12 @@ A Jets controller handles a web request and renders a response back.  Here's an 
 ```ruby
 class PostsController < ApplicationController
   def index
-    # render returns Lambda Proxy struture for web requests
+    # render returns Lambda Proxy structure for web requests
     render json: {hello: "world"}
   end
 
   def create
-    # render returns Lambda Proxy struture for web requests
+    # render returns Lambda Proxy structure for web requests
     render json: {hello: "world"}
   end
 end
