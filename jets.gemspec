@@ -27,6 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-s3"
   spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-dynamodb"
+  spec.add_dependency "kramdown"
+  spec.add_dependency "text-table"
 
   # for now
   spec.add_dependency "byebug"

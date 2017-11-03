@@ -48,7 +48,7 @@ module Jets
     desc "routes", "Print out your application routes"
     long_desc Help.routes
     def routes
-      Jets::Router.print_routes
+      puts Jets::Router.routes_help
     end
 
     desc "process TYPE", "process subtasks"

@@ -1,3 +1,5 @@
+require 'text-table'
+
 module Jets
   class Router
     attr_reader :path, :routes
@@ -72,6 +74,15 @@ module Jets
       builder = new
       builder.evaluate
       @@drawn_router = builder
+    end
+
+    def self.routes_help
+      table = Text::Table.new
+      table.head = %w[Verb Path Controller#action]
+      routes.each do |route|
+        table.rows << [route.method, route.path, route.to]
+      end
+      table
     end
   end
 end
