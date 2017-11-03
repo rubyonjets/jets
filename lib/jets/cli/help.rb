@@ -31,6 +31,14 @@ Creates a new starter jets project.  You can use the `--template` flag to use di
 $ jets new proj
 EOL
         end
+
+        def server
+<<-EOL
+Starts a local server for development.  The server mimics API Gateway and provides a way to test your app locally without deploying to AWS.
+
+$ jets server
+EOL
+        end
       end
     end
   end

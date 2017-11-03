@@ -28,7 +28,7 @@ describe Jets::Build::Router do
         router.resources("posts")
         tos = router.routes.map(&:to).sort
         expect(tos).to eq(
-          %w[posts#index posts#show posts#create posts#edit posts#update posts#delete].sort
+          ["posts#create", "posts#delete", "posts#edit", "posts#index", "posts#new", "posts#show", "posts#update"].sort
         )
       end
 
@@ -36,7 +36,7 @@ describe Jets::Build::Router do
         router = Jets::Build::Router.new(routes_path)
         router.evaluate
         expect(router.all_paths).to eq(
-          ["landing", "posts", "posts/:id", "posts/:id/edit"]
+          ["landing", "posts", "posts/:id", "posts/:id/edit", "posts/new"]
         )
       end
     end

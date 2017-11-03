@@ -35,6 +35,16 @@ module Jets
       Jets::New.new(project_name, options).run
     end
 
+    desc "server", "Runs a local server for development"
+    long_desc Help.server
+    option :port, aliases: :p, default: "8888", desc: "use PORT"
+    option :host, aliases: :h, default: "127.0.0.1", desc: "listen on HOST"
+    def server
+      # shell out to shotgun for automatic reloading
+      o = options
+      system("bundle exec shotgun --port #{o[:port]} --host #{o[:host]}")
+    end
+
     desc "process TYPE", "process subtasks"
     subcommand "process", Jets::Process
 

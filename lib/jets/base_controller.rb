@@ -18,6 +18,12 @@ module Jets
     end
 
   private
+    def params
+      query_string_params = event["queryStringParameters"] || {}
+      path_params = event["pathParameters"] || {}
+      path_params.merge(query_string_params).deep_symbolize_keys
+    end
+
     def render(options={})
       # render json: {"mytestdata": "value1"}, status: 200, headers: {...}
       if options.has_key?(:json)
@@ -43,21 +49,15 @@ module Jets
         body: JSON.dump(body) # change Hash to String
       )
 
-      # add cors headers if enabled
+      # Add cors headers if enabled
+      # header values should always be String to rack won't work
       resp[:headers] = {
+        "Content-Type" => "application/json",
         "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
-        "Access-Control-Allow-Credentials" => true # Required for cookies, authorization headers with HTTPS
+        "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
       } if Jets::Config.cors
 
       resp
-    end
-
-    # API Gateway LAMBDA_PROXY wraps the event in its own structure.
-    # We unwrap the "body" before sending it back
-    # For regular Lambda function calls, no need to unwrap but need to
-    # transform it to a string with JSON.dump.
-    def normalize_event_body(event)
-      body = event.has_key?("body") ? event["body"] : JSON.dump(event)
     end
   end
 end
