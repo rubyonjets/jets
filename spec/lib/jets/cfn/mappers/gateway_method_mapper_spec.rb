@@ -7,7 +7,7 @@ describe Jets::Cfn::Mappers::GatewayMethodMapper do
 
   describe "GatewayMethodMapper" do
     context "posts" do
-      let(:route) { Jets::Build::Route.new(path: "posts", method: :get, to: "posts#index") }
+      let(:route) { Jets::Route.new(path: "posts", method: :get, to: "posts#index") }
       it "posts contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "ApiGatewayMethodPostsGet"
         expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePosts"
@@ -16,7 +16,7 @@ describe Jets::Cfn::Mappers::GatewayMethodMapper do
     end
 
     context "posts/:id/edit" do
-      let(:route) { Jets::Build::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit") }
+      let(:route) { Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit") }
       it "posts/:id/edit contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "ApiGatewayMethodPostsIdEditGet"
         expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePostsIdEdit"

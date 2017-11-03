@@ -3,7 +3,7 @@ require "spec_helper"
 describe Jets::Server::LambdaAwsProxy do
   let(:proxy) { Jets::Server::LambdaAwsProxy.new(route, env) }
   let(:route) do
-    Jets::Build::Route.new(
+    Jets::Route.new(
       path: "posts/:id/edit",
       method: :get,
       to: "posts#edit",

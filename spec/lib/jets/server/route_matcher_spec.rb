@@ -51,7 +51,7 @@ describe Jets::Server::RouteMatcher do
       { "PATH_INFO" => "/posts/tung/edit", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Build::Route.new(
+      route = Jets::Route.new(
         path: "posts/:id/edit",
         method: :get,
         to: "posts#edit",
@@ -66,7 +66,7 @@ describe Jets::Server::RouteMatcher do
       { "PATH_INFO" => "/comments/hot", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Build::Route.new(
+      route = Jets::Route.new(
         path: "comments/hot",
         method: :any,
         to: "comments#hot",
@@ -81,7 +81,7 @@ describe Jets::Server::RouteMatcher do
       { "PATH_INFO" => "/comments/hot", "REQUEST_METHOD" => "POST" }
     end
     it "route_found?" do
-      route = Jets::Build::Route.new(
+      route = Jets::Route.new(
         path: "comments/hot",
         method: :any,
         to: "comments#hot",
@@ -96,7 +96,7 @@ describe Jets::Server::RouteMatcher do
       { "PATH_INFO" => "/some/other/path", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Build::Route.new(
+      route = Jets::Route.new(
         path: "comments/hot",
         method: :any,
         to: "comments#hot",

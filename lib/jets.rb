@@ -28,6 +28,8 @@ module Jets
   autoload :AwsServices, "jets/aws_services"
   autoload :New, "jets/new"
   autoload :Server, "jets/server"
+  autoload :Route, "jets/route"
+  autoload :Router, "jets/router"
 
   extend Util # root, logger, etc
 end

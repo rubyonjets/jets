@@ -10,7 +10,7 @@ class Jets::Cfn::Builders
 
     def add_api_gateway_parameters
       add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
-      Jets::Build::Router.all_paths.each do |path|
+      Jets::Router.all_paths.each do |path|
         map = Jets::Cfn::Mappers::GatewayResourceMapper.new(path)
         add_parameter(map.logical_id, Description: map.path)
       end
@@ -104,7 +104,7 @@ class Jets::Cfn::Builders
 
     # routes scoped to this controller template.
     def scoped_routes
-      @routes ||= Jets::Build::Router.routes.select do |route|
+      @routes ||= Jets::Router.routes.select do |route|
         route.controller_name == @controller_class.to_s
       end
     end
