@@ -16,8 +16,8 @@ class Jets::Server
     def self.routes_error_message(env)
       message = "<h2>404 Error: Route #{env['PATH_INFO'].sub('/','')} not found</h2>"
       if Jets.env != "production"
-        message << "<p>Here are the routes defined in your application.</p>"
-        message << "#{routes_table}."
+        message << "<p>Here are the routes defined in your application:</p>"
+        message << "#{routes_table}"
       end
       message
     end
