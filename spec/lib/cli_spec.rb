@@ -34,5 +34,11 @@ describe Jets::CLI do
       # puts out
       expect(out).to include("Creating new project called demo.")
     end
+
+    it "routes" do
+      out = execute("bin/jets routes #{@args}")
+      # puts out
+      expect(out).to include("Your application routes:")
+    end
   end
 end

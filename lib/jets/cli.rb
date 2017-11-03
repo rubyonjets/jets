@@ -45,6 +45,12 @@ module Jets
       system("bundle exec shotgun --port #{o[:port]} --host #{o[:host]}")
     end
 
+    desc "routes", "Print out your application routes"
+    long_desc Help.routes
+    def routes
+      Jets::Router.print_routes
+    end
+
     desc "process TYPE", "process subtasks"
     subcommand "process", Jets::Process
 

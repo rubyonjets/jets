@@ -39,6 +39,14 @@ Starts a local server for development.  The server mimics API Gateway and provid
 $ jets server
 EOL
         end
+
+        def routes
+<<-EOL
+Prints your apps routes.
+
+$ jets routes
+EOL
+        end
       end
     end
   end
