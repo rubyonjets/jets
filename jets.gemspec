@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-dynamodb"
 
-
   # for now
   spec.add_dependency "byebug"
 

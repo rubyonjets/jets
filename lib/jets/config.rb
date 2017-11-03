@@ -26,10 +26,6 @@ class Jets::Config
   # user - The user’s ~/.jets/application.yml values take the second highest precedence.
   # default - The default settings bundled with the jets tool takes the lowest precedence.
   #
-  # Even though default env can be configured in the config/settings.yml file.
-  # The JETS_ENV environment variable can be set and takes highest precedence
-  # over the settings file.
-  #
   # More info: http://rubyonjets.com/docs/settings/
   @@settings = nil
   def settings
@@ -47,9 +43,10 @@ class Jets::Config
     # Merge it all together
     settings = defaults.deep_merge(user.deep_merge(project))
 
-    # JETS_ENV and JETS_ENV_INSTANCE takes highest precedence over files
-    settings['env'] = ENV['JETS_ENV'] if ENV['JETS_ENV']
+    settings['env'] = ENV['JETS_ENV'] || 'development'
+    # env_instance can be set in the settings file but JETS_ENV cannot
     settings['env_instance'] = ENV['JETS_ENV_INSTANCE'] if ENV['JETS_ENV_INSTANCE']
+
     # Extra helpful aliases
     set_aliases!(settings)
 

@@ -7,6 +7,7 @@ require "pp"
 require "byebug"
 
 module Jets
+  autoload :Application, "jets/application"
   autoload :Util, "jets/util"
   autoload :Command, "jets/command"
   # sub commands
@@ -26,6 +27,7 @@ module Jets
   autoload :Naming, 'jets/naming'
   autoload :AwsServices, "jets/aws_services"
   autoload :New, "jets/new"
+  autoload :Server, "jets/server"
 
   extend Util # root, logger, etc
 end

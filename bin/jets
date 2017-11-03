@@ -1,11 +1,13 @@
 #!/usr/bin/env ruby
 
-# Trap ^C
-Signal.trap("INT") {
-  puts "\nCtrl-C detected. Exiting..."
-  sleep 1
-  exit
-}
+# traps: INT - ^C
+['INT', 'TERM', 'QUIT'].each do |signal|
+  trap(signal) do
+    puts "\nExiting..."
+    sleep 1
+    exit
+  end
+end
 
 $:.unshift(File.expand_path("../../lib", __FILE__))
 require "jets"
