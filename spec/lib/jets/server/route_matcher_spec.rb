@@ -18,16 +18,26 @@ describe Jets::Server::RouteMatcher do
     let(:env) do
       { "PATH_INFO" => "/posts/tung", "REQUEST_METHOD" => "GET" }
     end
-    it "find_route" do
+    it "find_route exact match" do
       route = matcher.find_route
       expect(route.path).to eq "posts/:id"
       expect(route.method).to eq "GET"
     end
   end
 
-  context "put posts/:id" do
+  context "get posts/:id" do
     let(:env) do
-      { "PATH_INFO" => "/posts/:id", "REQUEST_METHOD" => "PUT" }
+      { "PATH_INFO" => "/posts/tung/anything", "REQUEST_METHOD" => "GET" }
+    end
+    it "find_route slash at the end of the pattern disqualified the match" do
+      route = matcher.find_route
+      expect(route).to be nil
+    end
+  end
+
+  context "put posts/:id exact match" do
+    let(:env) do
+      { "PATH_INFO" => "/posts/tung", "REQUEST_METHOD" => "PUT" }
     end
     it "find_route" do
       route = matcher.find_route

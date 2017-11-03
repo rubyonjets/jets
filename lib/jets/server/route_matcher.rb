@@ -28,7 +28,7 @@ class Jets::Server
         # changes path to a string used for a regexp
         # posts/:id/edit => posts\/(.*)\/edit
         regexp_string = path.split('/').map do |s|
-                          s.include?(':') ? "(.*?)" : s
+                          s.include?(':') ? "([a-zA-Z0-9_]*)" : s
                         end.join('\/')
         # make sure beginning and end of the string matches
         regexp_string = "^#{regexp_string}$"
@@ -36,7 +36,8 @@ class Jets::Server
 
       if regexp_string
         regexp = Regexp.new(regexp_string)
-        return !!regexp.match(path_info) # could be true or false
+        matched = !!regexp.match(path_info)
+        return matched # could be true or false
       else
         # regular string match detection
         return false if path_info != route.path

@@ -14,9 +14,9 @@ resources :posts
 
 any "comments/hot", to: "comments#hot"
 
-get  "landing/posts", to: "posts#index" # posts/:id
-# # # ApiGatewayResource at /landing
-# # # ApiGatewayMethod that maps PostsControllerLanding to the resource
+# get  "landing/posts", to: "posts#index" # posts/:id
+# ApiGatewayResource at /landing
+# ApiGatewayMethod that maps PostsControllerLanding to the resource
 
 get  "landing/comments", to: "comments#hot" # posts/:id
 

@@ -51,7 +51,7 @@ class Jets::Build
         # changes path to a string used for a regexp
         # posts/:id/edit => posts\/(.*)\/edit
         regexp_string = path.split('/').map do |s|
-                          s.include?(':') ? "(.*?)" : s
+                          s.include?(':') ? "([a-zA-Z0-9_]*)" : s
                         end.join('\/')
         # make sure beginning and end of the string matches
         regexp_string = "^#{regexp_string}$"
