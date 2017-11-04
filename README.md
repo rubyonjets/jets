@@ -1,3 +1,5 @@
+Lambda and Ruby splat out a baby, and that child's name is Jets.
+
 ## What is Jets?
 
 Jets is a Serverless Framework that allows you to create applications with Ruby on AWS Lambda.  It includes everything required to build an application and deploy it.
