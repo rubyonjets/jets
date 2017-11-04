@@ -8,10 +8,10 @@ end
 
 describe Jets::BaseController do
   let(:controller) { FakeController.new(event, context) }
+  let(:context) { nil }
 
   context "general" do
     let(:event) { nil }
-    let(:context) { nil }
     it "#lambda_functions returns public user-defined methods" do
       expect(controller.lambda_functions).to eq(
         [:handler1, :handler2]
@@ -21,12 +21,10 @@ describe Jets::BaseController do
 
   context "normal lambda function integration request" do
     let(:event) { {"key1" => "value1", "key2" => "value2"} }
-    let(:context) { {} }
   end
 
   context "AWS_PROXY lambda proxy integration request from api gateway" do
     let(:event) { json_file("spec/fixtures/events/aws_proxy/request.json") }
-    let(:context) { {} }
 
     it "#render returns AWS_PROXY compatiable response format" do
       resp = controller.send(:render, json: {"my": "data"})
@@ -67,6 +65,32 @@ describe Jets::BaseController do
       resp = controller.send(:render, json: {"my": "data"})
       expect(resp[:headers].keys).to include("Access-Control-Allow-Origin")
       expect(resp[:headers].keys).to include("Access-Control-Allow-Credentials")
+    end
+  end
+
+  context "json passed in body" do
+    let(:event) do
+      {
+        "queryStringParameters" => {"qs-key" => "qs-value"},
+        "pathParameters" => {"path-key" => "path-value"},
+        "body" => "{\"body-key1\": \"body-value1\", \"body-key2\": \"body-value2\"}"
+      }
+    end
+    it "params merges all types of parameters together" do
+      params = controller.send(:params)
+      expect(params.keys.sort).to eq(%w[qs-key path-key body-key1 body-key2].sort)
+    end
+  end
+
+  context "invalid json passed in body" do
+    let(:event) do
+      {
+        "body" => "{\"body-key1mm.,,, \"body-key2\": \"body-value2\"}"
+      }
+    end
+    it "not error" do
+      params = controller.send(:params)
+      expect(params.keys).to eq([])
     end
   end
 

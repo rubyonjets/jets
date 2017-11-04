@@ -1,3 +1,4 @@
+require "active_support/core_ext/hash"
 require 'json'
 
 module Jets
@@ -18,10 +19,27 @@ module Jets
     end
 
   private
+    # Merge all the parameters together for convenience.  Users still have
+    # access via events.
+    #
+    # Precedence:
+    #   1. path parameters have highest precdence
+    #   2. query string parameters
+    #   3. body parameters
     def params
       query_string_params = event["queryStringParameters"] || {}
       path_params = event["pathParameters"] || {}
-      path_params.merge(query_string_params).deep_symbolize_keys
+      # attempt to parse body in case it is json
+      begin
+        body_params = JSON.parse(event["body"])
+      rescue JSON::ParserError
+        body_params = {}
+      end
+
+      params = body_params
+                .deep_merge(query_string_params)
+                .deep_merge(path_params)
+      ActiveSupport::HashWithIndifferentAccess.new(params)
     end
 
     def render(options={})

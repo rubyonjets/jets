@@ -20,7 +20,6 @@ class Jets::Server
       # resp = controller.edit
       controller = controller_class.new(event, context)
       resp = controller.send(controller_action)
-      puts "resp: #{resp.inspect}"
 
       # Map lambda proxy response format to rack format
       status = resp[:statusCode]
