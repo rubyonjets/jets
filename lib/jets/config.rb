@@ -69,7 +69,8 @@ class Jets::Config
     short_env = ENV_MAP[s['env'].to_sym] || s['env']
     s['short_env'] = short_env
     s['project_namespace'] = [s['project_name'], s['short_env'], s['env_instance']].compact.join('-')
-    s['table_namespace'] = s['project_name']
+    # table_namespace does not have the env_instance.  Think it's more common to want this case.
+    s['table_namespace'] = [s['project_name'], s['short_env']].compact.join('-')
   end
 
 end

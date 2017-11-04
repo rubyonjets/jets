@@ -38,4 +38,8 @@ module Jets::Util
   def env
     Jets::Config.env
   end
+
+  def config
+    Jets::Config.new.settings
+  end
 end
