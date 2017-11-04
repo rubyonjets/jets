@@ -51,6 +51,12 @@ module Jets
       puts Jets::Router.routes_help
     end
 
+    desc "console", "REPL console with Jets environment loaded"
+    long_desc Help.console
+    def console
+      Jets::Console.run
+    end
+
     desc "process TYPE", "process subtasks"
     subcommand "process", Jets::Process
 

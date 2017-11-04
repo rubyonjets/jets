@@ -47,6 +47,16 @@ Prints your apps routes.
 $ jets routes
 EOL
         end
+
+        def console
+<<-EOL
+REPL console with Jets environment loaded.
+
+$ jets console
+> Post.find("myid")
+EOL
+        end
+
       end
     end
   end

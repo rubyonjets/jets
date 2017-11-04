@@ -32,6 +32,7 @@ module Jets
   autoload :Server, "jets/server"
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
+  autoload :Console, "jets/console"
 
   extend Util # root, logger, etc
 end
