@@ -65,6 +65,7 @@ You connect Lambda functions to API Gateway URL endpoints with a routes file:
 
 ```ruby
 get  "posts", to: "posts#index"
+get  "posts/new", to: "posts#new"
 get  "posts/:id", to: "posts#show"
 post "posts", to: "posts#create"
 get  "posts/:id/edit", to: "posts#edit"
@@ -119,7 +120,7 @@ This creates and deploys a simple CRUD application to AWS so you can get a feel 
 
 ### Local Test Server
 
-To improve the speed of development, you can run a local server which mimics the API Gateway routes. So you can test your application code locally and then deploy to AWS Gateway and Lambda when you are ready.
+To improve the speed of development, you can run a local server which mimics API Gateway. So you can test your application code locally and then deploy to AWS when you are ready.
 
 ```sh
 jets server
