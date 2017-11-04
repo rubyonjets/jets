@@ -71,7 +71,7 @@ module Jets
       self.class.partition_key
     end
 
-    def to_param
+    def to_attrs
       @attrs
     end
 
@@ -88,7 +88,21 @@ module Jets
     # AWS Docs examples: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Ruby.04.html
     def self.scan(params={})
       Jets.logger.info("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets.env}.")
+
+      # TODO: remove these hard coded expression_values and allow them to
+      # be passed in as options.
+      params = {
+        table_name: table_name,
+        # projection_expression: "#t, #d",
+        expression_attribute_names: {"#updated_at"=>"updated_at"},
+        filter_expression: "#updated_at between :start_time and :end_time",
+        expression_attribute_values: {
+          ":start_time" => "2010-01-01T00:00:00",
+          ":end_time" => "2020-01-01T00:00:00"
+        }
+      }
       resp = db.scan(params)
+      resp.items.map {|i| Post.new(i) }
     end
 
     def self.replace(attrs)

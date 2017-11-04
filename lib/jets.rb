@@ -3,6 +3,8 @@ require "jets/version"
 require "active_support/core_ext/string"
 require "colorize"
 require "fileutils"
+require "jets/core_ext/object/to_attrs"
+
 require "pp"
 require "byebug"
 

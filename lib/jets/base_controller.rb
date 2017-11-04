@@ -62,9 +62,9 @@ module Jets
       # {statusCode: ..., body: ..., headers: }
       status = options.delete(:status) || 200
       body = options.delete(:json)
-      body.each do |k, v|
-        body[k] = v.respond_to?(:to_param) ? v.to_param : v
-      end
+      # to_p allows us to use
+      # render json: {post: post}
+      body = body.respond_to?(:to_attrs) ? body.to_attrs : body
       resp = options.merge(
         statusCode: status,
         body: JSON.dump(body) # change Hash to String
