@@ -36,7 +36,7 @@ module Jets::Util
   end
 
   def env
-    Jets::Config.env
+    Jets.config.env
   end
 
   def config

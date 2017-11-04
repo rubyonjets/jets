@@ -180,7 +180,7 @@ module Jets
       return @table_namespace if @table_namespace
 
       config = database_config
-      @table_namespace = config['table_namespace'] || Jets::Config.table_namespace
+      @table_namespace = config['table_namespace'] || Jets.config.table_namespace
     end
 
     # TODO: if dynamodb-local is not available print message to use with instructions that is was not found and how to install it

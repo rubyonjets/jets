@@ -51,7 +51,7 @@ class Jets::Cfn::Builders
 
     def add_cors(map)
       # TODO: provide a way to allow specify CORs domains
-      return unless Jets::Config.cors
+      return unless Jets.config.cors
 
       add_resource(map.cors_logical_id, "AWS::ApiGateway::Method",
         AuthorizationType: "NONE",

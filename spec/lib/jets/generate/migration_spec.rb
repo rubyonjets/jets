@@ -10,7 +10,7 @@ describe "migration" do
   end
 
   it "generates migration file in db/migrate" do
-    expect(migration.table_name).to eq "#{Jets::Config.project_namespace}-comments"
+    expect(migration.table_name).to eq "#{Jets.config.project_namespace}-comments"
 
     migration.create
 

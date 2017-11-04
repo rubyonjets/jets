@@ -18,7 +18,7 @@ class Jets::Delete
     empty_s3_bucket
 
     cfn.delete_stack(stack_name: parent_stack_name)
-    puts "Project #{Jets::Config.project_namespace} deleted!"
+    puts "Project #{Jets.config.project_namespace} deleted!"
   end
 
   def confirm_project_exists
@@ -27,7 +27,7 @@ class Jets::Delete
     rescue Aws::CloudFormation::Errors::ValidationError
       # Aws::CloudFormation::Errors::ValidationError is thrown when the stack
       # does not exist
-      puts "Config #{Jets::Config.project_namespace} does not exist. So it cannot be deleted."
+      puts "Config #{Jets.config.project_namespace} does not exist. So it cannot be deleted."
       exit 0
     end
   end
@@ -70,7 +70,7 @@ class Jets::Delete
     if @options[:sure]
       sure = 'y'
     else
-      puts "Are you sure you want to want to delete the '#{Jets::Config.project_namespace}' project? (y/N)"
+      puts "Are you sure you want to want to delete the '#{Jets.config.project_namespace}' project? (y/N)"
       sure = $stdin.gets
     end
 

@@ -28,9 +28,9 @@ class Jets::Cfn::Builders
         FunctionName: map.function_name,
         Handler: map.handler,
         Role: { Ref: "IamRole" },
-        MemorySize: Jets::Config.memory_size,
-        Runtime: Jets::Config.runtime,
-        Timeout: Jets::Config.timeout
+        MemorySize: Jets.config.memory_size,
+        Runtime: Jets.config.runtime,
+        Timeout: Jets.config.timeout
       )
     end
   end

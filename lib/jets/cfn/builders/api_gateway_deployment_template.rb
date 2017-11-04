@@ -20,7 +20,7 @@ class Jets::Cfn::Builders
       add_resource(logical_id, "AWS::ApiGateway::Deployment",
         Description: "Version #{timestamp} deployed by jets",
         RestApiId: "!Ref ApiGatewayRestApi",
-        StageName: Jets::Config.short_env,
+        StageName: Jets.config.short_env,
       )
     end
 

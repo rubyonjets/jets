@@ -20,7 +20,7 @@ class Jets::Cfn::Mappers
 
     # Example: PostsController
     def logical_id
-      regexp = Regexp.new(".*#{Jets::Config.project_namespace}-")
+      regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
       # byebug
       contoller_name = @path.sub(regexp, '').sub('.yml', '')
       contoller_name.underscore.camelize

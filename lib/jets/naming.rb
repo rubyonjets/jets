@@ -32,11 +32,11 @@ class Jets::Naming
     end
 
     def template_path_prefix
-      "/tmp/jets_build/templates/#{Jets::Config.project_namespace}"
+      "/tmp/jets_build/templates/#{Jets.config.project_namespace}"
     end
 
     def gateway_api_name
-      "#{Jets::Config.project_namespace}"
+      "#{Jets.config.project_namespace}"
     end
 
     @@md5 = nil # need to store the md5 in memory because the file gets renamed

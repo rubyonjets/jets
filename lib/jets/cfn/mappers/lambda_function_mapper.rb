@@ -16,7 +16,7 @@ class Jets::Cfn::Mappers
 
     def function_name
       method = "#{@process_type_class}_#{@method_name}".underscore.dasherize
-      "#{Jets::Config.project_namespace}-#{method}"
+      "#{Jets.config.project_namespace}-#{method}"
     end
 
     def handler

@@ -6,12 +6,12 @@ require 'yaml'
 class Jets::Config
   class << self
     # Allows calling settings with the dot notation:
-    # Jets::Config.project_name
-    # Jets::Config.timeout
-    # Jets::Config.level1_option.level2_option
-    # Jets::Config.level1_option.level2_option.level3_option
+    # Jets.config.project_name
+    # Jets.config.timeout
+    # Jets.config.level1_option.level2_option
+    # Jets.config.level1_option.level2_option.level3_option
     def method_missing(method_name)
-      settings = Jets::Config.new.settings
+      settings = Jets.config.new.settings
       if settings.to_h.has_key?(method_name)
         settings[method_name]
       else
@@ -57,7 +57,7 @@ class Jets::Config
   # comes to checking for the env.
   #
   #   Jets.env == 'development'
-  #   Jets::Config.project_namespace == 'proj-dev'
+  #   Jets.config.project_namespace == 'proj-dev'
   ENV_MAP = {
     development: 'dev',
     production: 'prod',
