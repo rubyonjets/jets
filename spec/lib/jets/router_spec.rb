@@ -32,12 +32,19 @@ describe Jets::Router do
         )
       end
 
-      it "#all_paths list all subpaths" do
+      it "all_paths list all subpaths" do
         router = Jets::Router.new(routes_path)
         router.evaluate
         expect(router.all_paths).to eq(
           ["landing", "posts", "posts/:id", "posts/:id/edit", "posts/new"]
         )
+      end
+
+      it "ordered_routes" do
+        router = Jets::Router.new(routes_path)
+        router.evaluate
+        expect(router.ordered_routes.map(&:path)).to eq(
+          ["posts/new", "landing", "posts", "posts", "posts/:id/edit", "posts/:id", "posts/:id", "posts/:id"])
       end
     end
   end

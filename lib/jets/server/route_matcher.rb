@@ -5,9 +5,13 @@ class Jets::Server
     end
 
     def find_route
-      # Important to sort by longest route path first.
-      # Since posts/:id and posts/:id/edit can both match.
-      routes = router.routes.sort_by { |route| route.path.length * -1 }
+      # Precedence:
+      # 1. Routes with no captures get highest precedence: posts/new
+      # 2. Then we consider the routes with captures: post/:id
+      #
+      # Within these 2 groups we consider the routes with the longest path first
+      # since posts/:id and posts/:id/edit can both match.
+      routes = router.ordered_routes
       route = routes.find do |route|
         route_found?(route)
       end
@@ -21,7 +25,7 @@ class Jets::Server
       # First check the request method: GET, POST, ANY, etc
       return false if request_method != route.method and route.method != "ANY"
 
-      # Then check actual path
+      # Then check path
       # If the route has a variable, use a regexp
       path = route.path
       if path.include?(':')

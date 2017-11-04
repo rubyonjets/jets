@@ -35,6 +35,7 @@ module Jets
       @routes << Route.new(options)
     end
 
+    # Useful for creating API Gateway Resources
     def all_paths
       results = []
       paths = routes.map(&:path)
@@ -49,6 +50,21 @@ module Jets
         results += sub_paths
       end
       @all_paths = (results + paths).sort.uniq
+    end
+
+    # Useful for RouterMatcher
+    #
+    # Precedence:
+    # 1. Routes with no captures get highest precedence: posts/new
+    # 2. Then we consider the routes with captures: post/:id
+    #
+    # Within these 2 groups we consider the routes with the longest path first
+    # since posts/:id and posts/:id/edit can both match.
+    def ordered_routes
+      length = Proc.new { |r| r.path.length * -1 }
+      capture_routes = routes.select { |r| r.path.include?(':') }.sort_by(&length)
+      simple_routes = (routes - capture_routes).sort_by(&length)
+      simple_routes + capture_routes
     end
 
     # Class methods

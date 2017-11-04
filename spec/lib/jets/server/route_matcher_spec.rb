@@ -18,9 +18,20 @@ describe Jets::Server::RouteMatcher do
     let(:env) do
       { "PATH_INFO" => "/posts/tung", "REQUEST_METHOD" => "GET" }
     end
-    it "find_route exact match" do
+    it "find_route" do
       route = matcher.find_route
       expect(route.path).to eq "posts/:id"
+      expect(route.method).to eq "GET"
+    end
+  end
+
+  context "get posts/new" do
+    let(:env) do
+      { "PATH_INFO" => "/posts/new", "REQUEST_METHOD" => "GET" }
+    end
+    it "find_route exact match" do
+      route = matcher.find_route
+      expect(route.path).to eq "posts/new"
       expect(route.method).to eq "GET"
     end
   end
@@ -35,7 +46,7 @@ describe Jets::Server::RouteMatcher do
     end
   end
 
-  context "put posts/:id exact match" do
+  context "put posts/:id" do
     let(:env) do
       { "PATH_INFO" => "/posts/tung", "REQUEST_METHOD" => "PUT" }
     end
