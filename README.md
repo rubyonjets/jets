@@ -117,7 +117,7 @@ jets deploy
 
 This creates and deploys a simple CRUD application to AWS so you can get a feel for how Jets works.
 
-### Testing locally
+### Local Test Server
 
 To improve the speed of development, you can run a local server which mimics the API Gateway routes. So you can test your application code locally and then deploy to AWS Gateway and Lambda when you are ready.
 
@@ -129,6 +129,15 @@ You can test your app at [http://localhost:8888](http://localhost:8888).  Exampl
 
 ```
 curl -sv http://localhost:8888/posts
+```
+
+### REPL Console
+
+You can test things out in a REPL console also:
+
+```sh
+jets console
+> Post.table_name
 ```
 
 ## Install
