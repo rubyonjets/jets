@@ -197,7 +197,7 @@ module Jets
       return @@db if @@db
 
       config = database_config
-      endpoint = config['endpoint']
+      endpoint = ENV['DYNAMODB_ENDPOINT'] || config['endpoint']
       Aws.config.update(endpoint: endpoint) if endpoint
 
       @@db ||= Aws::DynamoDB::Client.new
