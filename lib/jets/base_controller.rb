@@ -31,7 +31,7 @@ module Jets
       path_params = event["pathParameters"] || {}
       # attempt to parse body in case it is json
       begin
-        body_params = JSON.parse(event["body"])
+        body_params = event["body"] ? JSON.parse(event["body"]) : {}
       rescue JSON::ParserError
         body_params = {}
       end
@@ -62,6 +62,9 @@ module Jets
       # {statusCode: ..., body: ..., headers: }
       status = options.delete(:status) || 200
       body = options.delete(:json)
+      body.each do |k, v|
+        body[k] = v.respond_to?(:to_param) ? v.to_param : v
+      end
       resp = options.merge(
         statusCode: status,
         body: JSON.dump(body) # change Hash to String

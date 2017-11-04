@@ -55,7 +55,8 @@ module Jets
     # The method is named replace to clearly indicate that the item is
     # fully replaced.
     def replace
-      self.class.replace(@attrs)
+      attrs = self.class.replace(@attrs)
+      @attrs = attrs # refresh attrs because it now has the id
     end
 
     def find(id)
@@ -70,6 +71,10 @@ module Jets
       self.class.partition_key
     end
 
+    def to_param
+      @attrs
+    end
+
     # Longer hand methods for completeness.
     # Internallly encourage the shorter attrs method.
     def attributes=(attributes)
@@ -80,83 +85,9 @@ module Jets
       @attributes
     end
 
-    # If the total number of scanned items exceeds the maximum data set size limit of 1 MB, the scan stops and results are returned to the user as a LastEvaluatedKey value to continue the scan in a subsequent operation.
-
-    # aws dynamodb get-item \
-    #     --table-name ProductCatalog \
-    #     --key file://key.json \
-    #     --projection-expression "Description, RelatedItems[0], ProductReviews.FiveStar"
-    #
-    # `key.json`:
-    # {
-    #     "Id": { "N": "123" }
-    # }
-
+    # AWS Docs examples: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Ruby.04.html
     def self.scan(params={})
-      # Jets.logger.info("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets.env}.")
-
-      params = {
-        expression_attribute_names: {
-          "T" => "title",
-          "D" => "desc",
-        },
-        expression_attribute_values: {
-          ":a" => {
-            s: "my title",
-          },
-        },
-        filter_expression: "title = :a",
-        projection_expression: "#T, #D",
-        table_name: table_name,
-      }
-
-      params = {
-        table_name: table_name,
-        projection_expression: "title",
-      }
-
-      params = {
-        table_name: table_name,
-        expression_attribute_names: {"#t"=>"title", "#d"=>"desc"},
-        projection_expression: "#t, #d",
-      }
-
-      params = {
-        table_name: table_name,
-        # desc is a keyword
-        # since we can run into keywords we should always map attribute names
-        # and values
-        expression_attribute_values: {
-          ":desc" => "my desc"
-        },
-        expression_attribute_names: {"#desc"=>"desc"},
-        filter_expression: "#desc = :desc",
-      }
-
-      params = {
-        table_name: table_name,
-        filter_expression: "updated_at between :start_time and :end_time",
-        expression_attribute_values: {
-          ":start_time" => "2010-01-01T00:00:00",
-          ":end_time" => "2020-01-01T00:00:00"
-        }
-      }
-
-      params = {
-        table_name: table_name,
-        # projection_expression: "#t, #d",
-        expression_attribute_names: {"#updated_at"=>"updated_at"},
-        filter_expression: "#updated_at between :start_time and :end_time",
-        expression_attribute_values: {
-          ":start_time" => "2010-01-01T00:00:00",
-          ":end_time" => "2020-01-01T00:00:00"
-        }
-      }
-
-      Jets.logger.info("BaseModel Jets.env #{Jets.env.inspect}")
-      Jets.logger.info("BaseModel params #{params.inspect}")
-
-      # AWS Docs examples: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.Ruby.04.html
+      Jets.logger.info("Should not use scan for production. It's slow and expensive. You should create either a LSI or GSI and use query the index instead. Current environment: #{Jets.env}.")
       resp = db.scan(params)
     end
 
@@ -189,6 +120,36 @@ module Jets
       )
       attributes = resp.item # unwraps the item's attributes
       Post.new(attributes) if attributes
+    end
+
+    # Two ways to use the delete method:
+    #
+    # 1. Specify the key as a String. In this case the key will is the partition_key
+    # set on the model.
+    #   MyModel.delete("728e7b5df40b93c3ea6407da8ac3e520e00d7351")
+    #
+    # 2. Specify the key as a Hash, you can arbitrarily specific the key structure this way
+    # MyModel.delete("728e7b5df40b93c3ea6407da8ac3e520e00d7351")
+    #
+    # options is provided in case you want to specific condition_expression or
+    # expression_attribute_values.
+    def self.delete(key_object, options={})
+      if key_object.is_a?(String)
+        key = {
+          partition_key => key_object
+        }
+      else # it should be a Hash
+        key = key_object
+      end
+
+      params = {
+        table_name: table_name,
+        key: key
+      }
+      # In case you want to specify condition_expression or expression_attribute_values
+      params = params.merge(options)
+
+      resp = db.delete_item(params)
     end
 
     def self.partition_key
