@@ -37,13 +37,13 @@ Jets creates Lambda functions for the public methods in your controller. You dep
 jets deploy
 ```
 
-After deployment, you can test the Lambda functions with the AWS Lambda console or with the jets cli.
+After deployment, you can test the Lambda functions with the AWS Lambda console or with the CLI.
 
 ### AWS Lambda Console test
 
 [SCREENSHOT OF LAMBDA CONSOLE]
 
-### Jets CLI test
+### CLI test
 
 ```
 jets invoke posts-controller-index '{"test":1}'
