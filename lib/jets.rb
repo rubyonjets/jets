@@ -5,6 +5,9 @@ require "colorize"
 require "fileutils"
 require "jets/core_ext/object/to_attrs"
 
+$:.unshift(File.expand_path("../vendor/dynamodb_model/lib", __FILE__))
+require "dynamodb_model"
+
 require "pp"
 require "byebug"
 
@@ -12,9 +15,10 @@ module Jets
   autoload :Application, "jets/application"
   autoload :Util, "jets/util"
   autoload :Command, "jets/command"
-  # sub commands
+  # subtasks
   autoload :Process, 'jets/process'
   autoload :Generate, 'jets/generate'
+  autoload :Db, 'jets/db'
 
   autoload :CLI, "jets/cli"
   autoload :Build, 'jets/build'

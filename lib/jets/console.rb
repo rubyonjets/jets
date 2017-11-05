@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 class Jets::Console
   def self.run
     # Thanks: https://mutelight.org/bin-console

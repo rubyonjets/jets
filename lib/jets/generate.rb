@@ -1,3 +1,5 @@
+require "dynamodb_model"
+
 class Jets::Generate < Jets::Command
   autoload :Help, 'jets/generate/help'
   autoload :Migration, 'jets/generate/migration'
@@ -10,8 +12,9 @@ class Jets::Generate < Jets::Command
   long_desc Help.migration
   option :partition_key, default: "id:string:hash", desc: "table's partition key"
   option :sort_key, default: nil, desc: "table's sort key"
+  # option :type, default: 'dynamodb', desc: "dynamodb or relational"
   def migration(name)
-    # Migration.new(name, options).create
+    DynamodbModel::Migration::Generator.new(name, options).generate
   end
 
   desc "scaffold [name]", "Creates a CRUD scaffold"

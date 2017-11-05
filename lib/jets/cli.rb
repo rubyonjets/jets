@@ -62,5 +62,8 @@ module Jets
 
     desc "generate TYPE", "generate subtasks"
     subcommand "generate", Jets::Generate
+
+    desc "db TYPE", "db subtasks"
+    subcommand "db", Jets::Db
   end
 end

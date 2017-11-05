@@ -1,0 +1,3 @@
+[submodule "vendor/dynamodb_model"]
+	path = vendor/dynamodb_model
+	url = git@github.com:tongueroo/dynamodb_model.git
