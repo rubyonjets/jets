@@ -23,11 +23,16 @@ module Jets::Util
   # Especially since Lambda functions will usually only require some of the
   # classes most of the time.
   def boot
-    %w[
+    application_files = %w[
       app/controllers/application_controller
       app/jobs/application_job
       app/models/application_record
-    ].each { |p| require "#{Jets.root}#{p}" }
+      app/models/application_item
+    ]
+    application_files.each do |p|
+      path = "#{Jets.root}#{p}"
+      require path if File.exist?(path)
+    end
 
     Dir.glob("#{Jets.root}app/**/*").each do |path|
       next unless File.file?(path)
