@@ -5,7 +5,7 @@ require "colorize"
 require "fileutils"
 require "jets/core_ext/object/to_attrs"
 
-$:.unshift(File.expand_path("../vendor/dynamodb_model/lib", __FILE__))
+$:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
 require "dynamodb_model"
 
 require "pp"
@@ -37,6 +37,7 @@ module Jets
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
   autoload :Console, "jets/console"
+  autoload :Erb, "jets/erb"
 
   extend Util # root, logger, etc
 end

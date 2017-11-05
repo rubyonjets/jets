@@ -114,7 +114,7 @@ You can generate a starter project and deploy it to AWS Lambda with:
 ```sh
 jets new proj
 cd proj
-bundle exec ruby db/migrate/posts.rb # creates posts table
+jets db migrate db/migrate/posts.rb # creates posts table
 jets deploy
 ```
 

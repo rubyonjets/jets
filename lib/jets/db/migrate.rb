@@ -20,6 +20,6 @@ class Jets::Db::Migrate
   end
 
   def get_migration_class
-    File.basename(@path, '.rb').classify.camelize
+    File.basename(@path, '.rb').classify.constantize
   end
 end
