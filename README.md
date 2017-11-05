@@ -1,4 +1,4 @@
-Lambda and Ruby splat out a baby, and that child's name is Jets.
+Ruby and Lambda splat out a baby, and that child's name is Jets.
 
 ## What is Jets?
 

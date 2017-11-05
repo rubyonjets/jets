@@ -17,7 +17,7 @@ def print(text)
   $stderr.print(text)
 end
 
-Jets.boot
+Jets.boot # TODO: Can Jets.boot be called Jets in the run method?
 
 class Jets::Process::MainProcessor
   attr_reader :event, :context, :handler
@@ -30,7 +30,11 @@ class Jets::Process::MainProcessor
 
   def run
     # Use the handler to deduce app code to run.
-    # Example handlers: controllers/posts.create, jobs/sleep.perform
+    # Example handlers: handlers/controllers/posts.create, handlers/jobs/sleep.perform
+    #
+    #   ControllerDeducer.new("handlers/controllers/posts.create").delegate_class
+    #   delegate_class: PostsController
+    #
     delegate_class = Jets::Process::Deducer.new(handler).delegate_class
     deducer = delegate_class.new(handler) # IE: PostDeducer.new(handler)
     begin
@@ -43,7 +47,10 @@ class Jets::Process::MainProcessor
       #   require "app/jobs/sleep_job.rb"
 
       result = instance_eval(deducer.code, deducer.path)
+      # result = instance_eval("PostsController.new(event, context).create", "app/controllers/posts_controller.rb")
+      #
       # Example of generated code:
+      #
       # Controllers:
       #   result = PostsController.new(event, context).create
       # Jobs:
