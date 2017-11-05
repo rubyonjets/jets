@@ -25,10 +25,12 @@ class Jets::Cfn::Builders
 
     def add_minimal_resources
       # variables for minimal-stack.yml
-      @policy_name = "lamdba-#{Jets.config.project_namespace}-policy"
-      @role_name = "lamdba-#{Jets.config.project_namespace}-role"
       path = File.expand_path("../templates/minimal-stack.yml", __FILE__)
-      rendered_result = Jets::Erb.result(path)
+      variables = {
+        policy_name: "lamdba-#{Jets.config.project_namespace}-policy",
+        role_name: "lamdba-#{Jets.config.project_namespace}-role",
+      }
+      rendered_result = Jets::Erb.result(path, variables)
       minimal_template = YAML.load(rendered_result)
 
       # minimal_template = YAML.load(IO.read(path))

@@ -21,9 +21,8 @@ class Jets::Build
       js_path = "#{Jets.root}#{deducer.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
 
-      @deducer = deducer # Required ERB variablefor node-shim.js template
       template_path = File.expand_path('../node-shim.js', __FILE__)
-      result = Jets::Erb.result(template_path)
+      result = Jets::Erb.result(template_path, deducer: deducer)
 
       IO.write(js_path, result)
     end
