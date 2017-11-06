@@ -9,19 +9,11 @@ PATH
       aws-sdk-s3
       byebug
       colorize
-      dynamodb_model
       hashie
       kramdown
       recursive-open-struct
       text-table
       thor
-
-PATH
-  remote: /Users/tung/src/tongueroo/dynamodb_model
-  specs:
-    dynamodb_model (0.2.0)
-      activesupport
-      aws-sdk-dynamodb
 
 GEM
   remote: https://rubygems.org/
@@ -116,7 +108,6 @@ PLATFORMS
 DEPENDENCIES
   bundler
   codeclimate-test-reporter
-  dynamodb_model!
   jets!
   rake
   rspec

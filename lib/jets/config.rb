@@ -31,14 +31,12 @@ class Jets::Config
   def settings
     return @@settings if @@settings
 
-    project_settings = "#{Jets.root}/config/application.yml"
-    project = File.exist?(project_settings) ? YAML.load_file(project_settings) : {}
+    project = load_yaml("#{Jets.root}/config/application.yml")
 
-    user_settings = "#{ENV['HOME']}/.jets/application.yml"
-    user = File.exist?(user_settings) ? YAML.load_file(user_settings) : {}
+    user = load_yaml("#{ENV['HOME']}/.jets/application.yml")
 
     defaults_file = File.expand_path("../default/application.yml", __FILE__)
-    defaults = YAML.load_file(defaults_file)
+    defaults = load_yaml(defaults_file)
 
     # Merge it all together
     settings = defaults.deep_merge(user.deep_merge(project))
@@ -51,6 +49,11 @@ class Jets::Config
     set_aliases!(settings)
 
     @@settings = RecursiveOpenStruct.new(settings)
+  end
+
+  # Also renders ERB with the Jets environment
+  def load_yaml(path)
+    File.exist?(path) ? YAML.load_file(Jets::Erb.result(path)) : {}
   end
 
   # Use the shorter name in stack names, but use the full name when it

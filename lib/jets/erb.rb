@@ -1,9 +1,14 @@
 require 'erb'
 
 # Renders Erb and provide better backtrace where there's an error
+#
+# Usage:
+#
+#   result = Jets::Erb.result(path, key1: "val1", key2: "val2")
+#
 class Jets::Erb
   class << self
-    def result(path, variables)
+    def result(path, variables={})
       set_template_variables(variables)
       template = IO.read(path)
       begin
