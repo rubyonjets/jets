@@ -51,9 +51,10 @@ class Jets::Config
     @@settings = RecursiveOpenStruct.new(settings)
   end
 
-  # Also renders ERB with the Jets environment
+  # Also renders ERB to enable ENV['XXX'] variables use in application.yml.
+  # Should use Jets.config variables because that'll cause an infinite loop.
   def load_yaml(path)
-    File.exist?(path) ? YAML.load_file(Jets::Erb.result(path)) : {}
+    File.exist?(path) ? YAML.load(Jets::Erb.result(path)) : {}
   end
 
   # Use the shorter name in stack names, but use the full name when it
