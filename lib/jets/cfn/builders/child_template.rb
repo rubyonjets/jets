@@ -31,7 +31,7 @@ class Jets::Cfn::Builders
         MemorySize: Jets.config.memory_size,
         Runtime: Jets.config.runtime,
         Timeout: Jets.config.timeout,
-        Environment: map.environment,
+        Environment: { Variables: map.environment },
       )
     end
   end
