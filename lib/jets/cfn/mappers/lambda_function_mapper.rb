@@ -9,6 +9,11 @@ class Jets::Cfn::Mappers
       "#{class_action}LambdaFunction"
     end
 
+    def environment
+      env = Jets.config.environment ? Jets.config.environment.to_h : {}
+      env.deep_merge(JETS_ENV: Jets.env)
+    end
+
     # Example: PostsControllerIndex or SleepJobPerform
     def class_action
       "#{@process_type_class}_#{@method_name}".camelize

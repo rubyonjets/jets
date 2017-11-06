@@ -5,3 +5,7 @@ timeout: 10
 runtime: nodejs6.10
 memory_size: 1536
 cors: true
+# environment variables in the application.yml file apply to all lambda functions:
+# environment:
+#   VAR1: value1
+#   VAR2: value2

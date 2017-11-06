@@ -30,7 +30,8 @@ class Jets::Cfn::Builders
         Role: { Ref: "IamRole" },
         MemorySize: Jets.config.memory_size,
         Runtime: Jets.config.runtime,
-        Timeout: Jets.config.timeout
+        Timeout: Jets.config.timeout,
+        Environment: map.environment,
       )
     end
   end
