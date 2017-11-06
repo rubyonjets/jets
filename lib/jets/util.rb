@@ -34,7 +34,12 @@ module Jets::Util
       require path if File.exist?(path)
     end
 
-    Dir.glob("#{Jets.root}app/**/*").each do |path|
+    require_files("#{Jets.root}app/**/*")
+    require_files("#{Jets.root}lib/**/*")
+  end
+
+  def require_files(pattern)
+    Dir.glob(pattern).each do |path|
       next unless File.file?(path)
       require path
     end
