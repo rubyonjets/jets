@@ -9,10 +9,11 @@ module Jets
       @context = context # Hash. JSON.parse(context) ran in BaseProcessor
     end
 
-    # The public methods defined in the user's custom class will become
+    # The public methods defined in the project app class ulimately become
     # lambda functions.
-    # Returns Example:
-    #   ["FakeController#handler1", "FakeController#handler2"]
+    #
+    # Example return value:
+    #   [":index", :new, :create, :show]
     def lambda_functions
       # public_instance_methods(false) - to not include inherited methods
       functions = self.class.public_instance_methods(false) - Object.public_instance_methods
