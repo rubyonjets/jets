@@ -1,16 +1,16 @@
 class HardJob < ApplicationJob
-  # rate "1 minute"
+  rate "1 minute" # every minute
   def dig
     {done: "digging"}
   end
 
-  cron "*/5 * * * ? *" # every 5 minutes
+  rate "8 hours" # every 8 hours
   def drive
     puts("event data: #{event.inspect}")
     {done: "driving"}
   end
 
-  cron "* * * * ? *" # every minute
+  cron "0 */12 * * ? *" # every 12 hours
   def lift
     {done: "lifting"}
   end
@@ -39,8 +39,6 @@ end
 # 10:15am UTC on the last Friday of each month during the years 2002 to 2005:
 #   cron: "15 10 ? * 6L 2002-2005"
 #
-# More info: http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html
-
 # Sample Data
 #
 # All job methods have the `event` and `context` available. Here's an example of what that data looks like:
@@ -72,3 +70,5 @@ end
 #     "invokedFunctionArn":
 #     "arn:aws:lambda:us-east-1:160619113767:function:demo-dev-2-posts-controller-new"
 #   }
+#
+# For more info: http://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html
