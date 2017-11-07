@@ -4,10 +4,5 @@ class Jets::Build::Deducer
     def process_type
       "job"
     end
-
-    # interface method
-    def functions
-      [:perform]
-    end
   end
 end

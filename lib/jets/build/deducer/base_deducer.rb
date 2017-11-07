@@ -1,13 +1,9 @@
-# Example Interface methods:
+# Only interface methods: process_type
 #
 #   def process_type
 #     "job"
 #   end
-#
-#   def functions
-#     [:perform]
-#   end
-class Jets::Build::Deducer
+#class Jets::Build::Deducer
   class BaseDeducer
     attr_reader :path
     def initialize(path)
@@ -24,6 +20,17 @@ class Jets::Build::Deducer
     # PostsController
     def class_name
       @path.sub(%r{app/(\w+)/},'').sub('.rb','').classify
+    end
+
+    # Returns the public methods of the child_class.
+    # Example: [:create, :update]
+    def functions
+      # Example: require "./app/controllers/posts_controller.rb"
+      require_path = @path.starts_with?('/') ? @path : "#{Jets.root}#{@path}"
+      require require_path
+
+      klass = class_name.constantize
+      klass.lambda_functions
     end
 
     # This gets called in the node shim js template
