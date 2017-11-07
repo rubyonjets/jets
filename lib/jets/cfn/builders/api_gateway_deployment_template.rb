@@ -18,7 +18,7 @@ class Jets::Cfn::Builders
       logical_id = Jets::Cfn::Mappers::ApiGatewayDeploymentMapper.logical_id
       timestamp = Jets::Cfn::Mappers::ApiGatewayDeploymentMapper.timestamp
       # stage_name: stag, stag-1, stag-2, etc
-      stage_name = [Jets.config.short_env, Jets.config.env_instance].compact.join('-')
+      stage_name = [Jets.config.short_env, Jets.config.env_instance].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
       add_resource(logical_id, "AWS::ApiGateway::Deployment",
         Description: "Version #{timestamp} deployed by jets",
         RestApiId: "!Ref ApiGatewayRestApi",
