@@ -11,9 +11,8 @@ class Jets::Job
         @cron = expression
       end
 
+      # meth is a Symbol
       def method_added(meth)
-        meth = meth # Symbol
-
         return if %w[initialize method_missing].include?(meth.to_s)
         return unless public_method_defined?(meth)
 
@@ -25,7 +24,7 @@ class Jets::Job
         @cron ||= nil
 
         if @rate || @cron
-          tasks[meth] = Jets::Job::Task.new(meth, rate: @rate, cron: @cron)
+          tasks[meth] = Jets::Job::Task.new(meth, rate: @rate, cron: @cron, class_name: name)
           # done storing options, clear out for the next added method
           @rate, @cron = nil, nil
           true

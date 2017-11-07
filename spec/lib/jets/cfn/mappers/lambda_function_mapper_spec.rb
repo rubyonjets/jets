@@ -22,7 +22,7 @@ describe Jets::Cfn::Mappers::LambdaFunctionMapper do
       Jets::Cfn::Mappers::LambdaFunctionMapper.new("SleepJob", :perform)
     end
 
-    describe "JobFunctionMapper" do
+    describe "maps" do
       it "contains info for CloudFormation Job Function Resources" do
         expect(map.logical_id).to eq "SleepJobPerformLambdaFunction"
         expect(map.class_action).to eq "SleepJobPerform"

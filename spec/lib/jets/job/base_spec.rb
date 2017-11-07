@@ -7,7 +7,7 @@ describe Jets::Job::Base do
   context HardJob do
     it "all_tasks" do
       tasks = HardJob.all_tasks.keys
-      expect(tasks).to eq [:dig, :drive]
+      expect(tasks).to eq [:dig, :drive, :lift]
 
       dig_task = HardJob.all_tasks[:dig]
       expect(dig_task).to be_a(Jets::Job::Task)

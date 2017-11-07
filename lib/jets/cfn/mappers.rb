@@ -13,5 +13,7 @@ class Jets::Cfn
     autoload :GatewayMethodMapper, "jets/cfn/mappers/gateway_method_mapper"
     autoload :GatewayResourceMapper, "jets/cfn/mappers/gateway_resource_mapper"
     autoload :LambdaFunctionMapper, "jets/cfn/mappers/lambda_function_mapper"
+
+    autoload :EventsRuleMapper, "jets/cfn/mappers/events_rule_mapper"
   end
 end

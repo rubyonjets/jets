@@ -9,6 +9,11 @@ class HardJob < ApplicationJob
     puts("event data: #{event.inspect}")
     {done: "driving"}
   end
+
+  cron "* * * * ? *" # every minute
+  def lift
+    {done: "lifting"}
+  end
 end
 
 # Configuring Job Rate
