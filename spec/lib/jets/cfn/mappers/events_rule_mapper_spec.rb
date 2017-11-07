@@ -17,6 +17,8 @@ describe Jets::Cfn::Mappers::EventsRuleMapper do
       expect(mapper.lambda_function_logical_id).to eq "HardJobDigLambdaFunction"
       expect(mapper.rule_target_id).to eq "RuleTargetHardJobDig"
 
+      expect(mapper.permission_logical_id).to eq "HardJobDigPermissionEventsRule"
+
       expect(mapper.send(:full_task_name)).to eq "HardJobDig"
     end
   end

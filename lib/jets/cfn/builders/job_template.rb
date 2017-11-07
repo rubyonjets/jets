@@ -8,7 +8,7 @@ class Jets::Cfn::Builders
 
     def add_scheduled_tasks
       # @app_class example: HardJob
-      @app_class.all_tasks.each do |task|
+      @app_class.all_tasks.each do |task_name, task|
         map = Jets::Cfn::Mappers::EventsRuleMapper.new(task)
 
         add_event_rule(task, map)
@@ -42,21 +42,20 @@ class Jets::Cfn::Builders
     end
 
     def add_permission(map)
-      # HelloLambdaPermissionEventsRuleSchedule1:
-      #   Type: AWS::Lambda::Permission
-      #   Properties:
-      #     FunctionName:
-      #       Fn::GetAtt:
-      #       - HelloLambdaFunction
-      #       - Arn
-      #     Action: lambda:InvokeFunction
-      #     Principal: events.amazonaws.com
-      #     SourceArn:
-      #       Fn::GetAtt:
-      #       - HelloEventsRuleSchedule1
-      #       - Arn
+      add_resource(map.permission_logical_id, "AWS::Lambda::Permission",
+        FunctionName: "!GetAtt #{map.lambda_function_logical_id}.Arn",
+        Action: "lambda:InvokeFunction",
+        Principal: "events.amazonaws.com",
+        SourceArn: "!GetAtt #{map.logical_id}.Arn"
+      )
+      # Example:
+      # add_resource("HardJobDigPermissionEventsRule", "AWS::Lambda::Permission",
+      #   FunctionName: "!GetAtt HardJobDigLambdaFunction.Arn",
+      #   Action: "lambda:InvokeFunction",
+      #   Principal: "events.amazonaws.com",
+      #   SourceArn: "!GetAtt ScheduledEventHardJobDig.Arn"
+      # )
     end
-
   end
 end
 

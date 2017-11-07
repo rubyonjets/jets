@@ -15,11 +15,13 @@ class Jets::Cfn::Builders
     end
 
     def template
-      @template
+      # need the to_hash or the YAML dump has
+      #  !ruby/hash:ActiveSupport::HashWithIndifferentAccess
+      @template.to_hash
     end
 
     def text
-      text = YAML.dump(@template.to_hash)
+      text = YAML.dump(template)
       post_process_template(text)
     end
 

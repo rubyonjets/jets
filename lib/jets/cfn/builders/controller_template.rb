@@ -87,7 +87,6 @@ class Jets::Cfn::Builders
     end
 
     def add_permission(map)
-      # AWS::Lambda::Permission
       add_resource(map.permission_logical_id, "AWS::Lambda::Permission",
         FunctionName: "!GetAtt #{map.lambda_function_logical_id}.Arn",
         Action: "lambda:InvokeFunction",

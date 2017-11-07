@@ -22,6 +22,11 @@ class Jets::Cfn::Mappers
       "RuleTarget#{full_task_name}"
     end
 
+    # Example: HardJobDigPermissionEventsRule
+    def permission_logical_id
+      "#{full_task_name}PermissionEventsRule"
+    end
+
   private
     # Full camelized task name including the class
     # Example: HardJobDig
