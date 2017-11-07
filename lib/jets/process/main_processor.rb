@@ -31,33 +31,23 @@ class Jets::Process::MainProcessor
     # Use the handler to deduce app code to run.
     # Example handlers: handlers/controllers/posts.create, handlers/jobs/sleep.perform
     #
-    #   ControllerDeducer.new("handlers/controllers/posts.create").delegate_class
-    #   delegate_class: PostsController
+    #   deducer = Jets::Process::Deducer.new("handlers/controllers/posts.create")
     #
-    delegate_class = Jets::Process::Deducer.new(handler).delegate_class
-    deducer = delegate_class.new(handler) # IE: PostDeducer.new(handler)
+    deducer = Jets::Process::Deducer.new(handler)
     begin
-      # Example of generated code:
-      # Controllers:
-      #   require "app/controllers/application_controller"
-      #   require "app/controllers/posts_controller.rb"
-      # Jobs:
-      #   require "app/jobs/application_controller"
-      #   require "app/jobs/sleep_job.rb"
-
+      # Examples:
+      #   deducer.code => PostsController.new(event, context).show
+      #   deducer.path => app/controllers/posts_controller.rb
+      #
+      #   deducer.code => HardJob.new(event, context).dig
+      #   deducer.path => app/jobs/hard_job.rb
+      #
       result = instance_eval(deducer.code, deducer.path)
-      # result = instance_eval("PostsController.new(event, context).create", "app/controllers/posts_controller.rb")
-      #
-      # Example of generated code:
-      #
-      # Controllers:
-      #   result = PostsController.new(event, context).create
-      # Jobs:
-      #   result = SleepJob.new(event, context).perform
+      # result = PostsController.new(event, context).create
 
-      # Puts the return value of user's code to stdout because this is
+      # Puts the return value of project code to stdout because this is
       # what eventually gets used by API Gateway.
-      # Explicitly using $stdout since puts redirected to $stderr.
+      # Explicitly using $stdout since puts has been redirected to $stderr.
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
