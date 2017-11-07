@@ -49,18 +49,14 @@ class Jets::Job
         @tasks ||= ActiveSupport::OrderedHash.new
       end
 
-      # Returns the tasks for this Thor class and all subclasses.
+      # Returns the tasks for this Job class.
       #
       # ==== Returns
-      # OrderedHash:: An ordered hash with tasks names as keys and JobTask
-      #               objects as values.
+      # Array of task objects
       #
       def all_tasks
-        @all_tasks ||= ActiveSupport::OrderedHash.new
-        @all_tasks.merge!(tasks)
+        @tasks.values
       end
-
     end
-
   end
 end
