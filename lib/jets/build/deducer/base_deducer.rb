@@ -41,11 +41,11 @@ class Jets::Build::Deducer
     end
 
     # Used to show user where the generated files gets written to.
-    # Example return: "/tmp/jets_build/templates/proj-dev-posts-controller.yml"
+    # Example return: "#{Jets.tmp_build}/templates/proj-dev-posts-controller.yml"
     def cfn_path
       stack_name = File.basename(@path, ".rb").dasherize
       stack_name = "#{Jets.config.project_namespace}-#{stack_name}"
-      "/tmp/jets_build/templates/#{stack_name}.yml"
+      "#{Jets.tmp_build}/templates/#{stack_name}.yml"
     end
   end
 end

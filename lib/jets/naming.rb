@@ -32,7 +32,7 @@ class Jets::Naming
     end
 
     def template_path_prefix
-      "/tmp/jets_build/templates/#{Jets.config.project_namespace}"
+      "#{Jets.tmp_build}/templates/#{Jets.config.project_namespace}"
     end
 
     def gateway_api_name
@@ -42,7 +42,7 @@ class Jets::Naming
     @@md5 = nil # need to store the md5 in memory because the file gets renamed
     def md5_code_zipfile
       @@md5 ||= ENV['TEST'] ? 'TEST' : Digest::MD5.file(Jets::Naming.temp_code_zipfile).to_s[0..7]
-      "/tmp/jets_build/code/code-#{@@md5}.zip"
+      "#{Jets.tmp_build}/code/code-#{@@md5}.zip"
     end
 
     def code_s3_key

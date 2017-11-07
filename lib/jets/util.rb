@@ -52,4 +52,9 @@ module Jets::Util
   def config
     Jets::Config.new.settings
   end
+
+  @@tmp_build = nil
+  def tmp_build
+    @@tmp_build ||= "/tmp/jets_build/#{config.project_name}".freeze
+  end
 end

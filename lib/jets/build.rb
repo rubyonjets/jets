@@ -20,7 +20,7 @@ class Jets::Build
 
     TravelingRuby.new.build unless @options[:noop]
 
-    clean_start # cleans out templates and code-*.zip in /tmp/jets_build/
+    clean_start # cleans out templates and code-*.zip in Jets.tmp_build
 
     puts "Building node shims."
     app_code_paths.each do |path|
@@ -77,8 +77,8 @@ class Jets::Build
 
   # Remove any current templates in the tmp build folder for a clean start
   def clean_start
-    FileUtils.rm_rf("/tmp/jets_build/templates")
-    Dir.glob("/tmp/jets_build/code-*.zip").each { |f| FileUtils.rm_f(f) }
+    FileUtils.rm_rf("#{Jets.tmp_build}/templates")
+    Dir.glob("#{Jets.tmp_build}/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
   def app_code_paths

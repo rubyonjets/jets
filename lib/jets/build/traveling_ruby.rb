@@ -4,7 +4,6 @@ require "colorize"
 
 class Jets::Build
   TRAVELING_RUBY_URL = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
-  TEMP_BUILD_DIR = '/tmp/jets_build'.freeze
 
   class TravelingRuby
     attr_reader :full_project_path
@@ -15,15 +14,15 @@ class Jets::Build
     end
 
     def build
-      if File.exist?("#{TEMP_BUILD_DIR}/bundled")
-        puts "The #{TEMP_BUILD_DIR}/bundled folder exists. Incrementally re-building the bundle.  To fully rebundle: rm -rf #{TEMP_BUILD_DIR}/bundled"
+      if File.exist?("#{Jets.tmp_build}/bundled")
+        puts "The #{Jets.tmp_build}/bundled folder exists. Incrementally re-building the bundle.  To fully rebundle: rm -rf #{Jets.tmp_build}/bundled"
       end
 
       check_ruby_version
 
-      FileUtils.mkdir_p(TEMP_BUILD_DIR)
-      Dir.chdir(TEMP_BUILD_DIR) do
-        # These commands run from TEMP_BUILD_DIR
+      FileUtils.mkdir_p(Jets.tmp_build)
+      Dir.chdir(Jets.tmp_build) do
+        # These commands run from Jets.tmp_build
         get_traveling_ruby
         copy_gemfiles
         bundle_install
@@ -42,7 +41,7 @@ class Jets::Build
 
     def get_traveling_ruby
       if File.exist?(bundled_ruby_dest)
-        puts "Traveling Ruby already downloaded at #{TEMP_BUILD_DIR}/#{bundled_ruby_dest}."
+        puts "Traveling Ruby already downloaded at #{Jets.tmp_build}/#{bundled_ruby_dest}."
       else
         download_traveling_ruby
         unpack_traveling_ruby
@@ -76,8 +75,8 @@ class Jets::Build
     end
 
     def copy_gemfiles
-      FileUtils.cp("#{full_project_path}Gemfile", "#{TEMP_BUILD_DIR}/")
-      FileUtils.cp("#{full_project_path}Gemfile.lock", "#{TEMP_BUILD_DIR}/")
+      FileUtils.cp("#{full_project_path}Gemfile", "#{Jets.tmp_build}/")
+      FileUtils.cp("#{full_project_path}Gemfile.lock", "#{Jets.tmp_build}/")
     end
 
     def bundle_install
@@ -85,7 +84,7 @@ class Jets::Build
       require "bundler" # dynamicaly require bundler so user can use any bundler
       Bundler.with_clean_env do
         success = system(
-          "cd #{TEMP_BUILD_DIR} && " \
+          "cd #{Jets.tmp_build} && " \
           'env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development'
         )
 
@@ -99,12 +98,12 @@ class Jets::Build
     # bundled/gems folder and export it to BUNDLE_GEMFILE in the
     # wrapper script.
     def configure_bundler
-      puts "Moving gemfiles into #{TEMP_BUILD_DIR}/#{bundled_gems_dest}/"
+      puts "Moving gemfiles into #{Jets.tmp_build}/#{bundled_gems_dest}/"
       FileUtils.mv("Gemfile", "#{bundled_gems_dest}/")
       FileUtils.mv("Gemfile.lock", "#{bundled_gems_dest}/")
 
       bundle_config_path = "#{bundled_gems_dest}/.bundle/config"
-      puts "Generating #{TEMP_BUILD_DIR}/#{bundle_config_path}"
+      puts "Generating #{Jets.tmp_build}/#{bundle_config_path}"
       FileUtils.mkdir_p(File.dirname(bundle_config_path))
       bundle_config =<<-EOL
 BUNDLE_PATH: .
@@ -119,8 +118,8 @@ EOL
         puts "Removing current bundled from project"
         FileUtils.rm_rf("#{full_project_path}bundled")
       end
-      puts "Copying #{TEMP_BUILD_DIR}/bundled folder to your project."
-      FileUtils.cp_r("#{TEMP_BUILD_DIR}/bundled", full_project_path)
+      puts "Copying #{Jets.tmp_build}/bundled folder to your project."
+      FileUtils.cp_r("#{Jets.tmp_build}/bundled", full_project_path)
     end
 
     def bundled_ruby_dest
