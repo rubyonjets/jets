@@ -1,26 +1,43 @@
 class PostsController < ApplicationController
   def index
-    # render returns Lambda Proxy structure for web requests
-    render json: {a: "index"}, status: 200
+    puts "Post.table_name #{Post.table_name.inspect}"
+    posts = Post.scan # should not use scan for production
+    render json: {action: "index", posts: posts}, status: 200
+  end
+
+  def new
+    puts "event: #{event.inspect}"
+    puts "context: #{context.inspect}"
+    render json: {action: "new"}, status: 200
   end
 
   def show
-    render json: {a: "show"}, status: 200
+    post = Post.find(params[:id])
+    render json: {action: "show", post: post}, status: 200
   end
 
   def create
-    render json: {a: "create"}, status: 200
+    attrs = {title: params[:title], desc: params[:desc]}
+    attrs[:id] = params[:id] if params[:id]
+    post = Post.new(attrs)
+    post.replace
+    render json: {action: "create", post: post}, status: 200
   end
 
   def edit
-    render json: {a: "edit"}, status: 200
+    post = Post.find(params[:id])
+    render json: {action: "edit", post: post}, status: 200
   end
 
   def update
-    render json: {a: "update"}, status: 200
+    post = Post.find(params[:id])
+    post.attrs = {title: params[:title], desc: params[:desc]}
+    post.replace
+    render json: {action: "update", post: post}, status: 200
   end
 
   def delete
-    render json: {a: "delete"}, status: 200
+    Post.delete(params[:id])
+    render json: {action: "delete"}, status: 200
   end
 end

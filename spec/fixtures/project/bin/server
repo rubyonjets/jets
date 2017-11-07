@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export DYNAMODB_ENDPOINT=http://localhost:8000
+exec bundle exec jets server
