@@ -50,9 +50,9 @@ class Jets::Build
   end
 
   def build_api_gateway_templates
-    gateway = Jets::Cfn::Builders::ApiGatewayTemplate.new(@options)
+    gateway = Jets::Cfn::TemplateBuilders::ApiGatewayBuilder.new(@options)
     gateway.build
-    deployment = Jets::Cfn::Builders::ApiGatewayDeploymentTemplate.new(@options)
+    deployment = Jets::Cfn::TemplateBuilders::ApiGatewayDeploymentBuilder.new(@options)
     deployment.build
   end
 
@@ -63,16 +63,16 @@ class Jets::Build
     app_klass = File.basename(path, ".rb").classify.constantize # SleepJob
 
     process_class = path.split('/')[1].singularize.classify # Controller or Job
-    builder_class = "Jets::Cfn::Builders::#{process_class}Template".constantize
+    builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Template".constantize
 
-    # Jets::Cfn::Builders::JobTemplate.new(EasyJob) or
-    # Jets::Cfn::Builders::ControllerTemplate.new(PostsController)
+    # Jets::Cfn::TemplateBuilders::JobBuilder.new(EasyJob) or
+    # Jets::Cfn::TemplateBuilders::ControllerBuilder.new(PostsController)
     cfn = builder_class.new(app_klass)
     cfn.build
   end
 
   def build_parent_template
-    parent = Jets::Cfn::Builders::ParentTemplate.new(@options)
+    parent = Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options)
     parent.build
   end
 
