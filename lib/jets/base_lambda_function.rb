@@ -11,19 +11,19 @@ module Jets
       @context = context # Hash. JSON.parse(context) ran in BaseProcessor
     end
 
+    def lambda_functions
+      self.class.lambda_functions
+    end
+
     # The public methods defined in the project app class ulimately become
     # lambda functions.
     #
     # Example return value:
     #   [":index", :new, :create, :show]
-    def lambda_functions
-      # public_instance_methods(false) - to not include inherited methods
-      functions = self.class.public_instance_methods(false) - Object.public_instance_methods
-      functions.sort
-    end
-
     def self.lambda_functions
-      new(nil, nil).lambda_functions
+      # public_instance_methods(false) - to not include inherited methods
+      functions = public_instance_methods(false) - Object.public_instance_methods
+      functions.sort
     end
   end
 end

@@ -1,5 +1,4 @@
 require 'json'
-require_relative 'deducer'
 
 # Node shim calls this class to process both controllers and jobs
 
