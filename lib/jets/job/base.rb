@@ -36,11 +36,11 @@ class Jets::Job
           @rate, @cron = nil, nil
           true
         else
-          full_task_name = "#{name}##{meth.inspect}"
-          puts "[WARNING] #{full_task_name} created without a rate or cron expression.. " \
+          task_name = "#{name}##{meth}" # IE: HardJob#dig
+          puts "[WARNING] #{task_name} created without a rate or cron expression. " \
             "Add a rate or cron expression above the method definition if you want this method to be scheduled. " \
-            "If #{full_task_name} is not meant to be a scheduled function, then you can make it a private method to get rid of this warning."
-            "Invoked from #{caller[1].inspect}."
+            "If #{task_name} is not meant to be a scheduled lambda function, you can put the method under after a private keyword to get rid of this warning. " \
+            "#{task_name} defined at #{caller[1].inspect}."
           false
         end
       end
