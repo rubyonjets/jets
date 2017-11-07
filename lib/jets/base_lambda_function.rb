@@ -1,6 +1,8 @@
   require 'json'
 
-# This is the model that Jets::BaseController and Jets::BaseJob inherits from
+# BaseLambdaFunction is the superclass of:
+#   Jets::Controller::Base
+#   Jets::Job::Base
 module Jets
   class BaseLambdaFunction
     attr_reader :event, :context

@@ -1,5 +1,6 @@
 require 'json'
 
+# Job public methods get turned into Lambda functions.
 class Jets::Job
   class Base < Jets::BaseLambdaFunction
     class << self

@@ -1,9 +1,9 @@
 require "active_support/core_ext/hash"
 require 'json'
 
-module Jets
-  # All controller public methods will result in corresponding Lambda functions created.
-  class Controller::Base < Jets::BaseLambdaFunction
+# Controller public methods get turned into Lambda functions.
+class Jets::Controller
+  class Base < Jets::BaseLambdaFunction
   private
     # Merge all the parameters together for convenience.  Users still have
     # access via events.

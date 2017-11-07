@@ -25,7 +25,7 @@ end
 # main
 
 Jets.boot
-db = Jets::BaseModel.db # uses the appropriate dynamodb endpoint
+db = DynamodbModel::Item.db # uses the appropriate dynamodb endpoint
   # so we can test with local DynamoDB or a live on on AWS
 
 # summary of the dynamodb tables, useful for local dynamodb

@@ -37,9 +37,7 @@ module Jets
   autoload :Erb, "jets/erb"
 
   autoload :BaseLambdaFunction, 'jets/base_lambda_function'
-  autoload :BaseController, 'jets/base_controller'
-  autoload :BaseJob, 'jets/base_job'
-  autoload :BaseModel, 'jets/base_model'
+  autoload :Controller, 'jets/controller'
   autoload :Job, 'jets/job'
 
   extend Util # root, logger, etc
