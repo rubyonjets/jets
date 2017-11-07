@@ -12,10 +12,10 @@ class Jets::Job
       end
 
       def method_added(meth)
-        meth = meth.to_s
+        meth = meth # Symbol
 
-        return if %w[initialize method_missing].include?(meth)
-        return unless public_method_defined?(meth.to_sym)
+        return if %w[initialize method_missing].include?(meth.to_s)
+        return unless public_method_defined?(meth)
 
         register_task(meth)
       end

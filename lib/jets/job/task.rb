@@ -1,4 +1,5 @@
 class Jets::Job::Task
+  attr_reader :meth
   def initialize(meth, options)
     @meth = meth
     @options = options
