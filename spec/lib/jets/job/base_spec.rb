@@ -1,9 +1,6 @@
 require "spec_helper"
 
-describe Jets::BaseJob do
-  let(:build) do
-  end
-
+describe Jets::Job::Base do
   # by the time the class is finished loading into memory the rate and
   # cron configs will have been loaded so we can use them later to configure
   # the lambda functions
@@ -12,4 +9,3 @@ describe Jets::BaseJob do
   end
 
 end
-

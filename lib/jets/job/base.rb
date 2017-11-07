@@ -1,7 +1,7 @@
 require 'json'
 
-module Jets
-  class BaseJob < BaseLambdaFunction
+class Jets::Job
+  class Base < Jets::BaseLambdaFunction
     class << self
       def rate(expression)
         @rate = expression
@@ -14,7 +14,7 @@ module Jets
       def method_added(meth)
         meth = meth.to_s
 
-        return if meth == "initialize"
+        return if %w[initialize method_missing].include?(meth)
         return unless public_method_defined?(meth.to_sym)
 
         create_task(meth)
@@ -29,11 +29,20 @@ module Jets
         puts "  @rate #{@rate.inspect}"
         puts "  @cron #{@cron.inspect}"
 
-        tasks[meth] = Jets::Job::Task.new(meth, rate: @rate, cron: @cron)
-        pp tasks
-        # done storing options, clear out for the next added method
-        @rate, @cron = nil, nil
-        true
+        if @rate || @cron
+          tasks[meth] = Jets::Job::Task.new(meth, rate: @rate, cron: @cron)
+          pp tasks
+          # done storing options, clear out for the next added method
+          @rate, @cron = nil, nil
+          true
+        else
+          full_task_name = "#{name}##{meth.inspect}"
+          puts "[WARNING] #{full_task_name} created without a rate or cron expression.. " \
+            "Add a rate or cron expression above the method definition if you want this method to be scheduled. " \
+            "If #{full_task_name} is not meant to be a scheduled function, then you can make it a private method to get rid of this warning."
+            "Invoked from #{caller[1].inspect}."
+          false
+        end
       end
 
       def create_command(meth) #:nodoc:

@@ -1,2 +1,2 @@
-class ApplicationJob < Jets::BaseJob
+class ApplicationJob < Jets::Job::Base
 end
