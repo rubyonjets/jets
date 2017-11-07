@@ -5,7 +5,8 @@ describe Jets::Job::Base do
   # cron configs will have been loaded so we can use them later to configure
   # the lambda functions
   it "all_tasks" do
-    HardJob.all_tasks
+    pp HardJob.all_tasks
+    pp EasyJob.all_tasks
   end
 
 end
