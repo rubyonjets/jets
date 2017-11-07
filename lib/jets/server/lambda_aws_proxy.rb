@@ -1,4 +1,3 @@
-Jets.boot # need the project app code
 require 'cgi'
 require 'stringio'
 
@@ -8,6 +7,8 @@ class Jets::Server
     def initialize(route, env)
       @route = route
       @env = env
+      Jets.boot # need the project app code, call in here because that is
+      # seems to be more close to when API Gateway would load jets
     end
 
     def response
