@@ -7,7 +7,7 @@ class Jets::Cfn::Mappers
 
     # Example: "ScheduledEventHardJobDig"
     def logical_id
-      "ScheduledEvent#{full_task_name}"
+      "#{full_task_name}ScheduledEvent"
     end
 
     # Example: "HardJobDigLambdaFunction"
@@ -19,7 +19,7 @@ class Jets::Cfn::Mappers
     #
     # Example: RuleTargetHardJobDig
     def rule_target_id
-      "RuleTarget#{full_task_name}"
+      "#{full_task_name}RuleTarget"
     end
 
     # Example: HardJobDigPermissionEventsRule
