@@ -13,9 +13,9 @@ describe Jets::Job::Base do
       expect(dig_task).to be_a(Jets::Job::Task)
       expect(dig_task.schedule_expression).to eq "rate(1 minute)"
 
-      drive_task = HardJob.all_tasks[:drive]
+      drive_task = HardJob.all_tasks[:lift]
       expect(drive_task).to be_a(Jets::Job::Task)
-      expect(drive_task.schedule_expression).to eq "cron(*/5 * * * ? *)"
+      expect(drive_task.schedule_expression).to eq "cron(0 */12 * * ? *)"
     end
   end
 

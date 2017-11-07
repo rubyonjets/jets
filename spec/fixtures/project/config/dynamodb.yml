@@ -11,7 +11,7 @@ development:
   # table_namespace: stag
   # table_namespace: prod
   # table_namespace: dev-1
-  # table_namespace: proj-dev-1
+  # table_namespace: demo-dev-1
 
   # endpoint: http://localhost:8000 # uncomment if deploying to production and test
   # you can also use DYNAMODB_ENDPOINT environemnt variable to set this

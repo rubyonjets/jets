@@ -21,7 +21,7 @@ describe "HandlerGenerator" do
 
   context "job" do
     let(:generator) do
-      Jets::Build::HandlerGenerator.new("app/jobs/sleep_job.rb")
+      Jets::Build::HandlerGenerator.new("app/jobs/hard_job.rb")
     end
 
     it "find_deducer" do
@@ -30,9 +30,9 @@ describe "HandlerGenerator" do
 
     it "generates a node shim" do
       generator.generate
-      content = IO.read("#{Jets.root}handlers/jobs/sleep.js")
-      expect(content).to include("handlers/jobs/sleep.perform") # handler
-      expect(content).to include("exports.perform") # only 1 function
+      content = IO.read("#{Jets.root}handlers/jobs/hard.js")
+      expect(content).to include("handlers/jobs/hard.dig") # handler
+      expect(content).to include("exports.dig")
     end
   end
 end

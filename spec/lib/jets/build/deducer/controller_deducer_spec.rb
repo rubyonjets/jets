@@ -13,6 +13,6 @@ describe "ControllerDeducer" do
     expect(deducer.cfn_path).to include("posts-controller.yml")
 
     expect(deducer.functions).to eq(
-      [:create, :update, :index, :show, :edit, :delete].sort)
+      [:create, :delete, :edit, :index, :new, :show, :update].sort)
   end
 end

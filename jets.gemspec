@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-dynamodb"
   spec.add_dependency "kramdown"
   spec.add_dependency "text-table"
+  spec.add_dependency "rack"
 
   # for now
   spec.add_dependency "byebug"
