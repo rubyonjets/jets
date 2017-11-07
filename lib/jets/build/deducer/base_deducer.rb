@@ -3,7 +3,7 @@
 #   def process_type
 #     "job"
 #   end
-#class Jets::Build::Deducer
+class Jets::Build::Deducer
   class BaseDeducer
     attr_reader :path
     def initialize(path)

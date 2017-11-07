@@ -1,5 +1,5 @@
 class HardJob < ApplicationJob
-  rate "1 minute"
+  # rate "1 minute"
   def dig
     {done: "digging"}
   end
