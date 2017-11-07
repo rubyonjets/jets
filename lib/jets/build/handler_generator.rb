@@ -14,9 +14,7 @@ class Jets::Build
     end
 
     def generate
-      # find_deducer_class exames: ControllerDeducer or JobDeducer
-      deducer_class = find_deducer_class
-      deducer = deducer_class.new(@path)
+      deducer = Jets::Build::Deducer.new(@path)
 
       js_path = "#{Jets.root}#{deducer.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
@@ -25,13 +23,6 @@ class Jets::Build
       result = Jets::Erb.result(template_path, deducer: deducer)
 
       IO.write(js_path, result)
-    end
-
-    # base on the path a different deducer will be used
-    def find_deducer_class
-      # process_class example: Jets::Build::Deducer::ControllerDeducer
-      process_class = @path.split('/')[1].classify # Controller or Job
-      "Jets::Build::Deducer::#{process_class}Deducer".constantize
     end
 
   end
