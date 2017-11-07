@@ -19,10 +19,13 @@ module Jets::Util
     @@logger = Logger.new($stderr)
   end
 
-  # TODO: Jets.boot: lazy load project classes instead of eager loading
-  # Especially since Lambda functions will usually only require some of the
-  # classes most of the time.
+  # Load all application base classes and project classes
   def boot
+    require_application_base_classes
+    require_project_classes %w[app lib]
+  end
+
+  def require_application_base_classes
     application_files = %w[
       app/controllers/application_controller
       app/jobs/application_job
@@ -33,9 +36,13 @@ module Jets::Util
       path = "#{Jets.root}#{p}.rb"
       require path if File.exist?(path)
     end
+  end
 
-    require_files("#{Jets.root}app/**/*")
-    require_files("#{Jets.root}lib/**/*")
+  def require_project_classes(folders)
+    folders.each do |folder|
+      pattern = "#{Jets.root}#{folder}/**/*" # #{Jets.root}/lib/**/**
+      require_files(pattern)
+    end
   end
 
   def require_files(pattern)

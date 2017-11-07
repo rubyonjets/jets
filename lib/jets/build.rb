@@ -63,7 +63,7 @@ class Jets::Build
     app_klass = File.basename(path, ".rb").classify.constantize # SleepJob
 
     process_class = path.split('/')[1].singularize.classify # Controller or Job
-    builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Template".constantize
+    builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Builder".constantize
 
     # Jets::Cfn::TemplateBuilders::JobBuilder.new(EasyJob) or
     # Jets::Cfn::TemplateBuilders::ControllerBuilder.new(PostsController)
