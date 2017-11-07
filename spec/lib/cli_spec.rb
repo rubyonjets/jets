@@ -38,7 +38,9 @@ describe Jets::CLI do
     it "routes" do
       out = execute("bin/jets routes #{@args}")
       # puts out
-      expect(out).to include("Your application routes:")
+      # header
+      expect(out).to include("Verb")
+      expect(out).to include("Path")
     end
   end
 end

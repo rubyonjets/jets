@@ -21,7 +21,7 @@ describe Jets::Cfn::Builders::JobTemplate do
       expect(resources).to include("HardJobDigScheduledEvent")
       expect(resources).to include("HardJobDigPermissionEventsRule")
 
-      expect(builder.template_path).to eq "#{Jets.tmp_build}/templates/demo-dev-2-hard-job.yml"
+      expect(builder.template_path).to eq "#{Jets.tmp_build}/templates/demo-test-2-hard-job.yml"
     end
   end
 end

@@ -11,12 +11,12 @@ event:
 
 context:
 {"callbackWaitsForEmptyEventLoop"=>true,
- "logGroupName"=>"/aws/lambda/demo-dev-2-posts-controller-new",
+ "logGroupName"=>"/aws/lambda/demo-test-2-posts-controller-new",
  "logStreamName"=>"2017/11/07/[$LATEST]3cefcb18a8bc49acbfb3f29907a36391",
- "functionName"=>"demo-dev-2-posts-controller-new",
+ "functionName"=>"demo-test-2-posts-controller-new",
  "memoryLimitInMB"=>"1536",
  "functionVersion"=>"$LATEST",
  "invokeid"=>"cd68b58a-c379-11e7-bab1-855c4fa0d379",
  "awsRequestId"=>"cd68b58a-c379-11e7-bab1-855c4fa0d379",
  "invokedFunctionArn"=>
-  "arn:aws:lambda:us-east-1:160619113767:function:demo-dev-2-posts-controller-new"}
+  "arn:aws:lambda:us-east-1:160619113767:function:demo-test-2-posts-controller-new"}

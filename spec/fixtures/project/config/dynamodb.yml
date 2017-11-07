@@ -21,7 +21,7 @@ development:
 
 test:
   # table_namespace: proj # do not include the env
-  endpoint: http://localhost:8000
+  # endpoint: http://localhost:8000
   table_namespace: <%= Jets.config.table_namespace %>
 
 staging:
