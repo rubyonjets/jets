@@ -6,10 +6,6 @@ describe "HandlerGenerator" do
       Jets::Build::HandlerGenerator.new("app/controllers/posts_controller.rb")
     end
 
-    it "find_deducer" do
-      expect(generator.find_deducer_class).to eq Jets::Build::Deducer::ControllerDeducer
-    end
-
     it "generates a node shim" do
       generator.generate
       content = IO.read("#{Jets.root}handlers/controllers/posts.js")
@@ -22,10 +18,6 @@ describe "HandlerGenerator" do
   context "job" do
     let(:generator) do
       Jets::Build::HandlerGenerator.new("app/jobs/hard_job.rb")
-    end
-
-    it "find_deducer" do
-      expect(generator.find_deducer_class).to eq Jets::Build::Deducer::JobDeducer
     end
 
     it "generates a node shim" do
