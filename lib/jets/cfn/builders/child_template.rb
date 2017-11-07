@@ -18,6 +18,12 @@ class Jets::Cfn::Builders
       add_parameter("S3Bucket", Description: "S3 Bucket for source code.")
     end
 
+    def add_functions
+      @child_class.lambda_functions.each do |name|
+        add_function(name)
+      end
+    end
+
     def add_function(name)
       map = Jets::Cfn::Mappers::LambdaFunctionMapper.new(@child_class, name)
 

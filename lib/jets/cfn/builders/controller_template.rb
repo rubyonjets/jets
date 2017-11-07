@@ -16,12 +16,6 @@ class Jets::Cfn::Builders
       end
     end
 
-    def add_functions
-      @child_class.lambda_functions.each do |name|
-        add_function(name)
-      end
-    end
-
     def add_routes
       scoped_routes.each_with_index do |route, i|
         map = Jets::Cfn::Mappers::GatewayMethodMapper.new(route)

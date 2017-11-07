@@ -4,20 +4,6 @@ require 'json'
 module Jets
   # All controller public methods will result in corresponding Lambda functions created.
   class BaseController < BaseLambdaFunction
-    # The public methods defined in the user's custom class will become
-    # lambda functions.
-    # Returns Example:
-    #   ["FakeController#handler1", "FakeController#handler2"]
-    def lambda_functions
-      # public_instance_methods(false) - to not include inherited methods
-      functions = self.class.public_instance_methods(false) - Object.public_instance_methods
-      functions.sort
-    end
-
-    def self.lambda_functions
-      new(nil, nil).lambda_functions
-    end
-
   private
     # Merge all the parameters together for convenience.  Users still have
     # access via events.
