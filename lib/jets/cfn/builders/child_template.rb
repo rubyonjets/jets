@@ -2,14 +2,15 @@ class Jets::Cfn::Builders
   class ChildTemplate
     include Interface
 
-    def initialize(controller_class)
-      @controller_class = controller_class
+    # The child_class is can be a controller or a job
+    def initialize(child_class)
+      @child_class = child_class
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
     # template_path is an interface method for Interface module
     def template_path
-      Jets::Naming.template_path(@controller_class)
+      Jets::Naming.template_path(@child_class)
     end
 
     def add_common_parameters
@@ -18,7 +19,7 @@ class Jets::Cfn::Builders
     end
 
     def add_function(name)
-      map = Jets::Cfn::Mappers::LambdaFunctionMapper.new(@controller_class, name)
+      map = Jets::Cfn::Mappers::LambdaFunctionMapper.new(@child_class, name)
 
       add_resource(map.logical_id, "AWS::Lambda::Function",
         Code: {

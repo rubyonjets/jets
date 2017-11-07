@@ -17,7 +17,7 @@ class Jets::Cfn::Builders
     end
 
     def add_functions
-      @controller_class.lambda_functions.each do |name|
+      @child_class.lambda_functions.each do |name|
         add_function(name)
       end
     end
@@ -105,7 +105,7 @@ class Jets::Cfn::Builders
     # routes scoped to this controller template.
     def scoped_routes
       @routes ||= Jets::Router.routes.select do |route|
-        route.controller_name == @controller_class.to_s
+        route.controller_name == @child_class.to_s
       end
     end
   end
