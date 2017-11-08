@@ -31,6 +31,8 @@ class Jets::Process
       #   underscored_class_name: hard_job
       class_name = underscored_class_name.camelize # PostsController
       code = %|#{class_name}.new(event, context, {meth: "#{@handler_method}"}).#{@handler_method}|
+
+      code
       # code: "PostsController.new(event, context, meth: "show").show"
       # code: "HardJob.new(event, context, meth: "dig").dig"
     end

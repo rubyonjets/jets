@@ -19,7 +19,7 @@ class Jets::Server
       controller_action = find_controller_action
       # controller = PostsController.new(event, content)
       # resp = controller.edit
-      controller = controller_class.new(event, context)
+      controller = controller_class.new(event, context, meth: find_controller_action)
       resp = controller.send(controller_action)
 
       # Map lambda proxy response format to rack format

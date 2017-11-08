@@ -47,6 +47,7 @@ class Jets::Controller
       # to_attrs allows us to use:
       #   render json: {post: post}
       body = body.respond_to?(:to_attrs) ? body.to_attrs : body
+      body = JSON.dump(body) # body must be a String
       options[:body] = body # important to set as it was originally options[:json]
 
       render_aws_proxy(options)
@@ -87,7 +88,7 @@ class Jets::Controller
       resp = options.merge(
         statusCode: status,
         headers: headers,
-        body: JSON.dump(body), # body must be a String
+        body: body,
         isBase64Encoded: base64,
       )
     end
