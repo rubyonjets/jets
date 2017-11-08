@@ -6,9 +6,13 @@
 module Jets
   class BaseLambdaFunction
     attr_reader :event, :context
-    def initialize(event, context)
+    def initialize(event, context, options={})
       @event = event # Hash, JSON.parse(event) ran BaseProcessor
       @context = context # Hash. JSON.parse(context) ran in BaseProcessor
+      # options is useful for storing things that we need later on for processing
+      # For example: the the controller method_name is useful for identifying
+      # the which template to use.
+      @options = options
     end
 
     def lambda_functions

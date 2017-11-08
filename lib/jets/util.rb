@@ -22,7 +22,8 @@ module Jets::Util
   # Load all application base classes and project classes
   def boot
     require_application_base_classes
-    require_project_classes %w[app lib]
+    # being selective enough to not include app/views
+    require_project_classes %w[app/controllers app/jobs app/models lib]
   end
 
   def require_application_base_classes
@@ -47,7 +48,7 @@ module Jets::Util
 
   def require_files(pattern)
     Dir.glob(pattern).each do |path|
-      next unless File.file?(path)
+      next unless File.file?(path) && File.extname(path) == '.rb'
       require path
     end
   end

@@ -31,40 +31,81 @@ class Jets::Controller
     def render(options={})
       # render json: {"mytestdata": "value1"}, status: 200, headers: {...}
       if options.has_key?(:json)
-        result = render_aws_proxy(options)
+        render_json(options)
       elsif options.has_key?(:text)
-        result = options.delete(:text)
+        options[:text]
+      elsif options.has_key?(:template)
+        render_template(options)
       else
         raise "Unsupported render option. Only :text and :json supported.  options #{options.inspect}"
       end
-      result
     end
 
     # render json: {my: data}, status: 200
-    def render_aws_proxy(options)
-      # Transform the structure to AWS_PROXY compatiable structure
-      # AWS Docs Output Format of a Lambda Function for Proxy Integration
-      # http://amzn.to/2gSdMan
-      # {statusCode: ..., body: ..., headers: }
-      status = options.delete(:status) || 200
+    def render_json(options={})
       body = options.delete(:json)
-      # to_p allows us to use
-      # render json: {post: post}
+      # to_attrs allows us to use:
+      #   render json: {post: post}
       body = body.respond_to?(:to_attrs) ? body.to_attrs : body
+      options[:body] = body # important to set as it was originally options[:json]
+
+      render_aws_proxy(options)
+    end
+
+    def render_template(options={})
+      # only require action_controller when necessary
+      require 'action_controller'
+      ActionController::Base.append_view_path("app/views")
+      renderer = ActionController::Base.renderer
+      body = renderer.render(template: template_name)
+      options[:body] = body # important to set as it was originally nil
+
+      render_aws_proxy(options)
+    end
+
+    # Transform the structure to AWS_PROXY compatiable structure
+    # AWS Docs Output Format of a Lambda Function for Proxy Integration
+    # http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
+    #
+    # {statusCode: ..., body: ..., headers: ..., isBase64Encoded: ... }
+    def render_aws_proxy(options={})
+      # we do some normalization here
+      status = options[:status] || 200
+      headers = options[:headers] || {}
+      headers = cors_headers.merge(headers)
+      body = options[:body]
+      base64 = options[:base64] if options.has_key?(:base64)
+      base64 = options[:isBase64Encoded] if options.has_key?(:isBase64Encoded)
+
+      if body.is_a?(Hash)
+        headers["Content-Type"] = "application/json"
+      else
+        headers["Content-Type"] = "text/html; charset=utf-8"
+      end
+
+      # Compatiable Lambda Proxy Hash
       resp = options.merge(
         statusCode: status,
-        body: JSON.dump(body) # change Hash to String
+        headers: headers,
+        body: JSON.dump(body), # body must be a String
+        isBase64Encoded: base64,
       )
+    end
 
-      # Add cors headers if enabled
-      # header values should always be String to rack won't work
-      resp[:headers] = {
-        "Content-Type" => "application/json",
+    # Example: posts/index
+    def template_name
+      class_name = self.class.name.to_s.sub('Controller','').underscore
+      action_name = @options[:meth] # All the way from the MainProcessor
+      "#{class_name}/#{action_name}"
+    end
+
+    def cors_headers
+      return {} unless Jets.config.cors
+      {
         "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
         "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
-      } if Jets.config.cors
-
-      resp
+      }
     end
+
   end
 end

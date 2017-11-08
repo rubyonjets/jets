@@ -36,14 +36,14 @@ class Jets::Process::MainProcessor
     deducer = Jets::Process::Deducer.new(handler)
     begin
       # Examples:
-      #   deducer.code => PostsController.new(event, context).show
+      #   deducer.code => PostsController.new(event, context, meth: "show").show
       #   deducer.path => app/controllers/posts_controller.rb
       #
-      #   deducer.code => HardJob.new(event, context).dig
+      #   deducer.code => HardJob.new(event, context, meth: "dig").dig
       #   deducer.path => app/jobs/hard_job.rb
       #
       result = instance_eval(deducer.code, deducer.path)
-      # result = PostsController.new(event, context).create
+      # result = PostsController.new(event, context, meth: "create").create
 
       # Puts the return value of project code to stdout because this is
       # what eventually gets used by API Gateway.

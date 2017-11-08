@@ -22,7 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hashie"
   spec.add_dependency "colorize"
   spec.add_dependency "activesupport"
-  spec.add_dependency "actionview"
+  # spec.add_dependency "actionview" # dont need if we are using actionpack
+  spec.add_dependency "actionpack"
   spec.add_dependency "recursive-open-struct"
   spec.add_dependency "aws-sdk-s3"
   spec.add_dependency "aws-sdk-cloudformation"
