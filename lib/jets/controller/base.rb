@@ -85,12 +85,13 @@ class Jets::Controller
       end
 
       # Compatiable Lambda Proxy Hash
-      resp = options.merge(
+      # Explictly assign keys, additional keys will not be compatiable
+      resp = {
         statusCode: status,
         headers: headers,
         body: body,
         isBase64Encoded: base64,
-      )
+      }
     end
 
     # Example: posts/index
