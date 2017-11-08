@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:tongueroo/jets.git
-  revision: 8284d7876970a852a9b66351155e42bae00a55dd
+  revision: 9f97c4a8ff5f761a29796f8deacce1efb783e22f
   submodules: true
   specs:
     jets (0.2.0)
@@ -13,6 +13,7 @@ GIT
       colorize
       hashie
       kramdown
+      rack
       recursive-open-struct
       text-table
       thor
@@ -33,11 +34,11 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    aws-partitions (1.31.0)
+    aws-partitions (1.32.0)
     aws-sdk-cloudformation (1.2.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.6.1)
+    aws-sdk-core (3.7.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
@@ -47,7 +48,7 @@ GEM
     aws-sdk-kms (1.3.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.5.0)
+    aws-sdk-s3 (1.6.0)
       aws-sdk-core (~> 3)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)

@@ -1,8 +1,11 @@
 class PostsController < ApplicationController
   def index
-    puts "Post.table_name #{Post.table_name.inspect}"
-    posts = Post.scan # should not use scan for production
-    render json: {action: "index", posts: posts}, status: 200
+    # puts "Post.table_name #{Post.table_name.inspect}"
+    # posts = Post.scan # should not use scan for production
+    # render json: {action: "index", posts: posts}, status: 200
+
+    # render json: {"test": 1}
+    render template: "posts/index"
   end
 
   def new
