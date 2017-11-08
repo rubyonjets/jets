@@ -85,7 +85,7 @@ class Jets::Build
       Bundler.with_clean_env do
         success = system(
           "cd #{Jets.tmp_build} && " \
-          'env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development'
+          'env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test'
         )
 
         abort('Bundle install failed, exiting.') unless success
