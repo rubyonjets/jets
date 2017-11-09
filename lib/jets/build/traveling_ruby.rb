@@ -3,7 +3,7 @@ require "open-uri"
 require "colorize"
 
 class Jets::Build
-  TRAVELING_RUBY_URL = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
+  RUBY_URL = 'https://s3.amazonaws.com/boltops-gems/rubies/ruby-2.4.2-linux-x86_64.tar.gz'.freeze
 
   class TravelingRuby
     attr_reader :full_project_path
@@ -23,7 +23,7 @@ class Jets::Build
       FileUtils.mkdir_p(Jets.tmp_build)
       Dir.chdir(Jets.tmp_build) do
         # These commands run from Jets.tmp_build
-        get_precompiled_ruby
+        get_linux_ruby
         copy_gemfiles
         bundle_install
 
@@ -32,37 +32,31 @@ class Jets::Build
       end
     end
 
+    def jets_ruby_version
+      RUBY_URL.match(/ruby-(\d+\.\d+\.\d+)-linux/)[1] # 2.4.2
+    end
+
     def check_ruby_version
-      if RUBY_VERSION != "2.4.2" # TODO: remove hardcode RUBY_VERSION != "2.4.2"
+      if RUBY_VERSION != jets_ruby_version
         puts "You are using ruby version #{RUBY_VERSION}."
-        abort("You must use ruby #{traveling_version} to build the project because it's what Traveling Ruby uses.".colorize(:red))
+        abort("You must use ruby #{jets_ruby_version} to build the project because it's what Jets uses.".colorize(:red))
       end
     end
 
-    def get_precompiled_ruby
+    def get_linux_ruby
       if File.exist?(bundled_ruby_dest)
-        puts "Precompiled Ruby already downloaded at #{Jets.tmp_build}/#{bundled_ruby_dest}."
+        puts "Precompiled Linix Ruby #{jets_ruby_version} already downloaded at #{Jets.tmp_build}/#{bundled_ruby_dest}."
       else
-        FileUtils.mkdir_p("bundled")
-        system("cp -R /Users/tung/src/tongueroo/jets-workspace/mybundled #{bundled_ruby_dest}")
+        download_linux_ruby
       end
     end
 
-    def get_traveling_ruby
-      if File.exist?(bundled_ruby_dest)
-        puts "Traveling Ruby already downloaded at #{Jets.tmp_build}/#{bundled_ruby_dest}."
-      else
-        download_traveling_ruby
-        unpack_traveling_ruby
-      end
-    end
+    def download_linux_ruby
+      puts "Downloading jets ruby from #{RUBY_URL}."
 
-    def download_traveling_ruby
-      puts "Downloading traveling ruby from #{TRAVELING_RUBY_URL}."
-
-      File.open(traveling_ruby_tar_file, 'wb') do |saved_file|
+      File.open(ruby_tarfile, 'wb') do |saved_file|
         # the following "open" is provided by open-uri
-        open(TRAVELING_RUBY_URL, 'rb') do |read_file|
+        open(RUBY_URL, 'rb') do |read_file|
           saved_file.write(read_file.read)
         end
       end
@@ -70,17 +64,17 @@ class Jets::Build
       puts 'Download complete.'
     end
 
-    def unpack_traveling_ruby
-      puts 'Unpacking traveling ruby.'
+    def unpack_jets_ruby
+      puts 'Unpacking jets ruby.'
 
       FileUtils.mkdir_p(bundled_ruby_dest)
 
-      success = system("tar -xzf #{traveling_ruby_tar_file} -C #{bundled_ruby_dest}")
-      abort('Unpacking traveling ruby failed') unless success
-      puts 'Unpacking traveling ruby successful.'
+      success = system("tar -xzf #{ruby_tarfile} -C #{bundled_ruby_dest}")
+      abort('Unpacking jets ruby failed') unless success
+      puts 'Unpacking jets ruby successful.'
 
       puts 'Removing tar.'
-      FileUtils.rm_f(traveling_ruby_tar_file)
+      FileUtils.rm_f(ruby_tarfile)
     end
 
     def copy_gemfiles
@@ -139,8 +133,8 @@ EOL
       "bundled/gems"
     end
 
-    def traveling_ruby_tar_file
-      File.basename(TRAVELING_RUBY_URL)
+    def ruby_tarfile
+      File.basename(RUBY_URL)
     end
   end
 end
