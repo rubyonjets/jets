@@ -43,7 +43,7 @@ class Jets::Controller
 
     # render json: {my: data}, status: 200
     def render_json(options={})
-      body = options.delete(:json)
+      body = options[:json]
       # to_attrs allows us to use:
       #   render json: {post: post}
       body = body.respond_to?(:to_attrs) ? body.to_attrs : body
