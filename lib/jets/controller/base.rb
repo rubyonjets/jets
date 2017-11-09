@@ -47,7 +47,6 @@ class Jets::Controller
       # to_attrs allows us to use:
       #   render json: {post: post}
       body = body.respond_to?(:to_attrs) ? body.to_attrs : body
-      body = JSON.dump(body) # body must be a String
       options[:body] = body # important to set as it was originally options[:json]
 
       render_aws_proxy(options)
@@ -79,6 +78,7 @@ class Jets::Controller
       base64 = options[:isBase64Encoded] if options.has_key?(:isBase64Encoded)
 
       if body.is_a?(Hash)
+        body = JSON.dump(body) # body must be a String
         headers["Content-Type"] = "application/json"
       else
         headers["Content-Type"] = "text/html; charset=utf-8"
