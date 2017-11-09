@@ -23,19 +23,28 @@ class Jets::Build
       FileUtils.mkdir_p(Jets.tmp_build)
       Dir.chdir(Jets.tmp_build) do
         # These commands run from Jets.tmp_build
-        get_traveling_ruby
+        get_precompiled_ruby
         copy_gemfiles
         bundle_install
+
         configure_bundler
         copy_bundled_to_project
       end
     end
 
     def check_ruby_version
-      traveling_version = TRAVELING_RUBY_URL.match(/-((\d+)\.(\d+)\.(\d+))-/)[1]
-      if RUBY_VERSION != traveling_version
+      if RUBY_VERSION != "2.4.2" # TODO: remove hardcode RUBY_VERSION != "2.4.2"
         puts "You are using ruby version #{RUBY_VERSION}."
         abort("You must use ruby #{traveling_version} to build the project because it's what Traveling Ruby uses.".colorize(:red))
+      end
+    end
+
+    def get_precompiled_ruby
+      if File.exist?(bundled_ruby_dest)
+        puts "Precompiled Ruby already downloaded at #{Jets.tmp_build}/#{bundled_ruby_dest}."
+      else
+        FileUtils.mkdir_p("bundled")
+        system("cp -R /Users/tung/src/tongueroo/jets-workspace/mybundled #{bundled_ruby_dest}")
       end
     end
 

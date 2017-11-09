@@ -26,7 +26,7 @@ rack.multiprocess: false
 rack.run_once: false
 rack.url_scheme: "http"
 rack.hijack?: true
-rack.hijack: #<Proc:0x007f8ccf8db860@/Users/tung/.rbenv/versions/2.2.2/lib/ruby/gems/2.2.0/gems/rack-2.0.3/lib/rack/handler/webrick.rb:74 (lambda)>
+rack.hijack: #<Proc:0x007f8ccf8db860@/Users/tung/.rbenv/versions/2.2.2/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/handler/webrick.rb:74 (lambda)>
 rack.hijack_io: nil
 HTTP_VERSION: "HTTP/1.1"
 REQUEST_PATH: "/posts/tung/edit"
