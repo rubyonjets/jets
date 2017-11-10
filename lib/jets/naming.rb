@@ -4,10 +4,6 @@
 class Jets::Naming
   # Mainly used by build.rb
   class << self
-    def temp_code_zipfile
-      "#{Jets.root}code-temp.zip"
-    end
-
     def template_path(controller_class)
       underscored_controller = controller_class.to_s.underscore.dasherize
       "#{template_path_prefix}-#{underscored_controller}.yml"
@@ -32,25 +28,27 @@ class Jets::Naming
     end
 
     def template_path_prefix
-      "#{Jets.tmp_build}/templates/#{Jets.config.project_namespace}"
+      "#{Jets.tmpdir}/templates/#{Jets.config.project_namespace}"
     end
 
     def gateway_api_name
       "#{Jets.config.project_namespace}"
     end
 
-    @@md5 = nil # need to store the md5 in memory because the file gets renamed
-    def md5_code_zipfile
-      @@md5 ||= ENV['TEST'] ? 'TEST' : Digest::MD5.file(Jets::Naming.temp_code_zipfile).to_s[0..7]
-      "#{Jets.tmp_build}/code/code-#{@@md5}.zip"
-    end
-
     def code_s3_key
-      md5_zipfile = File.basename(Jets::Naming.md5_code_zipfile)
+      md5_zipfile = File.basename(md5_code_zipfile)
       if ENV['SKIP_CODE_UPLOAD']
         puts "Using jets/code/code.zip code in s3. Assumes this was manually uploaded!".colorize(:red)
       end
       ENV['SKIP_CODE_UPLOAD'] ? "jets/code/code.zip" : "jets/code/#{md5_zipfile}"
+    end
+
+    # build was already ran and that a file that contains the md5 path exists
+    # at Jets.tmpdir/code/current-md5-filename.txt
+    #
+    # md5_code_zipfile: /tmp/jets/demo/code/code-2e0e18f6.zip
+    def md5_code_zipfile
+      IO.read("#{Jets.tmpdir}/code/current-md5-filename.txt")
     end
   end
 end

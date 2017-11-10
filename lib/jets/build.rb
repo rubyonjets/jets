@@ -20,7 +20,7 @@ class Jets::Build
 
     LinuxRuby.new.build unless @options[:noop]
 
-    clean_start # cleans out templates and code-*.zip in Jets.tmp_build
+    clean_start # cleans out templates and code-*.zip in Jets.tmpdir
 
     puts "Building node shims."
     app_code_paths.each do |path|
@@ -28,8 +28,6 @@ class Jets::Build
       # puts "  #{deducer.path} => #{deducer.js_path}"
       generate_node_shim(path)
     end
-
-    create_zip_file
 
     # TODO: move this build.rb logic to cfn/builder.rb
     ## CloudFormation templates
@@ -79,8 +77,8 @@ class Jets::Build
 
   # Remove any current templates in the tmp build folder for a clean start
   def clean_start
-    FileUtils.rm_rf("#{Jets.tmp_build}/templates")
-    Dir.glob("#{Jets.tmp_build}/code-*.zip").each { |f| FileUtils.rm_f(f) }
+    FileUtils.rm_rf("#{Jets.tmpdir}/templates")
+    Dir.glob("#{Jets.tmpdir}/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
   def app_code_paths
@@ -99,27 +97,6 @@ class Jets::Build
   # Rids of the Jets.root at beginning
   def relative_path(path)
     path.sub(Jets.root, '')
-  end
-
-  def create_zip_file
-    puts 'Creating zip file.'
-    Dir.chdir(Jets.root) do
-      # TODO: create_zip_file adds unnecessary files like log files. cp and into temp directory and clean the directory up first.
-      success = system("zip -rq #{File.basename(temp_code_zipfile)} .")
-      dir = File.dirname(md5_code_zipfile)
-      FileUtils.mkdir_p(dir) unless File.exist?(dir)
-      FileUtils.mv(temp_code_zipfile, md5_code_zipfile)
-      abort('Creating zip failed, exiting.') unless success
-      puts "Zip file created at: #{md5_code_zipfile.colorize(:green)}"
-    end
-  end
-
-  def temp_code_zipfile
-    Jets::Naming.temp_code_zipfile
-  end
-
-  def md5_code_zipfile
-    Jets::Naming.md5_code_zipfile
   end
 
   # Make sure that this command is ran within a jets project

@@ -16,7 +16,7 @@ describe Jets::Cfn::TemplateBuilders::ApiGatewayBuilder do
       resource_types = resources.values.map { |i| i["Type"] }
       expect(resource_types).to include("AWS::ApiGateway::Resource")
 
-      expect(builder.template_path).to eq "#{Jets.tmp_build}/templates/demo-test-2-api-gateway.yml"
+      expect(builder.template_path).to eq "#{Jets.tmpdir}/templates/demo-test-2-api-gateway.yml"
     end
   end
 end

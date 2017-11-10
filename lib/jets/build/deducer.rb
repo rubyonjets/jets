@@ -57,11 +57,11 @@ class Jets::Build
     end
 
     # Used to show user where the generated files gets written to.
-    # Example return: "#{Jets.tmp_build}/templates/proj-dev-posts-controller.yml"
+    # Example return: "#{Jets.tmpdir}/templates/proj-dev-posts-controller.yml"
     def cfn_path
       stack_name = File.basename(@path, ".rb").dasherize
       stack_name = "#{Jets.config.project_namespace}-#{stack_name}"
-      "#{Jets.tmp_build}/templates/#{stack_name}.yml"
+      "#{Jets.tmpdir}/templates/#{stack_name}.yml"
     end
   end
 end
