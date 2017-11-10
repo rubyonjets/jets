@@ -31,14 +31,31 @@ class Jets::Build
         get_linux_ruby
         get_linux_gems
         # finally copy project and bundled folder into this project
-        copy_project
-        copy_bundled_to_project
-        create_zip_file
+        finalize_project
       end
     end
 
-    # TODO: create_zip_file adds unnecessary files like log files. cp and into
-    # temp directory and clean the directory up first.
+    def finalize_project
+      copy_project
+      clean_project
+      # clean_project might remove bundled and .bundle/config if user is
+      # ignore it it so. we run the copy commands after cleaning.
+      copy_bundle_config
+      copy_bundled_to_project
+      create_zip_file
+    end
+
+    def copy_bundle_config
+      # Override project's .bundle/config and ensure that .bundle/config matches
+      # at these 2 spots:
+      #   app_code/.bundle/config
+      #   bundled/gems/.bundle/config
+      new_bundle_config = "#{Jets.tmpdir}/.bundle/config"
+      app_bundle_config = "#{temp_app_code}/.bundle/config"
+      FileUtils.mkdir_p(File.dirname(app_bundle_config))
+      FileUtils.cp(new_bundle_config, app_bundle_config)
+    end
+
     def create_zip_file
       puts "Creating zip file."
       temp_code_zipfile = "#{Jets.tmpdir}/code/code-temp.zip"
@@ -196,46 +213,20 @@ class Jets::Build
       Bundler.with_clean_env do
         # cd /tmp/jets/demo/bundled
         success = system(
-          "cd #{full("bundled")} && " \
-          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path gems --without development test"
+          "cd #{Jets.tmpdir} && " \
+          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
         )
 
         abort('Bundle install failed, exiting.') unless success
       end
-
-      configure_bundler
 
       puts 'Bundle install success.'
     end
 
     def copy_gemfiles
       FileUtils.mkdir_p(full("bundled"))
-      FileUtils.cp("#{@full_project_path}Gemfile", "#{full("bundled")}/Gemfile")
-      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{full("bundled")}/Gemfile.lock")
-    end
-
-    # The wrapper script doesnt seem to work unless you move the gem files in the
-    # bundled/gems folder and export it to BUNDLE_GEMFILE in the
-    # wrapper script.
-    # TODO: Is configure_bundler really needed? Test on a Linux box
-    def configure_bundler
-      # This happens in /tmp/jets/demo
-      # bundled_gems_dest: bundled/gems
-      puts "Moving gemfiles into #{full(bundled_gems_dest)}/"
-      FileUtils.mv("bundled/Gemfile", "#{bundled_gems_dest}/")
-      FileUtils.mv("bundled/Gemfile.lock", "#{bundled_gems_dest}/")
-
-      # Copy new .bundle/config:
-      # When `bundle install` was ran earlier it generate a .bundler/config
-      # We want to use this one because it will have the right
-      # --without development test settings
-      bundle_config_dest = "#{bundled_gems_dest}/.bundle/config"
-      FileUtils.mkdir_p(File.dirname(bundle_config_dest))
-      FileUtils.cp("bundled/.bundle/config", bundle_config_dest)
-      # bundle_config_dest: bundled/gems/.bundle/config
-
-      # Later we will also copy this bundled/gems/.bundle/config
-      # to the app_code before we zip it up.
+      FileUtils.cp("#{@full_project_path}Gemfile", "#{Jets.tmpdir}/Gemfile")
+      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{Jets.tmpdir}/Gemfile.lock")
     end
 
     # Copy project into temporarly directory. Do this so we can keep the project
@@ -245,14 +236,28 @@ class Jets::Build
       puts "Copying project to temporary folder to build it: #{full(temp_app_code)}"
       FileUtils.rm_rf(temp_app_code) # remove current app_code folder
       FileUtils.cp_r(@full_project_path, temp_app_code)
+    end
 
-      # Override project's .bundle/config and ensure that .bundle/config matches
-      # at these 2 spots:
-      #   app_code/.bundle/config
-      #   bundled/gems/.bundle/config
-      app_bundle_config = "#{temp_app_code}/.bundle/config"
-      FileUtils.mkdir_p(File.dirname(app_bundle_config))
-      FileUtils.cp("bundled/gems/.bundle/config", app_bundle_config)
+    def clean_project
+      puts "Cleaning up project and removing ignored files that are not needed to be packaged before zipping up."
+      excludes = %w[.git tmp log]
+      excludes += get_excludes("#{temp_app_code}/.gitignore")
+      excludes += get_excludes("#{temp_app_code}/.dockerignore")
+      excludes.each do |exclude|
+        exclude = exclude.sub(%r{^/},'') # remove leading slash
+        remove_path = "#{temp_app_code}/#{exclude}"
+        FileUtils.rm_rf(remove_path)
+        puts "rm -rf #{remove_path}"
+      end
+    end
+
+    def get_excludes(file)
+      path = file
+      return [] unless File.exist?(path)
+
+      exclude = File.read(path).split("\n")
+      exclude.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
+      # IE: ["/handlers", "/bundled*", "/vendor/jets]
     end
 
     def check_ruby_version
@@ -327,10 +332,6 @@ class Jets::Build
 
     def bundled_ruby_dest(full=false)
       "bundled/ruby"
-    end
-
-    def bundled_gems_dest(full=false)
-      "bundled/gems"
     end
 
     def ruby_tarfile
