@@ -67,15 +67,16 @@ class Jets::Build
       # the md5_zip_dest.
       # It is a pain to pass this all the way up from the
       # LinuxRuby class.
-      # It is also a pain to keep this stored in a centralized Naming
-      # class because we cannot calculate the md5 until this file actually
-      # gets generated.
       # Let's store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
       # file that can be read from any places where this is needed.
       # Can also just generate a "fake file" for specs
     end
 
     def get_linux_gems
+      # We only want to check for darwin extensions.
+      # If the user is compiling native extensions on a linux target
+      # we directly upload them to Lambda.
+      #
       # Example paths:
       #   bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/nokogiri-1.8.1
       #   bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
@@ -203,6 +204,7 @@ class Jets::Build
       end
 
       configure_bundler
+
       puts 'Bundle install success.'
     end
 
@@ -215,6 +217,7 @@ class Jets::Build
     # The wrapper script doesnt seem to work unless you move the gem files in the
     # bundled/gems folder and export it to BUNDLE_GEMFILE in the
     # wrapper script.
+    # TODO: Is configure_bundler really needed? Test on a Linux box
     def configure_bundler
       # This happens in /tmp/jets/demo
       # bundled_gems_dest: bundled/gems
@@ -222,15 +225,17 @@ class Jets::Build
       FileUtils.mv("bundled/Gemfile", "#{bundled_gems_dest}/")
       FileUtils.mv("bundled/Gemfile.lock", "#{bundled_gems_dest}/")
 
-      bundle_config_path = "#{bundled_gems_dest}/.bundle/config"
-      puts "Generating #{full(bundle_config_path)}"
-      FileUtils.mkdir_p(File.dirname(bundle_config_path))
-      bundle_config =<<-EOL
-BUNDLE_PATH: .
-BUNDLE_WITHOUT: development test
-BUNDLE_DISABLE_SHARED_GEMS: '1'
-EOL
-      IO.write(bundle_config_path, bundle_config)
+      # Copy new .bundle/config:
+      # When `bundle install` was ran earlier it generate a .bundler/config
+      # We want to use this one because it will have the right
+      # --without development test settings
+      bundle_config_dest = "#{bundled_gems_dest}/.bundle/config"
+      FileUtils.mkdir_p(File.dirname(bundle_config_dest))
+      FileUtils.cp("bundled/.bundle/config", bundle_config_dest)
+      # bundle_config_dest: bundled/gems/.bundle/config
+
+      # Later we will also copy this bundled/gems/.bundle/config
+      # to the app_code before we zip it up.
     end
 
     # Copy project into temporarly directory. Do this so we can keep the project
@@ -240,6 +245,14 @@ EOL
       puts "Copying project to temporary folder to build it: #{full(temp_app_code)}"
       FileUtils.rm_rf(temp_app_code) # remove current app_code folder
       FileUtils.cp_r(@full_project_path, temp_app_code)
+
+      # Override project's .bundle/config and ensure that .bundle/config matches
+      # at these 2 spots:
+      #   app_code/.bundle/config
+      #   bundled/gems/.bundle/config
+      app_bundle_config = "#{temp_app_code}/.bundle/config"
+      FileUtils.mkdir_p(File.dirname(app_bundle_config))
+      FileUtils.cp("bundled/gems/.bundle/config", app_bundle_config)
     end
 
     def check_ruby_version
