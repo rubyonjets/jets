@@ -3,6 +3,7 @@ require "open-uri"
 require "colorize"
 require "socket"
 require "net/http"
+require "pp"
 
 class Jets::Build
   RUBY_URL = 'https://s3.amazonaws.com/boltops-gems/rubies/ruby-2.4.2-linux-x86_64.tar.gz'.freeze
@@ -78,21 +79,28 @@ class Jets::Build
       end
     end
 
+    # Example url:
+    #   https://s3.amazonaws.com/boltops-gems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
     def url_exists?(url)
-      puts "Checking url exists: #{url}"
+      puts "Checking url: #{url}"
       url = URI.parse(url)
-      req = Net::HTTP.new(url.host, url.port)
+      req = Net::HTTP.new(url.host, url.port).tap do |http|
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      end
       res = req.request_head(url.path)
-      true
-    rescue SocketError, Errno::ECONNRESET
+      res.code == "200"
+    rescue SocketError, OpenURI::HTTPError
       false
     end
 
     # gem_name: byebug-9.1.0
+    # Example url:
+    #   https://s3.amazonaws.com/boltops-gems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
     def gem_url(gem_name)
       # TODO: make boltops-gems downloads s3 url configurable
       folder = gem_name.gsub(/-(\d+\.\d+\.\d+.*)/,'') # folder byebug
-      "https://s3.amazonaws.com/boltops-gems/gems/#{folder}/#{gem_name}-x86_64-linux.tar.gz"
+      "https://s3.amazonaws.com/boltops-gems/gems/#{RUBY_VERSION}/#{folder}/#{gem_name}-x86_64-linux.tar.gz"
     end
 
     # Input: bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
