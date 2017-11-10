@@ -79,17 +79,20 @@ class Jets::Build
     end
 
     def url_exists?(url)
-      url = URI.parse("http://www.someurl.lc/")
+      puts "Checking url exists: #{url}"
+      url = URI.parse(url)
       req = Net::HTTP.new(url.host, url.port)
       res = req.request_head(url.path)
       true
-    rescue SocketError => e
+    rescue SocketError, Errno::ECONNRESET
       false
     end
 
+    # gem_name: byebug-9.1.0
     def gem_url(gem_name)
       # TODO: make boltops-gems downloads s3 url configurable
-      "https://s3.amazonaws.com/boltops-gems/gems/#{gem_name}-x86_64-linux}.tar.gz"
+      folder = gem_name.gsub(/-(\d+\.\d+\.\d+.*)/,'') # folder byebug
+      "https://s3.amazonaws.com/boltops-gems/gems/#{folder}/#{gem_name}-x86_64-linux.tar.gz"
     end
 
     # Input: bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
