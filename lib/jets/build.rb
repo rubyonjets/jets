@@ -3,7 +3,7 @@ require 'digest'
 class Jets::Build
   autoload :Deducer, "jets/build/deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
-  autoload :TravelingRuby, "jets/build/traveling_ruby"
+  autoload :LinuxRuby, "jets/build/linux_ruby"
 
   def initialize(options)
     @options = options
@@ -18,7 +18,7 @@ class Jets::Build
   def build
     confirm_jets_project
 
-    TravelingRuby.new.build unless @options[:noop]
+    LinuxRuby.new.build unless @options[:noop]
 
     clean_start # cleans out templates and code-*.zip in Jets.tmp_build
 
@@ -28,6 +28,7 @@ class Jets::Build
       # puts "  #{deducer.path} => #{deducer.js_path}"
       generate_node_shim(path)
     end
+
     create_zip_file
 
     # TODO: move this build.rb logic to cfn/builder.rb
