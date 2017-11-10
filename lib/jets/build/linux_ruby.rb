@@ -48,7 +48,7 @@ class Jets::Build
       check_availability(gem_names)
 
       gem_names.each do |gem_name|
-        download_linux_gem(gem_name)
+        get_linux_gem(gem_name)
       end
     end
 
@@ -109,11 +109,30 @@ class Jets::Build
       File.basename(path)
     end
 
+    # Downloads and extracts the linux gem into the proper directory.
+    # Extracts to: bundled/gems/ruby
+    # The downloaded tarball already has the full directory structure
+    # with the ruby version, example:
+    #   2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
+    # So all we need to do is extract the tarball into bundled/gems/ruby.
+    #
     # gem_name: byebug-9.1.0
-    def download_linux_gem(gem_name)
+    def get_linux_gem(gem_name)
+      # download - also move to /tmp/jets_build/demo/compiled_gems folder
       url = gem_url(gem_name)
-      dest = File.basename(url)
-      download_url(url, dest)
+      tarball = "#{Jets.tmp_build}/extensions/#{File.basename(url)}"
+      if File.exist?(tarball)
+        puts "Compiled gem already downloaded #{tarball}"
+      else
+        download_url(url, tarball)
+      end
+      # extract
+      gems_ruby_folder = "#{Jets.tmp_build}/bundled/gems/ruby"
+      puts "Unpacking compiled gem #{tarball} into #{gems_ruby_folder}"
+
+      success = system("tar -xzf #{tarball} -C #{gems_ruby_folder}")
+      abort("Unpacking gem #{tarball} failed") unless success
+      puts "Unpacking gem #{tarball} successful."
     end
 
     # Installs gems on the current target system: both compiled and non-compiled.
@@ -209,6 +228,8 @@ EOL
     end
 
     def download_url(source, dest)
+      FileUtils.mkdir_p(File.dirname(dest)) # ensure parent folder exists
+
       File.open(dest, 'wb') do |saved_file|
         # the following "open" is provided by open-uri
         open(source, 'rb') do |read_file|
