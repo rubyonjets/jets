@@ -57,6 +57,16 @@ module Jets
       Jets::Console.run
     end
 
+    desc "call", "Invoke or 'call' a lambda function on AWS"
+    long_desc Help.call
+    option :invocation_type, default: "RequestResponse", desc: "RequestResponse, Event, or DryRun"
+    option :log_type, default: "Tail", desc: "Works if invocation_type set to RequestResponse"
+    option :qualifier, desc: "Lambda function version or alias name"
+    def call(function_name, payload)
+      Jets::Call.new(function_name, payload, options).run
+    end
+    # Command is called 'call' because invoke is a Thor keyword.
+
     desc "process TYPE", "process subtasks"
     subcommand "process", Jets::Process
 

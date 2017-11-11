@@ -48,14 +48,14 @@ After deployment, you can test the Lambda functions with the AWS Lambda console 
 ### CLI test
 
 ```
-jets invoke posts-controller-index '{"test":1}'
-jets invoke help # for more info like passing the payload via a file
+jets call posts-controller-index '{"test":1}'
+jets call help # for more info like passing the payload via a file
 ```
 
 The corresponding `aws lambda` cli commands are:
 
 ```
-aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}'
+aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}' outfile.txt
 aws lambda invoke help
 ```
 

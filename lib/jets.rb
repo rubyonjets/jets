@@ -32,6 +32,7 @@ module Jets
   autoload :Router, "jets/router"
   autoload :Console, "jets/console"
   autoload :Erb, "jets/erb"
+  autoload :Call, "jets/call"
 
   autoload :BaseLambdaFunction, 'jets/base_lambda_function'
   autoload :Controller, 'jets/controller'
