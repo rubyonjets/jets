@@ -11,7 +11,6 @@ PATH
       colorize
       hashie
       kramdown
-      nokogiri (= 1.6.5)
       rack
       recursive-open-struct
       text-table
@@ -66,10 +65,10 @@ GEM
     loofah (2.1.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mini_portile (0.6.2)
+    mini_portile2 (2.3.0)
     minitest (5.10.3)
-    nokogiri (1.6.5)
-      mini_portile (~> 0.6.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     rack (2.0.3)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
