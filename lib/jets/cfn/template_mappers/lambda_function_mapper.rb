@@ -24,7 +24,13 @@ class Jets::Cfn::TemplateMappers
     #   "#{Jets.config.project_namespace}-sleep-job-perform"
     #   "demo-dev-sleep-job-perform"
     def function_name
-      method = "#{@process_type_class}_#{@method_name}".underscore.dasherize
+      # @process_type_class: admin/pages-controller
+      # @@method_name: index
+      method = @process_type_class.underscore
+      # method: admin/pages_controller
+      method = method.sub('/','-') + "-#{@method_name}"
+      puts "function_name method: #{method}".colorize(:cyan)
+      # method: admin-pages_controller-index
       "#{Jets.config.project_namespace}-#{method}"
     end
 

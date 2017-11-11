@@ -247,7 +247,7 @@ class Jets::Build
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{temp_app_code}/#{exclude}"
         FileUtils.rm_rf(remove_path)
-        puts "rm -rf #{remove_path}"
+        puts "rm -rf #{Jets.tmpdir}/#{remove_path}"
       end
     end
 
