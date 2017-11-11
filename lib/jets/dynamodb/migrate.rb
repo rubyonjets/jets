@@ -1,7 +1,7 @@
 require "dynamodb_model"
 
 # jets generate scaffold posts id:string title:string description:string
-class Jets::Db::Migrate
+class Jets::Dynamodb::Migrate
   def initialize(path, options)
     @path = path
     @options = options
@@ -14,7 +14,13 @@ class Jets::Db::Migrate
   end
 
   def migrate
-    require "#{Jets.root}#{@path}"
+    path = "#{Jets.root}#{@path}"
+    unless File.exist?(path)
+      puts "Unable to find the migration file: #{path}"
+      exit 1
+    end
+
+    require path
     migration_class = get_migration_class
     migration_class.new.up
   end

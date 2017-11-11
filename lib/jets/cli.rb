@@ -72,10 +72,7 @@ module Jets
     desc "process TYPE", "process subtasks"
     subcommand "process", Jets::Process
 
-    desc "generate TYPE", "generate subtasks"
-    subcommand "generate", Jets::Generate
-
-    desc "db TYPE", "db subtasks"
-    subcommand "db", Jets::Db
+    desc "dynamodb TYPE", "dynamodb subtasks"
+    subcommand "dynamodb", Jets::Dynamodb
   end
 end

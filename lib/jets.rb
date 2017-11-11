@@ -18,7 +18,7 @@ module Jets
   # subtasks
   autoload :Process, 'jets/process'
   autoload :Generate, 'jets/generate'
-  autoload :Db, 'jets/db'
+  autoload :Dynamodb, 'jets/dynamodb'
 
   autoload :CLI, "jets/cli"
   autoload :Build, 'jets/build'

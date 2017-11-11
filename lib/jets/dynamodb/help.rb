@@ -1,6 +1,18 @@
-class Jets::Generate::Help
+class Jets::Dynamodb::Help
   class << self
-    def migration
+    def migrate
+<<-EOL
+Runs migrations.
+
+Example:
+
+jets db migrate path/to/migration
+
+jets db migrate db/migrate/posts_migration.rb
+EOL
+    end
+
+    def generate
 <<-EOL
 Generates a migration file which can be used to create a DynamoDB table.  To run the migration file use `jets db:migrate`.
 
@@ -26,16 +38,6 @@ $ jets generate migration posts --partition-key id # default attribute type is s
 $ jets generate migration posts --partition-key id:number # attribute type will be number
 
 $ jets generate migration comments --partition-key post_id:string --sort-key created_at:string
-EOL
-    end
-
-    def scaffold
-<<-EOL
-Generates scaffold CRUD files for the project.
-
-Example:
-
-$ jets generate scaffold posts id:string title:string description:string
 EOL
     end
   end
