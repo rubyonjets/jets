@@ -1,5 +1,6 @@
 require "aws-sdk-s3"
 require "aws-sdk-cloudformation"
+require "aws-sdk-lambda"
 
 module Jets::AwsServices
   def s3
@@ -12,6 +13,10 @@ module Jets::AwsServices
 
   def cfn
     @cfn ||= Aws::CloudFormation::Client.new
+  end
+
+  def lambda
+    @lambda ||= Aws::Lambda::Client.new
   end
 
   def stack_exists?(stack_name)

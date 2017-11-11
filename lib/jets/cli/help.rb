@@ -57,6 +57,31 @@ $ jets console
 EOL
         end
 
+        def call
+<<-EOL
+Invoke the lambda function on AWS. Call a few extra things for convenience:
+
+1. Invokes the lambda function on AWS
+2. Prints out the Lambda log to stderr.
+3. Prints out the response from the lambda funtion to stdout.
+
+The response output is directed to stdout only so you can pipe it into another command.
+
+Examples:
+
+jets call posts-controller-index '{"test":1}'
+
+Can safely pipe output to another command since the logs are printed out to to stderr.
+
+jets call posts-controller-index '{"test":1}' | jq '.'
+
+The equivalent AWS Lambda CLI command:
+
+aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}' outfile.txt
+
+So `jets invoke` adds the function namespace making the command shorter.
+EOL
+        end
       end
     end
   end

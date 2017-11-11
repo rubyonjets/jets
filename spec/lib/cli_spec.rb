@@ -42,5 +42,11 @@ describe Jets::CLI do
       expect(out).to include("Verb")
       expect(out).to include("Path")
     end
+
+    it "call" do
+      out = execute("bin/jets call #{@args}")
+      puts out
+      expect(out).to include("Calling lambda function on AWS")
+    end
   end
 end
