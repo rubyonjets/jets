@@ -22,8 +22,10 @@ class Jets::Call
     $stderr.puts(text)
   end
 
-  def get_function_name(short_function_name)
-    [Jets.config.project_namespace, short_function_name].join('-')
+  def get_function_name(short_name)
+    short_name = short_name.sub("#{Jets.config.project_namespace}-", "")
+    # Strip the project namespace if the user has accidentally added it
+    [Jets.config.project_namespace, short_name].join('-')
   end
 
   def run
@@ -55,6 +57,7 @@ class Jets::Call
     return unless RUBY_PLATFORM =~ /darwin/
     return unless system("type pbcopy > /dev/null")
 
+    # TODO: for add_console_link_to_clipboard get the region from the ~/.aws/config and AWS_PROFILE setting
     region = Aws.config[:region] || 'us-east-1'
     link = "https://console.aws.amazon.com/lambda/home?region=#{region}#/functions/#{@function_name}?tab=configuration"
     system("echo #{link} | pbcopy")

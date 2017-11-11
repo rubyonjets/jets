@@ -63,6 +63,7 @@ module Jets
     option :log_type, default: "Tail", desc: "Works if invocation_type set to RequestResponse"
     option :qualifier, desc: "Lambda function version or alias name"
     option :show_log, type: :boolean, desc: "Shows last 4KB of log in the x-amz-log-result header"
+    option :lambda_proxy, type: :boolean, default: true, desc: "Enables automatic Lambda proxy transformation of the event payload"
     def call(function_name, payload='')
       Jets::Call.new(function_name, payload, options).run
     end

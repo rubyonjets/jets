@@ -59,31 +59,39 @@ EOL
 
         def call
 <<-EOL
-Invoke the lambda function on AWS. Call a few extra things for convenience:
+Invoke the lambda function on AWS. The `jets call` command can do a few extra things for your convenience:
 
-1. Invokes the lambda function on AWS
-2. Prints out the Lambda log to stderr.
-3. Prints out the response from the lambda funtion to stdout.
+It adds the function namespace to the function name.  So, you pass in "posts-controller-index" and the Lambda function is "demo-dev-posts-controller-index".
 
-Only the response output is directed to stdout so you can safely pipe it into another command.  Other logging output is direct to stderr. This way you can pipe the results of the command to tools like jq.
+It can print out the last 4KB of the lambda logs. The logging output is directed to stderr.  The response output from the lambda function itself is directed to stdout.  This is done so you can safely pipe the results of the call command to other tools like jq.
+
+For controllers, the event you pass at the CLI is automatically transformed into Lambda Proxy payload that contains the params as the queryStringParameters.  For example:
+
+{"test":1}
+
+Gets changed to:
+
+{"queryStringParameters":{"test":1}}
+
+This spares you from assembling the event payload manually to the payload that Jets controllers normally recieve.  If you would like to disable this Lambda Proxy transformation then use the `--no-lambda-proxy` flag.
+
+For jobs, the event is passed through untouched.
 
 Examples:
 
+jets call hard-job-drive '{"test":1}'
+
+jets call hard-job-drive '{"test":1}' | jq .
+
 jets call posts-controller-index # event payload is optional
 
-jets call posts-controller-index '{"test":1}'
-
-jets call posts-controller-index '{"test":1}' | jq '.'
-
-jets call posts-controller-show '{"test":1}' --show-log | jq .
+jets call posts-controller-index '{"test":1}' --show-log | jq .
 
 The equivalent AWS Lambda CLI command:
 
-aws lambda invoke --function-name demo-dev-posts-controller-index --payload '{"test":1}' outfile.txt
+aws lambda invoke --function-name demo-dev-hard-job-dig --payload '{"test":1}' outfile.txt ; cat outfile.txt | jq '.'
 
-cat outfile.txt | jq '.'
-
-`jets invoke` adds the function namespace making the command shorter.
+aws lambda invoke --function-name demo-dev-posts-controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt ; cat outfile.txt | jq '.'
 
 EOL
         end
