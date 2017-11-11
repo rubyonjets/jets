@@ -15,12 +15,19 @@ class Jets::Call
     @qualifier = @qualifier
   end
 
+  # For this class redirect puts to stderr so user can pipe output to tools like
+  # jq. Example:
+  #   jets call posts-controller-index '{"test":1}' | jq .
+  def puts(text)
+    $stderr.puts(text)
+  end
+
   def get_function_name(short_function_name)
     [Jets.config.project_namespace, short_function_name].join('-')
   end
 
   def run
-    puts("Calling lambda function on AWS")
+    puts "Calling lambda function #{@function_name} on AWS".colorize(:green)
     return if @options[:noop]
     resp = lambda.invoke(
       # client_context: client_context,
@@ -31,11 +38,12 @@ class Jets::Call
       qualifier: @qualifier, # "1",
     )
 
-    pp resp
+    if @options[:show_log]
+      puts "Last 4KB of log in the x-amz-log-result header:".colorize(:green)
+      puts Base64.decode64(resp.log_result)
+    end
 
-    # puts "log_result #{resp.log_result}"
-    puts Base64.decode64(resp.log_result)
-
+    $stdout.puts resp.payload.read # only thing that goes to stdout
   end
 
   # Client context must be a valid Base64-encoded JSON object

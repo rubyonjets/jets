@@ -34,14 +34,14 @@ Gem::Specification.new do |spec|
   spec.add_dependency "text-table"
   spec.add_dependency "rack"
 
-  # spec.add_dependency "byebug"
-  # spec.add_dependency "bundler"
-  # spec.add_dependency "rake"
-  # spec.add_dependency "rspec"
+  spec.add_development_dependency "byebug"
+  spec.add_development_dependency "bundler"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
 
   # ruby_dep-1.5.0 requires ruby version >= 2.2.5, which is incompatible with the current version, ruby 2.2.2p95
-  # spec.add_dependency "guard"
-  # spec.add_dependency "guard-bundler"
-  # spec.add_dependency "guard-rspec"
-  # spec.add_dependency "codeclimate-test-reporter", group: :test, require: nil
+  # spec.add_development_dependency "guard"
+  # spec.add_development_dependency "guard-bundler"
+  # spec.add_development_dependency "guard-rspec"
+  # spec.add_development_dependency "codeclimate-test-reporter", group: :test, require: nil
 end

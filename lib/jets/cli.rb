@@ -57,12 +57,13 @@ module Jets
       Jets::Console.run
     end
 
-    desc "call", "Invoke or 'call' a lambda function on AWS"
+    desc "call FUNCTION EVENT", "Invoke or 'call' a lambda function on AWS"
     long_desc Help.call
     option :invocation_type, default: "RequestResponse", desc: "RequestResponse, Event, or DryRun"
     option :log_type, default: "Tail", desc: "Works if invocation_type set to RequestResponse"
     option :qualifier, desc: "Lambda function version or alias name"
-    def call(function_name, payload)
+    option :show_log, type: :boolean, desc: "Shows last 4KB of log in the x-amz-log-result header"
+    def call(function_name, payload='')
       Jets::Call.new(function_name, payload, options).run
     end
     # Command is called 'call' because invoke is a Thor keyword.
