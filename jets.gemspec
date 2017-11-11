@@ -34,4 +34,15 @@ Gem::Specification.new do |spec|
 
   # locking down for TravelingRuby for now
   spec.add_dependency "nokogiri", "1.6.5"
+
+  spec.add_dependency "byebug"
+  spec.add_dependency "bundler"
+  spec.add_dependency "rake"
+  spec.add_dependency "rspec"
+
+  # ruby_dep-1.5.0 requires ruby version >= 2.2.5, which is incompatible with the current version, ruby 2.2.2p95
+  # spec.add_dependency "guard"
+  # spec.add_dependency "guard-bundler"
+  # spec.add_dependency "guard-rspec"
+  # spec.add_dependency "codeclimate-test-reporter", group: :test, require: nil
 end
