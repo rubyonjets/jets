@@ -4,11 +4,11 @@ require "json"
 class Jets::Call
   include Jets::AwsServices
 
-  def initialize(short_function_name, payload, options)
+  def initialize(short_function_name, event, options)
     @options = options
 
     @function_name = get_function_name(short_function_name)
-    @payload = payload
+    @event = event
 
     @invocation_type = options[:invocation_type] || "RequestResponse"
     @log_type = options[:log_type] || "Tail"
@@ -34,12 +34,14 @@ class Jets::Call
 
     add_console_link_to_clipboard
 
+    # puts "payload #{@payload.inspect}"
+
     resp = lambda.invoke(
       # client_context: client_context,
       function_name: @function_name,
       invocation_type: @invocation_type, # "Event", # RequestResponse
       log_type: @log_type, # pretty sweet
-      payload: @payload, # "fileb://file-path/input.json",
+      payload: transformed_event, # "fileb://file-path/input.json",
       qualifier: @qualifier, # "1",
     )
 
@@ -49,6 +51,15 @@ class Jets::Call
     end
 
     $stdout.puts resp.payload.read # only thing that goes to stdout
+  end
+
+  def transformed_event
+    return @event unless @function_name.include?("-controller-")
+    return @event if @options[:lambda_proxy] == false
+
+    event = JSON.load(@event)
+    lambda_proxy = {"queryStringParameters" => event}
+    JSON.dump(lambda_proxy)
   end
 
   # So use can quickly paste this into their browser if they want to see the function

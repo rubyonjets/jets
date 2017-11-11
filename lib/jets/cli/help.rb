@@ -87,6 +87,8 @@ jets call posts-controller-index # event payload is optional
 
 jets call posts-controller-index '{"test":1}' --show-log | jq .
 
+jets call posts-controller-index 'file://event.json' --show-log | jq .
+
 The equivalent AWS Lambda CLI command:
 
 aws lambda invoke --function-name demo-dev-hard-job-dig --payload '{"test":1}' outfile.txt ; cat outfile.txt | jq '.'
