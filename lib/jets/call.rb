@@ -29,6 +29,9 @@ class Jets::Call
   def run
     puts "Calling lambda function #{@function_name} on AWS".colorize(:green)
     return if @options[:noop]
+
+    add_console_link_to_clipboard
+
     resp = lambda.invoke(
       # client_context: client_context,
       function_name: @function_name,
@@ -44,6 +47,18 @@ class Jets::Call
     end
 
     $stdout.puts resp.payload.read # only thing that goes to stdout
+  end
+
+  # So use can quickly paste this into their browser if they want to see the function
+  # via the Lambda console
+  def add_console_link_to_clipboard
+    return unless RUBY_PLATFORM =~ /darwin/
+    return unless system("type pbcopy > /dev/null")
+
+    region = Aws.config[:region] || 'us-east-1'
+    link = "https://console.aws.amazon.com/lambda/home?region=#{region}#/functions/#{@function_name}?tab=configuration"
+    system("echo #{link} | pbcopy")
+    puts "Pro tip: The Lambda Console Link to the #{@function_name} function has been added to your clipboard."
   end
 
   # Client context must be a valid Base64-encoded JSON object
