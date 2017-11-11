@@ -15,13 +15,6 @@ class Jets::Call
     @qualifier = @qualifier
   end
 
-  # For this class redirect puts to stderr so user can pipe output to tools like
-  # jq. Example:
-  #   jets call posts-controller-index '{"test":1}' | jq .
-  def puts(text)
-    $stderr.puts(text)
-  end
-
   def get_function_name(short_name)
     short_name = short_name.sub("#{Jets.config.project_namespace}-", "")
     # Strip the project namespace if the user has accidentally added it
@@ -92,5 +85,12 @@ class Jets::Call
       }
     }
     Base64.encode64(JSON.dump(context))
+  end
+
+  # For this class redirect puts to stderr so user can pipe output to tools like
+  # jq. Example:
+  #   jets call posts-controller-index '{"test":1}' | jq .
+  def puts(text)
+    $stderr.puts(text)
   end
 end
