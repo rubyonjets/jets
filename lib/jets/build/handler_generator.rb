@@ -14,6 +14,8 @@ class Jets::Build
     end
 
     def generate
+      Jets.boot
+
       deducer = Jets::Build::Deducer.new(@path)
 
       js_path = "#{Jets.root}#{deducer.js_path}"

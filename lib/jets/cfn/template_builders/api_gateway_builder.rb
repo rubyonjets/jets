@@ -12,7 +12,7 @@ class Jets::Cfn::TemplateBuilders
     def compose
       return if @options[:stack_type] == 'minimal'
 
-      puts "Building API Gateway Resources template."
+      puts "Building API Gateway template."
       add_gateway_rest_api
       add_gateway_routes
     end
@@ -24,8 +24,6 @@ class Jets::Cfn::TemplateBuilders
 
     # If the are routes in config/routes.rb add Gateway API in parent stack
     def add_gateway_rest_api
-      return unless Jets::Router.routes.size > 0
-
       add_resource("RestApi", "AWS::ApiGateway::RestApi",
         Name: Jets::Naming.gateway_api_name
       )

@@ -5,7 +5,7 @@ class Jets::Naming
   # Mainly used by build.rb
   class << self
     def template_path(controller_class)
-      underscored_controller = controller_class.to_s.underscore.dasherize
+      underscored_controller = controller_class.to_s.underscore.gsub('/','-')
       "#{template_path_prefix}-#{underscored_controller}.yml"
     end
 

@@ -16,8 +16,6 @@ def print(text)
   $stderr.print(text)
 end
 
-Jets.boot # TODO: Can Jets.boot be called Jets in the run method?
-
 class Jets::Process::MainProcessor
   attr_reader :event, :context, :handler
   def initialize(event, context, handler)
@@ -28,6 +26,8 @@ class Jets::Process::MainProcessor
   end
 
   def run
+    Jets.boot
+
     # Use the handler to deduce app code to run.
     # Example handlers: handlers/controllers/posts.create, handlers/jobs/sleep.perform
     #

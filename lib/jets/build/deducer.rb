@@ -55,13 +55,5 @@ class Jets::Build
     def js_path
       @path.sub("app", "handlers").sub("_#{process_type}.rb", ".js")
     end
-
-    # Used to show user where the generated files gets written to.
-    # Example return: "#{Jets.tmpdir}/templates/proj-dev-posts-controller.yml"
-    def cfn_path
-      stack_name = File.basename(@path, ".rb").dasherize
-      stack_name = "#{Jets.config.project_namespace}-#{stack_name}"
-      "#{Jets.tmpdir}/templates/#{stack_name}.yml"
-    end
   end
 end

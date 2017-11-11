@@ -11,10 +11,24 @@ describe Jets::Build::Deducer do
       expect(deducer.process_type).to eq("controller")
       expect(deducer.handler_for(:create)).to eq "handlers/controllers/posts.create"
       expect(deducer.js_path).to eq "handlers/controllers/posts.js"
-      expect(deducer.cfn_path).to include("posts-controller.yml")
 
       expect(deducer.functions).to eq(
         [:create, :delete, :edit, :index, :new, :show, :update].sort)
+    end
+  end
+
+  context "controller with namespace" do
+    let(:deducer) do
+      Jets::Build::Deducer.new("app/controllers/admin/pages_controller.rb")
+    end
+
+    it "deduces info for node shim" do
+      expect(deducer.class_name).to eq("Admin::PagesController")
+      expect(deducer.process_type).to eq("controller")
+      expect(deducer.handler_for(:create)).to eq "handlers/controllers/admin/pages.create"
+      expect(deducer.js_path).to eq "handlers/controllers/admin/pages.js"
+
+      expect(deducer.functions).to eq [:index]
     end
   end
 
@@ -28,7 +42,6 @@ describe Jets::Build::Deducer do
       expect(deducer.process_type).to eq("job")
       expect(deducer.handler_for(:dig)).to eq "handlers/jobs/hard.dig"
       expect(deducer.js_path).to eq "handlers/jobs/hard.js"
-      expect(deducer.cfn_path).to include("hard-job.yml")
 
       expect(deducer.functions).to eq([:dig, :drive, :lift])
     end

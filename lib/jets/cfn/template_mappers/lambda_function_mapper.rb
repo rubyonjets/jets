@@ -7,7 +7,7 @@ class Jets::Cfn::TemplateMappers
 
     # Example: SleepJobPerformLambdaFunction
     def logical_id
-      "#{class_action}LambdaFunction"
+      "#{class_action}LambdaFunction".gsub('::','')
     end
 
     def environment

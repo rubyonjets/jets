@@ -11,7 +11,7 @@ describe Jets::Job::Base do
 
       dig_task = HardJob.tasks[:dig]
       expect(dig_task).to be_a(Jets::Job::Task)
-      expect(dig_task.schedule_expression).to eq "rate(1 minute)"
+      expect(dig_task.schedule_expression).to eq "rate(10 hours)"
 
       drive_task = HardJob.tasks[:lift]
       expect(drive_task).to be_a(Jets::Job::Task)

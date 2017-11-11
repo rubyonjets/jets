@@ -46,7 +46,7 @@ class Jets::Cfn::TemplateBuilders
         if shared_stack?(path)
           add_shared_stack(path)
         else
-          mapper_class_name = File.basename(path, '.yml').split('-').last.classify # Controller or Job
+          mapper_class_name = File.basename(path, '.yml').split('_').last.classify # Controller or Job
           mapper_class = "Jets::Cfn::TemplateMappers::#{mapper_class_name}Mapper".constantize # ControllerMapper or JobMapper
           map = mapper_class.new(path, @options[:s3_bucket])
 

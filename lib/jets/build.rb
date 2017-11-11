@@ -38,7 +38,6 @@ class Jets::Build
     build_api_gateway_templates
     # 2. Child templates - parent template needs them
     app_code_paths.each do |path|
-      # TODO: print out #{deducer.path} => #{deducer.cfn_path}" as part of building
       build_child_template(path)
     end
     # 3. Finally parent template
@@ -61,7 +60,11 @@ class Jets::Build
   # path: app/jobs/easy_job.rb
   def build_child_template(path)
     require "#{Jets.root}#{path}" # require "app/jobs/easy_job.rb"
-    app_klass = File.basename(path, ".rb").classify.constantize # SleepJob
+    class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
+    # strip the app/controller/ or app/jobs/ from the string
+    # also strip the .rb
+    # class_path: admin/pages_controller
+    app_klass = class_path.classify.constantize # SleepJob
 
     process_class = path.split('/')[1].singularize.classify # Controller or Job
     builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Builder".constantize
