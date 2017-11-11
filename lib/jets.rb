@@ -9,6 +9,8 @@ require "jets/core_ext/object/to_attrs"
 $:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
 require "dynamodb_model"
 
+require "pp"
+
 module Jets
   autoload :Application, "jets/application"
   autoload :Util, "jets/util"

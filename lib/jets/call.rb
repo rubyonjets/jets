@@ -34,7 +34,7 @@ class Jets::Call
     pp resp
 
     # puts "log_result #{resp.log_result}"
-    # puts Base64.decode64(resp.log_result)
+    puts Base64.decode64(resp.log_result)
 
   end
 

@@ -2,35 +2,24 @@ PATH
   remote: .
   specs:
     jets (0.2.0)
-      actionpack
+      actionview
       activesupport
       aws-sdk-cloudformation
       aws-sdk-dynamodb
       aws-sdk-lambda
       aws-sdk-s3
-      bundler
-      byebug
       colorize
       hashie
       kramdown
       nokogiri (= 1.6.5)
       rack
-      rake
       recursive-open-struct
-      rspec
       text-table
       thor
 
 GEM
   remote: https://rubygems.org/
   specs:
-    actionpack (5.1.4)
-      actionview (= 5.1.4)
-      activesupport (= 5.1.4)
-      rack (~> 2.0)
-      rack-test (>= 0.6.3)
-      rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.2)
     actionview (5.1.4)
       activesupport (= 5.1.4)
       builder (~> 3.1)
@@ -65,11 +54,9 @@ GEM
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.2)
     builder (3.2.3)
-    byebug (9.1.0)
     colorize (0.8.1)
     concurrent-ruby (1.0.5)
     crass (1.0.2)
-    diff-lcs (1.3)
     erubi (1.7.0)
     hashie (3.5.6)
     i18n (0.9.1)
@@ -84,28 +71,12 @@ GEM
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
     rack (2.0.3)
-    rack-test (0.7.0)
-      rack (>= 1.0, < 3)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rake (12.2.1)
     recursive-open-struct (1.0.5)
-    rspec (3.7.0)
-      rspec-core (~> 3.7.0)
-      rspec-expectations (~> 3.7.0)
-      rspec-mocks (~> 3.7.0)
-    rspec-core (3.7.0)
-      rspec-support (~> 3.7.0)
-    rspec-expectations (3.7.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-mocks (3.7.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.7.0)
-    rspec-support (3.7.0)
     text-table (1.2.4)
     thor (0.20.0)
     thread_safe (0.3.6)
