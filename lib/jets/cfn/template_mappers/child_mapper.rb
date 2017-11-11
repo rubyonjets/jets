@@ -21,8 +21,10 @@ class Jets::Cfn::TemplateMappers
     # Example: PostsController
     def logical_id
       regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
-      # byebug
       contoller_name = @path.sub(regexp, '').sub('.yml', '')
+      # map the path to a camelized logical_id. Example:
+      #   /tmp/jets/demo/templates/demo-dev-2-posts-controller.yml to
+      #   PostsController
       contoller_name.underscore.camelize
     end
 
