@@ -9,7 +9,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_api_gateway_parameters
-      add_parameter("ApiGatewayRestApi", Description: "ApiGatewayRestApi")
+      add_parameter("RestApi", Description: "RestApi")
       Jets::Router.all_paths.each do |path|
         map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
         add_parameter(map.logical_id, Description: map.path)
@@ -32,7 +32,7 @@ class Jets::Cfn::TemplateBuilders
         HttpMethod: route.method,
         RequestParameters: {},
         ResourceId: "!Ref #{map.gateway_resource_logical_id}",
-        RestApiId: "!Ref ApiGatewayRestApi",
+        RestApiId: "!Ref RestApi",
         AuthorizationType: "NONE",
         Integration: {
           IntegrationHttpMethod: "POST",
@@ -82,7 +82,7 @@ class Jets::Cfn::TemplateBuilders
           ]
         },
         ResourceId: "!Ref #{map.gateway_resource_logical_id}",
-        RestApiId: "!Ref ApiGatewayRestApi",
+        RestApiId: "!Ref RestApi",
       )
     end
 
@@ -91,7 +91,7 @@ class Jets::Cfn::TemplateBuilders
         FunctionName: "!GetAtt #{map.lambda_function_logical_id}.Arn",
         Action: "lambda:InvokeFunction",
         Principal: "apigateway.amazonaws.com",
-        SourceArn: "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*"
+        SourceArn: "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*"
       )
     end
 

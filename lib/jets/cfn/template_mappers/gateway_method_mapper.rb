@@ -5,7 +5,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def logical_id
-      "ApiGatewayMethod#{path_method_id}"
+      "#{path_method_id}ApiGatewayMethod"
     end
 
     def path_method_id
@@ -35,7 +35,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def permission_logical_id
-      "#{controller_action}PermissionApiGateway"
+      "#{controller_action}ApiGatewayPermission"
     end
 
     # Example: PostsControllerIndex

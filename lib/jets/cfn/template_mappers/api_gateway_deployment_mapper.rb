@@ -6,7 +6,7 @@ class Jets::Cfn::TemplateMappers
 
     def parameters
       {
-        ApiGatewayRestApi: "!GetAtt ApiGateway.Outputs.ApiGatewayRestApi"
+        RestApi: "!GetAtt ApiGateway.Outputs.RestApi"
       }
     end
 

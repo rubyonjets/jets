@@ -26,10 +26,10 @@ class Jets::Cfn::TemplateBuilders
     def add_gateway_rest_api
       return unless Jets::Router.routes.size > 0
 
-      add_resource("ApiGatewayRestApi", "AWS::ApiGateway::RestApi",
+      add_resource("RestApi", "AWS::ApiGateway::RestApi",
         Name: Jets::Naming.gateway_api_name
       )
-      add_output("ApiGatewayRestApi", Value: "!Ref ApiGatewayRestApi")
+      add_output("RestApi", Value: "!Ref RestApi")
     end
 
     # Adds route related Resources and Outputs
@@ -40,7 +40,7 @@ class Jets::Cfn::TemplateBuilders
         add_resource(map.logical_id, "AWS::ApiGateway::Resource",
           ParentId: map.parent_id,
           PathPart: map.path_part,
-          RestApiId: "!Ref ApiGatewayRestApi"
+          RestApiId: "!Ref RestApi"
         )
         add_output(map.logical_id,
           Value: "!Ref #{map.logical_id}"

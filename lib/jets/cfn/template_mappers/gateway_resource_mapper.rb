@@ -6,7 +6,7 @@ class Jets::Cfn::TemplateMappers
 
     # Returns: "ApiGatewayResourcePostsController"
     def logical_id
-      "ApiGatewayResource#{path_logical_id(@path)}"
+      "#{path_logical_id(@path)}ApiGatewayResource"
     end
 
     def cors_logical_id
@@ -30,9 +30,9 @@ class Jets::Cfn::TemplateMappers
       if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')
         parent_logical_id = path_logical_id(parent_path)
-        "!Ref ApiGatewayResource#{parent_logical_id}"
+        "!Ref #{parent_logical_id}ApiGatewayResource"
       else
-        "!GetAtt ApiGatewayRestApi.RootResourceId"
+        "!GetAtt RestApi.RootResourceId"
       end
     end
 
