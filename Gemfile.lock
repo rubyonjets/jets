@@ -7,10 +7,10 @@ PATH
       aws-sdk-cloudformation
       aws-sdk-dynamodb
       aws-sdk-s3
-      byebug
       colorize
       hashie
       kramdown
+      nokogiri (= 1.6.5)
       rack
       recursive-open-struct
       text-table
@@ -37,7 +37,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    aws-partitions (1.33.0)
+    aws-partitions (1.34.0)
     aws-sdk-cloudformation (1.2.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
@@ -71,10 +71,10 @@ GEM
     loofah (2.1.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mini_portile2 (2.3.0)
+    mini_portile (0.6.2)
     minitest (5.10.3)
-    nokogiri (1.8.1)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.6.5)
+      mini_portile (~> 0.6.0)
     rack (2.0.3)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
@@ -109,9 +109,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
+  byebug
   jets!
   rake
   rspec
-
-BUNDLED WITH
-   1.16.0

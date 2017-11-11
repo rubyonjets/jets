@@ -32,9 +32,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "text-table"
   spec.add_dependency "rack"
 
-  # for now
-  spec.add_dependency "byebug"
+  # locking down for TravelingRuby for now
+  spec.add_dependency "nokogiri", "1.6.5"
 
+  spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"

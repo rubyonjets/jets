@@ -4,6 +4,7 @@ class Jets::Build
   autoload :Deducer, "jets/build/deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
   autoload :LinuxRuby, "jets/build/linux_ruby"
+  autoload :TravelingRuby, "jets/build/traveling_ruby"
 
   def initialize(options)
     @options = options
@@ -18,7 +19,8 @@ class Jets::Build
   def build
     confirm_jets_project
 
-    LinuxRuby.new.build unless @options[:noop]
+    # LinuxRuby.new.build unless @options[:noop]
+    TravelingRuby.new.build unless @options[:noop]
 
     clean_start # cleans out templates and code-*.zip in Jets.tmpdir
 
