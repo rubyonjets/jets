@@ -16,6 +16,8 @@ resources :posts
 # put "comments/:id", to: "comments#update"
 # delete "comments/:id", to: "comments#delete"
 
+get "admin/pages", to: "admin/pages#index"
+
 any "comments/hot", to: "comments#hot"
 get "landing/posts", to: "posts#index"
 get "landing/comments", to: "comments#hot"

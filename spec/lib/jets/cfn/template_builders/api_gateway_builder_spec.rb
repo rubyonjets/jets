@@ -11,7 +11,7 @@ describe Jets::Cfn::TemplateBuilders::ApiGatewayBuilder do
       # puts builder.text # uncomment to see template text
 
       resources = builder.template["Resources"]
-      expect(resources).to include("ApiGatewayRestApi")
+      expect(resources).to include("RestApi")
       # Probably at least one route or AWS::ApiGateway::Resource is created
       resource_types = resources.values.map { |i| i["Type"] }
       expect(resource_types).to include("AWS::ApiGateway::Resource")

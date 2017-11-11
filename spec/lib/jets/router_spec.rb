@@ -35,6 +35,7 @@ describe Jets::Router do
       it "all_paths list all subpaths" do
         router = Jets::Router.new(routes_path)
         router.evaluate
+        # pp router.routes # uncommen to debug
         expect(router.all_paths).to eq(
           ["landing", "posts", "posts/:id", "posts/:id/edit", "posts/new"]
         )

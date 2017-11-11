@@ -16,8 +16,8 @@ require "fileutils"
 
 root = File.expand_path("../../", __FILE__)
 require "#{root}/lib/jets"
-
 Jets.boot
+require "aws-sdk-lambda" # for Aws.config.update
 
 module Helpers
   def execute(cmd)

@@ -10,7 +10,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def cors_logical_id
-      "#{logical_id}Cors"
+      "#{path_logical_id(@path)}CorsApiGatewayResource"
     end
 
     # Modify the path to confirm to API Gateway capture expressions

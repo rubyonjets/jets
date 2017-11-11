@@ -9,8 +9,8 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
     context "posts" do
       let(:route) { Jets::Route.new(path: "posts", method: :get, to: "posts#index") }
       it "posts contains info for CloudFormation API Gateway Resources" do
-        expect(map.logical_id).to eq "ApiGatewayMethodPostsGet"
-        expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePosts"
+        expect(map.logical_id).to eq "PostsGetApiGatewayMethod"
+        expect(map.gateway_resource_logical_id).to eq "PostsApiGatewayResource"
         expect(map.lambda_function_logical_id).to eq "PostsControllerIndexLambdaFunction"
       end
     end
@@ -18,8 +18,8 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
     context "posts/:id/edit" do
       let(:route) { Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit") }
       it "posts/:id/edit contains info for CloudFormation API Gateway Resources" do
-        expect(map.logical_id).to eq "ApiGatewayMethodPostsIdEditGet"
-        expect(map.gateway_resource_logical_id).to eq "ApiGatewayResourcePostsIdEdit"
+        expect(map.logical_id).to eq "PostsIdEditGetApiGatewayMethod"
+        expect(map.gateway_resource_logical_id).to eq "PostsIdEditApiGatewayResource"
         expect(map.lambda_function_logical_id).to eq "PostsControllerEditLambdaFunction"
       end
     end

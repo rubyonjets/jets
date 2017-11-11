@@ -1,4 +1,5 @@
 require 'logger'
+require 'active_support/dependencies'
 
 module Jets::Util
   # Ensures trailing slash
@@ -21,36 +22,12 @@ module Jets::Util
 
   # Load all application base classes and project classes
   def boot
-    require_application_base_classes
-    # being selective enough to not include app/views
-    require_project_classes %w[app/controllers app/jobs app/models lib]
-  end
-
-  def require_application_base_classes
-    application_files = %w[
-      app/controllers/application_controller
-      app/jobs/application_job
-      app/models/application_record
-      app/models/application_item
-    ]
-    application_files.each do |p|
-      path = "#{Jets.root}#{p}.rb"
-      require path if File.exist?(path)
-    end
-  end
-
-  def require_project_classes(folders)
-    folders.each do |folder|
-      pattern = "#{Jets.root}#{folder}/**/*" # #{Jets.root}/lib/**/**
-      require_files(pattern)
-    end
-  end
-
-  def require_files(pattern)
-    Dir.glob(pattern).each do |path|
-      next unless File.file?(path) && File.extname(path) == '.rb'
-      require path
-    end
+    autoload_paths = %w[
+      app/controllers
+      app/models
+      app/jobs
+    ].map { |p| "#{Jets.root}/#{p}" }
+    ActiveSupport::Dependencies.autoload_paths += autoload_paths
   end
 
   def env

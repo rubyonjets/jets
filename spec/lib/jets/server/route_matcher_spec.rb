@@ -116,4 +116,19 @@ describe Jets::Server::RouteMatcher do
       expect(found).to be false
     end
   end
+
+  context "get admin/pages" do
+    let(:env) do
+      { "PATH_INFO" => "/admin/pages", "REQUEST_METHOD" => "GET" }
+    end
+    it "route_found?" do
+      route = Jets::Route.new(
+        path: "admin/pages",
+        method: :get,
+        to: "admin/pages#index",
+      )
+      found = matcher.route_found?(route)
+      expect(found).to be true
+    end
+  end
 end
