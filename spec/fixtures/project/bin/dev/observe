@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+
+# Hack script to sync files from local machine to an Lambda EC2 instance
+# Usage:
+#  gem install observr
+#  HOST=174.129.78.131 observr bin/dev/observe
+
+@@host=ENV['HOST']
+
+def rsync_command
+  # --numeric-ids               don't map uid/gid values by user/group name
+  # --safe-links                ignore symlinks that point outside the tree
+  # -a, --archive               recursion and preserve almost everything (-rlptgoD)
+  # -x, --one-file-system       don't cross filesystem boundaries
+  # -z, --compress              compress file data during the transfer
+  # -S, --sparse                handle sparse files efficiently
+  # -v, --verbose               verbose
+  parent_dir = File.basename(File.expand_path("../../..", __FILE__))
+
+  excludes = rsync_excludes
+  options = "--delete --numeric-ids --safe-links -axzSv #{excludes}"
+  src = "."
+  dest = "ec2-user@#{@@host}:#{parent_dir}"
+  "rsync #{options} #{src} #{dest}"
+  # IE: rsync --delete --numeric-ids --safe-links -axzSv --exclude='.git' --exclude='tmp' --exclude='log' --exclude='/handlers' --exclude='/bundled*' --exclude='/vendor/jets' . ec2-user@174.129.78.131:demo
+end
+
+def rsync_excludes
+  excludes = %w[.git tmp log]
+  excludes += get_excludes('.gitignore')
+  excludes += get_excludes('.dockerignore')
+  excludes = excludes.uniq.map{|path| "--exclude='#{path}'"}.join(' ')
+  excludes
+end
+
+def get_excludes(file)
+  path = file
+  return [] unless File.exist?(path)
+
+  exclude = File.read(path).split("\n")
+  exclude.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
+  # IE: ["/handlers", "/bundled*", "/vendor/jets]
+end
+
+# Returns a String that watch will turn into a ruby Regexp
+def pattern
+  ignore = %w[bundled Gemfile.lock handlers README.md]
+  files = Dir.glob("*").reject {|p| ignore.include?(p) }
+  files = files.join('|')
+  "(#{files})" # Example: "(app|bin|config|config.ru|db|db_info.rb|Gemfile|spec)"
+end
+
+# puts "rsync_command #{rsync_command}"
+# puts "pattern #{pattern}"
+watch(pattern) do |md|
+  puts "*" * 30 + "Rsync started"
+  command = rsync_command
+  puts "=> #{command}"
+  system(command)
+  puts "*" * 30 + "Rsync completed"
+end

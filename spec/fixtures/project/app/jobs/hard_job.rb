@@ -1,5 +1,5 @@
 class HardJob < ApplicationJob
-  rate "1 minute" # every minute
+  rate "10 hours" # every 10 hours
   def dig
     {done: "digging"}
   end
@@ -22,8 +22,8 @@ end
 # unit of time. Valid units of times are: minute, minutes, hour, hours, day, days
 # Rate expression examples:
 #
-# every 3 hours:
-#   rate: "3 hours"
+# every 1 minute:
+#   rate: "1 minute"
 #
 # everyday:
 #   cron: "1 day"

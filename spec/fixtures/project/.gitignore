@@ -1,3 +1,6 @@
-/handlers
-/bundled
-/vendor/jets
+.DS_Store
+*.gem
+.bundle
+coverage
+pkg
+tmp
