@@ -22,6 +22,11 @@ class Jets::Cfn::TemplateBuilders
       Jets::Naming.api_gateway_template_path
     end
 
+    # do not bother writing a template if routes are empty
+    def write
+      super unless Jets::Router.routes.empty?
+    end
+
     # If the are routes in config/routes.rb add Gateway API in parent stack
     def add_gateway_rest_api
       add_resource("RestApi", "AWS::ApiGateway::RestApi",

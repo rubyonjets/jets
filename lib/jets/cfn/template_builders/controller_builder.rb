@@ -9,6 +9,8 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_api_gateway_parameters
+      return if Jets::Router.routes.empty?
+
       add_parameter("RestApi", Description: "RestApi")
       Jets::Router.all_paths.each do |path|
         map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)

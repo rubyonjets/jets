@@ -30,5 +30,10 @@ class Jets::Cfn::TemplateBuilders
     def template_path
       Jets::Naming.api_gateway_deployment_template_path
     end
+
+    # do not bother writing a template if routes are empty
+    def write
+      super unless Jets::Router.routes.empty?
+    end
   end
 end

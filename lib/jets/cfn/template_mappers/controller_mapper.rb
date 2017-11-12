@@ -3,6 +3,7 @@ class Jets::Cfn::TemplateMappers
     # Parameters that are common to all controller stacks
     def parameters
       parameters = super
+      return parameters if Jets::Router.routes.empty?
 
       # Add the API Gateway parameters
       parameters[:RestApi] = "!GetAtt ApiGateway.Outputs.RestApi"
