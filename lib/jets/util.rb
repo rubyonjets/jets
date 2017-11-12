@@ -22,7 +22,7 @@ module Jets::Util
 
   # Load all application base classes and project classes
   def boot
-    puts "Jets.boot called".colorize(:red)
+    # puts "Jets.boot called".colorize(:red)
     autoload_paths = %w[
       app/controllers
       app/models

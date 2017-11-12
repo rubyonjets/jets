@@ -1,13 +1,15 @@
 require "base64"
 require "json"
+require "active_support/core_ext/string"
 
 class Jets::Call
+  autoload :Guesser, "jets/call/guesser"
   include Jets::AwsServices
 
-  def initialize(short_function_name, event, options)
+  def initialize(provided_function_name, event, options)
     @options = options
 
-    @function_name = get_function_name(short_function_name)
+    @provided_function_name = provided_function_name
     @event = event
 
     @invocation_type = options[:invocation_type] || "RequestResponse"
@@ -15,14 +17,26 @@ class Jets::Call
     @qualifier = @qualifier
   end
 
-  def get_function_name(short_name)
-    short_name = short_name.sub("#{Jets.config.project_namespace}-", "")
+  def function_name
     # Strip the project namespace if the user has accidentally added it
-    [Jets.config.project_namespace, short_name].join('-')
+    # Since we're going to automatically add it no matter what at the end
+    # and dont want the namespace to be included twice
+    function_name = @provided_function_name.sub("#{Jets.config.project_namespace}-", "")
+
+    guesser = Guesser.new(function_name)
+    class_name = guesser.guess
+    if class_name
+      function_name = guesser.function_name
+    else
+      puts "Unable to find the function to call."
+      exit
+    end
+
+    [Jets.config.project_namespace, function_name].join('-')
   end
 
   def run
-    puts "Calling lambda function #{@function_name} on AWS".colorize(:green)
+    puts "Calling lambda function #{function_name} on AWS".colorize(:green)
     return if @options[:noop]
 
     add_console_link_to_clipboard
@@ -31,7 +45,7 @@ class Jets::Call
 
     resp = lambda.invoke(
       # client_context: client_context,
-      function_name: @function_name,
+      function_name: function_name,
       invocation_type: @invocation_type, # "Event", # RequestResponse
       log_type: @log_type, # pretty sweet
       payload: transformed_event, # "fileb://file-path/input.json",
@@ -47,7 +61,8 @@ class Jets::Call
   end
 
   def transformed_event
-    return @event unless @function_name.include?("_controller-")
+    pp function_name
+    return @event unless function_name.include?("_controller-")
     return @event if @options[:lambda_proxy] == false
 
     event = JSON.load(@event)
@@ -63,9 +78,9 @@ class Jets::Call
 
     # TODO: for add_console_link_to_clipboard get the region from the ~/.aws/config and AWS_PROFILE setting
     region = Aws.config[:region] || 'us-east-1'
-    link = "https://console.aws.amazon.com/lambda/home?region=#{region}#/functions/#{@function_name}?tab=configuration"
+    link = "https://console.aws.amazon.com/lambda/home?region=#{region}#/functions/#{function_name}?tab=configuration"
     system("echo #{link} | pbcopy")
-    puts "Pro tip: The Lambda Console Link to the #{@function_name} function has been added to your clipboard."
+    puts "Pro tip: The Lambda Console Link to the #{function_name} function has been added to your clipboard."
   end
 
   # Client context must be a valid Base64-encoded JSON object
