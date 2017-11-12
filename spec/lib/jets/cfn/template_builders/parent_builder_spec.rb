@@ -9,7 +9,7 @@ describe Jets::Cfn::TemplateBuilders::ParentBuilder do
     describe "compose" do
       it "builds parent template with mimnimal resources" do
         builder.compose
-        # puts builder.text # uncomment to see template text
+        puts builder.text # uncomment to see template text
 
         resources = builder.template["Resources"]
         expect(resources).to include("S3Bucket")
