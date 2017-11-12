@@ -4,6 +4,16 @@ require 'json'
 class Jets::Job
   class Base < Jets::BaseLambdaFunction
     class << self
+      def perform_now(meth, event, context=nil)
+        new(event, context).send(meth)
+      end
+
+      def perform_later(meth, event, context=nil)
+        function_name = "#{self.to_s.underscore}-#{meth}"
+        call = Jets::Call.new(function_name, JSON.dump(event))
+        call.run
+      end
+
       def rate(expression)
         @rate = expression
       end

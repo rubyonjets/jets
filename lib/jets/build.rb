@@ -17,7 +17,7 @@ class Jets::Build
   end
 
   def build
-    confirm_jets_project
+    Jets.confirm_jets_project!
 
     clean_start # cleans out non-cached files like templates and code-*.zip in Jets.build_root
 
@@ -113,11 +113,4 @@ class Jets::Build
     full_build_path ? "#{Jets.build_root}/app_root" : "app_root"
   end
 
-  # Make sure that this command is ran within a jets project
-  def confirm_jets_project
-    unless File.exist?("#{Jets.root}config/application.yml")
-      puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
-      exit
-    end
-  end
 end

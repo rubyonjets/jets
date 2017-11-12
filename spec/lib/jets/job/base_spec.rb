@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe Jets::Job::Base do
+  let(:null) { double(:null).as_null_object }
+
   # by the time the class is finished loading into memory the rate and
   # cron configs will have been loaded so we can use them later to configure
   # the lambda functions
@@ -24,6 +26,17 @@ describe Jets::Job::Base do
 
       all_task_names = all_tasks.map(&:name)
       expect(all_task_names).to eq(HardJob.tasks.keys)
+    end
+
+    it "perform_now" do
+      resp = HardJob.perform_now(:dig, {})
+      expect(resp).to eq(done: "digging")
+    end
+
+    it "perform_later" do
+      allow(Jets::Call).to receive(:new).and_return(null)
+      HardJob.perform_later(:dig, {})
+      expect(Jets::Call).to have_received(:new)
     end
   end
 

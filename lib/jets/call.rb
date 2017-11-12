@@ -6,7 +6,7 @@ class Jets::Call
   autoload :Guesser, "jets/call/guesser"
   include Jets::AwsServices
 
-  def initialize(provided_function_name, event, options)
+  def initialize(provided_function_name, event, options={})
     @options = options
 
     @provided_function_name = provided_function_name
@@ -15,6 +15,8 @@ class Jets::Call
     @invocation_type = options[:invocation_type] || "RequestResponse"
     @log_type = options[:log_type] || "Tail"
     @qualifier = @qualifier
+
+    Jets.confirm_jets_project!
   end
 
   def function_name
