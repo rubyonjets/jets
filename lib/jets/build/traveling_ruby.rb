@@ -97,6 +97,16 @@ class Jets::Build
       FileUtils.cp(new_bundle_config, app_bundle_config)
     end
 
+    def copy_bundled_to_project
+      app_root_bundled = "#{full(temp_app_root)}/bundled"
+      if File.exist?(app_root_bundled)
+        puts "Removing current bundled from project"
+        FileUtils.rm_rf(app_root_bundled)
+      end
+      # Leave #{Jets.build_root}/bundled behind to act as cache
+      FileUtils.cp_r("#{Jets.tmpdir}/bundled", app_root_bundled)
+    end
+
     def create_zip_file
       puts "Creating zip file."
       temp_code_zipfile = "#{Jets.tmpdir}/code/code-temp.zip"
@@ -327,17 +337,6 @@ class Jets::Build
 
       puts 'Removing tar.'
       FileUtils.rm_f(ruby_tarfile)
-    end
-
-    def copy_bundled_to_project
-      app_root_bundled = "#{temp_app_root}/bundled"
-      FileUtils.rm_rf(app_root_bundled) # wipe current bundled
-
-      if File.exist?(app_root_bundled)
-        puts "Removing current bundled from project"
-        FileUtils.rm_rf(app_root_bundled)
-      end
-      FileUtils.cp_r("#{Jets.tmpdir}/bundled", app_root_bundled)
     end
 
     def full(relative_path)
