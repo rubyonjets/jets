@@ -8,7 +8,7 @@ describe "HandlerGenerator" do
 
     it "generates a node shim" do
       generator.generate
-      content = IO.read("#{Jets.root}handlers/controllers/posts.js")
+      content = IO.read("#{Jets.tmpdir}/handlers/controllers/posts.js")
       expect(content).to include("handlers/controllers/posts.create") # handler
       expect(content).to include("exports.create") # 1st function
       expect(content).to include("exports.update") # 2nd function
@@ -22,7 +22,7 @@ describe "HandlerGenerator" do
 
     it "generates a node shim" do
       generator.generate
-      content = IO.read("#{Jets.root}handlers/jobs/hard.js")
+      content = IO.read("#{Jets.tmpdir}/handlers/jobs/hard.js")
       expect(content).to include("handlers/jobs/hard.dig") # handler
       expect(content).to include("exports.dig")
     end

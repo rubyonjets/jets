@@ -47,7 +47,7 @@ class Jets::Call
   end
 
   def transformed_event
-    return @event unless @function_name.include?("-controller-")
+    return @event unless @function_name.include?("_controller-")
     return @event if @options[:lambda_proxy] == false
 
     event = JSON.load(@event)
@@ -89,7 +89,7 @@ class Jets::Call
 
   # For this class redirect puts to stderr so user can pipe output to tools like
   # jq. Example:
-  #   jets call posts-controller-index '{"test":1}' | jq .
+  #   jets call posts_controller-index '{"test":1}' | jq .
   def puts(text)
     $stderr.puts(text)
   end

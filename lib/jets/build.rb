@@ -19,17 +19,11 @@ class Jets::Build
   def build
     confirm_jets_project
 
-    # LinuxRuby.new.build unless @options[:noop]
-    TravelingRuby.new.build unless @options[:noop]
-
     clean_start # cleans out templates and code-*.zip in Jets.tmpdir
 
-    puts "Building node shims."
-    app_code_paths.each do |path|
-      # TODO: print out #{deducer.path} => #{deducer.js_path}" as part of building
-      # puts "  #{deducer.path} => #{deducer.js_path}"
-      generate_node_shim(path)
-    end
+    # TODO: rename LinuxRuby and TravelingRuby to CodeBuild because it generates note shims too
+    # LinuxRuby.new.build unless @options[:noop]
+    TravelingRuby.new.build unless @options[:noop]
 
     # TODO: move this build.rb logic to cfn/builder.rb
     ## CloudFormation templates
@@ -37,16 +31,9 @@ class Jets::Build
     # 1. Shared templates - child templates needs them
     build_api_gateway_templates
     # 2. Child templates - parent template needs them
-    app_code_paths.each do |path|
-      build_child_template(path)
-    end
+    build_child_templates
     # 3. Finally parent template
     build_parent_template # must be called at the end
-  end
-
-  def generate_node_shim(path)
-    handler = Jets::Build::HandlerGenerator.new(path)
-    handler.generate
   end
 
   def build_api_gateway_templates
@@ -54,6 +41,13 @@ class Jets::Build
     gateway.build
     deployment = Jets::Cfn::TemplateBuilders::ApiGatewayDeploymentBuilder.new(@options)
     deployment.build
+  end
+
+  def build_child_templates
+    Jets.boot
+    app_code_paths.each do |path|
+      build_child_template(path)
+    end
   end
 
   # path: app/controllers/comments_controller.rb
@@ -87,6 +81,10 @@ class Jets::Build
   end
 
   def app_code_paths
+    self.class.app_code_paths
+  end
+
+  def self.app_code_paths
     paths = []
     expression = "#{Jets.root}app/**/**/*.rb"
     Dir.glob(expression).each do |path|
@@ -94,14 +92,11 @@ class Jets::Build
       next if path =~ /application_(controller|job).rb/
       next if path !~ %r{app/(controller|job)}
 
-      paths << relative_path(path)
+      relative_path = path.sub(Jets.root, '')
+      # Rids of the Jets.root at beginning
+      paths << relative_path
     end
     paths
-  end
-
-  # Rids of the Jets.root at beginning
-  def relative_path(path)
-    path.sub(Jets.root, '')
   end
 
   # Make sure that this command is ran within a jets project

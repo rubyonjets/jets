@@ -11,7 +11,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def depends_on
-      expression = "#{Jets::Naming.template_path_prefix}-*-controller*"
+      expression = "#{Jets::Naming.template_path_prefix}-*_controller*"
       controller_logical_ids = []
       Dir.glob(expression).each do |path|
         next unless File.file?(path)

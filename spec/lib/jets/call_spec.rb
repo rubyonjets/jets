@@ -6,7 +6,7 @@ describe Jets::Call do
     allow(call).to receive(:lambda).and_return(null)
     call
   end
-  let(:function_name) { "posts-controller-index" }
+  let(:function_name) { "posts_controller-index" }
   let(:null) { double(:null).as_null_object }
   let(:options) { {} }
 

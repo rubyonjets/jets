@@ -327,6 +327,10 @@ class Jets::Build
 
     # Group all the path settings together here
     def temp_app_code
+      self.class.temp_app_code
+    end
+
+    def self.temp_app_code
       "app_code"
     end
 

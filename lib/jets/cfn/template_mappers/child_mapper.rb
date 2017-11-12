@@ -2,7 +2,7 @@ class Jets::Cfn::TemplateMappers
   class ChildMapper
     attr_reader :path
     def initialize(path, s3_bucket)
-      # "#{Jets.tmpdir}/templates/proj-dev-posts-controller.yml"
+      # "#{Jets.tmpdir}/templates/proj-dev-posts_controller.yml"
       @path = path
       @s3_bucket = s3_bucket
     end
@@ -23,7 +23,7 @@ class Jets::Cfn::TemplateMappers
       regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
       contoller_name = @path.sub(regexp, '').sub('.yml', '')
       # map the path to a camelized logical_id. Example:
-      #   /tmp/jets/demo/templates/demo-dev-2-posts-controller.yml to
+      #   /tmp/jets/demo/templates/demo-dev-2-posts_controller.yml to
       #   PostsController
       contoller_name.underscore.camelize
     end
@@ -34,7 +34,7 @@ class Jets::Cfn::TemplateMappers
       # has been first launched.  We can create the bucket in a separate stack
       # And then grab it and then store it in a cache file.
       basename = File.basename(@path)
-      # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/proj-dev-posts-controller.yml"
+      # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/proj-dev-posts_controller.yml"
       "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
     end
   end

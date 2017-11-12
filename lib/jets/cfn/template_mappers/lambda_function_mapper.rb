@@ -21,10 +21,10 @@ class Jets::Cfn::TemplateMappers
     end
 
     # Examples:
-    #   "#{Jets.config.project_namespace}-sleep-job-perform"
-    #   "demo-dev-sleep-job-perform"
+    #   "#{Jets.config.project_namespace}-sleep_job-perform"
+    #   "demo-dev-sleep_job-perform"
     def function_name
-      # @process_type_class: admin/pages-controller
+      # @process_type_class: admin/pages_controller
       # @@method_name: index
       method = @process_type_class.underscore
       # method: admin/pages_controller

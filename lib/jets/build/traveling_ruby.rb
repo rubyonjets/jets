@@ -30,8 +30,17 @@ class Jets::Build
         bundle_install # installs current target gems: both compiled and non-compiled
         get_linux_ruby
         get_linux_gems
+        # generate node shim handlers
+        generate_node_shims
         # finally copy project and bundled folder into this project
         finalize_project
+      end
+    end
+
+    def generate_node_shims
+      Jets::Build::app_code_paths.each do |path|
+        handler = Jets::Build::HandlerGenerator.new(path)
+        handler.generate
       end
     end
 
@@ -327,6 +336,10 @@ class Jets::Build
 
     # Group all the path settings together here
     def temp_app_code
+      self.class.temp_app_code
+    end
+
+    def self.temp_app_code
       "app_code"
     end
 

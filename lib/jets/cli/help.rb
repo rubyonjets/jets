@@ -61,7 +61,7 @@ EOL
 <<-EOL
 Invoke the lambda function on AWS. The `jets call` command can do a few extra things for your convenience:
 
-It adds the function namespace to the function name.  So, you pass in "posts-controller-index" and the Lambda function is "demo-dev-posts-controller-index".
+It adds the function namespace to the function name.  So, you pass in "posts_controller-index" and the Lambda function is "demo-dev-posts_controller-index".
 
 It can print out the last 4KB of the lambda logs. The logging output is directed to stderr.  The response output from the lambda function itself is directed to stdout.  This is done so you can safely pipe the results of the call command to other tools like jq.
 
@@ -79,21 +79,21 @@ For jobs, the event is passed through untouched.
 
 Examples:
 
-jets call hard-job-drive '{"test":1}'
+jets call hard_job-drive '{"test":1}'
 
-jets call hard-job-drive '{"test":1}' | jq .
+jets call hard_job-drive '{"test":1}' | jq .
 
-jets call posts-controller-index # event payload is optional
+jets call posts_controller-index # event payload is optional
 
-jets call posts-controller-index '{"test":1}' --show-log | jq .
+jets call posts_controller-index '{"test":1}' --show-log | jq .
 
-jets call posts-controller-index 'file://event.json' --show-log | jq .
+jets call posts_controller-index 'file://event.json' --show-log | jq .
 
 The equivalent AWS Lambda CLI command:
 
-aws lambda invoke --function-name demo-dev-hard-job-dig --payload '{"test":1}' outfile.txt ; cat outfile.txt | jq '.'
+aws lambda invoke --function-name demo-dev-hard_job-dig --payload '{"test":1}' outfile.txt ; cat outfile.txt | jq '.'
 
-aws lambda invoke --function-name demo-dev-posts-controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt ; cat outfile.txt | jq '.'
+aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt ; cat outfile.txt | jq '.'
 
 EOL
         end

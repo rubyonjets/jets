@@ -39,7 +39,7 @@ class Jets::Cfn::TemplateBuilders
 
     def add_child_resources
       expression = "#{Jets::Naming.template_path_prefix}-*"
-      # IE: path: #{Jets.tmpdir}/templates/proj-dev-2-comments-controller.yml
+      # IE: path: #{Jets.tmpdir}/templates/proj-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
