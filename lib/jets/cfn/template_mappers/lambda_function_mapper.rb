@@ -29,7 +29,6 @@ class Jets::Cfn::TemplateMappers
       method = @process_type_class.underscore
       # method: admin/pages_controller
       method = method.sub('/','-') + "-#{@method_name}"
-      puts "function_name method: #{method}".colorize(:cyan)
       # method: admin-pages_controller-index
       "#{Jets.config.project_namespace}-#{method}"
     end

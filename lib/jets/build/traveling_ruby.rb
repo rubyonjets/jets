@@ -30,37 +30,69 @@ class Jets::Build
         bundle_install # installs current target gems: both compiled and non-compiled
         get_linux_ruby
         get_linux_gems
-        # generate node shim handlers
-        generate_node_shims
         # finally copy project and bundled folder into this project
+      end
+
+      copy_project
+      # Easier reason about the logic by when runrning these commands in
+      # the temp_app_root itself
+      Dir.chdir(full(temp_app_root)) do
         finalize_project
       end
     end
 
-    def generate_node_shims
-      Jets::Build::app_code_paths.each do |path|
-        handler = Jets::Build::HandlerGenerator.new(path)
-        handler.generate
-      end
-    end
-
     def finalize_project
-      copy_project
       clean_project
-      # clean_project might remove bundled and .bundle/config if user is
-      # ignore it it so. we run the copy commands after cleaning.
+      # clean_project might remove bundled, .bundle/config, handlers, etc
+      # if it is set in .gitignore of the project so always generate
+      # after the project has been cleaned
+      generate_node_shims
       copy_bundle_config
       copy_bundled_to_project
       create_zip_file
     end
 
+    # Copy project into temporarly directory. Do this so we can keep the project
+    # directory untouched and we can also remove a bunch of needed files like
+    # logs before zipping it up.
+    def copy_project
+      puts "Copying project to temporary folder to build it: #{full(temp_app_root)}"
+      FileUtils.rm_rf(full(temp_app_root)) # remove current app_root folder
+      FileUtils.cp_r(@full_project_path, full(temp_app_root))
+    end
+
+    # Because we're removing files, something dangerous
+    # always use full paths in this method.
+    def clean_project
+      puts "Cleaning up project and removing ignored files that are not needed to be packaged before zipping up."
+      excludes = %w[.git tmp log]
+      excludes += get_excludes("#{full(temp_app_root)}/.gitignore")
+      excludes += get_excludes("#{full(temp_app_root)}/.dockerignore")
+      excludes.each do |exclude|
+        exclude = exclude.sub(%r{^/},'') # remove leading slash
+        remove_path = "#{full(temp_app_root)}/#{exclude}"
+        FileUtils.rm_rf(remove_path)
+        puts "rm -rf #{remove_path}"
+      end
+    end
+
+    def generate_node_shims
+      # Crucial that the Dir.pwd is in the temp_app_root because for
+      # Jets::Build::app_root_paths because Jets.boot set ups
+      # autoload_paths and this is how project classes are loaded.
+      Jets::Build::app_root_paths.each do |path|
+        handler = Jets::Build::HandlerGenerator.new(path)
+        handler.generate
+      end
+    end
+
     def copy_bundle_config
       # Override project's .bundle/config and ensure that .bundle/config matches
       # at these 2 spots:
-      #   app_code/.bundle/config
+      #   app_root/.bundle/config
       #   bundled/gems/.bundle/config
       new_bundle_config = "#{Jets.tmpdir}/.bundle/config"
-      app_bundle_config = "#{temp_app_code}/.bundle/config"
+      app_bundle_config = "#{temp_app_root}/.bundle/config"
       FileUtils.mkdir_p(File.dirname(app_bundle_config))
       FileUtils.cp(new_bundle_config, app_bundle_config)
     end
@@ -70,10 +102,10 @@ class Jets::Build
       temp_code_zipfile = "#{Jets.tmpdir}/code/code-temp.zip"
       FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
 
-      command = "cd #{full(temp_app_code)} && zip -rq #{temp_code_zipfile} ."
+      command = "cd #{full(temp_app_root)} && zip -rq #{temp_code_zipfile} ."
       success = system(command)
       puts command
-      # zip -rq /tmp/jets/demo/code/code-temp.zip app_code
+      # zip -rq /tmp/jets/demo/code/code-temp.zip app_root
       abort("Fail creating app code zipfile") unless success
 
       # we can get the md5 only after the file has been created
@@ -238,28 +270,6 @@ class Jets::Build
       FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{Jets.tmpdir}/Gemfile.lock")
     end
 
-    # Copy project into temporarly directory. Do this so we can keep the project
-    # directory untouched and we can also remove a bunch of needed files like
-    # logs before zipping it up.
-    def copy_project
-      puts "Copying project to temporary folder to build it: #{full(temp_app_code)}"
-      FileUtils.rm_rf(temp_app_code) # remove current app_code folder
-      FileUtils.cp_r(@full_project_path, temp_app_code)
-    end
-
-    def clean_project
-      puts "Cleaning up project and removing ignored files that are not needed to be packaged before zipping up."
-      excludes = %w[.git tmp log]
-      excludes += get_excludes("#{temp_app_code}/.gitignore")
-      excludes += get_excludes("#{temp_app_code}/.dockerignore")
-      excludes.each do |exclude|
-        exclude = exclude.sub(%r{^/},'') # remove leading slash
-        remove_path = "#{temp_app_code}/#{exclude}"
-        FileUtils.rm_rf(remove_path)
-        puts "rm -rf #{Jets.tmpdir}/#{remove_path}"
-      end
-    end
-
     def get_excludes(file)
       path = file
       return [] unless File.exist?(path)
@@ -320,14 +330,14 @@ class Jets::Build
     end
 
     def copy_bundled_to_project
-      app_code_bundled = "#{temp_app_code}/bundled"
-      FileUtils.rm_rf(app_code_bundled) # wipe current bundled
+      app_root_bundled = "#{temp_app_root}/bundled"
+      FileUtils.rm_rf(app_root_bundled) # wipe current bundled
 
-      if File.exist?(app_code_bundled)
+      if File.exist?(app_root_bundled)
         puts "Removing current bundled from project"
-        FileUtils.rm_rf(app_code_bundled)
+        FileUtils.rm_rf(app_root_bundled)
       end
-      FileUtils.cp_r("#{Jets.tmpdir}/bundled", app_code_bundled)
+      FileUtils.cp_r("#{Jets.tmpdir}/bundled", app_root_bundled)
     end
 
     def full(relative_path)
@@ -335,12 +345,12 @@ class Jets::Build
     end
 
     # Group all the path settings together here
-    def temp_app_code
-      self.class.temp_app_code
+    def temp_app_root
+      self.class.temp_app_root
     end
 
-    def self.temp_app_code
-      "app_code"
+    def self.temp_app_root
+      "app_root"
     end
 
     def bundled_ruby_dest(full=false)

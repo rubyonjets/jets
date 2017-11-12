@@ -7,7 +7,6 @@ class Jets::Build
     attr_reader :path
     def initialize(path)
       @path = path
-      require_application_code
     end
 
     # process_type is key, it will either "controller" or "job".
@@ -18,12 +17,6 @@ class Jets::Build
     #   app/jobs/hard_job.rb
     def process_type
       @path.split('/')[1].singularize # controller or job
-    end
-
-    def require_application_code
-      # require "app/controllers/application_controller"
-      # require "app/job/application_job"
-      require "#{Jets.root}app/#{process_type.pluralize}/application_#{process_type}"
     end
 
     # PostsController

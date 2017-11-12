@@ -45,7 +45,7 @@ class Jets::Build
 
   def build_child_templates
     Jets.boot
-    app_code_paths.each do |path|
+    app_root_paths.each do |path|
       build_child_template(path)
     end
   end
@@ -80,15 +80,19 @@ class Jets::Build
     Dir.glob("#{Jets.tmpdir}/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
-  def app_code_paths
-    self.class.app_code_paths
+  def app_root_paths
+    self.class.app_root_paths
   end
 
-  def self.app_code_paths
+  # Crucial that the Dir.pwd is in the temp_app_root because for
+  # because Jets.boot set ups autoload_paths and this is how project
+  # classes are loaded.
+  def self.app_root_paths
     paths = []
     expression = "#{Jets.root}app/**/**/*.rb"
     Dir.glob(expression).each do |path|
       next unless File.file?(path)
+      next unless File.extname(path) == ".rb"
       next if path =~ /application_(controller|job).rb/
       next if path !~ %r{app/(controller|job)}
 
