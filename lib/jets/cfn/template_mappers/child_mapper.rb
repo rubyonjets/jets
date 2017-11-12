@@ -2,7 +2,7 @@ class Jets::Cfn::TemplateMappers
   class ChildMapper
     attr_reader :path
     def initialize(path, s3_bucket)
-      # "#{Jets.tmpdir}/templates/proj-dev-posts_controller.yml"
+      # "#{Jets.build_root}/templates/proj-dev-posts_controller.yml"
       @path = path
       @s3_bucket = s3_bucket
     end

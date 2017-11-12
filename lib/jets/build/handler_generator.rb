@@ -18,9 +18,9 @@ class Jets::Build
 
       deducer = Jets::Build::Deducer.new(@path)
 
-      # TODO: move LinuxRuby.temp_app_root to a common level for HandlerGenerator and LinuxRuby
-      temp_app_root = "#{Jets.tmpdir}/#{TravelingRuby.temp_app_root}"
-      js_path = "#{temp_app_root}/#{deducer.js_path}"
+      # TODO: move LinuxRuby.tmp_app_root to a common level for HandlerGenerator and LinuxRuby
+      tmp_app_root = "#{Jets.build_root}/#{TravelingRuby.tmp_app_root}"
+      js_path = "#{tmp_app_root}/#{deducer.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
 
       template_path = File.expand_path('../node-shim.js', __FILE__)

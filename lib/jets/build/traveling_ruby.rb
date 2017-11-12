@@ -19,14 +19,14 @@ class Jets::Build
     end
 
     def build
-      if File.exist?("#{Jets.tmpdir}/bundled")
-        puts "The #{Jets.tmpdir}/bundled folder exists. Incrementally re-building the bundle.  To fully rebundle: rm -rf #{Jets.tmpdir}/bundled"
+      if File.exist?("#{Jets.build_root}/bundled")
+        puts "The #{Jets.build_root}/bundled folder exists. Incrementally re-building the bundle.  To fully rebundle: rm -rf #{Jets.build_root}/bundled"
       end
       check_ruby_version
 
-      FileUtils.mkdir_p(Jets.tmpdir) # /tmp/jets/demo
-      # These commands run from within Jets.tmpdir
-      Dir.chdir(Jets.tmpdir) do
+      FileUtils.mkdir_p(Jets.build_root) # /tmp/jets/demo
+      # These commands run from within Jets.build_root
+      Dir.chdir(Jets.build_root) do
         bundle_install # installs current target gems: both compiled and non-compiled
         get_linux_ruby
         get_linux_gems
@@ -35,8 +35,8 @@ class Jets::Build
 
       copy_project
       # Easier reason about the logic by when runrning these commands in
-      # the temp_app_root itself
-      Dir.chdir(full(temp_app_root)) do
+      # the tmp_app_root itself
+      Dir.chdir(full(tmp_app_root)) do
         finalize_project
       end
     end
@@ -56,9 +56,9 @@ class Jets::Build
     # directory untouched and we can also remove a bunch of needed files like
     # logs before zipping it up.
     def copy_project
-      puts "Copying project to temporary folder to build it: #{full(temp_app_root)}"
-      FileUtils.rm_rf(full(temp_app_root)) # remove current app_root folder
-      FileUtils.cp_r(@full_project_path, full(temp_app_root))
+      puts "Copying project to temporary folder to build it: #{full(tmp_app_root)}"
+      FileUtils.rm_rf(full(tmp_app_root)) # remove current app_root folder
+      FileUtils.cp_r(@full_project_path, full(tmp_app_root))
     end
 
     # Because we're removing files, something dangerous
@@ -66,21 +66,21 @@ class Jets::Build
     def clean_project
       puts "Cleaning up project and removing ignored files that are not needed to be packaged before zipping up."
       excludes = %w[.git tmp log]
-      excludes += get_excludes("#{full(temp_app_root)}/.gitignore")
-      excludes += get_excludes("#{full(temp_app_root)}/.dockerignore")
+      excludes += get_excludes("#{full(tmp_app_root)}/.gitignore")
+      excludes += get_excludes("#{full(tmp_app_root)}/.dockerignore")
       excludes.each do |exclude|
         exclude = exclude.sub(%r{^/},'') # remove leading slash
-        remove_path = "#{full(temp_app_root)}/#{exclude}"
+        remove_path = "#{full(tmp_app_root)}/#{exclude}"
         FileUtils.rm_rf(remove_path)
         puts "rm -rf #{remove_path}"
       end
     end
 
     def generate_node_shims
-      # Crucial that the Dir.pwd is in the temp_app_root because for
-      # Jets::Build::app_root_paths because Jets.boot set ups
+      # Crucial that the Dir.pwd is in the tmp_app_root because for
+      # Jets::Build::app_files because Jets.boot set ups
       # autoload_paths and this is how project classes are loaded.
-      Jets::Build::app_root_paths.each do |path|
+      Jets::Build::app_files.each do |path|
         handler = Jets::Build::HandlerGenerator.new(path)
         handler.generate
       end
@@ -91,28 +91,28 @@ class Jets::Build
       # at these 2 spots:
       #   app_root/.bundle/config
       #   bundled/gems/.bundle/config
-      new_bundle_config = "#{Jets.tmpdir}/.bundle/config"
-      app_bundle_config = "#{temp_app_root}/.bundle/config"
+      new_bundle_config = "#{Jets.build_root}/.bundle/config"
+      app_bundle_config = "#{tmp_app_root}/.bundle/config"
       FileUtils.mkdir_p(File.dirname(app_bundle_config))
       FileUtils.cp(new_bundle_config, app_bundle_config)
     end
 
     def copy_bundled_to_project
-      app_root_bundled = "#{full(temp_app_root)}/bundled"
+      app_root_bundled = "#{full(tmp_app_root)}/bundled"
       if File.exist?(app_root_bundled)
         puts "Removing current bundled from project"
         FileUtils.rm_rf(app_root_bundled)
       end
       # Leave #{Jets.build_root}/bundled behind to act as cache
-      FileUtils.cp_r("#{Jets.tmpdir}/bundled", app_root_bundled)
+      FileUtils.cp_r("#{Jets.build_root}/bundled", app_root_bundled)
     end
 
     def create_zip_file
       puts "Creating zip file."
-      temp_code_zipfile = "#{Jets.tmpdir}/code/code-temp.zip"
+      temp_code_zipfile = "#{Jets.build_root}/code/code-temp.zip"
       FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
 
-      command = "cd #{full(temp_app_root)} && zip -rq #{temp_code_zipfile} ."
+      command = "cd #{full(tmp_app_root)} && zip -rq #{temp_code_zipfile} ."
       success = system(command)
       puts command
       # zip -rq /tmp/jets/demo/code/code-temp.zip app_root
@@ -120,7 +120,7 @@ class Jets::Build
 
       # we can get the md5 only after the file has been created
       md5 = Digest::MD5.file(temp_code_zipfile).to_s[0..7]
-      md5_zip_dest = "#{Jets.tmpdir}/code/code-#{md5}.zip"
+      md5_zip_dest = "#{Jets.build_root}/code/code-#{md5}.zip"
       FileUtils.mkdir_p(File.dirname(md5_zip_dest))
       FileUtils.mv(temp_code_zipfile, md5_zip_dest)
       # mv /tmp/jets/demo/code/code-temp.zip /tmp/jets/demo/code/code-a8a604aa.zip
@@ -130,7 +130,7 @@ class Jets::Build
       file_size = number_to_human_size(File.size(md5_zip_dest))
       puts "Zip file with code and bundled linux ruby created at: #{md5_zip_dest.colorize(:green)} (#{file_size})"
 
-      IO.write("#{Jets.tmpdir}/code/current-md5-filename.txt", md5_zip_dest)
+      IO.write("#{Jets.build_root}/code/current-md5-filename.txt", md5_zip_dest)
       # Much later: ship, base_child_builder need set an s3_key which requires
       # the md5_zip_dest.
       # It is a pain to pass this all the way up from the
@@ -230,14 +230,14 @@ class Jets::Build
     def get_linux_gem(gem_name)
       # download - also move to /tmp/jets/demo/compiled_gems folder
       url = gem_url(gem_name)
-      tarball = "#{Jets.tmpdir}/extensions/#{File.basename(url)}"
+      tarball = "#{Jets.build_root}/extensions/#{File.basename(url)}"
       if File.exist?(tarball)
         puts "Compiled gem already downloaded #{tarball}"
       else
         download_url(url, tarball)
       end
       # extract
-      gems_ruby_folder = "#{Jets.tmpdir}/bundled/gems/ruby"
+      gems_ruby_folder = "#{Jets.build_root}/bundled/gems/ruby"
       puts "Unpacking compiled gem #{tarball} into #{gems_ruby_folder}"
 
       success = system("tar -xzf #{tarball} -C #{gems_ruby_folder}")
@@ -264,7 +264,7 @@ class Jets::Build
       Bundler.with_clean_env do
         # cd /tmp/jets/demo/bundled
         success = system(
-          "cd #{Jets.tmpdir} && " \
+          "cd #{Jets.build_root} && " \
           "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
         )
 
@@ -276,8 +276,8 @@ class Jets::Build
 
     def copy_gemfiles
       FileUtils.mkdir_p(full("bundled"))
-      FileUtils.cp("#{@full_project_path}Gemfile", "#{Jets.tmpdir}/Gemfile")
-      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{Jets.tmpdir}/Gemfile.lock")
+      FileUtils.cp("#{@full_project_path}Gemfile", "#{Jets.build_root}/Gemfile")
+      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{Jets.build_root}/Gemfile.lock")
     end
 
     def get_excludes(file)
@@ -339,17 +339,15 @@ class Jets::Build
       FileUtils.rm_f(ruby_tarfile)
     end
 
+    # Provide pretty clear way to desinate full path.
+    # full("bundled") => /tmp/jets/demo/bundled
     def full(relative_path)
-      "#{Jets.tmpdir}/#{relative_path}"
+      "#{Jets.build_root}/#{relative_path}"
     end
 
     # Group all the path settings together here
-    def temp_app_root
-      self.class.temp_app_root
-    end
-
-    def self.temp_app_root
-      "app_root"
+    def self.tmp_app_root
+      Jets::Build::tmp_app_root
     end
 
     def bundled_ruby_dest(full=false)

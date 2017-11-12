@@ -19,7 +19,7 @@ class Jets::Build
   def build
     confirm_jets_project
 
-    clean_start # cleans out templates and code-*.zip in Jets.tmpdir
+    clean_start # cleans out templates and code-*.zip in Jets.build_root
 
     # TODO: rename LinuxRuby and TravelingRuby to CodeBuild because it generates note shims too
     # LinuxRuby.new.build unless @options[:noop]
@@ -45,7 +45,7 @@ class Jets::Build
 
   def build_child_templates
     Jets.boot
-    app_root_paths.each do |path|
+    app_files.each do |path|
       build_child_template(path)
     end
   end
@@ -76,18 +76,18 @@ class Jets::Build
 
   # Remove any current templates in the tmp build folder for a clean start
   def clean_start
-    FileUtils.rm_rf("#{Jets.tmpdir}/templates")
-    Dir.glob("#{Jets.tmpdir}/code-*.zip").each { |f| FileUtils.rm_f(f) }
+    FileUtils.rm_rf("#{Jets.build_root}/templates")
+    Dir.glob("#{Jets.build_root}/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
-  def app_root_paths
-    self.class.app_root_paths
+  def app_files
+    self.class.app_files
   end
 
-  # Crucial that the Dir.pwd is in the temp_app_root because for
+  # Crucial that the Dir.pwd is in the tmp_app_root because for
   # because Jets.boot set ups autoload_paths and this is how project
   # classes are loaded.
-  def self.app_root_paths
+  def self.app_files
     paths = []
     expression = "#{Jets.root}app/**/**/*.rb"
     Dir.glob(expression).each do |path|
@@ -101,6 +101,10 @@ class Jets::Build
       paths << relative_path
     end
     paths
+  end
+
+  def self.tmp_app_root(full_build_path=false)
+    full_build_path ? "#{Jets.build_root}/app_root" : "app_root"
   end
 
   # Make sure that this command is ran within a jets project

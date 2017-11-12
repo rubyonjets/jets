@@ -21,7 +21,7 @@ describe Jets::Cfn::TemplateBuilders::ParentBuilder do
         expect(resource_types).to include("AWS::IAM::Role")
         expect(resource_types).not_to include("AWS::CloudFormation::Stack")
 
-        expect(builder.template_path).to eq "#{Jets.tmpdir}/templates/demo-test-2-parent.yml"
+        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-2-parent.yml"
       end
     end
   end
@@ -56,7 +56,7 @@ describe Jets::Cfn::TemplateBuilders::ParentBuilder do
   #       expect(resource_types).to include("AWS::IAM::Role")
   #       expect(resource_types).to include("AWS::CloudFormation::Stack") # lots of child stacks
 
-  #       expect(builder.template_path).to eq "#{Jets.tmpdir}/templates/demo-test-2-parent.yml"
+  #       expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-2-parent.yml"
   #     end
   #   end
   # end

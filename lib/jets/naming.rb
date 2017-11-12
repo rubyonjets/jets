@@ -28,7 +28,7 @@ class Jets::Naming
     end
 
     def template_path_prefix
-      "#{Jets.tmpdir}/templates/#{Jets.config.project_namespace}"
+      "#{Jets.build_root}/templates/#{Jets.config.project_namespace}"
     end
 
     def gateway_api_name
@@ -44,11 +44,11 @@ class Jets::Naming
     end
 
     # build was already ran and that a file that contains the md5 path exists
-    # at Jets.tmpdir/code/current-md5-filename.txt
+    # at Jets.build_root/code/current-md5-filename.txt
     #
     # md5_code_zipfile: /tmp/jets/demo/code/code-2e0e18f6.zip
     def md5_code_zipfile
-      IO.read("#{Jets.tmpdir}/code/current-md5-filename.txt")
+      IO.read("#{Jets.build_root}/code/current-md5-filename.txt")
     end
     # The current-md5-filename.txt gets created as a part of LinuxRuby's build
     # process.

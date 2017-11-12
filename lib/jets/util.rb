@@ -39,8 +39,8 @@ module Jets::Util
     Jets::Config.new.settings
   end
 
-  @@tmpdir = nil
-  def tmpdir
-    @@tmpdir ||= "/tmp/jets/#{config.project_name}".freeze
+  @@build_root = nil
+  def build_root
+    @@build_root ||= "/tmp/jets/#{config.project_name}".freeze
   end
 end
