@@ -18,21 +18,14 @@ class Jets::Call
   end
 
   def function_name
-    # Strip the project namespace if the user has accidentally added it
-    # Since we're going to automatically add it no matter what at the end
-    # and dont want the namespace to be included twice
-    function_name = @provided_function_name.sub("#{Jets.config.project_namespace}-", "")
-
-    guesser = Guesser.new(function_name)
+    guesser = Guesser.new(@provided_function_name)
     class_name = guesser.guess
-    if class_name
-      function_name = guesser.function_name
-    else
+    unless class_name
       puts "Unable to find the function to call."
       exit
     end
 
-    [Jets.config.project_namespace, function_name].join('-')
+    guesser.function_name
   end
 
   def run
@@ -61,7 +54,6 @@ class Jets::Call
   end
 
   def transformed_event
-    pp function_name
     return @event unless function_name.include?("_controller-")
     return @event if @options[:lambda_proxy] == false
 

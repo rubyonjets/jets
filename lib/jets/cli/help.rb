@@ -95,6 +95,14 @@ aws lambda invoke --function-name demo-dev-hard_job-dig --payload '{"test":1}' o
 
 aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt ; cat outfile.txt | jq '.'
 
+For convenience, you can also provide the function name with only dashes and jets call figures out what function you intend to call. Example:
+
+jets call admin-related-pages-controller-index
+
+Gets turned into:
+
+aws lambda invoke --function-name demo-dev-admin/related_pages_controller-index
+
 EOL
         end
       end

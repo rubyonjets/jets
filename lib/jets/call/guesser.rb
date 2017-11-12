@@ -40,23 +40,43 @@ class Jets::Call
     end
 
     def function_name
+      # Strip the project namespace if the user has accidentally added it
+      # Since we're going to automatically add it no matter what at the end
+      # and dont want the namespace to be included twice
+      @provided_function_name = @provided_function_name.sub("#{Jets.config.project_namespace}-", "")
+
       class_name = detect_class_name
 
       code_path = class_name.underscore.gsub('/','-')
       function_name = [Jets.config.project_namespace, code_path, action_name].join('-')
     end
 
+    def process_type
+      if @provided_function_name.include?('controller')
+        "controller"
+      elsif @provided_function_name.include?('job')
+        "job"
+      else
+        # TODO: Guesser: handle process_type better when user doesnt provide controller or job in the name
+        nil
+      end
+    end
+
     def action_name
-      md = @provided_function_name.match(/[-_]controller[-_](.*)/)
+      md = @provided_function_name.match(process_type_pattern)
       action_name = md[1]
       action_name.gsub('-','_')
+    end
+
+    def process_type_pattern
+      Regexp.new("[-_]#{process_type}[-_](.*)")
     end
 
     # strips the action because we dont need it
     def underscored_name
     # strip action and concidentally the _controller_ string
-    name = @provided_function_name.sub(/[-_]controller[-_].*/,'')
-    name = name.gsub('-','_') + "_controller"
+    name = @provided_function_name.sub(process_type_pattern,'')
+    name = name.gsub('-','_') + "_#{process_type}"
     # So:
     # name: admin-related-pages
     # name: admin_related_pages_controller
