@@ -19,7 +19,7 @@ class Jets::Build
   def build
     confirm_jets_project
 
-    clean_start # cleans out templates and code-*.zip in Jets.build_root
+    clean_start # cleans out non-cached files like templates and code-*.zip in Jets.build_root
 
     # TODO: rename LinuxRuby and TravelingRuby to CodeBuild because it generates note shims too
     # LinuxRuby.new.build unless @options[:noop]
@@ -74,10 +74,16 @@ class Jets::Build
     parent.build
   end
 
-  # Remove any current templates in the tmp build folder for a clean start
+  # Most files are kept around after the build process for inspection and
+  # debugging. So we have to clean out the files. But we only want to clean ou
+  # some of the files.
+  #
+  # Cleans out non-cached files like templates and code-*.zip in Jets.build_root
+  # for a clean start.
+  #
   def clean_start
     FileUtils.rm_rf("#{Jets.build_root}/templates")
-    Dir.glob("#{Jets.build_root}/code-*.zip").each { |f| FileUtils.rm_f(f) }
+    Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
   def app_files

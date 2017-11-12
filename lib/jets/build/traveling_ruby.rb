@@ -92,9 +92,10 @@ class Jets::Build
       #   app_root/.bundle/config
       #   bundled/gems/.bundle/config
       new_bundle_config = "#{Jets.build_root}/.bundle/config"
-      app_bundle_config = "#{tmp_app_root}/.bundle/config"
+      app_bundle_config = "#{full(tmp_app_root)}/.bundle/config"
       FileUtils.mkdir_p(File.dirname(app_bundle_config))
       FileUtils.cp(new_bundle_config, app_bundle_config)
+      puts "cp #{new_bundle_config} #{app_bundle_config}".colorize(:cyan)
     end
 
     def copy_bundled_to_project
@@ -348,6 +349,10 @@ class Jets::Build
     # Group all the path settings together here
     def self.tmp_app_root
       Jets::Build::tmp_app_root
+    end
+
+    def tmp_app_root
+      self.class.tmp_app_root
     end
 
     def bundled_ruby_dest(full=false)
