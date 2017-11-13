@@ -26,6 +26,8 @@ class Jets::Dynamodb::Migrate
   end
 
   def get_migration_class
-    File.basename(@path, '.rb').classify.constantize
+    filename = File.basename(@path, '.rb')
+    filename = filename.sub(/\d+-/, '')
+    filename.classify.constantize
   end
 end

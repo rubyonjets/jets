@@ -12,7 +12,8 @@ class Jets::Dynamodb < Jets::Command
   long_desc Help.generate
   option :partition_key, default: "id:string:hash", desc: "table's partition key"
   option :sort_key, default: nil, desc: "table's sort key"
-  # option :type, default: 'dynamodb', desc: "dynamodb or relational"
+  option :table_name, desc: "override the the conventional table name"
+  option :table_action, desc: "create_table or update_table. Defaults to convention based on the name of the migration."
   def generate(name)
     DynamodbModel::Migration::Generator.new(name, options).generate
   end
