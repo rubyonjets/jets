@@ -98,8 +98,11 @@ jets deploy
 Test your of the API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that was created:
 
 ```sh
-$ curl -s https://1oin4qq7ag.execute-api.us-east-1.amazonaws.com/dev/posts
-[EXAMPLE RESPONSE]
+$ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | jq .
+{
+  "hello": "world",
+  "action": "index"
+}
 ```
 
 ### Project Structure
@@ -126,11 +129,11 @@ jets new demo
 cd demo
 export JETS_ENV=staging
 jets dynamodb generate create_posts # generates migration
-jets dynamodb migrate dynamodb/migrate/*_create_posts.rb # run migration
+jets dynamodb migrate dynamodb/migrate/20171112194549-create_posts_migration.rb # run migration. replace with your timestamp
 jets deploy
 ```
 
-This creates and deploys a simple CRUD application on AWS so you can get a feel for how Jets works.  Here's curl command to create a post:
+This creates and deploys a simple CRUD application on AWS so you can get a feel for how Jets works.  Here's a curl command to get posts:
 
 ```sh
 curl -sv http://endpoint/stag/posts | jq .
@@ -144,13 +147,13 @@ To improve the speed of development, you can run a local server which mimics API
 jets server
 ```
 
-You can test your app at [http://localhost:8888](http://localhost:8888).  Example:
+You can test your app at [http://localhost:8888](http://localhost:8888).  Here's a curl command to create a post:
 
 ```
 curl -sv -X POST http://localhost:8888/posts -d @payloads/create.json
 ```
 
-Examples of calling all the CRUD actions is available on the [CRUD Curl with Jets]() tutorial.
+You can find examples of all the CRUD actions at [CRUD Curl Jets Tutorial](https://github.com/tongueroo/jets/wiki/CRUD-Curl-Jets-Tutorial).
 
 ### DynamoDB Local
 
