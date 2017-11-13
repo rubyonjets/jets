@@ -142,12 +142,11 @@ curl -sv http://localhost:8888/posts
 
 ### DynamoDB Local
 
-Just like you developer with a local MySQL install, you can with a local DynamoDB install.  This is especially useful if you when you are running unit tests, so you don't get charged for DynamoDB for your tests.  Here's [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough).  It takes about 5 minutes.
-
+Just like you can develo with a local MySQL server, you can develop with a local DynamoDB server.  This is especially useful when for running your unit tests, so you don't pay for DynamoDB.  Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough).  It takes about 5 minutes.
 
 ### REPL Console
 
-You can test things out in a REPL console also:
+You can test things out in a REPL console:
 
 ```sh
 jets console
@@ -162,9 +161,7 @@ gem install jets
 
 ## Under the hood
 
-Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of ruby to add support.
-
-Jets deploys the Lambda and API Gateway resources as a CloudFormation stack.
+Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of Ruby to add support.
 
 ## Contributing
 
