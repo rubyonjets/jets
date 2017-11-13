@@ -136,7 +136,11 @@ jets deploy
 This creates and deploys a simple CRUD application on AWS so you can get a feel for how Jets works.  Here's a curl command to get posts:
 
 ```sh
-curl -sv http://endpoint/stag/posts | jq .
+$ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | jq .
+{
+  "hello": "world",
+  "action": "index"
+}
 ```
 
 ### Local Test Server
@@ -149,8 +153,22 @@ jets server
 
 You can test your app at [http://localhost:8888](http://localhost:8888).  Here's a curl command to create a post:
 
-```
-curl -sv -X POST http://localhost:8888/posts -d @payloads/create.json
+```sh
+$ curl -s -X POST http://localhost:8888/posts -d '{
+  "id": "myid",
+  "title": "test title",
+  "desc": "test desc"
+}' | jq .
+{
+  "action": "create",
+  "post": {
+    "id": "myid",
+    "title": "test title",
+    "desc": "test desc",
+    "created_at": "2017-11-04T01:46:03Z",
+    "updated_at": "2017-11-04T01:46:03Z"
+  }
+}
 ```
 
 You can find examples of all the CRUD actions at [CRUD Curl Jets Tutorial](https://github.com/tongueroo/jets/wiki/CRUD-Curl-Jets-Tutorial).
