@@ -83,6 +83,8 @@ jets call hard_job-drive '{"test":1}'
 
 jets call hard_job-drive '{"test":1}' | jq .
 
+jets call hard_job-drive file://event.json | jq . # load event with a file
+
 jets call posts_controller-index # event payload is optional
 
 jets call posts_controller-index '{"test":1}' --show-log | jq .

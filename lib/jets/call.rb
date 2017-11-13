@@ -56,10 +56,22 @@ class Jets::Call
   end
 
   def transformed_event
-    return @event unless function_name.include?("_controller-")
-    return @event if @options[:lambda_proxy] == false
+    text = @event
 
-    event = JSON.load(@event)
+    if text && text.include?("file://")
+      path = text.gsub('file://','')
+      path = "#{Jets.root}#{path}" unless path[0..0] == '/'
+      unless File.exist?(path)
+        puts "File #{path} does not exist.  Are you sure the file exists?".colorize(:red)
+        exit
+      end
+      text = IO.read(path)
+    end
+
+    return text unless function_name.include?("_controller-")
+    return text if @options[:lambda_proxy] == false
+
+    event = JSON.load(text)
     lambda_proxy = {"queryStringParameters" => event}
     JSON.dump(lambda_proxy)
   end
