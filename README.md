@@ -45,21 +45,27 @@ After deploymment, you can test the Lambda functions with the AWS Lambda console
 
 ### AWS Lambda Console test
 
-![Lambda Console](https://raw.githubusercontent.com/tongueroo/jets/master/screenshots/lambda-console-posts-controller-index.png)
+![Lambda Console](https://s3.amazonaws.com/boltops-demo/images/screenshots/lambda-console-posts-controller-index.png)
 
 ### CLI test
 
 You can use `jets call` to test via the the CLI:
 
 ```
-jets call posts-controller-index '{"test":1}' | jq .
-jets call help # for more info like passing the payload via a file
+$ jets call posts-controller-index '{"test":1}' | jq '.body | fromjson'
+{
+  "hello": "world",
+  "action": "index"
+}
+$ jets call help # for more info like passing the payload via a file
 ```
 
-The corresponding `aws lambda` CLI commands is:
+The corresponding `aws lambda` CLI commands are:
 
 ```
-aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"test":1}' outfile.txt ; cat outfile.txt | jq '.' ; rm outfile.txt
+aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"test":1}' outfile.txt
+cat outfile.txt | jq '.body | fromjson'
+rm outfile.txt
 aws lambda invoke help
 ```
 
