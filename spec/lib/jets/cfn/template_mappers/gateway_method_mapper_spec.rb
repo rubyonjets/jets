@@ -23,5 +23,14 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
         expect(map.lambda_function_logical_id).to eq "PostsControllerEditLambdaFunction"
       end
     end
+
+    context "admin/pages/:id/edit" do
+      let(:route) { Jets::Route.new(path: "admin/pages/:id/edit", method: :get, to: "admin/pages#edit") }
+      it "admin/pages/:id/edit contains info for CloudFormation API Gateway Resources" do
+        expect(map.logical_id).to eq "AdminPagesIdEditGetApiGatewayMethod"
+        expect(map.gateway_resource_logical_id).to eq "AdminPagesIdEditApiGatewayResource"
+        expect(map.lambda_function_logical_id).to eq "AdminPagesControllerEditLambdaFunction"
+      end
+    end
   end
 end

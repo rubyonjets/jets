@@ -31,17 +31,17 @@ class Jets::Cfn::TemplateMappers
     end
 
     def lambda_function_logical_id
-      "#{controller_action}LambdaFunction"
+      "#{controller_action_logical_id}LambdaFunction"
     end
 
     def permission_logical_id
-      "#{controller_action}ApiGatewayPermission"
+      "#{controller_action_logical_id}ApiGatewayPermission"
     end
 
     # Example: PostsControllerIndex
-    def controller_action
+    def controller_action_logical_id
       controller, action = @route.to.split('#')
-      "#{controller}_controller_#{action}".camelize
+      "#{controller}_controller_#{action}".camelize.gsub('::','')
     end
 
     def controller
