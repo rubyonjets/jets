@@ -22,6 +22,7 @@ class Jets::Server
       message
     end
 
+    # Show pretty route table for user to help with debugging in non-production mode
     def self.routes_table
       routes = Jets::Router.routes
       text = "Verb | Path | Controller#action\n"
