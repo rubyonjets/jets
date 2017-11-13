@@ -11,7 +11,7 @@ It is key to conceptually understand AWS Lambda and API Gateway to understand Je
 
 ## How It Works
 
-With Jets, you focus on your business logic and Jets does the mundane work. You write application code called controllers, workers, and functions, and Jets uploads them to Lambda and API Gateway.
+You focus on your application logic and Jets does the mundane work. You write application code called controllers and workers and Jets uploads them to Lambda and API Gateway.
 
 ### Jets Controllers
 
@@ -23,12 +23,14 @@ A Jets controller handles a web request and renders a response back.  Here's an 
 class PostsController < ApplicationController
   def index
     # render returns Lambda Proxy structure for web requests
-    render json: {hello: "world"}
+    render json: {hello: "world", action: "index"}
   end
 
-  def create
-    # render returns Lambda Proxy structure for web requests
-    render json: {hello: "world"}
+  def show
+    id = params[:id] # params are available
+    puts event # raw lambda even also are available
+               # puts goes to the lambda logs
+    render json: {action: "show", id: id}
   end
 end
 ```
@@ -39,7 +41,7 @@ Jets creates Lambda functions for the public methods in your controller. You dep
 jets deploy
 ```
 
-After deployment, you can test the Lambda functions with the AWS Lambda console or with the CLI.
+After deploymment, you can test the Lambda functions with the AWS Lambda console or CLI.
 
 ### AWS Lambda Console test
 
@@ -47,15 +49,17 @@ After deployment, you can test the Lambda functions with the AWS Lambda console 
 
 ### CLI test
 
+A `jets call` command makes testing with the CLI more convenient:
+
 ```
 jets call posts-controller-index '{"test":1}'
 jets call help # for more info like passing the payload via a file
 ```
 
-The corresponding `aws lambda` cli commands are:
+The corresponding `aws lambda` CLI commands is:
 
 ```
-aws lambda invoke --function-name demo-dev-posts-controller-index --payload '{"test":1}' outfile.txt
+aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"test":1}' outfile.txt ; cat outfile.txt ; rm outfile.txt
 aws lambda invoke help
 ```
 
@@ -74,18 +78,18 @@ get  "posts/:id/edit", to: "posts#edit"
 put  "posts", to: "posts#update"
 delete  "posts", to: "posts#delete"
 
-resources :comments # expands to all the RESTful routes above
+resources :comments # expands to the RESTful routes above
 
 any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 ```
 
-Deploying again will add the routes to API Gateway.
+Deploying again adds the routes to API Gateway.
 
 ```sh
 jets deploy
 ```
 
-You can test any of the generated endpoints via curl. Note, you will have to replace the URL endpoint with the one that was created for you:
+You can test any of the API Gateway endpoints. Note, replace the URL endpoint with the one that was created for you:
 
 ```sh
 $ curl -s https://1oin4qq7ag.execute-api.us-east-1.amazonaws.com/dev/posts
