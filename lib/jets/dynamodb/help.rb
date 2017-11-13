@@ -16,7 +16,7 @@ EOL
 <<-EOL
 Generates a migration file which can be used to create a DynamoDB table.  To run the migration file use `jets db:migrate`.
 
-The table name will have a namespace. For example, given your project is called "proj", the env is called "dev", and you create a table called "posts".  The DynamoDB full table name will be "proj-dev-posts".  You can change this behavior by editing your config/dynamodb.yml.
+The table name will have a namespace. For example, given your project is called "proj", the env is called "dev", and you create a table called "posts".  The DynamoDB full table name will be "demo-dev-posts".  You can change this behavior by editing your config/dynamodb.yml.
 
 For the `--partition-key` option, DynamoDB tables support certain types of attribute types. The cli will parse the --partition-key option and use the second part of the option to map it to the underlying DynamoDB type using this mapping.
 

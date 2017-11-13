@@ -61,7 +61,7 @@ class Jets::Config
   # comes to checking for the env.
   #
   #   Jets.env == 'development'
-  #   Jets.config.project_namespace == 'proj-dev'
+  #   Jets.config.project_namespace == 'demo-dev'
   ENV_MAP = {
     development: 'dev',
     production: 'prod',

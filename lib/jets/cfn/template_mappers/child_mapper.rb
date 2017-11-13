@@ -2,7 +2,7 @@ class Jets::Cfn::TemplateMappers
   class ChildMapper
     attr_reader :path
     def initialize(path, s3_bucket)
-      # "#{Jets.build_root}/templates/proj-dev-posts_controller.yml"
+      # "#{Jets.build_root}/templates/demo-dev-posts_controller.yml"
       @path = path
       @s3_bucket = s3_bucket
     end
@@ -34,7 +34,7 @@ class Jets::Cfn::TemplateMappers
       # has been first launched.  We can create the bucket in a separate stack
       # And then grab it and then store it in a cache file.
       basename = File.basename(@path)
-      # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/proj-dev-posts_controller.yml"
+      # IE: https://s3.amazonaws.com/[bucket]/jets/cfn-templates/demo-dev-posts_controller.yml"
       "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
     end
   end

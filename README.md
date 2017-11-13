@@ -55,7 +55,7 @@ jets call help # for more info like passing the payload via a file
 The corresponding `aws lambda` cli commands are:
 
 ```
-aws lambda invoke --function-name proj-dev-posts-controller-index --payload '{"test":1}' outfile.txt
+aws lambda invoke --function-name demo-dev-posts-controller-index --payload '{"test":1}' outfile.txt
 aws lambda invoke help
 ```
 
