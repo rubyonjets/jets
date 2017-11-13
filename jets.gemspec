@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionview" # dont need if we are using actionpack
   # spec.add_dependency "actionpack"
   spec.add_dependency "activerecord"
-  spec.add_dependency "railties"
+  spec.add_dependency "railties" # ActiveRecord database_tasks.rb require this
   # TODO: only load the database adapters that the app uses, so generate this
   # in the app's Gemfile
 
