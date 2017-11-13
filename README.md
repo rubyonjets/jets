@@ -112,9 +112,11 @@ config/routes.rb  | Where you set up routes for your application.
 You can generate a starter project and deploy it to AWS Lambda with:
 
 ```sh
-jets new proj
-cd proj
-jets db migrate db/migrate/posts.rb # creates posts table
+jets new demo
+cd demo
+export JETS_ENV=production
+jets dynamodb generate create_posts # generates migration
+jets dynamodb migrate dynamodb/migrate/*_create_posts.rb # run migration
 jets deploy
 ```
 
@@ -133,6 +135,11 @@ You can test your app at [http://localhost:8888](http://localhost:8888).  Exampl
 ```
 curl -sv http://localhost:8888/posts
 ```
+
+### DynamoDB Local
+
+Just like you developer with a local MySQL install, you can with a local DynamoDB install.  This is especially useful if you when you are running unit tests, so you don't get charged for DynamoDB for your tests.  Here's [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough).  It takes about 5 minutes.
+
 
 ### REPL Console
 
