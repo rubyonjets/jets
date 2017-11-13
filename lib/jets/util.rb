@@ -8,7 +8,7 @@ module Jets::Util
   @@root = nil
   def root
     return @@root if @@root
-    @@root = ENV['PROJECT_ROOT'].to_s
+    @@root = ENV['APP_ROOT'].to_s
     @@root = '.' if @@root == ''
     @@root = "#{@@root}/" unless @@root.ends_with?('/')
     @@root
