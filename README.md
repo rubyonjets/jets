@@ -11,7 +11,7 @@ It is key to conceptually understand AWS Lambda and API Gateway to understand Je
 
 ## How It Works
 
-You focus on your application logic and Jets does the mundane work. You write application code called controllers and workers and Jets uploads them to Lambda and API Gateway.
+You focus on your application logic and Jets does the mundane work. You write code called controllers and workers.  Jets turns them into Lambda funcitons and uploads them to AWS Lambda and API Gateway.
 
 ### Jets Controllers
 
@@ -27,9 +27,9 @@ class PostsController < ApplicationController
   end
 
   def show
-    id = params[:id] # params are available
-    puts event # raw lambda even also are available
-               # puts goes to the lambda logs
+    id = params[:id] # params available
+    # puts goes to the lambda logs
+    puts event # raw lambda event available
     render json: {action: "show", id: id}
   end
 end
@@ -45,21 +45,21 @@ After deploymment, you can test the Lambda functions with the AWS Lambda console
 
 ### AWS Lambda Console test
 
-[SCREENSHOT OF LAMBDA CONSOLE]
+![Lambda Console](https://raw.githubusercontent.com/tongueroo/jets/master/screenshots/lambda-console-posts-controller-index.png)
 
 ### CLI test
 
-A `jets call` command makes testing with the CLI more convenient:
+You can use `jets call` to test via the the CLI:
 
 ```
-jets call posts-controller-index '{"test":1}'
+jets call posts-controller-index '{"test":1}' | jq .
 jets call help # for more info like passing the payload via a file
 ```
 
 The corresponding `aws lambda` CLI commands is:
 
 ```
-aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"test":1}' outfile.txt ; cat outfile.txt ; rm outfile.txt
+aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"test":1}' outfile.txt ; cat outfile.txt | jq '.' ; rm outfile.txt
 aws lambda invoke help
 ```
 
@@ -83,13 +83,13 @@ resources :comments # expands to the RESTful routes above
 any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 ```
 
-Deploying again adds the routes to API Gateway.
+Deploying again to add the routes to API Gateway.
 
 ```sh
 jets deploy
 ```
 
-You can test any of the API Gateway endpoints. Note, replace the URL endpoint with the one that was created for you:
+Test your of the API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that was created:
 
 ```sh
 $ curl -s https://1oin4qq7ag.execute-api.us-east-1.amazonaws.com/dev/posts
@@ -118,13 +118,17 @@ You can generate a starter project and deploy it to AWS Lambda with:
 ```sh
 jets new demo
 cd demo
-export JETS_ENV=production
+export JETS_ENV=staging
 jets dynamodb generate create_posts # generates migration
 jets dynamodb migrate dynamodb/migrate/*_create_posts.rb # run migration
 jets deploy
 ```
 
-This creates and deploys a simple CRUD application to AWS so you can get a feel for how Jets works.
+This creates and deploys a simple CRUD application on AWS so you can get a feel for how Jets works.  Here's curl command to create a post:
+
+```sh
+curl -sv http://endpoint/stag/posts | jq .
+```
 
 ### Local Test Server
 
@@ -137,12 +141,14 @@ jets server
 You can test your app at [http://localhost:8888](http://localhost:8888).  Example:
 
 ```
-curl -sv http://localhost:8888/posts
+curl -sv -X POST http://localhost:8888/posts -d @payloads/create.json
 ```
+
+Examples of calling all the CRUD actions is available on the [CRUD Curl with Jets]() tutorial.
 
 ### DynamoDB Local
 
-Just like you can develo with a local MySQL server, you can develop with a local DynamoDB server.  This is especially useful when for running your unit tests, so you don't pay for DynamoDB.  Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough).  It takes about 5 minutes.
+Using DynamoDB Local is useful if you are using DynamoDB. Just like develop with a local MySQL server, you can do the same with DynamoDB.  Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) which takes about 5 minutes.
 
 ### REPL Console
 
@@ -161,7 +167,7 @@ gem install jets
 
 ## Under the hood
 
-Lambda does not yet support ruby. So Jets uses a node shim and a bundled version of Ruby to add support.
+Lambda does not yet support Ruby. So Jets uses a node shim and a bundled version of Ruby to add support.
 
 ## Contributing
 
