@@ -69,6 +69,12 @@ module Jets
     end
     # Command is called 'call' because invoke is a Thor keyword.
 
+    desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
+    long_desc Help.db
+    def db(*args)
+      Jets::Db.new(options).run_command(*args)
+    end
+
     desc "process TYPE", "process subtasks"
     subcommand "process", Jets::Process
 

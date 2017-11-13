@@ -6,6 +6,7 @@ require "colorize"
 require "fileutils"
 require "jets/core_ext/object/to_attrs"
 
+# TODO: only load the database adapters that the app uses
 $:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
 require "dynamodb_model"
 
@@ -19,6 +20,7 @@ module Jets
   autoload :Process, 'jets/process'
   autoload :Generate, 'jets/generate'
   autoload :Dynamodb, 'jets/dynamodb'
+  autoload :Db, 'jets/db'
 
   autoload :CLI, "jets/cli"
   autoload :Build, 'jets/build'
@@ -35,6 +37,8 @@ module Jets
   autoload :Console, "jets/console"
   autoload :Erb, "jets/erb"
   autoload :Call, "jets/call"
+
+  autoload :Database, 'jets/database'
 
   autoload :BaseLambdaFunction, 'jets/base_lambda_function'
   autoload :Controller, 'jets/controller'

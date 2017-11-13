@@ -107,7 +107,41 @@ aws lambda invoke --function-name demo-dev-admin/related_pages_controller-index
 
 EOL
         end
-      end
-    end
-  end
+
+        def db
+<<-EOL
+Runs ActiveRecord DB tasks.  This delegates to rake db:command1:command2 etc.  So:
+
+jets db create => rake db:migrate
+
+The commands:
+
+#{db_tasks}
+EOL
+        end
+
+        def db_tasks
+          out = `bundle exec rake -T`
+          tasks = out.split("\n").grep(/db:/)
+          tasks.map do |t|
+            # remove comment and rake
+            coloned_task = t.sub('rake ','')
+            spaced_task = coloned_task.gsub(':', ' ')
+            "jets #{spaced_task}"
+          end.join("\n\n")
+
+          # Cannot figure how to get only the tasks with descirptions using
+          # Rake::Task.tasks...
+          #
+          # Jets::Db::Tasks.load!
+          # tasks = Rake::Task.tasks.map(&:name) # ["db:setup", "db:create", ...]
+
+          # tasks.map do |t|
+          #   task_with_spaces = t.split(':').join(' ')
+          #   "jets #{task_with_spaces}"
+          # end.join("\n\n")
+        end
+      end # class << self
+    end # class Help
+  end # class CLI < Command
 end

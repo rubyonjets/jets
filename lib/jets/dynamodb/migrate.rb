@@ -1,6 +1,5 @@
 require "dynamodb_model"
 
-# jets generate scaffold posts id:string title:string description:string
 class Jets::Dynamodb::Migrate
   def initialize(path, options)
     @path = path
@@ -27,7 +26,7 @@ class Jets::Dynamodb::Migrate
 
   def get_migration_class
     filename = File.basename(@path, '.rb')
-    filename = filename.sub(/\d+-/, '')
+    filename = filename.sub(/\d+[-_]/, '') # strip leading timestsamp
     filename.classify.constantize
   end
 end
