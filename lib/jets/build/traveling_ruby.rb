@@ -6,9 +6,9 @@ require "net/http"
 require "action_view"
 
 class Jets::Build
-  RUBY_URL = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
-
   class TravelingRuby
+    RUBY_URL = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
+
     include ActionView::Helpers::NumberHelper # number_to_human_size
     attr_reader :full_project_path
     def initialize

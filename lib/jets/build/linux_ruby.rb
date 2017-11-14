@@ -6,9 +6,9 @@ require "net/http"
 require "action_view"
 
 class Jets::Build
-  RUBY_URL = 'https://s3.amazonaws.com/boltops-gems/rubies/ruby-2.4.2-linux-x86_64.tar.gz'.freeze
-
   class LinuxRuby
+    RUBY_URL = 'https://s3.amazonaws.com/boltops-gems/rubies/ruby-2.4.2-linux-x86_64.tar.gz'.freeze
+
     include ActionView::Helpers::NumberHelper # number_to_human_size
     attr_reader :full_project_path
     def initialize
