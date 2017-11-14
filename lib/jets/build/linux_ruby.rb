@@ -319,7 +319,8 @@ class Jets::Build
 
       File.open(dest, 'wb') do |saved_file|
         # the following "open" is provided by open-uri
-        open(source, 'rb') do |read_file|
+        # TODO: remove OpenSSL::SSL::VERIFY_NONE hack. Install figu
+        open(source, 'rb', ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |read_file|
           saved_file.write(read_file.read)
         end
       end
