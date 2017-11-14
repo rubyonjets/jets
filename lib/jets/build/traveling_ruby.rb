@@ -3,7 +3,6 @@ require "open-uri"
 require "colorize"
 require "socket"
 require "net/http"
-require "pp"
 require "action_view"
 
 class Jets::Build
