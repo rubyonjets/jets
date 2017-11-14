@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     jets (0.2.0)
+      actionpack
       actionview
       activerecord
       activesupport

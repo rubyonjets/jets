@@ -114,8 +114,6 @@ Runs ActiveRecord DB tasks.  This delegates to rake db:command1:command2 etc.  S
 
 jets db create => rake db:migrate
 
-The commands:
-
 #{db_tasks}
 EOL
         end
@@ -130,23 +128,25 @@ EOL
                    end
           out = `#{bundle} exec rake -T`
           tasks = out.split("\n").grep(/db:/)
-          tasks.map do |t|
-            # remove comment and rake
-            coloned_task = t.sub('rake ','')
-            spaced_task = coloned_task.gsub(':', ' ')
-            "jets #{spaced_task}"
-          end.join("\n\n")
+          commands = tasks.map do |t|
+                      # remove comment and rake
+                      coloned_task = t.sub('rake ','')
+                      spaced_task = coloned_task.gsub(':', ' ')
+                      "jets #{spaced_task}"
+                    end.join("\n\n")
 
-          Cannot figure how to get only the tasks with descirptions using
-          Rake::Task.tasks...
+          "The commands:\n\n#{commands}"
 
-          Jets::Db::Tasks.load!
-          tasks = Rake::Task.tasks.map(&:name) # ["db:setup", "db:create", ...]
+          # Cannot figure how to get only the tasks with descirptions using
+          # Rake::Task.tasks...
 
-          tasks.map do |t|
-            task_with_spaces = t.split(':').join(' ')
-            "jets #{task_with_spaces}"
-          end.join("\n\n")
+          # Jets::Db::Tasks.load!
+          # tasks = Rake::Task.tasks.map(&:name) # ["db:setup", "db:create", ...]
+
+          # tasks.map do |t|
+          #   task_with_spaces = t.split(':').join(' ')
+          #   "jets #{task_with_spaces}"
+          # end.join("\n\n")
         end
       end # class << self
     end # class Help
