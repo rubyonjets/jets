@@ -3,13 +3,12 @@ require "open-uri"
 require "colorize"
 require "socket"
 require "net/http"
-require "pp"
 require "action_view"
 
 class Jets::Build
-  RUBY_URL = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
-
   class TravelingRuby
+    RUBY_URL = 'http://d6r77u77i8pq3.cloudfront.net/releases/traveling-ruby-20150715-2.2.2-linux-x86_64.tar.gz'.freeze
+
     include ActionView::Helpers::NumberHelper # number_to_human_size
     attr_reader :full_project_path
     def initialize
@@ -303,7 +302,7 @@ class Jets::Build
 
     def get_linux_ruby
       if File.exist?(bundled_ruby_dest)
-        puts "Precompiled Linix Ruby #{jets_ruby_version} already downloaded at #{full(bundled_ruby_dest)}."
+        puts "Precompiled Linux Ruby #{jets_ruby_version} already downloaded at #{full(bundled_ruby_dest)}."
       else
         download_linux_ruby
         unpack_linux_ruby
