@@ -119,14 +119,11 @@ EOL
         end
 
         def db_tasks
-          # Use full bundled path on Lambda server.
-          # Think that Thor calls these methods on boot time.
-          bundle = if RUBY_PLATFORM =~ /linux/ && File.exist?('/var/task')
-                     "/var/task/bundled/ruby/bin/bundle"
-                   else
-                     "bundle"
-                   end
-          out = `#{bundle} exec rake -T`
+          # Think that Thor calls these desc and in turn methods on boot time.
+          # Dont show db tasks help for linux for speed up boot time for Lambda
+          reutrn "" if RUBY_PLATFORM =~ /linux/
+
+          out = `bundle exec rake -T`
           tasks = out.split("\n").grep(/db:/)
           commands = tasks.map do |t|
                       # remove comment and rake
