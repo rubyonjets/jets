@@ -4,6 +4,19 @@ require 'json'
 # Controller public methods get turned into Lambda functions.
 class Jets::Controller
   class Base < Jets::BaseLambdaFunction
+    def self.process(event, context, meth)
+      controller = new(event, context, meth)
+      controller.send(meth)
+      controller.ensure_render
+    end
+
+    def ensure_render
+      return @rendered_data if @rendered
+
+      # defaults to rendering templates
+      render template: default_template_name
+    end
+
   private
     # Merge all the parameters together for convenience.  Users still have
     # access via events.
@@ -29,16 +42,20 @@ class Jets::Controller
     end
 
     def render(options={})
+      raise "DoubleRenderError" if @rendered
+
       # render json: {"mytestdata": "value1"}, status: 200, headers: {...}
-      if options.has_key?(:json)
-        render_json(options)
-      elsif options.has_key?(:text)
-        options[:text]
-      elsif options.has_key?(:template)
-        render_template(options)
-      else
-        raise "Unsupported render option. Only :text and :json supported.  options #{options.inspect}"
-      end
+      @rendered_data = if options.has_key?(:json)
+          render_json(options)
+        elsif options.has_key?(:text)
+          options[:text]
+        elsif options.has_key?(:template)
+          render_template(options)
+        else
+          raise "Unsupported render option. Only :text and :json supported.  options #{options.inspect}"
+        end
+      @rendered = true
+      @rendered_data
     end
 
     # render json: {my: data}, status: 200
@@ -57,10 +74,19 @@ class Jets::Controller
       require 'action_controller'
       ActionController::Base.append_view_path("app/views")
       renderer = ActionController::Base.renderer
-      body = renderer.render(template: template_name)
+      template = options[:template] || default_template_name
+      body = renderer.render(template: template, assigns: all_instance_variables)
       options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(options)
+    end
+
+    def all_instance_variables
+      instance_variables.inject({}) do |vars, v|
+        k = v.to_s.sub(/^@/,'') # @event => event
+        vars[k] = instance_variable_get(v)
+        vars
+      end
     end
 
     # Transform the structure to AWS_PROXY compatiable structure
@@ -95,9 +121,9 @@ class Jets::Controller
     end
 
     # Example: posts/index
-    def template_name
-      class_name = self.class.name.to_s.sub('Controller','').underscore
-      action_name = @options[:meth] # All the way from the MainProcessor
+    def default_template_name
+      class_name = self.class.name.to_s.sub('Controller','').underscore.pluralize
+      action_name = @meth # All the way from the MainProcessor
       "#{class_name}/#{action_name}"
     end
 

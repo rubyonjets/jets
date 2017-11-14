@@ -39,11 +39,11 @@ class Jets::Process::MainProcessor
       #   deducer.code => PostsController.new(event, context, meth: "show").show
       #   deducer.path => app/controllers/posts_controller.rb
       #
-      #   deducer.code => HardJob.new(event, context, meth: "dig").dig
+      #   deducer.code => HardJob.process(event, context, "dig")
       #   deducer.path => app/jobs/hard_job.rb
       #
       result = instance_eval(deducer.code, deducer.path)
-      # result = PostsController.new(event, context, meth: "create").create
+      # result = PostsController.process(event, context, "create")
 
       # Puts the return value of project code to stdout because this is
       # what eventually gets used by API Gateway.

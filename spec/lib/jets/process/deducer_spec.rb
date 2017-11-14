@@ -9,7 +9,7 @@ describe "Deducer" do
     it "deduces info to run the ruby code" do
       expect(deducer.process_type).to include("controller")
       expect(deducer.path).to include("app/controllers/posts_controller.rb")
-      expect(deducer.code).to eq %Q|PostsController.new(event, context, {meth: "create"}).create|
+      expect(deducer.code).to eq %Q|PostsController.process(event, context, "create")|
     end
   end
 
@@ -21,7 +21,7 @@ describe "Deducer" do
     it "deduces info to run the ruby code" do
       expect(deducer.process_type).to include("job")
       expect(deducer.path).to include("app/jobs/hard_job.rb")
-      expect(deducer.code).to eq %Q|HardJob.new(event, context, {meth: "dig"}).dig|
+      expect(deducer.code).to eq %Q|HardJob.process(event, context, "dig")|
     end
   end
 end

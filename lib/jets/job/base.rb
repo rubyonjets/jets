@@ -4,6 +4,11 @@ require 'json'
 class Jets::Job
   class Base < Jets::BaseLambdaFunction
     class << self
+      def process(context, event, meth)
+        job = new(context, event, meth)
+        job.send(meth)
+      end
+
       def perform_now(meth, event, context=nil)
         new(event, context).send(meth)
       end

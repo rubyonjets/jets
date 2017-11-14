@@ -87,6 +87,7 @@ GEM
     method_source (0.9.0)
     mini_portile2 (2.3.0)
     minitest (5.10.3)
+    mysql2 (0.4.10)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
     rack (2.0.3)
@@ -131,6 +132,7 @@ DEPENDENCIES
   bundler
   byebug
   jets!
+  mysql2
   rake
   rspec
 
