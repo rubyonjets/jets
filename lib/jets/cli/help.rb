@@ -121,26 +121,32 @@ EOL
         end
 
         def db_tasks
-          # TOOD: db_tasks: fix bundle exec to use full bundled path on Lambda server
-          # out = `bundle exec rake -T`
-          # tasks = out.split("\n").grep(/db:/)
-          # tasks.map do |t|
-          #   # remove comment and rake
-          #   coloned_task = t.sub('rake ','')
-          #   spaced_task = coloned_task.gsub(':', ' ')
-          #   "jets #{spaced_task}"
-          # end.join("\n\n")
+          # Use full bundled path on Lambda server.
+          # Think that Thor calls these methods on boot time.
+          bundle = if RUBY_PLATFORM =~ /linux/ && File.exist?('/var/task')
+                     "/var/task/bundled/ruby/bin/bundle"
+                   else
+                     "bundle"
+                   end
+          out = `#{bundle} exec rake -T`
+          tasks = out.split("\n").grep(/db:/)
+          tasks.map do |t|
+            # remove comment and rake
+            coloned_task = t.sub('rake ','')
+            spaced_task = coloned_task.gsub(':', ' ')
+            "jets #{spaced_task}"
+          end.join("\n\n")
 
-          # Cannot figure how to get only the tasks with descirptions using
-          # Rake::Task.tasks...
-          #
-          # Jets::Db::Tasks.load!
-          # tasks = Rake::Task.tasks.map(&:name) # ["db:setup", "db:create", ...]
+          Cannot figure how to get only the tasks with descirptions using
+          Rake::Task.tasks...
 
-          # tasks.map do |t|
-          #   task_with_spaces = t.split(':').join(' ')
-          #   "jets #{task_with_spaces}"
-          # end.join("\n\n")
+          Jets::Db::Tasks.load!
+          tasks = Rake::Task.tasks.map(&:name) # ["db:setup", "db:create", ...]
+
+          tasks.map do |t|
+            task_with_spaces = t.split(':').join(' ')
+            "jets #{task_with_spaces}"
+          end.join("\n\n")
         end
       end # class << self
     end # class Help
