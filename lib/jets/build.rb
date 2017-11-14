@@ -4,7 +4,6 @@ class Jets::Build
   autoload :Deducer, "jets/build/deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
   autoload :LinuxRuby, "jets/build/linux_ruby"
-  autoload :TravelingRuby, "jets/build/traveling_ruby"
 
   def initialize(options)
     @options = options
@@ -21,9 +20,8 @@ class Jets::Build
 
     clean_start # cleans out non-cached files like templates and code-*.zip in Jets.build_root
 
-    # TODO: rename LinuxRuby and TravelingRuby to CodeBuild because it generates note shims too
+    # TODO: rename LinuxRuby to CodeBuild because it generates note shims too
     LinuxRuby.new.build unless @options[:noop]
-    # TravelingRuby.new.build unless @options[:noop]
 
     # TODO: move this build.rb logic to cfn/builder.rb
     ## CloudFormation templates
