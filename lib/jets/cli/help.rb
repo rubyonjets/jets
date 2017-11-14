@@ -121,14 +121,15 @@ EOL
         end
 
         def db_tasks
-          out = `bundle exec rake -T`
-          tasks = out.split("\n").grep(/db:/)
-          tasks.map do |t|
-            # remove comment and rake
-            coloned_task = t.sub('rake ','')
-            spaced_task = coloned_task.gsub(':', ' ')
-            "jets #{spaced_task}"
-          end.join("\n\n")
+          # TOOD: db_tasks: fix bundle exec to use full bundled path on Lambda server
+          # out = `bundle exec rake -T`
+          # tasks = out.split("\n").grep(/db:/)
+          # tasks.map do |t|
+          #   # remove comment and rake
+          #   coloned_task = t.sub('rake ','')
+          #   spaced_task = coloned_task.gsub(':', ' ')
+          #   "jets #{spaced_task}"
+          # end.join("\n\n")
 
           # Cannot figure how to get only the tasks with descirptions using
           # Rake::Task.tasks...
