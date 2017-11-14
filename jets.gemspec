@@ -22,8 +22,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hashie"
   spec.add_dependency "colorize"
   spec.add_dependency "activesupport"
-  spec.add_dependency "actionview" # dont need if we are using actionpack
-  # spec.add_dependency "actionpack"
+  spec.add_dependency "actionview"
+  spec.add_dependency "actionpack"
   spec.add_dependency "activerecord"
   spec.add_dependency "railties" # ActiveRecord database_tasks.rb require this
   # TODO: only load the database adapters that the app uses, so generate this
