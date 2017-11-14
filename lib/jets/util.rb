@@ -29,6 +29,17 @@ module Jets::Util
       app/jobs
     ].map { |p| "#{Jets.root}/#{p}" }
     ActiveSupport::Dependencies.autoload_paths += autoload_paths
+
+    connect_to_db
+  end
+
+  # Only need to do this for ActiveRecord. DynamodbModel handles connecting
+  # to the client already.
+  def connect_to_db
+    return unless defined?(Mysql2) # only connect if mysql2 adapter has been loaded
+    text = ERB.new(IO.read("#{Jets.root}config/database.yml")).result
+    config = YAML.load(text)
+    ActiveRecord::Base.establish_connection(config[Jets.env])
   end
 
   def env

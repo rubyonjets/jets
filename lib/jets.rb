@@ -9,6 +9,7 @@ require "jets/core_ext/object/to_attrs"
 # TODO: only load the database adapters that the app uses
 $:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
 require "dynamodb_model"
+require "active_record"
 
 require "pp"
 
@@ -46,3 +47,4 @@ module Jets
 
   extend Util # root, logger, etc
 end
+
