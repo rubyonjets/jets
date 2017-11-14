@@ -13,6 +13,10 @@ require "active_record"
 
 require "pp"
 
+# TODO: move Aws.use_bundled_cert! to a place that makes sense
+require 'aws-sdk-core'
+Aws.use_bundled_cert!
+
 module Jets
   autoload :Application, "jets/application"
   autoload :Util, "jets/util"
