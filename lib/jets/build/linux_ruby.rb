@@ -301,7 +301,7 @@ class Jets::Build
 
     def get_linux_ruby
       if File.exist?(bundled_ruby_dest)
-        puts "Precompiled Linix Ruby #{jets_ruby_version} already downloaded at #{full(bundled_ruby_dest)}."
+        puts "Precompiled Linux Ruby #{jets_ruby_version} already downloaded at #{full(bundled_ruby_dest)}."
       else
         download_linux_ruby
         unpack_linux_ruby
