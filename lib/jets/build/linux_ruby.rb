@@ -148,7 +148,9 @@ class Jets::Build
       #   bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/nokogiri-1.8.1
       #   bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
       #   bundled/gems/ruby/2.4.0/extensions/x86_64-linux/2.4.0-static/nokogiri-1.8.1
-      compiled_gem_paths = Dir.glob("bundled/gems/ruby/*/extensions/*darwin*/*/*").to_a
+      os = "darwin" unless ENV['FORCE_DOWNLOAD_GEMS']
+      # FORCE_DOWNLOAD_GEMS option allows us to test on Linux
+      compiled_gem_paths = Dir.glob("bundled/gems/ruby/*/extensions/*#{os}*/*/*").to_a
       gem_names = compiled_gem_paths.map { |p| gem_name(p) }
 
       # Exits early if not all the linux gems are available
