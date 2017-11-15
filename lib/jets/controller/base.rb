@@ -29,16 +29,20 @@ class Jets::Controller
       query_string_params = event["queryStringParameters"] || {}
       path_params = event["pathParameters"] || {}
       # attempt to parse body in case it is json
+      params = body_params
+                .deep_merge(query_string_params)
+                .deep_merge(path_params)
+      ActiveSupport::HashWithIndifferentAccess.new(params)
+    end
+
+    def body_params
       begin
         body_params = event["body"] ? JSON.parse(event["body"]) : {}
       rescue JSON::ParserError
         body_params = {}
       end
 
-      params = body_params
-                .deep_merge(query_string_params)
-                .deep_merge(path_params)
-      ActiveSupport::HashWithIndifferentAccess.new(params)
+      body_params
     end
 
     def render(options={})

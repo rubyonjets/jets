@@ -7,8 +7,9 @@ class FakeController < Jets::Controller::Base
 end
 
 describe Jets::Controller::Base do
-  let(:controller) { FakeController.new(event, context) }
+  let(:controller) { FakeController.new(event, context, meth) }
   let(:context) { nil }
+  let(:meth) { "index" }
 
   context "general" do
     let(:event) { nil }
