@@ -10,7 +10,7 @@ require "jets/core_ext/object/to_attrs"
 $:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
 require "dynamodb_model"
 require "active_record"
-require "mysql2"
+# require "mysql2"
 
 require "pp"
 
