@@ -14,7 +14,7 @@ EOL
     def db_tasks
       # Think that Thor calls these desc and in turn methods on boot time.
       # Dont show db tasks help for linux for speed up boot time for Lambda
-      reutrn "" if RUBY_PLATFORM =~ /linux/
+      return "" if RUBY_PLATFORM =~ /linux/
 
       out = `bundle exec rake -T`
       tasks = out.split("\n").grep(/db:/)
