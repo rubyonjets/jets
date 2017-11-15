@@ -36,13 +36,22 @@ class Jets::Controller
     end
 
     def body_params
-      begin
-        body_params = event["body"] ? JSON.parse(event["body"]) : {}
-      rescue JSON::ParserError
-        body_params = {}
-      end
+      return {} if event[:body].nil?
+
+      # 1st try json parsing
+      parsed_json = parse_json(event[:body])
+      return parsed_json if parsed_json
+
+      # 2nd tried parsing cgi
+
 
       body_params
+    end
+
+    def parse_json(text)
+      JSON.parse(text)
+    rescue JSON::ParserError
+      nil
     end
 
     def render(options={})
