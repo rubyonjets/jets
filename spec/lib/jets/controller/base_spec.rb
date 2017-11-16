@@ -102,12 +102,19 @@ describe Jets::Controller::Base do
         "headers" => {
           "content-type" => "application/x-www-form-urlencoded",
         },
-        "body" => "article%5Btitle%5D=Test2&article%5Bbody%5D=test2&article%5Bpublished%5D=yes&commit=Submit"
+        "body" => "article%5Btitle%5D=test1&article%5Bbody%5D=test2&article%5Bpublished%5D=yes&commit=Submit"
       }
     end
-    it "parse multi" do
+    it "parse application/x-www-form-urlencoded form data" do
       params = controller.send(:params)
-      expect(params.keys).to eq %w[article[title] article[body] article[published] commit]
+      expect(params).to eq({
+        "article" => {
+          "title" => "test1",
+          "body" => "test2",
+          "published" => "yes"
+        },
+        "commit" => "Submit"
+      })
     end
   end
 

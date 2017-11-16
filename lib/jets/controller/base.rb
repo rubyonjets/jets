@@ -1,5 +1,6 @@
 require "active_support/core_ext/hash"
 require 'json'
+require 'rack/utils' # Rack::Utils.parse_nested_query
 
 # Controller public methods get turned into Lambda functions.
 class Jets::Controller
@@ -28,8 +29,6 @@ class Jets::Controller
     def params
       query_string_params = event["queryStringParameters"] || {}
       path_params = event["pathParameters"] || {}
-      # attempt to parse body in case it is json
-
       params = body_params
                 .deep_merge(query_string_params)
                 .deep_merge(path_params)
@@ -50,9 +49,11 @@ class Jets::Controller
         content_type = event["headers"]["content-type"]
       end
       if content_type == "application/x-www-form-urlencoded"
-        return CGI.parse(body)
+        return Rack::Utils.parse_nested_query(body)
       end
 
+      # Rack::Utils.parse_nested_query
+      # attempt to parse body in case it is json
       {} # fallback to empty Hash
     end
 
