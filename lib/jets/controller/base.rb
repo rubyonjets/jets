@@ -102,10 +102,16 @@ class Jets::Controller
       ActionController::Base.append_view_path("app/views")
       ActionController::Base.append_view_path("app/views/posts")
 
+      puts %|event["headers"] #{event["headers"].inspect}|
+      puts %|event[:headers] #{event[:headers].inspect}|
+      puts %|event["httpMethod"] #{event["httpMethod"].inspect}|
+      puts %|event[:httpMethod] #{event[:httpMethod].inspect}|
+
       renderer = ActionController::Base.renderer.new(
-        http_host: event["headers"]["Host"],
+        # http_host: event["headers"]["Host"],
         # https: false,
-        method: event["httpMethod"].downcase,
+        # method: event["httpMethod"].downcase,
+
         # script_name: "",
         # input: ""
       )
