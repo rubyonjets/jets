@@ -32,6 +32,12 @@ describe Jets::Build::GemFetcher do
         gem_name = fetcher.gem_name_from_path(path)
         expect(gem_name).to eq "mygem-0.2.0"
       end
+
+      it "versionless_gem_name" do
+        gem_name = "byebug-0.9.1"
+        versionless_gem_name = fetcher.versionless_gem_name(gem_name)
+        expect(versionless_gem_name).to eq "byebug"
+      end
     end
   end
 

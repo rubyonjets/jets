@@ -13,6 +13,7 @@ class Jets::Build
 
       gem_names.each do |gem_name|
         get_linux_gem(gem_name)
+        get_linux_library(gem_name)
       end
     end
 
@@ -35,6 +36,12 @@ class Jets::Build
       gem_name = path.match(regexp)[1]
     end
 
+    # Input: "https://s3.amazonaws.com/lambdagems/gems/2.4.2/byebug/system.tgz"
+    # Output: byebug
+    def versionless_gem_name(gem_name)
+      gem_name.sub(/-\d+\.\d+\.\d+.*/,'')
+    end
+
     # Downloads and extracts the linux gem into the proper directory.
     # Extracts to: bundled/gems/ruby
     # The downloaded tarball already has the full directory structure
@@ -46,24 +53,65 @@ class Jets::Build
     def get_linux_gem(gem_name)
       # download - also move to /tmp/jets/demo/compiled_gems folder
       url = gem_url(gem_name)
-      tarball = "#{Jets.build_root}/extensions/#{File.basename(url)}"
+      versionless_gem_name = versionless_gem_name(gem_name)
+      tarball = "#{Jets.build_root}/extensions/#{versionless_gem_name}/#{File.basename(url)}"
       if File.exist?(tarball)
         puts "Compiled gem already downloaded #{tarball}"
       else
-        download_gem(url, tarball)
+        download_file(url, tarball)
       end
 
       extract_gem(tarball)
     end
 
+    def download_file(source_url, dest)
+      puts "Downloading: #{source_url}"
+      FileUtils.mkdir_p(File.dirname(dest)) # ensure parent folder exists
+
+      File.open(dest, 'wb') do |saved_file|
+        # the following "open" is provided by open-uri
+        # TODO: remove OpenSSL::SSL::VERIFY_NONE hack. Figure out how to install ssl cert properly
+        open(source_url, 'rb') do |read_file|
+          saved_file.write(read_file.read)
+        end
+      end
+    end
+
+    # The gem might required shared .so files.  We check each gem
+    def get_linux_library(gem_name)
+      system_url = gem_system_url(gem_name)
+
+      if url_exists?(system_url)
+        versionless_gem_name = versionless_gem_name(gem_name)
+        system_tarball = "#{Jets.build_root}/extensions/#{versionless_gem_name}/system.tgz"
+        if File.exist?(system_tarball)
+          puts "Compiled library already downloaded #{system_tarball}"
+        else
+          download_file(system_url, system_tarball)
+        end
+
+        extract_library(system_tarball)
+      end
+    end
+
+    def extract_library(tarball)
+      bundled_folder = "#{Jets.build_root}/bundled"
+      puts "Unpacking compiled library #{tarball} into #{bundled_folder}"
+
+      FileUtils.mkdir_p(bundled_folder)
+      success = system("tar -xzf #{tarball} -C #{bundled_folder}")
+      abort("Unpacking library #{tarball} failed") unless success
+      puts "Unpacking library successful."
+    end
+
     def extract_gem(tarball)
-      # extract
       gems_ruby_folder = "#{Jets.build_root}/bundled/gems/ruby"
       puts "Unpacking compiled gem #{tarball} into #{gems_ruby_folder}"
 
+      FileUtils.mkdir_p(gems_ruby_folder)
       success = system("tar -xzf #{tarball} -C #{gems_ruby_folder}")
       abort("Unpacking gem #{tarball} failed") unless success
-      puts "Unpacking gem #{tarball} successful."
+      puts "Unpacking gem successful."
     end
 
     # We check all the availability before even downloading so we can provide a
@@ -83,32 +131,22 @@ class Jets::Build
           next if available
           puts "  #{gem_name}"
         end
-        puts "How to fix this:"
-        puts "  1. Build your jets project on an Amazon Lambda based EC2 Instance."
-        puts "  2. Add the your required gems to boltopslabs/lambdagems and submit a pull request."
-        puts "  3. Configure jets to lookup your own pre-compiled gems url."
-        puts
-        puts "More info: http://rubyonjets.com/lambdagems"
+        puts <<-EOL
+How to fix this:
+
+  1. Build your jets project on an Amazon Lambda based EC2 Instance and compile your own gems with the proper shared libaries.
+  2. Configure jets to lookup your own pre-compiled gems url.
+  3. Add the the required gems to boltopslabs/lambdagems and submit a pull request.
+
+More info: http://rubyonjets.com/lambdagems
+EOL
         exit
       end
     end
 
-    def download_gem(source, dest)
-      FileUtils.mkdir_p(File.dirname(dest)) # ensure parent folder exists
-
-      File.open(dest, 'wb') do |saved_file|
-        # the following "open" is provided by open-uri
-        # TODO: remove OpenSSL::SSL::VERIFY_NONE hack. Figure out how to install ssl cert properly
-        open(source, 'rb') do |read_file|
-          saved_file.write(read_file.read)
-        end
-      end
-    end
-
     # Example url:
-    #   https://s3.amazonaws.com/boltops-gems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
+    #   https://s3.amazonaws.com/lambdagems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
     def url_exists?(url)
-      puts "Checking url: #{url}"
       url = URI.parse(url)
       req = Net::HTTP.new(url.host, url.port).tap do |http|
         http.use_ssl = true
@@ -120,14 +158,23 @@ class Jets::Build
       false
     end
 
-    # gem_name: byebug-9.1.0
-    # Example url:
-    #   https://s3.amazonaws.com/boltops-gems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
-    def gem_url(gem_name)
-      # TODO: make boltops-gems downloads s3 url configurable
-      folder = gem_name.gsub(/-(\d+\.\d+\.\d+.*)/,'') # folder byebug
-      "https://s3.amazonaws.com/boltops-gems/gems/#{RUBY_VERSION}/#{folder}/#{gem_name}-x86_64-linux.tar.gz"
+    # TODO: make lambdagems downloads s3 url configurable
+    def lambdagems_url
+      "https://s3.amazonaws.com/lambdagems"
     end
 
+    # gem_name: byebug-9.1.0
+    # Example url:
+    #   https://s3.amazonaws.com/lambdagems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
+    def gem_url(gem_name)
+      folder = gem_name.gsub(/-(\d+\.\d+\.\d+.*)/,'') # folder: byebug
+      "#{lambdagems_url}/gems/#{RUBY_VERSION}/#{folder}/#{gem_name}-x86_64-linux.tar.gz"
+    end
+
+    # If there's a  system.tgz then it is the same folder as the tarball gem.
+    def gem_system_url(gem_name)
+      gem_url = gem_url(gem_name)
+      File.dirname(gem_url) + "/system.tgz"
+    end
   end
 end
