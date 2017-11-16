@@ -4,6 +4,7 @@ class Jets::Build
   autoload :Deducer, "jets/build/deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
   autoload :LinuxRuby, "jets/build/linux_ruby"
+  autoload :GemFetcher, "jets/build/gem_fetcher"
 
   def initialize(options)
     @options = options
