@@ -102,26 +102,34 @@ class Jets::Controller
       ActionController::Base.append_view_path("app/views")
       ActionController::Base.append_view_path("app/views/posts")
 
-      puts %|event["headers"] #{event["headers"].inspect}|
-      puts %|event[:headers] #{event[:headers].inspect}|
-      puts %|event["httpMethod"] #{event["httpMethod"].inspect}|
-      puts %|event[:httpMethod] #{event[:httpMethod].inspect}|
-
-      renderer = ActionController::Base.renderer.new(
-        # http_host: event["headers"]["Host"],
-        # https: false,
-        # method: event["httpMethod"].downcase,
-
-        # script_name: "",
-        # input: ""
-      )
-      # default options: https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
+      renderer = ActionController::Base.renderer.new(renderer_options)
       template = options[:template] || default_template_name
 
       body = renderer.render(template: template, assigns: all_instance_variables, controller_name: "articles2")
       options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(options)
+    end
+
+    # default options:
+    #   https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
+    def renderer_options
+      # When testing lambda function directly, the event payload
+      # will not not always contain event["headers"]
+      return {} unless event["headers"]
+
+      origin = event["headers"]["origin"]
+      if origin
+        uri = URI.parse(origin)
+        https = uri.scheme == "https"
+      end
+      {
+        http_host: event["headers"]["Host"],
+        https: https,
+        method: event["httpMethod"].downcase,
+        # script_name: "",
+        # input: ""
+      }
     end
 
     # Transform the structure to AWS_PROXY compatiable structure
