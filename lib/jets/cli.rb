@@ -64,6 +64,7 @@ module Jets
     option :qualifier, desc: "Lambda function version or alias name"
     option :show_log, type: :boolean, desc: "Shows last 4KB of log in the x-amz-log-result header"
     option :lambda_proxy, type: :boolean, default: true, desc: "Enables automatic Lambda proxy transformation of the event payload"
+    option :guess, type: :boolean, default: true, desc: "Enables guess inference. Allows use of all dashes and verifies that the function exists in the code base."
     def call(function_name, payload='')
       Jets::Call.new(function_name, payload, options).run
     end

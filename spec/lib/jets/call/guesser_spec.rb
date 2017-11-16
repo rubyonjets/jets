@@ -35,12 +35,16 @@ describe Jets::Call::Guesser do
     end
 
     it "finds the right class when available" do
-      found_class_name = guesser.guess
+      found_class_name = guesser.class_name
       expect(found_class_name).to eq("Admin::RelatedPagesController")
     end
 
     it "function_name" do
       expect(guesser.function_name).to eq("#{Jets.config.project_namespace}-admin-related_pages_controller-list_all")
+    end
+
+    it "method_name" do
+      expect(guesser.method_name).to eq("list_all")
     end
   end
 
@@ -48,8 +52,9 @@ describe Jets::Call::Guesser do
     let(:function_name) { "does-not-exist" }
 
     it "raise error class when is not available" do
-      found_class_name = guesser.guess
+      found_class_name = guesser.class_name
       expect(found_class_name).to be nil
     end
   end
 end
+

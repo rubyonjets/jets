@@ -35,8 +35,24 @@ class Jets::Call
       @provided_function_name = provided_function_name
     end
 
-    def guess
-      detect_class_name
+    def class_name
+      @class_name ||= detect_class_name
+    end
+
+    def method_name
+      return @method_name if defined?(@method_name)
+      return nil unless class_name
+
+      underscored_class_name = class_name.underscore.gsub('/','_') + "_"
+      underscored_function_name = @provided_function_name.underscore.gsub('/','_')
+      meth = underscored_function_name.sub(underscored_class_name, '')
+
+      if class_name.constantize.public_instance_methods.include?(meth.to_sym)
+        @method_name = meth
+      else
+        @method_name_error ="#{class_name} class found but #{meth} method not found"
+        @method_name = nil
+      end
     end
 
     def function_name
@@ -44,8 +60,6 @@ class Jets::Call
       # Since we're going to automatically add it no matter what at the end
       # and dont want the namespace to be included twice
       @provided_function_name = @provided_function_name.sub("#{Jets.config.project_namespace}-", "")
-
-      class_name = detect_class_name
 
       code_path = class_name.underscore.gsub('/','-')
       function_name = [Jets.config.project_namespace, code_path, action_name].join('-')
@@ -72,7 +86,7 @@ class Jets::Call
       Regexp.new("[-_]#{process_type}[-_](.*)")
     end
 
-    # strips the action because we dont need it
+    # strips the action because we dont want it to guess the class name
     def underscored_name
     # strip action and concidentally the _controller_ string
     name = @provided_function_name.sub(process_type_pattern,'')
@@ -103,6 +117,17 @@ class Jets::Call
       guesses
     end
 
+    # Useful to printing out what was attempted to look up
+    def error_message
+      guesses = guess_classes
+      puts "Unable to find the function to call."
+      if class_name and !method_name
+        puts @method_name_error
+      else
+        puts "Tried: #{guesses.join(', ')}"
+      end
+    end
+
     def guess_classes
       guess_paths.map(&:classify)
     end
@@ -120,7 +145,7 @@ class Jets::Call
           return class_name_guess # if there's no error then the class is found
         rescue NameError
           if out_of_guesses(class_name_guess)
-            puts "Unable to find the class to call. Tried guessing: #{guess_classes[0..-2].join(', ')}."
+            # puts "Unable to find the class to call. Tried guessing: #{guess_classes[0..-2].join(', ')}."
             # raise # re-raise NameError for now but maybe better to provide
               # a custom error class, so we can rescue it and provide a
               # friendly message to the user

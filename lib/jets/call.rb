@@ -20,38 +20,42 @@ class Jets::Call
   end
 
   def function_name
-    guesser = Guesser.new(@provided_function_name)
-    class_name = guesser.guess
-    unless class_name
-      puts "Unable to find the function to call."
-      exit
+    if @options[:guess]
+      guesser = Guesser.new(@provided_function_name)
+      unless guesser.class_name and guesser.method_name
+        puts guesser.error_message
+        exit
+      end
+      guesser.function_name # guesser adds namespace already
+    else
+      [Jets.config.project_namespace, @provided_function_name].join('-')
     end
-
-    guesser.function_name
   end
 
   def run
     puts "Calling lambda function #{function_name} on AWS".colorize(:green)
     return if @options[:noop]
 
-    add_console_link_to_clipboard
-
-    # puts "payload #{@payload.inspect}"
-
-    resp = lambda.invoke(
-      # client_context: client_context,
-      function_name: function_name,
-      invocation_type: @invocation_type, # "Event", # RequestResponse
-      log_type: @log_type, # pretty sweet
-      payload: transformed_event, # "fileb://file-path/input.json",
-      qualifier: @qualifier, # "1",
-    )
+    begin
+      resp = lambda.invoke(
+        # client_context: client_context,
+        function_name: function_name,
+        invocation_type: @invocation_type, # "Event", # RequestResponse
+        log_type: @log_type, # pretty sweet
+        payload: transformed_event, # "fileb://file-path/input.json",
+        qualifier: @qualifier, # "1",
+      )
+    rescue Aws::Lambda::Errors::ResourceNotFoundException
+      puts "The function #{function_name} was not found.  Maybe check the spelling?".colorize(:red)
+      exit
+    end
 
     if @options[:show_log]
       puts "Last 4KB of log in the x-amz-log-result header:".colorize(:green)
       puts Base64.decode64(resp.log_result)
     end
 
+    add_console_link_to_clipboard
     $stdout.puts resp.payload.read # only thing that goes to stdout
   end
 
