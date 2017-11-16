@@ -67,7 +67,11 @@ class Jets::Controller
       raise "DoubleRenderError" if @rendered
 
       # render json: {"mytestdata": "value1"}, status: 200, headers: {...}
-      @rendered_data = if options.has_key?(:json)
+      @rendered_data = if options.is_a?(Symbol) # render :new
+          action_name = options
+          options = {template: "#{template_namespace}/#{action_name}"}
+          render_template(options)
+        elsif options.has_key?(:json)
           render_json(options)
         elsif options.has_key?(:text)
           options[:text]
@@ -155,9 +159,13 @@ class Jets::Controller
 
     # Example: posts/index
     def default_template_name
-      class_name = self.class.name.to_s.sub('Controller','').underscore.pluralize
       action_name = @meth # All the way from the MainProcessor
-      "#{class_name}/#{action_name}"
+      "#{template_namespace}/#{action_name}"
+    end
+
+    # PostsController => "posts" is the namespace
+    def template_namespace
+      self.class.name.to_s.sub('Controller','').underscore.pluralize
     end
 
     def cors_headers
