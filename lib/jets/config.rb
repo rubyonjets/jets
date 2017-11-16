@@ -44,8 +44,8 @@ class Jets::Config
     settings['env'] = ENV['JETS_ENV'] || 'development'
     ENV['RAILS_ENV'] = settings['env']
     ENV['RACK_ENV'] = settings['env']
-    # env_instance can be set in the settings file but JETS_ENV cannot
-    settings['env_instance'] = ENV['JETS_ENV_INSTANCE'] if ENV['JETS_ENV_INSTANCE']
+    # env_extra can be set in the settings file but JETS_ENV cannot
+    settings['env_extra'] = ENV['JETS_ENV_EXTRA'] if ENV['JETS_ENV_EXTRA']
 
     # Extra helpful aliases
     set_aliases!(settings)
@@ -70,12 +70,12 @@ class Jets::Config
     staging: 'stag',
   }
   def set_aliases!(s)
-    # IE: With env_instance: project-dev-1
-    #     Without env_instance: project-dev
+    # IE: With env_extra: project-dev-1
+    #     Without env_extra: project-dev
     short_env = ENV_MAP[s['env'].to_sym] || s['env']
     s['short_env'] = short_env
-    s['project_namespace'] = [s['project_name'], s['short_env'], s['env_instance']].compact.join('-')
-    # table_namespace does not have the env_instance.  Think it's more common to want this case.
+    s['project_namespace'] = [s['project_name'], s['short_env'], s['env_extra']].compact.join('-')
+    # table_namespace does not have the env_extra.  Think it's more common to want this case.
     s['table_namespace'] = [s['project_name'], s['short_env']].compact.join('-')
   end
 
