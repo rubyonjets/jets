@@ -97,7 +97,7 @@ class Jets::Call
       text = IO.read(path)
     end
 
-    puts "function_name #{function_name.inspect}"
+    puts "Function name: #{function_name.inspect}"
     return text unless function_name.include?("_controller-")
     return text if @options[:lambda_proxy] == false
 
