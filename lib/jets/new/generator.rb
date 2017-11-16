@@ -21,13 +21,11 @@ class Jets::New
     def copy
       project_root = @project_name
       source_root = File.expand_path("../../new/templates/#{@options[:template]}", __FILE__)
-      puts "source_root #{source_root}".colorize(:cyan)
       paths = Dir.glob("#{source_root}/**/{*,.*}").
                 select {|p| File.file?(p) }
       paths.each do |src|
         dest = src.gsub(%r{.*starter/},'')
         dest = "#{project_root}/#{dest}"
-        puts "  dest #{dest}".colorize(:cyan)
 
         if File.exist?(dest) and !@options[:force]
           puts "already exists: #{dest}".colorize(:yellow) unless @options[:quiet]

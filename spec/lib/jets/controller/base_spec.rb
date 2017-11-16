@@ -95,16 +95,16 @@ describe Jets::Controller::Base do
     end
   end
 
-  context "create with post data from form" do
+  context "post data from form with content-type application/x-www-form-urlencoded" do
     let(:meth) { "create" }
     let(:event) do
       {
         "body" => "article%5Btitle%5D=Test2&article%5Bbody%5D=test2&article%5Bpublished%5D=yes&commit=Submit"
       }
     end
-    it "not error" do
+    it "parse multi" do
       params = controller.send(:params)
-      expect(params.keys).to eq([])
+      expect(params.keys).to eq %w[article[title] article[body] article[published] commit]
     end
   end
 
