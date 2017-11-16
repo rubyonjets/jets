@@ -118,14 +118,6 @@ class Jets::Controller
       render_aws_proxy(options)
     end
 
-    def all_instance_variables
-      instance_variables.inject({}) do |vars, v|
-        k = v.to_s.sub(/^@/,'') # @event => event
-        vars[k] = instance_variable_get(v)
-        vars
-      end
-    end
-
     # Transform the structure to AWS_PROXY compatiable structure
     # AWS Docs Output Format of a Lambda Function for Proxy Integration
     # http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
@@ -137,8 +129,7 @@ class Jets::Controller
       headers = options[:headers] || {}
       headers = cors_headers.merge(headers)
       body = options[:body]
-      base64 = options[:base64] if options.has_key?(:base64)
-      base64 = options[:isBase64Encoded] if options.has_key?(:isBase64Encoded)
+      base64 = normalized_base64_option(options)
 
       if body.is_a?(Hash)
         body = JSON.dump(body) # body must be a String
@@ -150,11 +141,56 @@ class Jets::Controller
       # Compatiable Lambda Proxy Hash
       # Explictly assign keys, additional keys will not be compatiable
       resp = {
-        statusCode: status,
-        headers: headers,
-        body: body,
-        isBase64Encoded: base64,
+        "statusCode" => status,
+        "headers" => headers,
+        "body" => body,
+        "isBase64Encoded" => base64,
       }
+    end
+
+    def normalized_base64_option(options)
+      base64 = options[:base64] if options.has_key?(:base64)
+      base64 = options[:isBase64Encoded] if options.has_key?(:isBase64Encoded)
+      base64
+    end
+
+    # redirect_to "/posts", :status => 301
+    # redirect_to :action=>'atom', :status => 302
+    def redirect_to(url, options={})
+      unless url.is_a?(String)
+        raise "redirect_to url parameter must be a String. Please pass in a string"
+      end
+
+      uri = URI.parse(url)
+      # if no location.host, we been provided a relative host
+      if !uri.host && event["headers"] && event["headers"]["origin"]
+        url = "/#{url}" unless url.starts_with?('/')
+        redirect_url = event["headers"]["origin"] + url
+      else
+        redirect_url = url
+      end
+
+      base64 = normalized_base64_option(options)
+
+      resp = render_aws_proxy(
+        status: options[:status] || 302,
+        headers: {
+          "Location" => redirect_url
+        },
+        body: "",
+        isBase64Encoded: base64,
+      )
+      # so ensure_render doesnt get called and wipe out the redirect_to resp
+      @rendered = true
+      @rendered_data = resp
+    end
+
+    def all_instance_variables
+      instance_variables.inject({}) do |vars, v|
+        k = v.to_s.sub(/^@/,'') # @event => event
+        vars[k] = instance_variable_get(v)
+        vars
+      end
     end
 
     # Example: posts/index

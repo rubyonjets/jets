@@ -35,10 +35,10 @@ describe Jets::Controller::Base do
       #   "body": "must be a string, even if it is json, it should be a string"
       # }
       expect(resp).to be_a(Hash)
-      expect(resp.keys).to include(:statusCode)
-      expect(resp.keys).to include(:body)
-      expect(resp[:statusCode]).to eq 200
-      expect(resp[:body]).to be_a(String)
+      expect(resp.keys).to include("statusCode")
+      expect(resp.keys).to include("body")
+      expect(resp["statusCode"]).to eq 200
+      expect(resp["body"]).to be_a(String)
     end
 
     # Spec is to help understand the AWS_PROXY request format and
@@ -64,8 +64,8 @@ describe Jets::Controller::Base do
 
     it "adds cors headers" do
       resp = controller.send(:render, json: {"my": "data"})
-      expect(resp[:headers].keys).to include("Access-Control-Allow-Origin")
-      expect(resp[:headers].keys).to include("Access-Control-Allow-Credentials")
+      expect(resp["headers"].keys).to include("Access-Control-Allow-Origin")
+      expect(resp["headers"].keys).to include("Access-Control-Allow-Credentials")
     end
   end
 
@@ -115,6 +115,21 @@ describe Jets::Controller::Base do
         },
         "commit" => "Submit"
       })
+    end
+  end
+
+  context "redirection set" do
+    let(:event) do
+      {
+        "headers" => {
+          "origin" => "http://localhost:8888",
+        },
+      }
+    end
+    it "redirect_to" do
+      resp = controller.send(:redirect_to, "/myurl", status: 301)
+      redirect_url = resp["headers"]["Location"]
+      expect(redirect_url).to eq "http://localhost:8888/myurl"
     end
   end
 

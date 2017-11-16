@@ -25,11 +25,11 @@ class Jets::Server
       resp = controller_class.process(event, context, find_controller_action)
 
       # Map lambda proxy response format to rack format
-      # puts "resp #{resp}".colorize(:cyan)
-      status = resp[:statusCode]
-      headers = resp[:headers] || {}
+      puts "resp #{resp.inspect}".colorize(:cyan)
+      status = resp["statusCode"]
+      headers = resp["headers"] || {}
       headers = {'Content-Type' => 'text/html'}.merge(headers)
-      body = resp[:body]
+      body = resp["body"]
 
       [status, headers, [body]]
     end
