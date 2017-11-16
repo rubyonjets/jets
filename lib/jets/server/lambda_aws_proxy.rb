@@ -7,6 +7,10 @@ class Jets::Server
     def initialize(route, env)
       @route = route
       @env = env
+      # puts "@env #{env.inspect}"
+      @env.each do |k,v|
+        puts "#{k}: #{v}"
+      end
       Jets.boot # need the project app code, call in here because that is
       # seems to be more close to when API Gateway would load jets
     end

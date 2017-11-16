@@ -7,8 +7,9 @@ class FakeController < Jets::Controller::Base
 end
 
 describe Jets::Controller::Base do
-  let(:controller) { FakeController.new(event, context) }
+  let(:controller) { FakeController.new(event, context, meth) }
   let(:context) { nil }
+  let(:meth) { "index" }
 
   context "general" do
     let(:event) { nil }
@@ -86,6 +87,19 @@ describe Jets::Controller::Base do
     let(:event) do
       {
         "body" => "{\"body-key1mm.,,, \"body-key2\": \"body-value2\"}"
+      }
+    end
+    it "not error" do
+      params = controller.send(:params)
+      expect(params.keys).to eq([])
+    end
+  end
+
+  context "create with post data from form" do
+    let(:meth) { "create" }
+    let(:event) do
+      {
+        "body" => "article%5Btitle%5D=Test2&article%5Bbody%5D=test2&article%5Bpublished%5D=yes&commit=Submit"
       }
     end
     it "not error" do

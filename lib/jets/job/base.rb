@@ -10,7 +10,7 @@ class Jets::Job
       end
 
       def perform_now(meth, event, context=nil)
-        new(event, context).send(meth)
+        new(event, context, meth).send(meth)
       end
 
       def perform_later(meth, event, context=nil)

@@ -29,16 +29,29 @@ class Jets::Controller
       query_string_params = event["queryStringParameters"] || {}
       path_params = event["pathParameters"] || {}
       # attempt to parse body in case it is json
-      begin
-        body_params = event["body"] ? JSON.parse(event["body"]) : {}
-      rescue JSON::ParserError
-        body_params = {}
-      end
-
       params = body_params
                 .deep_merge(query_string_params)
                 .deep_merge(path_params)
       ActiveSupport::HashWithIndifferentAccess.new(params)
+    end
+
+    def body_params
+      return {} if event[:body].nil?
+
+      # 1st try json parsing
+      parsed_json = parse_json(event[:body])
+      return parsed_json if parsed_json
+
+      # 2nd tried parsing cgi
+
+
+      body_params
+    end
+
+    def parse_json(text)
+      JSON.parse(text)
+    rescue JSON::ParserError
+      nil
     end
 
     def render(options={})

@@ -42,6 +42,8 @@ class Jets::Config
     settings = defaults.deep_merge(user.deep_merge(project))
 
     settings['env'] = ENV['JETS_ENV'] || 'development'
+    ENV['RAILS_ENV'] = settings['env']
+    ENV['RACK_ENV'] = settings['env']
     # env_instance can be set in the settings file but JETS_ENV cannot
     settings['env_instance'] = ENV['JETS_ENV_INSTANCE'] if ENV['JETS_ENV_INSTANCE']
 
