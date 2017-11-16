@@ -94,8 +94,9 @@ class Jets::Controller
     def render_template(options={})
       # only require action_controller when necessary
       require "action_controller"
-      require "jets/rails_overrides/url_helper"
+      require "jets/rails_overrides"
       ActionController::Base.append_view_path("app/views")
+      ActionController::Base.append_view_path("app/views/posts")
 
       renderer = ActionController::Base.renderer.new(
         http_host: event["headers"]["Host"],
@@ -104,10 +105,10 @@ class Jets::Controller
         # script_name: "",
         # input: ""
       )
-      # Thanks https://blog.bigbinary.com/2016/01/08/rendering-views-outside-of-controllers-in-rails-5.html for how to customize the environment.
+      # default options: https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
       template = options[:template] || default_template_name
 
-      body = renderer.render(template: template, assigns: all_instance_variables)
+      body = renderer.render(template: template, assigns: all_instance_variables, controller_name: "articles2")
       options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(options)
