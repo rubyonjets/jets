@@ -36,8 +36,9 @@ module Jets::Util
   # Only need to do this for ActiveRecord. DynamodbModel handles connecting
   # to the client already.
   def connect_to_db
-    return unless defined?(Mysql2) # only connect if mysql2 adapter has been loaded
-    text = ERB.new(IO.read("#{Jets.root}config/database.yml")).result
+    database_yml = "#{Jets.root}config/database.yml"
+    return unless File.exist?(database_yml) # only connect if config/database.yml exists
+    text = ERB.new(IO.read(database_yml)).result
     config = YAML.load(text)
     ActiveRecord::Base.establish_connection(config[Jets.env])
   end
