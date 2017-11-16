@@ -44,7 +44,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   # there are development dependencies because we want to lazy load them
   # in the app. but we want to have them so we can run specs.
-  spec.add_development_dependency "mysql2"
+  spec.add_development_dependency "pg"
 
   # ruby_dep-1.5.0 requires ruby version >= 2.2.5, which is incompatible with the current version, ruby 2.2.2p95
   # spec.add_development_dependency "guard"
