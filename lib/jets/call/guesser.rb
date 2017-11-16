@@ -43,9 +43,10 @@ class Jets::Call
       return @method_name if defined?(@method_name)
       return nil unless class_name
 
-      underscored_class_name = class_name.underscore.gsub('/','_') + "_"
+      underscored_class_name = class_name.underscore.gsub('/','_')
       underscored_function_name = @provided_function_name.underscore.gsub('/','_')
       meth = underscored_function_name.sub(underscored_class_name, '')
+      meth = meth.sub(/^[-_]/,'') # remove leading _ or -
 
       if class_name.constantize.public_instance_methods.include?(meth.to_sym)
         @method_name = meth

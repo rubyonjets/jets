@@ -109,6 +109,12 @@ In order to allow calling functions with all dashes, the call method evaluates t
 
 jets call admin-related_pages_controller-index
 
+Local mode:
+
+Instead of calling AWS lambda remote, you can also have `jets call` use the code directly on your machine.  To enable this use the `--local` flag. Example:
+
+$ jets call hard_job-drive --local
+
 EOL
         end
 

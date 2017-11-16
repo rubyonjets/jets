@@ -8,6 +8,7 @@ class Jets::Call
 
   def initialize(provided_function_name, event, options={})
     @options = options
+    @guess = @options[:guess].nil? ? true : @options[:guess]
 
     @provided_function_name = provided_function_name
     @event = event
@@ -20,12 +21,8 @@ class Jets::Call
   end
 
   def function_name
-    if @options[:guess]
-      guesser = Guesser.new(@provided_function_name)
-      unless guesser.class_name and guesser.method_name
-        puts guesser.error_message
-        exit
-      end
+    if @guess
+      ensure_guesses_found! # possibly exits here
       guesser.function_name # guesser adds namespace already
     else
       [Jets.config.project_namespace, @provided_function_name].join('-')
@@ -33,6 +30,23 @@ class Jets::Call
   end
 
   def run
+    @options[:local] ? local_run : remote_run
+  end
+
+  # With local run there is no way to bypass the guesser
+  def local_run
+    puts "Local mode enabled!"
+    ensure_guesses_found! # possibly exits here
+    klass = guesser.class_name.constantize
+    # Example:
+    #   PostsController.process(event, context, meth)
+    data = klass.process(transformed_event, {}, guesser.method_name)
+    # Note: even though data might not always be json, the JSON.dump does a
+    # good job of not bombing, so always calling it to simplify code.
+    $stdout.puts JSON.dump(data)
+  end
+
+  def remote_run
     puts "Calling lambda function #{function_name} on AWS".colorize(:green)
     return if @options[:noop]
 
@@ -59,6 +73,17 @@ class Jets::Call
     $stdout.puts resp.payload.read # only thing that goes to stdout
   end
 
+  def guesser
+    @guesser ||= Guesser.new(@provided_function_name)
+  end
+
+  def ensure_guesses_found!
+    unless guesser.class_name and guesser.method_name
+      puts guesser.error_message
+      exit
+    end
+  end
+
   def transformed_event
     text = @event
 
@@ -72,6 +97,7 @@ class Jets::Call
       text = IO.read(path)
     end
 
+    puts "function_name #{function_name.inspect}"
     return text unless function_name.include?("_controller-")
     return text if @options[:lambda_proxy] == false
 

@@ -42,9 +42,14 @@ describe Jets::Call::Guesser do
     it "function_name" do
       expect(guesser.function_name).to eq("#{Jets.config.project_namespace}-admin-related_pages_controller-list_all")
     end
+  end
+
+  context "posts-controller-index" do
+    let(:function_name) { "posts-controller-index" }
 
     it "method_name" do
-      expect(guesser.method_name).to eq("list_all")
+      # the controller and acion must actually exists
+      expect(guesser.method_name).to eq("index")
     end
   end
 
