@@ -30,10 +30,6 @@ class Jets::Controller
       path_params = event["pathParameters"] || {}
       # attempt to parse body in case it is json
 
-      puts "query_string_params #{query_string_params.inspect}"
-      puts "path_params #{path_params.inspect}"
-      puts "body_params #{body_params.inspect}"
-
       params = body_params
                 .deep_merge(query_string_params)
                 .deep_merge(path_params)
@@ -44,15 +40,20 @@ class Jets::Controller
       body = event["body"]
       return {} if body.nil?
 
-      # 1st try json parsing
+      # Try json parsing
       parsed_json = parse_json(body)
       return parsed_json if parsed_json
 
-      # 2nd tried parsing cgi
-      # if CGI.parse(body)
-      # end
 
-      {}
+      # For content-type application/x-www-form-urlencoded CGI.parse the body
+      if event["headers"] && event["headers"]["content-type"]
+        content_type = event["headers"]["content-type"]
+      end
+      if content_type == "application/x-www-form-urlencoded"
+        return CGI.parse(body)
+      end
+
+      {} # fallback to empty Hash
     end
 
     def parse_json(text)

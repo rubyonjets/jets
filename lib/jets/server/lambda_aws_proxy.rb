@@ -7,9 +7,9 @@ class Jets::Server
     def initialize(route, env)
       @route = route
       @env = env
-      @env.each do |k,v|
-        puts "#{k}: #{v}"
-      end
+      # @env.each do |k,v|
+      #   puts "#{k}: #{v}"
+      # end
       Jets.boot # need the project app code, call in here because it is close
         # to when API Gateway would load jets as part the main_processor
     end
@@ -25,7 +25,7 @@ class Jets::Server
       resp = controller_class.process(event, context, find_controller_action)
 
       # Map lambda proxy response format to rack format
-      puts "resp #{resp}".colorize(:cyan)
+      # puts "resp #{resp}".colorize(:cyan)
       status = resp[:statusCode]
       headers = resp[:headers] || {}
       headers = {'Content-Type' => 'text/html'}.merge(headers)
@@ -51,12 +51,50 @@ class Jets::Server
       }
     end
 
+    # Annoying. The headers part part of the AWS Lambda proxy structure
+    # does not consisently use the same casing scheme for the header keys.
+    # So sometimes it looks like this:
+    #   Accept-Encoding
+    # and sometimes it is looks like this:
+    #   cache-control
+    # Special cases when the casing doesn't match, we map it over.
+    CASING_MAP = {
+      "Cache-Control" => "cache-control",
+      "Content-Type" => "content-type",
+      "Origin" => "origin",
+      "Upgrade-Insecure-Requests" => "upgrade-insecure-requests",
+    }
+
     def request_headers
-      @env.select { |k,v| k =~ /^HTTP_/ }.inject({}) do |h,(k,v)|
-        key = k.sub('HTTP_','').split('_').map(&:capitalize).join('-')
-        h[key] = v
-        h
+      headers = @env.select { |k,v| k =~ /^HTTP_/ }.inject({}) do |h,(k,v)|
+          # map things like HTTP_USER_AGENT to "User-Agent"
+          key = k.sub('HTTP_','').split('_').map(&:capitalize).join('-')
+          h[key] = v
+          h
+        end
+      # content type is not prepended with HTTP_ but is part of Lambda's event headers thankfully
+      headers["Content-Type"] = @env["CONTENT_TYPE"] if @env["CONTENT_TYPE"]
+
+      # adjust the casing so it matches the Lambda AWS Proxy's structure
+      CASING_MAP.each do |nice_casing, bad_casing|
+        if headers.has_key?(nice_casing)
+          headers[bad_casing] = headers.delete(nice_casing)
+        end
       end
+
+      # There are also a couple of other headers that are specific to
+      # AWS Lambda Proxy and API Gateway. Example:
+      #
+      # "X-Amz-Cf-Id": "W8DF6J-lx1bkV00eCiBwIq5dldTSGGiG4BinJlxvN_4o8fCZtbsVjw==",
+      # "X-Amzn-Trace-Id": "Root=1-5a0dc1ac-58a7db712a57d6aa4186c2ac",
+      # "X-Forwarded-For": "88.88.88.88, 54.239.203.117",
+      # "X-Forwarded-Port": "443",
+      # "X-Forwarded-Proto": "https",
+      #
+      # For sample dump of the event headers, check out:
+      #    spec/fixtures/samples/event-headers-form-post.json
+
+      headers
     end
 
     def query_string_parameters

@@ -99,6 +99,9 @@ describe Jets::Controller::Base do
     let(:meth) { "create" }
     let(:event) do
       {
+        "headers" => {
+          "content-type" => "application/x-www-form-urlencoded",
+        },
         "body" => "article%5Btitle%5D=Test2&article%5Bbody%5D=test2&article%5Bpublished%5D=yes&commit=Submit"
       }
     end

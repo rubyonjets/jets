@@ -1,0 +1,26 @@
+{
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.9,pt;q=0.8",
+    "cache-control": "max-age=0",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "content-type": "application/x-www-form-urlencoded",
+    "Host": "nol1n8ho0j.execute-api.us-east-1.amazonaws.com",
+    "origin": "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com",
+    "Referer": "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com/dev/articles/new",
+    "upgrade-insecure-requests": "1",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36",
+    "Via": "2.0 6e65abb04cb818a6ec78111935b507f7.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "W8DF6J-lx1bkV00eCiBwIq5dldTSGGiG4BinJlxvN_4o8fCZtbsVjw==",
+    "X-Amzn-Trace-Id": "Root=1-5a0dc1ac-58a7db712a57d6aa4186c2ac",
+    "X-Forwarded-For": "69.42.1.180, 54.239.203.117",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  }
+}

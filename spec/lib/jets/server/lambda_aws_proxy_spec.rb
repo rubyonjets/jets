@@ -57,4 +57,23 @@ describe Jets::Server::LambdaAwsProxy do
       )
     end
   end
+
+  context "post form application/x-www-form-urlencoded" do
+    let(:env) do
+      JSON.load(IO.read("spec/fixtures/rack-dumps/form-post.json"))
+    end
+    it "mapping of rack headers should match the lambda proxy headers" do
+      # Annoying. The headers part part of the AWS Lambda proxy structure
+      # does not consisently use the same casing scheme for the the header keys.
+      # So sometimes it looks like this:
+      #   Accept-Encoding
+      # and sometimes it is looks like this:
+      #   cache-control
+      headers = proxy.request_headers
+      expect(headers["content-type"]).to eq "application/x-www-form-urlencoded"
+      expect(headers["cache-control"]).to eq "max-age=0"
+      expect(headers["origin"]).to eq "http://localhost:8888"
+      expect(headers["upgrade-insecure-requests"]).to eq "1"
+    end
+  end
 end
