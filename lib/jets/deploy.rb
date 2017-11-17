@@ -51,8 +51,8 @@ private
     resp = cfn.describe_stacks(stack_name: parent_stack_name)
     status = resp.stacks[0].stack_status
     if status =~ /_IN_PROGRESS$/
-      puts "The '#{parent_stack_name}' stack status is #{status}." \
-           "It is not in an updateable status. Please check the stack and try again."
+      puts "The '#{parent_stack_name}' stack status is #{status}. " \
+           "It is not in an updateable status. Please wait until the stack is ready and try again.".colorize(:red)
       exit 0
     elsif resp.stacks[0].outputs.empty?
       # This Happens when the miminal stack fails at the very beginning.

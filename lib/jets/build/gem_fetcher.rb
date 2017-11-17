@@ -138,7 +138,7 @@ How to fix this:
   2. Configure jets to lookup your own pre-compiled gems url.
   3. Add the the required gems to boltopslabs/lambdagems and submit a pull request.
 
-More info: http://rubyonjets.com/lambdagems
+More info: http://lambdagems.com
 EOL
         exit
       end
