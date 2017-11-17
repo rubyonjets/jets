@@ -51,13 +51,13 @@ class Jets::Server
       }
     end
 
-    # Annoying. The headers part part of the AWS Lambda proxy structure
+    # Annoying. The headers part of the AWS Lambda proxy structure
     # does not consisently use the same casing scheme for the header keys.
-    # So sometimes it looks like this:
+    # Sometimes it looks like this:
     #   Accept-Encoding
-    # and sometimes it is looks like this:
+    # and sometimes it looks like this:
     #   cache-control
-    # Special cases when the casing doesn't match, we map it over.
+    # Map for special cases when the casing doesn't match.
     CASING_MAP = {
       "Cache-Control" => "cache-control",
       "Content-Type" => "content-type",
@@ -72,10 +72,10 @@ class Jets::Server
           h[key] = v
           h
         end
-      # content type is not prepended with HTTP_ but is part of Lambda's event headers thankfully
+      # Content type is not prepended with HTTP_ but is part of Lambda's event headers thankfully
       headers["Content-Type"] = @env["CONTENT_TYPE"] if @env["CONTENT_TYPE"]
 
-      # adjust the casing so it matches the Lambda AWS Proxy's structure
+      # Adjust the casing so it matches the Lambda AWS Proxy's structure
       CASING_MAP.each do |nice_casing, bad_casing|
         if headers.has_key?(nice_casing)
           headers[bad_casing] = headers.delete(nice_casing)
@@ -92,7 +92,7 @@ class Jets::Server
       # "X-Forwarded-Proto": "https",
       #
       # For sample dump of the event headers, check out:
-      #    spec/fixtures/samples/event-headers-form-post.json
+      #   spec/fixtures/samples/event-headers-form-post.json
 
       headers
     end

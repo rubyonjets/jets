@@ -63,20 +63,30 @@ class Jets::Controller
       nil
     end
 
-    def render(options={})
+    # Many different ways to render:
+    #
+    #  render "articles/index", layout: "application"
+    #  render :new
+    #  render template: "articles/index", layout: "application"
+    #  render json: {my: "data"}
+    #  render text: "plain text"
+    def render(options={}, rest={})
       raise "DoubleRenderError" if @rendered
 
       # render json: {"mytestdata": "value1"}, status: 200, headers: {...}
       @rendered_data = if options.is_a?(Symbol) # render :new
           action_name = options
           options = {template: "#{template_namespace}/#{action_name}"}
+          render_template(options.merge(rest)) # rest might include layout
+        elsif options.is_a?(String)
+          options = {template: options}
+          render_template(options.merge(rest)) # rest might include layout
+        elsif options.has_key?(:template)
           render_template(options)
         elsif options.has_key?(:json)
           render_json(options)
         elsif options.has_key?(:text)
           options[:text]
-        elsif options.has_key?(:template)
-          render_template(options)
         else
           raise "Unsupported render option. Only :text and :json supported.  options #{options.inspect}"
         end
@@ -105,7 +115,10 @@ class Jets::Controller
       renderer = ActionController::Base.renderer.new(renderer_options)
       template = options[:template] || default_template_name
 
-      body = renderer.render(template: template, assigns: all_instance_variables, controller_name: "articles2")
+      body = renderer.render(
+        template: template,
+        layout: options[:layout],
+        assigns: all_instance_variables)
       options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(options)
