@@ -50,11 +50,7 @@ class Jets::Controller
     end
 
     def render_template(options={})
-      # only require action_controller when necessary
-      require "action_controller"
-      require "jets/rails_overrides"
-      ActionController::Base.append_view_path("app/views")
-      ActionController::Base.append_view_path("app/views/posts")
+      setup_action_controller # setup only when necessary
 
       renderer = ActionController::Base.renderer.new(renderer_options)
       template = options[:template] || default_template_name
@@ -67,6 +63,21 @@ class Jets::Controller
       options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(options)
+    end
+
+    def setup_action_controller
+      require "action_controller"
+      require "jets/rails_overrides"
+
+      # laod helpers
+      helper_class = self.class.name.to_s.sub("Controller", "Helper")
+      helper_path = "#{Jets.root}app/helpers/#{helper_class.underscore}.rb"
+      ActiveSupport.on_load :action_view do
+        include ApplicationHelper
+        include helper_class.constantize if File.exist?(helper_path)
+      end
+
+      ActionController::Base.append_view_path("app/views")
     end
 
     # default options:

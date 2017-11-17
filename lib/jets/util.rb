@@ -27,6 +27,7 @@ module Jets::Util
       app/controllers
       app/models
       app/jobs
+      app/helpers
     ].map { |p| "#{Jets.root}/#{p}" }
     ActiveSupport::Dependencies.autoload_paths += autoload_paths
 
