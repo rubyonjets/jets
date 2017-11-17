@@ -118,7 +118,7 @@ describe Jets::Controller::Base do
     end
   end
 
-  context "redirection set" do
+  context "redirect from localhost" do
     let(:event) do
       {
         "headers" => {
@@ -130,6 +130,21 @@ describe Jets::Controller::Base do
       resp = controller.send(:redirect_to, "/myurl", status: 301)
       redirect_url = resp["headers"]["Location"]
       expect(redirect_url).to eq "http://localhost:8888/myurl"
+    end
+  end
+
+  context "redirect from amazonaws.com" do
+    let(:event) do
+      {
+        "headers" => {
+          "origin" => "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com",
+        },
+      }
+    end
+    it "redirect_to adds the stage name to the url" do
+      resp = controller.send(:redirect_to, "/myurl", status: 301)
+      redirect_url = resp["headers"]["Location"]
+      expect(redirect_url).to eq "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com/test/myurl"
     end
   end
 

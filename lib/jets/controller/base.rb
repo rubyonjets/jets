@@ -179,6 +179,7 @@ class Jets::Controller
       # if no location.host, we been provided a relative host
       if !uri.host && event["headers"] && event["headers"]["origin"]
         url = "/#{url}" unless url.starts_with?('/')
+        url = add_stage_name(url)
         redirect_url = event["headers"]["origin"] + url
       else
         redirect_url = url
@@ -197,6 +198,19 @@ class Jets::Controller
       # so ensure_render doesnt get called and wipe out the redirect_to resp
       @rendered = true
       @rendered_data = resp
+    end
+
+    # Add API Gateway Stage Name
+    def add_stage_name(url)
+      if event["headers"] && event["headers"]["origin"]
+        host = event["headers"]["origin"]  # with http(s) scheme
+        if host.include?("amazonaws.com") && url.starts_with?('/')
+          stage_name = [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
+          url = "/#{stage_name}#{url}"
+        end
+      end
+
+      url
     end
 
     def all_instance_variables
