@@ -16,7 +16,7 @@ describe Jets::Controller::Base do
     let(:event) { nil }
     it "lambda_functions returns public user-defined methods" do
       expect(controller.lambda_functions).to eq(
-        [:find_article, :handler1, :handler2]
+        [:handler1, :handler2]
       )
     end
 
