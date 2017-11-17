@@ -10,11 +10,11 @@ class Jets::Controller
       self.after_actions = []
 
       def self.before_action(meth, options={})
-        self.before_actions << [meth, options]
+        self.before_actions += [[meth, options]]
       end
 
       def self.after_action(meth, options={})
-        self.after_actions << [meth, options]
+        self.after_actions += [[meth, options]]
       end
     end # included
 

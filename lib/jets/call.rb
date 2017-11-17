@@ -47,7 +47,7 @@ class Jets::Call
   end
 
   def remote_run
-    puts "Calling lambda function #{function_name} on AWS".colorize(:green)
+    puts "Calling lambda function #{function_name} on AWS".colorize(:green) unless @options[:mute]
     return if @options[:noop]
 
     begin
@@ -97,7 +97,7 @@ class Jets::Call
       text = IO.read(path)
     end
 
-    puts "Function name: #{function_name.inspect}"
+    puts "Function name: #{function_name.inspect}" unless @options[:mute]
     return text unless function_name.include?("_controller-")
     return text if @options[:lambda_proxy] == false
 
@@ -116,7 +116,7 @@ class Jets::Call
     region = Aws.config[:region] || 'us-east-1'
     link = "https://console.aws.amazon.com/lambda/home?region=#{region}#/functions/#{function_name}?tab=configuration"
     system("echo #{link} | pbcopy")
-    puts "Pro tip: The Lambda Console Link to the #{function_name} function has been added to your clipboard."
+    puts "Pro tip: The Lambda Console Link to the #{function_name} function has been added to your clipboard." unless @options[:mute]
   end
 
   # Client context must be a valid Base64-encoded JSON object

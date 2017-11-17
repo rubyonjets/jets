@@ -2,12 +2,11 @@ require "spec_helper"
 
 describe Jets::Call do
   let(:call) do
-    call = Jets::Call.new(provided_function_name, event, options)
+    call = Jets::Call.new(provided_function_name, event, mute: true)
     allow(call).to receive(:lambda).and_return(null)
     call
   end
   let(:null) { double(:null).as_null_object }
-  let(:options) { {} }
 
   context "function with dash" do
     let(:provided_function_name) { "posts-controller-index" }

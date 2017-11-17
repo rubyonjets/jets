@@ -14,7 +14,6 @@ module Jets
 
     # Basic implementation of url_for to allow use helpers without routes existence
     def url_for(options = nil) # :nodoc:
-      puts "#{options.inspect}".colorize(:cyan)
       url = case options
             when String
               options
