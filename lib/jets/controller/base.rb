@@ -5,10 +5,16 @@ require 'rack/utils' # Rack::Utils.parse_nested_query
 # Controller public methods get turned into Lambda functions.
 class Jets::Controller
   class Base < Jets::BaseLambdaFunction
+    include Layout
+    include Callbacks
+
     def self.process(event, context, meth)
       controller = new(event, context, meth)
+      controller.run_before_actions(meth)
       controller.send(meth)
-      controller.ensure_render
+      resp = controller.ensure_render
+      controller.run_after_actions(meth)
+      resp
     end
 
     def ensure_render
@@ -114,10 +120,11 @@ class Jets::Controller
 
       renderer = ActionController::Base.renderer.new(renderer_options)
       template = options[:template] || default_template_name
+      layout = options[:layout] || self.class.layout
 
       body = renderer.render(
         template: template,
-        layout: options[:layout],
+        layout: layout,
         assigns: all_instance_variables)
       options[:body] = body # important to set as it was originally nil
 

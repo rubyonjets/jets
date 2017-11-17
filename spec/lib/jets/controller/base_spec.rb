@@ -2,6 +2,9 @@ require "spec_helper"
 
 # For testing lambda_function_names
 class FakeController < Jets::Controller::Base
+  layout :application
+  before_action :find_article
+
   def handler1; end
   def handler2; end
 end
@@ -13,10 +16,18 @@ describe Jets::Controller::Base do
 
   context "general" do
     let(:event) { nil }
-    it "#lambda_functions returns public user-defined methods" do
+    it "lambda_functions returns public user-defined methods" do
       expect(controller.lambda_functions).to eq(
         [:handler1, :handler2]
       )
+    end
+
+    it "layout set to application" do
+      expect(controller.class.layout).to eq "application"
+    end
+
+    it "before_actions includes find_article" do
+      expect(controller.class.before_actions).to eq [[:find_article, {}]]
     end
   end
 
