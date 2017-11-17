@@ -10,10 +10,10 @@ class Jets::Controller
 
     def self.process(event, context, meth)
       controller = new(event, context, meth)
-      controller.run_before_actions(meth)
+      controller.run_before_actions
       controller.send(meth)
       resp = controller.ensure_render
-      controller.run_after_actions(meth)
+      controller.run_after_actions
       resp
     end
 

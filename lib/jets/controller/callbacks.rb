@@ -21,8 +21,8 @@ class Jets::Controller
     # Instance Methods
     # define run_before_actions and run_after_actions
     [:before, :after].each do |type|
-      define_method "run_#{type}_actions" do |called_method|
-        called_method = called_method.to_sym
+      define_method "run_#{type}_actions" do
+        called_method = @meth.to_sym
         callbacks = self.class.send("#{type}_actions")
         callbacks.each do |array|
           callback, options = array
