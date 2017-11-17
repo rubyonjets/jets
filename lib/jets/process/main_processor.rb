@@ -42,6 +42,7 @@ class Jets::Process::MainProcessor
       #   deducer.code => HardJob.process(event, context, "dig")
       #   deducer.path => app/jobs/hard_job.rb
       #
+      puts "deducer.code: #{deducer.code}"
       result = instance_eval(deducer.code, deducer.path)
       # result = PostsController.process(event, context, "create")
 

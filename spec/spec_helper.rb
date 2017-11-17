@@ -26,6 +26,10 @@ module Helpers
     puts out if ENV["DEBUG"]
     out
   end
+
+  def json_file(path)
+    JSON.load(IO.read(path))
+  end
 end
 
 RSpec.configure do |c|

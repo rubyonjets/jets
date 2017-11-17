@@ -1,0 +1,29 @@
+{
+  "resource": "/articles/{id}",
+  "path": "/articles/5",
+  "httpMethod": "DELETE",
+  "headers": {
+    "Host": "localhost:8888",
+    "Connection": "keep-alive",
+    "Pragma": "no-cache",
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "X-Requested-With": "XMLHttpRequest",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36",
+    "Referer": "http://localhost:8888/articles",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.9,pt;q=0.8",
+    "Version": "HTTP/1.1",
+    "cache-control": "no-cache",
+    "origin": "http://localhost:8888"
+  },
+  "queryStringParameters": {
+  },
+  "pathParameters": {
+    "id": "5"
+  },
+  "stageVariables": null,
+  "requestContext": {
+  },
+  "body": null,
+  "isBase64Encoded": false
+}

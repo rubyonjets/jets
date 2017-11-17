@@ -1,6 +1,6 @@
 require "active_support/core_ext/hash"
-require 'json'
-require 'rack/utils' # Rack::Utils.parse_nested_query
+require "json"
+require "rack/utils" # Rack::Utils.parse_nested_query
 
 # Controller public methods get turned into Lambda functions.
 class Jets::Controller
@@ -22,6 +22,12 @@ class Jets::Controller
 
       # defaults to rendering templates
       render template: default_template_name
+    end
+
+    attr_reader :request
+    def initialize(event, context, meth)
+      super
+      @request = Request.new(event)
     end
 
   private

@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "kramdown"
   spec.add_dependency "text-table"
   spec.add_dependency "rack"
+  spec.add_dependency "json"
 
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"

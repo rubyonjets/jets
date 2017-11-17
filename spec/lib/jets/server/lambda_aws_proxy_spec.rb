@@ -60,7 +60,7 @@ describe Jets::Server::LambdaAwsProxy do
 
   context "post form application/x-www-form-urlencoded" do
     let(:env) do
-      JSON.load(IO.read("spec/fixtures/rack-dumps/form-post.json"))
+      JSON.load(IO.read("spec/fixtures/dumps/rack/form-post.json"))
     end
     it "mapping of rack headers should match the lambda proxy headers" do
       # Annoying. The headers part part of the AWS Lambda proxy structure

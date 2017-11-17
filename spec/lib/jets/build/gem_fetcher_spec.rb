@@ -14,6 +14,7 @@ describe Jets::Build::GemFetcher do
     context "all gems available" do
       it "downloads all gems" do
         allow(fetcher).to receive(:get_linux_gem)
+        allow(fetcher).to receive(:get_linux_library)
         fetcher.run
       end
     end
