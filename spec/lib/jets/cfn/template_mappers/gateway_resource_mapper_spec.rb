@@ -20,6 +20,7 @@ describe Jets::Cfn::TemplateMappers::GatewayResourceMapper do
       let(:path) { "*catchall" }
       it "uses valid characters for logical id" do
         expect(map.logical_id).to eq "CatchallApiGatewayResource"
+        expect(map.path_part).to eq "{catchall+}"
       end
     end
 

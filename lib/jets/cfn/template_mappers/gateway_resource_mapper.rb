@@ -23,6 +23,10 @@ class Jets::Cfn::TemplateMappers
         text = text.sub(':','')
         text = "{#{text}}"
       end
+      if text.starts_with?('*')
+        text = text.sub('*','')
+        text = "{#{text}+}"
+      end
       text
     end
 
@@ -38,6 +42,7 @@ class Jets::Cfn::TemplateMappers
 
     def path_part
       last_part = path.split('/').last
+      last_part.split('/').map {|s| transform_capture(s) }.join('/')
     end
 
   private
