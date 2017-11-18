@@ -63,9 +63,6 @@ class Jets::Build
     # Because we're removing files (something dangerous) use full paths.
     def clean_project
       puts "Cleaning up project and removing ignored files that are not needed to be packaged before zipping up."
-      excludes = %w[.git tmp log]
-      excludes += get_excludes("#{full(tmp_app_root)}/.gitignore")
-      excludes += get_excludes("#{full(tmp_app_root)}/.dockerignore")
       excludes.each do |exclude|
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{full(tmp_app_root)}/#{exclude}"
@@ -178,6 +175,18 @@ class Jets::Build
       FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{Jets.build_root}/Gemfile.lock")
     end
 
+    def excludes
+      excludes = %w[.git tmp log]
+      excludes += get_excludes("#{full(tmp_app_root)}/.gitignore")
+      excludes += get_excludes("#{full(tmp_app_root)}/.dockerignore")
+      excludes = excludes.reject do |p|
+        jetskeep.find do |keep|
+          p.include?(keep)
+        end
+      end
+      excludes
+    end
+
     def get_excludes(file)
       path = file
       return [] unless File.exist?(path)
@@ -185,6 +194,16 @@ class Jets::Build
       exclude = File.read(path).split("\n")
       exclude.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
       # IE: ["/handlers", "/bundled*", "/vendor/jets]
+    end
+
+    # We clean out ignored files pretty aggressively. So provide
+    # a way for users to keep files from being cleaned ou.
+    def jetskeep
+      path = Jets.root + ".jetskeep"
+      return [] unless path.exist?
+
+      keep = path.read.split("\n")
+      keep.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
     end
 
     def check_ruby_version
