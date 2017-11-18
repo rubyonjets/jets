@@ -29,6 +29,8 @@ class Jets::Controller
           render_template(options)
         elsif options.has_key?(:json)
           render_json(options)
+        elsif options.has_key?(:file)
+          render_file(options)
         elsif options.has_key?(:text)
           options[:text]
         else
@@ -36,6 +38,20 @@ class Jets::Controller
         end
       @rendered = true
       @rendered_data
+    end
+
+    def render_file(options={})
+      require "action_dispatch/http/mime_type"
+
+      path = options[:file]
+      content = IO.read(path)
+      options[:body] = content
+
+      ext = File.extname(path)[1..-1]
+      mime_type = Mime::Type.lookup_by_extension(ext)
+      options[:content_type] = mime_type.to_s if mime_type
+
+      render_aws_proxy(options)
     end
 
     # render json: {my: data}, status: 200
@@ -130,9 +146,9 @@ class Jets::Controller
 
       if body.is_a?(Hash)
         body = JSON.dump(body) # body must be a String
-        headers["Content-Type"] = "application/json"
+        headers["Content-Type"] ||= options[:content_type] || "application/json"
       else
-        headers["Content-Type"] = "text/html; charset=utf-8"
+        headers["Content-Type"] ||= options[:content_type] || "text/html; charset=utf-8"
       end
 
       # Compatiable Lambda Proxy Hash
