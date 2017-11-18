@@ -9,12 +9,6 @@ describe "Route" do
     expect(route.controller_name).to eq "PostsController"
   end
 
-  it "extract_parameters" do
-    route = Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit")
-    parameters = route.extract_parameters("posts/tung/edit")
-    expect(parameters).to eq("id" => "tung")
-  end
-
   context "route with namespace" do
     it "evaluates route info" do
       route = Jets::Route.new(path: "admin/pages", method: :get, to: "admin/pages#index")
@@ -22,6 +16,53 @@ describe "Route" do
       expect(route.to).to eq "admin/pages#index"
       expect(route.method).to eq "GET"
       expect(route.controller_name).to eq "Admin::PagesController"
+    end
+  end
+
+  context "route with captures" do
+    let(:route) do
+      Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit")
+    end
+    it "extract_parameters" do
+      parameters = route.extract_parameters("posts/tung/edit")
+      expect(parameters).to eq("id" => "tung")
+    end
+
+    it "api_gateway_format" do
+      api_gateway_path = route.send(:api_gateway_format, route.path)
+      expect(api_gateway_path).to eq "posts/{id}/edit"
+    end
+  end
+
+  context "route with catchall/globbing/wildcard" do
+    let(:route) do
+      Jets::Route.new(path: "others/*proxy", method: :any, to: "others#all")
+    end
+
+    it "api_gateway_format" do
+      api_gateway_path = route.send(:api_gateway_format, route.path)
+      expect(api_gateway_path).to eq "others/{proxy+}"
+    end
+
+    it "extract_parameters" do
+      parameters = route.extract_parameters("others/my/long/path")
+      expect(parameters).to eq("proxy" => "my/long/path")
+    end
+  end
+
+  context "route with nested catchall/globbing/wildcard" do
+    let(:route) do
+      Jets::Route.new(path: "nested/others/*proxy", method: :any, to: "others#all")
+    end
+
+    it "api_gateway_format" do
+      api_gateway_path = route.send(:api_gateway_format, route.path)
+      expect(api_gateway_path).to eq "nested/others/{proxy+}"
+    end
+
+    it "extract_parameters" do
+      parameters = route.extract_parameters("nested/others/my/long/path")
+      expect(parameters).to eq("proxy" => "my/long/path")
     end
   end
 end

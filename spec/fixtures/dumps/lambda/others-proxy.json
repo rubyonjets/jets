@@ -1,0 +1,54 @@
+{
+  "resource": "/others/{proxy+}",
+  "path": "/others/my/long/path",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "identity",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Host": "vtm0f1z8d4.execute-api.us-east-1.amazonaws.com",
+    "User-Agent": "Wget/1.18 (darwin16.0.0)",
+    "Via": "1.1 f32e4aea3683be99c4324204c29f5852.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "of9oHAW0XERmMPAL-nBzECLF9HRAY-cEkmHPY4tDs_M6l3-2tG16gg==",
+    "X-Amzn-Trace-Id": "Root=1-5a105ba5-77863b564444874b03b5025e",
+    "X-Forwarded-For": "69.42.1.180, 205.251.214.57",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "queryStringParameters": null,
+  "pathParameters": {
+    "proxy": "my/long/path"
+  },
+  "stageVariables": null,
+  "requestContext": {
+    "path": "/stag/others/my/long/path",
+    "accountId": "160619113767",
+    "resourceId": "akzef2",
+    "stage": "stag",
+    "requestId": "1beb529a-cc7b-11e7-8ed0-35ca8e934ce5",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": "",
+      "sourceIp": "69.42.1.180",
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Wget/1.18 (darwin16.0.0)",
+      "user": null
+    },
+    "resourcePath": "/others/{proxy+}",
+    "httpMethod": "GET",
+    "apiId": "vtm0f1z8d4"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}
