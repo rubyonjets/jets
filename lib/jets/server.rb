@@ -7,6 +7,8 @@ class Jets::Server
   autoload :ApiGateway, "jets/server/api_gateway"
   autoload :LambdaAwsProxy, "jets/server/lambda_aws_proxy"
 
+  # Use by Jets::Application
+  # Where config.ru in the project leads to.
   def self.call(env)
     ApiGateway.call(env)
   end

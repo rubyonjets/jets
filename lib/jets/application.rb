@@ -1,3 +1,5 @@
+require "jets/webpacker/middleware_setup" # makes "use Webpacker::DevServerProxy" works
+
 class Jets::Application
   def self.call(env)
     triplet = assemble_app.call(env)
@@ -7,6 +9,7 @@ class Jets::Application
     Rack::Builder.new do
       map("/") do
         use Jets::Server::TimingMiddleware
+        use Webpacker::DevServerProxy
         run Jets::Server
       end
     end

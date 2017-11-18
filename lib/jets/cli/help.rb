@@ -125,6 +125,20 @@ Generate things like scaffolds. This piggy backs off of rails generators.  Examp
 jets generate scaffold post title:string body:text published:boolean
 EOL
         end
+
+        def webpacker
+<<-EOL
+Webpacker commands.  Just delegates to the webpacker rake tasks. Useful command:
+
+$ jets webpacker install
+
+or
+
+$ rake webpacker:install
+
+Run `rake -T | grep webpacker` to see all the webpacker tasks.
+EOL
+        end
       end # class << self
     end # class Help
   end # class CLI < Command

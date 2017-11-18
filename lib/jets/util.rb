@@ -11,7 +11,7 @@ module Jets::Util
     @@root = ENV['APP_ROOT'].to_s
     @@root = '.' if @@root == ''
     @@root = "#{@@root}/" unless @@root.ends_with?('/')
-    @@root
+    @@root = Pathname.new(@@root)
   end
 
   @@logger = nil
@@ -44,8 +44,9 @@ module Jets::Util
     ActiveRecord::Base.establish_connection(config[Jets.env])
   end
 
+  @@env = nil
   def env
-    Jets.config.env
+    @@env ||= ActiveSupport::StringInquirer.new(Jets.config.env)
   end
 
   def config

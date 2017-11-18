@@ -74,13 +74,20 @@ module Jets
     desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
     long_desc Db::Help.db
     def db(*args)
-      Jets::Db.new(options).run_command(*args)
+      Jets::Db.new(options).run_command(args)
     end
 
-    desc "generate GENERATOR [args] [options]", "Generates things like scaffolds"
-    long_desc Help.generate
-    def generate(generator, *args)
-      Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
+    # TODO: implement a custom generator for Jets leveraging Rails generators
+    # desc "generate GENERATOR [args] [options]", "Generates things like scaffolds"
+    # long_desc Help.generate
+    # def generate(generator, *args)
+    #   Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
+    # end
+
+    desc "webpacker", "Webpacker commands"
+    long_desc Help.webpacker
+    def webpacker(*args)
+      Webpacker.run_command(args)
     end
 
     desc "process TYPE", "process subtasks"

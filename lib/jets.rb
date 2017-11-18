@@ -46,6 +46,9 @@ module Jets
   autoload :Controller, 'jets/controller'
   autoload :Job, 'jets/job'
 
+  autoload :Webpacker, 'jets/webpacker'
+  autoload :RakeTasks, 'jets/rake_tasks'
+
   extend Util # root, logger, etc
 end
 
