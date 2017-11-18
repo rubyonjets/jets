@@ -35,7 +35,7 @@ class Jets::Server
     end
 
     def build_event
-      resource = @route.path(true) # posts/{id}/edit
+      resource = @route.path(:api_gateway) # posts/{id}/edit
       path = @env['PATH_INFO'].sub('/','') # remove beginning space
       {
         "resource" => "/#{resource}", # "/posts/{id}/edit"

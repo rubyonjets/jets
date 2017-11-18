@@ -10,11 +10,14 @@ class Jets::Route
 
   # IE: standard: posts/:id/edit
   #     api_gateway: posts/{id}/edit
-  def path(api_gateway=false)
-    if api_gateway
+  def path(format=:jets)
+    case format
+    when :api_gateway
       api_gateway_format(@options[:path])
-    else
+    when :raw
       @options[:path]
+    else
+      ensure_jets_format(@options[:path])
     end
   end
 
@@ -94,6 +97,18 @@ class Jets::Route
   end
 
 private
+  def ensure_jets_format(path)
+    path.split('/').map do |s|
+      if s =~ /^\{/ and s =~ /\+\}$/
+        s.sub(/^\{/, '*').sub(/\+\}$/,'') # {proxy+} => *proxy
+      elsif s =~ /^\{/ and s =~ /\}$/
+        s.sub('{',':').sub(/\}$/,'') # {id} => :id
+      else
+        s
+      end
+    end.join('/')
+  end
+
   def api_gateway_format(path)
     path.split('/')
       .map {|s| transform_capture(s) }

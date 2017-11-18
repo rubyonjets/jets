@@ -65,4 +65,33 @@ describe "Route" do
       expect(parameters).to eq("proxy" => "my/long/path")
     end
   end
+
+  context "route provided in aws api gateway format" do
+    let(:route) do
+      Jets::Route.new(path: "posts/{id}/edit", method: :any, to: "posts#edit")
+    end
+
+    it "extract_parameters" do
+      parameters = route.extract_parameters("posts/tung/edit")
+      expect(parameters).to eq("id" => "tung")
+    end
+
+    it "api_gateway_format" do
+      api_gateway_path = route.send(:api_gateway_format, route.path)
+      expect(api_gateway_path).to eq "posts/{id}/edit"
+    end
+
+    it "path" do
+      jets_format = route.path
+      expect(jets_format).to eq "posts/:id/edit"
+    end
+
+    it "ensure_jets_format" do
+      jets_format = route.send(:ensure_jets_format, 'posts/{id}/edit')
+      expect(jets_format).to eq "posts/:id/edit"
+
+      jets_format = route.send(:ensure_jets_format, 'others/{proxy+}')
+      expect(jets_format).to eq "others/*proxy"
+    end
+  end
 end
