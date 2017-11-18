@@ -20,34 +20,50 @@ class Jets::Server
 
     def route_found?(route)
       request_method = @env["REQUEST_METHOD"]
-      path_info = @env["PATH_INFO"].sub(/^\//,'') # remove beginning slash
+      actual_path = @env["PATH_INFO"].sub(/^\//,'') # remove beginning slash
 
-      # First check the request method: GET, POST, ANY, etc
+      # Immediately stop checking when the request method: GET, POST, ANY, etc
+      # doesnt match.
       return false if request_method != route.method and route.method != "ANY"
 
-      # Then check path
+      # Check path for route variables:
       # If the route has a variable, use a regexp
       path = route.path
-      if path.include?(':')
-        # changes path to a string used for a regexp
-        # posts/:id/edit => posts\/(.*)\/edit
-        regexp_string = path.split('/').map do |s|
-                          s.include?(':') ? "([a-zA-Z0-9_]*)" : s
-                        end.join('\/')
-        # make sure beginning and end of the string matches
-        regexp_string = "^#{regexp_string}$"
-      end
-
-      if regexp_string
-        regexp = Regexp.new(regexp_string)
-        matched = !!regexp.match(path_info)
-        return matched # could be true or false
+      if path.include?('*')
+        return proxy_detection(path, actual_path) # early return true or false
+      elsif path.include?(':')
+        return capture_detection(path, actual_path) # early return true or false
       else
         # regular string match detection
-        return false if path_info != route.path
+        return false if actual_path != path
       end
 
       true # if we get to here that route matches
+    end
+
+    def proxy_detection(route_path, actual_path)
+      # drop the proxy_segment
+      leading_path = route_path.split('/')[0..-2].join('/')
+      unless leading_path.ends_with?('/') # ensure trailing slash
+        # This makes the pattern match more strictly
+        leading_path = "#{leading_path}/"
+      end
+
+      regexp = Regexp.new("^#{leading_path}")
+      !!regexp.match(actual_path) # could be true or false
+    end
+
+    def capture_detection(route_path, actual_path)
+      # changes path to a string used for a regexp
+      # posts/:id/edit => posts\/(.*)\/edit
+      regexp_string = route_path.split('/').map do |s|
+                        s.include?(':') ? "([a-zA-Z0-9_]*)" : s
+                      end.join('\/')
+      # make sure beginning and end of the string matches
+      regexp_string = "^#{regexp_string}$"
+
+      regexp = Regexp.new(regexp_string)
+      !!regexp.match(actual_path) # could be true or false
     end
 
     def router

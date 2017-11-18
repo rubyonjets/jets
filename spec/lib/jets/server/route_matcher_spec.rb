@@ -131,4 +131,34 @@ describe Jets::Server::RouteMatcher do
       expect(found).to be true
     end
   end
+
+  context "get others/my/long/path - proxy path route" do
+    let(:env) do
+      { "PATH_INFO" => "others/my/long/path", "REQUEST_METHOD" => "GET" }
+    end
+    it "route_found?" do
+      route = Jets::Route.new(
+        path: "others/*proxy",
+        method: :get,
+        to: "others#all",
+      )
+      found = matcher.route_found?(route)
+      expect(found).to be true
+    end
+  end
+
+  context "get others/my/long/path - proxy path route" do
+    let(:env) do
+      { "PATH_INFO" => "others2/my/long/path", "REQUEST_METHOD" => "GET" }
+    end
+    it "not route_found?" do
+      route = Jets::Route.new(
+        path: "others/*proxy",
+        method: :get,
+        to: "others#all",
+      )
+      found = matcher.route_found?(route)
+      expect(found).to be false
+    end
+  end
 end
