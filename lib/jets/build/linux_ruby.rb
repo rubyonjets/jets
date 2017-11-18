@@ -199,11 +199,13 @@ class Jets::Build
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned ou.
     def jetskeep
+      defaults = ["pack"]
       path = Jets.root + ".jetskeep"
-      return [] unless path.exist?
+      return defaults unless path.exist?
 
       keep = path.read.split("\n")
-      keep.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
+      keep = keep.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
+      (defaults + keep).uniq
     end
 
     def check_ruby_version
