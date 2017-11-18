@@ -1,6 +1,6 @@
 require "spec_helper"
 
-class FakeController < Jets::Controller::Base
+class SimpleController < Jets::Controller::Base
   layout :application
 
   def handler1; end
@@ -8,7 +8,7 @@ class FakeController < Jets::Controller::Base
 end
 
 describe Jets::Controller::Base do
-  let(:controller) { FakeController.new(event, context, meth) }
+  let(:controller) { SimpleController.new(event, context, meth) }
   let(:context) { nil }
   let(:meth) { "index" }
 
