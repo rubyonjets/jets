@@ -101,7 +101,7 @@ class Jets::Build
       next if path =~ /application_(controller|job).rb/
       next if path !~ %r{app/(controller|job)}
 
-      relative_path = path.to_s.sub(Jets.root, '')
+      relative_path = path.sub(Jets.root.to_s, '')
       # Rids of the Jets.root at beginning
       paths << relative_path
     end
