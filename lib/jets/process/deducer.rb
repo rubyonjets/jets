@@ -40,7 +40,8 @@ class Jets::Process
     # Input: @handler_path: handlers/jobs/hard_job.rb
     # Output: #{Jets.root/app/jobs/hard_job.rb
     def path
-      Jets.root + @handler_path.sub("handlers", "app") + "_#{process_type}.rb"
+      path = Jets.root + @handler_path.sub("handlers", "app") + "_#{process_type}.rb"
+      path.to_s
     end
 
     # Examples:
