@@ -42,7 +42,7 @@ class Jets::Cfn::TemplateMappers
 
   private
     def path_logical_id(path)
-      path.gsub('/','_').gsub(':','').camelize
+      path.gsub('/','_').gsub(':','').gsub('*','').camelize
     end
   end
 end

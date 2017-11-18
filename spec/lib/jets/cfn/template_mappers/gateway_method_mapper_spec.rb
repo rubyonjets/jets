@@ -13,7 +13,16 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
         expect(map.gateway_resource_logical_id).to eq "PostsApiGatewayResource"
         expect(map.lambda_function_logical_id).to eq "PostsControllerIndexLambdaFunction"
       end
+
     end
+
+    context("*catchall") do
+      let(:route) { Jets::Route.new(path: "*catchall", method: :get, to: "public_files#show") }
+      it "uses valid characters for logical id" do
+        expect(map.logical_id).to eq "CatchallGetApiGatewayMethod"
+      end
+    end
+
 
     context "posts/:id/edit" do
       let(:route) { Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit") }

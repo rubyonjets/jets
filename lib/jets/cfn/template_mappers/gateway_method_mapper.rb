@@ -9,7 +9,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def path_method_id
-      path = @route.path.gsub(':','_').gsub('/','_')
+      path = @route.path.gsub(':','_').gsub('/','_').gsub('*','')
       method = @route.method.downcase
       "#{path}_#{method}".camelize
     end

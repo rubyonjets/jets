@@ -16,6 +16,13 @@ describe Jets::Cfn::TemplateMappers::GatewayResourceMapper do
       end
     end
 
+    context("*catchall") do
+      let(:path) { "*catchall" }
+      it "uses valid characters for logical id" do
+        expect(map.logical_id).to eq "CatchallApiGatewayResource"
+      end
+    end
+
     context("show path with path_part that has the capture") do
       let(:path) { "posts/:id" }
       it "contains info for CloudFormation API Gateway Resources" do
