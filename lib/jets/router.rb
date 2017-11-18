@@ -56,15 +56,17 @@ module Jets
     #
     # Precedence:
     # 1. Routes with no captures get highest precedence: posts/new
-    # 2. Then we consider the routes with captures: post/:id
+    # 2. Then consider the routes with captures: post/:id
+    # 3. Last consider the routes with wildcards: *catchall
     #
     # Within these 2 groups we consider the routes with the longest path first
     # since posts/:id and posts/:id/edit can both match.
     def ordered_routes
       length = Proc.new { |r| r.path.length * -1 }
       capture_routes = routes.select { |r| r.path.include?(':') }.sort_by(&length)
-      simple_routes = (routes - capture_routes).sort_by(&length)
-      simple_routes + capture_routes
+      wildcard_routes = routes.select { |r| r.path.include?('*') }.sort_by(&length)
+      simple_routes = (routes - capture_routes - wildcard_routes).sort_by(&length)
+      simple_routes + capture_routes + wildcard_routes
     end
 
     # Class methods

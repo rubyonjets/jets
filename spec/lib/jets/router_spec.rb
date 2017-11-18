@@ -37,7 +37,7 @@ describe Jets::Router do
         router.evaluate
         # pp router.routes # uncommen to debug
         expect(router.all_paths).to eq(
-          ["landing", "posts", "posts/:id", "posts/:id/edit", "posts/new"]
+          ["*catchall", "landing", "posts", "posts/:id", "posts/:id/edit", "posts/new"]
         )
       end
 
@@ -45,7 +45,8 @@ describe Jets::Router do
         router = Jets::Router.new(routes_path)
         router.evaluate
         expect(router.ordered_routes.map(&:path)).to eq(
-          ["posts/new", "landing", "posts", "posts", "posts/:id/edit", "posts/:id", "posts/:id", "posts/:id"])
+          ["posts/new", "landing", "posts", "posts", "posts/:id/edit", "posts/:id", "posts/:id", "posts/:id", "*catchall"])
+
       end
     end
   end

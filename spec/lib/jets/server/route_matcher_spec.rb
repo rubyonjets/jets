@@ -7,7 +7,25 @@ describe Jets::Server::RouteMatcher do
     let(:env) do
       { "PATH_INFO" => "/posts/tung/edit", "REQUEST_METHOD" => "GET" }
     end
-    it "find_route" do
+    it "find_route finds highest precedence route" do
+      # In this case the catchall and the capture route matches
+      # But the matcher finds the route with the highest precedence
+      route = Jets::Route.new(
+        path: "*catchall",
+        method: :get,
+        to: "public_files#show",
+      )
+      found = matcher.route_found?(route)
+      expect(found).to be true
+
+      route = Jets::Route.new(
+        path: "posts/:id/edit",
+        method: :get,
+        to: "posts#edit",
+      )
+      found = matcher.route_found?(route)
+      expect(found).to be true
+
       route = matcher.find_route
       expect(route.path).to eq "posts/:id/edit"
       expect(route.method).to eq "GET"
@@ -42,7 +60,7 @@ describe Jets::Server::RouteMatcher do
     end
     it "find_route slash at the end of the pattern disqualified the match" do
       route = matcher.find_route
-      expect(route).to be nil
+      expect(route.path).to eq "*catchall"
     end
   end
 
@@ -54,6 +72,28 @@ describe Jets::Server::RouteMatcher do
       route = matcher.find_route
       expect(route.path).to eq "posts/:id"
       expect(route.method).to eq "PUT"
+    end
+  end
+
+  context "get everything/else catchall route" do
+    let(:env) do
+      { "PATH_INFO" => "/everything/else", "REQUEST_METHOD" => "GET" }
+    end
+
+    it "route_found?" do
+      route = Jets::Route.new(
+        path: "*catchall",
+        method: :get,
+        to: "public_files#catchall",
+      )
+      found = matcher.route_found?(route)
+      expect(found).to be true
+    end
+
+    it "find_route" do
+      route = matcher.find_route
+      expect(route.path).to eq "*catchall"
+      expect(route.method).to eq "ANY"
     end
   end
 
