@@ -57,7 +57,25 @@ class Jets::Build
     def copy_project
       puts "Copying project to temporary folder to build it: #{full(tmp_app_root)}"
       FileUtils.rm_rf(full(tmp_app_root)) # remove current app_root folder
-      FileUtils.cp_r(@full_project_path, full(tmp_app_root))
+      move_node_modules(Jets.root, Jets.build_root)
+      begin
+        FileUtils.cp_r(@full_project_path, full(tmp_app_root))
+      ensure
+        move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
+      end
+    end
+
+    # Move the node modules to the tmp build folder to speed up project copying.
+    # A little bit risk because a ctrl-c in the middle of the project copying
+    # results in a missing node_modules but user can easily rebuild that.
+    #
+    # Tesing shows 6.623413 vs 0.027754 speed improvement.
+    def move_node_modules(source_folder, dest_folder)
+      source = "#{source_folder}/node_modules"
+      dest = "#{dest_folder}/node_modules"
+      if File.exist?(source)
+        FileUtils.mv(source, dest)
+      end
     end
 
     # Because we're removing files (something dangerous) use full paths.
