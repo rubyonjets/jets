@@ -27,12 +27,11 @@ class Jets::Job
         @cron = expression
       end
 
-      # meth is a Symbol
-      def method_added(meth)
-        return if %w[initialize method_missing].include?(meth.to_s)
-        return unless public_method_defined?(meth)
-
+      # override register_function to also register a task
+      def register_function(meth)
+        super
         register_task(meth)
+        true
       end
 
       def register_task(meth)

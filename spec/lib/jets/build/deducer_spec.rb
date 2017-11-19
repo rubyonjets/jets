@@ -12,7 +12,7 @@ describe Jets::Build::Deducer do
       expect(deducer.handler_for(:create)).to eq "handlers/controllers/posts.create"
       expect(deducer.js_path).to eq "handlers/controllers/posts.js"
 
-      expect(deducer.functions).to eq(
+      expect(deducer.functions.sort).to eq(
         [:create, :delete, :edit, :index, :new, :show, :update].sort)
     end
   end

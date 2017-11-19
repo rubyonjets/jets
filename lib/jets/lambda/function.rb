@@ -72,7 +72,7 @@ module Jets::Lambda
       # Array of function objects
       #
       def all_functions
-        @functions.values
+        functions.values
       end
     end
   end
