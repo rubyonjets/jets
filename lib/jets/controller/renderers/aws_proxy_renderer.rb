@@ -32,8 +32,8 @@ module Jets::Controller::Renderers
     end
 
     def normalized_base64_option(options)
-      base64 = @options[:base64] if options.has_key?(:base64)
-      base64 = @options[:isBase64Encoded] if options.has_key?(:isBase64Encoded)
+      base64 = @options[:base64] if options.key?(:base64)
+      base64 = @options[:isBase64Encoded] if options.key?(:isBase64Encoded)
       base64
     end
 

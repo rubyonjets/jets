@@ -77,7 +77,7 @@ class Jets::Server
 
       # Adjust the casing so it matches the Lambda AWS Proxy's structure
       CASING_MAP.each do |nice_casing, bad_casing|
-        if headers.has_key?(nice_casing)
+        if headers.key?(nice_casing)
           headers[bad_casing] = headers.delete(nice_casing)
         end
       end

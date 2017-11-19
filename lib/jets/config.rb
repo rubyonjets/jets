@@ -12,7 +12,7 @@ class Jets::Config
     # Jets.config.level1_option.level2_option.level3_option
     def method_missing(method_name)
       settings = Jets.config.new.settings
-      if settings.to_h.has_key?(method_name)
+      if settings.to_h.key?(method_name)
         settings[method_name]
       else
         super
