@@ -29,7 +29,7 @@ module Jets::Controller::Renderers
       body = renderer.render(
         template: template,
         layout: layout,
-        assigns: all_instance_variables)
+        assigns: @options[:assigns])
       @options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(@options)
@@ -61,14 +61,6 @@ module Jets::Controller::Renderers
       }
       @options[:method] = @event["httpMethod"].downcase if @event["httpMethod"]
       options
-    end
-
-    def all_instance_variables
-      instance_variables.inject({}) do |vars, v|
-        k = v.to_s.sub(/^@/,'') # @event => event
-        vars[k] = instance_variable_get(v)
-        vars
-      end
     end
 
     def setup_action_controller

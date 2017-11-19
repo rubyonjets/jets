@@ -6,7 +6,7 @@ class Jets::Controller
       return @rendered_data if @rendered
 
       # defaults to rendering templates
-      Renderers::TemplateRenderer.new.render
+      Renderers::TemplateRenderer.new(template_renderer_options).render
     end
 
     # Many different ways to render:
@@ -25,9 +25,7 @@ class Jets::Controller
 
       @rendered_data =
         if options.key?(:template)
-          options[:event] = event
-          options[:controller_class] = self.class
-          options[:controller_action] =  @meth # All the way from the MainProcessor
+          options = template_renderer_options.merge(options)
           Renderers::TemplateRenderer.new(options).render
         elsif options.key?(:json)
           Renderers::JsonRenderer.new(options).render
@@ -41,6 +39,25 @@ class Jets::Controller
 
       @rendered = true
       @rendered_data
+    end
+
+    # Baseline template renderer optoins. The template renderer requires
+    # more options than the other renders
+    def template_renderer_options
+      {
+        assigns: all_instance_variables,
+        event: event,
+        controller_class: self.class,
+        controller_action:  @meth, # All the way from the MainProcessor
+      }
+    end
+
+    def all_instance_variables
+      instance_variables.inject({}) do |vars, v|
+        k = v.to_s.sub(/^@/,'') # @event => event
+        vars[k] = instance_variable_get(v)
+        vars
+      end
     end
 
     # Can normalize the options when it is a String or a Symbol

@@ -1,9 +1,13 @@
 require "spec_helper"
 
 describe Jets::Controller::Base do
-  let(:controller) { StoresController.new({}, nil, "index") }
+  let(:controller) {
+    controller = StoresController.new({}, nil, "new")
+    controller.new
+    controller
+  }
 
-  context "method" do
+  context "render called" do
     it "render :new" do
       resp = controller.render(:new)
       # pp resp
@@ -46,6 +50,15 @@ describe Jets::Controller::Base do
       expect(resp["body"]).to be_a(String)
       expect(resp["headers"]["Content-Type"]).to eq "text/plain"
     end
+  end
 
+  context "ensure_render implicitly called due to no previous rendering" do
+    it "ensure_render" do
+      controller = StoresController.new({}, nil, "new")
+      controller.new
+      resp = controller.ensure_render
+      # pp resp
+      expect(resp["body"]).to be_a(String)
+    end
   end
 end
