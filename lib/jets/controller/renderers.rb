@@ -1,4 +1,5 @@
 module Jets::Controller::Renderers
+  autoload :AwsProxyRenderer, "jets/controller/renderers/aws_proxy_renderer"
   autoload :BaseRenderer, "jets/controller/renderers/base_renderer"
   autoload :FileRenderer, "jets/controller/renderers/file_renderer"
   autoload :JsonRenderer, "jets/controller/renderers/json_renderer"

@@ -7,7 +7,7 @@ module Jets::Controller::Renderers
       body = body.respond_to?(:to_attrs) ? body.to_attrs : body
       @options[:body] = body # important to set as it was originally @options[:json]
 
-      render_aws_proxy(options)
+      render_aws_proxy(@options)
     end
   end
 end

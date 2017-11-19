@@ -24,13 +24,16 @@ class Jets::Controller
       end
 
       @rendered_data =
-        if options.has_key?(:template)
+        if options.key?(:template)
+          options[:event] = event
+          options[:controller_class] = self.class
+          options[:controller_action] =  @meth # All the way from the MainProcessor
           Renderers::TemplateRenderer.new(options).render
-        elsif options.has_key?(:json)
+        elsif options.key?(:json)
           Renderers::JsonRenderer.new(options).render
-        elsif options.has_key?(:file)
+        elsif options.key?(:file)
           Renderers::FileRenderer.new(options).render
-        elsif options.has_key?(:plain)
+        elsif options.key?(:plain)
           Renderers::PlainRenderer.new(options).render
         else
           raise "Unsupported render options. options: #{options.inspect}"
@@ -41,9 +44,12 @@ class Jets::Controller
     end
 
     # Can normalize the options when it is a String or a Symbol
+    # Also set defaults here like the layout
     def normalize_options(options, rest)
       template = options.to_s
-      rest.merge(template: template)
+      options = rest.merge(template: template)
+      options[:layout] ||= self.class.layout
+      options
     end
 
     # redirect_to "/posts", :status => 301
@@ -63,8 +69,8 @@ class Jets::Controller
         redirect_url = url
       end
 
-      aws_proxy = AwsProxyRenderer.new(
-        status: @options[:status] || 302,
+      aws_proxy = Renderers::AwsProxyRenderer.new(
+        status: options[:status] || 302,
         headers: { "Location" => redirect_url },
         body: "",
         isBase64Encoded: false,

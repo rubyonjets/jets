@@ -12,7 +12,7 @@ module Jets::Controller::Renderers
       mime_type = Rack::Mime.mime_type(ext)
       @options[:content_type] = mime_type
 
-      render_aws_proxy(options)
+      render_aws_proxy(@options)
     end
   end
 end

@@ -1,9 +1,15 @@
 module Jets::Controller::Renderers
   class TemplateRenderer < BaseRenderer
+    def initialize(options={})
+      super
+      @event = options[:event] || {}
+      @headers = @event[:headers] || {}
+    end
+
     def render
       @options[:body] = @options[:plain]
       @options[:content_type] = "text/plain"
-      render_aws_proxy(options)
+      render_aws_proxy(@options)
     end
 
     def render
@@ -18,7 +24,7 @@ module Jets::Controller::Renderers
       end
       template ||= default_template_name
 
-      layout = @options[:layout] || self.class.layout
+      layout = @options[:layout]
 
       body = renderer.render(
         template: template,
@@ -26,24 +32,34 @@ module Jets::Controller::Renderers
         assigns: all_instance_variables)
       @options[:body] = body # important to set as it was originally nil
 
-      render_aws_proxy(options)
+      render_aws_proxy(@options)
+    end
+
+    # Example: posts/index
+    def default_template_name
+      "#{template_namespace}/#{@options[:controller_action]}"
+    end
+
+    # PostsController => "posts" is the namespace
+    def template_namespace
+      @options[:controller_class].to_s.sub('Controller','').underscore.pluralize
     end
 
     # default options:
     #   https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
     def renderer_options
-      origin = headers["origin"]
+      origin = @headers["origin"]
       if origin
         uri = URI.parse(origin)
         https = uri.scheme == "https"
       end
       options = {
-        http_host: headers["Host"],
+        http_host: @headers["Host"],
         https: https,
         # script_name: "",
         # input: ""
       }
-      @options[:method] = event["httpMethod"].downcase if event["httpMethod"]
+      @options[:method] = @event["httpMethod"].downcase if @event["httpMethod"]
       options
     end
 
@@ -53,17 +69,6 @@ module Jets::Controller::Renderers
         vars[k] = instance_variable_get(v)
         vars
       end
-    end
-
-    # Example: posts/index
-    def default_template_name
-      action_name = @meth # All the way from the MainProcessor
-      "#{template_namespace}/#{action_name}"
-    end
-
-    # PostsController => "posts" is the namespace
-    def template_namespace
-      self.class.name.to_s.sub('Controller','').underscore.pluralize
     end
 
     def setup_action_controller

@@ -12,7 +12,7 @@ module Jets::Controller::Renderers
       headers = @options[:headers] || {}
       headers = cors_headers.merge(headers)
       body = @options[:body]
-      base64 = normalized_base64_option(options)
+      base64 = normalized_base64_option(@options)
 
       if body.is_a?(Hash)
         body = JSON.dump(body) # body must be a String

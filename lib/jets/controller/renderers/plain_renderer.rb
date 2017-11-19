@@ -3,7 +3,7 @@ module Jets::Controller::Renderers
     def render
       @options[:body] = @options[:plain]
       @options[:content_type] = "text/plain"
-      render_aws_proxy(options)
+      render_aws_proxy(@options)
     end
   end
 end
