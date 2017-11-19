@@ -152,8 +152,4 @@ describe Jets::Controller::Base do
       expect(redirect_url).to eq "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com/test/myurl"
     end
   end
-
-  def json_file(path)
-    JSON.load(IO.read(path))
-  end
 end
