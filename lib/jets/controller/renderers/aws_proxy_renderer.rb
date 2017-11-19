@@ -38,11 +38,17 @@ module Jets::Controller::Renderers
     end
 
     def cors_headers
-      return {} unless Jets.config.cors
-      {
-        "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
-        "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
-      }
+      case Jets.config.cors
+      when true
+        {
+          "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
+          "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
+        }
+      when Hash
+        Jets.config.cors # contains Hash with Access-Control-Allow-* values
+      else
+        {}
+      end
     end
   end
 end

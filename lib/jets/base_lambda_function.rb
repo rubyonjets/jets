@@ -5,7 +5,7 @@
 #   Jets::Job::Base
 module Jets
   class BaseLambdaFunction
-    attr_reader :event, :context
+    attr_reader :event, :context, :meth
     def initialize(event, context, meth)
       @event = event # Hash, JSON.parse(event) ran BaseProcessor
       @context = context # Hash. JSON.parse(context) ran in BaseProcessor

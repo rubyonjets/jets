@@ -2,12 +2,15 @@
 #   subclasses must implement render
 module Jets::Controller::Renderers
   class BaseRenderer
-    def initialize(options={})
+    delegate :request, :event, :headers, to: :controller
+    attr_reader :controller
+    def initialize(controller, options={})
+      @controller = controller
       @options = options
     end
 
     def render_aws_proxy(options)
-      AwsProxyRenderer.new(options).render
+      AwsProxyRenderer.new(@controller, options).render
     end
   end
 end

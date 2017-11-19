@@ -1,15 +1,11 @@
 module Jets::Controller::Renderers
   class TemplateRenderer < BaseRenderer
-    def initialize(options={})
-      super
-      @event = options[:event] || {}
-      @headers = @event[:headers] || {}
-    end
-
-    def render
-      @options[:body] = @options[:plain]
-      @options[:content_type] = "text/plain"
-      render_aws_proxy(@options)
+    def controller_instance_variables
+      @controller.instance_variables.inject({}) do |vars, v|
+        k = v.to_s.sub(/^@/,'') # @var => var
+        vars[k] = @controller.instance_variable_get(v)
+        vars
+      end
     end
 
     def render
@@ -29,7 +25,7 @@ module Jets::Controller::Renderers
       body = renderer.render(
         template: template,
         layout: layout,
-        assigns: @options[:assigns])
+        assigns: controller_instance_variables)
       @options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(@options)
@@ -37,29 +33,29 @@ module Jets::Controller::Renderers
 
     # Example: posts/index
     def default_template_name
-      "#{template_namespace}/#{@options[:controller_action]}"
+      "#{template_namespace}/#{@controller.meth}"
     end
 
     # PostsController => "posts" is the namespace
     def template_namespace
-      @options[:controller_class].to_s.sub('Controller','').underscore.pluralize
+      @controller.class.to_s.sub('Controller','').underscore.pluralize
     end
 
     # default options:
     #   https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
     def renderer_options
-      origin = @headers["origin"]
+      origin = headers["origin"]
       if origin
         uri = URI.parse(origin)
         https = uri.scheme == "https"
       end
       options = {
-        http_host: @headers["Host"],
+        http_host: headers["Host"],
         https: https,
         # script_name: "",
         # input: ""
       }
-      @options[:method] = @event["httpMethod"].downcase if @event["httpMethod"]
+      @options[:method] = event["httpMethod"].downcase if event["httpMethod"]
       options
     end
 

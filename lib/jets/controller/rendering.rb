@@ -6,7 +6,7 @@ class Jets::Controller
       return @rendered_data if @rendered
 
       # defaults to rendering templates
-      Renderers::TemplateRenderer.new(template_renderer_options).render
+      Renderers::TemplateRenderer.new(self, default_options).render
     end
 
     # Many different ways to render:
@@ -27,14 +27,13 @@ class Jets::Controller
 
       @rendered_data =
         if options.key?(:template)
-          options = template_renderer_options.merge(options)
-          Renderers::TemplateRenderer.new(options).render
+          Renderers::TemplateRenderer.new(self, options).render
         elsif options.key?(:json)
-          Renderers::JsonRenderer.new(options).render
+          Renderers::JsonRenderer.new(self, options).render
         elsif options.key?(:file)
-          Renderers::FileRenderer.new(options).render
+          Renderers::FileRenderer.new(self, options).render
         elsif options.key?(:plain)
-          Renderers::PlainRenderer.new(options).render
+          Renderers::PlainRenderer.new(self, options).render
         else
           raise "Unsupported render options. options: #{options.inspect}"
         end
@@ -45,25 +44,6 @@ class Jets::Controller
 
     def default_options
       { layout: self.class.layout }
-    end
-
-    # Baseline template renderer optoins. The template renderer requires
-    # more options than the other renders
-    def template_renderer_options
-      {
-        assigns: all_instance_variables,
-        event: event,
-        controller_class: self.class,
-        controller_action:  @meth, # All the way from the MainProcessor
-      }.reverse_merge(default_options)
-    end
-
-    def all_instance_variables
-      instance_variables.inject({}) do |vars, v|
-        k = v.to_s.sub(/^@/,'') # @event => event
-        vars[k] = instance_variable_get(v)
-        vars
-      end
     end
 
     # Can normalize the options when it is a String or a Symbol
@@ -90,7 +70,7 @@ class Jets::Controller
         redirect_url = url
       end
 
-      aws_proxy = Renderers::AwsProxyRenderer.new(
+      aws_proxy = Renderers::AwsProxyRenderer.new(self,
         status: options[:status] || 302,
         headers: { "Location" => redirect_url },
         body: "",
