@@ -34,8 +34,8 @@ module Jets::Lambda::Dsl
         return unless public_method_defined?(meth)
 
         register_task(meth)
-        # Important to clear @properties at the end of registering. Doing this
-        # here because register_task is overridden in Jets::Job::Dsl
+        # Important to clear @properties at the end of registering outside of
+        # register_task because register_task is overridden in Jets::Job::Dsl
         #
         # Jets::Job::Base < Jets::Lambda::Function
         # Both Jets::Job::Base and Jets::Lambda::Function have Dsl modules included.
