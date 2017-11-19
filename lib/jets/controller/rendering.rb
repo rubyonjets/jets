@@ -41,20 +41,22 @@ class Jets::Controller
     end
 
     def render_plain(options)
-      render_plain(options)
+      options[:body] = options[:plain]
+      options[:content_type] = "text/plain"
+      render_aws_proxy(options)
     end
 
     def render_file(options={})
-      require "action_dispatch/http/mime_type"
+      require "rack/mime"
 
       path = options[:file]
       path = "#{Jets.root}#{path}" unless path.starts_with?("/")
       content = IO.read(path)
       options[:body] = content
 
-      ext = File.extname(path)[1..-1]
-      mime_type = Mime::Type.lookup_by_extension(ext)
-      options[:content_type] = mime_type.to_s if mime_type
+      ext = File.extname(path)
+      mime_type = Rack::Mime.mime_type(ext)
+      options[:content_type] = mime_type
 
       render_aws_proxy(options)
     end

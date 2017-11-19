@@ -43,9 +43,9 @@ describe Jets::Controller::Base do
 
     it "render plain" do
       resp = controller.render(plain: "text")
-      expect(resp).to eq "text" # TODO: think is wrong because it is not
-        # the AWS proxy format
-      # expect(resp["body"]).to be_a(String)
+      # pp resp
+      expect(resp["body"]).to be_a(String)
+      expect(resp["headers"]["Content-Type"]).to eq "text/plain"
     end
 
   end
