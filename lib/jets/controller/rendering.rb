@@ -1,10 +1,12 @@
 class Jets::Controller
+  autoload :Renderers, "jets/controller/renderers"
+
   module Rendering
     def ensure_render
       return @rendered_data if @rendered
 
       # defaults to rendering templates
-      render template: default_template_name
+      Renderers::TemplateRenderer.new.render
     end
 
     # Many different ways to render:
@@ -17,158 +19,31 @@ class Jets::Controller
     def render(options={}, rest={})
       raise "DoubleRenderError" if @rendered
 
-      # render json: {"mytestdata": "value1"}, status: 200, headers: {...}
-      @rendered_data = if options.is_a?(Symbol) # render :new
-          action_name = options
-          options = {template: "#{template_namespace}/#{action_name}"}
-          render_template(options.merge(rest)) # rest might include layout
-        elsif options.is_a?(String)
-          options = {template: options}
-          render_template(options.merge(rest)) # rest might include layout
-        elsif options.has_key?(:template)
-          render_template(options)
+      if options.is_a?(Symbol) or options.is_a?(String)
+        options = normalize_options(options, rest)
+      end
+
+      @rendered_data =
+        if options.has_key?(:template)
+          Renderers::TemplateRenderer.new(options).render
         elsif options.has_key?(:json)
-          render_json(options)
+          Renderers::JsonRenderer.new(options).render
         elsif options.has_key?(:file)
-          render_file(options)
+          Renderers::FileRenderer.new(options).render
         elsif options.has_key?(:plain)
-          render_plain(options)
+          Renderers::PlainRenderer.new(options).render
         else
           raise "Unsupported render options. options: #{options.inspect}"
         end
+
       @rendered = true
       @rendered_data
     end
 
-    def render_plain(options)
-      options[:body] = options[:plain]
-      options[:content_type] = "text/plain"
-      render_aws_proxy(options)
-    end
-
-    def render_file(options={})
-      require "rack/mime"
-
-      path = options[:file]
-      path = "#{Jets.root}#{path}" unless path.starts_with?("/")
-      content = IO.read(path)
-      options[:body] = content
-
-      ext = File.extname(path)
-      mime_type = Rack::Mime.mime_type(ext)
-      options[:content_type] = mime_type
-
-      render_aws_proxy(options)
-    end
-
-    # render json: {my: data}, status: 200
-    def render_json(options={})
-      body = options[:json]
-      # to_attrs allows us to use:
-      #   render json: {post: post}
-      body = body.respond_to?(:to_attrs) ? body.to_attrs : body
-      options[:body] = body # important to set as it was originally options[:json]
-
-      render_aws_proxy(options)
-    end
-
-    def render_template(options={})
-      setup_action_controller # setup only when necessary
-
-      renderer = ActionController::Base.renderer.new(renderer_options)
-      template = options[:template] || default_template_name
-      layout = options[:layout] || self.class.layout
-
-      body = renderer.render(
-        template: template,
-        layout: layout,
-        assigns: all_instance_variables)
-      options[:body] = body # important to set as it was originally nil
-
-      render_aws_proxy(options)
-    end
-
-    def setup_action_controller
-      require "action_controller"
-      require "jets/rails_overrides"
-
-      # laod helpers
-      helper_class = self.class.name.to_s.sub("Controller", "Helper")
-      helper_path = "#{Jets.root}app/helpers/#{helper_class.underscore}.rb"
-      ActiveSupport.on_load :action_view do
-        include ApplicationHelper
-        include helper_class.constantize if File.exist?(helper_path)
-      end
-
-      ActionController::Base.append_view_path("#{Jets.root}app/views")
-
-      setup_webpacker
-    end
-
-    def setup_webpacker
-      require 'webpacker'
-      require 'webpacker/helper'
-      ActiveSupport.on_load :action_controller do
-        ActionController::Base.helper Webpacker::Helper
-      end
-
-      ActiveSupport.on_load :action_view do
-        include Webpacker::Helper
-      end
-    end
-
-    # default options:
-    #   https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
-    def renderer_options
-      origin = headers["origin"]
-      if origin
-        uri = URI.parse(origin)
-        https = uri.scheme == "https"
-      end
-      options = {
-        http_host: headers["Host"],
-        https: https,
-        # script_name: "",
-        # input: ""
-      }
-      options[:method] = event["httpMethod"].downcase if event["httpMethod"]
-      options
-    end
-
-    # Transform the structure to AWS_PROXY compatiable structure
-    # AWS Docs Output Format of a Lambda Function for Proxy Integration
-    # http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
-    #
-    # {statusCode: ..., body: ..., headers: ..., isBase64Encoded: ... }
-    def render_aws_proxy(options={})
-      # we do some normalization here
-      status = options[:status] || 200
-      headers = options[:headers] || {}
-      headers = cors_headers.merge(headers)
-      body = options[:body]
-      base64 = normalized_base64_option(options)
-
-      if body.is_a?(Hash)
-        body = JSON.dump(body) # body must be a String
-        headers["Content-Type"] ||= options[:content_type] || "application/json"
-      else
-        headers["Content-Type"] ||= options[:content_type] || "text/html; charset=utf-8"
-      end
-
-      # Compatiable Lambda Proxy Hash
-      # Explictly assign keys, additional keys will not be compatiable
-      resp = {
-        "statusCode" => status,
-        "headers" => headers,
-        "body" => body,
-        "isBase64Encoded" => base64,
-      }
-    end
-
-    def normalized_base64_option(options)
-      base64 = options[:base64] if options.has_key?(:base64)
-      base64 = options[:isBase64Encoded] if options.has_key?(:isBase64Encoded)
-      base64
+    # Can normalize the options when it is a String or a Symbol
+    def normalize_options(options, rest)
+      template = options.to_s
+      rest.merge(template: template)
     end
 
     # redirect_to "/posts", :status => 301
@@ -188,17 +63,14 @@ class Jets::Controller
         redirect_url = url
       end
 
-      base64 = normalized_base64_option(options)
-
-      resp = render_aws_proxy(
-        status: options[:status] || 302,
-        headers: {
-          "Location" => redirect_url
-        },
+      aws_proxy = AwsProxyRenderer.new(
+        status: @options[:status] || 302,
+        headers: { "Location" => redirect_url },
         body: "",
-        isBase64Encoded: base64,
+        isBase64Encoded: false,
       )
-      # so ensure_render doesnt get called and wipe out the redirect_to resp
+      resp = aws_proxy.render
+      # redirect is a type of rendering
       @rendered = true
       @rendered_data = resp
     end
@@ -216,31 +88,5 @@ class Jets::Controller
       url
     end
 
-    def all_instance_variables
-      instance_variables.inject({}) do |vars, v|
-        k = v.to_s.sub(/^@/,'') # @event => event
-        vars[k] = instance_variable_get(v)
-        vars
-      end
-    end
-
-    # Example: posts/index
-    def default_template_name
-      action_name = @meth # All the way from the MainProcessor
-      "#{template_namespace}/#{action_name}"
-    end
-
-    # PostsController => "posts" is the namespace
-    def template_namespace
-      self.class.name.to_s.sub('Controller','').underscore.pluralize
-    end
-
-    def cors_headers
-      return {} unless Jets.config.cors
-      {
-        "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
-        "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
-      }
-    end
   end
 end
