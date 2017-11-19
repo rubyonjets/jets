@@ -2,7 +2,7 @@ require 'json'
 
 # Job public methods get turned into Lambda functions.
 class Jets::Job
-  class Base < Jets::BaseLambdaFunction
+  class Base < Jets::Lambda::Function
     class << self
       def process(context, event, meth)
         job = new(context, event, meth)

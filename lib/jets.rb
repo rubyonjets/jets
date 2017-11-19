@@ -42,7 +42,7 @@ module Jets
 
   autoload :Database, 'jets/database'
 
-  autoload :BaseLambdaFunction, 'jets/base_lambda_function'
+  autoload :Lambda, 'jets/lambda'
   autoload :Controller, 'jets/controller'
   autoload :Job, 'jets/job'
 
