@@ -23,6 +23,8 @@ class Jets::Controller
         options = normalize_options(options, rest)
       end
 
+      options.reverse_merge!(default_options)
+
       @rendered_data =
         if options.key?(:template)
           options = template_renderer_options.merge(options)
@@ -41,6 +43,10 @@ class Jets::Controller
       @rendered_data
     end
 
+    def default_options
+      { layout: self.class.layout }
+    end
+
     # Baseline template renderer optoins. The template renderer requires
     # more options than the other renders
     def template_renderer_options
@@ -49,7 +55,7 @@ class Jets::Controller
         event: event,
         controller_class: self.class,
         controller_action:  @meth, # All the way from the MainProcessor
-      }
+      }.reverse_merge(default_options)
     end
 
     def all_instance_variables
@@ -64,9 +70,7 @@ class Jets::Controller
     # Also set defaults here like the layout
     def normalize_options(options, rest)
       template = options.to_s
-      options = rest.merge(template: template)
-      options[:layout] ||= self.class.layout
-      options
+      rest.merge(template: template)
     end
 
     # redirect_to "/posts", :status => 301
