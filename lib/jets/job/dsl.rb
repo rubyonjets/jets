@@ -1,3 +1,6 @@
+# Jets::Job::Base < Jets::Lambda::Function
+# Both Jets::Job::Base and Jets::Lambda::Function have Dsl modules included.
+# So the Jets::Job::Dsl overrides some of the Jets::Lambda::Function behavior.
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
 
@@ -11,21 +14,22 @@ module Jets::Job::Dsl
         @cron = expression
       end
 
-      # override register_function to also register a task
+      # Override register_function to register a task instead.
+      # A Task is a RegisteredFunction with some added DSL methods like like
+      # rate and cron.
       def register_function(meth)
-        super
         register_task(meth)
-        true
       end
 
       def register_task(meth)
-        @rate ||= nil
-        @cron ||= nil
-
         if @rate || @cron
-          tasks[meth] = Jets::Job::Task.new(meth, rate: @rate, cron: @cron, class_name: name)
+          functions[meth] = Jets::Job::Task.new(meth,
+            class_name: name,
+            rate: @rate,
+            cron: @cron,
+            properties: @properties)
           # done storing options, clear out for the next added method
-          @rate, @cron = nil, nil
+          @rate, @cron = nil, nil, nil
           true
         else
           task_name = "#{name}##{meth}" # IE: HardJob#dig
@@ -37,24 +41,8 @@ module Jets::Job::Dsl
         end
       end
 
-      # Returns the tasks for this Job class.
-      #
-      # ==== Returns
-      # OrderedHash:: An ordered hash with tasks names as keys and JobTask
-      #               objects as values.
-      #
-      def tasks
-        @tasks ||= ActiveSupport::OrderedHash.new
-      end
-
-      # Returns the tasks for this Job class.
-      #
-      # ==== Returns
-      # Array of task objects
-      #
-      def all_tasks
-        @tasks.values
-      end
+      alias_method :tasks, :functions
+      alias_method :all_tasks, :all_functions
     end
   end
 end

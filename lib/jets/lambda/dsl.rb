@@ -34,14 +34,23 @@ module Jets::Lambda::Dsl
         return unless public_method_defined?(meth)
 
         register_function(meth)
+        # Important to clear @properties at the end of registering. Doing this
+        # here because register_function is overridden in Jets::Job::Dsl
+        #
+        # Jets::Job::Base < Jets::Lambda::Function
+        # Both Jets::Job::Base and Jets::Lambda::Function have Dsl modules included.
+        # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Function behavior.
+        clear_properties
       end
 
       def register_function(meth)
-        @properties ||= {}
-        functions[meth] = Jets::Lambda::RegisteredFunction.new(meth, @properties)
+        functions[meth] = Jets::Lambda::RegisteredFunction.new(meth, properties: @properties)
         # done storing options, clear out for the next added method
-        @properties = {}
         true
+      end
+
+      def clear_properties
+        @properties = nil
       end
 
       # Returns the functions for this Job class.

@@ -1,16 +1,14 @@
-class Jets::Job::Task
-  # TODO: does Jets::Job::Task need class_name?
-  attr_reader :name, :class_name
-  def initialize(name, options)
-    @name = name
-    @options = options
+class Jets::Job::Task < Jets::Lambda::RegisteredFunction
+  attr_reader :meth, :class_name
+  def initialize(meth, options={})
+    super
     @rate = options[:rate]
     @cron = options[:cron]
-    @class_name = options[:class_name].to_s
+    @class_name = options[:class_name].to_s # use at EventsRuleMapper#full_task_name
   end
 
-  def meth
-    @name
+  def name
+    @meth
   end
 
   def schedule_expression

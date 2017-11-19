@@ -1,6 +1,10 @@
 require 'json'
 
 # Job public methods get turned into Lambda functions.
+#
+# Jets::Job::Base < Jets::Lambda::Function
+# Both Jets::Job::Base and Jets::Lambda::Function have Dsl modules included.
+# So the Jets::Job::Dsl overrides some of the Jets::Lambda::Function behavior.
 class Jets::Job
   class Base < Jets::Lambda::Function
     include Dsl
