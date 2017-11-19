@@ -1,8 +1,6 @@
 module Jets::CommonMethods
   # Add API Gateway Stage Name
   def add_stage_name(url)
-    puts "url #{url.inspect}"
-    puts "request.host #{request.host.inspect}"
     if request.host.include?("amazonaws.com") &&
             url.starts_with?('/') &&
             !url.starts_with?('http')

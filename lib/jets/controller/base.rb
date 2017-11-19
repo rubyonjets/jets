@@ -1,4 +1,5 @@
 require "active_support/core_ext/hash"
+require "active_support/core_ext/object"
 require "json"
 require "rack/utils" # Rack::Utils.parse_nested_query
 
@@ -19,6 +20,7 @@ class Jets::Controller
       resp
     end
 
+    delegate :headers, to: :request
     attr_reader :request
     def initialize(event, context, meth)
       super

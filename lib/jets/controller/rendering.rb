@@ -31,19 +31,24 @@ class Jets::Controller
           render_json(options)
         elsif options.has_key?(:file)
           render_file(options)
-        elsif options.has_key?(:text)
-          options[:text]
+        elsif options.has_key?(:plain)
+          render_plain(options)
         else
-          raise "Unsupported render option. Only :text and :json supported.  options #{options.inspect}"
+          raise "Unsupported render options. options: #{options.inspect}"
         end
       @rendered = true
       @rendered_data
+    end
+
+    def render_plain(options)
+      render_plain(options)
     end
 
     def render_file(options={})
       require "action_dispatch/http/mime_type"
 
       path = options[:file]
+      path = "#{Jets.root}#{path}" unless path.starts_with?("/")
       content = IO.read(path)
       options[:body] = content
 
@@ -93,7 +98,7 @@ class Jets::Controller
         include helper_class.constantize if File.exist?(helper_path)
       end
 
-      ActionController::Base.append_view_path("app/views")
+      ActionController::Base.append_view_path("#{Jets.root}app/views")
 
       setup_webpacker
     end
@@ -113,22 +118,19 @@ class Jets::Controller
     # default options:
     #   https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
     def renderer_options
-      # When testing lambda function directly, the event payload
-      # will not not always contain event["headers"]
-      return {} unless event["headers"]
-
-      origin = event["headers"]["origin"]
+      origin = headers["origin"]
       if origin
         uri = URI.parse(origin)
         https = uri.scheme == "https"
       end
-      {
-        http_host: event["headers"]["Host"],
+      options = {
+        http_host: headers["Host"],
         https: https,
-        method: event["httpMethod"].downcase,
         # script_name: "",
         # input: ""
       }
+      options[:method] = event["httpMethod"].downcase if event["httpMethod"]
+      options
     end
 
     # Transform the structure to AWS_PROXY compatiable structure
@@ -176,10 +178,10 @@ class Jets::Controller
 
       uri = URI.parse(url)
       # if no location.host, we been provided a relative host
-      if !uri.host && event["headers"] && event["headers"]["origin"]
+      if !uri.host && headers["origin"]
         url = "/#{url}" unless url.starts_with?('/')
         url = add_stage_name(url)
-        redirect_url = event["headers"]["origin"] + url
+        redirect_url = headers["origin"] + url
       else
         redirect_url = url
       end
@@ -201,8 +203,8 @@ class Jets::Controller
 
     # Add API Gateway Stage Name
     def add_stage_name(url)
-      if event["headers"] && event["headers"]["origin"]
-        host = event["headers"]["origin"]  # with http(s) scheme
+      if headers["origin"]
+        host = headers["origin"]  # with http(s) scheme
         if host.include?("amazonaws.com") && url.starts_with?('/')
           stage_name = [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
           url = "/#{stage_name}#{url}"

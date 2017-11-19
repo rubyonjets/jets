@@ -1,20 +1,52 @@
 require "spec_helper"
 
 describe Jets::Controller::Base do
-  let(:controller) { RenderMeController.new(event, context, meth) }
-  let(:context) { nil }
-  let(:meth) { "index" }
+  let(:controller) { StoresController.new({}, nil, "index") }
 
-  context "general" do
-    let(:event) { nil }
+  context "method" do
     it "render :new" do
       resp = controller.render(:new)
-      expect(resp).to eq("new html")
+      # pp resp
+      expect(resp["body"]).to be_a(String)
     end
 
-    it "layout set to application" do
-      expect(controller.class.layout).to eq "application"
+    # should work also
+    # it "render new" do
+    #   resp = controller.render("new")
+    #   pp resp
+    #   # expect(resp).to eq("new html")
+    # end
+
+    it "render stores/new" do
+      resp = controller.render("stores/new")
+      # pp resp
+      expect(resp["body"]).to be_a(String)
     end
+
+    it "render template: store/new" do
+      resp = controller.render(template: "stores/new")
+      # pp resp
+      expect(resp["body"]).to be_a(String)
+    end
+
+    it "render json" do
+      resp = controller.render(json: {my: "data"})
+      # pp resp
+      expect(resp["body"]).to be_a(String)
+    end
+
+    it "render file" do
+      resp = controller.render(file: "public/assets/a.txt")
+      # pp resp
+      expect(resp["body"]).to be_a(String)
+    end
+
+    it "render plain" do
+      resp = controller.render(plain: "text")
+      expect(resp).to eq "text" # TODO: think is wrong because it is not
+        # the AWS proxy format
+      # expect(resp["body"]).to be_a(String)
+    end
+
   end
-
 end
