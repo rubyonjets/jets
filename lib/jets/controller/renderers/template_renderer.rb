@@ -11,21 +11,9 @@ module Jets::Controller::Renderers
     def render
       setup_action_controller # setup only when necessary
 
-      # ActionController::Base.renderer does heavy lifting
+      # Rails rendering does heavy lifting
       renderer = ActionController::Base.renderer.new(renderer_options)
-
-      template = @options[:template]
-      if template and !template.include?('/')
-        template = "#{template_namespace}/#{template}"
-      end
-      template ||= default_template_name
-
-      layout = @options[:layout]
-
-      body = renderer.render(
-        template: template,
-        layout: layout,
-        assigns: controller_instance_variables)
+      body = renderer.render(render_options)
       @options[:body] = body # important to set as it was originally nil
 
       render_aws_proxy(@options)
@@ -57,6 +45,28 @@ module Jets::Controller::Renderers
       }
       @options[:method] = event["httpMethod"].downcase if event["httpMethod"]
       options
+    end
+
+    def render_options
+      # nomralize the template option
+      template = @options[:template]
+      if template and !template.include?('/')
+        template = "#{template_namespace}/#{template}"
+      end
+      template ||= default_template_name
+      # ready to override @options[:template]
+      @options[:template] = template if @options[:template]
+
+      render_options = {
+        template: template,
+        layout: @options[:layout],
+        assigns: controller_instance_variables,
+      }
+      types = %w[template json inline plain file xml body action].map(&:to_sym)
+      types.each do |type|
+        render_options[type] = @options[type] if @options[type]
+      end
+      render_options
     end
 
     def setup_action_controller

@@ -24,19 +24,7 @@ class Jets::Controller
       end
 
       options.reverse_merge!(default_options)
-
-      @rendered_data =
-        if options.key?(:template)
-          Renderers::TemplateRenderer.new(self, options).render
-        elsif options.key?(:json)
-          Renderers::JsonRenderer.new(self, options).render
-        elsif options.key?(:file)
-          Renderers::FileRenderer.new(self, options).render
-        elsif options.key?(:plain)
-          Renderers::PlainRenderer.new(self, options).render
-        else
-          raise "Unsupported render options. options: #{options.inspect}"
-        end
+      @rendered_data = Renderers::TemplateRenderer.new(self, options).render
 
       @rendered = true
       @rendered_data
@@ -47,7 +35,8 @@ class Jets::Controller
     end
 
     # Can normalize the options when it is a String or a Symbol
-    # Also set defaults here like the layout
+    # Also set defaults here like the layout.
+    # Ensure options is a Hash, not a String or Symbol.
     def normalize_options(options, rest)
       template = options.to_s
       rest.merge(template: template)

@@ -2,10 +2,15 @@
 module Jets::Controller::Renderers
   class AwsProxyRenderer < BaseRenderer
     # Transform the structure to AWS_PROXY compatiable structure
-    # AWS Docs Output Format of a Lambda Function for Proxy Integration
     # http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
+    # Example response:
     #
-    # {statusCode: ..., body: ..., headers: ..., isBase64Encoded: ... }
+    #   {
+    #     "statusCode" => status,
+    #     "headers" => headers,
+    #     "body" => body,
+    #     "isBase64Encoded" => base64,
+    #   }
     def render
       # we do some normalization here
       status = @options[:status] || 200
@@ -21,9 +26,9 @@ module Jets::Controller::Renderers
         headers["Content-Type"] ||= @options[:content_type] || "text/html; charset=utf-8"
       end
 
-      # Compatiable Lambda Proxy Hash
-      # Explictly assign keys, additional keys will not be compatiable
-      resp = {
+      # Compatiable Lambda Proxy response Hash.
+      # Additional extra keys results in compatiability. Explictly assign keys.
+      {
         "statusCode" => status,
         "headers" => headers,
         "body" => body,

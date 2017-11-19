@@ -39,7 +39,7 @@ describe Jets::Controller::Base do
     end
 
     it "render file" do
-      resp = controller.render(file: "public/assets/a.txt")
+      resp = controller.render(file: "#{Jets.root}public/assets/a.txt")
       # pp resp
       expect(resp["body"]).to be_a(String)
     end
@@ -48,7 +48,13 @@ describe Jets::Controller::Base do
       resp = controller.render(plain: "text")
       # pp resp
       expect(resp["body"]).to be_a(String)
-      expect(resp["headers"]["Content-Type"]).to eq "text/plain"
+      expect(resp["headers"]["Content-Type"]).to eq "text/html; charset=utf-8"
+    end
+
+    it "render status: 404" do
+      resp = controller.render(status: 404)
+      # pp resp
+      expect(resp["statusCode"]).to eq 404
     end
   end
 
