@@ -61,7 +61,7 @@ GEM
     aws-sdk-cloudformation (1.2.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.7.0)
+    aws-sdk-core (3.8.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
