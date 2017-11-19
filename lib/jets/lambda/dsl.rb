@@ -14,7 +14,7 @@ module Jets::Lambda::Dsl
       # Example return value:
       #   [":index", :new, :create, :show]
       def lambda_functions
-        all_functions.map(&:meth)
+        all_tasks.map(&:meth)
       end
 
       # convenience method
@@ -33,9 +33,9 @@ module Jets::Lambda::Dsl
         return if %w[initialize method_missing].include?(meth.to_s)
         return unless public_method_defined?(meth)
 
-        register_function(meth)
+        register_task(meth)
         # Important to clear @properties at the end of registering. Doing this
-        # here because register_function is overridden in Jets::Job::Dsl
+        # here because register_task is overridden in Jets::Job::Dsl
         #
         # Jets::Job::Base < Jets::Lambda::Function
         # Both Jets::Job::Base and Jets::Lambda::Function have Dsl modules included.
@@ -43,8 +43,8 @@ module Jets::Lambda::Dsl
         clear_properties
       end
 
-      def register_function(meth)
-        functions[meth] = Jets::Lambda::RegisteredFunction.new(meth, properties: @properties)
+      def register_task(meth)
+        tasks[meth] = Jets::Lambda::Task.new(meth, properties: @properties)
         # done storing options, clear out for the next added method
         true
       end
@@ -53,23 +53,23 @@ module Jets::Lambda::Dsl
         @properties = nil
       end
 
-      # Returns the functions for this Job class.
+      # Returns the tasks for this Job class.
       #
       # ==== Returns
-      # OrderedHash:: An ordered hash with functions names as keys and JobTask
+      # OrderedHash:: An ordered hash with tasks names as keys and JobTask
       #               objects as values.
       #
-      def functions
-        @functions ||= ActiveSupport::OrderedHash.new
+      def tasks
+        @tasks ||= ActiveSupport::OrderedHash.new
       end
 
-      # Returns the functions for this Job class.
+      # Returns the tasks for this Job class.
       #
       # ==== Returns
-      # Array of function objects
+      # Array of task objects
       #
-      def all_functions
-        functions.values
+      def all_tasks
+        tasks.values
       end
     end
   end

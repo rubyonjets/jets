@@ -14,16 +14,12 @@ module Jets::Job::Dsl
         @cron = expression
       end
 
-      # Override register_function to register a task instead.
-      # A Task is a RegisteredFunction with some added DSL methods like like
+      # Override register_task.
+      # A Job::Task is a Lambda::Task with some added DSL methods like
       # rate and cron.
-      def register_function(meth)
-        register_task(meth)
-      end
-
       def register_task(meth)
         if @rate || @cron
-          functions[meth] = Jets::Job::Task.new(meth,
+          tasks[meth] = Jets::Job::Task.new(meth,
             class_name: name,
             rate: @rate,
             cron: @cron,
@@ -40,9 +36,6 @@ module Jets::Job::Dsl
           false
         end
       end
-
-      alias_method :tasks, :functions
-      alias_method :all_tasks, :all_functions
     end
   end
 end

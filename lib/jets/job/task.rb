@@ -1,4 +1,4 @@
-class Jets::Job::Task < Jets::Lambda::RegisteredFunction
+class Jets::Job::Task < Jets::Lambda::Task
   attr_reader :meth, :class_name
   def initialize(meth, options={})
     super
