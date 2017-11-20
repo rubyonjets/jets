@@ -35,6 +35,8 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
         expect(properties["MemorySize"]).to eq 1024
         # should not pascalize the keys under Variables section
         expect(properties["Environment"]["Variables"]).to eq(
+          "JETS_ENV" => "test",
+          "my_test" => "data",
           "key1" => "value1",
           "key2" => "value2",
         )

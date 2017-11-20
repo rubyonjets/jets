@@ -33,12 +33,6 @@ class Jets::Cfn::TemplateBuilders
 
     def properties(map, task)
       global_properties = {
-        Code: {
-          S3Bucket: {Ref: "S3Bucket"}, # from child stack
-          S3Key: map.code_s3_key
-        },
-        FunctionName: map.function_name,
-        Handler: map.handler,
         Role: { Ref: "IamRole" },
         MemorySize: Jets.config.memory_size,
         Runtime: Jets.config.runtime,
@@ -51,9 +45,20 @@ class Jets::Cfn::TemplateBuilders
 
       function_properties = pascalize(task.properties.deep_stringify_keys)
 
+      # do not allow overriding of fixed properties
+      fixed_properties = {
+        Code: {
+          S3Bucket: {Ref: "S3Bucket"}, # from child stack
+          S3Key: map.code_s3_key
+        },
+        FunctionName: map.function_name,
+        Handler: map.handler,
+      }
+
       global_properties
-        .merge(class_properties)
-        .merge(function_properties)
+        .deep_merge(class_properties)
+        .deep_merge(function_properties)
+        .deep_merge(fixed_properties)
     end
 
     # Specialized pascalize that will not pascalize keys under the
