@@ -36,29 +36,27 @@ module Jets::Lambda::Dsl
 
       # convenience method that set properties
       def timeout(value)
-        @properties ||= {}
-        @properties[:timeout] = value
+        properties(timeout: value)
       end
 
       # convenience method that set properties
       def environment(hash)
-        @properties ||= {}
-        @properties[:environment] ||= {}
-        @properties[:environment][:variables] ||= {}
-        @properties[:environment][:variables].merge!(hash)
+        environment = {}
+        environment[:variables] ||= {}
+        environment[:variables].merge!(hash)
+        properties(environment: environment)
       end
       alias_method :env, :environment
 
       # convenience method that set properties
       def memory_size(value)
-        @properties ||= {}
-        @properties[:memory_size] = value
+        properties(memory_size: value)
       end
       alias_method :memory, :memory_size
 
       def properties(options={})
         @properties ||= {}
-        @properties = @properties.merge(options)
+        @properties.deep_merge!(options)
       end
       alias_method :props, :properties
 
