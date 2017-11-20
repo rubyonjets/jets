@@ -1,9 +1,9 @@
 class Jets::Cfn::TemplateMappers
   class LambdaFunctionMapper
-    attr_reader :process_type_class # Example: PostsController or SleepJob
-    def initialize(process_type_class, task)
-      @process_type_class = process_type_class.to_s
+    attr_reader :process_type_class
+    def initialize(task)
       @task = task
+      @process_type_class = task.class_name.to_s # Example: PostsController or SleepJob
     end
 
     # Example: SleepJobPerformLambdaFunction

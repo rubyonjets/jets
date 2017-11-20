@@ -3,7 +3,7 @@ require "spec_helper"
 describe Jets::Cfn::TemplateMappers::LambdaFunctionMapper do
   context "controller" do
     let(:map) do
-      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new("PostsController", task)
+      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(task)
     end
     let(:task) do
       Jets::Lambda::Task.new(PostsController, :index)
@@ -22,7 +22,7 @@ describe Jets::Cfn::TemplateMappers::LambdaFunctionMapper do
 
   context("job") do
     let(:map) do
-      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new("HardJob", task)
+      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(task)
     end
     let(:task) do
       Jets::Lambda::Task.new(HardJob, :perform)

@@ -10,5 +10,7 @@ class Jets::Cfn
     autoload :JobBuilder, "jets/cfn/template_builders/job_builder"
     autoload :ApiGatewayBuilder, "jets/cfn/template_builders/api_gateway_builder"
     autoload :ApiGatewayDeploymentBuilder, "jets/cfn/template_builders/api_gateway_deployment_builder"
+    # separate beast:
+    autoload :FunctionPropertiesBuilder, "jets/cfn/template_builders/function_properties_builder"
   end
 end

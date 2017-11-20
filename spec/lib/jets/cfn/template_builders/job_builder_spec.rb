@@ -2,9 +2,8 @@ require "spec_helper"
 
 describe Jets::Cfn::TemplateBuilders::JobBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::JobBuilder.new(app_class)
+    Jets::Cfn::TemplateBuilders::JobBuilder.new(HardJob)
   end
-  let(:app_class) { HardJob }
 
   describe "compose" do
     it "builds a child stack with the scheduled events" do

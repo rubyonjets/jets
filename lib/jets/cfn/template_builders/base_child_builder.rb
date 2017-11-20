@@ -26,81 +26,9 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_function(task)
-      map = Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(@app_class, task)
-      properties = properties(map, task)
-      add_resource(map.logical_id, "AWS::Lambda::Function", properties)
-    end
-
-    def properties(map, task)
-      global_properties = global_properties(map, task)
-      class_properties = class_properties(map, task)
-      function_properties = function_properties(map, task)
-      fixed_properties = fixed_properties(map, task)
-
-      global_properties
-        .deep_merge(class_properties)
-        .deep_merge(function_properties)
-        .deep_merge(fixed_properties)
-    end
-
-    def global_properties(map, task)
-      {
-        Code: {
-          S3Bucket: {Ref: "S3Bucket"}, # from child stack
-          S3Key: map.code_s3_key
-        },
-        Role: { Ref: "IamRole" },
-        MemorySize: Jets.config.memory_size,
-        Runtime: Jets.config.runtime,
-        Timeout: Jets.config.timeout,
-        Environment: { Variables: map.environment },
-      }.deep_stringify_keys
-    end
-
-    def class_properties(map, task)
-      class_properties = task.class_name.constantize.class_properties
-      pascalize(class_properties.deep_stringify_keys)
-    end
-
-    def function_properties(map, task)
-      pascalize(task.properties.deep_stringify_keys)
-    end
-
-    # Do not allow overriding of fixed properties. Changing properties will
-    # likely cause issues with Jets.
-    def fixed_properties(map, task)
-      {
-        FunctionName: map.function_name,
-        Handler: map.handler,
-      }
-    end
-
-  private
-    # Specialized pascalize that will not pascalize keys under the
-    # Variables part of the hash structure.
-    # Based on: https://stackoverflow.com/questions/8706930/converting-nested-hash-keys-from-camelcase-to-snake-case-in-ruby
-    def pascalize(value, parent_key=nil)
-      case value
-        when Array
-          value.map { |v| pascalize(v) }
-        when Hash
-          initializer = value.map do |k, v|
-            new_key = pascal_key(k, parent_key)
-            [new_key, pascalize(v, new_key)]
-          end
-          Hash[initializer]
-        else
-          value
-       end
-    end
-
-    def pascal_key(k, parent_key=nil)
-      if parent_key == "Variables" # do not pascalize keys anything under Variables
-        k
-      else
-        k = k.to_s.camelize
-        k.slice(0,1).capitalize + k.slice(1..-1) # capitalize first letter only
-      end
+      builder = FunctionPropertiesBuilder.new(task)
+      logical_id = builder.map.logical_id
+      add_resource(logical_id, "AWS::Lambda::Function", builder.properties)
     end
   end
 end
