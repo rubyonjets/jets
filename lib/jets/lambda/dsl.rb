@@ -30,17 +30,20 @@ module Jets::Lambda::Dsl
         @properties[:environment][:variables] ||= {}
         @properties[:environment][:variables].merge!(hash)
       end
+      alias_method :env, :environment
 
       # convenience method that set properties
       def memory_size(value)
         @properties ||= {}
         @properties[:memory_size] = value
       end
+      alias_method :memory, :memory_size
 
       def properties(options={})
         @properties ||= {}
         @properties = @properties.merge(options)
       end
+      alias_method :props, :properties
 
       # meth is a Symbol
       def method_added(meth)
@@ -58,7 +61,7 @@ module Jets::Lambda::Dsl
       end
 
       def register_task(meth)
-        tasks[meth] = Jets::Lambda::Task.new(meth, properties: @properties)
+        all_tasks[meth] = Jets::Lambda::Task.new(meth, properties: @properties)
         # done storing options, clear out for the next added method
         true
       end
@@ -67,23 +70,23 @@ module Jets::Lambda::Dsl
         @properties = nil
       end
 
-      # Returns the tasks for this Job class.
+      # Returns the all tasks for this class with their method names as keys.
       #
       # ==== Returns
       # OrderedHash:: An ordered hash with tasks names as keys and JobTask
       #               objects as values.
       #
-      def tasks
+      def all_tasks
         @tasks ||= ActiveSupport::OrderedHash.new
       end
 
-      # Returns the tasks for this Job class.
+      # Returns the tasks for this Job class in Array form.
       #
       # ==== Returns
       # Array of task objects
       #
-      def all_tasks
-        tasks.values
+      def tasks
+        all_tasks.values
       end
     end
   end

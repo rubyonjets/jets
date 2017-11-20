@@ -20,15 +20,19 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_functions
-      @app_class.lambda_functions.each do |name|
-        add_function(name)
+      @app_class.tasks.each do |task|
+        add_function(task)
       end
     end
 
-    def add_function(name)
-      map = Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(@app_class, name)
+    def add_function(task)
+      map = Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(@app_class, task)
+      properties = properties(map, task)
+      add_resource(map.logical_id, "AWS::Lambda::Function", properties)
+    end
 
-      add_resource(map.logical_id, "AWS::Lambda::Function",
+    def properties(map, task)
+      global_properties = {
         Code: {
           S3Bucket: {Ref: "S3Bucket"}, # from child stack
           S3Key: map.code_s3_key
@@ -40,7 +44,37 @@ class Jets::Cfn::TemplateBuilders
         Runtime: Jets.config.runtime,
         Timeout: Jets.config.timeout,
         Environment: { Variables: map.environment },
-      )
+      }.deep_stringify_keys
+
+      function_properties = pascalize(task.properties.deep_stringify_keys)
+      global_properties.merge(function_properties)
+    end
+
+    # Specialized pascalize that will not pascalize keys under the
+    # Variables part of the hash structure.
+    # Based on: https://stackoverflow.com/questions/8706930/converting-nested-hash-keys-from-camelcase-to-snake-case-in-ruby
+    def pascalize(value, parent_key=nil)
+      case value
+        when Array
+          value.map { |v| pascalize(v) }
+        when Hash
+          initializer = value.map do |k, v|
+            new_key = pascal_key(k, parent_key)
+            [new_key, pascalize(v, new_key)]
+          end
+          Hash[initializer]
+        else
+          value
+       end
+    end
+
+    def pascal_key(k, parent_key=nil)
+      if parent_key == "Variables" # do not pascalize keys anything under Variables
+        k
+      else
+        k = k.to_s.camelize
+        k.slice(0,1).capitalize + k.slice(1..-1) # capitalize first letter only
+      end
     end
   end
 end

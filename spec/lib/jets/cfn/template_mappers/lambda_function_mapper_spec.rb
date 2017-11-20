@@ -3,10 +3,13 @@ require "spec_helper"
 describe Jets::Cfn::TemplateMappers::LambdaFunctionMapper do
   context "controller" do
     let(:map) do
-      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new("PostsController", :index)
+      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new("PostsController", task)
+    end
+    let(:task) do
+      Jets::Lambda::Task.new(:index)
     end
 
-    describe "ControllerFunctionMapper" do
+    describe "map" do
       it "contains info for CloudFormation Controller Function Resources" do
         expect(map.logical_id).to eq "PostsControllerIndexLambdaFunction"
         expect(map.class_action).to eq "PostsControllerIndex"
@@ -19,10 +22,13 @@ describe Jets::Cfn::TemplateMappers::LambdaFunctionMapper do
 
   context("job") do
     let(:map) do
-      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new("SleepJob", :perform)
+      Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new("SleepJob", task)
+    end
+    let(:task) do
+      Jets::Lambda::Task.new(:perform)
     end
 
-    describe "maps" do
+    describe "map" do
       it "contains info for CloudFormation Job Function Resources" do
         expect(map.logical_id).to eq "SleepJobPerformLambdaFunction"
         expect(map.class_action).to eq "SleepJobPerform"
