@@ -58,7 +58,6 @@ module Jets::Controller::Renderers
       @options[:template] = template if @options[:template]
 
       render_options = {
-        template: template,
         layout: @options[:layout],
         assigns: controller_instance_variables,
       }
