@@ -7,15 +7,32 @@ module Jets::Lambda::Dsl
 
   included do
     class << self
-
-      # The public methods defined in the project app class ulimately become
-      # lambda functions.
-      #
-      # Example return value:
-      #   [":index", :new, :create, :show]
-      def lambda_functions
-        all_tasks.keys
+      def class_properties(options=nil)
+        if options
+          @class_properties ||= {}
+          @class_properties.deep_merge!(options)
+        else
+          @class_properties || {}
+        end
       end
+      alias_method :class_props, :class_properties
+
+      def class_timeout(value)
+        class_properties(timeout: value)
+      end
+
+      def class_environment(hash)
+        environment = {}
+        environment[:variables] ||= {}
+        environment[:variables].merge!(hash)
+        class_properties(environment: environment)
+      end
+      alias_method :class_env, :class_environment
+
+      def class_memory_size(value)
+        class_properties(memory_size: value)
+      end
+      alias_method :class_memory, :class_memory_size
 
       # convenience method that set properties
       def timeout(value)
@@ -61,7 +78,7 @@ module Jets::Lambda::Dsl
       end
 
       def register_task(meth)
-        all_tasks[meth] = Jets::Lambda::Task.new(meth, properties: @properties)
+        all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth, properties: @properties)
         # done storing options, clear out for the next added method
         true
       end
@@ -87,6 +104,15 @@ module Jets::Lambda::Dsl
       #
       def tasks
         all_tasks.values
+      end
+
+      # The public methods defined in the project app class ulimately become
+      # lambda functions.
+      #
+      # Example return value:
+      #   [":index", :new, :create, :show]
+      def lambda_functions
+        all_tasks.keys
       end
     end
   end

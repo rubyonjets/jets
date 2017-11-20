@@ -41,7 +41,7 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
       end
     end
 
-    describe "show function properties" do
+    describe "index function properties" do
       it "overrides global properties with function properties" do
         builder.compose
         # puts builder.text # uncomment to see template text
@@ -51,6 +51,17 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
         expect(properties["MemorySize"]).to eq 1000
         # should not pascalize the keys under Variables section
         expect(properties["DeadLetterConfig"]).to eq "arn"
+      end
+    end
+
+    describe "new function properties" do
+      it "overrides global properties with function properties" do
+        builder.compose
+        # puts builder.text # uncomment to see template text
+        resources = builder.template["Resources"]
+        properties = resources["StoresControllerNewLambdaFunction"]["Properties"]
+
+        expect(properties["MemorySize"]).to eq 768
       end
     end
   end

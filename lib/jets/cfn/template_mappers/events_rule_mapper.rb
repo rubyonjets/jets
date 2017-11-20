@@ -31,7 +31,7 @@ class Jets::Cfn::TemplateMappers
     # Full camelized task name including the class
     # Example: HardJobDig
     def full_task_name
-      class_name = @task.class_name # already camelized
+      class_name = @task.class_name
       task_name = @task.meth.to_s.camelize
       "#{class_name}#{task_name}"
     end

@@ -46,8 +46,14 @@ class Jets::Cfn::TemplateBuilders
         Environment: { Variables: map.environment },
       }.deep_stringify_keys
 
+      class_properties = task.class_name.constantize.class_properties
+      class_properties = pascalize(class_properties.deep_stringify_keys)
+
       function_properties = pascalize(task.properties.deep_stringify_keys)
-      global_properties.merge(function_properties)
+
+      global_properties
+        .merge(class_properties)
+        .merge(function_properties)
     end
 
     # Specialized pascalize that will not pascalize keys under the

@@ -19,8 +19,7 @@ module Jets::Job::Dsl
       # rate and cron.
       def register_task(meth)
         if @rate || @cron
-          all_tasks[meth] = Jets::Job::Task.new(meth,
-            class_name: name,
+          all_tasks[meth] = Jets::Job::Task.new(self.name, meth,
             rate: @rate,
             cron: @cron,
             properties: @properties)
