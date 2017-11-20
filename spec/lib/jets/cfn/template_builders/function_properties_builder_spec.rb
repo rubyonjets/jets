@@ -48,6 +48,14 @@ describe Jets::Cfn::TemplateBuilders::FunctionPropertiesBuilder do
         # testing class_properties(...)
         expect(props["MemorySize"]).to eq 768
       end
+
+      it "contains the .env properties values" do
+        props = builder.properties
+        # testing .env file is picked up
+        env_vars = props["Environment"]["Variables"]
+        expect(env_vars["env_key1"]).to eq "env_value1"
+        expect(env_vars["env_key2"]).to eq "env_value2"
+      end
     end
   end
 end
