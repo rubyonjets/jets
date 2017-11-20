@@ -13,10 +13,25 @@ describe Jets::Lambda::Dsl do
       expect(index_task.properties).to eq(
         dead_letter_config: "arn", timeout: 20, role: "myrole", memory_size: 1000
       )
+    end
 
-      new_task = StoresController.tasks[:new]
-      expect(new_task).to be_a(Jets::Lambda::Task)
-      expect(new_task.properties).to eq(timeout: 35)
+    it "timeout" do
+      task = StoresController.tasks[:new]
+      expect(task.properties).to eq(timeout: 35)
+    end
+
+    it "environment" do
+      task = StoresController.tasks[:show]
+      expect(task.properties[:environment]).to eq({
+        variables: {
+          key1: "value1",
+          key2: "value2",
+        }})
+    end
+
+    it "memory_size" do
+      task = StoresController.tasks[:show]
+      expect(task.properties[:memory_size]).to eq 1024
     end
   end
 

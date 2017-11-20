@@ -17,10 +17,24 @@ module Jets::Lambda::Dsl
         all_tasks.map(&:meth)
       end
 
-      # convenience method
+      # convenience method that set properties
       def timeout(value)
         @properties ||= {}
         @properties[:timeout] = value
+      end
+
+      # convenience method that set properties
+      def environment(hash)
+        @properties ||= {}
+        @properties[:environment] ||= {}
+        @properties[:environment][:variables] ||= {}
+        @properties[:environment][:variables].merge!(hash)
+      end
+
+      # convenience method that set properties
+      def memory_size(value)
+        @properties ||= {}
+        @properties[:memory_size] = value
       end
 
       def properties(options={})
