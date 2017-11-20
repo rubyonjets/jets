@@ -32,7 +32,19 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def properties(map, task)
-      global_properties = {
+      global_properties = global_properties(map, task)
+      class_properties = class_properties(map, task)
+      function_properties = function_properties(map, task)
+      fixed_properties = fixed_properties(map, task)
+
+      global_properties
+        .deep_merge(class_properties)
+        .deep_merge(function_properties)
+        .deep_merge(fixed_properties)
+    end
+
+    def global_properties(map, task)
+      {
         Code: {
           S3Bucket: {Ref: "S3Bucket"}, # from child stack
           S3Key: map.code_s3_key
@@ -43,23 +55,24 @@ class Jets::Cfn::TemplateBuilders
         Timeout: Jets.config.timeout,
         Environment: { Variables: map.environment },
       }.deep_stringify_keys
+    end
 
+    def class_properties(map, task)
       class_properties = task.class_name.constantize.class_properties
-      class_properties = pascalize(class_properties.deep_stringify_keys)
+      pascalize(class_properties.deep_stringify_keys)
+    end
 
-      function_properties = pascalize(task.properties.deep_stringify_keys)
+    def function_properties(map, task)
+      pascalize(task.properties.deep_stringify_keys)
+    end
 
-      # Do not allow overriding of fixed properties. Changing properties will
-      # likely cause issues with Jets.
-      fixed_properties = {
+    # Do not allow overriding of fixed properties. Changing properties will
+    # likely cause issues with Jets.
+    def fixed_properties(map, task)
+      {
         FunctionName: map.function_name,
         Handler: map.handler,
       }
-
-      global_properties
-        .deep_merge(class_properties)
-        .deep_merge(function_properties)
-        .deep_merge(fixed_properties)
     end
 
   private
