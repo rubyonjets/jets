@@ -25,7 +25,7 @@ module Jets::Job::Dsl
             cron: @cron,
             properties: @properties)
           # done storing options, clear out for the next added method
-          @rate, @cron = nil, nil, nil
+          @rate, @cron = nil, nil
           true
         else
           task_name = "#{name}##{meth}" # IE: HardJob#dig
