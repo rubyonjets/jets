@@ -58,10 +58,12 @@ module Jets::Controller::Renderers
       @options[:template] = template if @options[:template]
 
       render_options = {
+        template: template, # weird: template needs to be set no matter because it
+          # sets the name which is used in lookup_context.rb:209:in `normalize_name'
         layout: @options[:layout],
         assigns: controller_instance_variables,
       }
-      types = %w[template json inline plain file xml body action].map(&:to_sym)
+      types = %w[json inline plain file xml body action].map(&:to_sym)
       types.each do |type|
         render_options[type] = @options[type] if @options[type]
       end

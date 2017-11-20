@@ -14,7 +14,7 @@ module Jets::Lambda::Dsl
       # Example return value:
       #   [":index", :new, :create, :show]
       def lambda_functions
-        all_tasks.map(&:meth)
+        all_tasks.keys
       end
 
       # convenience method that set properties
