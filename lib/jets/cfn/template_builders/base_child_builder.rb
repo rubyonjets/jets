@@ -33,6 +33,10 @@ class Jets::Cfn::TemplateBuilders
 
     def properties(map, task)
       global_properties = {
+        Code: {
+          S3Bucket: {Ref: "S3Bucket"}, # from child stack
+          S3Key: map.code_s3_key
+        },
         Role: { Ref: "IamRole" },
         MemorySize: Jets.config.memory_size,
         Runtime: Jets.config.runtime,
@@ -45,12 +49,9 @@ class Jets::Cfn::TemplateBuilders
 
       function_properties = pascalize(task.properties.deep_stringify_keys)
 
-      # do not allow overriding of fixed properties
+      # Do not allow overriding of fixed properties. Changing properties will
+      # likely cause issues with Jets.
       fixed_properties = {
-        Code: {
-          S3Bucket: {Ref: "S3Bucket"}, # from child stack
-          S3Key: map.code_s3_key
-        },
         FunctionName: map.function_name,
         Handler: map.handler,
       }
@@ -61,6 +62,7 @@ class Jets::Cfn::TemplateBuilders
         .deep_merge(fixed_properties)
     end
 
+  private
     # Specialized pascalize that will not pascalize keys under the
     # Variables part of the hash structure.
     # Based on: https://stackoverflow.com/questions/8706930/converting-nested-hash-keys-from-camelcase-to-snake-case-in-ruby
