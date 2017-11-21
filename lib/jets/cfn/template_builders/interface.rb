@@ -5,6 +5,9 @@
 class Jets::Cfn::TemplateBuilders
   module Interface
     def build
+      return if @app_class.tasks.empty? # do not bother building or writing
+        # the template unless there are functions defined
+
       compose # must be implemented by subclass
       write
     end
