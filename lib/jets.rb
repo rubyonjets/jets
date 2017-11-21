@@ -26,7 +26,6 @@ module Jets
 
   autoload :CLI, "jets/cli"
   autoload :Build, 'jets/build'
-  autoload :Config, 'jets/config'
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'
   autoload :Delete, 'jets/delete'

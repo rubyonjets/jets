@@ -14,24 +14,22 @@ module Jets::Util
     @@root = Pathname.new(@@root)
   end
 
-  @@logger = nil
-  def logger
-    return @@logger if @@logger
-    @@logger = Logger.new($stderr)
-  end
-
   # Load all application base classes and project classes
   def boot
-    # puts "Jets.boot called".colorize(:red)
-    autoload_paths = %w[
-      app/controllers
-      app/models
-      app/jobs
-      app/helpers
-    ].map { |p| "#{Jets.root}/#{p}" }
-    ActiveSupport::Dependencies.autoload_paths += autoload_paths
-
+    ActiveSupport::Dependencies.autoload_paths += config.autoload_paths
     connect_to_db
+  end
+
+  def config
+    Jets.application.config
+  end
+
+  @@application = nil
+  def application
+    return @@application if @@application
+    @@application = Jets::Application.new
+    @@application.load_configs # triggers load of application configs
+    @@application
   end
 
   # Only need to do this for ActiveRecord. DynamodbModel handles connecting
@@ -46,11 +44,11 @@ module Jets::Util
 
   @@env = nil
   def env
-    @@env ||= ActiveSupport::StringInquirer.new(Jets.config.env)
-  end
+    return @@env if @@env
 
-  def config
-    Jets::Config.new.settings
+    env = ENV['JETS_ENV'] || 'development'
+    ENV['RAILS_ENV'] = ENV['RACK_ENV'] = env
+    @@env = ActiveSupport::StringInquirer.new(env)
   end
 
   @@build_root = nil
@@ -58,9 +56,15 @@ module Jets::Util
     @@build_root ||= "/tmp/jets/#{config.project_name}".freeze
   end
 
+  @@logger = nil
+  def logger
+    return @@logger if @@logger
+    @@logger = Logger.new($stderr)
+  end
+
   # Make sure that this command is ran within a jets project
   def confirm_jets_project!
-    unless File.exist?("#{Jets.root}config/application.yml")
+    unless File.exist?("#{Jets.root}config/application.rb")
       puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
       exit
     end

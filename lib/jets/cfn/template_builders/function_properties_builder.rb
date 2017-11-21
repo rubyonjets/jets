@@ -24,19 +24,20 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def global_properties
-      {
+      baseline = {
         Code: {
           S3Bucket: {Ref: "S3Bucket"}, # from child stack
           S3Key: map.code_s3_key
         },
         Role: { Ref: "IamRole" },
-        MemorySize: Jets.config.memory_size,
-        Runtime: Jets.config.runtime,
-        Timeout: Jets.config.timeout,
         Environment: { Variables: map.environment },
       }.deep_stringify_keys
-    end
 
+      app_config_props = Jets.application.config.function.to_h
+      app_config_props = pascalize(app_config_props.deep_stringify_keys)
+
+      baseline.deep_merge(app_config_props)
+    end
     def class_properties
       class_properties = @task.class_name.constantize.class_properties
       pascalize(class_properties.deep_stringify_keys)

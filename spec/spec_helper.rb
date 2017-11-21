@@ -1,6 +1,10 @@
 ENV["TEST"] = "1"
 ENV["JETS_ENV"] = "test"
-ENV["APP_ROOT"] = "./spec/fixtures/apps/alpha"
+
+# ENV["APP_ROOT"] = "./spec/fixtures/apps/alpha"
+ENV["APP_ROOT"] = "./spec/fixtures/apps/demo" # TODO: switch to different project app_root for different fixture projects in a better way.  Want a default and then
+# be able to switch a the beginning of each test in the block block.
+
 # Ensures aws api never called. Fixture home folder does not contain ~/.aws/credentails
 ENV['HOME'] = "spec/fixtures/home"
 

@@ -13,8 +13,9 @@ describe Jets::Cfn::TemplateBuilders::FunctionPropertiesBuilder do
     describe "properties" do
       it "contain the lambda function properties" do
         props = builder.properties
-        # pp props
+        pp props
         expect(props["Timeout"]).to eq 10
+        expect(props["DeadLetterQueue"]).to eq("TargetArn" => "arn")
       end
     end
   end
