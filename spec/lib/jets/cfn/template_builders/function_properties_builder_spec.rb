@@ -13,9 +13,12 @@ describe Jets::Cfn::TemplateBuilders::FunctionPropertiesBuilder do
     describe "properties" do
       it "contain the lambda function properties" do
         props = builder.properties
-        pp props
+        # pp props
         expect(props["Timeout"]).to eq 10
-        expect(props["DeadLetterQueue"]).to eq("TargetArn" => "arn")
+        # contains the app config env vars
+        env_vars = props["Environment"]["Variables"]
+        expect(env_vars["global_app_key1"]).to eq "global_app_value1"
+        expect(env_vars["global_app_key2"]).to eq "global_app_value2"
       end
     end
   end
