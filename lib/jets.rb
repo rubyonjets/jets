@@ -4,7 +4,6 @@ require "active_support/core_ext/string"
 require "active_support/ordered_hash"
 require "colorize"
 require "fileutils"
-require "jets/core_ext/object/to_attrs"
 
 # TODO: only load the database adapters that the app uses
 $:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))

@@ -67,6 +67,7 @@ module Jets::Controller::Renderers
       types.each do |type|
         render_options[type] = @options[type] if @options[type]
       end
+
       render_options
     end
 

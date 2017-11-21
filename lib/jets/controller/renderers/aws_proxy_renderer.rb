@@ -14,17 +14,12 @@ module Jets::Controller::Renderers
     def render
       # we do some normalization here
       status = @options[:status] || 200
-      headers = @options[:headers] || {}
-      headers = cors_headers.merge(headers)
       body = @options[:body]
       base64 = normalized_base64_option(@options)
 
-      if body.is_a?(Hash)
-        body = JSON.dump(body) # body must be a String
-        headers["Content-Type"] ||= @options[:content_type] || "application/json"
-      else
-        headers["Content-Type"] ||= @options[:content_type] || "text/html; charset=utf-8"
-      end
+      headers = @options[:headers] || {}
+      headers = cors_headers.merge(headers)
+      headers["Content-Type"] ||= @options[:content_type] || "text/html; charset=utf-8"
 
       # Compatiable Lambda Proxy response Hash.
       # Additional extra keys results in compatiability. Explictly assign keys.

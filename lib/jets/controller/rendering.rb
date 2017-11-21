@@ -24,10 +24,17 @@ class Jets::Controller
       end
 
       options.reverse_merge!(default_options)
+      adjust_content_type!(options)
       @rendered_data = Renderers::TemplateRenderer.new(self, options).render
 
       @rendered = true
       @rendered_data
+    end
+
+    def adjust_content_type!(options)
+      if options.key?(:json)
+        options[:content_type] = "application/json"
+      end
     end
 
     def default_options
