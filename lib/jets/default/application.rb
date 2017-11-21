@@ -8,7 +8,8 @@ Jets.application.configure do
                             app/models
                             app/jobs
                             app/helpers
-                          ].map { |p| "#{Jets.root}#{p}" }
+                          ]
+  config.extra_autoload_paths = []
 
   # function properties defaults
   config.function = RecursiveOpenStruct.new

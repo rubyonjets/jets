@@ -16,8 +16,14 @@ module Jets::Util
 
   # Load all application base classes and project classes
   def boot
-    ActiveSupport::Dependencies.autoload_paths += config.autoload_paths
+    ActiveSupport::Dependencies.autoload_paths += autoload_paths
+
     connect_to_db
+  end
+
+  def autoload_paths
+    autoload_paths = config.autoload_paths + config.extra_autoload_paths
+    autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
   end
 
   def config
