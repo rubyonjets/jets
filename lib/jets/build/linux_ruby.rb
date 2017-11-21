@@ -194,7 +194,7 @@ class Jets::Build
     end
 
     def excludes
-      excludes = %w[.git tmp log]
+      excludes = %w[.git tmp log spec]
       excludes += get_excludes("#{full(tmp_app_root)}/.gitignore")
       excludes += get_excludes("#{full(tmp_app_root)}/.dockerignore")
       excludes = excludes.reject do |p|
