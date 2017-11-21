@@ -80,12 +80,12 @@ class Jets::Build
 
     # Because we're removing files (something dangerous) use full paths.
     def clean_project
-      puts "Cleaning up project and removing ignored files that are not needed to be packaged before zipping up."
+      puts "Cleaning up: removing ignored files before packaging zipfile."
       excludes.each do |exclude|
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{full(tmp_app_root)}/#{exclude}"
         FileUtils.rm_rf(remove_path)
-        puts "rm -rf #{remove_path}"
+        puts "  rm -rf #{remove_path}"
       end
     end
 

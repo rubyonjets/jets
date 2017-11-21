@@ -53,7 +53,9 @@ class Jets::Application
   def normalize_environment!
     environment = config.function.environment
     if environment and !environment.to_h.key?(:variables)
-      environment[:variables] = environment.to_h
+      config.function.environment = {
+        variables: environment.to_h
+      }
     end
   end
 
