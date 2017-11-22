@@ -3,8 +3,6 @@ class Jets::Console
     # Thanks: https://mutelight.org/bin-console
     require "irb"
     require "irb/completion"
-    require "bundler/setup"
-    Bundler.require(:default)
 
     Jets.boot
 

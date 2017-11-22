@@ -28,6 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "railties" # ActiveRecord database_tasks.rb require this
   # TODO: only load the database adapters that the app uses, so generate this
   # in the app's Gemfile
+  spec.add_dependency "dotenv"
 
   spec.add_dependency "recursive-open-struct"
   spec.add_dependency "aws-sdk-s3"

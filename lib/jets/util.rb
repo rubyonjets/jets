@@ -16,9 +16,15 @@ module Jets::Util
 
   # Load all application base classes and project classes
   def boot
+    require "bundler/setup"
+    Bundler.require(*Jets.groups)
+    Jets::Dotenv.load!
     ActiveSupport::Dependencies.autoload_paths += autoload_paths
-
     connect_to_db
+  end
+
+  def groups
+    [:default, Jets.env.to_sym]
   end
 
   def autoload_paths
@@ -27,7 +33,7 @@ module Jets::Util
   end
 
   def config
-    Jets.application.config
+    application.config
   end
 
   # Calling application triggers load of configs.
