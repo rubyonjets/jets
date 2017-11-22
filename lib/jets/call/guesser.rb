@@ -1,7 +1,7 @@
 # Transforms the user provided function name to the actual lambda
 # function name.
 #
-# Allow for variety of different inputs work:
+# Allow for variety of different inputs to work:
 # Simple:
 #   admin/pages_controller-index => admin-pages_controller-index
 #   admin-pages_controller-index => admin-pages_controller-index
