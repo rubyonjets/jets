@@ -52,3 +52,4 @@ module Jets
   extend Util # root, logger, etc
 end
 
+Jets.boot

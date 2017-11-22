@@ -14,8 +14,6 @@ class Jets::Build
     end
 
     def generate
-      Jets.boot
-
       deducer = Jets::Build::Deducer.new(@path)
 
       # TODO: move LinuxRuby.tmp_app_root to a common level for HandlerGenerator and LinuxRuby

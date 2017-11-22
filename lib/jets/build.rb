@@ -43,7 +43,6 @@ class Jets::Build
   end
 
   def build_child_templates
-    Jets.boot
     app_files.each do |path|
       build_child_template(path)
     end

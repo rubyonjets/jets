@@ -26,8 +26,6 @@ class Jets::Process::MainProcessor
   end
 
   def run
-    Jets.boot
-
     # Use the handler to deduce app code to run.
     # Example handlers: handlers/controllers/posts.create, handlers/jobs/sleep.perform
     #

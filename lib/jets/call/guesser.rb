@@ -138,8 +138,6 @@ class Jets::Call
     end
 
     def detect_class_name
-      Jets.boot # require to detect the right class exists
-
       guess_classes.each do |class_name_guess|
         begin
           class_name_guess.constantize
