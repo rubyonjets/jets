@@ -4,7 +4,7 @@ describe Jets::Controller::Request do
   let(:request) { Jets::Controller::Request.new(event) }
 
   context "general" do
-    let(:event) { json_file("spec/fixtures/dumps/lambda/xhr-delete.json") }
+    let(:event) { json_file("spec/fixtures/dumps/api_gateway/xhr-delete.json") }
 
     it "xhr" do
       expect(request.xhr?).to be true

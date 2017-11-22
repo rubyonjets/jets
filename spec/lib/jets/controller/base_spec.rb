@@ -30,7 +30,7 @@ describe Jets::Controller::Base do
   end
 
   context "AWS_PROXY lambda proxy integration request from api gateway" do
-    let(:event) { json_file("spec/fixtures/events/aws_proxy/request.json") }
+    let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
 
     it "#render returns AWS_PROXY compatiable response format" do
       resp = controller.send(:render, json: {"my": "data"})
