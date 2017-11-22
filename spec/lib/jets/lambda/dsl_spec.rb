@@ -1,6 +1,26 @@
 require "spec_helper"
 
+class TestPropertiesController < ApplicationController
+  properties(
+    dead_letter_config: "arn", timeout: 20, role: "myrole", memory_size: 1000
+  )
+  def index
+  end
+end
+
 describe Jets::Lambda::Dsl do
+  context "TestPropertiesController" do
+    let(:controller) { TestPropertiesController.new({}, nil, "index") }
+
+    it "tasks" do
+      index_task = TestPropertiesController.all_tasks[:index]
+      expect(index_task).to be_a(Jets::Lambda::Task)
+      expect(index_task.properties).to eq(
+        dead_letter_config: "arn", timeout: 20, role: "myrole", memory_size: 1000
+      )
+    end
+  end
+
   context "StoresController" do
     let(:controller) { StoresController.new({}, nil, "new") }
 
@@ -10,9 +30,6 @@ describe Jets::Lambda::Dsl do
 
       index_task = StoresController.all_tasks[:index]
       expect(index_task).to be_a(Jets::Lambda::Task)
-      expect(index_task.properties).to eq(
-        dead_letter_config: "arn", timeout: 20, role: "myrole", memory_size: 1000
-      )
     end
 
     it "timeout" do

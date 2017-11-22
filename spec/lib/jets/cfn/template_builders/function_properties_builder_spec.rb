@@ -34,7 +34,7 @@ describe Jets::Cfn::TemplateBuilders::FunctionPropertiesBuilder do
         # pp props
         # testing properties(...)
         expect(props["MemorySize"]).to eq 1000
-        expect(props["Role"]).to eq "myrole"
+        expect(props["Role"]).to eq("Ref"=>"IamRole")
         expect(props["Timeout"]).to eq 20
       end
     end

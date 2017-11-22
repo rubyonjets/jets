@@ -12,6 +12,7 @@ Jets.application.configure do
   config.extra_autoload_paths = []
 
   # function properties defaults
+  config.function = RecursiveOpenStruct.new
   config.function.timeout = 10
   config.function.runtime = "nodejs6.10"
   config.function.memory_size = 1536

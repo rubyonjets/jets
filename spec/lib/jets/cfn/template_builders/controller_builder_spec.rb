@@ -55,8 +55,7 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
         properties = resources["StoresControllerIndexLambdaFunction"]["Properties"]
 
         expect(properties["MemorySize"]).to eq 1000
-        # should not pascalize the keys under Variables section
-        expect(properties["DeadLetterConfig"]).to eq "arn"
+        expect(properties["Timeout"]).to eq 20
       end
     end
 

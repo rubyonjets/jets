@@ -36,6 +36,15 @@ module Helpers
   end
 end
 
+# pretty hacky way of stubbing out md5_code_zipfile
+Jets::Naming # autoload it
+class Jets::Naming
+  # override this for specs
+  def self.md5_code_zipfile
+    "/tmp/jets/demo/code/code-2e0e18f6.zip"
+  end
+end
+
 RSpec.configure do |c|
   c.before(:suite) do
     Aws.config.update(stub_responses: true)

@@ -30,11 +30,14 @@ module Jets::Util
     Jets.application.config
   end
 
+  # Calling application triggers load of configs.
+  # Jets' the default config/application.rb is loaded,
+  # then the project's config/application.rb is loaded.
   @@application = nil
   def application
     return @@application if @@application
     @@application = Jets::Application.new
-    @@application.load_configs # triggers load of application configs
+    @@application.load_configs
     @@application
   end
 

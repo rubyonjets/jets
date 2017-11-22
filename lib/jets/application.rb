@@ -13,12 +13,14 @@ class Jets::Application
     @config ||= RecursiveOpenStruct.new
   end
 
+  # Jets' the default config/application.rb is loaded,
+  # then the project's config/application.rb is loaded.
   def load_configs
     require File.expand_path("../default/application.rb", __FILE__)
     app_config = "#{Jets.root}config/application.rb"
     require app_config if File.exist?(app_config)
     set_aliases!
-    normalize_environment!
+    normalize_env_vars!
   end
 
   # Use the shorter name in stack names, but use the full name when it
@@ -48,9 +50,10 @@ class Jets::Application
     end
   end
 
-  # It is pretty easy to attempt to environment variables without the correct
-  # AWS Environment.Variables path struture. We auto-fix it for convenience.
-  def normalize_environment!
+  # It is pretty easy to attempt to set environment variables without
+  # the correct AWS Environment.Variables path struture.
+  # Auto-fix it for convenience.
+  def normalize_env_vars!
     environment = config.function.environment
     if environment and !environment.to_h.key?(:variables)
       config.function.environment = {
