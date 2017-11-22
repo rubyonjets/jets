@@ -47,7 +47,8 @@ module Jets
   autoload :Webpacker, 'jets/webpacker'
   autoload :RakeTasks, 'jets/rake_tasks'
 
-  autoload :Dotenv, 'jets/Dotenv'
+  autoload :Dotenv, 'jets/dotenv'
+  autoload :Booter, 'jets/booter'
 
   extend Util # root, logger, etc
 end

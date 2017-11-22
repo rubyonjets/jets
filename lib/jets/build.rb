@@ -17,8 +17,6 @@ class Jets::Build
   end
 
   def build
-    Jets.confirm_jets_project!
-
     clean_start # cleans out non-cached files like templates and code-*.zip in Jets.build_root
 
     # TODO: rename LinuxRuby to CodeBuild because it generates note shims too

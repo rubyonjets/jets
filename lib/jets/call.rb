@@ -16,8 +16,6 @@ class Jets::Call
     @invocation_type = options[:invocation_type] || "RequestResponse"
     @log_type = options[:log_type] || "Tail"
     @qualifier = @qualifier
-
-    Jets.confirm_jets_project!
   end
 
   def function_name
