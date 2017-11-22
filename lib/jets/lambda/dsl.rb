@@ -66,6 +66,7 @@ module Jets::Lambda::Dsl
         return unless public_method_defined?(meth)
 
         register_task(meth)
+        # done storing options, clear out for the next added method
         # Important to clear @properties at the end of registering outside of
         # register_task because register_task is overridden in Jets::Job::Dsl
         #
@@ -77,7 +78,6 @@ module Jets::Lambda::Dsl
 
       def register_task(meth)
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth, properties: @properties)
-        # done storing options, clear out for the next added method
         true
       end
 
