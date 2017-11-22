@@ -1,6 +1,6 @@
 Jets.application.configure do
   config.project_name = "proj"
-  # config.env_extra = 2 # Optional. Any random will do: 1,2,abc,xyz
+  # config.env_extra = 2 # Optional. Any value works: 1,2,abc,xyz
     # Allows creation of multiple instances of env.
   config.cors = true
   config.autoload_paths = %w[
