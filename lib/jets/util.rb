@@ -16,6 +16,9 @@ module Jets::Util
 
   # Load all application base classes and project classes
   def boot
+    confirm_jets_project!
+
+    $stderr.puts "Jets booting up in #{Jets.env.colorize(:green)} mode!"
     require "bundler/setup"
     Bundler.require(*Jets.groups)
     Jets::Dotenv.load!

@@ -11,7 +11,7 @@ require "dynamodb_model"
 require "active_record"
 require "pg"
 
-require "pp"
+require "pp" # TODO: remove pp
 
 module Jets
   autoload :Application, "jets/application"
@@ -51,5 +51,3 @@ module Jets
 
   extend Util # root, logger, etc
 end
-
-Jets.boot
