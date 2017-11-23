@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Jets::Lambda::FunctionConstructor do
   let(:constructor) { Jets::Lambda::FunctionConstructor.new(code_path) }
-  let(:code_path) { "spec/fixtures/apps/demo/app/functions/hello_function.rb" }
+  let(:code_path) { "spec/fixtures/apps/demo/app/functions/hello.rb" }
 
   let(:event) { {"key1" => "value1", "key2" => "value2", "key3" => "value3"} }
 

@@ -18,14 +18,12 @@ module Jets::Lambda
     end
 
     def self.handler
-      self.class.handler_task.meth
+      handler_task.meth
     end
 
-    # https://stackoverflow.com/questions/9363842/is-there-any-hack-to-override-a-class-name-with-custom-one
-    # Object.const_set(name.capitalize, Class.new()).new()
     def self.process(event, context, meth)
       function = new
-      function.send(hander, event, context)
+      function.send(handler, event, context)
     end
   end
 end

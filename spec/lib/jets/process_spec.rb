@@ -4,7 +4,7 @@ describe Jets::Process do
 
   describe "jets process" do
     it "controller [event] [context] [handler]" do
-      args = %Q|'{"we":"love","using":"Lambda"}' '{"test":"1"}' handlers/controllers/posts.new|
+      args = %Q|'{"we":"love","using":"Lambda"}' '{"test":"1"}' handlers/controllers/posts_controller.new|
       out = execute("bin/jets process controller #{args}")
       # pp out # uncomment to debug
       data = JSON.parse(out)
@@ -13,7 +13,7 @@ describe Jets::Process do
     end
 
     it "job [event] [context] [handler]" do
-      args = %Q|'{"we":"love","using":"Lambda"}' '{"test":"1"}' handlers/jobs/hard.dig|
+      args = %Q|'{"we":"love","using":"Lambda"}' '{"test":"1"}' handlers/jobs/hard_job.dig|
       out = execute("bin/jets process job #{args}")
       # pp out # uncomment to debug
       data = JSON.parse(out)

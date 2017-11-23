@@ -42,7 +42,7 @@ class Jets::Process::MainProcessor
       #
       #   deducer.code => HelloFunction.process(event, context, "lambda_handler")
       #   deducer.path => app/functions/hello.rb
-      #
+      deducer.define_class
       result = instance_eval(deducer.code, deducer.path)
       # result = PostsController.process(event, context, "create")
 
@@ -52,7 +52,10 @@ class Jets::Process::MainProcessor
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
-      $stdout.puts JSON.dump(result) # only place where we write to stdout.
+      text = JSON.dump(result)
+      # TODO: figure a way to silence this output for specs wihtout breaking process_spec.rb
+      $stdout.puts text # only place where we write to stdout.
+      text
     rescue Exception => e
       # Customize error message slightly so nodejs shim can process the
       # returned error message.

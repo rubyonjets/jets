@@ -37,16 +37,12 @@ class Jets::Build
 
     # This gets called in the node shim js template
     def handler_for(method)
-      # process_type: controller or job
-      regexp = Regexp.new("#{process_type.camelize}$")
-      # module_name: posts (controller) or sleep (job)
-      module_name = class_name.sub(regexp, '').underscore
-      "handlers/#{process_type.pluralize}/#{module_name}.#{method}"
+      "handlers/#{process_type.pluralize}/#{class_name.underscore}.#{method}"
     end
 
     # Example return: "handlers/controllers/posts.js"
     def js_path
-      @path.sub("app", "handlers").sub("_#{process_type}.rb", ".js")
+      @path.sub("app", "handlers").sub(/\.rb$/, ".js")
     end
   end
 end

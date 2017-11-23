@@ -9,8 +9,8 @@ describe Jets::Build::Deducer do
     it "deduces info for node shim" do
       expect(deducer.class_name).to eq("PostsController")
       expect(deducer.process_type).to eq("controller")
-      expect(deducer.handler_for(:create)).to eq "handlers/controllers/posts.create"
-      expect(deducer.js_path).to eq "handlers/controllers/posts.js"
+      expect(deducer.handler_for(:create)).to eq "handlers/controllers/posts_controller.create"
+      expect(deducer.js_path).to eq "handlers/controllers/posts_controller.js"
 
       expect(deducer.functions.sort).to eq(
         [:create, :delete, :edit, :index, :new, :show, :update].sort)
@@ -25,8 +25,8 @@ describe Jets::Build::Deducer do
     it "deduces info for node shim" do
       expect(deducer.class_name).to eq("Admin::PagesController")
       expect(deducer.process_type).to eq("controller")
-      expect(deducer.handler_for(:create)).to eq "handlers/controllers/admin/pages.create"
-      expect(deducer.js_path).to eq "handlers/controllers/admin/pages.js"
+      expect(deducer.handler_for(:create)).to eq "handlers/controllers/admin/pages_controller.create"
+      expect(deducer.js_path).to eq "handlers/controllers/admin/pages_controller.js"
 
       expect(deducer.functions).to eq [:index]
     end
@@ -40,8 +40,8 @@ describe Jets::Build::Deducer do
     it "deduces info for node shim" do
       expect(deducer.class_name).to eq("HardJob")
       expect(deducer.process_type).to eq("job")
-      expect(deducer.handler_for(:dig)).to eq "handlers/jobs/hard.dig"
-      expect(deducer.js_path).to eq "handlers/jobs/hard.js"
+      expect(deducer.handler_for(:dig)).to eq "handlers/jobs/hard_job.dig"
+      expect(deducer.js_path).to eq "handlers/jobs/hard_job.js"
 
       expect(deducer.functions).to eq([:dig, :drive, :lift])
     end
