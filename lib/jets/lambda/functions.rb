@@ -1,10 +1,12 @@
 require 'json'
 
-# Jets::Lambda::Function is the superclass of:
+# Jets::Lambda::Functions represents a collection of Lambda functions.
+#
+# Jets::Lambda::Functions is the superclass of:
 #   Jets::Controller::Base
 #   Jets::Job::Base
 module Jets::Lambda
-  class Function
+  class Functions
     include Dsl
 
     attr_reader :event, :context, :meth

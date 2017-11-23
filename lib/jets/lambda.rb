@@ -1,6 +1,6 @@
-# Task vs Function
+# Task vs Functions
 #
-# Function is inherited by Job::Base and Controller::Base.
+# Functions is inherited by Job::Base and Controller::Base.
 # It is holds the event and context is used for processing when you
 # call the lambda function.
 #
@@ -11,6 +11,6 @@
 # Overview diagram : http://bit.ly/2zQeoF3
 module Jets::Lambda
   autoload :Dsl, "jets/lambda/dsl"
-  autoload :Function, "jets/lambda/function"
+  autoload :Functions, "jets/lambda/functions"
   autoload :Task, "jets/lambda/task"
 end

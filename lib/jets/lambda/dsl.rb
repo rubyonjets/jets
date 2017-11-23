@@ -70,9 +70,9 @@ module Jets::Lambda::Dsl
         # Important to clear @properties at the end of registering outside of
         # register_task because register_task is overridden in Jets::Job::Dsl
         #
-        # Jets::Job::Base < Jets::Lambda::Function
-        # Both Jets::Job::Base and Jets::Lambda::Function have Dsl modules included.
-        # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Function behavior.
+        # Jets::Job::Base < Jets::Lambda::Functions
+        # Both Jets::Job::Base and Jets::Lambda::Functions have Dsl modules included.
+        # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
         clear_properties
       end
 

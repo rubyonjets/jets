@@ -14,7 +14,7 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
 
         resources = builder.template["Resources"]
         resource_types = resources.values.map { |i| i["Type"] }
-        expect(resource_types).to include("AWS::Lambda::Function")
+        expect(resource_types).to include("AWS::Lambda::Functions")
         expect(resource_types).to include("AWS::ApiGateway::Method")
         expect(resource_types).to include("AWS::Lambda::Permission")
 
