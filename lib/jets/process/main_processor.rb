@@ -34,11 +34,14 @@ class Jets::Process::MainProcessor
     deducer = Jets::Process::Deducer.new(handler)
     begin
       # Examples:
-      #   deducer.code => PostsController.new(event, context, meth: "show").show
+      #   deducer.code => PostsController.process(event, context, "show")
       #   deducer.path => app/controllers/posts_controller.rb
       #
       #   deducer.code => HardJob.process(event, context, "dig")
       #   deducer.path => app/jobs/hard_job.rb
+      #
+      #   deducer.code => HelloFunction.process(event, context, "lambda_handler")
+      #   deducer.path => app/functions/hello.rb
       #
       result = instance_eval(deducer.code, deducer.path)
       # result = PostsController.process(event, context, "create")

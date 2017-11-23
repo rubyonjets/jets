@@ -10,8 +10,8 @@ class Jets::Job
     include Dsl
 
     class << self
-      def process(context, event, meth)
-        job = new(context, event, meth)
+      def process(event, context, meth)
+        job = new(event, context, meth)
         job.send(meth)
       end
 

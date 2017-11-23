@@ -7,8 +7,6 @@ require 'json'
 #   Jets::Job::Base
 module Jets::Lambda
   class Functions
-    include Dsl
-
     attr_reader :event, :context, :meth
     def initialize(event, context, meth)
       @event = event # Hash, JSON.parse(event) ran BaseProcessor
@@ -17,5 +15,8 @@ module Jets::Lambda
       # store meth because it is useful to for identifying the which template
       # to use later.
     end
+
+    include Dsl # At the end so methods like event, context and method
+      # do not trigger method_added
   end
 end

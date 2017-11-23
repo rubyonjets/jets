@@ -92,7 +92,7 @@ module Jets::Lambda::Dsl
       #               objects as values.
       #
       def all_tasks
-        @tasks ||= ActiveSupport::OrderedHash.new
+        @all_tasks ||= ActiveSupport::OrderedHash.new
       end
 
       # Returns the tasks for this Job class in Array form.
