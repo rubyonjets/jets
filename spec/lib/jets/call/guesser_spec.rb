@@ -105,9 +105,19 @@ describe Jets::Call::Guesser do
     let(:function_name) { "complex-long-name-function-handler" }
 
     it "function_filenames" do
-      paths = guesser.function_filenames("complex_long_name_function")
+      # paths = guesser.function_filenames("complex_long_name_function")
 
+      primary_namespace = nil
+      paths = guesser.function_filenames("complex_long_name_function", primary_namespace)
       pp paths
+
+      # primary_namespace = "complex"
+      # paths = guesser.function_filenames("complex_long_name_function", primary_namespace)
+      # pp paths
+
+      # primary_namespace = "complex_long"
+      # paths = guesser.function_filenames("complex_long_name_function", primary_namespace)
+      # pp paths
 
       # expect(paths).to eq([
       #   "complex_long_name_function", # ns: nil

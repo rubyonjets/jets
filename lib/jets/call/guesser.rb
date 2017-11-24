@@ -162,29 +162,54 @@ class Jets::Call
       # end
     end
 
-    def function_filenames(meth, namespace=nil)
-      parts = meth.split('_')
-      primary_namespace = parts.first
-      next_meth = parts[1..-1].join('_')
-
+    def function_filenames(meth, primary_namespace=nil)
       guesses = []
+      parts = meth.split('_')
 
-      [primary_namespace, next_meth].join('/') # complex/long_name_function
+      # primary_namespace = parts.first
+      # next_meth = parts[1..-1].join('_')
+
+      if primary_namespace
+        next_meth = meth.sub("#{primary_namespace}_", '')
+        [primary_namespace, next_meth].compact.join('/') # complex/long_name_function
+      else
+        guesses << meth
+
+        next_primary_namespace = meth.split('_').first
+        guesses += function_filenames(meth, next_primary_namespace)
+        return guesses # end recursion
+      end
+
       next_parts = next_meth.split('_')
 
+      puts
+      puts "meth #{meth.inspect}"
       puts "primary_namespace #{primary_namespace.inspect}"
       puts "next_meth #{next_meth.inspect}"
       puts "next_parts #{next_parts.inspect}"
+      # puts "parts #{parts.inspect}"
+      puts
 
       n = next_parts.size + 1
-      n.times do |i|
-        namespace = i == 0 ? nil : parts[0..i-1].join('/')
+      next_parts.size.times do |i|
+        namespace = i == 0 ? nil : next_parts[0..i-1].join('/')
         # puts "namespace #{namespace.inspect}"
-        class_path = parts[i..-1].join('_')
-        guesses << [namespace, class_path].compact.join('/')
+        class_path = next_parts[i..-1].join('_')
+        guesses << [primary_namespace, namespace, class_path].compact.join('/')
       end
 
-      guesses
+      final_primary_namespace = meth.split('_')[0..-2].join('_')
+      puts "final_primary_namespace #{final_primary_namespace.inspect}"
+      if primary_namespace == final_primary_namespace
+        return guesses # end recursion
+      else
+        # next_primary_namespace = meth.split('_').first
+        namespace_size = parts.size - next_parts.size
+        next_primary_namespace = parts[0..namespace_size].join('_')
+        puts "namespace_size #{namespace_size}"
+        guesses += function_filenames(meth, next_primary_namespace)
+        return guesses
+      end
     end
 
     def function_paths
