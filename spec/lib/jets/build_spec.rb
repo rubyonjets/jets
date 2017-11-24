@@ -20,8 +20,8 @@ describe Jets::Build do
     # context "node shim" do
     #   it "posts create should return json" do
     #     # build.build
-    #     # Dir.chdir(ENV["APP_ROOT"]) do
-    #       out = execute("cd #{ENV["APP_ROOT"]} && node handlers/controllers/posts.js")
+    #     # Dir.chdir(ENV["JETS_ROOT"]) do
+    #       out = execute("cd #{ENV["JETS_ROOT"]} && node handlers/controllers/posts.js")
     #       puts out
     #     # end
     #   end
