@@ -17,4 +17,10 @@ class Jets::Process < Jets::Command
   def job(event, context, handler)
     MainProcessor.new(event, context, handler).run
   end
+
+  desc "function [event] [context] [handler]", "Processes node shim job handler"
+  long_desc Help.job
+  def function(event, context, handler)
+    MainProcessor.new(event, context, handler).run
+  end
 end
