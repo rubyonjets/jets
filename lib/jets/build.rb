@@ -49,8 +49,6 @@ class Jets::Build
   # path: app/controllers/comments_controller.rb
   # path: app/jobs/easy_job.rb
   def build_child_template(path)
-    puts "build_child_template path #{path.inspect}".colorize(:cyan)
-
     require "#{Jets.root}#{path}" # require "app/jobs/easy_job.rb"
     class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
     # strip the app/controller/ or app/jobs/ from the string

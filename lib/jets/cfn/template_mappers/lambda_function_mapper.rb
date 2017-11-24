@@ -2,7 +2,8 @@ class Jets::Cfn::TemplateMappers
   class LambdaFunctionMapper
     def initialize(task)
       @task = task
-      @app_class = task.class_name.to_s # Example: PostsController or SleepJob
+      @app_class = task.class_name.to_s
+      # @app_class examples: PostsController, HardJob, Hello, HelloFunction
     end
 
     # Example: SleepJobPerformLambdaFunction
@@ -24,8 +25,9 @@ class Jets::Cfn::TemplateMappers
     #   "#{Jets.config.project_namespace}-sleep_job-perform"
     #   "demo-dev-sleep_job-perform"
     def function_name
-      # @app_class: admin/pages_controller
-      # @@task.meth: index
+      # Example values:
+      #   @app_class: admin/pages_controller
+      #   @task.meth: index
       method = @app_class.underscore
       # method: admin/pages_controller
       method = method.sub('/','-') + "-#{@task.meth}"

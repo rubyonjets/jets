@@ -1,9 +1,8 @@
 # Build::Deducers figure out required values to create the node shim
 class Jets::Build
   class Deducer
-    attr_reader :full_path, :relative_path
-
-    # Can pass in a relative or a full path. Example paths:
+    # Allow user to specify relative or full path. The right path gets used
+    # internally. Example paths:
     #   app/controllers/posts_controller.rb
     #   app/jobs/hard_job.rb
     #   /tmp/jets/build/app_root/app/jobs/hard_job.rb
@@ -13,8 +12,6 @@ class Jets::Build
       @relative_path = relative(path)
     end
 
-    # Allow user to specify relative or full path.
-    # It will ensure that the full path is used internally.
     def full(path)
       path = "#{Jets.root}#{path}" unless path.starts_with?("/")
       path

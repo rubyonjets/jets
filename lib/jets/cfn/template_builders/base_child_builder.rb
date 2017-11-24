@@ -2,7 +2,7 @@ class Jets::Cfn::TemplateBuilders
   class BaseChildBuilder
     include Interface
 
-    # The app_klass is can be a controller or a job class.
+    # The app_klass is can be a controller, job or anonymous function class.
     # IE: PostsController, HardJob
     def initialize(app_klass)
       @app_klass = app_klass

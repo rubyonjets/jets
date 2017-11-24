@@ -40,7 +40,7 @@ class Jets::Process::MainProcessor
       #   deducer.code => HardJob.process(event, context, "dig")
       #   deducer.path => app/jobs/hard_job.rb
       #
-      #   deducer.code => HelloFunction.process(event, context, "lambda_handler")
+      #   deducer.code => HelloFunction.process(event, context, "world")
       #   deducer.path => app/functions/hello.rb
       deducer.load_class
       result = instance_eval(deducer.code, deducer.path)

@@ -40,8 +40,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def class_properties
-      # puts "function_properties_builder.rb: @task.class_name #{@task.class_name.inspect}"
-      # puts "function_properties_builder.rb: @task #{@task.inspect}"
+      # klass is PostsController, HardJob, Hello, or HelloFunction
       klass = Jets::Klass.from_task(@task)
       class_properties = klass.class_properties
       pascalize(class_properties.deep_stringify_keys)

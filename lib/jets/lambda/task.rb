@@ -34,8 +34,11 @@ class Jets::Lambda::Task
   # We add the class_type to the task later on as we are constructing the class
   # as part of the Class.new logic.
   #
-  # For normal controller and job classes though it can easily be determinated as
-  # part of initialization. So we do that for convenience.
+  # For controller and job standard ruby classes though it can easily be
+  # determinated as part of initialization. So we get the type for convenience then.
+  #
+  # For anonymous function classes, we just set to nil and will later fix in
+  # FunctionConstructor.
   #
   # Returns: "controller", "job" or nil
   def get_type

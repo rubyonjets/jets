@@ -8,6 +8,7 @@ describe "HandlerGenerator" do
 
     it "generates a node shim" do
       generator.generate
+      # okay to use tmp_app_root because we just have generated it above
       content = IO.read("#{Jets::Build.tmp_app_root("full")}/handlers/controllers/posts_controller.js")
       expect(content).to include("handlers/controllers/posts_controller.create") # handler
       expect(content).to include("exports.create") # 1st function

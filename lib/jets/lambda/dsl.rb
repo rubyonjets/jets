@@ -66,19 +66,21 @@ module Jets::Lambda::Dsl
         return unless public_method_defined?(meth)
 
         register_task(meth)
-        # done storing options, clear out for the next added method
+        # Done storing options, clear out for the next added method.
+        clear_properties
         # Important to clear @properties at the end of registering outside of
         # register_task because register_task is overridden in Jets::Job::Dsl
         #
-        # Jets::Job::Base < Jets::Lambda::Functions
+        #   Jets::Job::Base < Jets::Lambda::Functions
+        #
         # Both Jets::Job::Base and Jets::Lambda::Functions have Dsl modules included.
-        # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
-        clear_properties
+        # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Dsl behavior.
       end
 
       def register_task(meth)
         # Note: for anonymous classes like for app/functions self.name is ""
-        # We adjust the class name when we build the functions later.
+        # We adjust the class name when we build the functions later in
+        # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
           properties: @properties)
         true
@@ -98,7 +100,7 @@ module Jets::Lambda::Dsl
         @all_tasks ||= ActiveSupport::OrderedHash.new
       end
 
-      # Returns the tasks for this Job class in Array form.
+      # Returns the tasks for this class in Array form.
       #
       # ==== Returns
       # Array of task objects
@@ -111,7 +113,7 @@ module Jets::Lambda::Dsl
       # lambda functions.
       #
       # Example return value:
-      #   [":index", :new, :create, :show]
+      #   [:index, :new, :create, :show]
       def lambda_functions
         all_tasks.keys
       end

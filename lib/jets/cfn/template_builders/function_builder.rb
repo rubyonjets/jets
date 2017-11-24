@@ -6,15 +6,8 @@ class Jets::Cfn::TemplateBuilders
       add_functions
     end
 
-    # For function stacks, ensure there's a _function.rb at the end.
-    # This is because we allow users to defined app/functions without
-    # the _function.rb at the end.
-    # There is an off chance of this edge case:
-    #
-    #   app/functions/hello_function.rb
-    #   app/functions/hello.rb
-    #
-    # We wont worry about that.
+    # For function stacks, ensure there's a _function.yml at the end of the
+    # template_path name for easy identification.
     def template_path
       path = super
       unless path.include?("function.yml")
