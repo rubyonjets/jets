@@ -8,7 +8,7 @@ class Jets::Call
 
   def initialize(provided_function_name, event, options={})
     @options = options
-    @guess = @options[:guess].nil? ? true : @options[:guess]
+    @guess = @options[:smart].nil? ? true : @options[:smart]
 
     @provided_function_name = provided_function_name
     @event = event
