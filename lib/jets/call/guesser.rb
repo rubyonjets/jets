@@ -91,6 +91,8 @@ class Jets::Call
     end
 
     # Strips the action because we dont want it to guess the class name
+    # So:
+    #   admin-related-pages => admin_related_pages_controller
     def underscored_name
       # strip action and concidentally the _controller_ string
       name = @provided_function_name.sub(process_type_pattern,'')
@@ -98,8 +100,7 @@ class Jets::Call
       unless process_type == "function"
         name = name.gsub('-','_') + "_#{process_type}"
       end
-      # So:
-      #   admin-related-pages => admin_related_pages_controller
+      name
     end
 
     # Guesses autoload paths.
@@ -162,58 +163,54 @@ class Jets::Call
       # end
     end
 
-    def function_filenames(meth, primary_namespace=nil)
+    def function_filenames(meth=nil, primary_namespace=nil)
+      # meth ||= @provided_function_name
+
       guesses = []
-      parts = meth.split('_')
 
-      # primary_namespace = parts.first
-      # next_meth = parts[1..-1].join('_')
-
-      if primary_namespace
-        next_meth = meth.sub("#{primary_namespace}_", '')
-        [primary_namespace, next_meth].compact.join('/') # complex/long_name_function
-      else
+      if primary_namespace.nil?
         guesses << meth
-
         next_primary_namespace = meth.split('_').first
-        guesses += function_filenames(meth, next_primary_namespace)
-        return guesses # end recursion
+        guesses += function_filenames(meth, next_primary_namespace) # start of recursion
+        return guesses # return early
       end
 
+      next_meth = meth.sub("#{primary_namespace}_", '')
       next_parts = next_meth.split('_')
 
-      puts
-      puts "meth #{meth.inspect}"
-      puts "primary_namespace #{primary_namespace.inspect}"
-      puts "next_meth #{next_meth.inspect}"
-      puts "next_parts #{next_parts.inspect}"
-      # puts "parts #{parts.inspect}"
-      puts
-
+      # Takes the next_parts and creates guesses with the parts joined by '/'
+      # with the primary_namespace prepended.  So if next_parts is
+      # ["long", "name", "function"] and primary_namespace is "complex"
+      #
+      # guesses that get added:
+      #
+      #   [
+      #     "complex/long_name_function",
+      #     "complex/long/name_function",
+      #     "complex/long/name/function",
+      #   ]
       n = next_parts.size + 1
       next_parts.size.times do |i|
         namespace = i == 0 ? nil : next_parts[0..i-1].join('/')
-        # puts "namespace #{namespace.inspect}"
         class_path = next_parts[i..-1].join('_')
         guesses << [primary_namespace, namespace, class_path].compact.join('/')
       end
 
       final_primary_namespace = meth.split('_')[0..-2].join('_')
-      puts "final_primary_namespace #{final_primary_namespace.inspect}"
       if primary_namespace == final_primary_namespace
-        return guesses # end recursion
+        return guesses # end of recursion
       else
-        # next_primary_namespace = meth.split('_').first
+        parts = meth.split('_')
         namespace_size = parts.size - next_parts.size
         next_primary_namespace = parts[0..namespace_size].join('_')
-        puts "namespace_size #{namespace_size}"
         guesses += function_filenames(meth, next_primary_namespace)
         return guesses
       end
     end
 
     def function_paths
-      function_filenames.map do |name|
+      filenames = function_filenames(@provided_function_name.underscore)
+      filenames.map do |name|
         "app/functions/#{name}.rb"
       end
     end

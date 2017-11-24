@@ -66,7 +66,7 @@ describe Jets::Call::Guesser do
     let(:function_name) { "hello-world" }
 
     it "function_filenames" do
-      filenames = guesser.function_filenames
+      filenames = guesser.function_filenames("hello")
       expect(filenames).to eq([
         "hello" # <= Found path
       ])
@@ -84,20 +84,14 @@ describe Jets::Call::Guesser do
     let(:function_name) { "simple-function-handler" }
 
     it "function_filenames" do
-      paths = guesser.function_filenames
-
-      pp paths
-
-      # expect(paths).to eq([
-      #   "app/functions/simple.rb",
-      #   "app/functions/simple_function.rb", # <= found path
-      #   "app/functions/simple/function.rb",
-      # ])
-
-      # [
-      #   "app/functions/simple_function.rb",
-      #   "app/functions/simple/function.rb",
-      # ]
+      filenames = guesser.function_filenames("simple_function") # underscored name
+      # pp filenames
+      expect(filenames).to eq(
+        [
+          "simple_function",
+          "simple/function",
+        ]
+      )
     end
   end
 
@@ -105,11 +99,31 @@ describe Jets::Call::Guesser do
     let(:function_name) { "complex-long-name-function-handler" }
 
     it "function_filenames" do
-      # paths = guesser.function_filenames("complex_long_name_function")
+      filenames = guesser.function_filenames("complex_long_name_function") # underscored name
+      # pp filenames
+      expect(filenames).to eq([
+        "complex_long_name_function", # ns: nil
+                                      # m: complex_long_name_function
+        "complex/long_name_function", # ns: complex
+                                      # m: long_name_function
+        "complex/long/name_function", # ns: complex/long <= IMPORTANT
+                                      # m: name_function
+        "complex/long/name/function", # ns: complex/long/name
+                                      # m: function
 
-      primary_namespace = nil
-      paths = guesser.function_filenames("complex_long_name_function", primary_namespace)
-      pp paths
+        "complex_long/name_function", # ns: complex_long <= IMPORTANT
+                                      # m: name_function
+        "complex_long/name/function", # ns: complex_long/name
+                                      # m: function
+
+        "complex_long_name/function", # ns: complex_long_name
+                                      # m: function
+      ])
+
+      # Leaving around, useful for understanding
+      # primary_namespace = nil
+      # paths = guesser.function_filenames("complex_long_name_function", primary_namespace)
+      # pp paths
 
       # primary_namespace = "complex"
       # paths = guesser.function_filenames("complex_long_name_function", primary_namespace)
@@ -118,25 +132,6 @@ describe Jets::Call::Guesser do
       # primary_namespace = "complex_long"
       # paths = guesser.function_filenames("complex_long_name_function", primary_namespace)
       # pp paths
-
-      # expect(paths).to eq([
-      #   "complex_long_name_function", # ns: nil
-      #                                 # m: complex_long_name_function
-      #   "complex/long_name_function", # ns: complex
-      #                                 # m: long_name_function
-      #   "complex/long/name_function", # ns: complex/long <= IMPORTANT
-      #                                 # m: name_function
-      #   "complex/long/name/function", # ns: complex/long/name
-      #                                 # m: function
-
-      #   "complex_long/name_function", # ns: complex_long <= IMPORTANT
-      #                                 # m: name_function
-      #   "complex_long/name/function", # ns: complex_long/name
-      #                                 # m: function
-
-      #   "complex_long_name/function", # ns: complex_long_name
-      #                                 # m: function
-      # ])
     end
   end
 end
