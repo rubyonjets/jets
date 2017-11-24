@@ -16,8 +16,8 @@ class Jets::Build
     def generate
       deducer = Jets::Build::Deducer.new(@path)
 
-      # TODO: move LinuxRuby.tmp_app_root to a common level for HandlerGenerator and LinuxRuby
-      tmp_app_root = "#{Jets.build_root}/#{LinuxRuby.tmp_app_root}"
+      # TODO: move CodeBuilder.tmp_app_root to a common level for HandlerGenerator and CodeBuilder
+      tmp_app_root = "#{Jets.build_root}/#{CodeBuilder.tmp_app_root}"
       js_path = "#{tmp_app_root}/#{deducer.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
 

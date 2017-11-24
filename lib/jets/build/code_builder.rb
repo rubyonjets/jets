@@ -5,8 +5,9 @@ require "socket"
 require "net/http"
 require "action_view"
 
+# Builds bundled Linux ruby and shim handlers
 class Jets::Build
-  class LinuxRuby
+  class CodeBuilder
     RUBY_URL = 'https://s3.amazonaws.com/lambdagems/rubies/ruby-2.4.2-linux-x86_64.tar.gz'.freeze
 
     include ActionView::Helpers::NumberHelper # number_to_human_size
@@ -18,6 +19,8 @@ class Jets::Build
     end
 
     def build
+      clean_start # cleans out non-cached files like code-*.zip in Jets.build_roots
+
       if File.exist?("#{Jets.build_root}/bundled")
         puts "The #{Jets.build_root}/bundled folder exists. Incrementally re-building the bundle.  To fully rebundle: rm -rf #{Jets.build_root}/bundled"
       end
@@ -38,6 +41,17 @@ class Jets::Build
       Dir.chdir(full(tmp_app_root)) do
         finalize_project
       end
+    end
+
+    # Most files are kept around after the build process for inspection and
+    # debugging. So we have to clean out the files. But we only want to clean ou
+    # some of the files.
+    #
+    # Cleans out non-cached files like code-*.zip in Jets.build_root
+    # for a clean start.
+    #
+    def clean_start
+      Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
     end
 
     def finalize_project
@@ -147,7 +161,7 @@ class Jets::Build
       # Much later: ship, base_child_builder need set an s3_key which requires
       # the md5_zip_dest.
       # It is a pain to pass this all the way up from the
-      # LinuxRuby class.
+      # CodeBuilder class.
       # Let's store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
       # file that can be read from any places where this is needed.
       # Can also just generate a "fake file" for specs

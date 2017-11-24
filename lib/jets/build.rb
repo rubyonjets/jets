@@ -3,7 +3,7 @@ require 'digest'
 class Jets::Build
   autoload :Deducer, "jets/build/deducer"
   autoload :HandlerGenerator, "jets/build/handler_generator"
-  autoload :LinuxRuby, "jets/build/linux_ruby"
+  autoload :CodeBuilder, "jets/build/code_builder"
   autoload :GemFetcher, "jets/build/gem_fetcher"
 
   def initialize(options)
@@ -17,11 +17,16 @@ class Jets::Build
   end
 
   def build
-    clean_start # cleans out non-cached files like templates and code-*.zip in Jets.build_root
+    build_code
+    build_all_templates
+  end
 
-    # TODO: rename LinuxRuby to CodeBuild because it generates note shims too
-    LinuxRuby.new.build unless @options[:noop]
+  def build_code
+    CodeBuilder.new.build unless @options[:noop]
+  end
 
+  def build_all_templates
+    clean_templates
     # TODO: move this build.rb logic to cfn/builder.rb
     ## CloudFormation templates
     puts "Building Lambda functions as CloudFormation templates."
@@ -78,16 +83,8 @@ class Jets::Build
     parent.build
   end
 
-  # Most files are kept around after the build process for inspection and
-  # debugging. So we have to clean out the files. But we only want to clean ou
-  # some of the files.
-  #
-  # Cleans out non-cached files like templates and code-*.zip in Jets.build_root
-  # for a clean start.
-  #
-  def clean_start
+  def clean_templates
     FileUtils.rm_rf("#{Jets.build_root}/templates")
-    Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
   end
 
   def app_files

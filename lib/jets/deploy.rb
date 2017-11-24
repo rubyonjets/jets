@@ -12,6 +12,8 @@ class Jets::Deploy
   end
 
   def deploy
+    build_code
+
     if first_run?
       deploy_minimal_stack
       deploy_full_stack
@@ -20,19 +22,24 @@ class Jets::Deploy
     end
   end
 
+  def build_code
+    Jets::Build.new(stack_options).build_code
+  end
+
   def deploy_minimal_stack
     Jets::Build.new(stack_options).build_minimal_stack
     Jets::Cfn::Ship.new(stack_options).run
   end
 
   def deploy_full_stack
-    Jets::Build.new(stack_options).run
+    stack_options = stack_options(true) # refresh stack_options
+    Jets::Build.new(stack_options).build_all_templates
     Jets::Cfn::Ship.new(stack_options).run
   end
 
 private
-  def stack_options
-    stack_options = if first_run?
+  def stack_options(fresh=false)
+    stack_options = if first_run?(fresh)
         {stack_type: "minimal"}
       else
         resp = check_updatable_status # exit if stack status is not in an updated able state
@@ -44,14 +51,13 @@ private
     @options.merge(stack_options)
   end
 
-  def first_run?
-    return @first_run if @first_run_determined
+  def first_run?(fresh=false)
+    return @first_run if @first_run_determined and !fresh
 
     @first_run = !stack_exists?(parent_stack_name)
     @first_run_determined = true
     @first_run
   end
-  alias_method :first_run, :first_run?
 
   def parent_stack_name
     Jets::Naming.parent_stack_name

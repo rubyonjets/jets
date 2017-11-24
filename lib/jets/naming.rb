@@ -50,12 +50,12 @@ class Jets::Naming
     def md5_code_zipfile
       IO.read("#{Jets.build_root}/code/current-md5-filename.txt")
     end
-    # The current-md5-filename.txt gets created as a part of LinuxRuby's build
+    # The current-md5-filename.txt gets created as a part of CodeBuilder's build
     # process.
     # And is required to be used much later for cfn/ship and base_child_builder
     # They need set an s3_key which requires the md5_zip_dest.
     # It is a pain to pass this all the way up from the
-    # LinuxRuby class.
+    # CodeBuilder class.
     # We store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
     # file that can be read from any places where this is needed.
     # Can also just generate a "fake file" for specs
