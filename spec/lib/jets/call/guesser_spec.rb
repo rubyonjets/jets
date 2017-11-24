@@ -78,6 +78,7 @@ describe Jets::Call::Guesser do
         "app/functions/hello.rb" # <= Found path
       ])
     end
+
   end
 
   context "simple-function-handler function" do
@@ -92,6 +93,14 @@ describe Jets::Call::Guesser do
           "simple/function",
         ]
       )
+    end
+
+    it "function_paths" do
+      paths = guesser.function_paths
+      expect(paths).to eq([
+        "app/functions/simple_function.rb", # <= Found path
+        "app/functions/simple/function.rb", # <= Found path
+      ])
     end
   end
 

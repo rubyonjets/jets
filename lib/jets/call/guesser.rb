@@ -164,19 +164,26 @@ class Jets::Call
     end
 
     def function_filenames(meth=nil, primary_namespace=nil)
-      # meth ||= @provided_function_name
-
       guesses = []
+      parts = meth.split('_')
 
       if primary_namespace.nil?
         guesses << meth
-        next_primary_namespace = meth.split('_').first
-        guesses += function_filenames(meth, next_primary_namespace) # start of recursion
-        return guesses # return early
+
+        if parts.size == 1 # already on final_primary_namespace
+          return guesses # end of recursion
+        else
+          next_primary_namespace =  parts.first
+          guesses += function_filenames(meth, next_primary_namespace) # start of recursion
+          return guesses # return early
+        end
       end
 
       next_meth = meth.sub("#{primary_namespace}_", '')
       next_parts = next_meth.split('_')
+
+      # puts "next_meth #{next_meth.inspect}"
+      # puts "next_parts #{next_parts.inspect}"
 
       # Takes the next_parts and creates guesses with the parts joined by '/'
       # with the primary_namespace prepended.  So if next_parts is
@@ -196,11 +203,10 @@ class Jets::Call
         guesses << [primary_namespace, namespace, class_path].compact.join('/')
       end
 
-      final_primary_namespace = meth.split('_')[0..-2].join('_')
+      final_primary_namespace = parts[0..-2].join('_')
       if primary_namespace == final_primary_namespace
         return guesses # end of recursion
       else
-        parts = meth.split('_')
         namespace_size = parts.size - next_parts.size
         next_primary_namespace = parts[0..namespace_size].join('_')
         guesses += function_filenames(meth, next_primary_namespace)
@@ -209,7 +215,9 @@ class Jets::Call
     end
 
     def function_paths
-      filenames = function_filenames(@provided_function_name.underscore)
+      # drop the last word for starting filename
+      starting_filename = @provided_function_name.underscore.split('_')[0..-2].join('_')
+      filenames = function_filenames(starting_filename)
       filenames.map do |name|
         "app/functions/#{name}.rb"
       end
