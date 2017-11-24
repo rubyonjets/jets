@@ -105,9 +105,9 @@ Gets turned into:
 
 aws lambda invoke --function-name demo-dev-admin/related_pages_controller-index
 
-In order to allow calling functions with all dashes, the call method evaluates the app code and finds if the controller and method actually exists.  If you want to turn this off and want to always explicitly provide the method name use the `--no-guess` option.  The function name will then have to match the lambda function without the namespace. Example:
+In order to allow calling functions with all dashes, the call method evaluates the app code and finds if the controller and method actually exists.  If you want to turn this off and want to always explicitly provide the method name use the `--no-smart` option.  The function name will then have to match the lambda function without the namespace. Example:
 
-jets call admin-related_pages_controller-index
+jets call admin-related_pages_controller-index --no-smart
 
 Local mode:
 
