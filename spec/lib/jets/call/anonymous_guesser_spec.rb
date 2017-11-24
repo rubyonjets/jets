@@ -6,12 +6,9 @@ describe Jets::Call::AnonymousGuesser do
   context "hello-world function" do
     let(:function_name) { "hello-world" }
 
-    it "class_name" do
-      class_name = guesser.class_name
-      method_name = guesser.method_name
-
-      expect(class_name).to eq "Hello"
-      expect(method_name).to eq "world"
+    it "class_name and method should be found" do
+      expect(guesser.class_name).to eq "Hello"
+      expect(guesser.method_name).to eq "world"
       # puts "class_name #{class_name.inspect}"
       # puts "method_name #{method_name.inspect}"
     end
@@ -30,6 +27,19 @@ describe Jets::Call::AnonymousGuesser do
       ])
     end
 
+  end
+
+  context "hello-world2 function" do
+    let(:function_name) { "hello-world2" }
+
+    it "method should not be found" do
+      expect(guesser.class_name).to eq "Hello"
+      expect(guesser.method_name).to be nil
+      # puts guesser.error_message
+      # expect(guesser.error_message).not_to be nil
+      # puts "class_name #{class_name.inspect}"
+      # puts "method_name #{method_name.inspect}"
+    end
   end
 
   context "simple-function-handler function" do

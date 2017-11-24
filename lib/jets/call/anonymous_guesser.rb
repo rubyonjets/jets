@@ -16,11 +16,11 @@ class Jets::Call
       underscored_class_name = class_name.underscore
       meth = full_function_name.sub("#{underscored_class_name}_","")
 
-      if meth == class_name.constantize.handler
+      if meth == class_name.constantize.handler.to_s
         @method_name = meth
       else
-        @method_name_error = "#{class_name} class found but #{meth} methd not found"
-        @method_name = meth
+        @method_name_error = "#{class_name} class found but #{meth} method not found"
+        @method_name = nil
       end
     end
 
