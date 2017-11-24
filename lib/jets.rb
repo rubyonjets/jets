@@ -50,5 +50,7 @@ module Jets
   autoload :Dotenv, 'jets/dotenv'
   autoload :Booter, 'jets/booter'
 
+  autoload :Klass, 'jets/klass'
+
   extend Util # root, logger, etc
 end

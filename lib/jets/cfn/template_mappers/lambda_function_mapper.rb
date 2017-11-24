@@ -1,9 +1,8 @@
 class Jets::Cfn::TemplateMappers
   class LambdaFunctionMapper
-    attr_reader :process_type_class
     def initialize(task)
       @task = task
-      @process_type_class = task.class_name.to_s # Example: PostsController or SleepJob
+      @app_class = task.class_name.to_s # Example: PostsController or SleepJob
     end
 
     # Example: SleepJobPerformLambdaFunction
@@ -18,16 +17,16 @@ class Jets::Cfn::TemplateMappers
 
     # Example: PostsControllerIndex or SleepJobPerform
     def class_action
-      "#{@process_type_class}_#{@task.meth}".camelize
+      "#{@app_class}_#{@task.meth}".camelize
     end
 
     # Examples:
     #   "#{Jets.config.project_namespace}-sleep_job-perform"
     #   "demo-dev-sleep_job-perform"
     def function_name
-      # @process_type_class: admin/pages_controller
+      # @app_class: admin/pages_controller
       # @@task.meth: index
-      method = @process_type_class.underscore
+      method = @app_class.underscore
       # method: admin/pages_controller
       method = method.sub('/','-') + "-#{@task.meth}"
       # method: admin-pages_controller-index
@@ -35,14 +34,8 @@ class Jets::Cfn::TemplateMappers
     end
 
     def handler
-      regexp = Regexp.new(process_type.camelize) # IE: Controller or Job
-      underscored = @process_type_class.to_s.sub(regexp,'').underscore
-      "handlers/#{process_type.pluralize}/#{underscored}.#{@task.meth}"
-    end
-
-    # controller or job
-    def process_type
-      process_type_class.underscore.split('_').last
+      underscored = @app_class.underscore
+      "handlers/#{@task.type.pluralize}/#{underscored}.#{@task.meth}"
     end
 
     def code_s3_key

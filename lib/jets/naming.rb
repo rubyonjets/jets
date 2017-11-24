@@ -4,9 +4,13 @@
 class Jets::Naming
   # Mainly used by build.rb
   class << self
-    def template_path(controller_class)
-      underscored_controller = controller_class.to_s.underscore.gsub('/','-')
-      "#{template_path_prefix}-#{underscored_controller}.yml"
+    def template_path(app_class)
+      underscored = app_class.to_s.underscore.gsub('/','-')
+      "#{template_path_prefix}-#{underscored}.yml"
+    end
+
+    def template_path_prefix
+      "#{Jets.build_root}/templates/#{Jets.config.project_namespace}"
     end
 
     # consider moving these methods into cfn/builder/helpers.rb or that area.
@@ -25,10 +29,6 @@ class Jets::Naming
 
     def parent_stack_name
       File.basename(parent_template_path, ".yml")
-    end
-
-    def template_path_prefix
-      "#{Jets.build_root}/templates/#{Jets.config.project_namespace}"
     end
 
     def gateway_api_name

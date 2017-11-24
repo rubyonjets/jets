@@ -77,7 +77,10 @@ module Jets::Lambda::Dsl
       end
 
       def register_task(meth)
-        all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth, properties: @properties)
+        # Note: for anonymous classes like for app/functions self.name is ""
+        # We adjust the class name when we build the functions later.
+        all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
+          properties: @properties)
         true
       end
 

@@ -44,7 +44,10 @@ class Jets::Cfn::TemplateBuilders
         next unless File.file?(path)
         next if path =~ /api-gateway/ # treated specially
 
-        mapper_class_name = File.basename(path, '.yml').split('_').last.classify # Controller or Job
+        mapper_class_name = File.basename(path, '.yml').split('_').last
+        mapper_class_name = mapper_class_name.classify
+        # mapper_class_name: Controller, Job or Function
+        # puts "mapper_class_name #{mapper_class_name.inspect}"
         mapper_class = "Jets::Cfn::TemplateMappers::#{mapper_class_name}Mapper".constantize # ControllerMapper or JobMapper
         map = mapper_class.new(path, @options[:s3_bucket])
 

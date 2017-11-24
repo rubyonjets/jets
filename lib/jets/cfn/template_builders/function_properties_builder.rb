@@ -38,8 +38,12 @@ class Jets::Cfn::TemplateBuilders
 
       baseline.deep_merge(app_config_props)
     end
+
     def class_properties
-      class_properties = @task.class_name.constantize.class_properties
+      # puts "function_properties_builder.rb: @task.class_name #{@task.class_name.inspect}"
+      # puts "function_properties_builder.rb: @task #{@task.inspect}"
+      klass = Jets::Klass.from_task(@task)
+      class_properties = klass.class_properties
       pascalize(class_properties.deep_stringify_keys)
     end
 

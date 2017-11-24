@@ -18,6 +18,7 @@ describe Jets::Lambda::Function do
   context TestHelloFunction do
     it "first method used as the handler" do
       task = TestHelloFunction.handler_task
+      # pp task
       expect(task.meth).to eq :handler
     end
   end

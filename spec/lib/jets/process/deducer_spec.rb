@@ -25,7 +25,7 @@ describe "Deducer" do
     end
   end
 
-  context "function" do
+  context "function without _function" do
     let(:deducer) do
       Jets::Process::Deducer.new("handlers/functions/hello.world")
     end
@@ -34,6 +34,18 @@ describe "Deducer" do
       expect(deducer.process_type).to include("function")
       expect(deducer.path).to include("app/functions/hello.rb")
       expect(deducer.code).to eq %Q|Hello.process(event, context, "world")|
+    end
+  end
+
+  context "function with _function" do
+    let(:deducer) do
+      Jets::Process::Deducer.new("handlers/functions/hello_function.world")
+    end
+
+    it "deduces info to run the ruby code" do
+      expect(deducer.process_type).to include("function")
+      expect(deducer.path).to include("app/functions/hello_function.rb")
+      expect(deducer.code).to eq %Q|HelloFunction.process(event, context, "world")|
     end
   end
 end

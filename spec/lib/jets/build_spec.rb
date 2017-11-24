@@ -8,7 +8,7 @@ describe Jets::Build do
     Jets::Build.new(noop: true)
   end
 
-  describe "Build" do
+  context "running build process" do
     # TODO: figure out way to test build.rb fast
     # it "builds handlers javascript files" do
     #   build.build
@@ -26,6 +26,19 @@ describe Jets::Build do
     #     # end
     #   end
     # end
+  end
+
+  context "methods" do
+    it "app_file?" do
+      yes = Jets::Build.app_file?("app/controllers/posts_controller.rb")
+      expect(yes).to be true
+
+      yes = Jets::Build.app_file?("app/functions/hello.rb")
+      expect(yes).to be true
+
+      yes = Jets::Build.app_file?("app/models/post.rb")
+      expect(yes).to be false
+    end
   end
 end
 

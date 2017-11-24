@@ -1,13 +1,13 @@
 require "spec_helper"
 
 describe Jets::Build::Deducer do
-  context "controller" do
+  context "controller without namespace" do
     let(:deducer) do
       Jets::Build::Deducer.new("app/controllers/posts_controller.rb")
     end
 
     it "deduces info for node shim" do
-      expect(deducer.class_name).to eq("PostsController")
+      expect(deducer.klass).to eq(PostsController)
       expect(deducer.process_type).to eq("controller")
       expect(deducer.handler_for(:create)).to eq "handlers/controllers/posts_controller.create"
       expect(deducer.js_path).to eq "handlers/controllers/posts_controller.js"
@@ -23,7 +23,7 @@ describe Jets::Build::Deducer do
     end
 
     it "deduces info for node shim" do
-      expect(deducer.class_name).to eq("Admin::PagesController")
+      expect(deducer.klass).to eq(Admin::PagesController)
       expect(deducer.process_type).to eq("controller")
       expect(deducer.handler_for(:create)).to eq "handlers/controllers/admin/pages_controller.create"
       expect(deducer.js_path).to eq "handlers/controllers/admin/pages_controller.js"
@@ -38,12 +38,27 @@ describe Jets::Build::Deducer do
     end
 
     it "deduces info for node shim" do
-      expect(deducer.class_name).to eq("HardJob")
+      expect(deducer.klass).to eq(HardJob)
       expect(deducer.process_type).to eq("job")
       expect(deducer.handler_for(:dig)).to eq "handlers/jobs/hard_job.dig"
       expect(deducer.js_path).to eq "handlers/jobs/hard_job.js"
 
       expect(deducer.functions).to eq([:dig, :drive, :lift])
+    end
+  end
+
+  context "function" do
+    let(:deducer) do
+      Jets::Build::Deducer.new("app/functions/hello.rb")
+    end
+
+    it "deduces info for node shim" do
+      expect(deducer.klass).to eq(Hello)
+      expect(deducer.process_type).to eq("function")
+      expect(deducer.handler_for(:world)).to eq "handlers/functions/hello.world"
+      expect(deducer.js_path).to eq "handlers/functions/hello.js"
+
+      expect(deducer.functions).to eq([:world])
     end
   end
 end

@@ -42,7 +42,7 @@ class Jets::Process::MainProcessor
       #
       #   deducer.code => HelloFunction.process(event, context, "lambda_handler")
       #   deducer.path => app/functions/hello.rb
-      deducer.define_class
+      deducer.load_class
       result = instance_eval(deducer.code, deducer.path)
       # result = PostsController.process(event, context, "create")
 

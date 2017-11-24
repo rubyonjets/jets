@@ -2,16 +2,16 @@ class Jets::Cfn::TemplateBuilders
   class BaseChildBuilder
     include Interface
 
-    # The app_class is can be a controller or a job class.
+    # The app_klass is can be a controller or a job class.
     # IE: PostsController, HardJob
-    def initialize(app_class)
-      @app_class = app_class
+    def initialize(app_klass)
+      @app_klass = app_klass
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
     # template_path is an interface method for Interface module
     def template_path
-      Jets::Naming.template_path(@app_class)
+      Jets::Naming.template_path(@app_klass)
     end
 
     def add_common_parameters
@@ -20,7 +20,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_functions
-      @app_class.tasks.each do |task|
+      @app_klass.tasks.each do |task|
         add_function(task)
       end
     end

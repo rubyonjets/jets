@@ -7,8 +7,8 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_scheduled_tasks
-      # @app_class example: HardJob
-      @app_class.tasks.each do |task|
+      # @app_klass example: HardJob
+      @app_klass.tasks.each do |task|
         map = Jets::Cfn::TemplateMappers::EventsRuleMapper.new(task)
 
         add_event_rule(task, map)

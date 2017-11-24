@@ -49,20 +49,25 @@ class Jets::Build
   # path: app/controllers/comments_controller.rb
   # path: app/jobs/easy_job.rb
   def build_child_template(path)
+    puts "build_child_template path #{path.inspect}".colorize(:cyan)
+
     require "#{Jets.root}#{path}" # require "app/jobs/easy_job.rb"
     class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
     # strip the app/controller/ or app/jobs/ from the string
     # also strip the .rb
     # class_path: admin/pages_controller
-    app_klass = class_path.classify.constantize # SleepJob
 
     process_class = path.split('/')[1].singularize.classify # Controller or Job
     builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Builder".constantize
 
-    # Jets::Cfn::TemplateBuilders::JobBuilder.new(EasyJob) or
-    # Jets::Cfn::TemplateBuilders::ControllerBuilder.new(PostsController)
-    cfn = builder_class.new(app_klass)
-    cfn.build
+    # Examples:
+    #   Jets::Cfn::TemplateBuilders::JobBuilder.new(EasyJob)
+    #   Jets::Cfn::TemplateBuilders::ControllerBuilder.new(PostsController)
+    #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(Hello)
+    #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(HelloFunction)
+    app_klass = Jets::Klass.from_path(path)
+    builder = builder_class.new(app_klass)
+    builder.build
   end
 
   def build_parent_template
@@ -93,16 +98,34 @@ class Jets::Build
     paths = []
     expression = "#{Jets.root}app/**/**/*.rb"
     Dir.glob(expression).each do |path|
-      next unless File.file?(path)
-      next unless File.extname(path) == ".rb"
-      next if path =~ /application_(controller|job).rb/
-      next if path !~ %r{app/(controller|job)}
+      return false unless File.file?(path)
+      next unless app_file?(path)
 
       relative_path = path.sub(Jets.root.to_s, '')
       # Rids of the Jets.root at beginning
       paths << relative_path
     end
     paths
+  end
+
+  def self.app_file?(path)
+    return false unless File.extname(path) == ".rb"
+    # Do not define lamda functions for the application_controller.rb or
+    # application_job.rb
+    excludes = %w[
+      application_controller.rb
+      application_job.rb
+    ]
+    return false if excludes.detect { |p| path.include?(p) }
+
+    includes = %w[
+      app/controllers
+      app/jobs
+      app/functions
+    ]
+    return true if includes.detect { |p| path.include?(p) }
+
+    false
   end
 
   def self.tmp_app_root(full_build_path=false)

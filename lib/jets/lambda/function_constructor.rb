@@ -3,7 +3,11 @@
 module Jets::Lambda
   class FunctionConstructor
     def initialize(code_path)
-      @code_path = code_path
+      @code_path = full(code_path)
+    end
+
+    def full(path)
+      "#{Jets.root}#{path}"
     end
 
     # Returns an anonymous class that contains the methods defined in the
@@ -24,7 +28,19 @@ module Jets::Lambda
       code = IO.read(@code_path)
       function_klass = Class.new(Jets::Lambda::Function)
       function_klass.module_eval(code)
+      adjust_tasks(function_klass)
       function_klass # assign this to a Constant for a pretty class name
+    end
+
+    # For anonymous classes method_added contains "" for the class name.
+    # So we adjust it.
+    def adjust_tasks(klass)
+      class_name = @code_path.sub(/.*app\/functions\//,'').sub(/\.rb$/, '')
+      class_name = class_name.classify
+      klass.tasks.each do |task|
+        task.class_name = class_name
+        task.type = "function"
+      end
     end
   end
 end
