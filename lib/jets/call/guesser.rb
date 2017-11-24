@@ -60,6 +60,17 @@ class Jets::Call
       end
     end
 
+    # Useful to printing out what was attempted to look up
+    def error_message
+      guesses = guess_classes
+      puts "Unable to find the function to call."
+      if class_name and !method_name
+        puts @method_name_error
+      else
+        puts "Tried: #{guesses.join(', ')}"
+      end
+    end
+
     def function_name
       # Strip the project namespace if the user has accidentally added it
       # Since we're going to automatically add it no matter what at the end
@@ -124,17 +135,6 @@ class Jets::Call
       end
 
       guesses
-    end
-
-    # Useful to printing out what was attempted to look up
-    def error_message
-      guesses = guess_classes
-      puts "Unable to find the function to call."
-      if class_name and !method_name
-        puts @method_name_error
-      else
-        puts "Tried: #{guesses.join(', ')}"
-      end
     end
 
     def guess_classes

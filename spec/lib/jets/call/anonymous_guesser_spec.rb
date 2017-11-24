@@ -6,6 +6,16 @@ describe Jets::Call::AnonymousGuesser do
   context "hello-world function" do
     let(:function_name) { "hello-world" }
 
+    it "class_name" do
+      class_name = guesser.class_name
+      method_name = guesser.method_name
+
+      expect(class_name).to eq "Hello"
+      expect(method_name).to eq "world"
+      # puts "class_name #{class_name.inspect}"
+      # puts "method_name #{method_name.inspect}"
+    end
+
     it "function_filenames" do
       filenames = guesser.function_filenames("hello")
       expect(filenames).to eq([

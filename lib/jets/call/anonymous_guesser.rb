@@ -1,11 +1,38 @@
 class Jets::Call
   class AnonymousGuesser < Guesser
-    def function_underscored_name
-      name = @provided_function_name.gsub('-','_')
-      name.split('_')[0..-2].join('_') # remove last word
-      # So:
-      #   hello-world => hello
-      #   simple-function-handler => simple-function
+    def detect_class_name
+      found_path = function_paths.find do |path|
+        File.exist?("#{Jets.root}#{path}")
+      end
+
+      klass = Jets::Klass.from_path(found_path) if found_path
+      klass.to_s
+    end
+
+    def method_name
+      return @method_name if defined?(@method_name)
+
+      full_function_name = @provided_function_name.gsub('-','_').underscore
+      underscored_class_name = class_name.underscore
+      meth = full_function_name.sub("#{underscored_class_name}_","")
+
+      if meth == class_name.constantize.handler
+        @method_name = meth
+      else
+        @method_name_error = "#{class_name} class found but #{meth} methd not found"
+        @method_name = meth
+      end
+    end
+
+    # Useful to printing out what was attempted to look up
+    def error_message
+      guess_paths = function_paths
+      puts "Unable to find the function to call."
+      if class_name and !method_name
+        puts @method_name_error
+      else
+        puts "Tried: #{guess_paths.join(', ')}"
+      end
     end
 
     def function_filenames(meth=nil, primary_namespace=nil)
@@ -66,48 +93,6 @@ class Jets::Call
       filenames.map do |name|
         "app/functions/#{name}.rb"
       end
-    end
-
-    # Useful to printing out what was attempted to look up
-    def error_message
-      guesses = guess_classes
-      puts "Unable to find the function to call."
-      if class_name and !method_name
-        puts @method_name_error
-      else
-        puts "Tried: #{guesses.join(', ')}"
-      end
-    end
-
-    def guess_classes
-      autoload_paths.map(&:classify)
-    end
-
-    def out_of_guesses(guess)
-      guess.include?("::Controller")
-    end
-
-    def detect_class_name
-      guess_classes.each do |class_name_guess|
-        begin
-          class_name_guess.constantize
-          return class_name_guess # if there's no error then the class is found
-        rescue NameError
-          if out_of_guesses(class_name_guess)
-            # puts "Unable to find the class to call. Tried guessing: #{guess_classes[0..-2].join(', ')}."
-            # raise # re-raise NameError for now but maybe better to provide
-              # a custom error class, so we can rescue it and provide a
-              # friendly message to the user
-          else
-            next
-          end
-        end
-      end
-
-      # Functions are anonymous classes, so
-      function_paths
-
-      nil
     end
 
   end
