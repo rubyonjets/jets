@@ -33,6 +33,11 @@ class Jets::Build
     build_parent_template # must be called at the end
   end
 
+  def build_minimal_stack
+    parent = Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options)
+    parent.build
+  end
+
   def build_api_gateway_templates
     gateway = Jets::Cfn::TemplateBuilders::ApiGatewayBuilder.new(@options)
     gateway.build

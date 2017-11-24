@@ -12,7 +12,8 @@ class Jets::Cfn
     end
 
     def run
-      upload_to_s3 if @options[:s3_bucket] # available when stack_type is not minimal
+      upload_to_s3 if @options[:stack_type] == "full" # s3 bucket is available
+        # only when stack_type is full
 
       puts "Shipping CloudFormation stack!"
       begin
@@ -113,6 +114,8 @@ class Jets::Cfn
 
     # Upload both code and child templates to s3
     def upload_to_s3
+      raise "Did not specify @options[:s3_bucket] #{@options[:s3_bucket].inspect}" unless @options[:s3_bucket]
+
       bucket_name = @options[:s3_bucket]
 
       puts "Uploading child CloudFormation templates to S3"

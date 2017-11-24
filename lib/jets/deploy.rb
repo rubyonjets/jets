@@ -12,32 +12,46 @@ class Jets::Deploy
   end
 
   def deploy
-    first_run = first_run?
-    stack_options = get_stack_options(first_run)
-    options = @options.merge(stack_options)
-
-    Jets::Build.new(options).run
-    Jets::Cfn::Ship.new(options).run
-
-    deploy if first_run # re-deploy again
-  end
-
-private
-  def get_stack_options(first_run)
-    if first_run
-      {stack_type: "minimal"}
+    if first_run?
+      deploy_minimal_stack
+      deploy_full_stack
     else
-      resp = check_updatable_status # exit if stack status is not in an updated able state
-      output = resp.stacks[0].outputs.find {|o| o.output_key == 'S3Bucket'}
-      s3_bucket = output.output_value
-      {stack_type: "full", s3_bucket: s3_bucket}
+      deploy_full_stack
     end
   end
 
-  # Important to not cache this. Must always return a fresh status.
-  def first_run?
-    !stack_exists?(parent_stack_name)
+  def deploy_minimal_stack
+    Jets::Build.new(stack_options).build_minimal_stack
+    Jets::Cfn::Ship.new(stack_options).run
   end
+
+  def deploy_full_stack
+    Jets::Build.new(stack_options).run
+    Jets::Cfn::Ship.new(stack_options).run
+  end
+
+private
+  def stack_options
+    stack_options = if first_run?
+        {stack_type: "minimal"}
+      else
+        resp = check_updatable_status # exit if stack status is not in an updated able state
+        output = resp.stacks[0].outputs.find {|o| o.output_key == 'S3Bucket'}
+        s3_bucket = output.output_value
+        {stack_type: "full", s3_bucket: s3_bucket}
+      end
+
+    @options.merge(stack_options)
+  end
+
+  def first_run?
+    return @first_run if @first_run_determined
+
+    @first_run = !stack_exists?(parent_stack_name)
+    @first_run_determined = true
+    @first_run
+  end
+  alias_method :first_run, :first_run?
 
   def parent_stack_name
     Jets::Naming.parent_stack_name
