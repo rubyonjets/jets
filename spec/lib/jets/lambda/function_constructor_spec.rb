@@ -11,7 +11,7 @@ describe Jets::Lambda::FunctionConstructor do
       WhateverFunction = constructor.build
       whatever_function = WhateverFunction.new
       result = whatever_function.world(event, {})
-      expect(result).to eq "value1"
+      expect(result).to eq 'hello world: "value1"'
     end
   end
 

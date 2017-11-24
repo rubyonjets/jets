@@ -14,8 +14,8 @@ describe Jets::Call::Guesser do
   context "admin-related-pages-controller-list-all" do
     let(:function_name) { "admin-related-pages-controller-list-all" }
 
-    it "guess_paths" do
-      paths = guesser.guess_paths
+    it "autoload_paths" do
+      paths = guesser.autoload_paths
       expect(paths).to eq([
         "admin_related_pages_controller",
         "admin/related_pages_controller",
@@ -56,9 +56,77 @@ describe Jets::Call::Guesser do
   context "does-not-exist" do
     let(:function_name) { "does-not-exist" }
 
-    it "raise error class when is not available" do
+    it "returns nil when class is not found" do
       found_class_name = guesser.class_name
       expect(found_class_name).to be nil
+    end
+  end
+
+  context "hello-world function" do
+    let(:function_name) { "hello-world" }
+
+    it "function_filenames" do
+      filenames = guesser.function_filenames
+      expect(filenames).to eq([
+        "hello" # <= Found path
+      ])
+    end
+
+    it "function_paths" do
+      paths = guesser.function_paths
+      expect(paths).to eq([
+        "app/functions/hello.rb" # <= Found path
+      ])
+    end
+  end
+
+  context "simple-function-handler function" do
+    let(:function_name) { "simple-function-handler" }
+
+    it "function_filenames" do
+      paths = guesser.function_filenames
+
+      pp paths
+
+      # expect(paths).to eq([
+      #   "app/functions/simple.rb",
+      #   "app/functions/simple_function.rb", # <= found path
+      #   "app/functions/simple/function.rb",
+      # ])
+
+      # [
+      #   "app/functions/simple_function.rb",
+      #   "app/functions/simple/function.rb",
+      # ]
+    end
+  end
+
+  context "complex-long-name-function-handler function" do
+    let(:function_name) { "complex-long-name-function-handler" }
+
+    it "function_filenames" do
+      paths = guesser.function_filenames("complex_long_name_function")
+
+      pp paths
+
+      # expect(paths).to eq([
+      #   "complex_long_name_function", # ns: nil
+      #                                 # m: complex_long_name_function
+      #   "complex/long_name_function", # ns: complex
+      #                                 # m: long_name_function
+      #   "complex/long/name_function", # ns: complex/long <= IMPORTANT
+      #                                 # m: name_function
+      #   "complex/long/name/function", # ns: complex/long/name
+      #                                 # m: function
+
+      #   "complex_long/name_function", # ns: complex_long <= IMPORTANT
+      #                                 # m: name_function
+      #   "complex_long/name/function", # ns: complex_long/name
+      #                                 # m: function
+
+      #   "complex_long_name/function", # ns: complex_long_name
+      #                                 # m: function
+      # ])
     end
   end
 end

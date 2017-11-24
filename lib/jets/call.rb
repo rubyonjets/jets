@@ -1,3 +1,5 @@
+require "byebug"
+
 require "base64"
 require "json"
 require "active_support/core_ext/string"
@@ -31,7 +33,7 @@ class Jets::Call
     @options[:local] ? local_run : remote_run
   end
 
-  # With local run there is no way to bypass the guesser
+  # With local mode there is no way to bypass the guesser
   def local_run
     puts "Local mode enabled!"
     ensure_guesses_found! # possibly exits here
@@ -68,6 +70,7 @@ class Jets::Call
     end
 
     add_console_link_to_clipboard
+    # byebug
     $stdout.puts resp.payload.read # only thing that goes to stdout
   end
 

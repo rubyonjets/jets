@@ -39,7 +39,7 @@ describe Jets::Process::MainProcessor do
       result = processor.run
       data = JSON.load(result)
       # pp data
-      expect(data).to eq "value1"
+      expect(data).to eq 'hello world: "value1"'
     end
   end
 end

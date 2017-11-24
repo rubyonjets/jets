@@ -36,7 +36,11 @@ class Jets::Call
     end
 
     def class_name
-      @class_name ||= detect_class_name
+      return @class_name if @detection_ran
+
+      @class_name = detect_class_name
+      @detection_ran = true
+      @class_name
     end
 
     def method_name
@@ -67,14 +71,17 @@ class Jets::Call
     end
 
     def process_type
-      if @provided_function_name.include?('controller')
+      if @provided_function_name =~ /[-_]controller/
         "controller"
-      elsif @provided_function_name.include?('job')
+      elsif @provided_function_name =~ /[-_]job/
         "job"
       else
-        # TODO: Guesser: handle process_type better when user doesnt provide controller or job in the name
-        nil
+        "function"
       end
+    end
+
+    def process_type_pattern
+      Regexp.new("[-_]#{process_type}[-_](.*)")
     end
 
     def action_name
@@ -83,20 +90,20 @@ class Jets::Call
       action_name.gsub('-','_')
     end
 
-    def process_type_pattern
-      Regexp.new("[-_]#{process_type}[-_](.*)")
-    end
-
-    # strips the action because we dont want it to guess the class name
+    # Strips the action because we dont want it to guess the class name
     def underscored_name
-    # strip action and concidentally the _controller_ string
-    name = @provided_function_name.sub(process_type_pattern,'')
-    name = name.gsub('-','_') + "_#{process_type}"
-    # So:
-    # name: admin-related-pages
-    # name: admin_related_pages_controller
+      # strip action and concidentally the _controller_ string
+      name = @provided_function_name.sub(process_type_pattern,'')
+      # Ensure _controller or _job at the end except for simple functions
+      unless process_type == "function"
+        name = name.gsub('-','_') + "_#{process_type}"
+      end
+      # So:
+      #   admin-related-pages => admin_related_pages_controller
     end
 
+    # Guesses autoload paths.
+    #
     # underscored_name: admin_related_pages_controller
     # Returns:
     #   [
@@ -105,7 +112,7 @@ class Jets::Call
     #     "admin_related/pages_controller",
     #     "admin_related_pages/controller",
     #   ]
-    def guess_paths
+    def autoload_paths
       guesses = []
 
       parts = underscored_name.split('_')
@@ -116,6 +123,74 @@ class Jets::Call
       end
 
       guesses
+    end
+
+    def function_underscored_name
+      name = @provided_function_name.gsub('-','_')
+      name.split('_')[0..-2].join('_') # remove last word
+      # So:
+      #   hello-world => hello
+      #   simple-function-handler => simple-function
+    end
+
+    # function_underscored_name: admin_related_pages_controller
+    # Returns:
+    #   [
+    #      "simple",
+    #      "simple_function", # <= found path
+    #      "simple/function",
+    #   ]
+    def function_filenames
+      guesses = []
+
+      parts = function_underscored_name.split('_')
+      puts "parts = #{parts.inspect}"
+
+      new_underscored = parts.join('_')
+      guesses << new_underscored
+      # parts = ["simple", "function"]
+
+      # parts.size.times do |i|
+      #   namespace = i == 0 ? nil : parts[0..i-1].join('/')
+      #   class_path = parts[i..-1].join('_')
+      #   guesses << [namespace, class_path].compact.join('/')
+      # end
+
+      guesses
+      # Dir.glob("#{Jets.root}app/functions/**/*").each do |path|
+      #   puts "path #{path.inspect}"
+      # end
+    end
+
+    def function_filenames(meth, namespace=nil)
+      parts = meth.split('_')
+      primary_namespace = parts.first
+      next_meth = parts[1..-1].join('_')
+
+      guesses = []
+
+      [primary_namespace, next_meth].join('/') # complex/long_name_function
+      next_parts = next_meth.split('_')
+
+      puts "primary_namespace #{primary_namespace.inspect}"
+      puts "next_meth #{next_meth.inspect}"
+      puts "next_parts #{next_parts.inspect}"
+
+      n = next_parts.size + 1
+      n.times do |i|
+        namespace = i == 0 ? nil : parts[0..i-1].join('/')
+        # puts "namespace #{namespace.inspect}"
+        class_path = parts[i..-1].join('_')
+        guesses << [namespace, class_path].compact.join('/')
+      end
+
+      guesses
+    end
+
+    def function_paths
+      function_filenames.map do |name|
+        "app/functions/#{name}.rb"
+      end
     end
 
     # Useful to printing out what was attempted to look up
@@ -130,7 +205,7 @@ class Jets::Call
     end
 
     def guess_classes
-      guess_paths.map(&:classify)
+      autoload_paths.map(&:classify)
     end
 
     def out_of_guesses(guess)
@@ -153,6 +228,9 @@ class Jets::Call
           end
         end
       end
+
+      # Functions are anonymous classes, so
+      function_paths
 
       nil
     end
