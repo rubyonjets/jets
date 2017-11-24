@@ -22,9 +22,9 @@ class Jets::Cfn::TemplateMappers
       "#{full_task_name}RuleTarget"
     end
 
-    # Example: HardJobDigPermissionEventsRule
+    # Example: HardJobDigEventsRulePermission
     def permission_logical_id
-      "#{full_task_name}PermissionEventsRule"
+      "#{full_task_name}EventsRulePermission"
     end
 
   private

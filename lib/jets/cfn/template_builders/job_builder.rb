@@ -49,7 +49,7 @@ class Jets::Cfn::TemplateBuilders
         SourceArn: "!GetAtt #{map.logical_id}.Arn"
       )
       # Example:
-      # add_resource("HardJobDigPermissionEventsRule", "AWS::Lambda::Permission",
+      # add_resource("HardJobDigEventsRulePermission", "AWS::Lambda::Permission",
       #   FunctionName: "!GetAtt HardJobDigLambdaFunction.Arn",
       #   Action: "lambda:InvokeFunction",
       #   Principal: "events.amazonaws.com",
