@@ -6,6 +6,7 @@ class Jets::Process < Jets::Command
   class_option :verbose, type: :boolean
   class_option :noop, type: :boolean
 
+  # Some duplication here but the long_desc help is different enough
   desc "controller [event] [context] [handler]", "Processes node shim controller handler"
   long_desc Help.controller
   def controller(event, context, handler)
@@ -19,7 +20,7 @@ class Jets::Process < Jets::Command
   end
 
   desc "function [event] [context] [handler]", "Processes node shim job handler"
-  long_desc Help.job
+  long_desc Help.function
   def function(event, context, handler)
     MainProcessor.new(event, context, handler).run
   end
