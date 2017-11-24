@@ -47,7 +47,7 @@ describe Jets::Build::Deducer do
     end
   end
 
-  context "function" do
+  context "function without _function" do
     let(:deducer) do
       Jets::Build::Deducer.new("app/functions/hello.rb")
     end
@@ -59,6 +59,21 @@ describe Jets::Build::Deducer do
       expect(deducer.js_path).to eq "handlers/functions/hello.js"
 
       expect(deducer.functions).to eq([:world])
+    end
+  end
+
+  context "function with _function" do
+    let(:deducer) do
+      Jets::Build::Deducer.new("app/functions/simple_function.rb")
+    end
+
+    it "deduces info for node shim" do
+      expect(deducer.klass).to eq(SimpleFunction)
+      expect(deducer.process_type).to eq("function")
+      expect(deducer.handler_for(:world)).to eq "handlers/functions/simple_function.world"
+      expect(deducer.js_path).to eq "handlers/functions/simple_function.js"
+
+      expect(deducer.functions).to eq([:handler])
     end
   end
 end

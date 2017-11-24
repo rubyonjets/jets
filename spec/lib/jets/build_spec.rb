@@ -33,6 +33,9 @@ describe Jets::Build do
       yes = Jets::Build.app_file?("app/controllers/posts_controller.rb")
       expect(yes).to be true
 
+      yes = Jets::Build.app_file?("app/jobs/hard_job.rb")
+      expect(yes).to be true
+
       yes = Jets::Build.app_file?("app/functions/hello.rb")
       expect(yes).to be true
 

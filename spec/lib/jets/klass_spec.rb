@@ -22,9 +22,13 @@ describe Jets::Klass do
     klass = Jets::Klass.from_task(task)
     expect(klass).to eq HardJob
 
-    task = Jets::Lambda::Task.new("Simple", :handler, type: "function")
+    task = Jets::Lambda::Task.new("Hello", :handler, type: "function")
     klass = Jets::Klass.from_task(task)
-    expect(klass).to eq Simple
+    expect(klass).to eq Hello
+
+    task = Jets::Lambda::Task.new("SimpleFunction", :handler, type: "function")
+    klass = Jets::Klass.from_task(task)
+    expect(klass).to eq SimpleFunction
   end
 end
 

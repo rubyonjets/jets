@@ -21,7 +21,7 @@ describe Jets::Lambda::Task do
     end
   end
 
-  context "HelloFunction" do
+  context "HelloWorld which is anonyomous class" do
     let(:task) do
       # functions are anonymoust classes which have a class_name of "".
       # We will fix the class name later when in FunctionConstructor.

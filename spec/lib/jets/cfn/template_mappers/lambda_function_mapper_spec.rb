@@ -44,16 +44,16 @@ describe Jets::Cfn::TemplateMappers::LambdaFunctionMapper do
       Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(task)
     end
     let(:task) do
-      Jets::Lambda::Task.new("HelloFunction", :world)
+      Jets::Lambda::Task.new("SimpleFunction", :handler)
     end
 
     describe "map" do
       it "contains info for CloudFormation Job Function Resources" do
         # pp task
-        expect(map.logical_id).to eq "HelloFunctionWorldLambdaFunction"
-        expect(map.class_action).to eq "HelloFunctionWorld"
-        expect(map.function_name).to eq "#{Jets.config.project_namespace}-hello_function-world"
-        expect(map.handler).to eq "handlers/functions/hello_function.world"
+        expect(map.logical_id).to eq "SimpleFunctionHandlerLambdaFunction"
+        expect(map.class_action).to eq "SimpleFunctionHandler"
+        expect(map.function_name).to eq "#{Jets.config.project_namespace}-simple_function-handler"
+        expect(map.handler).to eq "handlers/functions/simple_function.handler"
         expect(map.code_s3_key).to include("jets/code")
       end
     end
