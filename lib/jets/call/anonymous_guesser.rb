@@ -1,5 +1,5 @@
 class Jets::Call
-  class AnonymousGuesser < Guesser
+  class AnonymousGuesser < BaseGuesser
     def detect_class_name
       found_path = function_paths.find do |path|
         File.exist?("#{Jets.root}#{path}")

@@ -5,7 +5,9 @@ require "json"
 require "active_support/core_ext/string"
 
 class Jets::Call
-  autoload :Guesser, "jets/call/guesser"
+  # autoload :Guesser, "jets/call/guesser"
+  autoload :BaseGuesser, "jets/call/base_guesser"
+  autoload :AutoloadGuesser, "jets/call/autoload_guesser"
   autoload :AnonymousGuesser, "jets/call/anonymous_guesser"
 
   include Jets::AwsServices

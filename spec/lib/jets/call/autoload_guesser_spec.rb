@@ -1,7 +1,7 @@
 require "spec_helper"
 
-describe Jets::Call::Guesser do
-  let(:guesser) { Jets::Call::Guesser.new(function_name) }
+describe Jets::Call::AutoloadGuesser do
+  let(:guesser) { Jets::Call::AutoloadGuesser.new(function_name) }
 
   context "admin/related_pages_controller-list-all" do
     let(:function_name) { "admin/related_pages_controller-list-all" }
