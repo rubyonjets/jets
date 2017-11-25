@@ -76,9 +76,8 @@ class Jets::Call
     end
 
     add_console_link_to_clipboard
-    result = resp.payload.read
-    text = Jets::Util.normalize_result(result)
-    $stdout.puts text # only thing that goes to stdout
+    result = resp.payload.read # already been normalized/JSON.dump by AWS
+    $stdout.puts result # only thing that goes to stdout
   end
 
   def guesser
