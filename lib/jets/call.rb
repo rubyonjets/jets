@@ -48,7 +48,7 @@ class Jets::Call
     # Note: even though data might not always be json, the JSON.dump does a
     # good job of not bombing, so always calling it to simplify code.
 
-    text = normalize(result)
+    text = Jets::Util.normalize_result(result)
     $stdout.puts text
   end
 
@@ -77,7 +77,7 @@ class Jets::Call
 
     add_console_link_to_clipboard
     result = resp.payload.read
-    text = normalize(result)
+    text = Jets::Util.normalize_result(result)
     $stdout.puts text # only thing that goes to stdout
   end
 
@@ -153,19 +153,4 @@ class Jets::Call
     $stderr.puts(text)
   end
 
-  # Make sure that the result is a text.  If it is parseable json then
-  # dump it as json instead of the raw string that is meant to be json anyway.
-  def normalize(result)
-    return result unless result.is_a?(String)
-
-    json?(result) ? JSON.dump(result) : result
-  end
-
-  # https://stackoverflow.com/questions/26232909/checking-if-a-string-is-valid-json-before-trying-to-parse-it
-  def json?(text)
-    JSON.parse(text)
-    return true
-  rescue JSON::ParserError => e
-    return false
-  end
 end

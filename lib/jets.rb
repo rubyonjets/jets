@@ -15,6 +15,7 @@ require "pp" # TODO: remove pp
 
 module Jets
   autoload :Application, "jets/application"
+  autoload :Util, "jets/util"
   autoload :Command, "jets/command"
   # subtasks
   autoload :Process, 'jets/process'
