@@ -44,10 +44,12 @@ class Jets::Call
     klass = guesser.class_name.constantize
     # Example:
     #   PostsController.process(event, context, meth)
-    data = klass.process(transformed_event, {}, guesser.method_name)
+    result = klass.process(transformed_event, {}, guesser.method_name)
     # Note: even though data might not always be json, the JSON.dump does a
     # good job of not bombing, so always calling it to simplify code.
-    $stdout.puts JSON.dump(data)
+
+    text = normalize(result)
+    $stdout.puts text
   end
 
   def remote_run
@@ -74,8 +76,9 @@ class Jets::Call
     end
 
     add_console_link_to_clipboard
-    # byebug
-    $stdout.puts resp.payload.read # only thing that goes to stdout
+    result = resp.payload.read
+    text = normalize(result)
+    $stdout.puts text # only thing that goes to stdout
   end
 
   def guesser
@@ -148,5 +151,21 @@ class Jets::Call
   #   jets call posts_controller-index '{"test":1}' | jq .
   def puts(text)
     $stderr.puts(text)
+  end
+
+  # Make sure that the result is a text.  If it is parseable json then
+  # dump it as json instead of the raw string that is meant to be json anyway.
+  def normalize(result)
+    return result unless result.is_a?(String)
+
+    json?(result) ? JSON.dump(result) : result
+  end
+
+  # https://stackoverflow.com/questions/26232909/checking-if-a-string-is-valid-json-before-trying-to-parse-it
+  def json?(text)
+    JSON.parse(text)
+    return true
+  rescue JSON::ParserError => e
+    return false
   end
 end

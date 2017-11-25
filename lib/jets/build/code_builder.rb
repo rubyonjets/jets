@@ -231,7 +231,7 @@ class Jets::Build
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned ou.
     def jetskeep
-      defaults = ["pack"]
+      defaults = %w[pack handlers]
       path = Jets.root + ".jetskeep"
       return defaults unless path.exist?
 

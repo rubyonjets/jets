@@ -52,7 +52,7 @@ class Jets::Process::MainProcessor
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
-      text = JSON.dump(result)
+      text = normalize(result)
       # TODO: figure a way to silence this output for specs wihtout breaking process_spec.rb
       $stdout.puts text # only place where we write to stdout.
       text
@@ -66,5 +66,21 @@ class Jets::Process::MainProcessor
       # $stderr.puts("END OF RUBY OUTPUT")
       exit 1 # instead of re-raising to control the error backtrace output
     end
+  end
+
+  # Make sure that the result is a text.  If it is parseable json then
+  # dump it as json instead of the raw string that is meant to be json anyway.
+  def normalize(result)
+    return result unless result.is_a?(String)
+
+    json?(result) ? JSON.dump(result) : result
+  end
+
+  # https://stackoverflow.com/questions/26232909/checking-if-a-string-is-valid-json-before-trying-to-parse-it
+  def json?(text)
+    JSON.parse(text)
+    return true
+  rescue JSON::ParserError => e
+    return false
   end
 end
