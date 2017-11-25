@@ -44,7 +44,8 @@ class Jets::Call
     klass = guesser.class_name.constantize
     # Example:
     #   PostsController.process(event, context, meth)
-    result = klass.process(transformed_event, {}, guesser.method_name)
+    event = JSON.load(transformed_event) || {} # transformed_event is JSON text String
+    result = klass.process(event, {}, guesser.method_name)
     # Note: even though data might not always be json, the JSON.dump does a
     # good job of not bombing, so always calling it to simplify code.
 
@@ -53,7 +54,7 @@ class Jets::Call
   end
 
   def remote_run
-    puts "Calling lambda function #{function_name} on AWS".colorize(:green) unless @options[:mute]
+    puts "Calling lambda function #{function_name} on AWS" unless @options[:mute]
     return if @options[:noop]
 
     begin
@@ -62,7 +63,7 @@ class Jets::Call
         function_name: function_name,
         invocation_type: @invocation_type, # "Event", # RequestResponse
         log_type: @log_type, # pretty sweet
-        payload: transformed_event, # "fileb://file-path/input.json",
+        payload: transformed_event, # "fileb://file-path/input.json", <= JSON
         qualifier: @qualifier, # "1",
       )
     rescue Aws::Lambda::Errors::ResourceNotFoundException
@@ -91,26 +92,42 @@ class Jets::Call
     end
   end
 
+  # @event is String because it can be the file:// notation
+  # Returns text String for the lambda.invoke payload.
   def transformed_event
     text = @event
-
     if text && text.include?("file://")
-      path = text.gsub('file://','')
-      path = "#{Jets.root}#{path}" unless path[0..0] == '/'
-      unless File.exist?(path)
-        puts "File #{path} does not exist.  Are you sure the file exists?".colorize(:red)
-        exit
-      end
-      text = IO.read(path)
+      text = load_event_from_file(text)
     end
 
-    puts "Function name: #{function_name.inspect}" unless @options[:mute]
+    check_valid_json!(text)
+
+    puts "Function name: #{function_name.colorize(:green)}" unless @options[:mute]
     return text unless function_name.include?("_controller-")
     return text if @options[:lambda_proxy] == false
 
     event = JSON.load(text)
     lambda_proxy = {"queryStringParameters" => event}
     JSON.dump(lambda_proxy)
+  end
+
+  def load_event_from_file(text)
+    path = text.gsub('file://','')
+    path = "#{Jets.root}#{path}" unless path[0..0] == '/'
+    unless File.exist?(path)
+      puts "File #{path} does not exist.  Are you sure the file exists?".colorize(:red)
+      exit
+    end
+    text = IO.read(path)
+  end
+
+  # Exits with friendly error message when user provides bad just
+  def check_valid_json!(text)
+    JSON.load(text)
+  rescue JSON::ParserError => e
+    puts "Invalid json provided:\n  '#{text}'"
+    puts "Exiting... Please try again and provide valid json."
+    exit 1
   end
 
   # So use can quickly paste this into their browser if they want to see the function
