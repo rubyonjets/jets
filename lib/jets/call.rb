@@ -1,5 +1,3 @@
-require "byebug"
-
 require "base64"
 require "json"
 require "active_support/core_ext/string"
