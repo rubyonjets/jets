@@ -37,8 +37,7 @@ describe Jets::Processors::MainProcessor do
     let(:event) { {"key1" => "value1"} }
     it "returns result" do
       result = processor.run
-      # data = JSON.load(result)
-      data = result
+      data = JSON.load(result)
       # pp data
       expect(data).to eq 'hello world: "value1"'
     end

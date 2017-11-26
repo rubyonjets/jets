@@ -24,6 +24,7 @@ module Jets
   autoload :Db, 'jets/db'
 
   autoload :Build, 'jets/build'
+  autoload :Processors, 'jets/processors'
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'
   autoload :Delete, 'jets/delete'
