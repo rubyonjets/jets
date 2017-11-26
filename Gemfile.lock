@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:tongueroo/webpacker.git
-  revision: 1664b8f2a3eadcfd1f0d0e342dff98c77027ff2a
+  revision: 479005dfb84f913a73550d485c07892e628f884b
   specs:
     webpacker (3.0.2)
       activesupport (>= 4.2)

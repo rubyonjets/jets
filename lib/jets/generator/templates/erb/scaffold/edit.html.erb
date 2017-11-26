@@ -1,0 +1,6 @@
+<h1>Editing <%= singular_table_name.titleize %></h1>
+
+<%%= render 'form', <%= singular_table_name %>: @<%= singular_table_name %> %>
+
+<%%= link_to 'Show', "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}/edit" %> |
+<%%= link_to 'Back', "/<%= plural_table_name %>" %>

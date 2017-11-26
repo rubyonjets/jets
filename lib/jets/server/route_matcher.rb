@@ -90,9 +90,7 @@ class Jets::Server
 
     def router
       return @router if @router
-      @router = Jets::Router.new
-      @router.evaluate
-      @router
+      @router = Jets.application.routes
     end
   end
 end

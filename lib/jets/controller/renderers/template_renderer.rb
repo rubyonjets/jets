@@ -91,6 +91,7 @@ module Jets::Controller::Renderers
     def setup_webpacker
       require 'webpacker'
       require 'webpacker/helper'
+
       ActiveSupport.on_load :action_controller do
         ActionController::Base.helper Webpacker::Helper
       end

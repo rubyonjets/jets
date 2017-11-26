@@ -38,7 +38,13 @@ class Jets::Controller
     end
 
     def default_options
-      { layout: self.class.layout }
+      layout = self.class.layout.nil? ? default_layout : self.class.layout
+      { layout: layout }
+    end
+
+    def default_layout
+      application_layout_exist = !Dir.glob("#{Jets.root}app/views/layouts/application*").empty?
+      "application" if application_layout_exist
     end
 
     # Can normalize the options when it is a String or a Symbol

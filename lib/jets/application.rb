@@ -62,4 +62,17 @@ class Jets::Application
     end
   end
 
+  # Naming it routes because config/routes.rb requires
+  #
+  #   Jets.application.routes.draw do
+  #
+  # for scaffolding to work.
+  def routes
+    @router ||= Jets::Router.new
+  end
+
+  def load_routes
+    require "#{Jets.root}config/routes.rb"
+  end
+
 end

@@ -35,6 +35,7 @@ module Jets::Core
     return @@application if @@application
     @@application = Jets::Application.new
     @@application.load_configs
+    @@application.load_routes
     @@application
   end
 

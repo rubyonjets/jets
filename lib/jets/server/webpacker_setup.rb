@@ -4,3 +4,4 @@ require "webpacker"
 require "webpacker/dev_server_proxy"
 
 Webpacker.bootstrap # whenever jets server is runs should Webpacker.bootstrap
+

@@ -50,6 +50,27 @@ describe "Route" do
     end
   end
 
+  context "route with toplevel catchall/globbing/wildcard" do
+    let(:route) do
+      Jets::Route.new(path: "*catchall", method: :any, to: "catch#all")
+    end
+
+    it "api_gateway_format" do
+      api_gateway_path = route.send(:api_gateway_format, route.path)
+      expect(api_gateway_path).to eq "{catchall+}"
+    end
+
+    it "extract_parameters for path with slashes" do
+      parameters = route.extract_parameters("my/long/path")
+      expect(parameters).to eq("catchall" => "my/long/path")
+    end
+
+    it "extract_parameters for path with no slashes" do
+      parameters = route.extract_parameters("whatever")
+      expect(parameters).to eq("catchall" => "whatever")
+    end
+  end
+
   context "route with nested catchall/globbing/wildcard" do
     let(:route) do
       Jets::Route.new(path: "nested/others/*proxy", method: :any, to: "others#all")

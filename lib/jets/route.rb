@@ -63,12 +63,15 @@ class Jets::Route
     # changes path to a string used for a regexp
     # others/*proxy => others\/(.*)
     # nested/others/*proxy => nested/others\/(.*)
-    leading_path = path.split('/')[0..-2].join('/') # drop last segment
-    # leading_path: nested/others
-
-    # capture everything after the leading_path as the value
-    regexp = Regexp.new("#{leading_path}/(.*)")
-    value = actual_path.match(regexp)[1]
+    if path.include?('/')
+      leading_path = path.split('/')[0..-2].join('/') # drop last segment
+      # leading_path: nested/others
+      # capture everything after the leading_path as the value
+      regexp = Regexp.new("#{leading_path}/(.*)")
+      value = actual_path.match(regexp)[1]
+    else
+      value = actual_path
+    end
 
     # the last segment without the '*' is the key
     proxy_segment = path.split('/').last # last segment is the proxy segment

@@ -32,6 +32,7 @@ module Jets
   autoload :Router, "jets/router"
   autoload :Erb, "jets/erb"
   autoload :Call, "jets/call"
+  autoload :Generator, "jets/generator"
 
   autoload :Database, 'jets/database'
 
@@ -39,7 +40,6 @@ module Jets
   autoload :Controller, 'jets/controller'
   autoload :Job, 'jets/job'
 
-  autoload :Webpacker, 'jets/webpacker'
   autoload :RakeTasks, 'jets/rake_tasks'
 
   autoload :Dotenv, 'jets/dotenv'

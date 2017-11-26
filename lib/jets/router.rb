@@ -2,15 +2,13 @@ require 'text-table'
 
 module Jets
   class Router
-    attr_reader :path, :routes
-    def initialize(path=nil)
-      @path = path || "#{Jets.root}/config/routes.rb"
+    attr_reader :routes
+    def initialize
       @routes = []
     end
 
-    def evaluate
-      code = IO.read(path)
-      instance_eval(code, path)
+    def draw(&block)
+      instance_eval(&block)
     end
 
     # Methods supported by API Gateway
@@ -74,6 +72,14 @@ module Jets
       drawn_router
     end
 
+    @@drawn_router = nil
+    def self.drawn_router
+      return @@drawn_router if @@drawn_router
+
+      router = Jets.application.routes
+      @@drawn_router = router
+    end
+
     def self.routes
       drawn_router.routes
     end
@@ -84,14 +90,6 @@ module Jets
     # Output: ["posts", "posts/:id", "posts/:id/edit"]
     def self.all_paths
       drawn_router.all_paths
-    end
-
-    @@drawn_router = nil
-    def self.drawn_router
-      return @@drawn_router if @@drawn_router
-      builder = new
-      builder.evaluate
-      @@drawn_router = builder
     end
 
     def self.routes_help

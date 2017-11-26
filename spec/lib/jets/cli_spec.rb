@@ -1,12 +1,7 @@
 require "spec_helper"
 
 describe Jets::CLI do
-  let(:null) { double(:null).as_null_object }
-  let(:command) do
-    command = Jets::CLI.new(given_args)
-    allow(command).to receive(:shell).and_return(null)
-    command
-  end
+  let(:command) { Jets::CLI.new(given_args) }
 
   context Jets::CLI do
     it "tracks subclasses" do
@@ -28,10 +23,10 @@ describe Jets::CLI do
   context 'jets help' do
     let(:given_args) { ["help"] }
 
-    it "starts" do
-      # Makes sure all the code runs to completion.  Tests:
+    it "prints main help menu" do
+      allow(command).to receive(:main_help)
       command.start
-      expect(command).to have_received(:shell).at_least(:once)
+      expect(command).to have_received(:main_help).at_least(:once)
     end
 
     it "thor_args removes namespace from args" do

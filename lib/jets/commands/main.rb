@@ -73,11 +73,10 @@ module Jets::Commands
       Call.new(function_name, payload, options).run
     end
 
-    # TODO: implement a custom generator for Jets leveraging Rails generators
     desc "generate [type] [args]", "Generates things like scaffolds"
     long_desc Help.generate
     def generate(generator, *args)
-      Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
+      Jets::Generator.invoke(generator, *args)
     end
   end
 end

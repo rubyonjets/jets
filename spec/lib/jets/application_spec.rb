@@ -1,24 +1,26 @@
 require "spec_helper"
 
 describe Jets::Application do
-  let(:app) do
-    Jets::Application.new
-  end
+  context "Jets::Application.new" do
+    let(:app) do
+      Jets::Application.new
+    end
 
-  describe "configure" do
-    it "should assign config values" do
-      app.configure do
-        config.test1 = "value1"
-        config.test2 = "value2"
+    describe "configure" do
+      it "should assign config values" do
+        app.configure do
+          config.test1 = "value1"
+          config.test2 = "value2"
+        end
+        expect(app.config.to_hash).to eq(
+          test1: "value1",
+          test2: "value2",
+        )
       end
-      expect(app.config.to_hash).to eq(
-        test1: "value1",
-        test2: "value2",
-      )
     end
   end
 
-  context "app.config loaded with defaults" do
+  context "Jets.application loaded with defaults" do
     let(:app) { Jets.application }
     let(:config) { app.config }
 
@@ -36,6 +38,13 @@ describe Jets::Application do
       expect(config.function.timeout).to eq 10
       expect(config.function.memory_size).to eq 1536
     end
+
+    it "routes should be loaded" do
+      router = app.routes
+      expect(router).to be_a(Jets::Router)
+      expect(router.routes).not_to be_empty
+    end
   end
+
 end
 
