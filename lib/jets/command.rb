@@ -4,39 +4,21 @@ require "byebug"
 class Jets::Command
   class << self
     def start(given_args=ARGV, **config)
-      # full_namespace, args = [], **config
+      full_command = full_command(given_args)
+      namespace, meth = namespace_and_meth(full_command)
+      thor_args = thor_args(given_args)
 
-      # command = full_namespace
-      # args = args.dup
-      # command = args.dup.shift
-      # pp given_args
-
-      # puts "full_namespace #{full_namespace}"
-      # puts "command #{command}"
-      # puts "args #{args.inspect}"
-      # puts "config #{config.inspect}"
-      # puts ""
-
-      # puts "given_args #{given_args}"
-      if given_args.first == "help"
-        full_namespace = given_args[1]
+      if namespace
+        klass = "Jets::Commands::#{namespace.classify}".constantize
+        klass.send(:dispatch, nil, thor_args, nil, config)
       else
-        full_namespace = given_args.first
+        main_help
       end
-      # puts "full_namespace #{full_namespace.inspect}"
+    end
 
-      if full_namespace.nil?
-        meth = nil
-        namespace = nil
-      elsif full_namespace.include?(':')
-        words = full_namespace.split(':')
-        meth = words.pop
-        namespace = words.join(':')
-      else
-        meth = full_namespace
-        namespace = nil
-      end
-      # puts "namespace #{namespace.inspect}"
+    def thor_args(given_args)
+      full_command = full_command(given_args)
+      namespace, meth = namespace_and_meth(full_command)
 
       thor_args = given_args.dup
       if given_args.first == "help"
@@ -45,17 +27,28 @@ class Jets::Command
         thor_args[0] = meth
       end
 
-      if namespace
-        klass = "Jets::Commands::#{namespace.classify}".constantize
-        klass.send(:dispatch, nil, thor_args, nil, config)
-      else
-        # klass = Jets::Command::Base
-        main_help
-      end
+      thor_args.compact
+    end
 
-      # hard codes that work
-      # Jets::Commands::Foo.send(:dispatch, :bar, [], nil, config)
-      # Jets::Commands::Foo.send(:dispatch, nil, ["help", "bar"], nil, config)
+    def full_command(given_args)
+      given_args[0] == "help" ?
+        given_args[1] :
+        given_args[0]
+    end
+
+    def namespace_and_meth(full_command)
+      if full_command.nil?
+        meth = nil
+        namespace = nil
+      elsif full_command.include?(':')
+        words = full_command.split(':')
+        meth = words.pop
+        namespace = words.join(':')
+      else
+        meth = full_command
+        namespace = nil
+      end
+      [namespace, meth]
     end
 
     def main_help
