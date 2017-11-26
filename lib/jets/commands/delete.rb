@@ -1,4 +1,4 @@
-class Jets::Delete
+class Jets::Commands::Delete
   include Jets::AwsServices
 
   def initialize(options)

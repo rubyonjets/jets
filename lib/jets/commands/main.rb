@@ -24,7 +24,7 @@ module Jets::Commands
     long_desc Help.delete
     option :sure, type: :boolean, desc: "Skip are you sure prompt."
     def delete
-      Jets::Delete.new(options).run
+      Delete.new(options).run
     end
 
     desc "new", "Creates new starter project"
