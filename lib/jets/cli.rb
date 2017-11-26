@@ -15,17 +15,16 @@ class Jets::CLI
     @config = config
   end
 
-  # 1. look up Thor tasks
-  # 2. look up Rake tasks
-  # 3. help menu with all commands when both Thor and Rake tasks are not found
   def start
     if meth and namespace.nil?
       Jets::Commands::Main.send(:dispatch, nil, thor_args, nil, @config)
       return
     end
 
-    command_class = find_by_namespace(namespace)
+    # command_class = find_by_namespace(namespace)
+    command_class = lookup(full_command)
     if command_class.is_a?(RakeCommand)
+      # test
     elsif command_class.is_a?(Jets::Commands::Base)
       command_class.send(:dispatch, nil, thor_args, nil, @config)
     else
@@ -33,8 +32,14 @@ class Jets::CLI
     end
   end
 
-  def find_by_namespace(namespace)
-    klass = "Jets::Commands::#{namespace.classify}".constantize
+  # 1. look up Thor tasks
+  # 2. look up Rake tasks
+  # 3. help menu with all commands when both Thor and Rake tasks are not found
+  def lookup(full_command)
+    thor_task_found = Jets::Commands::Base.task_full_names.include?(full_command)
+    if thor_task_found
+      "Jets::Commands::#{namespace.classify}".constantize
+    end
   end
 
   # ["-h", "-?", "--help", "-D", "help"]

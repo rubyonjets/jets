@@ -1,4 +1,4 @@
-class Jets::Commands::Webpacker
+class Jets::Webpacker
   autoload :RakeTasks, "jets/webpacker/rake_tasks"
   autoload :MiddlewareSetup, "jets/webpacker/middleware_setup"
 
