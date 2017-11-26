@@ -3,52 +3,73 @@ require "jets/command/base"
 
 describe Jets::Command do
   let(:null) { double(:null).as_null_object }
-  let(:command_klass) do
-    allow(Jets::Command).to receive(:shell).and_return(null)
-    Jets::Command
+  let(:command) do
+    command = Jets::Command.new(given_args)
+    allow(command).to receive(:shell).and_return(null)
+    command
   end
 
-  it "help" do
-    # just makes sure all the code runs to completion
-    command_klass.start(["help"])
-    expect(Jets::Command).to have_received(:shell).at_least(:once)
+  context '"help"' do
+    let(:given_args) { ["help"] }
+
+    it "starts" do
+      # just makes sure all the code runs to completion
+      command.start()
+      expect(command).to have_received(:shell).at_least(:once)
+    end
+
+    it "thor_args removes namespace from args" do
+      expect(command.thor_args).to eq(["help"])
+    end
+
+    it "full_command, namespace, meth" do
+      expect(command.full_command).to be nil
+      expect(command.namespace).to be nil
+      expect(command.meth).to be nil
+    end
   end
 
-  it "thor_args moves namespace from args" do
-    args = command_klass.thor_args(["help"])
-    expect(args).to eq(["help"])
+  context '"help", "dynamodb:migrate"' do
+    let(:given_args) { ["help", "dynamodb:migrate"] }
 
-    args = command_klass.thor_args(["help", "dynamodb:migrate"])
-    expect(args).to eq(["help", "migrate"])
+    it "thor_args removes namespace from args" do
+      expect(command.thor_args).to eq(["help", "migrate"])
+    end
 
-    args = command_klass.thor_args(["dynamodb:migrate"])
-    expect(args).to eq(["migrate"])
+    it "full_command, namespace, meth" do
+      expect(command.full_command).to eq "dynamodb:migrate"
+      expect(command.namespace).to eq "dynamodb"
+      expect(command.meth).to  eq "migrate"
+    end
   end
 
-  it "full_command" do
-    command = command_klass.full_command(["help"])
-    expect(command).to be nil
+  context '"dynamodb:migrate"' do
+    let(:given_args) { ["dynamodb:migrate"] }
 
-    command = command_klass.full_command(["help", "dynamodb:migrate"])
-    expect(command).to eq "dynamodb:migrate"
+    it "thor_args removes namespace from args" do
+      expect(command.thor_args).to eq(["migrate"])
+    end
 
-    command = command_klass.full_command(["dynamodb:migrate"])
-    expect(command).to eq "dynamodb:migrate"
+    it "full_command, namespace, meth" do
+      expect(command.full_command).to eq "dynamodb:migrate"
+      expect(command.namespace).to eq "dynamodb"
+      expect(command.meth).to  eq "migrate"
+    end
   end
 
-  it "namespace_and_meth" do
-    namespace, meth = command_klass.namespace_and_meth("help")
-    expect(namespace).to be nil
-    expect(meth).to eq "help"
+  # it "namespace_and_meth" do
+  #   namespace, meth = command.namespace_and_meth("help")
+  #   expect(namespace).to be nil
+  #   expect(meth).to eq "help"
 
-    namespace, meth = command_klass.namespace_and_meth("dynamodb:migrate")
-    expect(namespace).to eq "dynamodb"
-    expect(meth).to eq "migrate"
+  #   namespace, meth = command.namespace_and_meth("dynamodb:migrate")
+  #   expect(namespace).to eq "dynamodb"
+  #   expect(meth).to eq "migrate"
 
-    namespace, meth = command_klass.namespace_and_meth("dynamodb:migrate:down")
-    expect(namespace).to eq "dynamodb:migrate"
-    expect(meth).to eq "down"
-  end
+  #   namespace, meth = command.namespace_and_meth("dynamodb:migrate:down")
+  #   expect(namespace).to eq "dynamodb:migrate"
+  #   expect(meth).to eq "down"
+  # end
 end
 
 # full_command, args = [], **config
