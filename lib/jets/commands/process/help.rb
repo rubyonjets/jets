@@ -6,9 +6,9 @@ Processes node shim controller handler. The node shim spawns out to this command
 
 Example:
 
-$ jets process controller '{"pathParameters":{}}' '{"context":"data"}' "handlers/controllers/posts_controller.index"
+$ jets process:controller '{"pathParameters":{}}' '{"context":"data"}' "handlers/controllers/posts_controller.index"
 
-$ jets process controller '{"pathParameters":{"id":"tung"}}' '{}' handlers/controllers/posts_controller.show
+$ jets process:controller '{"pathParameters":{"id":"tung"}}' '{}' handlers/controllers/posts_controller.show
 EOL
     end
 
@@ -18,7 +18,7 @@ Processes node shim job handler. The node shim spawns out to this command.
 
 Example:
 
-$ jets process job '{"we":"love", "using":"Lambda"}' '{"context":"data"}' "handlers/jobs/hard_job.dig"
+$ jets process:job '{"we":"love", "using":"Lambda"}' '{"context":"data"}' "handlers/jobs/hard_job.dig"
 EOL
     end
 
