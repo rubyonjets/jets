@@ -299,7 +299,7 @@ class Jets::Builders
 
     # Group all the path settings together here
     def self.tmp_app_root
-      Jets::Builders::tmp_app_root
+      Jets::Commands::Build.tmp_app_root
     end
 
     def tmp_app_root

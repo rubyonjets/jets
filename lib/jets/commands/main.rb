@@ -8,7 +8,7 @@ class Jets::Commands::Main < Jets::Commands::Base
   desc "build", "Builds and prepares project for Lambda"
   long_desc Help.build
   def build
-    Jets::Build.new(options).run
+    Jets::Commands::Build.new(options).run
   end
 
   desc "deploy", "Deploys project to Lambda"

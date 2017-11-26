@@ -5,7 +5,7 @@ describe Jets::Builders do
     FileUtils.rm_f("spec/fixtures/project/handlers/controllers/posts.js")
   end
   let(:build) do
-    Jets::Build.new(noop: true)
+    Jets::Commands::Build.new(noop: true)
   end
 
   context "running build process" do

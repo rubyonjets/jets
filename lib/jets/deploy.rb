@@ -23,17 +23,17 @@ class Jets::Deploy
   end
 
   def build_code
-    Jets::Build.new(stack_options).build_code
+    Jets::Commands::Build.new(stack_options).build_code
   end
 
   def deploy_minimal_stack
-    Jets::Build.new(stack_options).build_minimal_stack
+    Jets::Commands::Build.new(stack_options).build_minimal_stack
     Jets::Cfn::Ship.new(stack_options).run
   end
 
   def deploy_full_stack
     stack_options = stack_options(true) # refresh stack_options
-    Jets::Build.new(stack_options).build_all_templates
+    Jets::Commands::Build.new(stack_options).build_all_templates
     Jets::Cfn::Ship.new(stack_options).run
   end
 

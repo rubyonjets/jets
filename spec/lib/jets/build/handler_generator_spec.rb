@@ -9,7 +9,7 @@ describe "HandlerGenerator" do
     it "generates a node shim" do
       generator.generate
       # okay to use tmp_app_root because we just have generated it above
-      content = IO.read("#{Jets::Builders.tmp_app_root("full")}/handlers/controllers/posts_controller.js")
+      content = IO.read("#{Jets::Commands::Build.tmp_app_root("full")}/handlers/controllers/posts_controller.js")
       expect(content).to include("handlers/controllers/posts_controller.create") # handler
       expect(content).to include("exports.create") # 1st function
       expect(content).to include("exports.update") # 2nd function
@@ -23,7 +23,7 @@ describe "HandlerGenerator" do
 
     it "generates a node shim" do
       generator.generate
-      content = IO.read("#{Jets::Builders.tmp_app_root("full")}/handlers/jobs/hard_job.js")
+      content = IO.read("#{Jets::Commands::Build.tmp_app_root("full")}/handlers/jobs/hard_job.js")
       expect(content).to include("handlers/jobs/hard_job.dig") # handler
       expect(content).to include("exports.dig")
     end
