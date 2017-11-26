@@ -6,9 +6,9 @@ Runs migrations.
 
 Example:
 
-jets dynamodb:migrate path/to/migration
+jets db migrate path/to/migration
 
-jets dynamodb:migrate db/migrate/posts_migration.rb
+jets db migrate db/migrate/posts_migration.rb
 EOL
     end
 
@@ -33,26 +33,26 @@ For example, --partition-key id:string will map 'string' to 's'.  More info here
 
 Examples:
 
-$ jets dynamodb:generate create_posts --partition-key id # default attribute type is string
+$ jets dynamodb generate create_posts --partition-key id # default attribute type is string
 
-$ jets dynamodb:generate create_posts --partition-key id:number # attribute type will be number
+$ jets dynamodb generate create_posts --partition-key id:number # attribute type will be number
 
-$ jets dynamodb:generate create_comments --partition-key post_id:string --sort-key created_at:string
+$ jets dynamodb generate create_comments --partition-key post_id:string --sort-key created_at:string
 
 To run migrations:
 
-$ jets dynamodb:migrate path/to/migration
+$ jets dynamodb migrate path/to/migration
 
-$ jets dynamodb:migrate dynamodb/migrate/20171112162404-create_articles_migration.rb
+$ jets dynamodb migrate dynamodb/migrate/20171112162404-create_articles_migration.rb
 
 
 To add global secondary indexes:
 
-$ jets dynamodb:generate update_comments --partition-key user_id:string --sort-key created_at:string
+$ jets dynamodb generate update_comments --partition-key user_id:string --sort-key created_at:string
 
 To run:
 
-$ jets dynamodb:migrate dynamodb/migrate/20171112161530-create_posts_migration.rb
+$ jets dynamodb migrate dynamodb/migrate/20171112161530-create_posts_migration.rb
 
 Conventions:
 
@@ -60,17 +60,17 @@ An create_table or update_table migration file is generated based name you provi
 
 The table_name is also inferred from the migration name you provide.  Examples:
 
-jets dynamodb:generate create_posts => table_name: posts
+jets dynamodb generate create_posts => table_name: posts
 
-jets dynamodb:generate update_comments => table_name: comments
+jets dynamodb generate update_comments => table_name: comments
 
 You can override both of these conventions:
 
-jets dynamodb:generate create_my_posts --table-name posts
+jets dynamodb generate create_my_posts --table-name posts
 
-jets dynamodb:generate my_posts --table-action create_table --table-name posts
+jets dynamodb generate my_posts --table-action create_table --table-name posts
 
-jets dynamodb:generate my_posts --table-action update_table --table-name posts
+jets dynamodb generate my_posts --table-action update_table --table-name posts
 
 EOL
     end

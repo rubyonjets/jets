@@ -1,7 +1,7 @@
 class Jets::Commands::Dynamodb < Jets::Command::Base
-  autoload :Help, 'jets/commands/dynamodb/help'
   autoload :Migrator, 'jets/commands/dynamodb/migrator'
   autoload :Migrate, 'jets/commands/dynamodb/migrate'
+  autoload :Help, 'jets/commands/dynamodb/help'
 
   desc "migrate [path]", "Runs migrations"
   long_desc Help.migrate
