@@ -44,7 +44,7 @@ class Jets::Commands::RakeCommand
     def help_message(namespaced_command)
       task = rake_tasks(true).find { |t| t.name == namespaced_command }
       message = "Help provided by rake task:\n\n"
-      message << task.name_with_args.dup + "\n"
+      message << "jets #{task.name_with_args.dup}\n"
       message << "    #{task.full_comment}"
       message
     end

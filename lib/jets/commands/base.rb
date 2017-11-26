@@ -46,6 +46,20 @@ class Jets::Commands::Base < Thor
       end.flatten.sort
     end
 
+    # Use Jets banner instead of Thor to account for the namespace commands
+    def banner(command, namespace = nil, subcommand = false)
+      class_name = self.name # Examples:
+        # Jets::Commands::Dynamodb, Jets::Commands::Main
+      class_name.gsub!('Jets::Commands::','').gsub!(/^Main/,'')
+      namespace = class_name.underscore.gsub('/',':')
+      namespace = nil if namespace.empty?
+
+      command_name = command.usage # we set this as the last part of the command
+      namespaced_command = [namespace, command_name].compact.join(':')
+
+      "jets #{namespaced_command}"
+    end
+
     def help_list(all=false)
       # hack to show hidden comands when requested
       Thor::HiddenCommand.class_eval do
