@@ -8,7 +8,6 @@ class Jets::CLI
 
   def initialize(given_args=ARGV, **config)
     @given_args = given_args.dup
-    @thor_args = given_args.dup
     @config = config
   end
 
@@ -24,7 +23,7 @@ class Jets::CLI
   end
 
   def thor_args
-    args = @thor_args.dup
+    args = @given_args
 
     if args.first == "help"
       args[1] = meth
