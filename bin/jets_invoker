@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+# traps: INT - ^C
+['INT', 'TERM', 'QUIT'].each do |signal|
+  trap(signal) do
+    puts "\nExiting..."
+    sleep 1
+    exit
+  end
+end
+
+$:.unshift(File.expand_path("../../lib", __FILE__))
+require "jets"
+require "jets/cli"
+
+Jets.boot
+Jets::CommandInvoker.start
+# Jets::Commands::Foo.send(:dispatch, nil, ["help", "bar"], nil, {})
+# Jets::Commands::Foo.send(:dispatch, nil, ["bar"], nil, {})

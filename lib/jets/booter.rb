@@ -48,7 +48,7 @@ class Jets::Booter
     autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
   end
 
-  # Make sure that this command is ran within a jets project
+  # Cannot call this for the jets new
   def confirm_jets_project!
     unless File.exist?("#{Jets.root}config/application.rb")
       puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)

@@ -78,11 +78,11 @@ module Jets
     end
 
     # TODO: implement a custom generator for Jets leveraging Rails generators
-    # desc "generate GENERATOR [args] [options]", "Generates things like scaffolds"
-    # long_desc Help.generate
-    # def generate(generator, *args)
-    #   Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
-    # end
+    desc "generate GENERATOR [args] [options]", "Generates things like scaffolds"
+    long_desc Help.generate
+    def generate(generator, *args)
+      Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
+    end
 
     desc "webpacker", "Webpacker commands"
     long_desc Help.webpacker
