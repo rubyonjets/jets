@@ -88,7 +88,4 @@ class Jets::Commands::Main < Jets::Commands::Base
   # def webpacker(*args)
   #   Webpacker.run_command(args)
   # end
-
-  # desc "process TYPE", "process subtasks"
-  # subcommand "process", Jets::Process
 end
