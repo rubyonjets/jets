@@ -50,7 +50,7 @@ class Jets::Command
         klass.send(:dispatch, nil, thor_args, nil, config)
       else
         # klass = Jets::Command::Base
-        top_level_help
+        main_help
       end
 
       # hard codes that work
@@ -58,21 +58,25 @@ class Jets::Command
       # Jets::Commands::Foo.send(:dispatch, nil, ["help", "bar"], nil, config)
     end
 
-    def top_level_help
+    def main_help
       # puts Jets::Commands::Foo.help(Thor::Shell::Basic.new)
 
       shell = Thor::Shell::Basic.new
       shell.say "Commands:"
+
+      list = []
       klasses = [Jets::Commands::Foo, Jets::Commands::Dynamodb]
       klasses.each do |klass|
-        list = klass.printable_commands(true, false)
-        # pp list
+        commands = klass.printable_commands(true, false)
         namespace = namespace_from_class(klass)
-        list.map! { |array| array[0].sub!("jets ", "jets #{namespace}:") ; array }
-        list.reject! { |array| array[0].include?(':help') }
-
-        shell.print_table(list, :indent => 2, :truncate => true)
+        commands.map! { |array| array[0].sub!("jets ", "jets #{namespace}:") ; array }
+        commands.reject! { |array| array[0].include?(':help') }
+        list += commands
       end
+
+      first_help = ["jets help", "# Describe available commands or one specific command"]
+      list.unshift(first_help)
+      shell.print_table(list, :indent => 2, :truncate => true)
     end
 
     def namespace_from_class(klass)
