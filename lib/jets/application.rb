@@ -3,7 +3,7 @@ require "recursive-open-struct"
 class Jets::Application
   # Middleware used for development only
   autoload :Middleware, "jets/application/middleware"
-  extend Middleware
+  include Middleware
 
   def configure(&block)
     instance_eval(&block) if block
