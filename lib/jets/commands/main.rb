@@ -86,7 +86,7 @@ module Jets::Commands
     desc "webpacker", "Webpacker commands"
     long_desc Help.webpacker
     def webpacker(*args)
-      Jets::Webpacker.run_command(args)
+      Jets::Commands::Webpacker.run_command(args)
     end
   end
 end
