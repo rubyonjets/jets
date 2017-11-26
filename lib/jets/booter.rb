@@ -1,16 +1,12 @@
 # Global overrides for Lambda processing
 $stdout.sync = true
-# This might seem weird but we want puts to write to stderr which is set in
-# the node shim to write to stderr.  This directs the output to Lambda logs.
-# Printing to stdout can managle up the payload returned from Lambda function.
-# This is not desired if you want to return say a json payload to API Gateway
-# eventually.
-def puts(text)
-  $stderr.puts(text)
-end
-def print(*args)
-  $stderr.print(*args)
-end
+$stderr.sync = true
+$stdout = $stderr
+# $stdout = $stderr might seem weird but we want puts to write to stderr which
+# is set in the node shim to write to stderr.  This directs the output to
+# Lambda logs.
+# Printing to stdout managles up the payload returned from Lambda function.
+# This is not desired when returning payload to API Gateway eventually.
 
 class Jets::Booter
   def boot!
