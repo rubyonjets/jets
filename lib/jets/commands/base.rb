@@ -39,7 +39,14 @@ class Jets::Commands::Base < Thor
       end.flatten.sort
     end
 
-    def help_list
+    def help_list(all=false)
+      # hack to show hidden comands when requested
+      Thor::HiddenCommand.class_eval do
+        def hidden?
+          false
+        end
+      end if all
+
       list = []
       Jets::Commands::Base.eager_load!
       Jets::Commands::Base.subclasses.each do |klass|

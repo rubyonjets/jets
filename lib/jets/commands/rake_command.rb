@@ -1,9 +1,5 @@
 class Jets::Commands::RakeCommand
   class << self
-    def printing_commands
-      formatted_rake_tasks.map(&:first)
-    end
-
     # Same signature as Jets::Commands::Base.perform.
     def perform(namespaced_command, thor_args)
       if thor_args.first == "help"
@@ -22,11 +18,18 @@ class Jets::Commands::RakeCommand
       end
     end
 
-    def rake
-      Rake.application
+    def printing_commands(all=false)
+      formatted_rake_tasks(all).map(&:first)
     end
 
-    def rake_tasks
+    def formatted_rake_tasks(all=false)
+      rake_tasks(all).map do |t|
+        comment = "# #{t.comment}" if t.comment
+        [ t.name_with_args, comment ]
+      end
+    end
+
+    def rake_tasks(all=false)
       require_rake
 
       return @rake_tasks if defined?(@rake_tasks)
@@ -34,22 +37,24 @@ class Jets::Commands::RakeCommand
       Rake::TaskManager.record_task_metadata = true
       rake.instance_variable_set(:@name, "jets")
       load_tasks
-      @rake_tasks = rake.tasks.select(&:comment)
+      @rake_tasks = rake.tasks
+      @rake_tasks = @rake_tasks.select(&:comment) unless all
+      @rake_tasks
     end
 
     def help_message(namespaced_command)
-      task = rake_tasks.find { |t| t.name == namespaced_command }
+      task = rake_tasks(true).find { |t| t.name == namespaced_command }
       message = "Help provided by rake task:\n\n"
       message << task.name_with_args.dup + "\n"
       message << "    #{task.full_comment}"
       message
     end
 
-    def formatted_rake_tasks
-      rake_tasks.map { |t| [ t.name_with_args, "# #{t.comment}" ] }
+  private
+    def rake
+      Rake.application
     end
 
-  private
     def require_rake
       require "rake" # Defer booting Rake until we know it's needed.
     end

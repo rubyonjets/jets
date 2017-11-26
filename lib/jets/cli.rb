@@ -16,7 +16,6 @@ class Jets::CLI
   end
 
   def start
-    # command_class = find_by_namespace(namespace)
     command_class = lookup(full_command)
     if command_class
       command_class.perform(full_command, thor_args)
@@ -37,7 +36,7 @@ class Jets::CLI
       return klass
     end
 
-    rake_task_found = Jets::Commands::RakeCommand.printing_commands.include?(full_command)
+    rake_task_found = Jets::Commands::RakeCommand.printing_commands(show_all_tasks).include?(full_command)
     if rake_task_found
       return Jets::Commands::RakeCommand
     end
@@ -101,6 +100,22 @@ class Jets::CLI
     shell.say main_help_body
   end
 
+  def thor_list
+    Jets::Commands::Base.help_list(show_all_tasks)
+  end
+
+  def rake_list
+    list = Jets::Commands::RakeCommand.formatted_rake_tasks(show_all_tasks)
+    list.map do |array|
+      array[0] = "jets #{array[0]}"
+      array
+    end
+  end
+
+  def show_all_tasks
+    @given_args.include?("--all") || @given_args.include?("-A")
+  end
+
   def main_help_body
     <<-EOL
 For more help on each command add the -h flag to any of the commands.  Examples:
@@ -113,15 +128,4 @@ For more help on each command add the -h flag to any of the commands.  Examples:
 EOL
   end
 
-  def thor_list
-    Jets::Commands::Base.help_list
-  end
-
-  def rake_list
-    list = Jets::Commands::RakeCommand.formatted_rake_tasks
-    list.map do |array|
-      array[0] = "jets #{array[0]}"
-      array
-    end
-  end
 end
