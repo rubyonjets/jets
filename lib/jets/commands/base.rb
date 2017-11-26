@@ -54,7 +54,7 @@ class Jets::Commands::Base < Thor
       namespace = class_name.underscore.gsub('/',':')
       namespace = nil if namespace.empty?
 
-      command_name = command.usage # we set this as the last part of the command
+      command_name = command.usage # set with desc when defining tht Thor class
       namespaced_command = [namespace, command_name].compact.join(':')
 
       "jets #{namespaced_command}"
