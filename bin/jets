@@ -11,6 +11,5 @@ end
 
 $:.unshift(File.expand_path("../../lib", __FILE__))
 require "jets"
-
 Jets.boot
 Jets::CLI.start

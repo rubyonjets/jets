@@ -16,19 +16,18 @@ class Jets::CLI
   end
 
   def start
-    if meth and namespace.nil?
-      Jets::Commands::Main.send(:dispatch, nil, thor_args, nil, @config)
+    # command_class = find_by_namespace(namespace)
+    command_class = lookup(full_command)
+
+    unless command_class
+      main_help
       return
     end
 
-    # command_class = find_by_namespace(namespace)
-    command_class = lookup(full_command)
-    if command_class.is_a?(Jets::Commands::RakeCommand)
-      command_class.perform(thor_args, @config)
-    elsif command_class.is_a?(Jets::Commands::Base)
+    if command_class < Jets::Commands::Base
       command_class.send(:dispatch, nil, thor_args, nil, @config)
-    else
-      main_help
+    elsif command_class == Jets::Commands::RakeCommand
+      Jets::Commands::RakeCommand.perform(full_command)
     end
   end
 
@@ -38,10 +37,13 @@ class Jets::CLI
   def lookup(full_command)
     thor_task_found = Jets::Commands::Base.namespaced_commands.include?(full_command)
     if thor_task_found
-      return "Jets::Commands::#{namespace.classify}".constantize
+      klass = namespace.nil? ?
+                Jets::Commands::Main :
+                "Jets::Commands::#{namespace.classify}".constantize
+      return klass
     end
 
-    rake_task_found = Jets::Commands::RakeCommand.namespaced_commands.include?(full_command)
+    rake_task_found = Jets::Commands::RakeCommand.printing_commands.include?(full_command)
     if rake_task_found
       return Jets::Commands::RakeCommand
     end

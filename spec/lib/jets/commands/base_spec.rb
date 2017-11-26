@@ -9,7 +9,7 @@ describe Jets::Commands::Base do
   end
 
   context Jets::Commands::Base do
-    it "task_names" do
+    it "namespaced_commands" do
       commands = Jets::Commands::Base.namespaced_commands
       expect(commands).to include "build"
       expect(commands).to include "call"
