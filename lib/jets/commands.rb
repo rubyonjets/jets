@@ -3,6 +3,7 @@ module Jets::Commands
   autoload :Build, "jets/commands/build"
   autoload :Deploy, "jets/commands/deploy"
   autoload :Delete, "jets/commands/delete"
+  autoload :New, "jets/commands/new"
   autoload :Db, "jets/commands/db"
   autoload :Dynamodb, "jets/commands/dynamodb"
   autoload :Main, "jets/commands/main"

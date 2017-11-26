@@ -31,7 +31,7 @@ module Jets::Commands
     long_desc Help.new_long_desc
     option :template, default: "starter", desc: "Starter template to use."
     def new(project_name)
-      Jets::New.new(project_name, options).run
+      New.new(project_name, options).run
     end
 
     desc "server", "Runs a local server for development"

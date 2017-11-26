@@ -3,7 +3,7 @@ require 'colorize'
 require 'active_support/core_ext/string'
 require 'bundler'
 
-class Jets::New
+class Jets::Commands::New
   class Generator
     def initialize(project_name, options={})
       @project_name = project_name

@@ -1,5 +1,5 @@
-class Jets::New
-  autoload :Generator, "jets/new/generator"
+class Jets::Commands::New
+  autoload :Generator, "jets/commands/new/generator"
 
   def initialize(project_name, options)
     @project_name = project_name
