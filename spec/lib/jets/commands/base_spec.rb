@@ -9,8 +9,8 @@ describe Jets::Commands::Base do
   end
 
   context Jets::Commands::Base do
-    it "task_full_names" do
-      full_names = Jets::Commands::Base.task_full_names
+    it "task_names" do
+      full_names = Jets::Commands::Base.task_names
       expect(full_names).to include "build"
       expect(full_names).to include "call"
       expect(full_names).to include "routes"

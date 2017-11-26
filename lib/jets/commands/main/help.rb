@@ -128,7 +128,7 @@ EOL
 <<-EOL
 Webpacker commands.  Just delegates to the webpacker rake tasks. Useful command:
 
-$ jets webpacker install
+$ jets webpacker:install
 
 or
 
