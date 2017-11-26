@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Jets::Builders do
+describe Jets::Commands::Build do
   before(:each) do
     FileUtils.rm_f("spec/fixtures/project/handlers/controllers/posts.js")
   end
@@ -30,16 +30,16 @@ describe Jets::Builders do
 
   context "methods" do
     it "app_file?" do
-      yes = Jets::Builders.app_file?("app/controllers/posts_controller.rb")
+      yes = Jets::Commands::Build.app_file?("app/controllers/posts_controller.rb")
       expect(yes).to be true
 
-      yes = Jets::Builders.app_file?("app/jobs/hard_job.rb")
+      yes = Jets::Commands::Build.app_file?("app/jobs/hard_job.rb")
       expect(yes).to be true
 
-      yes = Jets::Builders.app_file?("app/functions/hello.rb")
+      yes = Jets::Commands::Build.app_file?("app/functions/hello.rb")
       expect(yes).to be true
 
-      yes = Jets::Builders.app_file?("app/models/post.rb")
+      yes = Jets::Commands::Build.app_file?("app/models/post.rb")
       expect(yes).to be false
     end
   end
