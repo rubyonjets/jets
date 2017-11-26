@@ -56,7 +56,7 @@ class Jets::Commands::Base < Thor
         list += commands
       end
 
-      list.sort_by { |array| array[1] }
+      list.sort_by! { |array| array[0] }
     end
 
     def namespace_from_class(klass)
