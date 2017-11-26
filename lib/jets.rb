@@ -55,6 +55,7 @@ module Jets
   autoload :Core, "jets/core"
   extend Core # root, logger, etc
 
+  autoload :Command, "jets/command"
   autoload :Commands, "jets/commands"
   autoload :CommandInvoker, "jets/command_invoker"
 end

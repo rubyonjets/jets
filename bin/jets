@@ -14,4 +14,6 @@ require "jets"
 require "jets/cli"
 
 Jets.boot
-Jets::CLI.start(ARGV)
+# Jets::Command.start
+
+puts Jets::Commands::Foo.help(Thor::Shell::Basic.new)

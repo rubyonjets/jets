@@ -1,5 +1,5 @@
 module Jets::Commands
-  class Foo < Jets::Command
+  class Foo < Jets::Command::Base
     desc "bar [options]", "bar desc"
     option :dry
     def bar
