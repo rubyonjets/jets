@@ -44,8 +44,7 @@ describe Jets::CLI do
   context 'jets --whatever' do
     let(:given_args) { ["--whatever"] }
 
-    it "command_args removes -- options" do
-      expect(command.command_args).to eq []
+    it "full_command, namespace, meth" do
       expect(command.full_command).to be nil
       expect(command.namespace).to be nil
       expect(command.meth).to be nil
@@ -60,7 +59,6 @@ describe Jets::CLI do
     end
 
     it "full_command, namespace, meth" do
-      expect(command.command_args).to eq ["routes"]
       expect(command.full_command).to eq "routes"
       expect(command.namespace).to be nil
       expect(command.meth).to eq "routes"
@@ -72,6 +70,48 @@ describe Jets::CLI do
 
     it "thor_args removes namespace from args" do
       expect(command.thor_args).to eq(["help", "migrate"])
+    end
+
+    it "full_command, namespace, meth" do
+      expect(command.full_command).to eq "dynamodb:migrate"
+      expect(command.namespace).to eq "dynamodb"
+      expect(command.meth).to  eq "migrate"
+    end
+  end
+
+  context 'jets dynamodb:migrate help' do
+    let(:given_args) { ["dynamodb:migrate", "help"] }
+
+    it "thor_args moves help command to the front" do
+      expect(command.thor_args).to eq(["help", "migrate"]) # help in front
+    end
+
+    it "full_command, namespace, meth" do
+      expect(command.full_command).to eq "dynamodb:migrate"
+      expect(command.namespace).to eq "dynamodb"
+      expect(command.meth).to  eq "migrate"
+    end
+  end
+
+  context 'jets dynamodb:migrate --help' do
+    let(:given_args) { ["dynamodb:migrate", "help"] }
+
+    it "thor_args moves help command to the front" do
+      expect(command.thor_args).to eq(["help", "migrate"]) # help in front
+    end
+
+    it "full_command, namespace, meth" do
+      expect(command.full_command).to eq "dynamodb:migrate"
+      expect(command.namespace).to eq "dynamodb"
+      expect(command.meth).to  eq "migrate"
+    end
+  end
+
+  context 'jets --help dynamodb:migrate' do
+    let(:given_args) { ["dynamodb:migrate", "help"] }
+
+    it "thor_args moves help command to the front" do
+      expect(command.thor_args).to eq(["help", "migrate"]) # help in front
     end
 
     it "full_command, namespace, meth" do

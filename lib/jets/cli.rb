@@ -22,28 +22,32 @@ class Jets::CLI
     end
   end
 
+  # ["-h", "-?", "--help", "-D", "help"]
+  def help_flags
+    Thor::HELP_MAPPINGS + ["help"]
+  end
+
   def thor_args
     args = @given_args
 
-    if args.first == "help"
-      args[1] = meth
+    help_args = args & help_flags
+    if help_args.empty?
+      args[0] = meth # reassigns the command without the namespace
     else
-      args[0] = meth
+      # allows using help flags at the end of the ocmmand to trigger the help menu
+      args -= help_flags # remove "help" and help flags from args
+      args[0] = meth # first command will always be the meth now since
+        # we removed the help flags
+      args.unshift("help")
     end
-
     args.compact
   end
 
-  # Removes any args that starts with -
-  # Those are option args.
-  def command_args
-    @given_args.reject {|o| o =~ /^-/ }
-  end
-
   def full_command
-    command_args[0] == "help" ?
-      command_args[1] :
-      command_args[0]
+    # Removes any args that starts with -, those are option args.
+    # Also remove "help" flag.
+    args = @given_args.reject {|o| o =~ /^-/ } - help_flags
+    args[0] # first argument should always be the command
   end
 
   def namespace
