@@ -14,7 +14,7 @@ end
 
 class Jets::Booter
   def boot!
-    confirm_jets_project!
+    # confirm_jets_project!
 
     $stderr.puts "Jets booting up in #{Jets.env.colorize(:green)} mode!"
     require "bundler/setup"
