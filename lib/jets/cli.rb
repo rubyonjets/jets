@@ -105,7 +105,7 @@ class Jets::CLI
     <<-EOL
 For more help on each command add the -h flag to any of the commands.  Examples:
 
-  jets build -h
+  jets call -h
   jets routes -h
   jets dynamodb:create -h
   jets db:create -h

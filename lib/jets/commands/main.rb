@@ -85,11 +85,5 @@ module Jets::Commands
     def generate(generator, *args)
       Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
     end
-
-    desc "webpacker", "Webpacker commands"
-    long_desc Help.webpacker
-    def webpacker(*args)
-      Jets::Commands::Webpacker.run_command(args)
-    end
   end
 end
