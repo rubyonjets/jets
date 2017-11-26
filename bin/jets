@@ -14,4 +14,4 @@ require "jets"
 require "jets/command/base"
 
 Jets.boot
-Jets::Command.start
+Jets::Command.new(ARGV).start

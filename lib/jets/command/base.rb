@@ -2,42 +2,27 @@ require "thor"
 
 class Jets::Command
   class Base < Thor
+
     class << self
-      # def command_help(shell, command_name)
-      #   meth = normalize_command_name(command_name)
-      #   command = all_commands[meth]
+      # Track all command subclasses.
+      def subclasses
+        @subclasses ||= []
+      end
 
-      #   pp command
-      #   unless command.long_description
-      #     command.long_description = markdown_long_desc(meth)
-      #   end
+      def inherited(base)
+        super
 
-      #   super
-      # end
+        self.subclasses << base if base.name
+      end
 
-      # def long_desc(long_description=nil, options = {})
-      #   if long_description
-      #     super
-      #   else
-      #     @long_desc ||= Jets::Erb.result(long_desc_path) if long_desc_path
-      #   end
-      # end
+      # useful for help menu
+      def eager_load!
+        path = File.expand_path("../../", __FILE__)
+        Dir.glob("#{path}/commands/**/*.rb").each do |path|
+          require path
+        end
+      end
 
-      # def long_desc_path
-      #   # Jets::Commands::Dynamodb
-      #   # self.to_s.underscore
-      #   # puts "markdown_path "
-      #   # path = File.expand_path("../#{}")
-      #   # puts "File.expand_path: "
-      #   puts "self #{self.inspect}"
-      #   nil
-      # end
-
-      # def markdown_long_desc(meth)
-      #   puts "class #{self.class}"
-      #   puts "meth #{meth}"
-      #   nil
-      # end
       # TODO: re-enable after figure out the namespace thor hacks
       # def dispatch(m, args, options, config)
       #   # Allow calling for help via:

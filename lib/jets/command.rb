@@ -5,12 +5,13 @@ class Jets::Command
   def initialize(given_args=ARGV, **config)
     @given_args = given_args.dup
     @thor_args = given_args.dup
+    @config = config
   end
 
   def start
     if namespace
       klass = "Jets::Commands::#{namespace.classify}".constantize
-      klass.send(:dispatch, nil, thor_args, nil, config)
+      klass.send(:dispatch, nil, thor_args, nil, @config)
     else
       main_help
     end
@@ -55,18 +56,9 @@ class Jets::Command
   end
 
   def main_help
-    # puts Jets::Commands::Foo.help(Thor::Shell::Basic.new)
-    shell.say "Commands:"
-
     list = []
-    # TODO: use inherited to store the list of classes
-    klasses = [
-      Jets::Commands::Foo,
-      Jets::Commands::Dynamodb,
-      Jets::Commands::Dynamodb::Migrate,
-      Jets::Commands::Main,
-    ]
-    klasses.each do |klass|
+    Jets::Command::Base.eager_load!
+    Jets::Command::Base.subclasses.each do |klass|
       commands = klass.printable_commands(true, false)
       namespace = namespace_from_class(klass)
       # puts "namespace2 #{namespace}"
@@ -85,6 +77,8 @@ class Jets::Command
     first_help = ["jets help", "# Describe available commands or one specific command"]
     list.sort_by! { |array| array[1] }
     list.unshift(first_help)
+
+    shell.say "Commands:"
     shell.print_table(list, :indent => 2, :truncate => true)
   end
 
