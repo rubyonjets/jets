@@ -4,6 +4,7 @@ class Jets::Commands::RakeCommand
       formatted_rake_tasks.map(&:first)
     end
 
+    # Same signature as Jets::Commands::Base.perform.  Not using thor_args.
     def perform(task, *)
       require_rake
 

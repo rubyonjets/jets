@@ -38,5 +38,15 @@ class Jets::Commands::Base < Thor
         end
       end.flatten.sort
     end
+
+    # thor_args is an array of commands. Examples:
+    #   ["help"]
+    #   ["dynamodb:migrate"]
+    #
+    # Same signature as RakeCommand.perform.  Not using full_command.
+    def perform(full_command, thor_args)
+      config = {} # doesnt seem like config is used
+      dispatch(nil, thor_args, nil, config)
+    end
   end
 end

@@ -18,16 +18,10 @@ class Jets::CLI
   def start
     # command_class = find_by_namespace(namespace)
     command_class = lookup(full_command)
-
-    unless command_class
+    if command_class
+      command_class.perform(full_command, thor_args)
+    else
       main_help
-      return
-    end
-
-    if command_class < Jets::Commands::Base
-      command_class.send(:dispatch, nil, thor_args, nil, @config)
-    elsif command_class == Jets::Commands::RakeCommand
-      Jets::Commands::RakeCommand.perform(full_command)
     end
   end
 
