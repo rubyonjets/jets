@@ -21,10 +21,12 @@ class Jets::Commands::Base < Thor
       Dir.glob("#{path}/commands/**/*.rb").select do |path|
         next if !File.file?(path) or path =~ /templates/
 
+        # puts "path #{path.inspect}"
         class_name = path
                       .sub('.rb','')
                       .sub(%r{.*/jets/commands}, 'jets/commands')
                       .classify
+        # puts "  class_name #{class_name.inspect}"
         class_name.constantize # not using require so we dont have to worry about the ordering of the require
       end
     end
@@ -60,7 +62,6 @@ class Jets::Commands::Base < Thor
         commands.map! do |array|
           if namespace
             array[0].sub!("jets ", "jets #{namespace}:")
-            array[0] += " [options]"
           end
           array
         end

@@ -29,9 +29,13 @@ class Jets::CLI
   def lookup(full_command)
     thor_task_found = Jets::Commands::Base.namespaced_commands.include?(full_command)
     if thor_task_found
-      klass = namespace.nil? ?
-                Jets::Commands::Main :
-                "Jets::Commands::#{namespace.classify}".constantize
+      klass = if namespace.nil?
+                Jets::Commands::Main
+              else
+                class_name = namespace.gsub(':','/')
+                class_name = "Jets::Commands::#{class_name.classify}"
+                class_name.constantize
+              end
       return klass
     end
 
@@ -117,7 +121,7 @@ class Jets::CLI
 
   def main_help_body
     <<-EOL
-For more help on each command add the -h flag to any of the commands.  Examples:
+Add -h to any of the commands for more help.  Examples:
 
   jets call -h
   jets routes -h
