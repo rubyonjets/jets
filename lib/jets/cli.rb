@@ -36,7 +36,7 @@ class Jets::CLI
       return klass
     end
 
-    rake_task_found = Jets::Commands::RakeCommand.printing_commands(show_all_tasks).include?(full_command)
+    rake_task_found = Jets::Commands::RakeCommand.namespaced_commands.include?(full_command)
     if rake_task_found
       return Jets::Commands::RakeCommand
     end

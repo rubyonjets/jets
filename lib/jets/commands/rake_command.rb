@@ -18,8 +18,9 @@ class Jets::Commands::RakeCommand
       end
     end
 
-    def printing_commands(all=false)
-      formatted_rake_tasks(all).map(&:first)
+    # Useful for CLI.lookup.
+    def namespaced_commands
+      formatted_rake_tasks(true).map(&:first)
     end
 
     def formatted_rake_tasks(all=false)
@@ -32,14 +33,12 @@ class Jets::Commands::RakeCommand
     def rake_tasks(all=false)
       require_rake
 
-      return @rake_tasks if defined?(@rake_tasks)
-
       Rake::TaskManager.record_task_metadata = true
       rake.instance_variable_set(:@name, "jets")
       load_tasks
-      @rake_tasks = rake.tasks
-      @rake_tasks = @rake_tasks.select(&:comment) unless all
-      @rake_tasks
+      tasks = rake.tasks
+      tasks = tasks.select(&:comment) unless all
+      tasks
     end
 
     def help_message(namespaced_command)

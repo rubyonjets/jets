@@ -8,8 +8,8 @@ describe Jets::Commands::RakeCommand do
       expect(tasks).not_to be_empty
     end
 
-    it "printing_commands" do
-      commands = Jets::Commands::RakeCommand.printing_commands
+    it "namescaped_commands" do
+      commands = Jets::Commands::RakeCommand.namescaped_commands
       # pp commands
       expect(commands).to include "db:create"
       expect(commands).to include "db:migrate"
