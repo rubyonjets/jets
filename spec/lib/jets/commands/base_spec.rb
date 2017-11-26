@@ -10,13 +10,13 @@ describe Jets::Commands::Base do
 
   context Jets::Commands::Base do
     it "task_names" do
-      full_names = Jets::Commands::Base.task_names
-      expect(full_names).to include "build"
-      expect(full_names).to include "call"
-      expect(full_names).to include "routes"
-      expect(full_names).to include "dynamodb:generate"
-      expect(full_names).to include "dynamodb:migrate:down"
-      expect(full_names).to include "process:controller"
+      commands = Jets::Commands::Base.namespaced_commands
+      expect(commands).to include "build"
+      expect(commands).to include "call"
+      expect(commands).to include "routes"
+      expect(commands).to include "dynamodb:generate"
+      expect(commands).to include "dynamodb:migrate:down"
+      expect(commands).to include "process:controller"
     end
   end
 end

@@ -28,7 +28,7 @@ class Jets::Commands::Base < Thor
     #   build
     #   process:controller
     #   dynamodb:migrate:down
-    def task_names
+    def namespaced_commands
       eager_load!
       subclasses.map do |klass|
         klass.all_tasks.keys.map do |task_name|

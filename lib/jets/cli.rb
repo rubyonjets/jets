@@ -7,7 +7,7 @@ class Jets::CLI
   end
 
   def self.thor_tasks
-    Jets::Commands::Base.task_names
+    Jets::Commands::Base.namespaced_commands
   end
 
   def initialize(given_args=ARGV, **config)
@@ -24,7 +24,7 @@ class Jets::CLI
     # command_class = find_by_namespace(namespace)
     command_class = lookup(full_command)
     if command_class.is_a?(Jets::Commands::RakeCommand)
-      # test
+      command_class.perform(thor_args, @config)
     elsif command_class.is_a?(Jets::Commands::Base)
       command_class.send(:dispatch, nil, thor_args, nil, @config)
     else
@@ -36,9 +36,14 @@ class Jets::CLI
   # 2. look up Rake tasks
   # 3. help menu with all commands when both Thor and Rake tasks are not found
   def lookup(full_command)
-    thor_task_found = Jets::Commands::Base.task_names.include?(full_command)
+    thor_task_found = Jets::Commands::Base.namespaced_commands.include?(full_command)
     if thor_task_found
-      "Jets::Commands::#{namespace.classify}".constantize
+      return "Jets::Commands::#{namespace.classify}".constantize
+    end
+
+    rake_task_found = Jets::Commands::RakeCommand.namespaced_commands.include?(full_command)
+    if rake_task_found
+      return Jets::Commands::RakeCommand
     end
   end
 
