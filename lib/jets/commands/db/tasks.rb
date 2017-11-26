@@ -2,7 +2,7 @@ require "rails"
 require "active_record"
 require "recursive-open-struct"
 
-class Jets::Db::Tasks
+class Jets::Commands::Db::Tasks
   # Ugly but it loads ActiveRecord database tasks
   def self.load!
     text = ERB.new(IO.read("#{Jets.root}config/database.yml")).result

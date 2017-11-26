@@ -69,11 +69,11 @@ class Jets::Commands::Main < Jets::Commands::Base
     Jets::Call.new(function_name, payload, options).run
   end
 
-  # desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
-  # long_desc Db::Help.db
-  # def db(*args)
-  #   Jets::Db.new(options).run_command(args)
-  # end
+  desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
+  long_desc Jets::Commands::Db::Help.db
+  def db(*args)
+    Jets::Commands::Db.new(options).run_command(args)
+  end
 
   # TODO: implement a custom generator for Jets leveraging Rails generators
   desc "generate [type] [args] [options]", "Generates things like scaffolds"
@@ -82,9 +82,9 @@ class Jets::Commands::Main < Jets::Commands::Base
     Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
   end
 
-  # desc "webpacker", "Webpacker commands"
-  # long_desc Help.webpacker
-  # def webpacker(*args)
-  #   Webpacker.run_command(args)
-  # end
+  desc "webpacker", "Webpacker commands"
+  long_desc Help.webpacker
+  def webpacker(*args)
+    Webpacker.run_command(args)
+  end
 end

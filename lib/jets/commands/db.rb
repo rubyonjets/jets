@@ -2,9 +2,9 @@ require "jets"
 require "rails/generators"
 require "rails/generators/active_record/migration/migration_generator"
 
-class Jets::Db
-  autoload :Tasks, 'jets/db/tasks'
-  autoload :Help, 'jets/db/help'
+class Jets::Commands::Db
+  autoload :Tasks, 'jets/commands/db/tasks'
+  autoload :Help, 'jets/commands/db/help'
 
   def initialize(options)
     @options = options

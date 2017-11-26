@@ -21,7 +21,6 @@ module Jets
   autoload :Commands, "jets/commands"
   # TODO: move these fake subtasks into commands folder
   autoload :Generate, 'jets/generate'
-  autoload :Db, 'jets/db'
 
   autoload :Build, 'jets/build'
   autoload :Processors, 'jets/processors'

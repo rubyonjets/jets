@@ -1,5 +1,5 @@
-# Though Jets::Db is not a subcommand, organizing the help for it.
-class Jets::Db::Help
+# Though Jets::Commands::Db is not a subcommand, organizing the help for it.
+class Jets::Commands::Db::Help
   class << self
     def db
 <<-EOL
@@ -30,7 +30,7 @@ EOL
       # Cannot figure how to get only the tasks with descirptions using
       # Rake::Task.tasks...
 
-      # Jets::Db::Tasks.load!
+      # Jets::Commands::Db::Tasks.load!
       # tasks = Rake::Task.tasks.map(&:name) # ["db:setup", "db:create", ...]
 
       # tasks.map do |t|
