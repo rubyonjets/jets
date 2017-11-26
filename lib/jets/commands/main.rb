@@ -1,6 +1,6 @@
 require "thor"
 
-class Jets::Commands::Main < Jets::Command::Base
+class Jets::Commands::Main < Jets::Commands::Base
   autoload :Help, 'jets/commands/main/help'
 
   class_option :verbose, type: :boolean

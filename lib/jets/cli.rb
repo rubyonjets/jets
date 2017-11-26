@@ -1,7 +1,11 @@
 require "thor"
 require "byebug"
 
-class Jets::Command
+class Jets::CLI
+  def self.start(given_args=ARGV)
+    new(given_args).start
+  end
+
   def initialize(given_args=ARGV, **config)
     @given_args = given_args.dup
     @thor_args = given_args.dup
@@ -57,14 +61,12 @@ class Jets::Command
 
   def main_help
     list = []
-    Jets::Command::Base.eager_load!
-    Jets::Command::Base.subclasses.each do |klass|
+    Jets::Commands::Base.eager_load!
+    Jets::Commands::Base.subclasses.each do |klass|
       commands = klass.printable_commands(true, false)
       namespace = namespace_from_class(klass)
-      # puts "namespace2 #{namespace}"
       commands.map! do |array|
         if namespace
-          # puts "array[0] #{array[0]}"
           array[0].sub!("jets ", "jets #{namespace}:")
           array[0] += " [options]"
         end

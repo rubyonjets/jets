@@ -1,15 +1,15 @@
 require "spec_helper"
-require "jets/command/base"
+require "jets/commands/base"
 
-describe Jets::Command do
+describe Jets::CLI do
   let(:null) { double(:null).as_null_object }
   let(:command) do
-    command = Jets::Command.new(given_args)
+    command = Jets::CLI.new(given_args)
     allow(command).to receive(:shell).and_return(null)
     command
   end
 
-  context 'Jets::Command' do
+  context 'Jets::CLI' do
     it "tracks subclasses" do
       # trigger classes to autload for spec
       classes = [
@@ -17,7 +17,7 @@ describe Jets::Command do
         Jets::Commands::Dynamodb::Migrate,
         Jets::Commands::Main,
       ]
-      expect(Jets::Command::Base.subclasses).to eq classes
+      expect(Jets::Commands::Base.subclasses).to eq classes
     end
   end
 

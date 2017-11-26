@@ -1,4 +1,4 @@
-class Jets::Commands::Foo < Jets::Command::Base
+class Jets::Commands::Foo < Jets::Commands::Base
   desc "bar", "bar desc"
   option :dry
   def bar

@@ -1,4 +1,4 @@
-class Jets::Commands::Dynamodb < Jets::Command::Base
+class Jets::Commands::Dynamodb < Jets::Commands::Base
   autoload :Migrator, 'jets/commands/dynamodb/migrator'
   autoload :Migrate, 'jets/commands/dynamodb/migrate'
   autoload :Help, 'jets/commands/dynamodb/help'
