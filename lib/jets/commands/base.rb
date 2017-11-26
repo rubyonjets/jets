@@ -56,10 +56,7 @@ class Jets::Commands::Base < Thor
         list += commands
       end
 
-      first_help = ["jets help", "# Describe available commands or one specific command"]
-      list.sort_by! { |array| array[1] }
-      list.unshift(first_help)
-      list
+      list.sort_by { |array| array[1] }
     end
 
     def namespace_from_class(klass)
