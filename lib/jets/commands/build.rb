@@ -1,11 +1,6 @@
 require 'digest'
 
-class Jets::Build
-  autoload :Deducer, "jets/build/deducer"
-  autoload :HandlerGenerator, "jets/build/handler_generator"
-  autoload :CodeBuilder, "jets/build/code_builder"
-  autoload :GemFetcher, "jets/build/gem_fetcher"
-
+class Jets::Commands::Build
   def initialize(options)
     @options = options
   end
@@ -22,7 +17,7 @@ class Jets::Build
   end
 
   def build_code
-    CodeBuilder.new.build unless @options[:noop]
+    Jets::Builders::CodeBuilder.new.build unless @options[:noop]
   end
 
   def build_all_templates

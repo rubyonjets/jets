@@ -6,7 +6,7 @@ require "net/http"
 require "action_view"
 
 # Builds bundled Linux ruby and shim handlers
-class Jets::Build
+class Jets::Builders
   class CodeBuilder
     RUBY_URL = 'https://s3.amazonaws.com/lambdagems/rubies/ruby-2.4.2-linux-x86_64.tar.gz'.freeze
 
@@ -105,10 +105,10 @@ class Jets::Build
 
     def generate_node_shims
       # Crucial that the Dir.pwd is in the tmp_app_root because for
-      # Jets::Build::app_files because Jets.boot set ups
+      # Jets::Builders::app_files because Jets.boot set ups
       # autoload_paths and this is how project classes are loaded.
-      Jets::Build::app_files.each do |path|
-        handler = Jets::Build::HandlerGenerator.new(path)
+      Jets::Builders::app_files.each do |path|
+        handler = Jets::Builders::HandlerGenerator.new(path)
         handler.generate
       end
     end
@@ -299,7 +299,7 @@ class Jets::Build
 
     # Group all the path settings together here
     def self.tmp_app_root
-      Jets::Build::tmp_app_root
+      Jets::Builders::tmp_app_root
     end
 
     def tmp_app_root

@@ -1,5 +1,5 @@
 # Build::Deducers figure out required values to create the node shim
-class Jets::Build
+class Jets::Builders
   class Deducer
     # Allow user to specify relative or full path. The right path gets used
     # internally. Example paths:

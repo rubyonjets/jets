@@ -22,7 +22,7 @@ module Jets
   # TODO: move these fake subtasks into commands folder
   autoload :Generate, 'jets/generate'
 
-  autoload :Build, 'jets/build'
+  autoload :Builders, 'jets/builders'
   autoload :Processors, 'jets/processors'
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'

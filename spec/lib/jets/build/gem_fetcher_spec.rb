@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe Jets::Build::GemFetcher do
+describe Jets::Builders::GemFetcher do
   context "already downloaded" do
     let(:fetcher) do
-      fetcher = Jets::Build::GemFetcher.new
+      fetcher = Jets::Builders::GemFetcher.new
       allow(fetcher).to receive(:exit) # stub out exit
       allow(fetcher).to receive(:compiled_gem_paths).and_return(compiled_gem_paths)
       allow(fetcher).to receive(:url_exists?).and_return(url_exists)

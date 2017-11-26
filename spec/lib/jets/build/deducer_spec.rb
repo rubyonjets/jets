@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe Jets::Build::Deducer do
+describe Jets::Builders::Deducer do
   context "controller without namespace" do
     let(:deducer) do
-      Jets::Build::Deducer.new("app/controllers/posts_controller.rb")
+      Jets::Builders::Deducer.new("app/controllers/posts_controller.rb")
     end
 
     it "deduces info for node shim" do
@@ -19,7 +19,7 @@ describe Jets::Build::Deducer do
 
   context "controller with namespace" do
     let(:deducer) do
-      Jets::Build::Deducer.new("app/controllers/admin/pages_controller.rb")
+      Jets::Builders::Deducer.new("app/controllers/admin/pages_controller.rb")
     end
 
     it "deduces info for node shim" do
@@ -34,7 +34,7 @@ describe Jets::Build::Deducer do
 
   context "job" do
     let(:deducer) do
-      Jets::Build::Deducer.new("app/jobs/hard_job.rb")
+      Jets::Builders::Deducer.new("app/jobs/hard_job.rb")
     end
 
     it "deduces info for node shim" do
@@ -49,7 +49,7 @@ describe Jets::Build::Deducer do
 
   context "function without _function" do
     let(:deducer) do
-      Jets::Build::Deducer.new("app/functions/hello.rb")
+      Jets::Builders::Deducer.new("app/functions/hello.rb")
     end
 
     it "deduces info for node shim" do
@@ -64,7 +64,7 @@ describe Jets::Build::Deducer do
 
   context "function with _function" do
     let(:deducer) do
-      Jets::Build::Deducer.new("app/functions/simple_function.rb")
+      Jets::Builders::Deducer.new("app/functions/simple_function.rb")
     end
 
     it "deduces info for node shim" do

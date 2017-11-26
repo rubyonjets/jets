@@ -1,4 +1,4 @@
-class Jets::Build
+class Jets::Builders
   class GemFetcher
     def run
       # If there are subfolders compiled_gem_paths might have files deeper

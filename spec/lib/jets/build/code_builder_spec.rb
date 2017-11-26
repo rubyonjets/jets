@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe Jets::Build::CodeBuilder do
+describe Jets::Builders::CodeBuilder do
   context "general" do
     let(:builder) do
-      Jets::Build::CodeBuilder.new
+      Jets::Builders::CodeBuilder.new
     end
 
     it "excludes should not include jetskeep" do

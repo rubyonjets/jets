@@ -3,18 +3,18 @@ require "erb"
 
 # Example:
 #
-# Jets::Build::HandlerGenerator.new(
+# Jets::Builders::HandlerGenerator.new(
 #   "PostsController",
 #   :create, :update
 # )
-class Jets::Build
+class Jets::Builders
   class HandlerGenerator
     def initialize(path)
       @path = path
     end
 
     def generate
-      deducer = Jets::Build::Deducer.new(@path)
+      deducer = Jets::Builders::Deducer.new(@path)
 
       # TODO: move CodeBuilder.tmp_app_root to a common level for HandlerGenerator and CodeBuilder
       tmp_app_root = "#{Jets.build_root}/#{CodeBuilder.tmp_app_root}"
