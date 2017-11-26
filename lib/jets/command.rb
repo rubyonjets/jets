@@ -67,10 +67,10 @@ class Jets::Command
       list = []
       # TODO: use inherited to store the list of classes
       klasses = [
-        # Jets::Commands::Foo,
+        Jets::Commands::Foo,
         Jets::Commands::Dynamodb,
         Jets::Commands::Dynamodb::Migrate,
-        # Jets::Commands::Main
+        Jets::Commands::Main,
       ]
       klasses.each do |klass|
         commands = klass.printable_commands(true, false)
@@ -80,6 +80,7 @@ class Jets::Command
           if namespace
             # puts "array[0] #{array[0]}"
             array[0].sub!("jets ", "jets #{namespace}:")
+            array[0] += " [options]"
           end
           array
         end

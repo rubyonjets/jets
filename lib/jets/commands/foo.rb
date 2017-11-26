@@ -1,12 +1,12 @@
 class Jets::Commands::Foo < Jets::Command::Base
-  desc "bar [options]", "bar desc"
+  desc "bar", "bar desc"
   option :dry
   def bar
     puts "bar called"
     puts "options #{options.inspect}"
   end
 
-  desc "baz [options]", "baz desc"
+  desc "baz", "baz desc"
   def baz
     puts "baz called"
   end
