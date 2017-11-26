@@ -128,8 +128,8 @@ You can generate a starter project and deploy it to AWS Lambda with:
 jets new demo
 cd demo
 export JETS_ENV=staging
-jets dynamodb generate create_posts # generates migration
-jets dynamodb migrate dynamodb/migrate/20171112194549-create_posts_migration.rb # run migration. replace with your timestamp
+jets dynamodb:generate create_posts # generates migration
+jets dynamodb:migrate dynamodb/migrate/20171112194549-create_posts_migration.rb # run migration. replace with your timestamp
 jets deploy
 ```
 
