@@ -1,5 +1,4 @@
 require "spec_helper"
-require "jets/commands/base"
 
 describe Jets::CLI do
   let(:null) { double(:null).as_null_object }
@@ -9,7 +8,7 @@ describe Jets::CLI do
     command
   end
 
-  context 'Jets::CLI' do
+  context Jets::CLI do
     it "tracks subclasses" do
       # trigger classes to autload for spec
       classes = [
@@ -18,6 +17,11 @@ describe Jets::CLI do
         Jets::Commands::Main,
       ]
       expect(Jets::Commands::Base.subclasses).to eq classes
+    end
+
+    it "thor_tasks" do
+      tasks = Jets::CLI.thor_tasks
+      # pp tasks
     end
   end
 

@@ -10,4 +10,5 @@ module Jets::Commands
   autoload :Dynamodb, "jets/commands/dynamodb"
   autoload :Main, "jets/commands/main"
   autoload :Process, "jets/commands/process"
+  autoload :Webpacker, "jets/commands/webpacker"
 end
