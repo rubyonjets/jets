@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Jets::Process do
+describe Jets::Processors do
 
   describe "jets process" do
     it "controller [event] [context] [handler]" do
