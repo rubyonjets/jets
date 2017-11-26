@@ -61,15 +61,16 @@ class Jets::Command
     def top_level_help
       # puts Jets::Commands::Foo.help(Thor::Shell::Basic.new)
 
+      shell = Thor::Shell::Basic.new
+      shell.say "Commands:"
       klasses = [Jets::Commands::Foo, Jets::Commands::Dynamodb]
       klasses.each do |klass|
         list = klass.printable_commands(true, false)
         # pp list
         namespace = namespace_from_class(klass)
-        list.map! {|array| array[0].sub!("jets ", "jets #{namespace}:") ; array }
+        list.map! { |array| array[0].sub!("jets ", "jets #{namespace}:") ; array }
+        list.reject! { |array| array[0].include?(':help') }
 
-        shell = Thor::Shell::Basic.new
-        shell.say "Commands:"
         shell.print_table(list, :indent => 2, :truncate => true)
       end
     end
