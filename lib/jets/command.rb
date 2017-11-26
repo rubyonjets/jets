@@ -16,13 +16,13 @@ class Jets::Command
     # puts "config #{config.inspect}"
     # puts ""
 
-    puts "given_args #{given_args}"
+    # puts "given_args #{given_args}"
     if given_args.first == "help"
       full_namespace = given_args[1]
     else
       full_namespace = given_args.first
     end
-    puts "full_namespace #{full_namespace.inspect}"
+    # puts "full_namespace #{full_namespace.inspect}"
 
     if full_namespace.nil?
       meth = nil
@@ -35,7 +35,7 @@ class Jets::Command
       meth = full_namespace
       namespace = nil
     end
-    puts "namespace #{namespace.inspect}"
+    # puts "namespace #{namespace.inspect}"
 
     thor_args = given_args.dup
     if given_args.first == "help"
@@ -46,13 +46,25 @@ class Jets::Command
 
     if namespace
       klass = "Jets::Commands::#{namespace.classify}".constantize
+      klass.send(:dispatch, nil, thor_args, nil, config)
     else
-      klass = Jets::Command::Base
+      # klass = Jets::Command::Base
+      top_level_help
     end
-    klass.send(:dispatch, nil, thor_args, nil, config)
 
     # hard codes that work
     # Jets::Commands::Foo.send(:dispatch, :bar, [], nil, config)
     # Jets::Commands::Foo.send(:dispatch, nil, ["help", "bar"], nil, config)
+  end
+
+  def self.top_level_help
+    # puts Jets::Commands::Foo.help(Thor::Shell::Basic.new)
+
+    shell = Thor::Shell::Basic.new
+    shell.say "Commands:"
+    list = Jets::Commands::Foo.printable_commands(true, false)
+    # pp list
+    list.map! {|array| array[0].sub!("jets ", "jets foo:") ; array }
+    shell.print_table(list, :indent => 2, :truncate => true)
   end
 end

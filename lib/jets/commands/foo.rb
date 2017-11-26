@@ -7,7 +7,7 @@ module Jets::Commands
       puts "options #{options.inspect}"
     end
 
-    desc "bar [options]", "baz desc"
+    desc "baz [options]", "baz desc"
     def baz
       puts "baz called"
     end
