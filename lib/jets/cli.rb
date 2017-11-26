@@ -16,6 +16,8 @@ class Jets::CLI
     if namespace
       klass = "Jets::Commands::#{namespace.classify}".constantize
       klass.send(:dispatch, nil, thor_args, nil, @config)
+    elsif meth
+      Jets::Commands::Main.send(:dispatch, nil, thor_args, nil, @config)
     else
       main_help
     end
@@ -33,10 +35,16 @@ class Jets::CLI
     args.compact
   end
 
+  # Removes any args that starts with -
+  # Those are option args.
+  def command_args
+    @given_args.reject {|o| o =~ /^-/ }
+  end
+
   def full_command
-    @given_args[0] == "help" ?
-      @given_args[1] :
-      @given_args[0]
+    command_args[0] == "help" ?
+      command_args[1] :
+      command_args[0]
   end
 
   def namespace

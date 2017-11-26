@@ -44,24 +44,26 @@ describe Jets::CLI do
   context 'jets --whatever' do
     let(:given_args) { ["--whatever"] }
 
-    it "starts" do
-      # Makes sure all the code runs to completion.  Tests:
-      command.start
-      expect(command).to have_received(:shell).at_least(:once)
+    it "command_args removes -- options" do
+      expect(command.command_args).to eq []
+      expect(command.full_command).to be nil
+      expect(command.namespace).to be nil
+      expect(command.meth).to be nil
     end
+  end
+
+  context 'jets routes - command without namespace' do
+    let(:given_args) { ["routes"] }
 
     it "thor_args removes namespace from args" do
-      expect(command.thor_args).to eq(["help"])
+      expect(command.thor_args).to eq(["routes"])
     end
 
     it "full_command, namespace, meth" do
-      puts "command.full_command #{command.full_command.inspect}"
-      puts "command.namespace #{command.namespace.inspect}"
-      puts "command.meth #{command.meth.inspect}"
-
-      # expect(command.full_command).to be nil
-      # expect(command.namespace).to be nil
-      # expect(command.meth).to be nil
+      expect(command.command_args).to eq ["routes"]
+      expect(command.full_command).to eq "routes"
+      expect(command.namespace).to be nil
+      expect(command.meth).to eq "routes"
     end
   end
 
