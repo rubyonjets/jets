@@ -19,11 +19,11 @@ describe Jets::Commands::RakeCommand do
     end
 
     it "perform" do
-      # Wonder how to better test this without adding a def rake_app stub
+      # Wonder how to better test this without adding a def rake stub
       null = double(:null).as_null_object
-      allow(Jets::Commands::RakeCommand).to receive(:rake_app).and_return(null)
-      Jets::Commands::RakeCommand.perform("webpacker:verify_install")
-      expect(Jets::Commands::RakeCommand).to have_received(:rake_app).at_least(:once)
+      allow(Jets::Commands::RakeCommand).to receive(:rake).and_return(null)
+      Jets::Commands::RakeCommand.perform("webpacker:verify_install", {})
+      expect(Jets::Commands::RakeCommand).to have_received(:rake).at_least(:once)
     end
   end
 end

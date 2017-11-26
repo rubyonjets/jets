@@ -4,20 +4,25 @@ class Jets::Commands::RakeCommand
       formatted_rake_tasks.map(&:first)
     end
 
-    # Same signature as Jets::Commands::Base.perform.  Not using thor_args.
-    def perform(task, *)
+    # Same signature as Jets::Commands::Base.perform.
+    def perform(namespaced_command, thor_args)
+      if thor_args.first == "help"
+        puts help_message(namespaced_command)
+        return
+      end
+
       require_rake
 
-      ARGV.unshift(task) # Prepend the task, so Rake knows how to run it.
+      ARGV.unshift(namespaced_command) # Prepend the task, so Rake knows how to run it.
 
-      rake_app.standard_exception_handling do
-        rake_app.init("jets")
-        rake_app.load_rakefile
-        rake_app.top_level
+      rake.standard_exception_handling do
+        rake.init("jets")
+        rake.load_rakefile
+        rake.top_level
       end
     end
 
-    def rake_app
+    def rake
       Rake.application
     end
 
@@ -27,12 +32,19 @@ class Jets::Commands::RakeCommand
       return @rake_tasks if defined?(@rake_tasks)
 
       Rake::TaskManager.record_task_metadata = true
-      rake_app.instance_variable_set(:@name, "jets")
+      rake.instance_variable_set(:@name, "jets")
       load_tasks
-      @rake_tasks = rake_app.tasks.select(&:comment)
+      @rake_tasks = rake.tasks.select(&:comment)
     end
 
   private
+    def help_message(namespaced_command)
+      task = rake_tasks.find { |t| t.name == namespaced_command }
+      message = task.name_with_args.dup + "\n"
+      message << "    #{task.full_comment}"
+      message
+    end
+
     def formatted_rake_tasks
       rake_tasks.map { |t| [ t.name_with_args, t.comment ] }
     end

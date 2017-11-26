@@ -1,5 +1,7 @@
 class Jets::Commands::Console
   def self.run
+    $stderr.puts Jets.boot_message
+
     # Thanks: https://mutelight.org/bin-console
     require "irb"
     require "irb/completion"

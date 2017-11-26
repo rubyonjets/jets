@@ -41,6 +41,7 @@ module Jets::Commands
     def server
       # shell out to shotgun for automatic reloading
       o = options
+      $stderr.puts Jets.boot_message
       system("bundle exec shotgun --port #{o[:port]} --host #{o[:host]}")
     end
 

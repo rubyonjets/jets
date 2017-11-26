@@ -19,6 +19,10 @@ module Jets::Core
     Jets::Booter.new.boot!
   end
 
+  def boot_message
+    "Jets booting up in #{Jets.env.colorize(:green)} mode!"
+  end
+
   def config
     application.config
   end
