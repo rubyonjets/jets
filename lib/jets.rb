@@ -25,7 +25,6 @@ module Jets
   autoload :Builders, 'jets/builders'
   autoload :Processors, 'jets/processors'
   autoload :Cfn, 'jets/cfn'
-  autoload :Deploy, 'jets/deploy'
   autoload :Delete, 'jets/delete'
   autoload :Naming, 'jets/naming'
   autoload :AwsServices, "jets/aws_services"

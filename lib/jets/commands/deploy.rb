@@ -1,4 +1,4 @@
-class Jets::Deploy
+class Jets::Commands::Deploy
   include Jets::AwsServices
 
   def initialize(options)

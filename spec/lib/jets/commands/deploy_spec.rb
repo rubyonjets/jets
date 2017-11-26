@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Jets::Deploy do
+describe Jets::Commands::Deploy do
   let(:build) do
-    Jets::Deploy.new(noop: true)
+    Jets::Commands::Deploy.new(noop: true)
   end
 
   describe "Deploy" do
