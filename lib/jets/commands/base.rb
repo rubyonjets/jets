@@ -48,48 +48,34 @@ class Jets::Commands::Base < Thor
 
     # Use Jets banner instead of Thor to account for the namespace commands
     def banner(command, namespace = nil, subcommand = false)
-      class_name = self.name # Examples:
-        # Jets::Commands::Dynamodb, Jets::Commands::Main
-      class_name.gsub!('Jets::Commands::','').gsub!(/^Main/,'')
-      namespace = class_name.underscore.gsub('/',':')
-      namespace = nil if namespace.empty?
-
+      namespace = namespace_from_class(self)
       command_name = command.usage # set with desc when defining tht Thor class
       namespaced_command = [namespace, command_name].compact.join(':')
 
       "jets #{namespaced_command}"
     end
 
+    def namespace_from_class(klass)
+      namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('/',':')
+      # puts "namespace #{namespace.inspect}"
+      namespace unless namespace == "main"
+    end
+
     def help_list(all=false)
       # hack to show hidden comands when requested
       Thor::HiddenCommand.class_eval do
-        def hidden?
-          false
-        end
+        def hidden?; false; end
       end if all
 
       list = []
       Jets::Commands::Base.eager_load!
       Jets::Commands::Base.subclasses.each do |klass|
         commands = klass.printable_commands(true, false)
-        namespace = namespace_from_class(klass)
-        commands.map! do |array|
-          if namespace
-            array[0].sub!("jets ", "jets #{namespace}:")
-          end
-          array
-        end
         commands.reject! { |array| array[0].include?(':help') }
         list += commands
       end
 
       list.sort_by! { |array| array[0] }
-    end
-
-    def namespace_from_class(klass)
-      namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('/',':')
-      # puts "namespace #{namespace.inspect}"
-      namespace unless namespace == "main"
     end
 
     # thor_args is an array of commands. Examples:
