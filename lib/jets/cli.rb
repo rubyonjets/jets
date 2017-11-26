@@ -92,37 +92,36 @@ class Jets::CLI
   end
 
   def main_help
-    list = []
-    Jets::Commands::Base.eager_load!
-    Jets::Commands::Base.subclasses.each do |klass|
-      commands = klass.printable_commands(true, false)
-      namespace = namespace_from_class(klass)
-      commands.map! do |array|
-        if namespace
-          array[0].sub!("jets ", "jets #{namespace}:")
-          array[0] += " [options]"
-        end
-        array
-      end
-      commands.reject! { |array| array[0].include?(':help') }
-      list += commands
-    end
-
-    first_help = ["jets help", "# Describe available commands or one specific command"]
-    list.sort_by! { |array| array[1] }
-    list.unshift(first_help)
-
+    shell = Thor::Shell::Basic.new
     shell.say "Commands:"
-    shell.print_table(list, :indent => 2, :truncate => true)
+    shell.print_table(thor_list, :indent => 2, :truncate => true)
+    shell.say "\nCommands via rake:"
+    shell.print_table(rake_list, :indent => 2, :truncate => true)
+    shell.say "\n"
+    shell.say main_help_body
   end
 
-  def namespace_from_class(klass)
-    namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('/',':')
-    # puts "namespace #{namespace.inspect}"
-    namespace unless namespace == "main"
+  def main_help_body
+    <<-EOL
+For more help on each command add the -h flag to any of the commands.  Examples:
+
+  jets build -h
+  jets routes -h
+  jets dynamodb:create -h
+  jets db:create -h
+
+EOL
   end
 
-  def shell
-    @shell ||= Thor::Shell::Basic.new
+  def thor_list
+    Jets::Commands::Base.help_list
+  end
+
+  def rake_list
+    list = Jets::Commands::RakeCommand.formatted_rake_tasks
+    list.map do |array|
+      array[0] = "jets #{array[0]}"
+      array
+    end
   end
 end

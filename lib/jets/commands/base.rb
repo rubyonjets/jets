@@ -39,6 +39,35 @@ class Jets::Commands::Base < Thor
       end.flatten.sort
     end
 
+    def help_list
+      list = []
+      Jets::Commands::Base.eager_load!
+      Jets::Commands::Base.subclasses.each do |klass|
+        commands = klass.printable_commands(true, false)
+        namespace = namespace_from_class(klass)
+        commands.map! do |array|
+          if namespace
+            array[0].sub!("jets ", "jets #{namespace}:")
+            array[0] += " [options]"
+          end
+          array
+        end
+        commands.reject! { |array| array[0].include?(':help') }
+        list += commands
+      end
+
+      first_help = ["jets help", "# Describe available commands or one specific command"]
+      list.sort_by! { |array| array[1] }
+      list.unshift(first_help)
+      list
+    end
+
+    def namespace_from_class(klass)
+      namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('/',':')
+      # puts "namespace #{namespace.inspect}"
+      namespace unless namespace == "main"
+    end
+
     # thor_args is an array of commands. Examples:
     #   ["help"]
     #   ["dynamodb:migrate"]

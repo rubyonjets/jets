@@ -37,18 +37,19 @@ class Jets::Commands::RakeCommand
       @rake_tasks = rake.tasks.select(&:comment)
     end
 
-  private
     def help_message(namespaced_command)
       task = rake_tasks.find { |t| t.name == namespaced_command }
-      message = task.name_with_args.dup + "\n"
+      message = "Help provided by rake task:\n\n"
+      message << task.name_with_args.dup + "\n"
       message << "    #{task.full_comment}"
       message
     end
 
     def formatted_rake_tasks
-      rake_tasks.map { |t| [ t.name_with_args, t.comment ] }
+      rake_tasks.map { |t| [ t.name_with_args, "# #{t.comment}" ] }
     end
 
+  private
     def require_rake
       require "rake" # Defer booting Rake until we know it's needed.
     end
