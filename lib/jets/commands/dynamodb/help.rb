@@ -1,4 +1,4 @@
-class Jets::Dynamodb::Help
+class Jets::Commands::Dynamodb::Help
   class << self
     def migrate
 <<-EOL

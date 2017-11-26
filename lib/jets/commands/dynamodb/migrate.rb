@@ -1,6 +1,6 @@
 require "dynamodb_model"
 
-class Jets::Dynamodb::Migrate
+class Jets::Commands::Dynamodb::Migrate
   def initialize(path, options)
     @path = path
     @options = options
