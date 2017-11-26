@@ -9,7 +9,7 @@ class Jets::Command
       # command = full_namespace
       # args = args.dup
       # command = args.dup.shift
-      args = args
+      # pp given_args
 
       # puts "full_namespace #{full_namespace}"
       # puts "command #{command}"
@@ -60,8 +60,6 @@ class Jets::Command
 
     def main_help
       # puts Jets::Commands::Foo.help(Thor::Shell::Basic.new)
-
-      shell = Thor::Shell::Basic.new
       shell.say "Commands:"
 
       list = []
@@ -98,6 +96,10 @@ class Jets::Command
       namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('/',':')
       # puts "namespace #{namespace.inspect}"
       namespace unless namespace == "main"
+    end
+
+    def shell
+      @shell ||= Thor::Shell::Basic.new
     end
   end
 end
