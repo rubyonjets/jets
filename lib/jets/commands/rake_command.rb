@@ -9,11 +9,15 @@ class Jets::Commands::RakeCommand
 
       ARGV.unshift(task) # Prepend the task, so Rake knows how to run it.
 
-      Rake.application.standard_exception_handling do
-        Rake.application.init("jets")
-        Rake.application.load_rakefile
-        Rake.application.top_level
+      rake_app.standard_exception_handling do
+        rake_app.init("jets")
+        rake_app.load_rakefile
+        rake_app.top_level
       end
+    end
+
+    def rake_app
+      Rake.application
     end
 
     def rake_tasks
@@ -22,9 +26,9 @@ class Jets::Commands::RakeCommand
       return @rake_tasks if defined?(@rake_tasks)
 
       Rake::TaskManager.record_task_metadata = true
-      Rake.application.instance_variable_set(:@name, "jets")
+      rake_app.instance_variable_set(:@name, "jets")
       load_tasks
-      @rake_tasks = Rake.application.tasks.select(&:comment)
+      @rake_tasks = rake_app.tasks.select(&:comment)
     end
 
   private

@@ -10,7 +10,7 @@ describe Jets::Commands::RakeCommand do
 
     it "printing_commands" do
       commands = Jets::Commands::RakeCommand.printing_commands
-      pp commands
+      # pp commands
       expect(commands).to include "db:create"
       expect(commands).to include "db:migrate"
       expect(commands).to include "webpacker"
@@ -19,7 +19,11 @@ describe Jets::Commands::RakeCommand do
     end
 
     it "perform" do
-      puts Jets::Commands::RakeCommand.perform("webpacker:verify_install")
+      # Wonder how to better test this without adding a def rake_app stub
+      null = double(:null).as_null_object
+      allow(Jets::Commands::RakeCommand).to receive(:rake_app).and_return(null)
+      Jets::Commands::RakeCommand.perform("webpacker:verify_install")
+      expect(Jets::Commands::RakeCommand).to have_received(:rake_app).at_least(:once)
     end
   end
 end
