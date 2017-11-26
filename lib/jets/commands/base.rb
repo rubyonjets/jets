@@ -18,9 +18,14 @@ class Jets::Commands::Base < Thor
     # useful for help menu
     def eager_load!
       path = File.expand_path("../../", __FILE__)
-      Dir.glob("#{path}/commands/**/*.rb").each do |path|
-        next if path =~ /templates/
-        require path
+      Dir.glob("#{path}/commands/**/*.rb").select do |path|
+        next if !File.file?(path) or path =~ /templates/
+
+        class_name = path
+                      .sub('.rb','')
+                      .sub(%r{.*/jets/commands}, 'jets/commands')
+                      .classify
+        class_name.constantize # not using require so we dont have to worry about the ordering of the require
       end
     end
 

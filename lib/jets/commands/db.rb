@@ -1,41 +1,14 @@
-require "jets"
 require "rails/generators"
 require "rails/generators/active_record/migration/migration_generator"
 
-class Jets::Commands::Db
-  autoload :Tasks, 'jets/commands/db/tasks'
+class Jets::Commands::Db < Jets::Commands::Base
   autoload :Help, 'jets/commands/db/help'
+  autoload :Tasks, 'jets/commands/db/tasks'
 
-  def initialize(options)
-    @options = options
-  end
-
-  def run_command(*args)
-    # "jets db generate help" results in args:
-    #   ["help", "generate"]
-    if args[0] == "help" && args[1] == "generate"
-      # TODO: figure out how to print help via Thor itself for jets db generate help
-      print_help_generate
-      return
-    end
-
-    # generate is the only method that does not delegate to the ActiveRecord
-    # rake tasks.
-    if args[0] == "generate"
-      args.shift # remove generate
-      # Example:
-      #   args: ["generate", "create_articles", "title:string"]
-      #   args: ["create_articles", "title:string"]
-      generator = ActiveRecord::Generators::MigrationGenerator.new(args)
-      generator.create_migration_file
-    else
-      command = "bundle exec rake db:#{args.join(':')}"
-      puts "=> #{command}".colorize(:green)
-      system command
-    end
-  end
-
-  def print_help_generate
-    puts Help.generate
+  desc "generate", "Creates a migration to change a db table"
+  long_desc Jets::Commands::Db::Help.generate
+  def generate(*args)
+    generator = ActiveRecord::Generators::MigrationGenerator.new(args)
+    generator.create_migration_file
   end
 end

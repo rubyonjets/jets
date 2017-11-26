@@ -73,12 +73,6 @@ module Jets::Commands
       Call.new(function_name, payload, options).run
     end
 
-    desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
-    long_desc Jets::Commands::Db::Help.db
-    def db(*args)
-      Jets::Commands::Db.new(options).run_command(args)
-    end
-
     # TODO: implement a custom generator for Jets leveraging Rails generators
     desc "generate [type] [args] [options]", "Generates things like scaffolds"
     long_desc Help.generate

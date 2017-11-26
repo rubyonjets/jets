@@ -8,8 +8,8 @@ $stdout.sync = true
 def puts(text)
   $stderr.puts(text)
 end
-def print(text)
-  $stderr.print(text)
+def print(*args)
+  $stderr.print(*args)
 end
 
 class Jets::Booter

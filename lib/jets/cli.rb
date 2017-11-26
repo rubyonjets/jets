@@ -1,5 +1,4 @@
 require "thor"
-require "byebug"
 
 class Jets::CLI
   def self.start(given_args=ARGV)
