@@ -67,7 +67,7 @@ module Jets::Commands
     option :smart, type: :boolean, default: true, desc: "Enables smart mode. Uses inference to allows use of all dashes to specify functions. Smart mode verifies that the function exists in the code base."
     option :local, type: :boolean, desc: "Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode smart mode is always used."
     def call(function_name, payload='')
-      Jets::Commands::Call.new(function_name, payload, options).run
+      Call.new(function_name, payload, options).run
     end
 
     desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"

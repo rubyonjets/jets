@@ -3,8 +3,8 @@
 # traps: INT - ^C
 ['INT', 'TERM', 'QUIT'].each do |signal|
   trap(signal) do
-    puts "\nExiting..."
-    sleep 1
+    puts ""
+    sleep 0.1
     exit
   end
 end
