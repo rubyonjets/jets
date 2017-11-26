@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Jets::Process::MainProcessor do
+describe Jets::Processors::MainProcessor do
   let(:processor) do
-    Jets::Process::MainProcessor.new(
+    Jets::Processors::MainProcessor.new(
       JSON.dump(event),
       JSON.dump(context),
       handler

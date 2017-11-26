@@ -1,7 +1,5 @@
-class Jets::Process < Jets::Command
-  autoload :Help, 'jets/process/help'
-  autoload :Deducer, 'jets/process/deducer'
-  autoload :MainProcessor, 'jets/process/main_processor'
+class Jets::Commands::Process < Jets::Commands::Base
+  autoload :Help, 'jets/commands/process/help'
 
   class_option :verbose, type: :boolean
   class_option :noop, type: :boolean

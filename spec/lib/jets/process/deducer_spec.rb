@@ -3,7 +3,7 @@ require "spec_helper"
 describe "Deducer" do
   context "controller" do
     let(:deducer) do
-      Jets::Process::Deducer.new("handlers/controllers/posts_controller.create")
+      Jets::Processors::Deducer.new("handlers/controllers/posts_controller.create")
     end
 
     it "deduces info to run the ruby code" do
@@ -15,7 +15,7 @@ describe "Deducer" do
 
   context "job" do
     let(:deducer) do
-      Jets::Process::Deducer.new("handlers/jobs/hard_job.dig")
+      Jets::Processors::Deducer.new("handlers/jobs/hard_job.dig")
     end
 
     it "deduces info to run the ruby code" do
@@ -27,7 +27,7 @@ describe "Deducer" do
 
   context "function without _function" do
     let(:deducer) do
-      Jets::Process::Deducer.new("handlers/functions/hello.world")
+      Jets::Processors::Deducer.new("handlers/functions/hello.world")
     end
 
     it "deduces info to run the ruby code" do
@@ -39,7 +39,7 @@ describe "Deducer" do
 
   context "function with _function" do
     let(:deducer) do
-      Jets::Process::Deducer.new("handlers/functions/hello_function.world")
+      Jets::Processors::Deducer.new("handlers/functions/hello_function.world")
     end
 
     it "deduces info to run the ruby code" do

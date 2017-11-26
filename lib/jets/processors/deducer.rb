@@ -1,10 +1,10 @@
-# Jets::Process::Deducer class figures out information that allows the
+# Jets::Processors::Deducer class figures out information that allows the
 # controller or job to be called. Sme key methods for deducer:
 #
 #   code - code to instance eval.  IE: PostsController.new(event, context).index
 #   path - full path to the app code. IE: #{Jets.root}app/controllers/posts_controller.rb
 #
-class Jets::Process
+class Jets::Processors
   class Deducer
     def initialize(handler)
       @handler = handler # handlers/controllers/posts.show

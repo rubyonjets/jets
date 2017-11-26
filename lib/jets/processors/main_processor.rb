@@ -1,7 +1,7 @@
 require 'json'
 
 # Node shim calls this class to process both controllers and jobs
-class Jets::Process::MainProcessor
+class Jets::Processors::MainProcessor
   attr_reader :event, :context, :handler
   def initialize(event, context, handler)
     # assume valid json from Lambda
@@ -14,9 +14,9 @@ class Jets::Process::MainProcessor
     # Use the handler to deduce app code to run.
     # Example handlers: handlers/controllers/posts.create, handlers/jobs/sleep.perform
     #
-    #   deducer = Jets::Process::Deducer.new("handlers/controllers/posts.create")
+    #   deducer = Jets::Processors::Deducer.new("handlers/controllers/posts.create")
     #
-    deducer = Jets::Process::Deducer.new(handler)
+    deducer = Jets::Processors::Deducer.new(handler)
     begin
       # Examples:
       #   deducer.code => PostsController.process(event, context, "show")

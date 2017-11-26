@@ -16,14 +16,13 @@ require "pp" # TODO: remove pp
 module Jets
   autoload :Application, "jets/application"
   autoload :Util, "jets/util"
-  autoload :Command, "jets/command"
-  # subtasks
-  autoload :Process, 'jets/process'
-  autoload :Generate, 'jets/generate'
-  autoload :Dynamodb, 'jets/dynamodb'
-  autoload :Db, 'jets/db'
 
   autoload :CLI, "jets/cli"
+  autoload :Commands, "jets/commands"
+  # TODO: move these fake subtasks into commands folder
+  autoload :Generate, 'jets/generate'
+  autoload :Db, 'jets/db'
+
   autoload :Build, 'jets/build'
   autoload :Cfn, 'jets/cfn'
   autoload :Deploy, 'jets/deploy'
@@ -55,7 +54,4 @@ module Jets
   autoload :Core, "jets/core"
   extend Core # root, logger, etc
 
-  autoload :Command, "jets/command"
-  autoload :Commands, "jets/commands"
-  autoload :CommandInvoker, "jets/command_invoker"
 end

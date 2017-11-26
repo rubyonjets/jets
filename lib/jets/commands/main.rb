@@ -56,7 +56,8 @@ class Jets::Commands::Main < Jets::Commands::Base
     Jets::Console.run
   end
 
-  desc "call FUNCTION EVENT", "Invoke or 'call' a lambda function on AWS"
+  # Command is called 'call' because invoke is a Thor keyword.
+  desc "call [function] [event]", "Call a lambda function on AWS or locally"
   long_desc Help.call
   option :invocation_type, default: "RequestResponse", desc: "RequestResponse, Event, or DryRun"
   option :log_type, default: "Tail", desc: "Works if invocation_type set to RequestResponse"
@@ -68,7 +69,6 @@ class Jets::Commands::Main < Jets::Commands::Base
   def call(function_name, payload='')
     Jets::Call.new(function_name, payload, options).run
   end
-  # Command is called 'call' because invoke is a Thor keyword.
 
   # desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
   # long_desc Db::Help.db
@@ -76,7 +76,7 @@ class Jets::Commands::Main < Jets::Commands::Base
   #   Jets::Db.new(options).run_command(args)
   # end
 
-  # # TODO: implement a custom generator for Jets leveraging Rails generators
+  # TODO: implement a custom generator for Jets leveraging Rails generators
   # desc "generate GENERATOR [args] [options]", "Generates things like scaffolds"
   # long_desc Help.generate
   # def generate(generator, *args)

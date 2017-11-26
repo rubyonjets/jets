@@ -1,4 +1,4 @@
-class Jets::Process::Help
+class Jets::Commands::Process::Help
   class << self
     def controller
 <<-EOL
