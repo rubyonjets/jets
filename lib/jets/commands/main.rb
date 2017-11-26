@@ -1,5 +1,4 @@
 require "thor"
-require "jets/cli/help"
 
 class Jets::Commands::Main < Jets::Command::Base
   autoload :Help, 'jets/commands/main/help'
@@ -71,28 +70,25 @@ class Jets::Commands::Main < Jets::Command::Base
   end
   # Command is called 'call' because invoke is a Thor keyword.
 
-  desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
-  long_desc Db::Help.db
-  def db(*args)
-    Jets::Db.new(options).run_command(args)
-  end
+  # desc "db COMMAND1 COMMAND2 ...", "DB tasks. Delegates to rake db:command1:command2"
+  # long_desc Db::Help.db
+  # def db(*args)
+  #   Jets::Db.new(options).run_command(args)
+  # end
 
-  # TODO: implement a custom generator for Jets leveraging Rails generators
-  desc "generate GENERATOR [args] [options]", "Generates things like scaffolds"
-  long_desc Help.generate
-  def generate(generator, *args)
-    Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
-  end
+  # # TODO: implement a custom generator for Jets leveraging Rails generators
+  # desc "generate GENERATOR [args] [options]", "Generates things like scaffolds"
+  # long_desc Help.generate
+  # def generate(generator, *args)
+  #   Rails::Generators.invoke(generator, args, behavior: :invoke, destination_root: Jets.root)
+  # end
 
-  desc "webpacker", "Webpacker commands"
-  long_desc Help.webpacker
-  def webpacker(*args)
-    Webpacker.run_command(args)
-  end
+  # desc "webpacker", "Webpacker commands"
+  # long_desc Help.webpacker
+  # def webpacker(*args)
+  #   Webpacker.run_command(args)
+  # end
 
-  desc "process TYPE", "process subtasks"
-  subcommand "process", Jets::Process
-
-  desc "dynamodb TYPE", "dynamodb subtasks"
-  subcommand "dynamodb", Jets::Dynamodb
+  # desc "process TYPE", "process subtasks"
+  # subcommand "process", Jets::Process
 end

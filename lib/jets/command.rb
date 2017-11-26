@@ -65,22 +65,33 @@ class Jets::Command
       shell.say "Commands:"
 
       list = []
-      klasses = [Jets::Commands::Foo, Jets::Commands::Dynamodb]
+      klasses = [
+        Jets::Commands::Foo,
+        Jets::Commands::Dynamodb,
+        Jets::Commands::Main
+      ]
       klasses.each do |klass|
         commands = klass.printable_commands(true, false)
         namespace = namespace_from_class(klass)
-        commands.map! { |array| array[0].sub!("jets ", "jets #{namespace}:") ; array }
+        commands.map! do |array|
+          if namespace
+            array[0].sub!("jets ", "jets #{namespace}:")
+          end
+          array
+        end
         commands.reject! { |array| array[0].include?(':help') }
         list += commands
       end
 
       first_help = ["jets help", "# Describe available commands or one specific command"]
+      list.sort_by { |array| array[1] }
       list.unshift(first_help)
       shell.print_table(list, :indent => 2, :truncate => true)
     end
 
     def namespace_from_class(klass)
-      klass.to_s.sub('Jets::Commands::', '').underscore.gsub('_',':')
+      namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('_',':')
+      namespace unless namespace == "main"
     end
   end
 end
