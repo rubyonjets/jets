@@ -28,7 +28,7 @@ require "active_support/core_ext/object"
 #
 # Now we're at a point where we can start guessing
 # function_name = detect_function_name(function_name)
-class Jets::Call
+class Jets::Commands::Call
   class Guesser
     delegate :class_name, :method_name, :error_message, :function_name,
       to: :delegate_guesser

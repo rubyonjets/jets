@@ -1,7 +1,7 @@
 require "spec_helper"
 
-describe Jets::Call::AnonymousGuesser do
-  let(:guesser) { Jets::Call::AnonymousGuesser.new(function_name) }
+describe Jets::Commands::Call::AnonymousGuesser do
+  let(:guesser) { Jets::Commands::Call::AnonymousGuesser.new(function_name) }
 
   context "hello-world function" do
     let(:function_name) { "hello-world" }

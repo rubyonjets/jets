@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Jets::Call do
+describe Jets::Commands::Call do
   let(:call) do
-    call = Jets::Call.new(provided_function_name, event, mute: true)
+    call = Jets::Commands::Call.new(provided_function_name, event, mute: true)
     allow(call).to receive(:lambda).and_return(null)
     call
   end

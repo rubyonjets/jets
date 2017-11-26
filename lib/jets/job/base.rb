@@ -21,7 +21,7 @@ class Jets::Job
 
       def perform_later(meth, event, context=nil)
         function_name = "#{self.to_s.underscore}-#{meth}"
-        call = Jets::Call.new(function_name, JSON.dump(event))
+        call = Jets::Commands::Call.new(function_name, JSON.dump(event))
         call.run
       end
     end

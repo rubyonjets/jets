@@ -1,4 +1,4 @@
-class Jets::Call
+class Jets::Commands::Call
   class AutoloadGuesser < BaseGuesser
     def detect_class_name
       guess_classes.each do |class_name_guess|

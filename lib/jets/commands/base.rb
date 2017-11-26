@@ -19,6 +19,7 @@ class Jets::Commands::Base < Thor
     def eager_load!
       path = File.expand_path("../../", __FILE__)
       Dir.glob("#{path}/commands/**/*.rb").each do |path|
+        next if path =~ /templates/
         require path
       end
     end

@@ -34,9 +34,9 @@ describe Jets::Job::Base do
     end
 
     it "perform_later" do
-      allow(Jets::Call).to receive(:new).and_return(null)
+      allow(Jets::Commands::Call).to receive(:new).and_return(null)
       HardJob.perform_later(:dig, {})
-      expect(Jets::Call).to have_received(:new)
+      expect(Jets::Commands::Call).to have_received(:new)
     end
   end
 

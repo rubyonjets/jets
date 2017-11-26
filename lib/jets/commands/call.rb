@@ -2,11 +2,11 @@ require "base64"
 require "json"
 require "active_support/core_ext/string"
 
-class Jets::Call
-  autoload :BaseGuesser, "jets/call/base_guesser"
-  autoload :AutoloadGuesser, "jets/call/autoload_guesser"
-  autoload :AnonymousGuesser, "jets/call/anonymous_guesser"
-  autoload :Guesser, "jets/call/guesser"
+class Jets::Commands::Call
+  autoload :BaseGuesser, "jets/commands/call/base_guesser"
+  autoload :AutoloadGuesser, "jets/commands/call/autoload_guesser"
+  autoload :AnonymousGuesser, "jets/commands/call/anonymous_guesser"
+  autoload :Guesser, "jets/commands/call/guesser"
 
   include Jets::AwsServices
 

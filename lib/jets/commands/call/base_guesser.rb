@@ -3,7 +3,7 @@
 #   method_name
 #   error_message
 #
-class Jets::Call
+class Jets::Commands::Call
   class BaseGuesser
     # provided_function_name:
     #   admin/related_pages_controller-list_all

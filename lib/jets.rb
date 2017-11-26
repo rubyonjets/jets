@@ -30,7 +30,6 @@ module Jets
   autoload :Server, "jets/server"
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
-  autoload :Console, "jets/console"
   autoload :Erb, "jets/erb"
   autoload :Call, "jets/call"
 
