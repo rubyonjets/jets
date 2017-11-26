@@ -3,7 +3,6 @@ require "thor"
 class Jets::Commands::Main < Jets::Commands::Base
   autoload :Help, 'jets/commands/main/help'
 
-  class_option :verbose, type: :boolean
   class_option :noop, type: :boolean
 
   desc "build", "Builds and prepares project for Lambda"

@@ -7,7 +7,7 @@ require "spec_helper"
 #   $ rake clean:vcr ; time rake
 describe Jets::CLI do
   before(:all) do
-    @args = "--noop"
+    @args = "--noop 2>&1"
   end
 
   describe "jets" do
