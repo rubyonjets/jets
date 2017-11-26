@@ -1,11 +1,12 @@
 class Jets::Commands::Dynamodb < Jets::Command::Base
   autoload :Help, 'jets/commands/dynamodb/help'
+  autoload :Migrator, 'jets/commands/dynamodb/migrator'
   autoload :Migrate, 'jets/commands/dynamodb/migrate'
 
   desc "migrate [path]", "Runs migrations"
   long_desc Help.migrate
   def migrate(path)
-    Migrate.new(path, options).run
+    Migrator.new(path, options).run
   end
 
   desc "generate [name]", "Creates a migration for a DynamoDB table"

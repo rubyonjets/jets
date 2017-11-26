@@ -65,16 +65,20 @@ class Jets::Command
       shell.say "Commands:"
 
       list = []
+      # TODO: use inherited to store the list of classes
       klasses = [
-        Jets::Commands::Foo,
+        # Jets::Commands::Foo,
         Jets::Commands::Dynamodb,
-        Jets::Commands::Main
+        Jets::Commands::Dynamodb::Migrate,
+        # Jets::Commands::Main
       ]
       klasses.each do |klass|
         commands = klass.printable_commands(true, false)
         namespace = namespace_from_class(klass)
+        # puts "namespace2 #{namespace}"
         commands.map! do |array|
           if namespace
+            # puts "array[0] #{array[0]}"
             array[0].sub!("jets ", "jets #{namespace}:")
           end
           array
@@ -84,13 +88,14 @@ class Jets::Command
       end
 
       first_help = ["jets help", "# Describe available commands or one specific command"]
-      list.sort_by { |array| array[1] }
+      list.sort_by! { |array| array[1] }
       list.unshift(first_help)
       shell.print_table(list, :indent => 2, :truncate => true)
     end
 
     def namespace_from_class(klass)
-      namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('_',':')
+      namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('/',':')
+      # puts "namespace #{namespace.inspect}"
       namespace unless namespace == "main"
     end
   end

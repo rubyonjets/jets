@@ -1,32 +1,9 @@
-require "dynamodb_model"
-
-class Jets::Commands::Dynamodb::Migrate
-  def initialize(path, options)
-    @path = path
-    @options = options
-  end
-
-  def run
-    puts "Running database migrations"
-    return if @options[:noop]
-    migrate
-  end
-
-  def migrate
-    path = "#{Jets.root}#{@path}"
-    unless File.exist?(path)
-      puts "Unable to find the migration file: #{path}"
-      exit 1
-    end
-
-    require path
-    migration_class = get_migration_class
-    migration_class.new.up
-  end
-
-  def get_migration_class
-    filename = File.basename(@path, '.rb')
-    filename = filename.sub(/\d+[-_]/, '') # strip leading timestsamp
-    filename.classify.constantize
+class Jets::Commands::Dynamodb::Migrate < Jets::Command::Base
+  desc "down", "Runs migrations down"
+  # desc "migrate:down [path]", "Runs migrations down"
+  # long_desc Help.migrate
+  def down#(path)
+    # Migrate.new(path, options).run
+    puts "Jets::Commands::Dynamodb::Down ran"
   end
 end
