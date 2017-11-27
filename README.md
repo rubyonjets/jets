@@ -193,7 +193,7 @@ You can find examples of all the CRUD actions at [CRUD Curl Jets Tutorial](https
 
 ### Database Support
 
-Jets supports PostgreSQL and DynamoDB.  They can both be used in the same application. If you are using DynamoDB it can be useful to use DynamoDB Local, just like you would use a local SQL server. Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) that takes about 5 minutes.
+Jets supports PostgreSQL and DynamoDB.  Both can be used in the same application. If you are using DynamoDB it can be useful to use DynamoDB Local, just like you would use a local SQL server. Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) that takes about 5 minutes.
 
 ### REPL Console
 
