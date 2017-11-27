@@ -191,9 +191,9 @@ $ curl -s -X POST http://localhost:8888/posts -d '{
 
 You can find examples of all the CRUD actions at [CRUD Curl Jets Tutorial](https://github.com/tongueroo/jets/wiki/CRUD-Curl-Jets-Tutorial).
 
-### DynamoDB Local
+### Database Support
 
-Just like developing with a local MySQL server, using DynamoDB Local can be useful. Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) that takes about 5 minutes.
+Jets supports PostgreSQL and DynamoDB.  They can both be used in the same application. If you are using DynamoDB it can be useful to use DynamoDB Local, just like you would use a local SQL server. Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) that takes about 5 minutes.
 
 ### REPL Console
 
