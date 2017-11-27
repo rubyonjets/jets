@@ -11,11 +11,11 @@ It is key to conceptually understand AWS Lambda and API Gateway to understand Je
 
 ## How It Works
 
-You focus on your application logic and Jets does the mundane work. You write code called controllers and workers.  Jets turns them into Lambda funcitons and uploads them to AWS Lambda and API Gateway.
+You focus on your application logic and Jets does the mundane work. You write code called controllers and workers.  Jets turns the code into Lambda functions and uploads them to AWS Lambda and API Gateway.
 
 ### Jets Controllers
 
-A Jets controller handles a web request and renders a response back.  Here's an example
+A Jets controller handles a web request and renders a response.  Here's an example
 
 `app/controllers/posts_controller.rb`:
 
@@ -41,7 +41,7 @@ Jets creates Lambda functions for the public methods in your controller. You dep
 jets deploy
 ```
 
-After deploymment, you can test the Lambda functions with the AWS Lambda console or CLI.
+After deployment, you can test the Lambda functions with the AWS Lambda console or CLI.
 
 ### AWS Lambda Console test
 
@@ -63,11 +63,13 @@ $ jets call help # for more info like passing the payload via a file
 The corresponding `aws lambda` CLI commands are:
 
 ```
-aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"test":1}' outfile.txt
+aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt
 cat outfile.txt | jq '.body | fromjson'
 rm outfile.txt
 aws lambda invoke help
 ```
+
+For controllers, the `jets call` method wraps the parameters in the lambda [proxy integration input format structure](http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format).
 
 ### Jets Routing
 
@@ -76,26 +78,28 @@ You connect Lambda functions to API Gateway URL endpoints with a routes file:
 `config/routes.rb`:
 
 ```ruby
-get  "posts", to: "posts#index"
-get  "posts/new", to: "posts#new"
-get  "posts/:id", to: "posts#show"
-post "posts", to: "posts#create"
-get  "posts/:id/edit", to: "posts#edit"
-put  "posts", to: "posts#update"
-delete  "posts", to: "posts#delete"
+Jets.application.routes.draw do
+  get  "posts", to: "posts#index"
+  get  "posts/new", to: "posts#new"
+  get  "posts/:id", to: "posts#show"
+  post "posts", to: "posts#create"
+  get  "posts/:id/edit", to: "posts#edit"
+  put  "posts", to: "posts#update"
+  delete  "posts", to: "posts#delete"
 
-resources :comments # expands to the RESTful routes above
+  resources :comments # expands to the RESTful routes above
 
-any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
+  any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
+end
 ```
 
-Deploying again to add the routes to API Gateway.
+Deploy again to add the routes to API Gateway.
 
 ```sh
 jets deploy
 ```
 
-Test your of the API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that was created:
+Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that was created:
 
 ```sh
 $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | jq .
@@ -105,6 +109,21 @@ $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | 
 }
 ```
 
+### Jets Workers
+
+A Jets worker handles background jobs.  It is performed outside of the web request/response cycle. Here's an example:
+
+```
+class HardJob < ApplicationJob
+  rate "10 hours" # every 10 hours
+  def dig
+    {done: "digging"}
+  end
+end
+```
+
+`HardJob#dig` will be ran every 10 hours.
+
 ### Project Structure
 
 Here's an overview of a Jets project structure.
@@ -112,10 +131,9 @@ Here's an overview of a Jets project structure.
 File / Directory  | Description
 ------------- | -------------
 app/controllers  | Contains controller code that handles web requests.  The controller code renders API Gateway Lambda Proxy compatible responses.
-app/jobs  | Job code for background jobs.  The jobs are performed as Lambda functions, so they are subject to Lambda limits.
-app/functions  | Generic function code that look more like the traditional Lambda function handler format.
-config/application.yml  | Application wide configurations.  Where you can globally configure things like project_name, env, timeout, memory size.
-config/events.yml  | Where you specify events to trigger worker or function code.
+app/jobs  | Job code for background jobs.  Jobs are ran as Lambda functions, so they are subject to Lambda limits.
+app/functions  | Generic function code that looks more like the traditional Lambda function handler format.
+config/application.rb  | Application wide configurations.  Where you can globally configure things like project_name, extra_autoload_paths, function timeout, memory size, etc.
 config/routes.rb  | Where you set up routes for your application.
 
 ## Usage
@@ -145,7 +163,7 @@ $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | 
 
 ### Local Test Server
 
-To improve the speed of development, you can run a local server which mimics API Gateway. So you can test your application code locally and then deploy to AWS when you are ready.
+To speed up development, you can run a local server which mimics API Gateway. Test your application code locally and then deploy to AWS when ready.
 
 ```sh
 jets server
@@ -175,7 +193,7 @@ You can find examples of all the CRUD actions at [CRUD Curl Jets Tutorial](https
 
 ### DynamoDB Local
 
-Using DynamoDB Local is useful if you are using DynamoDB. Just like develop with a local MySQL server, you can do the same with DynamoDB.  Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) which takes about 5 minutes.
+Just like developing with a local MySQL server, using DynamoDB Local can be useful. Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) that takes about 5 minutes.
 
 ### REPL Console
 
