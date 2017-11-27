@@ -23,7 +23,6 @@ class Jets::Server
       resp = controller_class.process(event, context, find_controller_action)
 
       # Map lambda proxy response format to rack format
-      # puts "resp #{resp.inspect}".colorize(:cyan)
       status = resp["statusCode"]
       headers = resp["headers"] || {}
       headers = {'Content-Type' => 'text/html'}.merge(headers)
@@ -102,8 +101,9 @@ class Jets::Server
     # To get the post body:
     #   rack.input: #<StringIO:0x007f8ccf8db9a0>
     def get_body
-      # @env["rack.input"] should always in there and we should make the tests
-      # always rack.input but handling it this way because it's simpler
+      # @env["rack.input"] is always provided by rack and we should make
+      # the test data always have rack.input to mimic rack, but but handling
+      # it this way because it's simpler.
       input = @env["rack.input"] || StringIO.new
       body = input.read
       # return nil for blank string, because thats what Lambda AWS_PROXY does

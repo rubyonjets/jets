@@ -22,9 +22,9 @@ class Jets::Booter
     connect_to_db
   end
 
-  # Only need to do this for ActiveRecord. DynamodbModel handles connecting
-  # to the client already.
-  # Only connects if config/database.yml exists.
+  # Only connects connect to database for ActiveRecord and when
+  # config/database.yml exists.
+  # DynamodbModel handles connecting to the clients lazily.
   def connect_to_db
     database_yml = "#{Jets.root}config/database.yml"
     return unless File.exist?(database_yml)

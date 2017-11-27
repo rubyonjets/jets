@@ -15,9 +15,6 @@ require "pp"
 require "byebug"
 require "fileutils"
 
-# require "bundler"
-# Bundler.require(:development)
-
 root = File.expand_path("../../", __FILE__)
 require "#{root}/lib/jets"
 Jets.boot
@@ -39,7 +36,7 @@ end
 # pretty hacky way of stubbing out md5_code_zipfile
 Jets::Naming # autoload it
 class Jets::Naming
-  # override this for specs
+  # override for specs
   def self.md5_code_zipfile
     "/tmp/jets/demo/code/code-2e0e18f6.zip"
   end
