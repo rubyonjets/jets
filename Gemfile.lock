@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:tongueroo/webpacker.git
-  revision: 479005dfb84f913a73550d485c07892e628f884b
+  revision: b231558172784f1c5b419b8625652b474f9d62c9
   specs:
     webpacker (3.0.2)
       activesupport (>= 4.2)
@@ -58,7 +58,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (8.0.0)
-    aws-partitions (1.39.0)
+    aws-partitions (1.40.0)
     aws-sdk-cloudformation (1.3.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
