@@ -12,15 +12,15 @@ module Jets::Commands
       git_installed = system("type git > /dev/null")
       return unless git_installed
 
-      system("cd #{project_name} && git init")
-      system("cd #{project_name} && git add .")
-      system("cd #{project_name} && git commit -m 'first commit'")
+      run("cd #{project_name} && git init")
+      run("cd #{project_name} && git add .")
+      run("cd #{project_name} && git commit -m 'first commit'")
     end
 
     def bundle_install
-      # Bundler.with_clean_env do
-      #   system("cd #{project_name} && BUNDLE_IGNORE_CONFIG=1 bundle install")
-      # end
+      Bundler.with_clean_env do
+        system("cd #{project_name} && BUNDLE_IGNORE_CONFIG=1 bundle install")
+      end
     end
 
     def user_message
