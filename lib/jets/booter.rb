@@ -9,49 +9,62 @@ $stdout = $stderr
 # This is not desired when returning payload to API Gateway eventually.
 
 class Jets::Booter
-  def boot!
-    confirm_jets_project!
-    puts boot_message
+  class << self
+    def boot!
+      confirm_jets_project!
+      puts boot_message
 
-    require "bundler/setup"
-    Bundler.require(*bundler_groups)
+      require_bundle_gems
 
-    Jets::Dotenv.load!
+      Jets::Dotenv.load!
 
-    Jets.application.setup! # app configs: autoload_paths, routes, etc
-    connect_to_db
-  end
+      Jets.application.setup! # app configs: autoload_paths, routes, etc
+      connect_to_db
+    end
 
-  # Only connects connect to database for ActiveRecord and when
-  # config/database.yml exists.
-  # DynamodbModel handles connecting to the clients lazily.
-  def connect_to_db
-    database_yml = "#{Jets.root}config/database.yml"
-    return unless File.exist?(database_yml)
+    # Use for rake tasks that defined in Gemfile source that are git based. Example:
+    #   gem "webpacker", git: "git@github.com:tongueroo/webpacker.git"
+    def require_bundle_gems
+      # When boot! is called there will always be a Gemfile
+      # because we call confirm_jets_project!  But let say the user calls
+      # jets command from a folder that is not a jets project.  An example is
+      # `jets help` from the user's home directory.
+      # In that case we will not require the usage of bundler.
+      # This could load to load errors but this use case is mainly isolated to
+      # jets help.  So within jets help we can rescue load errors.  This is done in
+      # Jets::RakeTasks.load!
+      return if !File.exist?("Gemfile") || !ENV['BUNDLE_GEMFILE']
 
-    text = Jets::Erb.result(database_yml)
-    config = YAML.load(text)
-    ActiveRecord::Base.establish_connection(config[Jets.env])
-  end
+      require "bundler/setup"
+      Bundler.require(*bundler_groups)
+    end
 
-  def bundler_groups
-    [:default, Jets.env.to_sym]
-  end
+    # Only connects connect to database for ActiveRecord and when
+    # config/database.yml exists.
+    # DynamodbModel handles connecting to the clients lazily.
+    def connect_to_db
+      database_yml = "#{Jets.root}config/database.yml"
+      return unless File.exist?(database_yml)
 
-  # Cannot call this for the jets new
-  def confirm_jets_project!
-    unless File.exist?("#{Jets.root}config/application.rb")
-      puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
-      exit
+      text = Jets::Erb.result(database_yml)
+      config = YAML.load(text)
+      ActiveRecord::Base.establish_connection(config[Jets.env])
+    end
+
+    def bundler_groups
+      [:default, Jets.env.to_sym]
+    end
+
+    # Cannot call this for the jets new
+    def confirm_jets_project!
+      unless File.exist?("#{Jets.root}config/application.rb")
+        puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
+        exit
+      end
+    end
+
+    def boot_message
+      "Jets booting up in #{Jets.env.colorize(:green)} mode!"
     end
   end
-
-  def boot_message
-    self.class.boot_message
-  end
-
-  def self.boot_message
-    "Jets booting up in #{Jets.env.colorize(:green)} mode!"
-  end
-
 end

@@ -97,8 +97,12 @@ class Jets::CLI
     shell = Thor::Shell::Basic.new
     shell.say "Commands:"
     shell.print_table(thor_list, :indent => 2, :truncate => true)
-    shell.say "\nCommands via rake:"
-    shell.print_table(rake_list, :indent => 2, :truncate => true)
+
+    unless rake_list.empty?
+      shell.say "\nCommands via rake:"
+      shell.print_table(rake_list, :indent => 2, :truncate => true)
+    end
+
     shell.say "\n"
     shell.say main_help_body
   end

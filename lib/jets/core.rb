@@ -20,7 +20,7 @@ module Jets::Core
 
   # Load all application base classes and project classes
   def boot
-    Jets::Booter.new.boot!
+    Jets::Booter.boot!
   end
 
   # Ensures trailing slash
