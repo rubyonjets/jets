@@ -18,5 +18,19 @@ describe Jets::Commands::Base do
       expect(commands).to include "dynamodb:migrate:down"
       expect(commands).to include "process:controller"
     end
+
+    it "klass_from_namespace" do
+      klass = Jets::Commands::Base.klass_from_namespace("dynamodb")
+      expect(klass).to be Jets::Commands::Dynamodb
+
+      klass = Jets::Commands::Base.klass_from_namespace(nil)
+      expect(klass).to be Jets::Commands::Main
+    end
+
+    it "autocomplete" do
+      full_command = Jets::Commands::Base.autocomplete("ser")
+      puts "full_command #{full_command.inspect}"
+      expect(full_command).to eq "server"
+    end
   end
 end

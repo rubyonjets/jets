@@ -29,14 +29,7 @@ class Jets::CLI
   def lookup(full_command)
     thor_task_found = Jets::Commands::Base.namespaced_commands.include?(full_command)
     if thor_task_found
-      klass = if namespace.nil?
-                Jets::Commands::Main
-              else
-                class_name = namespace.gsub(':','/')
-                class_name = "Jets::Commands::#{class_name.classify}"
-                class_name.constantize
-              end
-      return klass
+      return Jets::Commands::Base.klass_from_namespace(namespace)
     end
 
     rake_task_found = Jets::Commands::RakeCommand.namespaced_commands.include?(full_command)
@@ -70,7 +63,8 @@ class Jets::CLI
     # Removes any args that starts with -, those are option args.
     # Also remove "help" flag.
     args = @given_args.reject {|o| o =~ /^-/ } - help_flags
-    args[0] # first argument should always be the command
+    command = args[0] # first argument should always be the command
+    Jets::Commands::Base.autocomplete(command)
   end
 
   def namespace

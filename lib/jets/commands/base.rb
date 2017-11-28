@@ -86,5 +86,34 @@ class Jets::Commands::Base < Thor
       config = {} # doesnt seem like config is used
       dispatch(nil, thor_args, nil, config)
     end
+
+    def klass_from_namespace(namespace)
+      if namespace.nil?
+        Jets::Commands::Main
+      else
+        class_name = namespace.gsub(':','/')
+        class_name = "Jets::Commands::#{class_name.classify}"
+        class_name.constantize
+      end
+    end
+
+    # If this fails to match then it'l just return the original full command
+    def autocomplete(full_command)
+      return nil if full_command.nil? # jets help
+
+      eager_load!
+
+      words = full_command.split(':')
+      namespace = words[0..-2].join if words.size > 1
+      command = words.last
+      thor_subclass = klass_from_namespace(namespace)
+      # Thor's normalize_command_name autocompletes the command
+      begin
+        thor_subclass.normalize_command_name(command)
+      rescue Thor::AmbiguousCommandError => e
+        puts "Unable to autodetect the command name. #{e.message}."
+        full_command # return original full_command
+      end
+    end
   end
 end
