@@ -2,6 +2,27 @@ require 'logger'
 require 'active_support/dependencies'
 
 module Jets::Core
+  # Calling application triggers load of configs.
+  # Jets' the default config/application.rb is loaded,
+  # then the project's config/application.rb is loaded.
+  @@application = nil
+  def application
+    return @@application if @@application
+
+    @@application = Jets::Application.new
+    @@application.setup!
+    @@application
+  end
+
+  def config
+    application.config
+  end
+
+  # Load all application base classes and project classes
+  def boot
+    Jets::Booter.new.boot!
+  end
+
   # Ensures trailing slash
   # Useful for appending a './' in front of a path or leaving it alone.
   # Returns: '/path/with/trailing/slash/' or './'
@@ -14,30 +35,6 @@ module Jets::Core
     @@root = Pathname.new(@@root)
   end
 
-  # Load all application base classes and project classes
-  def boot
-    Jets::Booter.new.boot!
-  end
-
-  def boot_message
-    "Jets booting up in #{Jets.env.colorize(:green)} mode!"
-  end
-
-  def config
-    application.config
-  end
-
-  # Calling application triggers load of configs.
-  # Jets' the default config/application.rb is loaded,
-  # then the project's config/application.rb is loaded.
-  @@application = nil
-  def application
-    return @@application if @@application
-    @@application = Jets::Application.new
-    @@application.load_configs
-    @@application.load_routes
-    @@application
-  end
 
   @@env = nil
   def env

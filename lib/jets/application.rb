@@ -9,8 +9,20 @@ class Jets::Application
     instance_eval(&block) if block
   end
 
+  def setup!
+    load_configs # Must be first thing to run. follwing methods could use config
+    setup_auto_load_paths
+    load_routes
+  end
+
   def config
     @config ||= RecursiveOpenStruct.new
+  end
+
+  def setup_auto_load_paths
+    autoload_paths = config.autoload_paths + config.extra_autoload_paths
+    autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
+    ActiveSupport::Dependencies.autoload_paths += autoload_paths
   end
 
   # Jets' the default config/application.rb is loaded,

@@ -10,15 +10,15 @@ $stdout = $stderr
 
 class Jets::Booter
   def boot!
-    # confirm_jets_project!
+    confirm_jets_project!
+    puts boot_message
 
     require "bundler/setup"
     Bundler.require(*bundler_groups)
 
     Jets::Dotenv.load!
 
-    ActiveSupport::Dependencies.autoload_paths += autoload_paths
-
+    Jets.application.setup! # app configs: autoload_paths, routes, etc
     connect_to_db
   end
 
@@ -38,17 +38,20 @@ class Jets::Booter
     [:default, Jets.env.to_sym]
   end
 
-  def autoload_paths
-    autoload_paths = Jets.config.autoload_paths + Jets.config.extra_autoload_paths
-    autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
-  end
-
   # Cannot call this for the jets new
   def confirm_jets_project!
     unless File.exist?("#{Jets.root}config/application.rb")
       puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
       exit
     end
+  end
+
+  def boot_message
+    self.class.boot_message
+  end
+
+  def self.boot_message
+    "Jets booting up in #{Jets.env.colorize(:green)} mode!"
   end
 
 end

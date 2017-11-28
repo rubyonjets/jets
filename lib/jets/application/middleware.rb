@@ -6,7 +6,6 @@ module Jets::Application::Middleware
     # Trying to keep the config.ru interface clean:
     #
     #   require "jets"
-    #   Jets.boot
     #   run Jets.application
     require "jets/server/webpacker_setup" # makes "use Webpacker::DevServerProxy" works
     triplet = assemble_app.call(env)
