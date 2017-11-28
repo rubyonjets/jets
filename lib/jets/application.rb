@@ -21,7 +21,7 @@ class Jets::Application
 
   def setup_auto_load_paths
     autoload_paths = config.autoload_paths + config.extra_autoload_paths
-    autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
+    autoload_paths = autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
     ActiveSupport::Dependencies.autoload_paths += autoload_paths
   end
 
