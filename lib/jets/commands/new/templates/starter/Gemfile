@@ -12,3 +12,5 @@ group :development, :test do
   gem 'sinatra'
   gem 'shotgun'
 end
+
+<%= options.inspect %>
