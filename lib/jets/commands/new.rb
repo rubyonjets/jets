@@ -37,11 +37,8 @@ class Jets::Commands::New < Jets::Commands::Sequence
   argument :project_name
   class_option :repo, default: "tongueroo/starter", desc: "Starter repo to use."
 
-  def start_here
+  def copy_project
     puts "Creating new project called #{project_name}."
-    puts "options #{options.inspect}"
-    puts "args #{args.inspect}"
-    puts "project_name #{project_name.inspect}"
     directory ".", project_name
   end
 
@@ -55,12 +52,13 @@ class Jets::Commands::New < Jets::Commands::Sequence
   end
 
   def bundle_install
-    Bundler.with_clean_env do
-      system("cd #{project_name} && BUNDLE_IGNORE_CONFIG=1 bundle install")
-    end
+    # Bundler.with_clean_env do
+    #   system("cd #{project_name} && BUNDLE_IGNORE_CONFIG=1 bundle install")
+    # end
   end
 
   def user_message
+    puts "=" * 64
     puts "Congrats 🎉 You have successfully created a Jets project."
     puts "To deploy the project to AWS Lambda:"
     puts "  cd #{project_name}".colorize(:green)
