@@ -13,14 +13,13 @@ module Jets::Commands
       class_option *args
     end
 
-    def copy_project
-      puts "Creating new project called #{project_name}."
-      directory ".", project_name
+    def create_project
+      options[:repo] ? clone_project : copy_project
     end
 
     def git_init
-      git_installed = system("type git > /dev/null")
-      return unless git_installed
+      return unless git_installed?
+      return if File.exist?("#{project_name}/.git") # this is a clone repo
 
       run("cd #{project_name} && git init")
       run("cd #{project_name} && git add .")
