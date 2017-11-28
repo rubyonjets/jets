@@ -23,7 +23,8 @@ class Jets::RakeTasks
       begin
         require "webpacker"
       rescue LoadError
-        puts "WARN: unable to load gem. #{$!}. Running with 'bundle exec' might fix this warning."
+        # puts "WARN: unable to load gem. #{$!}. Running with 'bundle exec' might fix this warning."
+
         # Can happen if the user calls jets not in a folder with the right Gemfile
         # or in a folder without Gemfile at all.
         return

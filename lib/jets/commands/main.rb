@@ -27,12 +27,7 @@ module Jets::Commands
       Delete.new(options).run
     end
 
-    desc "new", "Creates new starter project"
-    long_desc Help.new_long_desc
-    option :template, default: "starter", desc: "Starter template to use."
-    def new(project_name)
-      New.new(project_name, options).run
-    end
+    register(Jets::Commands::New, "new", "new", "Creates new starter project")
 
     desc "server", "Runs a local server for development"
     long_desc Help.server
