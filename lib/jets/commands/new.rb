@@ -1,7 +1,17 @@
 module Jets::Commands
   class New < Sequence
     argument :project_name
-    class_option :repo, default: "tongueroo/starter", desc: "Starter repo to use."
+
+    # Ugly, but when the class_option is only defined in the Thor::Group class
+    # it doesnt show up with jets new help :(
+    # If anyone knows how to fix this let me know.
+    def self.cli_options
+      [[:repo, desc: "Starter repo to use. Format: user/repo"]]
+    end
+
+    cli_options.each do |args|
+      class_option *args
+    end
 
     def copy_project
       puts "Creating new project called #{project_name}."

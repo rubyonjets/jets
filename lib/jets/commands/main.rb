@@ -27,8 +27,6 @@ module Jets::Commands
       Delete.new(options).run
     end
 
-    register(Jets::Commands::New, "new", "new", "Creates new starter project")
-
     desc "server", "Runs a local server for development"
     long_desc Help.server
     option :port, aliases: :p, default: "8888", desc: "use PORT"
@@ -73,5 +71,11 @@ module Jets::Commands
     def generate(generator, *args)
       Jets::Generator.invoke(generator, *args)
     end
+
+    long_desc Help.new_long_desc
+    Jets::Commands::New.cli_options.each do |args|
+      option *args
+    end
+    register(Jets::Commands::New, "new", "new", "Creates new starter project")
   end
 end
