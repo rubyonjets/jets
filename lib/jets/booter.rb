@@ -33,10 +33,13 @@ class Jets::Booter
       # This could load to load errors but this use case is mainly isolated to
       # jets help.  So within jets help we can rescue load errors.  This is done in
       # Jets::RakeTasks.load!
-      return if !File.exist?("Gemfile") || !ENV['BUNDLE_GEMFILE']
 
-      require "bundler/setup"
-      Bundler.require(*bundler_groups)
+      # NOTE: Dont think ENV['BUNDLE_GEMFILE'] is quite working right.  We still need
+      # to be in the project directory.  Leaving logic in here for when it gets fix.
+      if ENV['BUNDLE_GEMFILE'] || File.exist?("Gemfile")
+        require "bundler/setup"
+        Bundler.require(*bundler_groups)
+      end
     end
 
     # Only connects connect to database for ActiveRecord and when
