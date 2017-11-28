@@ -57,7 +57,7 @@ class Jets::CLI
     if help_args.empty?
       args[0] = meth # reassigns the command without the namespace
     else
-      # allows using help flags at the end of the ocmmand to trigger the help menu
+      # Allow using help flags at the end of the command to trigger help menu
       args -= help_flags # remove "help" and help flags from args
       args[0] = meth # first command will always be the meth now since
         # we removed the help flags

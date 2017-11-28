@@ -5,13 +5,8 @@
 class Jets::Cfn::TemplateBuilders
   module Interface
     def build
-      # if @app_klass
-      #   puts "@app_klass #{@app_klass.inspect}"
-      #   puts "@app_klass.tasks.empty? #{@app_klass.tasks.empty?.inspect}"
-      #   puts "@app_klass.tasks #{@app_klass.tasks.inspect}"
-      # end
-      return if @app_klass && @app_klass.tasks.empty? # do not bother building or writing
-        # the template unless there are functions defined
+      return if @app_klass && @app_klass.tasks.empty? # do not bother building
+        #or writing the template unless there are functions defined
 
       compose # must be implemented by subclass
       write

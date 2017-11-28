@@ -13,5 +13,5 @@ class Jets::Controller
         end
       end
     end # included
-  end # ClassOptions
+  end # Layout
 end

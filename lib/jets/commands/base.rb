@@ -15,19 +15,19 @@ class Jets::Commands::Base < Thor
       end
     end
 
-    # useful for help menu
+    # Useful for help menu when we need to have all the definitions loaded.
+    # Using constantize instead of require so we dont care about
+    # order. The eager load actually uses autoloading.
     def eager_load!
       path = File.expand_path("../../", __FILE__)
       Dir.glob("#{path}/commands/**/*.rb").select do |path|
         next if !File.file?(path) or path =~ /templates/
 
-        # puts "path #{path.inspect}"
         class_name = path
                       .sub('.rb','')
                       .sub(%r{.*/jets/commands}, 'jets/commands')
                       .classify
-        # puts "  class_name #{class_name.inspect}"
-        class_name.constantize # not using require so we dont have to worry about the ordering of the require
+        class_name.constantize # dont have to worry about order.
       end
     end
 
@@ -46,7 +46,7 @@ class Jets::Commands::Base < Thor
       end.flatten.sort
     end
 
-    # Use Jets banner instead of Thor to account for the namespace commands
+    # Use Jets banner instead of Thor to account for namespaces in commands.
     def banner(command, namespace = nil, subcommand = false)
       namespace = namespace_from_class(self)
       command_name = command.usage # set with desc when defining tht Thor class
@@ -57,7 +57,6 @@ class Jets::Commands::Base < Thor
 
     def namespace_from_class(klass)
       namespace = klass.to_s.sub('Jets::Commands::', '').underscore.gsub('/',':')
-      # puts "namespace #{namespace.inspect}"
       namespace unless namespace == "main"
     end
 
@@ -68,8 +67,8 @@ class Jets::Commands::Base < Thor
       end if all
 
       list = []
-      Jets::Commands::Base.eager_load!
-      Jets::Commands::Base.subclasses.each do |klass|
+      eager_load!
+      subclasses.each do |klass|
         commands = klass.printable_commands(true, false)
         commands.reject! { |array| array[0].include?(':help') }
         list += commands

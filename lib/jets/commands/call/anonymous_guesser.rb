@@ -12,7 +12,7 @@ class Jets::Commands::Call
     def method_name
       return @method_name if defined?(@method_name)
 
-      full_function_name = @provided_function_name.gsub('-','_').underscore
+      full_function_name = @provided_function_name.underscore
       underscored_class_name = class_name.underscore
       meth = full_function_name.sub("#{underscored_class_name}_","")
 
@@ -53,9 +53,6 @@ class Jets::Commands::Call
 
       next_meth = meth.sub("#{primary_namespace}_", '')
       next_parts = next_meth.split('_')
-
-      # puts "next_meth #{next_meth.inspect}"
-      # puts "next_parts #{next_parts.inspect}"
 
       # Takes the next_parts and creates guesses with the parts joined by '/'
       # with the primary_namespace prepended.  So if next_parts is

@@ -72,7 +72,8 @@ class Jets::Application
   end
 
   def load_routes
-    require "#{Jets.root}config/routes.rb"
+    routes_file = "#{Jets.root}config/routes.rb"
+    require routes_file if File.exist?(routes_file)
   end
 
 end
