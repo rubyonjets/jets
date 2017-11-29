@@ -107,7 +107,7 @@ class Jets::Builders
       # Crucial that the Dir.pwd is in the tmp_app_root because for
       # Jets::Builders::app_files because Jets.boot set ups
       # autoload_paths and this is how project classes are loaded.
-      Jets::Builders::app_files.each do |path|
+      Jets::Commands::Build.app_files.each do |path|
         handler = Jets::Builders::HandlerGenerator.new(path)
         handler.generate
       end

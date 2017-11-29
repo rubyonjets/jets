@@ -3,6 +3,21 @@ require "spec_helper"
 describe Jets::Server::RouteMatcher do
   let(:matcher) { Jets::Server::RouteMatcher.new(env) }
 
+  context "get /" do
+    let(:env) do
+      { "PATH_INFO" => "/", "REQUEST_METHOD" => "GET" }
+    end
+    it "find_route finds root route" do
+      route = Jets::Route.new(
+        path: "/",
+        method: :get,
+        to: "posts#new",
+      )
+      found = matcher.route_found?(route)
+      expect(found).to be true
+    end
+  end
+
   context "get posts/:id/edit" do
     let(:env) do
       { "PATH_INFO" => "/posts/tung/edit", "REQUEST_METHOD" => "GET" }
