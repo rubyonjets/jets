@@ -3,6 +3,7 @@ require 'kramdown'
 class Jets::Server
   class ApiGateway
     def self.call(env)
+      Jets.boot
       route = RouteMatcher.new(env).find_route
       if route
         proxy = LambdaAwsProxy.new(route, env)

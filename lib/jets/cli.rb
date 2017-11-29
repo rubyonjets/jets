@@ -37,11 +37,18 @@ class Jets::CLI
     end
   end
 
+  ALIASES = {
+    "g"  => "generate",
+    "c"  => "console",
+    "s"  => "server",
+    "db" => "dbconsole",
+  }
   def full_command
     # Removes any args that starts with -, those are option args.
     # Also remove "help" flag.
     args = @given_args.reject {|o| o =~ /^-/ } - help_flags
     command = args[0] # first argument should always be the command
+    command = ALIASES[command] || command
     Jets::Commands::Base.autocomplete(command)
   end
 
