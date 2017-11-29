@@ -22,7 +22,7 @@ module Jets::Commands
 
     desc "delete", "Delete project and all its resources"
     long_desc Help.delete
-    option :sure, type: :boolean, desc: "Skip are you sure prompt."
+    option :force, type: :boolean, desc: "Skip are you sure prompt."
     def delete
       Delete.new(options).run
     end
