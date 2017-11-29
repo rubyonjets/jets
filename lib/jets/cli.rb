@@ -28,7 +28,7 @@ class Jets::CLI
   # new and help.
   def boot_jets
     command = thor_args.first
-    unless command.nil? || %w[new help].include?(command)
+    if !%w[new help].include?(command)
       Jets.boot
     end
   end

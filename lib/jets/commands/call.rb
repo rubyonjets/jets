@@ -48,7 +48,7 @@ class Jets::Commands::Call
     # good job of not bombing, so always calling it to simplify code.
 
     text = Jets::Util.normalize_result(result)
-    $stdout.puts text
+    STDOUT.puts text
   end
 
   def remote_run
@@ -76,7 +76,7 @@ class Jets::Commands::Call
 
     add_console_link_to_clipboard
     result = resp.payload.read # already been normalized/JSON.dump by AWS
-    $stdout.puts result # only thing that goes to stdout
+    STDOUT.puts result # only thing that goes to stdout
   end
 
   def guesser

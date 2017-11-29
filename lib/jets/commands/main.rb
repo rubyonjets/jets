@@ -34,7 +34,6 @@ module Jets::Commands
     def server
       # shell out to shotgun for automatic reloading
       o = options
-      puts Jets::Booter.boot_message
       command = "bundle exec shotgun --port #{o[:port]} --host #{o[:host]}"
       puts "=> #{command}".colorize(:green)
       system(command)
