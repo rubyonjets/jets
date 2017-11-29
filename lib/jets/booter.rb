@@ -1,16 +1,8 @@
-# Global overrides for Lambda processing
-$stdout.sync = true
-$stderr.sync = true
-$stdout = $stderr
-# $stdout = $stderr might seem weird but we want puts to write to stderr which
-# is set in the node shim to write to stderr.  This directs the output to
-# Lambda logs.
-# Printing to stdout managles up the payload returned from Lambda function.
-# This is not desired when returning payload to API Gateway eventually.
-
 class Jets::Booter
   class << self
     def boot!
+      stdout_to_stderr
+
       confirm_jets_project!
       puts(boot_message) unless Jets.env.test?
 
@@ -20,6 +12,23 @@ class Jets::Booter
 
       Jets.application.setup! # app configs: autoload_paths, routes, etc
       connect_to_db
+    end
+
+    # Override for Lambda processing.
+    # $stdout = $stderr might seem weird but we want puts to write to stderr which
+    # is set in the node shim to write to stderr.  This directs the output to
+    # Lambda logs.
+    # Printing to stdout managles up the payload returned from Lambda function.
+    # This is not desired when returning payload to API Gateway eventually.
+    def stdout_to_stderr
+      $stdout.sync = true
+      $stderr.sync = true
+      $stdout = $stderr
+    end
+
+    # useful for cli usage
+    def reset_stdout
+      $stdout = STDOUT
     end
 
     # Use for rake tasks that defined in Gemfile source that are git based. Example:

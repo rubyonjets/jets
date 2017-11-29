@@ -31,6 +31,7 @@ class Jets::CLI
     if !%w[new help].include?(command)
       Jets.boot
     end
+    Jets::Booter.reset_stdout
   end
 
   def full_command
