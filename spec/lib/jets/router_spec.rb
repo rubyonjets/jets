@@ -33,6 +33,19 @@ describe Jets::Router do
         # end
         # pp Jets::Router.routes
       end
+
+      it "root" do
+        router.draw do
+          root "posts#index"
+        end
+
+        route = router.routes.first
+        expect(route).to be_a(Jets::Route)
+        expect(route.root?).to be true
+        expect(route.to).to eq "posts#index"
+        expect(route.path).to eq ''
+        expect(route.method).to eq "GET"
+      end
     end
 
     context("routes with resources macro") do

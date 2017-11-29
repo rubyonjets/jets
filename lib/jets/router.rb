@@ -33,6 +33,11 @@ module Jets
       @routes << Route.new(options)
     end
 
+    # root "posts#index"
+    def root(to)
+      @routes << Route.new(path: '', to: to, method: :get, root: true)
+    end
+
     # Useful for creating API Gateway Resources
     def all_paths
       results = []

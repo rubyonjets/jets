@@ -16,7 +16,7 @@ class Jets::Route
       api_gateway_format(@options[:path])
     when :raw
       @options[:path]
-    else
+    else # jets format
       ensure_jets_format(@options[:path])
     end
   end
@@ -28,6 +28,10 @@ class Jets::Route
   # IE: posts#index
   def to
     @options[:to]
+  end
+
+  def root?
+    path == ''
   end
 
   # IE: PostsController
