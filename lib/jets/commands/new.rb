@@ -20,11 +20,20 @@ module Jets::Commands
       options[:repo] ? clone_project : copy_project
       destination_root = "#{Dir.pwd}/#{project_name}"
       self.destination_root = destination_root
-      FileUtils.cd(destination_root)
+      FileUtils.cd("#{Dir.pwd}/#{project_name}")
     end
 
     def make_bin_executable
       chmod "bin", 0755 & ~File.umask, verbose: false
+    end
+
+    def git_init
+      return unless git_installed?
+      return if File.exist?(".git") # this is a clone repo
+
+      run("git init")
+      run("git add .")
+      run("git commit -m 'first commit'")
     end
 
     def bundle_install
@@ -36,15 +45,6 @@ module Jets::Commands
     def webpacker_install
       puts "SKIPPING webpacker:install"
       run("jets webpacker:install")
-    end
-
-    def git_init
-      return unless git_installed?
-      return if File.exist?(".git") # this is a clone repo
-
-      run("git init")
-      run("git add .")
-      run("git commit -m 'first commit'")
     end
 
     def user_message
