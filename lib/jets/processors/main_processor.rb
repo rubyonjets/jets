@@ -39,7 +39,7 @@ class Jets::Processors::MainProcessor
       # json string, it just dumps it to a plain text string.
       text = Jets::Util.normalize_result(result)
       # TODO: figure a way to silence this output for specs wihtout breaking process_spec.rb
-      $stdout.puts text # only place where we write to stdout.
+      STDOUT.puts text # only place where we write to stdout.
       text
     rescue Exception => e
       # Customize error message slightly so nodejs shim can process the

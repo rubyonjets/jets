@@ -12,7 +12,7 @@ class Jets::Booter
   class << self
     def boot!
       confirm_jets_project!
-      puts boot_message
+      puts(boot_message) unless Jets.env.test?
 
       require_bundle_gems
 
