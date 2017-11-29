@@ -31,7 +31,10 @@ class Jets::CLI
     if !%w[new help].include?(command)
       Jets.boot
     end
-    Jets::Booter.reset_stdout
+    if command = "help"
+      # help output goes to stdout when explicitly called
+      Jets::Booter.reset_stdout
+    end
   end
 
   def full_command

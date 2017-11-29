@@ -20,7 +20,6 @@ class Jets::Commands::Call
     @invocation_type = options[:invocation_type] || "RequestResponse"
     @log_type = options[:log_type] || "Tail"
     @qualifier = @qualifier
-    Jets::Booter.stdout_to_stderr
   end
 
   def function_name
