@@ -104,12 +104,14 @@ class Jets::Commands::Base < Thor
       eager_load!
 
       words = full_command.split(':')
-      namespace = words[0..-2].join if words.size > 1
+      namespace = words[0..-2].join(':') if words.size > 1
       command = words.last
+
       thor_subclass = klass_from_namespace(namespace)
-      # Thor's normalize_command_name autocompletes the command
+      # Thor's normalize_command_name autocompletes the command but then we need to add the namespace back
       begin
-        thor_subclass.normalize_command_name(command)
+        command = thor_subclass.normalize_command_name(command)
+        [namespace, command].compact.join(':')
       rescue Thor::AmbiguousCommandError => e
         puts "Unable to autodetect the command name. #{e.message}."
         full_command # return original full_command
