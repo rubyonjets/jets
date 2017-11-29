@@ -15,13 +15,30 @@ class Jets::CLI
   end
 
   def start
-    Jets.boot
+    boot_jets
     command_class = lookup(full_command)
     if command_class
       command_class.perform(full_command, thor_args)
     else
       main_help
     end
+  end
+
+  # Pretty much all commands require being within a jets project except for
+  # new and help.
+  def boot_jets
+    command = thor_args.first
+    unless command.nil? || %w[new help].include?(command)
+      Jets.boot
+    end
+  end
+
+  def full_command
+    # Removes any args that starts with -, those are option args.
+    # Also remove "help" flag.
+    args = @given_args.reject {|o| o =~ /^-/ } - help_flags
+    command = args[0] # first argument should always be the command
+    Jets::Commands::Base.autocomplete(command)
   end
 
   # 1. look up Thor tasks
@@ -45,7 +62,7 @@ class Jets::CLI
   end
 
   def thor_args
-    args = @given_args
+    args = @given_args.clone
 
     help_args = args & help_flags
     if help_args.empty?
@@ -58,14 +75,6 @@ class Jets::CLI
       args.unshift("help")
     end
     args.compact
-  end
-
-  def full_command
-    # Removes any args that starts with -, those are option args.
-    # Also remove "help" flag.
-    args = @given_args.reject {|o| o =~ /^-/ } - help_flags
-    command = args[0] # first argument should always be the command
-    Jets::Commands::Base.autocomplete(command)
   end
 
   def namespace
