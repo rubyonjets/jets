@@ -12,7 +12,7 @@ class Jets::Commands::Build
   end
 
   def build
-    build_code
+    build_code unless @options[:templates_only]
     build_all_templates
   end
 
