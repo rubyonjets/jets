@@ -1,3 +1,5 @@
+require 'rake'
+
 class Jets::Commands::RakeTasks
   class << self
     # Will only load the tasks once.  Just in case the user has already loaded
@@ -26,7 +28,15 @@ class Jets::Commands::RakeTasks
         # Happens whne user calls jets help outside the jets project folder.
         return
       end
+
       Webpacker::RakeTasks.load!
+      Rake::Task['webpacker:install'].enhance do
+        # FORCE from rake webpacker:install FORCE=1
+        args ||= []
+        args += ["--force"] if ENV['FORCE']
+        Jets::Commands::WebpackerTemplate.start(args)
+      end
+      # Thanks: https://coderwall.com/p/qhdhgw/adding-a-post-execution-hook-to-the-rails-db-migrate-task
     end
   end
 end
