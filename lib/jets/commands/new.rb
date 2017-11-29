@@ -6,7 +6,10 @@ module Jets::Commands
     # it doesnt show up with jets new help :(
     # If anyone knows how to fix this let me know.
     def self.cli_options
-      [[:repo, desc: "Starter repo to use. Format: user/repo"]]
+      [
+        [:repo, desc: "Starter repo to use. Format: user/repo"],
+        [:force, desc: "Bypass overwrite are you sure prompt for existing files."],
+      ]
     end
 
     cli_options.each do |args|
@@ -30,6 +33,12 @@ module Jets::Commands
       Bundler.with_clean_env do
         system("cd #{project_name} && BUNDLE_IGNORE_CONFIG=1 bundle install")
       end
+    end
+
+    def webpacker_install
+      # Always force webpacker:install. Going to overwrite later anyway as part
+      # of WebpackerTemplate#reapply_templates.
+      run("cd #{project_name} && jets webpacker:install")
     end
 
     def user_message

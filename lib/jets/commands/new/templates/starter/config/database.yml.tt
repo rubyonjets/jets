@@ -1,0 +1,25 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  pool: <%%= ENV["DB_POOL"] || 5  %>
+  database: <%%= ENV['DB_NAME'] || '<%= project_name %>_dev' %>
+  username: <%%= ENV['DB_USER'] || ENV['USER'] %>
+  password: <%%= ENV['DB_PASS'] %>
+  host: <%%= ENV["DB_HOST"] %>
+
+development:
+  <<: *default
+  database: <%= project_name %>_dev
+
+test:
+  <<: *default
+  database: <%= project_name %>_test
+
+staging:
+  <<: *default
+  url: <%%= ENV['DB_URL'] %>
+
+production:
+  <<: *default
+  # TODO: remove hardcode of test database url
+  url: <%%= ENV['DB_URL'] %>

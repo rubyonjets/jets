@@ -12,12 +12,6 @@ class Jets::Commands::Sequence < Thor::Group
   end
 
 private
-  def copy_file(source, *args, &block)
-    template(source, *args, &block)
-  end
-  public :copy_file # in order to override methods in Thor they have to first
-    # be declared private
-
   def clone_project
     unless git_installed?
       abort "Unable to detect git installation on your system.  Git needs to be installed in order to use the --repo option."

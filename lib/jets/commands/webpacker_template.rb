@@ -11,12 +11,7 @@ class Jets::Commands::WebpackerTemplate < Thor::Group
   end
 
   def reapply_templates
-    directory "app/javascript", "app/javascript", force: force?
-  end
-
-private
-  # Usage: jets webpacker:install FORCE=1
-  def force?
-    args.include?('--force')
+    # Always overwrite javascript webpacker:install created.
+    directory "app/javascript", "app/javascript", force: true
   end
 end
