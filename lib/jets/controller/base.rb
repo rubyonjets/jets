@@ -11,7 +11,7 @@ class Jets::Controller
     include Rendering
     include Params
 
-    def self.process(event, context, meth)
+    def self.process(event, context={}, meth)
       controller = new(event, context, meth)
       controller.run_before_actions
       controller.send(meth)
@@ -22,7 +22,7 @@ class Jets::Controller
 
     delegate :headers, to: :request
     attr_reader :request
-    def initialize(event, context, meth)
+    def initialize(event, context={}, meth)
       super
       @request = Request.new(event)
     end
