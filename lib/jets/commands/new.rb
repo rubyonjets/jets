@@ -38,7 +38,7 @@ module Jets::Commands
     def webpacker_install
       # Always force webpacker:install. Going to overwrite later anyway as part
       # of WebpackerTemplate#reapply_templates.
-      run("cd #{project_name} && jets webpacker:install")
+      run("cd #{project_name} && jets webpacker:install FORCE=1")
     end
 
     def user_message
