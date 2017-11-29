@@ -18,27 +18,33 @@ module Jets::Commands
 
     def create_project
       options[:repo] ? clone_project : copy_project
+      destination_root = "#{Dir.pwd}/#{project_name}"
+      self.destination_root = destination_root
+      FileUtils.cd("#{Dir.pwd}/#{project_name}")
+    end
+
+    def make_bin_executable
+      chmod "bin", 0755 & ~File.umask, verbose: false
     end
 
     def git_init
       return unless git_installed?
-      return if File.exist?("#{project_name}/.git") # this is a clone repo
+      return if File.exist?(".git") # this is a clone repo
 
-      run("cd #{project_name} && git init")
-      run("cd #{project_name} && git add .")
-      run("cd #{project_name} && git commit -m 'first commit'")
+      run("git init")
+      run("git add .")
+      run("git commit -m 'first commit'")
     end
 
     def bundle_install
       Bundler.with_clean_env do
-        system("cd #{project_name} && BUNDLE_IGNORE_CONFIG=1 bundle install")
+        system("BUNDLE_IGNORE_CONFIG=1 bundle install")
       end
     end
 
     def webpacker_install
-      # Always force webpacker:install. Going to overwrite later anyway as part
-      # of WebpackerTemplate#reapply_templates.
-      run("cd #{project_name} && jets webpacker:install FORCE=1")
+      puts "SKIPPING webpacker:install"
+      run("jets webpacker:install")
     end
 
     def user_message

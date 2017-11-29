@@ -8,5 +8,5 @@ gemspec
 # right now need both because of jets/application.rb and
 # jets/webpacker/middleware_setup.rb
 group :development, :test do
-  gem "webpacker", git: "git@github.com:tongueroo/webpacker.git"
+  gem "webpacker", git: "git@github.com:tongueroo/webpacker.git", branch: "jets"
 end
