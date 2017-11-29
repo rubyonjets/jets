@@ -13,7 +13,7 @@ class Jets::Cfn::TemplateMappers
       "#{path_logical_id(@path)}CorsApiGatewayResource"
     end
 
-    # Modify the path to confirm to API Gateway capture expressions
+    # Modify the path to conform to API Gateway capture expressions
     def path
       @path.split('/').map {|s| transform_capture(s) }.join('/')
     end
@@ -21,11 +21,11 @@ class Jets::Cfn::TemplateMappers
     def transform_capture(text)
       if text.starts_with?(':')
         text = text.sub(':','')
-        text = "{#{text}}"
+        text = "{#{text}}" # :foo => {foo}
       end
       if text.starts_with?('*')
         text = text.sub('*','')
-        text = "{#{text}+}"
+        text = "{#{text}+}" # *foo => {foo+}
       end
       text
     end

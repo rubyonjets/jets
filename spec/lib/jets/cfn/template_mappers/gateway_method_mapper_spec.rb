@@ -29,6 +29,7 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
       it "posts/:id/edit contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "PostsIdEditGetApiGatewayMethod"
         expect(map.gateway_resource_logical_id).to eq "PostsIdEditApiGatewayResource"
+        expect(map.gateway_resource_id).to eq "!Ref PostsIdEditApiGatewayResource"
         expect(map.lambda_function_logical_id).to eq "PostsControllerEditLambdaFunction"
       end
     end
@@ -39,6 +40,16 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
         expect(map.logical_id).to eq "AdminPagesIdEditGetApiGatewayMethod"
         expect(map.gateway_resource_logical_id).to eq "AdminPagesIdEditApiGatewayResource"
         expect(map.lambda_function_logical_id).to eq "AdminPagesControllerEditLambdaFunction"
+      end
+    end
+
+    context "homepage - top most level root url" do
+      let(:route) { Jets::Route.new(path: "", method: :get, to: "home#show") }
+
+      it "contains info for CloudFormation API Gateway Resources" do
+        expect(map.logical_id).to eq "RootPathHomepageGetApiGatewayMethod"
+        expect(map.gateway_resource_id).to eq "!GetAtt RestApi.RootResourceId"
+        expect(map.lambda_function_logical_id).to eq "HomeControllerShowLambdaFunction"
       end
     end
   end

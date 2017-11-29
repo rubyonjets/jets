@@ -39,6 +39,7 @@ class Jets::Cfn::TemplateBuilders
     def add_gateway_routes
       # The routes required a Gateway Resource to contain them.
       Jets::Router.all_paths.each do |path|
+        next if path.empty? # no AWS::ApiGateway::Resource for the top level route
         map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
         add_resource(map.logical_id, "AWS::ApiGateway::Resource",
           ParentId: map.parent_id,

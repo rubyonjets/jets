@@ -33,7 +33,7 @@ class Jets::Cfn::TemplateBuilders
       add_resource(map.logical_id, "AWS::ApiGateway::Method",
         HttpMethod: route.method,
         RequestParameters: {},
-        ResourceId: "!Ref #{map.gateway_resource_logical_id}",
+        ResourceId: map.gateway_resource_id,
         RestApiId: "!Ref RestApi",
         AuthorizationType: "NONE",
         Integration: {
@@ -83,7 +83,7 @@ class Jets::Cfn::TemplateBuilders
             }
           ]
         },
-        ResourceId: "!Ref #{map.gateway_resource_logical_id}",
+        ResourceId: map.gateway_resource_id,
         RestApiId: "!Ref RestApi",
       )
     end

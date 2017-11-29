@@ -5,7 +5,11 @@ class Jets::Cfn::TemplateMappers
     end
 
     def logical_id
-      "#{path_method_id}ApiGatewayMethod"
+      if @route.root?
+        "RootPathHomepageGetApiGatewayMethod"
+      else
+        "#{path_method_id}ApiGatewayMethod"
+      end
     end
 
     def path_method_id
@@ -20,6 +24,18 @@ class Jets::Cfn::TemplateMappers
     #   ApiGatewayResourcePosts
     def gateway_resource_logical_id
       resource_map.logical_id
+    end
+
+    # Fop level ApiGateway::Method resources use:
+    #   "!GetAtt RestApi.RootResourceId"
+    # Instead of:
+    #   "!Ref #{map.gateway_resource_logical_id}"
+    def gateway_resource_id
+      if @route.root?
+        "!GetAtt RestApi.RootResourceId"
+      else
+        "!Ref #{gateway_resource_logical_id}"
+      end
     end
 
     def cors_logical_id
