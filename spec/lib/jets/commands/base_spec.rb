@@ -27,10 +27,22 @@ describe Jets::Commands::Base do
       expect(klass).to be Jets::Commands::Main
     end
 
-    it "autocomplete" do
+    it "autocomplete console" do
+      full_command = Jets::Commands::Base.autocomplete("con")
+      expect(full_command).to eq "console"
+    end
+
+    it "autocomplete server" do
       full_command = Jets::Commands::Base.autocomplete("ser")
-      puts "full_command #{full_command.inspect}"
       expect(full_command).to eq "server"
+
+      full_command = Jets::Commands::Base.autocomplete("server")
+      expect(full_command).to eq "server"
+    end
+
+    it "autocomplete webpacker:install" do
+      full_command = Jets::Commands::Base.autocomplete("webpacker:install")
+      expect(full_command).to eq "webpacker:install"
     end
   end
 end
