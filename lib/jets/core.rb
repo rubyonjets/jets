@@ -55,4 +55,9 @@ module Jets::Core
     return @@logger if @@logger
     @@logger = Logger.new($stderr)
   end
+
+  def load_tasks
+    Jets::Commands::RakeTasks.load!
+  end
+
 end

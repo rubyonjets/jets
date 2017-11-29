@@ -40,8 +40,6 @@ module Jets
   autoload :Controller, 'jets/controller'
   autoload :Job, 'jets/job'
 
-  autoload :RakeTasks, 'jets/rake_tasks'
-
   autoload :Dotenv, 'jets/dotenv'
   autoload :Booter, 'jets/booter'
 

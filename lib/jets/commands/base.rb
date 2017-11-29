@@ -27,6 +27,9 @@ class Jets::Commands::Base < Thor
                       .sub('.rb','')
                       .sub(%r{.*/jets/commands}, 'jets/commands')
                       .classify
+        class_name.sub!(/Task$/, "Tasks") # special rule here for Tasks class
+        # NOTE: Weird thing where Jets::Commands::Db::Task => Thor::Command
+        # because Task is a class available to Thor I believe.
         class_name.constantize # dont have to worry about order.
       end
     end

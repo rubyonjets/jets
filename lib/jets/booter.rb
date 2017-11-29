@@ -31,18 +31,27 @@ class Jets::Booter
       $stdout = STDOUT
     end
 
-    # Use for rake tasks that defined in Gemfile source that are git based. Example:
+    # require_bundle_gems called when environment boots up via Jets.boot.  It
+    # also useful for when to loading Rake tasks in
+    # Jets::Commands::RakeTasks.load!
+    #
+    # For example, some gems like webpacker that load rake tasks are specified
+    # with a git based source:
+    #
     #   gem "webpacker", git: "git@github.com:tongueroo/webpacker.git"
+    #
+    # This results in the user having to specific bundle exec in front of
+    # jets for those rake tasks to show up in jets help.
+    #
+    # Instead, when the user is within the project folder, jets automatically
+    # requires bundler for the user. So the rake tasks show up when calling
+    # jets help.
+    #
+    # When the user calls jets help from outside the project folder, bundler
+    # is not used and the load errors get rescued gracefully.  This is done in
+    # Jets::Commands::RakeTasks.load!  In the case when there are in another
+    # project with another Gemfile, the load errors will still be rescued.
     def require_bundle_gems
-      # When boot! is called there will always be a Gemfile
-      # because we call confirm_jets_project!  But let say the user calls
-      # jets command from a folder that is not a jets project.  An example is
-      # `jets help` from the user's home directory.
-      # In that case we will not require the usage of bundler.
-      # This could load to load errors but this use case is mainly isolated to
-      # jets help.  So within jets help we can rescue load errors.  This is done in
-      # Jets::RakeTasks.load!
-
       # NOTE: Dont think ENV['BUNDLE_GEMFILE'] is quite working right.  We still need
       # to be in the project directory.  Leaving logic in here for when it gets fix.
       if ENV['BUNDLE_GEMFILE'] || File.exist?("Gemfile")

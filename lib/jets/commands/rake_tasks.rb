@@ -1,32 +1,29 @@
-class Jets::RakeTasks
+class Jets::Commands::RakeTasks
   class << self
     # Will only load the tasks once.  Just in case the user has already loaded
     # Jets rake tasks in their Rakefile. Example Rakefile that does this:
     #
     #   require 'jets'
-    #   Jets::RakeTasks.load!
+    #   Jets.load_tasks
     #
     @@loaded = false
     def load!
       return if @@loaded # prevent loading twice
-
-      Jets::Booter.require_bundle_gems # forucing use of bundler in case
-        # there are gems in the Gemile that use a git gem source.  Example:
-        #  gem "webpacker", git: "git@github.com:tongueroo/webpacker.git"
+      Jets::Booter.require_bundle_gems # use bundler when in project folder
 
       Jets::Commands::Db::Tasks.load!
       load_webpacker_tasks
+
       @@loaded = true
     end
 
+    # Handles load errors gracefuly per Booter.required_bundle_gems comments.
     def load_webpacker_tasks
       begin
         require "webpacker"
       rescue LoadError
         # puts "WARN: unable to load gem. #{$!}. Running with 'bundle exec' might fix this warning."
-
-        # Can happen if the user calls jets not in a folder with the right Gemfile
-        # or in a folder without Gemfile at all.
+        # Happens whne user calls jets help outside the jets project folder.
         return
       end
       Webpacker::RakeTasks.load!

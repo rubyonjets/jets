@@ -35,7 +35,7 @@ class Jets::Commands::RakeCommand
 
       Rake::TaskManager.record_task_metadata = true
       rake.instance_variable_set(:@name, "jets")
-      load_tasks
+      Jets::Commands::RakeTasks.load!
       tasks = rake.tasks
       tasks = tasks.select(&:comment) unless all
       tasks
@@ -56,10 +56,6 @@ class Jets::Commands::RakeCommand
 
     def require_rake
       require "rake" # Defer booting Rake until we know it's needed.
-    end
-
-    def load_tasks
-      Jets::RakeTasks.load!
     end
   end
 end

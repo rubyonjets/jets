@@ -11,5 +11,6 @@ module Jets::Commands
   autoload :Main, "jets/commands/main"
   autoload :Process, "jets/commands/process"
   autoload :RakeCommand, "jets/commands/rake_command"
+  autoload :RakeTasks, 'jets/commands/rake_tasks'
   autoload :Sequence, "jets/commands/sequence"
 end
