@@ -4,7 +4,7 @@ describe Jets::Processors do
   describe "jets" do
     it "process:controller event context handler" do
       args = %Q|'{"event":"test"}' '{}' handlers/controllers/posts_controller.new|
-      out = execute("exe/jets process:controller #{args}")
+      out = execute("bin/jets process:controller #{args}")
       # pp out # uncomment to debug
       data = JSON.parse(out)
       expect(data["statusCode"]).to eq 200
@@ -13,7 +13,7 @@ describe Jets::Processors do
 
     it "process:job event context handler" do
       args = %Q|'{"event":"test"}' '{}' handlers/jobs/hard_job.dig|
-      out = execute("exe/jets process:job #{args}")
+      out = execute("bin/jets process:job #{args}")
       # pp out # uncomment to debug
       data = JSON.parse(out)
       expect(data).to eq("done"=>"digging") # data returned is Hash
@@ -21,7 +21,7 @@ describe Jets::Processors do
 
     it "process:function event context handler" do
       args = %Q|'{"key1":"value1"}' '{}' handlers/functions/hello.world|
-      out = execute("exe/jets process:function #{args}")
+      out = execute("bin/jets process:function #{args}")
       # pp out # uncomment to debug
       data = JSON.parse(out)
       expect(data).to eq 'hello world: "value1"'
