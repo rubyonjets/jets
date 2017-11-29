@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+# Figure out where this script is located.
+PROJECTDIR="`dirname \"$0\"`"
+PROJECTDIR="`cd \"$PROJECTDIR/..\" && pwd`"
+
+unset BUNDLE_IGNORE_CONFIG
+# When jets packages the app code it creates .bundle/config in the project root.
+# We want that to be used.
+
+# Run the actual app using the bundled Ruby interpreter, with Bundler activated.
+os=$(uname)
+if [[ "$os" == 'Darwin' ]]; then
+  # macosx ruby for development
+  exec bundle exec jets "$@"
+else
+
+  # bundled openssl into bundled/ruby
+  export LD_LIBRARY_PATH=/var/task/bundled/ruby/openssl-1.0.2k/lib:$LD_LIBRARY_PATH
+
+  # bundled ruby for Lambda
+  exec "$PROJECTDIR/bundled/ruby/bin/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.4.0/bin/jets" "$@"
+fi
