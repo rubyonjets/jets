@@ -44,7 +44,7 @@ describe Jets::CLI do
     end
 
     it "call" do
-      out = execute("bin/jets call posts-controller-index #{@args} 2>&1")
+      out = execute("bin/jets call posts-controller-index #{@args}")
       # puts out
       expect(out).to include("Calling lambda function")
     end

@@ -15,6 +15,7 @@ class Jets::CLI
   end
 
   def start
+    Jets.boot
     command_class = lookup(full_command)
     if command_class
       command_class.perform(full_command, thor_args)

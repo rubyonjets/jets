@@ -1,7 +1,5 @@
 class Jets::Commands::Console
   def self.run
-    Jets.boot
-
     # Thanks: https://mutelight.org/bin-console
     require "irb"
     require "irb/completion"
