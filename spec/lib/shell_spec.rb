@@ -12,39 +12,39 @@ describe Jets::CLI do
 
   describe "jets" do
     it "build" do
-      out = execute("bin/jets build #{@args}")
+      out = execute("exe/jets build #{@args}")
       # puts out
       expect(out).to include("Building project")
     end
 
     it "deploy" do
-      out = execute("bin/jets deploy #{@args}")
+      out = execute("exe/jets deploy #{@args}")
       # puts out
       expect(out).to include("Deploying project")
     end
 
     it "delete" do
-      out = execute("bin/jets delete #{@args}")
+      out = execute("exe/jets delete #{@args}")
       # puts out
       expect(out).to include("Deleting project")
     end
 
     # TODO: figure out how to test out jets new without too much work
     # it "new" do
-    #   out = execute("bin/jets new demo #{@args}")
+    #   out = execute("exe/jets new demo #{@args}")
     #   # puts out
     #   expect(out).to include("Creating new project")
     # end
 
     it "routes" do
-      out = execute("bin/jets routes #{@args}")
+      out = execute("exe/jets routes #{@args}")
       # puts out
       expect(out).to include("Verb")
       expect(out).to include("Path")
     end
 
     it "call" do
-      out = execute("bin/jets call posts-controller-index #{@args}")
+      out = execute("exe/jets call posts-controller-index #{@args}")
       # puts out
       expect(out).to include("Calling lambda function")
     end
