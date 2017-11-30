@@ -38,5 +38,6 @@ module Jets
   autoload :Klass, 'jets/klass'
   autoload :Util, "jets/util"
   autoload :WelcomeController, "jets/welcome_controller"
+  autoload :PublicController, "jets/public_controller"
   extend Core # root, logger, etc
 end
