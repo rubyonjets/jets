@@ -26,18 +26,6 @@ class Jets::Cfn::TemplateMappers
       resource_map.logical_id
     end
 
-    # Fop level ApiGateway::Method resources use:
-    #   "!GetAtt RestApi.RootResourceId"
-    # Instead of:
-    #   "!Ref #{map.gateway_resource_logical_id}"
-    def gateway_resource_id
-      if @route.root?
-        "!Ref RestApi.RootResourceId"
-      else
-        "!Ref #{gateway_resource_logical_id}"
-      end
-    end
-
     def cors_logical_id
       resource_map.cors_logical_id
     end

@@ -13,9 +13,7 @@ class Jets::Cfn::TemplateBuilders
 
       add_parameter("RestApi", Description: "RestApi")
       scoped_routes.each do |route|
-        puts "route #{route.path.inspect}"
         map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route)
-        puts "map.logical_id #{map.logical_id.inspect}"
         add_parameter(map.logical_id, Description: map.path)
       end
     end
@@ -35,7 +33,7 @@ class Jets::Cfn::TemplateBuilders
       add_resource(map.logical_id, "AWS::ApiGateway::Method",
         HttpMethod: route.method,
         RequestParameters: {},
-        ResourceId: map.gateway_resource_id,
+        ResourceId: "!Ref #{map.gateway_resource_logical_id}",
         RestApiId: "!Ref RestApi",
         AuthorizationType: "NONE",
         Integration: {

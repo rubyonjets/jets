@@ -29,7 +29,6 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
       it "posts/:id/edit contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "PostsIdEditGetApiGatewayMethod"
         expect(map.gateway_resource_logical_id).to eq "PostsIdEditApiGatewayResource"
-        expect(map.gateway_resource_id).to eq "!Ref PostsIdEditApiGatewayResource"
         expect(map.lambda_function_logical_id).to eq "PostsControllerEditLambdaFunction"
       end
     end

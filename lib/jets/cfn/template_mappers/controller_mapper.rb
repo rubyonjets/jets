@@ -16,18 +16,9 @@ class Jets::Cfn::TemplateMappers
     end
 
     def scoped_routes
-      return @routes if @routes
-
-      @routes = Jets::Router.routes.select do |route|
-        puts "need to figure out how to get app_class from path"
-        puts "path #{@path}"
-        puts "route.controller_name: #{route.controller_name.inspect}"
-        puts "current_class: #{current_class.inspect}"
+      @routes ||= Jets::Router.routes.select do |route|
         route.controller_name == current_class
       end
-
-      puts "controller_mapper.rb: #{@routes.map(&:to).inspect}"
-      @routes
     end
 
       # Example:

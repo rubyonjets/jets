@@ -62,8 +62,6 @@ class Jets::Cfn::TemplateBuilders
         )
       end
 
-      puts "@options[:stack_type] #{@options[:stack_type].inspect}"
-      puts "Jets::Router.routes.empty? #{Jets::Router.routes.empty?.inspect}"
       if @options[:stack_type] == 'full' and !Jets::Router.routes.empty?
         add_api_gateway
         add_api_gateway_deployment
