@@ -30,6 +30,10 @@ class Jets::Route
     @options[:to]
   end
 
+  def internal?
+    !!@options[:internal]
+  end
+
   def homepage?
     path == ''
   end

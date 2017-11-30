@@ -9,7 +9,6 @@ class Jets::Server
         proxy = LambdaAwsProxy.new(route, env)
         triplet = proxy.response
       else
-        # TODO: print out jets routes in development mode
         [404, {'Content-Type' => 'text/html'}, [routes_error_message(env)]]
       end
     end

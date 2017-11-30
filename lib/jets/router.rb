@@ -2,9 +2,30 @@ require 'text-table'
 
 module Jets
   class Router
-    attr_reader :routes
+    attr_reader :all_routes
     def initialize
-      @routes = []
+      @all_routes = [new_homepage_route]
+    end
+
+    # Only shows the external public routes
+    def routes
+      @all_routes.reject { |r| r.internal? }
+    end
+
+    def new_homepage_route
+      Route.new(path: '', method: :get, to: "jets/welcome#index",
+        internal: true)
+    end
+
+    # Internal or external route
+    def homepage_route
+      @all_routes.find { |r| r.homepage? }
+    end
+
+    # root "posts#index"
+    def root(to)
+      @all_routes.delete_if { |r| r.homepage? }
+      @all_routes << Route.new(path: '', to: to, method: :get, root: true)
     end
 
     def draw(&block)
@@ -30,12 +51,7 @@ module Jets
     end
 
     def create_route(options)
-      @routes << Route.new(options)
-    end
-
-    # root "posts#index"
-    def root(to)
-      @routes << Route.new(path: '', to: to, method: :get, root: true)
+      @all_routes << Route.new(options)
     end
 
     # Useful for creating API Gateway Resources

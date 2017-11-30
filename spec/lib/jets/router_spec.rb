@@ -4,7 +4,7 @@ describe Jets::Router do
   let(:router) { Jets::Router.new }
 
   describe "Router" do
-    context("main test project") do
+    context "main test project" do
       it "draw class method" do
         router = Jets::Router.draw
         expect(router).to be_a(Jets::Router)
@@ -48,7 +48,7 @@ describe Jets::Router do
       end
     end
 
-    context("routes with resources macro") do
+    context "routes with resources macro" do
       it "expands macro to all the REST routes" do
         router.draw do
           resources :posts
@@ -77,6 +77,23 @@ describe Jets::Router do
         expect(router.ordered_routes.map(&:path)).to eq(
           ["posts/new", "posts", "posts", "posts/:id/edit", "posts/:id", "posts/:id", "posts/:id", "*catchall"])
 
+      end
+    end
+
+    context "'empty' routes table" do
+      it "should have a default homepage internal route" do
+        homepage = router.homepage_route
+        expect(homepage).to be_a(Jets::Route)
+        expect(homepage.internal?).to be true
+        expect(homepage.to).to eq "jets/welcome#index"
+
+        # internal routes are hidden
+        routes = router.routes
+        expect(routes).to eq([])
+
+        # internal routes are seen with all_routes
+        routes = router.all_routes
+        expect(routes.size).to be > 0
       end
     end
   end
