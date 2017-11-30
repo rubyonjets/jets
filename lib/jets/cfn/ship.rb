@@ -161,6 +161,8 @@ class Jets::Cfn
     #
     # Returns resp so we can use it to grab data about the stack without calling api again.
     def check_updatable_status
+      return true if !stack_exists?(@parent_stack_name)
+
       # Assumes stack exists
       resp = cfn.describe_stacks(stack_name: @parent_stack_name)
       status = resp.stacks[0].stack_status
@@ -175,7 +177,7 @@ class Jets::Cfn
         "You can delete the CloudFormation stack or use the `jets delete` command"
         exit 0
       else
-        resp
+        true
       end
     end
 

@@ -13,7 +13,7 @@ class Jets::Cfn::TemplateBuilders
 
       add_parameter("RestApi", Description: "RestApi")
       scoped_routes.each do |route|
-        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route)
+        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route.path)
         add_parameter(map.logical_id, Description: map.desc)
       end
     end

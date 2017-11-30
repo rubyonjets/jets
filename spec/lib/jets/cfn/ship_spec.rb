@@ -7,6 +7,7 @@ describe Jets::Cfn::Ship do
 
   describe "Cfn::Ship" do
     it "adds functions to resources" do
+      expect(ship).to receive(:check_updatable_status) # stub
       expect(ship).to receive(:save_stack)  # stub
       expect(ship).to receive(:wait_for_stack) # stub
       ship.run

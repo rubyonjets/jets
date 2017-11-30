@@ -1,13 +1,13 @@
 class Jets::Cfn::TemplateMappers
   class GatewayResourceMapper
-    def initialize(route)
-      @route = route
-      @path = route.path # Examples: "posts/:id/edit" or "posts"
+    def initialize(path)
+      @path = path # Examples: "posts/:id/edit" or "posts"
     end
 
     # Returns: "ApiGatewayResourcePostsController"
     def logical_id
-      if @route.homepage? # homepage root route
+      homepage = @page == ''
+      if homepage
         "RootResourceId"
       else
         "#{path_logical_id(@path)}ApiGatewayResource"

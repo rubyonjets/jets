@@ -45,12 +45,16 @@ class Jets::Cfn::TemplateBuilders
       # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
       # Outputs: Maximum number of outputs that you can declare in your AWS CloudFormation template. 60 outputs
       # Output name: Maximum size of an output name. 255 characters.
-      Jets::Router.routes.each do |route|
-        next if route.homepage? # handled by RootResourceId output
+      #
+      # Note we must use .all_paths, not .routes here because we need to
+      # build the parent ApiGateway::Resource nodes also
+      Jets::Router.all_paths.each do |path|
+        homepage = path == ''
+        next if homepage # handled by RootResourceId output already
 
-        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route)
+        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
 
-        unless route.homepage? # no AWS::ApiGateway::Resource for the top level route
+        unless homepage # no AWS::ApiGateway::Resource for the top level route
           add_resource(map.logical_id, "AWS::ApiGateway::Resource",
             ParentId: map.parent_id,
             PathPart: map.path_part,

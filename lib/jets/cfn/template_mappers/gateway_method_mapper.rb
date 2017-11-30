@@ -31,7 +31,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def resource_map
-      @resource_map ||= GatewayResourceMapper.new(@route)
+      @resource_map ||= GatewayResourceMapper.new(@route.path)
     end
 
     def lambda_function_logical_id
