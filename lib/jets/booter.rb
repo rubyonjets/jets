@@ -4,7 +4,6 @@ class Jets::Booter
       stdout_to_stderr
 
       confirm_jets_project!
-      puts(boot_message) unless Jets.env.test?
 
       require_bundle_gems
 
@@ -84,7 +83,7 @@ class Jets::Booter
       end
     end
 
-    def boot_message
+    def message
       "Jets booting up in #{Jets.env.colorize(:green)} mode!"
     end
   end

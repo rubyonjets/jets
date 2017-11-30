@@ -98,6 +98,8 @@ module Jets
     end
 
     def self.routes_help
+      return "Your routes table is empty." if routes.empty?
+
       table = Text::Table.new
       table.head = %w[Verb Path Controller#action]
       routes.each do |route|

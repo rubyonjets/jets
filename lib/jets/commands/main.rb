@@ -37,6 +37,7 @@ module Jets::Commands
       o = options
       command = "bundle exec shotgun --port #{o[:port]} --host #{o[:host]}"
       puts "=> #{command}".colorize(:green)
+      puts Jets::Booter.message
       system(command)
     end
 

@@ -43,7 +43,6 @@ module Jets::Commands
     end
 
     def webpacker_install
-      puts "SKIPPING webpacker:install"
       run("jets webpacker:install")
     end
 
