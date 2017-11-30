@@ -7,13 +7,15 @@ class Jets::Cfn
 
     def initialize(options)
       @options = options
-      @stack_name = Jets::Naming.parent_stack_name
+      @parent_stack_name = Jets::Naming.parent_stack_name
       @template_path = Jets::Naming.parent_template_path
     end
 
     def run
       upload_to_s3 if @options[:stack_type] == :full # s3 bucket is available
         # only when stack_type is full
+
+      check_updatable_status
 
       puts "Shipping CloudFormation stack!"
       begin
@@ -35,7 +37,7 @@ class Jets::Cfn
     end
 
     def save_stack
-      if stack_exists?(@stack_name)
+      if stack_exists?(@parent_stack_name)
         update_stack
       else
         create_stack
@@ -60,7 +62,7 @@ class Jets::Cfn
     # options common to both create_stack and update_stack
     def stack_options
       {
-        stack_name: @stack_name,
+        stack_name: @parent_stack_name,
         template_body: IO.read(@template_path),
         capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
         # disable_rollback: !@options[:rollback],
@@ -87,7 +89,7 @@ class Jets::Cfn
     # All CloudFormation states listed here:
     # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
     def stack_status
-      resp = cfn.describe_stacks(stack_name: @stack_name)
+      resp = cfn.describe_stacks(stack_name: @parent_stack_name)
       status = resp.stacks[0].stack_status
       [resp, status]
     end
@@ -154,5 +156,28 @@ class Jets::Cfn
         "#{minutes.to_i}m #{seconds.to_i}s"
       end
     end
+
+    # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
+    #
+    # Returns resp so we can use it to grab data about the stack without calling api again.
+    def check_updatable_status
+      # Assumes stack exists
+      resp = cfn.describe_stacks(stack_name: @parent_stack_name)
+      status = resp.stacks[0].stack_status
+      if status =~ /_IN_PROGRESS$/
+        puts "The '#{@parent_stack_name}' stack status is #{status}. " \
+             "It is not in an updateable status. Please wait until the stack is ready and try again.".colorize(:red)
+        exit 0
+      elsif resp.stacks[0].outputs.empty?
+        # This Happens when the miminal stack fails at the very beginning.
+        # There is no s3 bucket at all.  User should delete the stack.
+        puts "The minimal stack failed to create. Please delete the stack first and try again." \
+        "You can delete the CloudFormation stack or use the `jets delete` command"
+        exit 0
+      else
+        resp
+      end
+    end
+
   end
 end
