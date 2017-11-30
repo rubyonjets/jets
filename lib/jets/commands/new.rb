@@ -27,15 +27,6 @@ module Jets::Commands
       chmod "bin", 0755 & ~File.umask, verbose: false
     end
 
-    def git_init
-      return unless git_installed?
-      return if File.exist?(".git") # this is a clone repo
-
-      run("git init")
-      run("git add .")
-      run("git commit -m 'first commit'")
-    end
-
     def bundle_install
       Bundler.with_clean_env do
         system("BUNDLE_IGNORE_CONFIG=1 bundle install")
@@ -46,12 +37,25 @@ module Jets::Commands
       run("jets webpacker:install")
     end
 
+    def git_init
+      return unless git_installed?
+      return if File.exist?(".git") # this is a clone repo
+
+      run("git init")
+      run("git add .")
+      run("git commit -m 'first commit'")
+    end
+
     def user_message
       puts "=" * 64
-      puts "Congrats 🎉 You have successfully created a Jets project."
-      puts "To deploy the project to AWS Lambda:"
+      puts "Congrats 🎉 You have successfully created a Jets project.\n\n"
+      puts "To test locally:"
       puts "  cd #{project_name}".colorize(:green)
+      puts "  jets server".colorize(:green)
+      puts ""
+      puts "To deploy to AWS Lambda:"
       puts "  jets deploy".colorize(:green)
+      puts ""
     end
   end
 end

@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 
-gem "jets", git: "git@github.com:tongueroo/jets.git", submodules: true
+#gem "jets", git: "git@github.com:tongueroo/jets.git", submodules: true
+# TODO: remove this testing gem file hack
+gem "jets", path: "~/src/tongueroo/jets"
 # Include webpacker if you are you are building html pages
 gem "webpacker", git: "git@github.com:tongueroo/webpacker.git", branch: "jets"
 # Include pg gem if you are using ActiveRecord
