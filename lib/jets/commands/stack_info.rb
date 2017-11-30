@@ -1,19 +1,27 @@
-module Jets::Commands::FirstRun
+# The important methods in this class are stack_type, s3_bucket and first_run?
+# We use stack_type and s3_bucket to get info for both the build and deploy CLI
+# commands.
+# first_run? will always make an API call.
+module Jets::Commands::StackInfo
   include Jets::AwsServices
 
-  def first_run?
-    !stack_exists?(parent_stack_name)
+  def stack_type
+    first_run? ? :minimal : :full
   end
 
-  def merge_build_options!
-    if first_run?
-      @options.merge!(stack_type: "minimal")
-    else
-      resp = check_updatable_status # exit if stack status is not in an updated able state
-      output = resp.stacks[0].outputs.find {|o| o.output_key == 'S3Bucket'}
-      s3_bucket = output.output_value
-      @options.merge!(stack_type: "full", s3_bucket: s3_bucket)
-    end
+  def s3_bucket
+    return @s3_bucket if @s3_bucket
+
+    return nil if first_run?
+
+    resp = check_updatable_status # exit if stack status is not in an updated able state
+    output = resp.stacks[0].outputs.find {|o| o.output_key == 'S3Bucket'}
+    @s3_bucket = output.output_value # once an s3 bucket is found, cache it
+  end
+
+  # Always call API
+  def first_run?
+    !stack_exists?(parent_stack_name)
   end
 
   # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html

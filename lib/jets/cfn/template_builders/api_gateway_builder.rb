@@ -10,7 +10,7 @@ class Jets::Cfn::TemplateBuilders
 
     # compose is an interface method
     def compose
-      return if @options[:stack_type] == 'minimal'
+      return if @options[:stack_type] == :minimal
 
       puts "Building API Gateway template."
       add_gateway_rest_api

@@ -1,27 +1,29 @@
 module Jets::Commands
   class Deploy
-    include FirstRun
+    include StackInfo
 
     def initialize(options)
-      @options = options.dup
+      @options = options
     end
 
     def run
       puts "Deploying project to Lambda..."
       return if @options[:noop]
       build_code
-      ship if first_run? # first time will deploy minimal stack
-      ship # deploy full nested stack
+      # first time will deploy minimal stack
+      ship(stack_type: :minimal) if first_run?
+      # deploy full nested stack when stack already exists
+      ship(stack_type: :full, s3_bucket: s3_bucket)
     end
 
     def build_code
       Jets::Commands::Build.new(@options).build_code
     end
 
-    def ship
-      merge_build_options!
-      Jets::Commands::Build.new(@options).build_templates
-      Jets::Cfn::Ship.new(@options).run
+    def ship(stack_options)
+      options = @options.merge(stack_options) # includes stack_type and s3_bucket
+      Jets::Commands::Build.new(options).build_templates
+      Jets::Cfn::Ship.new(options).run
     end
   end
 end

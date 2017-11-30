@@ -15,7 +15,7 @@ class Jets::Cfn::TemplateBuilders
       puts "Building parent template."
 
       add_minimal_resources
-      add_child_resources unless @options[:stack_type] == 'minimal'
+      add_child_resources unless @options[:stack_type] == :minimal
     end
 
     # template_path is an interface method
@@ -62,7 +62,7 @@ class Jets::Cfn::TemplateBuilders
         )
       end
 
-      if @options[:stack_type] == 'full' and !Jets::Router.routes.empty?
+      if @options[:stack_type] == :full and !Jets::Router.routes.empty?
         add_api_gateway
         add_api_gateway_deployment
       end

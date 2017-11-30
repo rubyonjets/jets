@@ -2,7 +2,7 @@ require 'digest'
 
 module Jets::Commands
   class Build
-    include FirstRun
+    include StackInfo
 
     def initialize(options)
       @options = options.dup
@@ -11,6 +11,9 @@ module Jets::Commands
     def run
       puts "Building project for Lambda..."
       return if @options[:noop]
+      # run gets called from the CLI and does not have all the stack_options yet.
+      # We compute it and change the options early here.
+      @options.merge!(stack_type: stack_type, s3_bucket: s3_bucket)
       build
     end
 
@@ -24,8 +27,7 @@ module Jets::Commands
     end
 
     def build_templates
-      merge_build_options!
-      if first_run?
+      if @options[:stack_type] == :minimal
         build_minimal_template
       else
         build_all_templates
