@@ -32,7 +32,7 @@ class Jets::Cfn::TemplateMappers
     #   "!Ref #{map.gateway_resource_logical_id}"
     def gateway_resource_id
       if @route.root?
-        "!GetAtt RestApi.RootResourceId"
+        "!Ref RestApi.RootResourceId"
       else
         "!Ref #{gateway_resource_logical_id}"
       end
@@ -43,7 +43,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def resource_map
-      @resource_map ||= GatewayResourceMapper.new(@route.path)
+      @resource_map ||= GatewayResourceMapper.new(@route)
     end
 
     def lambda_function_logical_id

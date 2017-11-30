@@ -33,22 +33,30 @@ class Jets::Cfn::TemplateBuilders
         Name: Jets::Naming.gateway_api_name
       )
       add_output("RestApi", Value: "!Ref RestApi")
+      add_output("RootResourceId", Value: "!GetAtt RestApi.RootResourceId")
     end
 
     # Adds route related Resources and Outputs
     def add_gateway_routes
       # The routes required a Gateway Resource to contain them.
-      Jets::Router.all_paths.each do |path|
-        next if path.empty? # no AWS::ApiGateway::Resource for the top level route
-        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
-        add_resource(map.logical_id, "AWS::ApiGateway::Resource",
-          ParentId: map.parent_id,
-          PathPart: map.path_part,
-          RestApiId: "!Ref RestApi"
-        )
-        add_output(map.logical_id,
-          Value: "!Ref #{map.logical_id}"
-        )
+      # TODO: outputing all routes in 1 template will hit the 60 routes limit
+      # Will have to either output them as a joined string or
+      # break this up to multiple tempaltes.
+      # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
+      # Outputs: Maximum number of outputs that you can declare in your AWS CloudFormation template. 60 outputs
+      # Output name: Maximum size of an output name. 255 characters.
+      Jets::Router.routes.each do |route|
+        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route)
+
+        unless route.root? # no AWS::ApiGateway::Resource for the top level route
+          add_resource(map.logical_id, "AWS::ApiGateway::Resource",
+            ParentId: map.parent_id,
+            PathPart: map.path_part,
+            RestApiId: "!Ref RestApi"
+          )
+        end
+
+        add_output(map.logical_id, Value: "!Ref #{map.logical_id}")
       end
     end
   end

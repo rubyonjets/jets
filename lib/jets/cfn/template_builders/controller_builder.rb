@@ -12,10 +12,10 @@ class Jets::Cfn::TemplateBuilders
       return if Jets::Router.routes.empty?
 
       add_parameter("RestApi", Description: "RestApi")
-      Jets::Router.all_paths.each do |path|
-        next if path.empty? # homepage root route
-
-        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
+      scoped_routes.each do |route|
+        puts "route #{route.path.inspect}"
+        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route)
+        puts "map.logical_id #{map.logical_id.inspect}"
         add_parameter(map.logical_id, Description: map.path)
       end
     end
