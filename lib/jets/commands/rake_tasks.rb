@@ -30,13 +30,14 @@ class Jets::Commands::RakeTasks
       end
 
       Webpacker::RakeTasks.load!
+      # Thanks: https://coderwall.com/p/qhdhgw/adding-a-post-execution-hook-to-the-rails-db-migrate-task
       Rake::Task['webpacker:install'].enhance do
         # FORCE from rake webpacker:install FORCE=1
+        # using ENV because rake webpacker:install is a rake task
         args ||= []
         args += ["--force"] if ENV['FORCE']
         Jets::Commands::WebpackerTemplate.start(args)
       end
-      # Thanks: https://coderwall.com/p/qhdhgw/adding-a-post-execution-hook-to-the-rails-db-migrate-task
     end
   end
 end

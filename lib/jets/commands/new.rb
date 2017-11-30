@@ -8,7 +8,8 @@ module Jets::Commands
     def self.cli_options
       [
         [:repo, desc: "Starter repo to use. Format: user/repo"],
-        [:force, desc: "Bypass overwrite are you sure prompt for existing files."],
+        [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
+        [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
       ]
     end
 
@@ -34,7 +35,11 @@ module Jets::Commands
     end
 
     def webpacker_install
-      run("jets webpacker:install")
+      return unless options[:webpacker]
+
+      command = "jets webpacker:install"
+      command += " FORCE=1" if options[:force]
+      run(command)
     end
 
     def git_init

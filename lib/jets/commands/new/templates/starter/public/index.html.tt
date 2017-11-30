@@ -5,27 +5,45 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <style type="text/css" media="screen" charset="utf-8">
+    body {
+      text-align: center;
+      margin: 0;
+    }
+    .header {
+      background-color: #b81513;
+      padding: 20px;
+      color: white;
+    }
+    .title {
+      font-size: 1.5em;
+    }
+    .intro {
+      text-align: left;
+      font-size: large;
+      margin: 0 auto;
+      max-width: 640px;
+    }
+    .code {
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <section>
+    <header class="header">
+      <img src="images/jets.png" class="logo" alt="logo" />
+      <h1 class="title">Welcome to Jets</h1>
+    </header>
+    <div class="intro">
       <p>
-        <a href="http://rubyonjets.com">
-          <img />
-        </a>
+        To get started:
       </p>
-
-      <h1>Congratulations! Welcome to Jets.</h1>
-
-      <img />
-
-      <p class="version">
-        <strong>Jets version:</strong> <%= Jets.version %><br />
-        <strong>Ruby version:</strong> <%= RUBY_VERSION %> (<%= RUBY_PLATFORM %>)
-      </p>
-    </section>
+      <div class="code"><pre><code>
+        $ jets generate scaffold Post title:string
+        $ curl localhost:8888
+      </code></pre></div>
+      <p>More on: <a href="http://rubyonjets.com">rubyonjets.com</a></p>
+    </div>
   </div>
 </body>
 </html>
