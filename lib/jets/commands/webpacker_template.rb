@@ -12,7 +12,6 @@ class Jets::Commands::WebpackerTemplate < Thor::Group
   end
 
   def reapply_templates
-    # Always overwrite javascript webpacker:install created.
     directory "app/javascript", "app/javascript", force: options[:force]
   end
 end

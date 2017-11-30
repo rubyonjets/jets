@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ruby on Jets</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style type="text/css" media="screen" charset="utf-8">
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section>
+      <p>
+        <a href="http://rubyonjets.com">
+          <img />
+        </a>
+      </p>
+
+      <h1>Congratulations! Welcome to Jets.</h1>
+
+      <img />
+
+      <p class="version">
+        <strong>Jets version:</strong> <%= Jets.version %><br />
+        <strong>Ruby version:</strong> <%= RUBY_VERSION %> (<%= RUBY_PLATFORM %>)
+      </p>
+    </section>
+  </div>
+</body>
+</html>

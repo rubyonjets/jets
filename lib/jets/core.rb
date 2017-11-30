@@ -60,4 +60,8 @@ module Jets::Core
     Jets::Commands::RakeTasks.load!
   end
 
+  def version
+    Jets::VERSION
+  end
+
 end

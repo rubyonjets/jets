@@ -14,38 +14,29 @@ require "pg"
 require "pp" # TODO: remove pp
 
 module Jets
-  autoload :Application, "jets/application"
-  autoload :Util, "jets/util"
-
   autoload :CLI, "jets/cli"
   autoload :Commands, "jets/commands"
-  # TODO: move these fake subtasks into commands folder
-  autoload :Generate, 'jets/generate'
 
-  autoload :Builders, 'jets/builders'
-  autoload :Processors, 'jets/processors'
-  autoload :Cfn, 'jets/cfn'
-  autoload :Naming, 'jets/naming'
   autoload :AwsServices, "jets/aws_services"
-  autoload :Server, "jets/server"
+  autoload :Builders, 'jets/builders'
+  autoload :Call, "jets/call"
+  autoload :Cfn, 'jets/cfn'
+  autoload :Controller, 'jets/controller'
+  autoload :Erb, "jets/erb"
+  autoload :Job, 'jets/job'
+  autoload :Lambda, 'jets/lambda'
+  autoload :Naming, 'jets/naming'
+  autoload :Processors, 'jets/processors'
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
-  autoload :Erb, "jets/erb"
-  autoload :Call, "jets/call"
-  autoload :Generator, "jets/generator"
+  autoload :Server, "jets/server"
 
-  autoload :Database, 'jets/database'
-
-  autoload :Lambda, 'jets/lambda'
-  autoload :Controller, 'jets/controller'
-  autoload :Job, 'jets/job'
-
-  autoload :Dotenv, 'jets/dotenv'
+  autoload :Application, "jets/application"
   autoload :Booter, 'jets/booter'
-
-  autoload :Klass, 'jets/klass'
-
   autoload :Core, "jets/core"
+  autoload :Dotenv, 'jets/dotenv'
+  autoload :Klass, 'jets/klass'
+  autoload :Util, "jets/util"
+  autoload :WelcomeController, "jets/welcome_controller"
   extend Core # root, logger, etc
-
 end
