@@ -16,16 +16,20 @@ module Jets::Commands
 
     def build
       build_code unless @options[:templates_only]
+      build_templates
+    end
+
+    def build_code
+      Jets::Builders::CodeBuilder.new.build unless @options[:noop]
+    end
+
+    def build_templates
       merge_build_options!
       if first_run?
         build_minimal_template
       else
         build_all_templates
       end
-    end
-
-    def build_code
-      Jets::Builders::CodeBuilder.new.build unless @options[:noop]
     end
 
     def build_all_templates

@@ -14,26 +14,16 @@ module Jets::Commands
 
     def deploy
       build_code
-
-      if first_run?
-        deploy_minimal_stack
-        deploy_full_stack
-      else
-        deploy_full_stack
-      end
+      deploy if first_run? # first time will deploy minimal stack
+      deploy # deploy full nested stack
     end
 
     def build_code
       Jets::Commands::Build.new(@options).build_code
     end
 
-    def deploy_minimal_stack
-      Jets::Commands::Build.new(@options).build_minimal_template
-      Jets::Cfn::Ship.new(@options).run
-    end
-
-    def deploy_full_stack
-      Jets::Commands::Build.new(@options).build_all_templates
+    def deploy
+      Jets::Commands::Build.new(@options).build_templates
       Jets::Cfn::Ship.new(@options).run
     end
   end
