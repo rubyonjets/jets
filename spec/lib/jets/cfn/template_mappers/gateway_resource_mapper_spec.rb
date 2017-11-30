@@ -2,7 +2,11 @@ require "spec_helper"
 
 describe Jets::Cfn::TemplateMappers::GatewayResourceMapper do
   let(:map) do
-    Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
+    Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route)
+  end
+  let(:route) do
+    # only info that matters for spec is path
+    Jets::Route.new(path: path, method: :get, to: "posts#index")
   end
 
   describe "GatewayResourceMapper" do

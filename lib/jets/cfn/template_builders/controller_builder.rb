@@ -83,7 +83,7 @@ class Jets::Cfn::TemplateBuilders
             }
           ]
         },
-        ResourceId: map.gateway_resource_id,
+        ResourceId: "!Ref #{map.gateway_resource_logical_id}",
         RestApiId: "!Ref RestApi",
       )
     end
