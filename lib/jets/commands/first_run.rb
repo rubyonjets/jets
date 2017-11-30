@@ -2,9 +2,7 @@ module Jets::Commands::FirstRun
   include Jets::AwsServices
 
   def first_run?
-    first_run = !stack_exists?(parent_stack_name)
-    puts "first_run: #{first_run.inspect}"
-    first_run
+    !stack_exists?(parent_stack_name)
   end
 
   def merge_build_options!

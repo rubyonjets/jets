@@ -8,7 +8,7 @@ class Jets::Cfn::TemplateMappers
     # Returns: "ApiGatewayResourcePostsController"
     def logical_id
       if @route.homepage? # homepage root route
-        "RootPathHomepageApiGatewayResource"
+        "RootResourceId"
       else
         "#{path_logical_id(@path)}ApiGatewayResource"
       end
@@ -21,6 +21,10 @@ class Jets::Cfn::TemplateMappers
     # Modify the path to conform to API Gateway capture expressions
     def path
       @path.split('/').map {|s| transform_capture(s) }.join('/')
+    end
+
+    def desc
+      path.empty? ? 'Homepage route: /' : "Route for: /#{path}"
     end
 
     def transform_capture(text)
