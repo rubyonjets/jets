@@ -28,12 +28,12 @@ module Jets::Commands
     end
 
     def deploy_minimal_stack
-      Jets::Commands::Build.new(@options).build_minimal_stack
+      Jets::Commands::Build.new(@options).build_minimal_template
       Jets::Cfn::Ship.new(@options).run
     end
 
     def deploy_full_stack
-      Jets::Commands::Build.new(@options).build_templates
+      Jets::Commands::Build.new(@options).build_all_templates
       Jets::Cfn::Ship.new(@options).run
     end
   end

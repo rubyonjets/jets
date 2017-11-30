@@ -18,7 +18,7 @@ module Jets::Commands
       build_code unless @options[:templates_only]
       merge_build_options!
       if first_run?
-        build_minimal_stack
+        build_minimal_template
       else
         build_all_templates
       end
@@ -41,7 +41,7 @@ module Jets::Commands
       build_parent_template # must be called at the end
     end
 
-    def build_minimal_stack
+    def build_minimal_template
       parent = Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options)
       parent.build
     end
