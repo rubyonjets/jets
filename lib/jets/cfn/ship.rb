@@ -12,6 +12,8 @@ class Jets::Cfn
     end
 
     def run
+      puts "ship.rb @options #{@options.inspect}"
+      puts "ship.rb @options[:stack_type] #{@options[:stack_type].inspect}"
       upload_to_s3 if @options[:stack_type] == "full" # s3 bucket is available
         # only when stack_type is full
 
