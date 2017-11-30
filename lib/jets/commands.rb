@@ -14,4 +14,5 @@ module Jets::Commands
   autoload :RakeTasks, 'jets/commands/rake_tasks'
   autoload :WebpackerTemplate, 'jets/commands/webpacker_template'
   autoload :Sequence, "jets/commands/sequence"
+  autoload :FirstRun, "jets/commands/first_run"
 end
