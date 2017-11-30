@@ -30,7 +30,7 @@ class Jets::Route
     @options[:to]
   end
 
-  def root?
+  def homepage?
     path == ''
   end
 

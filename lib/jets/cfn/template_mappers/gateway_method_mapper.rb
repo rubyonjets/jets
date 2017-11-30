@@ -5,7 +5,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def logical_id
-      if @route.root?
+      if @route.homepage?
         "RootPathHomepageGetApiGatewayMethod"
       else
         "#{path_method_id}ApiGatewayMethod"

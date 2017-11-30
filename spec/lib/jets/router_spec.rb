@@ -41,7 +41,7 @@ describe Jets::Router do
 
         route = router.routes.first
         expect(route).to be_a(Jets::Route)
-        expect(route.root?).to be true
+        expect(route.homepage?).to be true
         expect(route.to).to eq "posts#index"
         expect(route.path).to eq ''
         expect(route.method).to eq "GET"

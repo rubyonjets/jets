@@ -7,7 +7,7 @@ class Jets::Cfn::TemplateMappers
 
     # Returns: "ApiGatewayResourcePostsController"
     def logical_id
-      if @route.root? # homepage root route
+      if @route.homepage? # homepage root route
         "RootPathHomepageApiGatewayResource"
       else
         "#{path_logical_id(@path)}ApiGatewayResource"

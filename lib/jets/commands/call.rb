@@ -136,7 +136,7 @@ class Jets::Commands::Call
 
     # TODO: for add_console_link_to_clipboard get the region from the ~/.aws/config and AWS_PROFILE setting
     region = Aws.config[:region] || 'us-east-1'
-    link = "https://console.aws.amazon.com/lambda/home?region=#{region}#/functions/#{function_name}?tab=configuration"
+    link = "https://console.aws.amazon.com/lambda/homepage?region=#{region}#/functions/#{function_name}?tab=configuration"
     system("echo #{link} | pbcopy")
     puts "Pro tip: The Lambda Console Link to the #{function_name} function has been added to your clipboard." unless @options[:mute]
   end

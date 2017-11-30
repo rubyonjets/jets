@@ -48,7 +48,7 @@ class Jets::Cfn::TemplateBuilders
       Jets::Router.routes.each do |route|
         map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(route)
 
-        unless route.root? # no AWS::ApiGateway::Resource for the top level route
+        unless route.homepage? # no AWS::ApiGateway::Resource for the top level route
           add_resource(map.logical_id, "AWS::ApiGateway::Resource",
             ParentId: map.parent_id,
             PathPart: map.path_part,
