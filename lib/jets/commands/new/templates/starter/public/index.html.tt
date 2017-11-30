@@ -41,9 +41,14 @@
       <div class="code"><pre><code>
         $ jets generate scaffold Post title:string
         $ curl localhost:8888
+        $ jets help
       </code></pre></div>
       <p>More on: <a href="http://rubyonjets.com">rubyonjets.com</a></p>
     </div>
+    <p class="version">
+      <strong>Jets version:</strong> <%= Jets.version %><br />
+      <strong>Ruby version:</strong> <%= RUBY_VERSION %> (<%= RUBY_PLATFORM %>)
+    </p>
   </div>
 </body>
 </html>
