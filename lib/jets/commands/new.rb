@@ -10,6 +10,7 @@ module Jets::Commands
         [:repo, desc: "Starter repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
+        [:git, type: :boolean, default: true, desc: "Git initialize the project"],
       ]
     end
 
@@ -43,6 +44,7 @@ module Jets::Commands
     end
 
     def git_init
+      return if !options[:git]
       return unless git_installed?
       return if File.exist?(".git") # this is a clone repo
 
