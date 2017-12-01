@@ -1,19 +1,3 @@
-class Jets::Commands::Dynamodb::Help
-  class << self
-    def migrate
-<<-EOL
-Runs migrations.
-
-Example:
-
-jets dynamodb:migrate path/to/migration
-
-jets dynamodb:migrate db/migrate/posts_migration.rb
-EOL
-    end
-
-    def generate
-<<-EOL
 Generates a migration file which can be used to create a DynamoDB table.  To run the migration file use `jets db:migrate`.
 
 The table name will have a namespace. For example, given your project is called "proj", the env is called "dev", and you create a table called "posts".  The DynamoDB full table name will be "demo-dev-posts".  You can change this behavior by editing your config/dynamodb.yml.
@@ -71,8 +55,3 @@ jets dynamodb:generate create_my_posts --table-name posts
 jets dynamodb:generate my_posts --table-action create_table --table-name posts
 
 jets dynamodb:generate my_posts --table-action update_table --table-name posts
-
-EOL
-    end
-  end
-end
