@@ -19,6 +19,7 @@ describe "Route" do
     end
   end
 
+
   context "route with captures" do
     let(:route) do
       Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit")

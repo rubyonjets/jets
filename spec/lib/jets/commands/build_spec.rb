@@ -42,6 +42,20 @@ describe Jets::Commands::Build do
       yes = Jets::Commands::Build.app_file?("app/models/post.rb")
       expect(yes).to be false
     end
+
+    it "internal_app_files" do
+      router = Jets::Router.drawn_router
+      files = Jets::Commands::Build.internal_app_files
+      expect(files).to eq([])
+
+      router.draw do
+        root "jets/welcome#index"
+        any "*catchall", to: "jets/public#show"
+      end
+      files = Jets::Commands::Build.internal_app_files
+      expect(files.size).to eq 2
+    end
   end
+
 end
 

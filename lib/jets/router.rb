@@ -72,6 +72,10 @@ module Jets
       simple_routes + capture_routes + wildcard_routes
     end
 
+    def self.has_controller?(name)
+      routes.detect { |r| r.controller_name == name }
+    end
+
     # Class methods
     def self.draw
       drawn_router

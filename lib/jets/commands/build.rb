@@ -68,13 +68,12 @@ module Jets::Commands
     # path: app/controllers/comments_controller.rb
     # path: app/jobs/easy_job.rb
     def build_child_template(path)
-      require "#{Jets.root}#{path}" # require "app/jobs/easy_job.rb"
       class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
-      # strip the app/controller/ or app/jobs/ from the string
-      # also strip the .rb
-      # class_path: admin/pages_controller
+      class_name = class_path.classify
+      class_name.constantize # load app/**/* class definition
 
-      process_class = path.split('/')[1].singularize.classify # Controller or Job
+      md = path.match(%r{/app/(.*?)/}) # extract: controller, job or function
+      process_class = md[1].classify
       builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Builder".constantize
 
       # Examples:
@@ -114,6 +113,21 @@ module Jets::Commands
         # Rids of the Jets.root at beginning
         paths << relative_path
       end
+      paths += internal_app_files
+      paths
+    end
+
+    # Add internal Jets controllers if they are being used
+    def self.internal_app_files
+      paths = []
+      internal = File.expand_path("../../internal/app/controllers/jets", __FILE__)
+
+      welcome = Jets::Router.has_controller?("Jets::WelcomeController")
+      paths << "#{internal}/public_controller.rb" if welcome
+
+      public_catchall = Jets::Router.has_controller?("Jets::PublicController")
+      paths << "#{internal}/welcome_controller.rb" if public_catchall
+
       paths
     end
 

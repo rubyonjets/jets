@@ -37,7 +37,8 @@ module Jets
   autoload :Dotenv, 'jets/dotenv'
   autoload :Klass, 'jets/klass'
   autoload :Util, "jets/util"
-  autoload :WelcomeController, "jets/welcome_controller"
-  autoload :PublicController, "jets/public_controller"
   extend Core # root, logger, etc
+
+  autoload :WelcomeController, "jets/internal/app/controllers/jets/welcome_controller"
+  autoload :PublicController, "jets/internal/app/controllers/jets/public_controller"
 end

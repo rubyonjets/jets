@@ -20,6 +20,8 @@ class Jets::Builders
     def relative(path)
       full_path = full(path)
       full_path.sub(Jets.root.to_s, "")
+               .sub(/.*internal\/app/, "app")
+
     end
 
     # process_type is key, it will either "controller" or "job".
@@ -55,7 +57,9 @@ class Jets::Builders
 
     # Example return: "handlers/controllers/posts.js"
     def js_path
-      @relative_path.sub("app", "handlers").sub(/\.rb$/, ".js")
+      @relative_path
+        .sub("app", "handlers")
+        .sub(/\.rb$/, ".js")
     end
   end
 end
