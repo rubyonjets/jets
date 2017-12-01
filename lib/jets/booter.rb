@@ -1,6 +1,9 @@
 class Jets::Booter
   class << self
+    @booted = false
     def boot!
+      return if @booted
+
       stdout_to_stderr
 
       confirm_jets_project!
@@ -9,8 +12,10 @@ class Jets::Booter
 
       Jets::Dotenv.load!
 
-      Jets.application.setup! # app configs: autoload_paths, routes, etc
+      Jets.application # trigger application.setup! # app configs: autoload_paths, routes, etc
       connect_to_db
+
+      @booted = true
     end
 
     # Override for Lambda processing.

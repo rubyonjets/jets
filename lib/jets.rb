@@ -23,6 +23,7 @@ module Jets
   autoload :Cfn, 'jets/cfn'
   autoload :Controller, 'jets/controller'
   autoload :Erb, "jets/erb"
+  autoload :Generator, "jets/generator"
   autoload :Job, 'jets/job'
   autoload :Lambda, 'jets/lambda'
   autoload :Naming, 'jets/naming'
@@ -38,7 +39,4 @@ module Jets
   autoload :Klass, 'jets/klass'
   autoload :Util, "jets/util"
   extend Core # root, logger, etc
-
-  autoload :WelcomeController, "jets/internal/app/controllers/jets/welcome_controller"
-  autoload :PublicController, "jets/internal/app/controllers/jets/public_controller"
 end

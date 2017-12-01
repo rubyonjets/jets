@@ -22,7 +22,18 @@ class Jets::Application
   def setup_auto_load_paths
     autoload_paths = config.autoload_paths + config.extra_autoload_paths
     autoload_paths = autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
+    # internal_autoload_paths are last
+    autoload_paths += internal_autoload_paths
     ActiveSupport::Dependencies.autoload_paths += autoload_paths
+  end
+
+  def internal_autoload_paths
+    internal = File.expand_path("../internal", __FILE__)
+    paths = %w[
+      app/controllers
+      app/models
+    ]
+    paths.map { |path| "#{internal}/#{path}" }
   end
 
   # Jets' the default config/application.rb is loaded,
