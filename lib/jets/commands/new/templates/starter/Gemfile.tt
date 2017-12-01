@@ -1,10 +1,13 @@
 source "https://rubygems.org"
 
 gem "jets", git: "git@github.com:tongueroo/jets.git", submodules: true
+
+<% if options[:webpacker] %>
 # Include webpacker if you are you are building html pages
 gem "webpacker", git: "git@github.com:tongueroo/webpacker.git", branch: "jets"
 # Include pg gem if you are using ActiveRecord
 gem "pg"
+<% end %>
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -9,6 +9,21 @@
       text-align: center;
       margin: 0;
     }
+    img {
+      max-width: 320px;
+    }
+    .container {
+      max-width: 648px;
+    }
+    @media (min-width: 768px) {
+      img {
+        max-width: none;
+      }
+      .container {
+        max-width: none;
+      }
+    }
+
     .header {
       background-color: #b81513;
       padding: 20px;
@@ -21,9 +36,17 @@
       text-align: left;
       font-size: large;
       margin: 0 auto;
+      padding: 0 20px;
       max-width: 640px;
     }
-    .code {
+    pre, code {
+      padding: 0;
+      margin: 0;
+    }
+    pre {
+      margin-left: 20px;
+      width: 99%;
+      overflow: auto;
     }
   </style>
 </head>

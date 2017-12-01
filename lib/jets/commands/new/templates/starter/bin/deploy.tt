@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Starter wrapper deploy script so you dont forget to set some things when running
+# jets deploy. Meant to be modified to yoru needs.
+#
+# Usage:
+#   bin/deploy production
+#   bin/deploy staging
+
+set -ux
+JETS_ENV=$1
+set -e
+
+JETS_ENV="${JETS_ENV:-production}" # default to production
+export JETS_ENV
+
+bundle update
+
+<% if options[:webpacker] %>
+yarn install
+bin/webpack
+<% end %>
+
+jets deploy
