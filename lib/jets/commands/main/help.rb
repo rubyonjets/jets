@@ -24,15 +24,13 @@ EOL
 
     def new_long_desc
 <<-EOL
-Creates a new starter jets project.
+Creates a starter skeleton jets project. Example:
 
-Ues the `--template` flag to chose between a starter skeleton project or a tutorial project with a fully working CRUD.  The default is skeleton project.  Examples:
-
-$ jets new blog # defaults to --template skeleton
-
-$ jets new blog --template tutorial
+$ jets new blog
 
 Use the `--repo` flag to clone an example project from GitHub instead.  With this flag, jets new command clones a jets project repo from GitHub.  For example:
+
+$ jets new blog --repo tongueroo/tutorial
 
 $ jets new blog --repo tongueroo/todos
 

@@ -7,7 +7,7 @@ module Jets::Commands
     # If anyone knows how to fix this let me know.
     def self.cli_options
       [
-        [:repo, desc: "Starter repo to use. Format: user/repo"],
+        [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
@@ -20,6 +20,7 @@ module Jets::Commands
 
     def create_project
       options[:repo] ? clone_project : copy_project
+
       destination_root = "#{Dir.pwd}/#{project_name}"
       self.destination_root = destination_root
       FileUtils.cd("#{Dir.pwd}/#{project_name}")

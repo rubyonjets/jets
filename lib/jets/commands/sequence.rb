@@ -8,7 +8,7 @@ class Jets::Commands::Sequence < Thor::Group
   include Thor::Actions
 
   def self.source_root
-    File.expand_path("new/templates/starter", File.dirname(__FILE__))
+    File.expand_path("new/templates/skeleton", File.dirname(__FILE__))
   end
 
 private
