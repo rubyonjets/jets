@@ -1,4 +1,5 @@
 module Jets::Commands
+  autoload :Help, "jets/commands/help"
   autoload :Base, "jets/commands/base"
   autoload :Build, "jets/commands/build"
   autoload :Deploy, "jets/commands/deploy"
