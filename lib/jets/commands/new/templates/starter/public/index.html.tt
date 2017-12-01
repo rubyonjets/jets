@@ -31,7 +31,7 @@
 <body>
   <div class="container">
     <header class="header">
-      <img src="images/jets.png" class="logo" alt="logo" />
+      <img src="https://s3.amazonaws.com/jets-public/jets/images/jets.png" class="logo" alt="logo" />
       <h1 class="title">Welcome to Jets</h1>
     </header>
     <div class="intro">

@@ -79,22 +79,5 @@ describe Jets::Router do
 
       end
     end
-
-    context "'empty' routes table" do
-      it "should have a default homepage internal route" do
-        homepage = router.homepage_route
-        expect(homepage).to be_a(Jets::Route)
-        expect(homepage.internal?).to be true
-        expect(homepage.to).to eq "jets/welcome#index"
-
-        # internal routes are hidden
-        routes = router.routes
-        expect(routes).to eq([])
-
-        # internal routes are seen with all_routes
-        routes = router.all_routes
-        expect(routes.size).to be > 0
-      end
-    end
   end
 end
