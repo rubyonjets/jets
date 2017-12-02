@@ -61,6 +61,8 @@ environment.plugins.set('Provide', new webpack.ProvidePlugin({
 JS
       after = "const { environment } = require('@rails/webpacker')\n"
       insert_into_file("config/webpack/environment.js", jquery, after: after)
+
+      run("yarn add bootstrap@4.0.0-beta jquery popper.js")
     end
 
     def git_init

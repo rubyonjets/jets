@@ -9,7 +9,7 @@ class Jets::Commands::WebpackerTemplate < Thor::Group
   class_option :force, desc: "Bypass confirmation and overwrite existing files."
   class_option :bootstrap, type: :boolean, default: true, desc: "Install bootstrap"
   def self.source_root
-    File.expand_path("new/templates/webpacker", File.dirname(__FILE__))
+    File.expand_path("templates/webpacker", File.dirname(__FILE__))
   end
 
   def reapply_templates
