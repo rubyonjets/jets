@@ -31,6 +31,8 @@ class Jets::Commands::RakeTasks
 
       Webpacker::RakeTasks.load!
       # Thanks: https://coderwall.com/p/qhdhgw/adding-a-post-execution-hook-to-the-rails-db-migrate-task
+      # Enchancing in case the user runs webpacker:install afterwards
+      # instead of jets new.
       Rake::Task['webpacker:install'].enhance do
         # FORCE from rake webpacker:install FORCE=1
         # using ENV because rake webpacker:install is a rake task

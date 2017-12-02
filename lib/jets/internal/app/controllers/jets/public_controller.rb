@@ -4,11 +4,12 @@
 # same way as browsers.
 class Jets::PublicController < Jets::Controller::Base
   def show
-    path = Jets.root + "public" + params[:catchall]
-    if path.exist?
-      render file: path
+    public_path = Jets.root + "public"
+    catchall_path = "#{public_path}/#{params[:catchall]}"
+    if File.exist?(catchall_path)
+      render file: catchall_path
     else
-      render status: 404
+      render file: "#{public_path}/404", status: 404
     end
   end
 end

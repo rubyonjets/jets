@@ -10,6 +10,7 @@ module Jets::Commands
         [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
+        [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap"], # same option in WebpackerTemplate
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
       ]
     end
@@ -42,6 +43,24 @@ module Jets::Commands
       command = "jets webpacker:install"
       command += " FORCE=1" if options[:force]
       run(command)
+    end
+
+    # bootstrap is dependent on webpacker, options[:bootstrap] is used
+    # in webpacker_install.
+    def bootstrap_install
+      puts "bootstrap_install options: #{options.inspect}"
+      return unless options[:bootstrap]
+
+      jquery =<<-JS
+const webpack = require('webpack')
+environment.plugins.set('Provide', new webpack.ProvidePlugin({
+  $: 'jquery',
+  jQuery: 'jquery',
+  Popper: ['popper.js', 'default']
+}))
+JS
+      after = "const { environment } = require('@rails/webpacker')\n"
+      insert_into_file("config/webpack/environment.js", jquery, after: after)
     end
 
     def git_init
