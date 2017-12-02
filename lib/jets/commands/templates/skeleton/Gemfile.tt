@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
-#gem "jets", git: "git@github.com:tongueroo/jets.git", submodules: true
-gem "jets", path: "~/src/tongueroo/jets"
+gem "jets", git: "git@github.com:tongueroo/jets.git", submodules: true
+#gem "jets", path: "~/src/tongueroo/jets"
 
 <% if options[:webpacker] -%>
 # Include webpacker if you are you are building html pages
