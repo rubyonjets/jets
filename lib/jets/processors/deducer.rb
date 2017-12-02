@@ -13,8 +13,8 @@ class Jets::Processors::Deducer
   end
 
   def code
-    # code: "PostsController.new(event, context, meth: "show").show"
-    # code: "HardJob.new(event, context, meth: "dig").dig"
+    # code: "PostsController.process(event, context, meth: "show")"
+    # code: "HardJob.process(event, context, meth: "dig")"
     %|#{class_name}.process(event, context, "#{@handler_method}")|
   end
 

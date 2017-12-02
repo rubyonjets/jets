@@ -72,7 +72,7 @@ module Jets::Commands
       class_name = class_path.classify
       class_name.constantize # load app/**/* class definition
 
-      md = path.match(%r{/app/(.*?)/}) # extract: controller, job or function
+      md = path.match(%r{app/(.*?)/}) # extract: controller, job or function
       process_class = md[1].classify
       builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Builder".constantize
 
