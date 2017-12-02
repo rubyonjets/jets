@@ -24,8 +24,7 @@ class Jets::CLI
     end
   end
 
-  # Pretty much all commands require being within a jets project except for
-  # new and help.
+  # All commands require Jets.boot except new and help.
   def boot_jets
     command = thor_args.first
     if !%w[new help].include?(command)
