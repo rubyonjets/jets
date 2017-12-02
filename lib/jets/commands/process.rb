@@ -5,19 +5,19 @@ module Jets::Commands
 
     # Some duplication here but the long_desc help is different enough
     desc "controller [event] [context] [handler]", "Processes node shim controller handler", hide: true
-    long_desc Help.text(:controller)
+    long_desc Help.text('process:controller')
     def controller(event, context, handler)
       Jets::Processors::MainProcessor.new(event, context, handler).run
     end
 
     desc "job [event] [context] [handler]", "Processes node shim job handler", hide: true
-    long_desc Help.text(:job)
+    long_desc Help.text('process:job')
     def job(event, context, handler)
       Jets::Processors::MainProcessor.new(event, context, handler).run
     end
 
     desc "function [event] [context] [handler]", "Processes node shim job handler", hide: true
-    long_desc Help.text(:function)
+    long_desc Help.text('process:function')
     def function(event, context, handler)
       Jets::Processors::MainProcessor.new(event, context, handler).run
     end

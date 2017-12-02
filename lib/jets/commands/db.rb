@@ -6,7 +6,7 @@ module Jets::Commands
     autoload :Tasks, 'jets/commands/db/tasks'
 
     desc "generate", "Creates a migration to change a db table"
-    long_desc Help.text(:generate)
+    long_desc Help.text('db:generate')
     def generate(*args)
       generator = ActiveRecord::Generators::MigrationGenerator.new(args)
       generator.create_migration_file
