@@ -5,6 +5,8 @@ require "rack/mime"
 # Tricky because API Gateway is not respecting the Accept header in the
 # same way as browsers.
 class Jets::PublicController < Jets::Controller::Base
+  layout false
+
   def show
     public_path = Jets.root + "public"
     catchall_path = "#{public_path}/#{params[:catchall]}"
