@@ -24,16 +24,52 @@ class Jets::CLI
     end
   end
 
-  # All commands require Jets.boot except new and help.
+  # The commands new and help do not call Jets.boot. Main reason is that
+  # Jets.boot are ran inside a Jets project folder.
+  #
+  # * jets new - need to generate a project outside a project folder.
+  # * jets help - don't need to be in a project folder general help.
+  #   When you are inside a project folder though, more help commands
+  #   are available and displayed.
+  #
   def boot_jets
     command = thor_args.first
     if !%w[new help].include?(command)
+      set_jets_env_for_deploy_command!
       Jets.boot
     end
-    if command == "help"
-      # help output goes to stdout when explicitly called
-      Jets::Booter.reset_stdout
+  end
+
+  # Adjust JETS_ENV before boot_jets is called for the jets deploy
+  # command.  Must do this early in the process before Jets.boot because
+  # Jets.boot calls Jets.env as part of the bootup process in
+  # require_bundle_gems and sets the Jets.env to whatever the JETS_ENV is
+  # at the time.
+  def set_jets_env_for_deploy_command!
+    command, env = thor_args[0..1]
+    if command == "deploy" && !env.nil?
+      ENV['JETS_ENV'] = env
     end
+  end
+
+  # thor_args normalized the args Array to work with our Thor command
+  # subclasses.
+  # 1. The namespace is stripe
+  # 2. Help is shifted in front if a help flag is detected
+  def thor_args
+    args = @given_args.clone
+
+    help_args = args & help_flags
+    if help_args.empty?
+      args[0] = meth # reassigns the command without the namespace
+    else
+      # Allow using help flags at the end of the command to trigger help menu
+      args -= help_flags # remove "help" and help flags from args
+      args[0] = meth # first command will always be the meth now since
+        # we removed the help flags
+      args.unshift("help")
+    end
+    args.compact
   end
 
   ALIASES = {
@@ -69,22 +105,6 @@ class Jets::CLI
   # ["-h", "-?", "--help", "-D", "help"]
   def help_flags
     Thor::HELP_MAPPINGS + ["help"]
-  end
-
-  def thor_args
-    args = @given_args.clone
-
-    help_args = args & help_flags
-    if help_args.empty?
-      args[0] = meth # reassigns the command without the namespace
-    else
-      # Allow using help flags at the end of the command to trigger help menu
-      args -= help_flags # remove "help" and help flags from args
-      args[0] = meth # first command will always be the meth now since
-        # we removed the help flags
-      args.unshift("help")
-    end
-    args.compact
   end
 
   def namespace

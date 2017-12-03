@@ -30,11 +30,6 @@ class Jets::Booter
       $stdout = $stderr
     end
 
-    # useful for cli usage
-    def reset_stdout
-      $stdout = STDOUT
-    end
-
     # require_bundle_gems called when environment boots up via Jets.boot.  It
     # also useful for when to loading Rake tasks in
     # Jets::Commands::RakeTasks.load!

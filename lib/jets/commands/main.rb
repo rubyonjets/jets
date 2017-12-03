@@ -12,12 +12,12 @@ module Jets::Commands
       Build.new(options).run
     end
 
-    desc "deploy", "Deploys project to Lambda"
+    desc "deploy [environment]", "Deploys project to Lambda"
     long_desc Help.text(:deploy)
     option :capabilities, type: :array, desc: "iam capabilities. Ex: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
     option :iam, type: :boolean, desc: "Shortcut for common IAM capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
-    def deploy
-      Deploy.new(options).run
+    def deploy(env='staging')
+      Deploy.new(options.merge(env: env)).run
     end
 
     desc "delete", "Delete project and all its resources"

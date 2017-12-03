@@ -2,6 +2,16 @@ require "thor"
 
 class Jets::Commands::Base < Thor
   class << self
+    # thor_args is an array of commands. Examples:
+    #   ["help"]
+    #   ["dynamodb:migrate"]
+    #
+    # Same signature as RakeCommand.perform.  Not using full_command.
+    def perform(full_command, thor_args)
+      config = {} # doesnt seem like config is used
+      dispatch(nil, thor_args, nil, config)
+    end
+
     # Track all command subclasses.
     def subclasses
       @subclasses ||= []
@@ -78,16 +88,6 @@ class Jets::Commands::Base < Thor
       end
 
       list.sort_by! { |array| array[0] }
-    end
-
-    # thor_args is an array of commands. Examples:
-    #   ["help"]
-    #   ["dynamodb:migrate"]
-    #
-    # Same signature as RakeCommand.perform.  Not using full_command.
-    def perform(full_command, thor_args)
-      config = {} # doesnt seem like config is used
-      dispatch(nil, thor_args, nil, config)
     end
 
     def klass_from_namespace(namespace)
