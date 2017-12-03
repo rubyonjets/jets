@@ -16,8 +16,11 @@ module Jets::Commands
     long_desc Help.text(:deploy)
     option :capabilities, type: :array, desc: "iam capabilities. Ex: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
     option :iam, type: :boolean, desc: "Shortcut for common IAM capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
-    def deploy(env='staging')
-      Deploy.new(options.merge(env: env)).run
+    # Note the environment is here to trick the Thor parser to allowing an
+    # environment parameter. It is not actually set here.  It is set earlier
+    # in cli.rb: set_jets_env_for_deploy_command!
+    def deploy(environment=nil)
+      Deploy.new(options).run
     end
 
     desc "delete", "Delete project and all its resources"

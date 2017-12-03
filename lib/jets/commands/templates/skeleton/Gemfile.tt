@@ -1,7 +1,10 @@
 source "https://rubygems.org"
 
-#gem "jets", git: "git@github.com:tongueroo/jets.git", submodules: true
-gem "jets", path: "~/src/tongueroo/jets"
+if File.exist?("dev.mode")
+  gem "jets", path: "#{ENV['HOME']}/src/tongueroo/jets"
+else
+  gem "jets", git: "git@github.com:tongueroo/jets.git", submodules: true
+end
 
 <% if options[:webpacker] -%>
 # Include webpacker if you are you are building html pages

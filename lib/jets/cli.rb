@@ -45,11 +45,12 @@ class Jets::CLI
   # Jets.boot calls Jets.env as part of the bootup process in
   # require_bundle_gems and sets the Jets.env to whatever the JETS_ENV is
   # at the time.
+  #
+  # Defaults to staging when not set.
   def set_jets_env_for_deploy_command!
     command, env = thor_args[0..1]
-    if command == "deploy" && !env.nil?
-      ENV['JETS_ENV'] = env
-    end
+    return unless command == "deploy"
+    ENV['JETS_ENV'] = env ? env : 'staging'
   end
 
   # thor_args normalized the args Array to work with our Thor command
