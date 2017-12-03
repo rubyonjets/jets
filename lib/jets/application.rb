@@ -68,8 +68,8 @@ class Jets::Application
     config.table_namespace = [config.project_name, config.short_env].compact.join('-')
 
     # env_extra can be also be set with JETS_ENV_EXTRA.
-    # config.env_extra takes higher precedence.
-    if ENV['JETS_ENV_EXTRA'] and !config.env_extra
+    # JETS_ENV_EXTRA higher precedence than config.env_extra
+    if ENV['JETS_ENV_EXTRA']
       config.env_extra = ENV['JETS_ENV_EXTRA']
     end
   end
