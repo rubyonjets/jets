@@ -63,12 +63,11 @@ class Jets::Booter
     # config/database.yml exists.
     # DynamodbModel handles connecting to the clients lazily.
     def connect_to_db
-      database_yml = "#{Jets.root}config/database.yml"
-      return unless File.exist?(database_yml)
-
-      text = Jets::Erb.result(database_yml)
-      config = YAML.load(text)
-      ActiveRecord::Base.establish_connection(config[Jets.env])
+      db_config = Jets.application.config.database[Jets.env].to_h
+      if db_config.empty? && File.exist?("#{Jets.root}config/database.yml")
+        abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
+      end
+      ActiveRecord::Base.establish_connection(db_config)
     end
 
     def bundler_groups

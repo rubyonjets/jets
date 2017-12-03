@@ -18,5 +18,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'shotgun'
   gem 'rack'
-  gem 'rspec'
+end
+
+group :test do
+  gem 'rspec' # rspec test group only or we get the "irb: warn: can't alias context from irb_context warning" when starting jets console
 end

@@ -36,14 +36,15 @@ class Jets::Application
     paths.map { |path| "#{internal}/#{path}" }
   end
 
-  # Jets' the default config/application.rb is loaded,
-  # then the project's config/application.rb is loaded.
+  # The Jets default/application.rb is loaded.
+  # Then project config/application.rb is loaded.
   def load_configs
     require File.expand_path("../default/application.rb", __FILE__)
     app_config = "#{Jets.root}config/application.rb"
     require app_config if File.exist?(app_config)
     set_aliases!
     normalize_env_vars!
+    load_db_config
   end
 
   # Use the shorter name in stack names, but use the full name when it
@@ -82,6 +83,19 @@ class Jets::Application
       config.function.environment = {
         variables: environment.to_h
       }
+    end
+  end
+
+  def load_db_config
+    config.database = {}
+
+    database_yml = "#{Jets.root}config/database.yml"
+    if File.exist?(database_yml)
+      text = Jets::Erb.result(database_yml)
+      db_config = YAML.load(text)
+      config.database = db_config
+      # No matter what config.database RecursiveOpenStruct. Tried
+      # db_config.to_h.deep_stringify_keys
     end
   end
 

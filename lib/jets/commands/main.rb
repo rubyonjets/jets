@@ -58,7 +58,7 @@ module Jets::Commands
     desc "dbconsole", "DB REPL console"
     long_desc Help.text(:dbconsole)
     def dbconsole
-      # Dbconsole.run
+      Dbconsole.start(*args)
     end
 
     # Command is called 'call' because invoke is a Thor keyword.

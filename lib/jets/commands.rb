@@ -16,4 +16,5 @@ module Jets::Commands
   autoload :WebpackerTemplate, 'jets/commands/webpacker_template'
   autoload :Sequence, "jets/commands/sequence"
   autoload :StackInfo, "jets/commands/stack_info"
+  autoload :Dbconsole, "jets/commands/dbconsole"
 end
