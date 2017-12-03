@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Jets App</title>
   <%%= javascript_pack_tag "application" %>
-  <%%= stylesheet_pack_tag "application" %>
+  <%%= stylesheet_pack_tag "theme" %>
 </head>
 <body>
   <%%= yield %>

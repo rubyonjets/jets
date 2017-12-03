@@ -7,7 +7,8 @@ module Jets::Commands
     end
 
     def run
-      puts "Deploying project to Lambda..."
+      deployment_env = Jets.config.project_namespace.colorize(:green)
+      puts "Deploying to Lambda #{deployment_env} environment..."
       return if @options[:noop]
       compile_assets
 

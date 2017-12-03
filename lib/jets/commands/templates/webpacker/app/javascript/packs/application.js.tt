@@ -11,5 +11,4 @@
 import 'bootstrap/dist/js/bootstrap';
 <% end -%>
 import '../src/jets/delete-item'
-import '../src/application' // application.scss
 console.log('Hello World from Webpacker')

@@ -60,18 +60,15 @@ class Jets::Application
     staging: 'stag',
   }
   def set_aliases!
+    # env_extra can be also be set with JETS_ENV_EXTRA.
+    # JETS_ENV_EXTRA higher precedence than config.env_extra
+    config.env_extra = ENV['JETS_ENV_EXTRA'] if ENV['JETS_ENV_EXTRA']
     # IE: With env_extra: project-dev-1
     #     Without env_extra: project-dev
     config.short_env = ENV_MAP[Jets.env.to_sym] || Jets.env
     config.project_namespace = [config.project_name, config.short_env, config.env_extra].compact.join('-')
     # table_namespace does not have the env_extra, more common case desired.
     config.table_namespace = [config.project_name, config.short_env].compact.join('-')
-
-    # env_extra can be also be set with JETS_ENV_EXTRA.
-    # JETS_ENV_EXTRA higher precedence than config.env_extra
-    if ENV['JETS_ENV_EXTRA']
-      config.env_extra = ENV['JETS_ENV_EXTRA']
-    end
   end
 
   # It is pretty easy to attempt to set environment variables without

@@ -49,7 +49,7 @@ class Jets::CLI
   # Defaults to staging when not set.
   def set_jets_env_for_deploy_command!
     command, env = thor_args[0..1]
-    return unless command == "deploy"
+    return unless command == "deploy" && !env.starts_with?('-')
     ENV['JETS_ENV'] = env ? env : 'staging'
   end
 
