@@ -5,12 +5,8 @@ require "recursive-open-struct"
 class Jets::Commands::Db::Tasks
   # Ugly but it loads ActiveRecord database tasks
   def self.load!
-    database_yml = "#{Jets.root}config/database.yml"
-    return unless File.exist?(database_yml)
-
-    text = ERB.new(IO.read(database_yml)).result
-    config = YAML.load(text)
-    ActiveRecord::Tasks::DatabaseTasks.database_configuration = config
+    db_configs = Jets.application.config.database.to_h.deep_stringify_keys
+    ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = ["db/migrate"]
 
     # Need to mock out the usage of Rails.application in:

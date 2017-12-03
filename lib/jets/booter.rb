@@ -5,15 +5,9 @@ class Jets::Booter
       return if @booted
 
       stdout_to_stderr
-
       confirm_jets_project!
-
-      require_bundle_gems
-
-      Jets::Dotenv.load!
-
-      Jets.application # trigger application.setup! # app configs: autoload_paths, routes, etc
-      connect_to_db
+      require_bundle_gemsSetups up and      Jets.load!
+      Jets._db
 
       @booted = true
     end
@@ -59,15 +53,20 @@ class Jets::Booter
       end
     end
 
-    # Only connects connect to database for ActiveRecord and when
-    # config/database.yml exists.
-    # DynamodbModel handles connecting to the clients lazily.
-    def connect_to_db
-      db_config = Jets.application.config.database[Jets.env].to_h
-      if db_config.empty? && File.exist?("#{Jets.root}config/database.yml")
+    # Setups up and connects to database for ActiveRecord.
+    # DynamodbModel connects lazily so doesn't have to do this for DynamoDB.
+    def setup_db
+      db_configs = Jets.application.config.database.to_h.deep_stringify_keys
+      # DatabaseTasks.database_configuration for db:create db:migrate tasks
+      # Documented in DatabaseTasks that this is the right way to set it when
+      # using ActiveRecord rake tasks outside of Rails.
+      ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
+
+      current_config = db_configs[Jets.env]
+      if current_config.empty? && File.exist?("#{Jets.root}config/database.yml")
         abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
       end
-      ActiveRecord::Base.establish_connection(db_config)
+      ActiveRecord::Base.establish_connection(current_config)
     end
 
     def bundler_groups
