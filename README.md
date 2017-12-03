@@ -15,7 +15,7 @@ You focus on your application logic and Jets does the mundane work. You write co
 
 ### Jets Controllers
 
-A Jets controller handles a web request and renders a response.  Here's an example
+A Jets controller handles a web request and renders a response.  Here's an example:
 
 `app/controllers/posts_controller.rb`:
 
