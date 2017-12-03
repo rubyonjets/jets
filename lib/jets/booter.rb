@@ -6,8 +6,10 @@ class Jets::Booter
 
       stdout_to_stderr
       confirm_jets_project!
-      require_bundle_gemsSetups up and      Jets.load!
-      Jets._db
+      require_bundle_gems
+      Jets::Dotenv.load!
+      Jets.application # triggers application.setup! # autoload_paths, routes, etc
+      setup_db
 
       @booted = true
     end
@@ -53,8 +55,9 @@ class Jets::Booter
       end
     end
 
-    # Setups up and connects to database for ActiveRecord.
-    # DynamodbModel connects lazily so doesn't have to do this for DynamoDB.
+    # Only connects connect to database for ActiveRecord and when
+    # config/database.yml exists.
+    # DynamodbModel handles connecting to the clients lazily.
     def setup_db
       db_configs = Jets.application.config.database.to_h.deep_stringify_keys
       # DatabaseTasks.database_configuration for db:create db:migrate tasks
