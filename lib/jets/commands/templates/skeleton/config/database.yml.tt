@@ -18,10 +18,9 @@ test:
 staging:
   <<: *default
   database: <%= project_name %>_stag
-  url: <%%= ENV['DB_URL'] %>
+  url: <%%= ENV['DATABASE_URL'] %>
 
 production:
   <<: *default
   database: <%= project_name %>_prod
-  # TODO: remove hardcode of test database url
-  url: <%%= ENV['DB_URL'] %>
+  url: <%%= ENV['DATABASE_URL'] %>

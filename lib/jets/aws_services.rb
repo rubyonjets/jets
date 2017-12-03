@@ -43,4 +43,29 @@ module Jets::AwsServices
     end
     exist
   end
+
+  # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
+  #
+  # Returns resp so we can use it to grab data about the stack without calling api again.
+  def stack_in_progress?(stack_name)
+    return true if !stack_exists?(stack_name)
+
+    # Assumes stack exists
+    resp = cfn.describe_stacks(stack_name: stack_name)
+    status = resp.stacks[0].stack_status
+    if status =~ /_IN_PROGRESS$/
+      puts "The '#{stack_name}' stack status is #{status}. " \
+           "Please wait until the stack is ready and try again.".colorize(:red)
+      exit 0
+    elsif resp.stacks[0].outputs.empty?
+      # This Happens when the miminal stack fails at the very beginning.
+      # There is no s3 bucket at all.  User should delete the stack.
+      puts "The minimal stack failed to create. Please delete the stack first and try again." \
+      "You can delete the CloudFormation stack or use the `jets delete` command"
+      exit 0
+    else
+      true
+    end
+  end
+
 end
