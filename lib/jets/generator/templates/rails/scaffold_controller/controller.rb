@@ -38,7 +38,14 @@ class <%= controller_class_name %>Controller < ApplicationController
   # PUT <%= route_url %>/1
   def update
     if @<%= orm_instance.update("#{singular_table_name}_params") %>
-      redirect_to "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"
+      redirect_url = "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"
+      if request.xhr?
+        puts "xhr put call"
+        render json: {success: true, location: redirect_url} # local
+      else
+        puts "standard http put call"
+        redirect_to redirect_url
+      end
     else
       render :edit
     end

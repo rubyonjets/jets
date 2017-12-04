@@ -1,4 +1,9 @@
-<%%= form_tag("/<%= plural_table_name %>") do %>
+<%% editing = @event["path"].include?("edit") %>
+<%% action = editing ? "/<%= plural_table_name %>/#{<%= singular_table_name %>.id}" : "/<%= plural_table_name %>" %>
+<%%= form_tag(action) do %>
+<%% if editing -%>
+  <input type="hidden" name="_method" value="put" />
+<%% end -%>
   <%% if <%= singular_table_name %>.errors.any? %>
     <div id="error_explanation">
       <h2><%%= pluralize(<%= singular_table_name %>.errors.count, "error") %> prohibited this <%= singular_table_name %> from being saved:</h2>

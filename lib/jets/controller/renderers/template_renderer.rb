@@ -1,11 +1,13 @@
 module Jets::Controller::Renderers
   class TemplateRenderer < BaseRenderer
     def controller_instance_variables
-      @controller.instance_variables.inject({}) do |vars, v|
+      instance_vars = @controller.instance_variables.inject({}) do |vars, v|
         k = v.to_s.sub(/^@/,'') # @var => var
         vars[k] = @controller.instance_variable_get(v)
         vars
       end
+      instance_vars[:event] = event
+      instance_vars
     end
 
     def render

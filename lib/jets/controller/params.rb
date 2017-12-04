@@ -30,7 +30,7 @@ class Jets::Controller
       if event["headers"] && event["headers"]["content-type"]
         content_type = event["headers"]["content-type"]
       end
-      if content_type == "application/x-www-form-urlencoded"
+      if content_type&.include?("application/x-www-form-urlencoded")
         return Rack::Utils.parse_nested_query(body)
       end
 

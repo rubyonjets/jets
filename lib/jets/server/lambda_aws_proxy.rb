@@ -106,6 +106,7 @@ class Jets::Server
       # it this way because it's simpler.
       input = @env["rack.input"] || StringIO.new
       body = input.read
+      puts "lambda_aws_proxy.rb: body #{body.inspect}".colorize(:cyan)
       # return nil for blank string, because thats what Lambda AWS_PROXY does
       body unless body.empty?
     end
