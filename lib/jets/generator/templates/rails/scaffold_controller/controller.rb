@@ -38,7 +38,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # PUT <%= route_url %>/1
   def update
     if @<%= orm_instance.update("#{singular_table_name}_params") %>
-      render json: {success: true, location: "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"}
+      render json: {success: true, location: url_for("/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}")}
     else
       render :edit
     end
