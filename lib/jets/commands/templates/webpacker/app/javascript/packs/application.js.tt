@@ -10,5 +10,5 @@
 <% if options[:bootstrap] -%>
 import 'bootstrap/dist/js/bootstrap';
 <% end -%>
-import '../src/jets/delete-item'
+import '../src/jets/crud'
 console.log('Hello World from Webpacker')

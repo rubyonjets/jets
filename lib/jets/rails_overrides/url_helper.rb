@@ -4,15 +4,6 @@ require "action_view"
 module Jets::UrlHelper
   include Jets::CommonMethods
 
-  def link_to(name = nil, options = nil, html_options = nil, &block)
-    # add class="jets-delete" to delete links for javascript to call it later
-    if html_options&.[](:method) == :delete
-      html_class = html_options[:class]
-      html_options[:class] = [html_class, "jets-delete"].compact.join(' ')
-    end
-    super
-  end
-
   # Basic implementation of url_for to allow use helpers without routes existence
   def url_for(options = nil) # :nodoc:
     url = case options
