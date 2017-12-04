@@ -97,5 +97,9 @@ class Jets::Controller
       url
     end
 
+    def url_for(url)
+      add_stage_name(url)
+    end
+
   end
 end
