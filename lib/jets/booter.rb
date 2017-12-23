@@ -59,7 +59,7 @@ class Jets::Booter
     # config/database.yml exists.
     # DynamodbModel handles connecting to the clients lazily.
     def setup_db
-      db_configs = Jets.application.config.database.to_h.deep_stringify_keys
+      db_configs = Jets.application.config.database
       # DatabaseTasks.database_configuration for db:create db:migrate tasks
       # Documented in DatabaseTasks that this is the right way to set it when
       # using ActiveRecord rake tasks outside of Rails.

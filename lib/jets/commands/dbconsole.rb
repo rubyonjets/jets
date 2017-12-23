@@ -100,7 +100,7 @@ module Jets::Commands
 
     private
       def configurations # :doc:
-        db_config = Jets.application.config.database.to_h.deep_stringify_keys!
+        db_config = Jets.application.config.database
         ActiveRecord::Base.configurations = db_config
         ActiveRecord::Base.configurations
       end

@@ -1,5 +1,3 @@
-require "recursive-open-struct"
-
 class Jets::Application
   # Middleware used for development only
   autoload :Middleware, "jets/application/middleware"
@@ -16,7 +14,7 @@ class Jets::Application
   end
 
   def config
-    @config ||= RecursiveOpenStruct.new
+    @config ||= ActiveSupport::OrderedOptions.new
   end
 
   def setup_auto_load_paths
@@ -91,8 +89,6 @@ class Jets::Application
       text = Jets::Erb.result(database_yml)
       db_config = YAML.load(text)
       config.database = db_config
-      # No matter what config.database RecursiveOpenStruct. Tried
-      # db_config.to_h.deep_stringify_keys
     end
   end
 
