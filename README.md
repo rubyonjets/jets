@@ -35,41 +35,7 @@ class PostsController < ApplicationController
 end
 ```
 
-Jets creates Lambda functions each the public method in your controller. You deploy the code with:
-
-```sh
-jets deploy
-```
-
-After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
-
-### AWS Lambda Console test
-
-![Lambda Console](https://s3.amazonaws.com/boltops-demo/images/screenshots/lambda-console-posts-controller-index.png)
-
-### CLI test
-
-You can use `jets call` to test with the CLI:
-
-```
-$ jets call posts-controller-index '{"test":1}' | jq '.body | fromjson'
-{
-  "hello": "world",
-  "action": "index"
-}
-$ jets call help # for more info like passing the payload via a file
-```
-
-The corresponding `aws lambda` CLI commands would be:
-
-```
-aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt
-cat outfile.txt | jq '.body | fromjson'
-rm outfile.txt
-aws lambda invoke help
-```
-
-For controllers, the `jets call` method wraps the parameters in the lambda [proxy integration input format structure](http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format).
+Jets creates Lambda functions each the public method in your controller.
 
 ### Jets Routing
 
@@ -91,12 +57,6 @@ Jets.application.routes.draw do
 
   any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 end
-```
-
-Deploy again to add the routes to API Gateway.
-
-```sh
-jets deploy
 ```
 
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that was created:
@@ -140,6 +100,45 @@ app/jobs  | Job code for background jobs.  Jobs are ran as Lambda functions, so 
 app/functions  | Generic function code that looks more like the traditional Lambda function handler format.
 config/application.rb  | Application wide configurations.  Where you can globally configure things like project_name, extra_autoload_paths, function timeout, memory size, etc.
 config/routes.rb  | Where you set up routes for your application.
+
+### Jets Deployment
+
+You deploy the code with:
+
+```sh
+jets deploy
+```
+
+After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
+
+### AWS Lambda Console test
+
+![Lambda Console](https://s3.amazonaws.com/boltops-demo/images/screenshots/lambda-console-posts-controller-index.png)
+
+### CLI test
+
+You can use `jets call` to test with the CLI:
+
+```
+$ jets call posts-controller-index '{"test":1}' | jq '.body | fromjson'
+{
+  "hello": "world",
+  "action": "index"
+}
+$ jets call help # for more info like passing the payload via a file
+					# or how to call the functions locally with --local
+```
+
+The corresponding `aws lambda` CLI commands would be:
+
+```
+aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt
+cat outfile.txt | jq '.body | fromjson'
+rm outfile.txt
+aws lambda invoke help
+```
+
+For controllers, the `jets call` method wraps the parameters in the lambda [proxy integration input format structure](http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format).
 
 ## Usage
 
