@@ -20,7 +20,7 @@ describe Jets::CLI do
     it "deploy" do
       out = execute("exe/jets deploy #{@args}")
       # puts out
-      expect(out).to include("Deploying project")
+      expect(out).to include("Deploying")
     end
 
     it "delete" do
