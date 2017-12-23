@@ -59,7 +59,7 @@ Jets.application.routes.draw do
 end
 ```
 
-Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that was created:
+Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
 ```sh
 $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | jq .
