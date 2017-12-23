@@ -1,10 +1,10 @@
-Ruby and Lambda splat out a baby, and that child's name is Jets.
+Ruby and Lambda splat out a baby and that child's name is Jets.
 
 ## What is Jets?
 
 Jets is a Serverless Framework that allows you to create applications with Ruby on AWS Lambda.  It includes everything required to build an application and deploy it.
 
-It is key to conceptually understand AWS Lambda and API Gateway to understand Jets.  Jets maps your code to Lambda functions and API Gateway resources.
+It is key to understand AWS Lambda and API Gateway to understand Jets conceptually.  Jets maps your code to Lambda functions and API Gateway resources.
 
 * **AWS Lambda** is Functions as a Service. It allows you to upload and run functions without worrying about the underlying infrastructure.
 * **API Gateway** is the routing layer for Lambda. It is used to route REST URL endpoints to Lambda functions.
@@ -22,7 +22,7 @@ A Jets controller handles a web request and renders a response.  Here's an examp
 ```ruby
 class PostsController < ApplicationController
   def index
-    # render returns Lambda Proxy structure for web requests
+    # renders Lambda Proxy structure compatiable with API Gateway
     render json: {hello: "world", action: "index"}
   end
 
@@ -35,13 +35,13 @@ class PostsController < ApplicationController
 end
 ```
 
-Jets creates Lambda functions for the public methods in your controller. You deploy the code with:
+Jets creates Lambda functions each the public method in your controller. You deploy the code with:
 
 ```sh
 jets deploy
 ```
 
-After deployment, you can test the Lambda functions with the AWS Lambda console or CLI.
+After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
 
 ### AWS Lambda Console test
 
@@ -49,7 +49,7 @@ After deployment, you can test the Lambda functions with the AWS Lambda console 
 
 ### CLI test
 
-You can use `jets call` to test via the the CLI:
+You can use `jets call` to test with the CLI:
 
 ```
 $ jets call posts-controller-index '{"test":1}' | jq '.body | fromjson'
@@ -60,7 +60,7 @@ $ jets call posts-controller-index '{"test":1}' | jq '.body | fromjson'
 $ jets call help # for more info like passing the payload via a file
 ```
 
-The corresponding `aws lambda` CLI commands are:
+The corresponding `aws lambda` CLI commands would be:
 
 ```
 aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt
@@ -119,10 +119,15 @@ class HardJob < ApplicationJob
   def dig
     {done: "digging"}
   end
+
+  cron "0 */12 * * ? *" # every 12 hours
+  def lift
+    {done: "lifting"}
+  end
 end
 ```
 
-`HardJob#dig` will be ran every 10 hours.
+`HardJob#dig` will be ran every 10 hours and `HardJob#lift` will be ran every 12 hours.
 
 ### Project Structure
 
@@ -130,7 +135,7 @@ Here's an overview of a Jets project structure.
 
 File / Directory  | Description
 ------------- | -------------
-app/controllers  | Contains controller code that handles web requests.  The controller code renders API Gateway Lambda Proxy compatible responses.
+app/controllers  | Contains controller code that handles web requests.  The controllers render API Gateway Lambda Proxy compatible responses.
 app/jobs  | Job code for background jobs.  Jobs are ran as Lambda functions, so they are subject to Lambda limits.
 app/functions  | Generic function code that looks more like the traditional Lambda function handler format.
 config/application.rb  | Application wide configurations.  Where you can globally configure things like project_name, extra_autoload_paths, function timeout, memory size, etc.
