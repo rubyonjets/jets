@@ -1,3 +1,5 @@
+require "action_controller/metal/strong_parameters"
+
 class Jets::Controller
   module Params
   private
@@ -14,7 +16,7 @@ class Jets::Controller
       params = body_params
                 .deep_merge(query_string_params)
                 .deep_merge(path_params)
-      ActiveSupport::HashWithIndifferentAccess.new(params)
+      ActionController::Parameters.new(params)
     end
 
     def body_params

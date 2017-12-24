@@ -64,7 +64,7 @@ private
     <%- if attributes_names.empty? -%>
     params.fetch(:<%= singular_table_name %>, {})
     <%- else -%>
-    params[:<%= singular_table_name %>]
+    params.require(:<%= singular_table_name %>).permit(<%= attributes_names.map { |name| ":#{name}" }.join(', ') %>)
     <%- end -%>
   end
 end

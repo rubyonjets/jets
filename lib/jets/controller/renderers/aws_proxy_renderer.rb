@@ -1,3 +1,5 @@
+require "rack/utils"
+
 # Special renderer.  All the other renderers lead here
 module Jets::Controller::Renderers
   class AwsProxyRenderer < BaseRenderer
@@ -13,7 +15,7 @@ module Jets::Controller::Renderers
     #   }
     def render
       # we do some normalization here
-      status = @options[:status] || 200
+      status = map_status_code(@options[:status]) || 200
       body = @options[:body]
       base64 = normalized_base64_option(@options)
 
@@ -29,6 +31,18 @@ module Jets::Controller::Renderers
         "body" => body,
         "isBase64Encoded" => base64,
       }
+    end
+
+    # maps:
+    #   :continue => 100
+    #   :success => 200
+    #   etc
+    def map_status_code(code)
+      if code.is_a?(Symbol)
+        Rack::Utils::SYMBOL_TO_STATUS_CODE[code]
+      else
+        code
+      end
     end
 
     def normalized_base64_option(options)

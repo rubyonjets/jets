@@ -76,15 +76,22 @@ JS
     end
 
     def user_message
-      puts "=" * 64
-      puts "Congrats 🎉 You have successfully created a Jets project.\n\n"
-      puts "To test locally:"
-      puts "  cd #{project_name}".colorize(:green)
-      puts "  jets server".colorize(:green)
-      puts ""
-      puts "To deploy to AWS Lambda:"
-      puts "  jets deploy".colorize(:green)
-      puts ""
+      puts <<-EOL
+#{"="*64}
+Congrats 🎉 You have successfully created a Jets project.
+
+Cd into the project directory:
+  cd #{project_name}
+
+To start a server and test locally:
+  jets server # localhost:8888 should have the Jets welcome page
+
+Scaffold example:
+  jets generate scaffold Post title:string body:text published:boolean
+
+To deploy to AWS Lambda:
+  jets deploy
+EOL
     end
   end
 end

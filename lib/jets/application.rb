@@ -8,7 +8,7 @@ class Jets::Application
   end
 
   def setup!
-    load_configs # Must be first thing to run. follwing methods could use config
+    load_configs # load config object so following methods can use it
     setup_auto_load_paths
     load_routes
   end
@@ -34,12 +34,13 @@ class Jets::Application
     paths.map { |path| "#{internal}/#{path}" }
   end
 
-  # The Jets default/application.rb is loaded.
-  # Then project config/application.rb is loaded.
   def load_configs
+    # The Jets default/application.rb is loaded.
     require File.expand_path("../default/application.rb", __FILE__)
+    # Then project config/application.rb is loaded.
     app_config = "#{Jets.root}config/application.rb"
     require app_config if File.exist?(app_config)
+    # Normalize config and setup some shortcuts
     set_aliases!
     normalize_env_vars!
     load_db_config
