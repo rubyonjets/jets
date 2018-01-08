@@ -4,7 +4,7 @@ require_dependency "<%= namespaced_path %>/application_controller"
 <% end -%>
 <% module_namespacing do -%>
 class <%= controller_class_name %>Controller < ApplicationController
-  before_action :set_<%= singular_table_name %>, only: [:show, :update, :destroy]
+  before_action :set_<%= singular_table_name %>, only: [:show, :update, :delete]
 
   # GET <%= route_url %>
   def index
@@ -39,8 +39,9 @@ class <%= controller_class_name %>Controller < ApplicationController
   end
 
   # DELETE <%= route_url %>/1
-  def destroy
+  def delete
     @<%= orm_instance.destroy %>
+    render json: {deleted: true}
   end
 
   private
