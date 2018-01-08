@@ -1,3 +1,5 @@
+require "active_support/ordered_options"
+
 class Jets::Application
   # Middleware used for development only
   autoload :Middleware, "jets/application/middleware"
