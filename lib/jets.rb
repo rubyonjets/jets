@@ -4,14 +4,7 @@ require "active_support/core_ext/string"
 require "active_support/ordered_hash"
 require "colorize"
 require "fileutils"
-
-# TODO: only load the database adapters that the app uses
-$:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
-require "dynamodb_model"
-require "active_record"
-require "pg"
-
-require "pp" # TODO: remove pp
+require "pp" # TODO: remove pp after debugging
 
 module Jets
   autoload :CLI, "jets/cli"
@@ -39,4 +32,17 @@ module Jets
   autoload :Klass, 'jets/klass'
   autoload :Util, "jets/util"
   extend Core # root, logger, etc
+end
+
+# lazy loaded dependencies: depends what project. Mainly determined by Gemfile
+# and config files.
+if File.exist?("#{Jets.root}config/dynamodb.yml")
+  $:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
+  require "dynamodb_model"
+end
+
+# https://makandracards.com/makandra/42521-detecting-if-a-ruby-gem-is-loaded
+if File.exist?("#{Jets.root}config/database.yml")
+  require "active_record"
+  require "pg" if Gem.loaded_specs.has_key?('pg')
 end

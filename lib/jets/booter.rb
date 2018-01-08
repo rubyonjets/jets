@@ -59,6 +59,8 @@ class Jets::Booter
     # config/database.yml exists.
     # DynamodbModel handles connecting to the clients lazily.
     def setup_db
+      return unless File.exist?("#{Jets.root}config/database.yml")
+
       db_configs = Jets.application.config.database
       # DatabaseTasks.database_configuration for db:create db:migrate tasks
       # Documented in DatabaseTasks that this is the right way to set it when
@@ -66,7 +68,7 @@ class Jets::Booter
       ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
 
       current_config = db_configs[Jets.env]
-      if current_config.empty? && File.exist?("#{Jets.root}config/database.yml")
+      if current_config.empty?
         abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
       end
       ActiveRecord::Base.establish_connection(current_config)

@@ -1,4 +1,8 @@
-require "dynamodb_model"
+begin
+  require "dynamodb_model"
+rescue LoadError # Commands::Base.eager_load
+  nil
+end
 
 class Jets::Commands::Dynamodb::Migrator
   def initialize(path, options)
