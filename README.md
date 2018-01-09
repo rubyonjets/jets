@@ -126,7 +126,7 @@ $ jets call posts-controller-index '{"test":1}' | jq '.body | fromjson'
   "action": "index"
 }
 $ jets call help # for more info like passing the payload via a file
-					# or how to call the functions locally with --local
+                 # or how to call the functions locally with --local
 ```
 
 The corresponding `aws lambda` CLI commands would be:
