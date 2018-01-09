@@ -12,7 +12,7 @@
   "SERVER_NAME": "localhost",
   "SERVER_PORT": "8888",
   "SERVER_PROTOCOL": "HTTP/1.1",
-  "SERVER_SOFTWARE": "WEBrick/1.3.1 (Ruby/2.4.2/2017-09-14)",
+  "SERVER_SOFTWARE": "WEBrick/1.3.1 (Ruby/2.5.0/2017-09-14)",
   "HTTP_HOST": "localhost:8888",
   "HTTP_CONNECTION": "keep-alive",
   "HTTP_CACHE_CONTROL": "max-age=0",

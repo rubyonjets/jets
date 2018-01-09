@@ -8,7 +8,7 @@ require "action_view"
 # Builds bundled Linux ruby and shim handlers
 class Jets::Builders
   class CodeBuilder
-    RUBY_URL = 'https://s3.amazonaws.com/lambdagems/rubies/ruby-2.4.2-linux-x86_64.tar.gz'.freeze
+    RUBY_URL = 'https://s3.amazonaws.com/lambdagems/rubies/ruby-2.5.0-linux-x86_64.tar.gz'.freeze
 
     include ActionView::Helpers::NumberHelper # number_to_human_size
     attr_reader :full_project_path

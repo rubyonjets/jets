@@ -11,7 +11,7 @@ SCRIPT_NAME:
 SERVER_NAME: localhost
 SERVER_PORT: 8888
 SERVER_PROTOCOL: HTTP/1.1
-SERVER_SOFTWARE: WEBrick/1.3.1 (Ruby/2.4.2/2017-09-14)
+SERVER_SOFTWARE: WEBrick/1.3.1 (Ruby/2.5.0/2017-09-14)
 HTTP_CACHE_CONTROL: no-cache
 HTTP_POSTMAN_TOKEN: 82715a67-efab-4452-8ee9-bde46dbbec61
 HTTP_USER_AGENT: PostmanRuntime/6.4.1
@@ -27,7 +27,7 @@ rack.multiprocess: false
 rack.run_once: false
 rack.url_scheme: http
 rack.hijack?: true
-rack.hijack: #<Proc:0x00007fa9a3810f70@/Users/tung/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/lint.rb:525>
+rack.hijack: #<Proc:0x00007fa9a3810f70@/Users/tung/.rbenv/versions/2.5.0/lib/ruby/gems/2.4.0/gems/rack-2.0.3/lib/rack/lint.rb:525>
 rack.hijack_io:
 HTTP_VERSION: HTTP/1.1
 REQUEST_PATH: /articles

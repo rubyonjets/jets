@@ -36,7 +36,7 @@ class Jets::Builders
       gem_name = path.match(regexp)[1]
     end
 
-    # Input: "https://s3.amazonaws.com/lambdagems/gems/2.4.2/byebug/system.tgz"
+    # Input: "https://s3.amazonaws.com/lambdagems/gems/2.5.0/byebug/system.tgz"
     # Output: byebug
     def versionless_gem_name(gem_name)
       gem_name.sub(/-\d+\.\d+\.\d+.*/,'')
@@ -145,7 +145,7 @@ EOL
     end
 
     # Example url:
-    #   https://s3.amazonaws.com/lambdagems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
+    #   https://s3.amazonaws.com/lambdagems/gems/2.5.0/byebug/byebug-9.1.0-x86_64-linux.tar.gz
     def url_exists?(url)
       url = URI.parse(url)
       req = Net::HTTP.new(url.host, url.port).tap do |http|
@@ -165,7 +165,7 @@ EOL
 
     # gem_name: byebug-9.1.0
     # Example url:
-    #   https://s3.amazonaws.com/lambdagems/gems/2.4.2/byebug/byebug-9.1.0-x86_64-linux.tar.gz
+    #   https://s3.amazonaws.com/lambdagems/gems/2.5.0/byebug/byebug-9.1.0-x86_64-linux.tar.gz
     def gem_url(gem_name)
       folder = gem_name.gsub(/-(\d+\.\d+\.\d+.*)/,'') # folder: byebug
       "#{lambdagems_url}/gems/#{RUBY_VERSION}/#{folder}/#{gem_name}-x86_64-linux.tar.gz"
