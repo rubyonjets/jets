@@ -11,7 +11,7 @@ set -ux
 JETS_ENV=$1
 set -e
 
-JETS_ENV="${JETS_ENV:-production}" # default to production
+JETS_ENV="${JETS_ENV:-staging}" # default to staging
 export JETS_ENV
 
 bundle update
@@ -20,5 +20,4 @@ bundle update
 yarn install
 bin/webpack
 <% end %>
-
 jets deploy
