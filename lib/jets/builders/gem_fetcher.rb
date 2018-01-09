@@ -23,13 +23,13 @@ class Jets::Builders
       # we directly upload them to Lambda.
       #
       # Example paths:
-      #   bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/nokogiri-1.8.1
-      #   bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
-      #   bundled/gems/ruby/2.4.0/extensions/x86_64-linux/2.4.0-static/nokogiri-1.8.1
+      #   bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/nokogiri-1.8.1
+      #   bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/byebug-9.1.0
+      #   bundled/gems/ruby/2.5.0/extensions/x86_64-linux/2.5.0-static/nokogiri-1.8.1
       Dir.glob("#{Jets.build_root}/bundled/gems/ruby/*/extensions/*darwin*/**/*.{so,bundle}")
     end
 
-    # Input: bundled/gems/ruby/2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
+    # Input: bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/byebug-9.1.0
     # Output: byebug-9.1.0
     def gem_name_from_path(path)
       regexp = /gems\/ruby\/\d+\.\d+\.\d+\/extensions\/.*?\/.*?\/(.*?)\//
@@ -46,7 +46,7 @@ class Jets::Builders
     # Extracts to: bundled/gems/ruby
     # The downloaded tarball already has the full directory structure
     # with the ruby version, example:
-    #   2.4.0/extensions/x86_64-darwin-16/2.4.0-static/byebug-9.1.0
+    #   2.5.0/extensions/x86_64-darwin-16/2.5.0-static/byebug-9.1.0
     # So all we need to do is extract the tarball into bundled/gems/ruby.
     #
     # gem_name: byebug-9.1.0
