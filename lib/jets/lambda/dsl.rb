@@ -34,6 +34,10 @@ module Jets::Lambda::Dsl
       end
       alias_method :class_memory, :class_memory_size
 
+      def class_role(name)
+        class_properties(role: name)
+      end
+
       # convenience method that set properties
       def timeout(value)
         properties(timeout: value)
