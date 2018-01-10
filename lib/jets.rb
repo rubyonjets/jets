@@ -23,6 +23,7 @@ module Jets
   autoload :Processors, 'jets/processors'
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
+  autoload :Rule, 'jets/rule'
   autoload :Server, "jets/server"
 
   autoload :Application, "jets/application"
