@@ -1,3 +1,4 @@
+# Used in cfn/template_builders/rule_builder.rb to build AWS::Config::ConfigRule
 class Jets::Cfn::TemplateMappers
   class ConfigRuleMapper
     # task is a Jets::Job::Task
