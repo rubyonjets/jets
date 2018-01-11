@@ -7,14 +7,29 @@ module Jets::Rule::Dsl
   included do
     class << self
       def scope(value)
-        properties(scope: value)
+        scope = case value
+          when String
+            {"ComplianceResourceTypes" => [value]}
+          when Array
+            {"ComplianceResourceTypes" => value}
+          else # default to hash
+            value
+          end
+
+        config_rule(scope: scope)
+      end
+
+      def config_rule(options={})
+        @config_rule ||= {}
+        @config_rule.deep_merge!(options)
       end
 
       # Override register_task.
       # Creates instances of Rule::Task instead of a Lambda::Task
+      # Also adds the config_rule option that is specific to Rule classes
       def register_task(meth)
         all_tasks[meth] = Jets::Rule::Task.new(self.name, meth,
-          properties: @properties)
+          properties: @properties, config_rule: @config_rule)
         true
       end
     end

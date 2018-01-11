@@ -29,7 +29,7 @@ class Jets::Cfn::TemplateBuilders
         ]
       )
       # Example:
-      # add_resource("ScheduledEventHardJobDig", "AWS::Events::Rule",
+      # add_resource("HardJobDigScheduledEvent", "AWS::Events::Rule",
       #   ScheduleExpression: "rate(1 minute)",
       #   State: "ENABLED",
       #   Targets: [
@@ -53,7 +53,7 @@ class Jets::Cfn::TemplateBuilders
       #   FunctionName: "!GetAtt HardJobDigLambdaFunction.Arn",
       #   Action: "lambda:InvokeFunction",
       #   Principal: "events.amazonaws.com",
-      #   SourceArn: "!GetAtt ScheduledEventHardJobDig.Arn"
+      #   SourceArn: "!GetAtt HardJobDigScheduledEvent.Arn"
       # )
     end
   end

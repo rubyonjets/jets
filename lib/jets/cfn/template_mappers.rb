@@ -17,5 +17,6 @@ class Jets::Cfn
     autoload :LambdaFunctionMapper, "jets/cfn/template_mappers/lambda_function_mapper"
 
     autoload :EventsRuleMapper, "jets/cfn/template_mappers/events_rule_mapper"
+    autoload :ConfigRuleMapper, "jets/cfn/template_mappers/config_rule_mapper"
   end
 end

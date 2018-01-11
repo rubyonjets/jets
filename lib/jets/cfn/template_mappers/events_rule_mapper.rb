@@ -5,7 +5,7 @@ class Jets::Cfn::TemplateMappers
       @task = task
     end
 
-    # Example: "ScheduledEventHardJobDig"
+    # Example: "HardJobDigScheduledEvent"
     def logical_id
       "#{full_task_name}ScheduledEvent"
     end
