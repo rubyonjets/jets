@@ -24,6 +24,28 @@ module Jets::Rule::Dsl
         config_rule(scope: scope)
       end
 
+      def config_rule_name(value)
+        config_rule(config_rule_name: value)
+      end
+
+      def description(value)
+        config_rule(description: value)
+      end
+      alias_method :desc, :description
+
+      def input_parameters(value)
+        config_rule(input_parameters: value)
+      end
+
+      def maximum_execution_frequency(value)
+        config_rule(maximum_execution_frequency: value)
+      end
+
+      # not really meant to be used but provided for completeness
+      def source(value)
+        config_rule(source: value)
+      end
+
       def config_rule(options={})
         @config_rule ||= {}
         @config_rule.deep_merge!(options)
