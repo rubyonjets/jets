@@ -10,7 +10,8 @@ class Jets::Rule::Task < Jets::Lambda::Task
   end
 
   def conventional_config_rule_name
-    "#{@class_name.underscore}_#{@meth}".dasherize
+    name_without_rule = @class_name.underscore.gsub(/_rule$/,'')
+    "#{name_without_rule}_#{@meth}".dasherize
   end
 
   def config_rule_properties
