@@ -7,7 +7,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_config_rules
-      # @app_klass is PostsController, HardRule, Hello, or HelloFunction, or SecurityRule
+      # @app_klass is PostsController, HardRule, Hello, or HelloFunction, or GameRule
       @app_klass.tasks.each do |task|
         map = Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(task)
 
@@ -23,7 +23,7 @@ class Jets::Cfn::TemplateBuilders
       # using config_rule_properties
       add_resource(map.logical_id, "AWS::Config::ConfigRule", task.config_rule_properties)
       # Example:
-      # add_resource("SecurityRuleProtectConfigRule", "AWS::Config::ConfigRule",
+      # add_resource("GameRuleProtectConfigRule", "AWS::Config::ConfigRule",
       #   "ConfigRuleName" : String,
       #   "Description" : String,
       #   "InputParameters" : { ParameterName : Value },
@@ -41,8 +41,8 @@ class Jets::Cfn::TemplateBuilders
         SourceArn: "!GetAtt #{map.logical_id}.Arn"
       )
       # Example:
-      # add_resource("SecurityRuleProtectConfigRulePermission", "AWS::Lambda::Permission",
-      #   FunctionName: "!GetAtt SecurityRuleProtectLambdaFunction.Arn",
+      # add_resource("GameRuleProtectConfigRulePermission", "AWS::Lambda::Permission",
+      #   FunctionName: "!GetAtt GameRuleProtectLambdaFunction.Arn",
       #   Action: "lambda:InvokeFunction",
       #   Principal: "config.amazonaws.com",
       #   SourceArn: "!GetAtt ScheduledEventHardRuleDig.Arn"

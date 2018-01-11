@@ -40,7 +40,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def class_properties
-      # klass is PostsController, HardJob, Hello, or HelloFunction
+      # klass is PostsController, HardJob, GameRule, Hello or HelloFunction
       klass = Jets::Klass.from_task(@task)
       class_properties = klass.class_properties
       Pascalize.pascalize(class_properties.deep_stringify_keys)

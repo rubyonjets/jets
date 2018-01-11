@@ -6,6 +6,11 @@ module Jets::Rule::Dsl
 
   included do
     class << self
+      # Allows for different types of values. Examples:
+      #
+      # String: scope "AWS::EC2::SecurityGroup"
+      # Array:  scope ["AWS::EC2::SecurityGroup"]
+      # Hash:   scope {"ComplianceResourceTypes" => ["AWS::EC2::SecurityGroup"]}
       def scope(value)
         scope = case value
           when String

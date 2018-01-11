@@ -43,13 +43,12 @@ class Jets::Klass
     def from_task(task)
       class_name = task.class_name
       filename = class_name.underscore
-      type = if filename =~ /_controller$/
-               "controller"
-             elsif filename =~ /_job$/
-               "job"
-             else # simple function
-               "function"
-             end
+
+      # Examples of filename: posts_controller, hard_job, security_rule,
+      #   hello_function, hello
+      valid_types = %w[controller job rule]
+      type = filename.split('_').last
+      type = "function" unless valid_types.include?(type)
 
       path = "app/#{type.pluralize}/#{filename}.rb"
       from_path(path)

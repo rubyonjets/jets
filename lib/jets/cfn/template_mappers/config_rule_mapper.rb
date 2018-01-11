@@ -5,24 +5,24 @@ class Jets::Cfn::TemplateMappers
       @task = task
     end
 
-    # Example: "ConfigRuleSecurityRuleProtect"
+    # Example: "ConfigRuleGameRuleProtect"
     def logical_id
       "#{full_task_name}ConfigRule"
     end
 
-    # Example: "SecurityRuleProtectLambdaFunction"
+    # Example: "GameRuleProtectLambdaFunction"
     def lambda_function_logical_id
       "#{full_task_name}LambdaFunction"
     end
 
-    # Example: SecurityRuleProtectConfigRulePermission
+    # Example: GameRuleProtectConfigRulePermission
     def permission_logical_id
       "#{full_task_name}ConfigRulePermission"
     end
 
   private
     # Full camelized task name including the class
-    # Example: SecurityRuleProtect
+    # Example: GameRuleProtect
     def full_task_name
       class_name = @task.class_name
       task_name = @task.meth.to_s.camelize
