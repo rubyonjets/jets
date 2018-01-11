@@ -21,7 +21,10 @@ class Jets::Cfn::TemplateBuilders
       # Usually we build the properties with the mappers but in the case for
       # a config_rule it makes more sense to grab properties from the task
       # using config_rule_properties
-      add_resource(map.logical_id, "AWS::Config::ConfigRule", task.config_rule_properties)
+      add_resource(map.logical_id, "AWS::Config::ConfigRule",
+        Properties: task.config_rule_properties,
+        DependsOn: map.permission_logical_id
+      )
       # Example:
       # add_resource("GameRuleProtectConfigRule", "AWS::Config::ConfigRule",
       #   "ConfigRuleName" : String,
@@ -37,8 +40,7 @@ class Jets::Cfn::TemplateBuilders
       add_resource(map.permission_logical_id, "AWS::Lambda::Permission",
         FunctionName: "!GetAtt #{map.lambda_function_logical_id}.Arn",
         Action: "lambda:InvokeFunction",
-        Principal: "config.amazonaws.com",
-        SourceArn: "!GetAtt #{map.logical_id}.Arn"
+        Principal: "config.amazonaws.com"
       )
       # Example:
       # add_resource("GameRuleProtectConfigRulePermission", "AWS::Lambda::Permission",

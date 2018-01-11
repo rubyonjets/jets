@@ -21,7 +21,7 @@ class Jets::Rule::Task < Jets::Lambda::Task
 
   def config_rule_defaults
     map = Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(self)
-    source_identifier = "!Fn::GetAtt #{map.lambda_function_logical_id}.Arn"
+    source_identifier = "!GetAtt #{map.lambda_function_logical_id}.Arn"
     {
       "ConfigRuleName" => config_rule_name,
       "Source" => {
