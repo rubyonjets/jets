@@ -9,7 +9,7 @@ default: &default
 
 development:
   <<: *default
-  database: <%= project_name %>_dev
+  database: <%%= ENV['DB_NAME'] || '<%= project_name %>_dev' %>
 
 test:
   <<: *default

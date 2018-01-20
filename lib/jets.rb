@@ -47,10 +47,7 @@ end
 # TODO: move require "pg" into loader class and abstract to support more gems
 if File.exist?("#{Jets.root}config/database.yml")
   require "active_record"
-  if Gem.loaded_specs.has_key?('pg')
-    puts "loading pg gem"
-    puts require "pg"
-  else
-    puts "not loading pg gem"
-  end
+  # Note: think this is only needed for specs
+  # Apps require pg in their own Gemfile via bundler
+  puts require "pg" if Gem.loaded_specs.has_key?('pg')
 end

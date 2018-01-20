@@ -25,8 +25,8 @@
     }
 
     .header {
-      background-color: #b81513;
-      /*padding: 20px;*/
+      padding: 20px;
+      /*background-color: #b81513;*/
       /*color: white;*/
     }
     .title {
@@ -63,7 +63,8 @@
       </p>
       <div class="code"><pre><code>
         $ jets generate scaffold Post title:string
-        $ curl localhost:8888
+        $ jets db:migrate
+        $ open http://localhost:8888/posts
         $ jets help
       </code></pre></div>
       <p>More on: <a href="http://rubyonjets.com">rubyonjets.com</a></p>

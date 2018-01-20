@@ -48,7 +48,6 @@ module Jets::Commands
     # bootstrap is dependent on webpacker, options[:bootstrap] is used
     # in webpacker_install.
     def bootstrap_install
-      puts "bootstrap_install options: #{options.inspect}"
       return unless options[:bootstrap]
 
       jquery =<<-JS
