@@ -12,11 +12,18 @@ class Jets::Controller
     include Params
 
     def self.process(event, context={}, meth)
+      t1 = Time.now
+      Jets.logger.info "Processing by #{self}##{meth}"
+
       controller = new(event, context, meth)
+      Jets.logger.info "  Parameters: #{controller.params(true).to_h.inspect}"
       controller.run_before_actions
       controller.send(meth)
       resp = controller.ensure_render
       controller.run_after_actions
+
+      time = Time.now - t1
+      Jets.logger.info "Completed Status Code #{resp["statusCode"]} in #{time}s"
       resp
     end
 

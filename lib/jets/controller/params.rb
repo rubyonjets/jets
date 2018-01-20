@@ -2,7 +2,6 @@ require "action_controller/metal/strong_parameters"
 
 class Jets::Controller
   module Params
-  private
     # Merge all the parameters together for convenience.  Users still have
     # access via events.
     #
@@ -10,15 +9,20 @@ class Jets::Controller
     #   1. path parameters have highest precdence
     #   2. query string parameters
     #   3. body parameters
-    def params
+    def params(raw=false)
       query_string_params = event["queryStringParameters"] || {}
       path_params = event["pathParameters"] || {}
       params = body_params
                 .deep_merge(query_string_params)
                 .deep_merge(path_params)
-      ActionController::Parameters.new(params)
+      if raw
+        params
+      else
+        ActionController::Parameters.new(params)
+      end
     end
 
+  private
     def body_params
       body = event["body"]
       return {} if body.nil?
