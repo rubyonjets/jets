@@ -1,5 +1,6 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "jets/version"
+require "jets/pascalize"
 require "active_support/core_ext/string"
 require "active_support/ordered_hash"
 require "colorize"
@@ -23,6 +24,7 @@ module Jets
   autoload :Processors, 'jets/processors'
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
+  autoload :Rule, 'jets/rule'
   autoload :Server, "jets/server"
 
   autoload :Application, "jets/application"

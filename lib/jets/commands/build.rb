@@ -145,6 +145,7 @@ module Jets::Commands
         app/controllers
         app/jobs
         app/functions
+        app/rules
       ]
       return true if includes.detect { |p| path.include?(p) }
 

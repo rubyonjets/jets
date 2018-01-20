@@ -41,7 +41,7 @@ class Jets::Commands::Call
     end
 
     def delegate_guesser
-      @delegate_guesser ||= if @provided_function_name =~ /[-_](controller|job)/
+      @delegate_guesser ||= if @provided_function_name =~ /[-_](controller|job|rule)/
                               AutoloadGuesser.new(@provided_function_name)
                             else
                               AnonymousGuesser.new(@provided_function_name)

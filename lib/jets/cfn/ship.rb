@@ -133,11 +133,6 @@ class Jets::Cfn
       md5_code_zipfile = Jets::Naming.md5_code_zipfile
       file_size = number_to_human_size(File.size(md5_code_zipfile))
 
-      if ENV['SKIP_CODE_UPLOAD'] # only use if you know what you are doing and are testing mainly cloudformation only
-        puts "Skipping uploading of #{md5_code_zipfile} (#{file_size}) to S3 for quick testing".colorize(:red)
-        return
-      end
-
       puts "Uploading #{md5_code_zipfile} (#{file_size}) to S3"
       start_time = Time.now
       key = Jets::Naming.code_s3_key

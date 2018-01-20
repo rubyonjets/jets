@@ -16,6 +16,12 @@ module Jets::Commands
       Jets::Processors::MainProcessor.new(event, context, handler).run
     end
 
+    desc "rule [event] [context] [handler]", "Processes node shim rule handler", hide: true
+    long_desc Help.text('process:rule')
+    def rule(event, context, handler)
+      Jets::Processors::MainProcessor.new(event, context, handler).run
+    end
+
     desc "function [event] [context] [handler]", "Processes node shim job handler", hide: true
     long_desc Help.text('process:function')
     def function(event, context, handler)

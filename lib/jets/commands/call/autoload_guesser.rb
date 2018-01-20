@@ -53,6 +53,8 @@ class Jets::Commands::Call
         "controller"
       elsif @provided_function_name =~ /[-_]job/
         "job"
+      elsif @provided_function_name =~ /[-_]rule/
+        "rule"
       else
         "function"
       end

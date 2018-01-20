@@ -139,7 +139,16 @@ class Jets::Builders
       temp_code_zipfile = "#{Jets.build_root}/code/code-temp.zip"
       FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
 
-      command = "cd #{full(tmp_app_root)} && zip -rq #{temp_code_zipfile} ."
+       # only use if you know what you are doing and are testing mainly cloudformation only
+      if ENV['SMALL_CODE_UPLOAD']
+        small_file = "/tmp/empty.txt"
+        puts "Faking upload with #{small_file} to S3 for quick testing. Uploading tiny file.".colorize(:red)
+        IO.write(small_file, "test")
+        command = "zip -rq #{temp_code_zipfile} #{small_file}"
+      else
+        command = "cd #{full(tmp_app_root)} && zip -rq #{temp_code_zipfile} ."
+      end
+
       success = system(command)
       puts command
       # zip -rq /tmp/jets/demo/code/code-temp.zip app_root
