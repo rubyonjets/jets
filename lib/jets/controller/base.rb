@@ -16,7 +16,10 @@ class Jets::Controller
       Jets.logger.info "Processing by #{self}##{meth}"
 
       controller = new(event, context, meth)
+
+      Jets.logger.info "  Raw Event: #{event.inspect}"
       Jets.logger.info "  Parameters: #{controller.params(true).to_h.inspect}"
+
       controller.run_before_actions
       controller.send(meth)
       resp = controller.ensure_render
@@ -24,6 +27,7 @@ class Jets::Controller
 
       time = Time.now - t1
       Jets.logger.info "Completed Status Code #{resp["statusCode"]} in #{time}s"
+
       resp
     end
 
