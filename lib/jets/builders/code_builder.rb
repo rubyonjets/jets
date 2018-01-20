@@ -59,6 +59,7 @@ class Jets::Builders
       # clean_project might remove bundled, .bundle/config, handlers, etc
       # if it is set in .gitignore of the project so always generate
       # after the project has been cleaned
+      reconfigure_development_webpacker
       generate_node_shims
       copy_bundle_config
       copy_bundled_to_project
@@ -111,6 +112,20 @@ class Jets::Builders
         handler = Jets::Builders::HandlerGenerator.new(path)
         handler.generate
       end
+    end
+
+    # Bit hacky but this saves the user from accidentally forgetting to change this
+    # when they deploy a jets project in development mode
+    def reconfigure_development_webpacker
+      return unless Jets.env.development?
+
+      webpacker_yml = "#{full(tmp_app_root)}/config/webpacker.yml"
+      return unless File.exist?(webpacker_yml)
+
+      config = YAML.load_file(webpacker_yml)
+      config["development"]["compile"] = false # force this to be false for deployment
+      new_yaml = YAML.dump(config)
+      IO.write(webpacker_yml, new_yaml)
     end
 
     def copy_bundle_config
