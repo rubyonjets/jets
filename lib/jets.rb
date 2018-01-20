@@ -49,5 +49,5 @@ if File.exist?("#{Jets.root}config/database.yml")
   require "active_record"
   # Note: think this is only needed for specs
   # Apps require pg in their own Gemfile via bundler
-  puts require "pg" if Gem.loaded_specs.has_key?('pg')
+  require "pg" if Gem.loaded_specs.has_key?('pg')
 end
