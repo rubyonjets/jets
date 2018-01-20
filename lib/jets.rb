@@ -44,7 +44,13 @@ if File.exist?("#{Jets.root}config/dynamodb.yml")
 end
 
 # https://makandracards.com/makandra/42521-detecting-if-a-ruby-gem-is-loaded
+# TODO: move require "pg" into loader class and abstract to support more gems
 if File.exist?("#{Jets.root}config/database.yml")
   require "active_record"
-  require "pg" if Gem.loaded_specs.has_key?('pg')
+  if Gem.loaded_specs.has_key?('pg')
+    puts "loading pg gem"
+    puts require "pg"
+  else
+    puts "not loading pg gem"
+  end
 end
