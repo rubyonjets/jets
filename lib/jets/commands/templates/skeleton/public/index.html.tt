@@ -26,8 +26,8 @@
 
     .header {
       background-color: #b81513;
-      padding: 20px;
-      color: white;
+      /*padding: 20px;*/
+      /*color: white;*/
     }
     .title {
       font-size: 1.5em;
@@ -55,7 +55,7 @@
   <div class="container">
     <header class="header">
       <img src="https://s3.amazonaws.com/jets-public/jets/images/jets.png" class="logo" alt="logo" />
-      <h1 class="title">Welcome to Jets</h1>
+      <h1 class="title">Welcome. Congrats on setting up Jets.</h1>
     </header>
     <div class="intro">
       <p>
