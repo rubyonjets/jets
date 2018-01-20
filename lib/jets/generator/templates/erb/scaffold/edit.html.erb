@@ -2,5 +2,5 @@
 
 <%%= render 'form', <%= singular_table_name %>: @<%= singular_table_name %> %>
 
-<%%= link_to 'Show', "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}/edit" %> |
+<%%= link_to 'Show', "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}" %> |
 <%%= link_to 'Back', "/<%= plural_table_name %>" %>

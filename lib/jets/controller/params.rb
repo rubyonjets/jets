@@ -33,15 +33,13 @@ class Jets::Controller
 
 
       # For content-type application/x-www-form-urlencoded CGI.parse the body
-      if event["headers"] && event["headers"]["content-type"]
-        content_type = event["headers"]["content-type"]
-      end
-      if content_type&.include?("application/x-www-form-urlencoded")
+      headers = event["headers"] || {}
+      # API Gateway seems to use either: content-type or Content-Type
+      content_type = headers["content-type"] || headers["Content-Type"]
+      if content_type == "application/x-www-form-urlencoded"
         return Rack::Utils.parse_nested_query(body)
       end
 
-      # Rack::Utils.parse_nested_query
-      # attempt to parse body in case it is json
       {} # fallback to empty Hash
     end
 
