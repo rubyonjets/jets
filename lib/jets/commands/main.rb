@@ -69,8 +69,8 @@ module Jets::Commands
     option :qualifier, desc: "Lambda function version or alias name"
     option :show_log, type: :boolean, desc: "Shows last 4KB of log in the x-amz-log-result header"
     option :lambda_proxy, type: :boolean, default: true, desc: "Enables automatic Lambda proxy transformation of the event payload"
-    option :smart, type: :boolean, default: true, desc: "Enables smart mode. Uses inference to allows use of all dashes to specify functions. Smart mode verifies that the function exists in the code base."
-    option :local, type: :boolean, desc: "Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode smart mode is always used."
+    option :guess, type: :boolean, default: true, desc: "Enables guess mode. Uses inference to allows use of all dashes to specify functions. Smart mode verifies that the function exists in the code base."
+    option :local, type: :boolean, desc: "Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode guess mode is always used."
     def call(function_name, payload='')
       Call.new(function_name, payload, options).run
     end

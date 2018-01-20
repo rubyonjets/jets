@@ -12,7 +12,7 @@ class Jets::Commands::Call
 
   def initialize(provided_function_name, event, options={})
     @options = options
-    @guess = @options[:smart].nil? ? true : @options[:smart]
+    @guess = @options[:guess].nil? ? true : @options[:guess]
 
     @provided_function_name = provided_function_name
     @event = event

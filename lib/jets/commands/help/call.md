@@ -33,7 +33,7 @@ The equivalent AWS Lambda CLI command:
   aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt
   cat outfile.txt | jq '.'
 
-For convenience, you can also provide the function name with only dashes and jets call figures out what function you intend to call. Examples:
+For convenience, you can also provide the function name with only dashes and jets call will gets what function you intend to call. Examples:
 
   jets call posts-controller-index
   jets call admin-related-pages-controller-index
@@ -43,9 +43,9 @@ Are the same as:
   aws lambda invoke --function-name demo-dev-posts_controller-index
   aws lambda invoke --function-name demo-dev-admin/related_pages_controller-index
 
-In order to allow calling functions with all dashes, the call method evaluates the app code and finds if the controller and method actually exists.  If you want to turn this off and want to always explicitly provide the method name use the `--no-smart` option.  The function name will then have to match the lambda function without the namespace. Example:
+In order to allow calling functions with all dashes, the call method evaluates the app code and finds if the controller and method actually exists.  If you want to turn this off and want to always explicitly provide the method name use the `--no-guess` option.  The function name will then have to match the lambda function without the namespace. Example:
 
-  jets call admin-related_pages_controller-index --no-smart
+  jets call admin-related_pages_controller-index --no-guess
 
 Local mode:
 
