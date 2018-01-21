@@ -66,10 +66,6 @@ jobs:
           command: dynamodb-local
           background: true
 
-      - run:
-          name: delay
-          command: sleep 10
-
       # run tests!
       - run:
           name: run tests
