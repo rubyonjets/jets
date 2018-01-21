@@ -63,8 +63,8 @@ jobs:
 
       - run:
           name: start dynamodb-local
-          command: |
-            dynamodb-local &
+          command: dynamodb-local
+          background: true
 
       # run tests!
       - run:
