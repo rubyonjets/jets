@@ -85,7 +85,7 @@ jobs:
 
       - run:
           name: install awscli
-          command: apt-get update && sudo apt-get install -y awscli groff
+          command: sudo apt-get update && sudo apt-get install -y awscli groff
 
       # collect reports
       - store_test_results:
