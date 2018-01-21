@@ -81,7 +81,7 @@ describe RedirectionController do
     let(:event) do
       {
         "headers" => {
-          "origin" => "http://localhost:8888",
+          "host" => "http://localhost:8888",
         },
       }
     end
@@ -92,11 +92,11 @@ describe RedirectionController do
     end
   end
 
-  context "redirect from amazonaws.com with origin set" do
+  context "redirect from amazonaws.com with host set" do
     let(:event) do
       {
         "headers" => {
-          "origin" => "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com",
+          "host" => "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com",
         },
       }
     end
@@ -107,11 +107,11 @@ describe RedirectionController do
     end
   end
 
-  context "redirect from amazonaws.com with Origin set" do
+  context "redirect from amazonaws.com with Host set" do
     let(:event) do
       {
         "headers" => {
-          "Origin" => "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com",
+          "Host" => "https://nol1n8ho0j.execute-api.us-east-1.amazonaws.com",
         },
       }
     end

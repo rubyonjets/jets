@@ -17,7 +17,7 @@ class Jets::Controller
 
       controller = new(event, context, meth)
 
-      Jets.logger.info "  Raw Event: #{event.inspect}"
+      Jets.logger.info "  Event: #{event.inspect}"
       Jets.logger.info "  Parameters: #{controller.params(true).to_h.inspect}"
 
       controller.run_before_actions

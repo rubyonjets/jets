@@ -64,10 +64,10 @@ class Jets::Controller
 
       uri = URI.parse(url)
       # if no location.host, we been provided a relative host
-      if !uri.host && origin
+      if !uri.host && actual_host
         url = "/#{url}" unless url.starts_with?('/')
         url = add_stage_name(url)
-        redirect_url = origin + url
+        redirect_url = actual_host + url
       else
         redirect_url = url
       end
@@ -86,9 +86,9 @@ class Jets::Controller
 
     # Add API Gateway Stage Name
     def add_stage_name(url)
-      return url unless origin
+      return url unless actual_host
 
-      if origin.include?("amazonaws.com") && url.starts_with?('/')
+      if actual_host.include?("amazonaws.com") && url.starts_with?('/')
         stage_name = [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
         url = "/#{stage_name}#{url}"
       end
@@ -99,8 +99,8 @@ class Jets::Controller
       add_stage_name(url)
     end
 
-    def origin
-      headers["origin"] || headers["Origin"]
+    def actual_host
+      headers["host"] || headers["Host"]
     end
 
   end

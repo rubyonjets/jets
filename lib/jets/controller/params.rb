@@ -36,7 +36,7 @@ class Jets::Controller
       headers = event["headers"] || {}
       # API Gateway seems to use either: content-type or Content-Type
       content_type = headers["content-type"] || headers["Content-Type"]
-      if content_type == "application/x-www-form-urlencoded"
+      if content_type.to_s.include?("application/x-www-form-urlencoded")
         return Rack::Utils.parse_nested_query(body)
       end
 
