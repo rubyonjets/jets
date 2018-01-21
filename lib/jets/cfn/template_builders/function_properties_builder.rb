@@ -53,9 +53,10 @@ class Jets::Cfn::TemplateBuilders
     # Do not allow overriding of fixed properties. Changing properties will
     # likely cause issues with Jets.
     def fixed_properties
+      handler = ENV['FAKE_CODE_UPLOAD'] ? 'tmp/hello.handler' : map.handler
       {
         FunctionName: map.function_name,
-        Handler: map.handler,
+        Handler: handler,
       }
     end
 

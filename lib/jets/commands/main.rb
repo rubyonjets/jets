@@ -81,6 +81,13 @@ module Jets::Commands
       Jets::Generator.invoke(generator, *args)
     end
 
+
+    desc "url [JETS_ENV]", "App url if routes are defined", hide: true
+    long_desc Help.text(:url)
+    def url
+      Jets::Commands::Url.new(options).display
+    end
+
     long_desc Help.text(:new)
     Jets::Commands::New.cli_options.each do |args|
       option *args

@@ -37,10 +37,7 @@ class Jets::Naming
 
     def code_s3_key
       md5_zipfile = File.basename(md5_code_zipfile)
-      if ENV['SKIP_CODE_UPLOAD']
-        puts "Using jets/code/code.zip code in s3. Assumes this was manually uploaded!".colorize(:red)
-      end
-      ENV['SKIP_CODE_UPLOAD'] ? "jets/code/code.zip" : "jets/code/#{md5_zipfile}"
+      "jets/code/#{md5_zipfile}"
     end
 
     # build was already ran and that a file that contains the md5 path exists

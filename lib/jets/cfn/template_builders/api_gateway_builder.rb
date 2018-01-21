@@ -33,6 +33,7 @@ class Jets::Cfn::TemplateBuilders
         Name: Jets::Naming.gateway_api_name
       )
       add_output("RestApi", Value: "!Ref RestApi")
+      add_output("Region", Value: "!Ref AWS::Region")
       add_output("RootResourceId", Value: "!GetAtt RestApi.RootResourceId")
     end
 

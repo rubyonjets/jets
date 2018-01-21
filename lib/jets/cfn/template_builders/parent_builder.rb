@@ -74,9 +74,12 @@ class Jets::Cfn::TemplateBuilders
     def add_api_gateway
       path = "#{Jets.config.project_namespace}-api-gateway.yml"
       map = Jets::Cfn::TemplateMappers::ApiGatewayMapper.new(path, @options[:s3_bucket])
+
       add_resource(map.logical_id, "AWS::CloudFormation::Stack",
         Properties: { TemplateURL: map.template_url }
       )
+
+      add_output(map.logical_id, Value: "!Ref #{map.logical_id}")
     end
 
     def add_api_gateway_deployment

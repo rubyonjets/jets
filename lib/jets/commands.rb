@@ -17,4 +17,5 @@ module Jets::Commands
   autoload :Sequence, "jets/commands/sequence"
   autoload :StackInfo, "jets/commands/stack_info"
   autoload :Dbconsole, "jets/commands/dbconsole"
+  autoload :Url, "jets/commands/url"
 end

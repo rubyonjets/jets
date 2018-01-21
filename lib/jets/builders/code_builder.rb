@@ -19,6 +19,13 @@ class Jets::Builders
     end
 
     def build
+      if ENV['FAKE_CODE_UPLOAD']
+        create_zip_file(fake=true)
+        return # early
+      end
+
+      compile_assets
+
       clean_start # cleans out non-cached files like code-*.zip in Jets.build_roots
 
       if File.exist?("#{Jets.build_root}/bundled")
@@ -41,6 +48,16 @@ class Jets::Builders
       Dir.chdir(full(tmp_app_root)) do
         finalize_project
       end
+    end
+
+    # This happens in the current app directory not the tmp app_root for simplicity
+    def compile_assets
+      # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
+      webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
+      return unless webpacker_loaded
+
+      sh("yarn install")
+      sh("JETS_ENV=#{Jets.env} bin/webpack")
     end
 
     # Most files are kept around after the build process for inspection and
@@ -149,17 +166,18 @@ class Jets::Builders
       FileUtils.cp_r("#{Jets.build_root}/bundled", app_root_bundled)
     end
 
-    def create_zip_file
+    def create_zip_file(fake=nil)
       puts "Creating zip file."
       temp_code_zipfile = "#{Jets.build_root}/code/code-temp.zip"
       FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
 
        # only use if you know what you are doing and are testing mainly cloudformation only
-      if ENV['SMALL_CODE_UPLOAD']
-        small_file = "/tmp/empty.txt"
-        puts "Faking upload with #{small_file} to S3 for quick testing. Uploading tiny file.".colorize(:red)
-        IO.write(small_file, "test")
-        command = "zip -rq #{temp_code_zipfile} #{small_file}"
+      if fake
+        hello_world = "/tmp/hello.js"
+        puts "Uploading tiny #{hello_world} file to S3 for quick testing.".colorize(:red)
+        code = IO.read(File.expand_path("../node-hello.js", __FILE__))
+        IO.write(hello_world, code)
+        command = "zip -rq #{temp_code_zipfile} #{hello_world}"
       else
         command = "cd #{full(tmp_app_root)} && zip -rq #{temp_code_zipfile} ."
       end
@@ -181,6 +199,7 @@ class Jets::Builders
       file_size = number_to_human_size(File.size(md5_zip_dest))
       puts "Zip file with code and bundled linux ruby created at: #{md5_zip_dest.colorize(:green)} (#{file_size})"
 
+      # Save state
       IO.write("#{Jets.build_root}/code/current-md5-filename.txt", md5_zip_dest)
       # Much later: ship, base_child_builder need set an s3_key which requires
       # the md5_zip_dest.
