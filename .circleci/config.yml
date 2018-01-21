@@ -19,8 +19,8 @@ jobs:
     steps:
       - checkout
 
-      - submodule
-        name: submodule sync
+      - submodule:
+          name: submodule sync
           command: |
             git submodule sync
             git submodule update --init
