@@ -83,6 +83,10 @@ jobs:
 
             bundle exec rspec
 
+      - run:
+          name: install awscli
+          command: apt-get update && sudo apt-get install -y awscli groff
+
       # collect reports
       - store_test_results:
           path: /tmp/test-results
