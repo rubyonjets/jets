@@ -72,7 +72,7 @@ jobs:
           command: |
             mkdir /tmp/test-results
 
-            cat .rspec <<EOL
+            cat >.rspec <<EOL
             --format documentation
             --exclude-pattern spec/fixtures/apps/**/*
             --format RspecJunitFormatter \
