@@ -39,7 +39,6 @@ module Jets::Commands
       stack = cfn.describe_stacks(stack_name: stack_name).stacks.first
       status = stack["stack_status"]
       if status =~ /^ROLLBACK_/ ||
-         status =~ /^UPDATE_/ ||
          status =~ /_IN_PROGRESS$/
         puts "Parent stack associate with this '#{Jets.config.project_name}' project not in a updateable state.".colorize(:red)
         puts "Stack name #{stack_name} status #{stack["stack_status"]}"

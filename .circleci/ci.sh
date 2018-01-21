@@ -51,8 +51,10 @@ echo "export PATH=~/bin:$PATH" >> ~/.bashrc
 # testing.
 # Using this jets to initially create the project
 APP_NAME=demo$(date +%s)
-jets new $APP_NAME
+cd ~/repo
+bundle
 rewrite_jets_bin # since jets new will re-install jets
+jets new $APP_NAME
 # jets new calls the following for us automatically:
 # bundle # this overwrites /usr/local/bundle/bin/jets
 # jets webpacker:install
