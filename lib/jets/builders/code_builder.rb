@@ -357,6 +357,7 @@ class Jets::Builders
       puts "=> #{command}".colorize(:green)
       success = system(command)
       abort("#{command} failed to run") unless success
+      success
     end
   end
 end
