@@ -19,7 +19,7 @@ jobs:
     steps:
       - checkout
 
-      - submodule:
+      - run:
           name: submodule sync
           command: |
             git submodule sync
