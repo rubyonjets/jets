@@ -38,6 +38,7 @@ unset BUNDLE_PATH
 unset BUNDLE_APP_CONFIG
 unset BUNDLE_SILENCE_ROOT_WARNING
 unset BUNDLE_BIN
+unset GEM_HOME
 
 gem install bundler
 rewrite_jets_bin
@@ -53,8 +54,9 @@ echo "export PATH=~/bin:$PATH" >> ~/.bashrc
 APP_NAME=demo$(date +%s)
 cd ~/repo
 bundle
-rewrite_jets_bin # since jets new will re-install jets
+cd
 jets new $APP_NAME
+rewrite_jets_bin # since jets new will re-install jets
 # jets new calls the following for us automatically:
 # bundle # this overwrites /usr/local/bundle/bin/jets
 # jets webpacker:install
