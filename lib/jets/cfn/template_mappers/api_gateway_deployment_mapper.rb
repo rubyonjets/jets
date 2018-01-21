@@ -1,7 +1,20 @@
 class Jets::Cfn::TemplateMappers
   class ApiGatewayDeploymentMapper < ChildMapper
+    # override superclass initialize signature
+    def initialize
+    end
+
     def logical_id
       self.class.logical_id
+    end
+
+    def timestamp
+      self.class.timestamp
+    end
+
+    # stage_name: stag, stag-1, stag-2, etc
+    def stage_name
+      [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
     end
 
     def parameters

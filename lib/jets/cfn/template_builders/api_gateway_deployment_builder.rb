@@ -15,14 +15,11 @@ class Jets::Cfn::TemplateBuilders
       puts "Building API Gateway Deployment template."
       add_parameter("RestApi", Description: "RestApi")
 
-      logical_id = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.logical_id
-      timestamp = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.timestamp
-      # stage_name: stag, stag-1, stag-2, etc
-      stage_name = [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
-      add_resource(logical_id, "AWS::ApiGateway::Deployment",
-        Description: "Version #{timestamp} deployed by jets",
+      map = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.new
+      add_resource(map.logical_id, "AWS::ApiGateway::Deployment",
+        Description: "Version #{map.timestamp} deployed by jets",
         RestApiId: "!Ref RestApi",
-        StageName: stage_name,
+        StageName: map.stage_name,
       )
     end
 
