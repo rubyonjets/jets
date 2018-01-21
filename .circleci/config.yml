@@ -62,7 +62,7 @@ jobs:
             tar zxf dynamodb_local_latest.tar.gz
             cat >~/dynamodb-local <<EOL
             #!/bin/sh
-            java -Djava.library.path=~/dynamodb_local_latest/DynamoDBLocal_lib -jar ~/dynamodb_local_latest/DynamoDBLocal.jar -sharedDb"
+            exec java -Djava.library.path=~/dynamodb_local_latest/DynamoDBLocal_lib -jar ~/dynamodb_local_latest/DynamoDBLocal.jar -sharedDb
             EOL
 
             chmod a+x ~/dynamodb-local
