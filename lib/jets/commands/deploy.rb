@@ -13,7 +13,7 @@ module Jets::Commands
 
       build_code
       # first time will deploy minimal stack
-      exit_if_stack_exists!
+      exit_unless_updateable!
 
       ship(stack_type: :minimal) if first_run?
       # deploy full nested stack when stack already exists
@@ -30,15 +30,21 @@ module Jets::Commands
       Jets::Cfn::Ship.new(options).run
     end
 
-    def exit_if_stack_exists!
+    # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
+    def exit_unless_updateable!
       stack_name = Jets::Naming.parent_stack_name
       exists = stack_exists?(stack_name)
-      return unless exists
+      return unless exists # continue because stack could be updating
 
       stack = cfn.describe_stacks(stack_name: stack_name).stacks.first
-      puts "Parent stack associate with this '#{Jets.config.project_name}' project already exists.".colorize(:red)
-      puts "Stack name #{stack_name} status #{stack["stack_status"]}"
-      exit
+      status = stack["stack_status"]
+      if status =~ /^ROLLBACK_/ ||
+         status =~ /^UPDATE_/ ||
+         status =~ /_IN_PROGRESS$/
+        puts "Parent stack associate with this '#{Jets.config.project_name}' project not in a updateable state.".colorize(:red)
+        puts "Stack name #{stack_name} status #{stack["stack_status"]}"
+        exit
+      end
     end
   end
 end
