@@ -72,6 +72,8 @@ class Jets::Controller
         redirect_url = url
       end
 
+      redirect_url = ensure_protocol(redirect_url)
+
       aws_proxy = Renderers::AwsProxyRenderer.new(self,
         status: options[:status] || 302,
         headers: { "Location" => redirect_url },
@@ -82,6 +84,21 @@ class Jets::Controller
       # redirect is a type of rendering
       @rendered = true
       @rendered_data = resp
+    end
+
+    def ensure_protocol(url)
+      return url if url.starts_with?('http')
+
+      # annoying but the request payload is different with localhost/rack vs
+      # api gateway
+      # check out:
+      #   spec/fixtures/dumps/api_gateway/posts/create.json
+      #   spec/fixtures/dumps/rack/posts/create.json
+      protocol = actual_host.include?("amazonaws.com") ?
+        headers["X-Forwarded-Proto"] :
+        URI.parse(headers["origin"]).scheme
+
+      "#{protocol}://#{url}"
     end
 
     # Add API Gateway Stage Name
@@ -100,7 +117,7 @@ class Jets::Controller
     end
 
     def actual_host
-      headers["host"] || headers["Host"]
+      headers["Host"]
     end
 
   end
