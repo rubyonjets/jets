@@ -191,8 +191,6 @@ class Jets::Builders
       FileUtils.mv(temp_code_zipfile, md5_zip_dest)
       # mv /tmp/jets/demo/code/code-temp.zip /tmp/jets/demo/code/code-a8a604aa.zip
 
-      abort("Creating zip failed, exiting.") unless success
-
       file_size = number_to_human_size(File.size(md5_zip_dest))
       puts "Zip file with code and bundled linux ruby created at: #{md5_zip_dest.colorize(:green)} (#{file_size})"
 
@@ -230,12 +228,10 @@ class Jets::Builders
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_clean_env do
         # cd /tmp/jets/demo/bundled
-        success = sh(
+        sh(
           "cd #{Jets.build_root} && " \
           "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
         )
-
-        abort('Bundle install failed, exiting.') unless success
       end
 
       puts 'Bundle install success.'
