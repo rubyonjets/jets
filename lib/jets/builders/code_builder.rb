@@ -182,10 +182,7 @@ class Jets::Builders
         command = "cd #{full(tmp_app_root)} && zip -rq #{temp_code_zipfile} ."
       end
 
-      success = system(command)
-      puts command
-      # zip -rq /tmp/jets/demo/code/code-temp.zip app_root
-      abort("Fail creating app code zipfile") unless success
+      sh(command)
 
       # we can get the md5 only after the file has been created
       md5 = Digest::MD5.file(temp_code_zipfile).to_s[0..7]
@@ -233,7 +230,7 @@ class Jets::Builders
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_clean_env do
         # cd /tmp/jets/demo/bundled
-        success = system(
+        success = sh(
           "cd #{Jets.build_root} && " \
           "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
         )
@@ -326,8 +323,7 @@ class Jets::Builders
 
       FileUtils.mkdir_p(bundled_ruby_dest)
 
-      success = system("tar -xzf #{ruby_tarfile} -C #{bundled_ruby_dest}")
-      abort('Unpacking linux ruby failed') unless success
+      sh("tar -xzf #{ruby_tarfile} -C #{bundled_ruby_dest}")
       puts 'Unpacking linux ruby successful.'
 
       puts 'Removing tar.'
@@ -355,6 +351,12 @@ class Jets::Builders
 
     def ruby_tarfile
       File.basename(RUBY_URL)
+    end
+
+    def sh(command)
+      puts "=> #{command}".colorize(:green)
+      success = system(command)
+      abort("#{command} failed to run") unless success
     end
   end
 end

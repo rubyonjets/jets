@@ -18,12 +18,6 @@ module Jets::Commands
       ship(stack_type: :full, s3_bucket: s3_bucket)
     end
 
-    def sh(command)
-      puts "=> #{command}".colorize(:green)
-      success = system(command)
-      abort("#{command} failed to run") unless success
-    end
-
     def build_code
       Jets::Commands::Build.new(@options).build_code
     end
