@@ -1,10 +1,5 @@
 class Jets::Cfn::TemplateMappers
   class ApiGatewayDeploymentMapper < ChildMapper
-    # override superclass initialize signature
-    # dont need file path and s3 bucket
-    def initialize
-    end
-
     def logical_id
       self.class.logical_id
     end
