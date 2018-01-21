@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:tongueroo/webpacker.git
+  remote: https://github.com/tongueroo/webpacker.git
   revision: a8c46614c6757fab65e4d0c47d8203014e7b4ef9
   branch: jets
   specs:

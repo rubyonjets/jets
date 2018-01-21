@@ -33,7 +33,7 @@ class Jets::Booter
     # For example, some gems like webpacker that load rake tasks are specified
     # with a git based source:
     #
-    #   gem "webpacker", git: "git@github.com:tongueroo/webpacker.git"
+    #   gem "webpacker", git: "https://github.com/tongueroo/webpacker.git"
     #
     # This results in the user having to specific bundle exec in front of
     # jets for those rake tasks to show up in jets help.

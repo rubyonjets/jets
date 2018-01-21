@@ -8,7 +8,7 @@ gemspec
 # right now need both because of jets/application.rb and
 # jets/webpacker/middleware_setup.rb
 group :development, :test do
-  gem "webpacker", git: "git@github.com:tongueroo/webpacker.git", branch: "jets"
+  gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
   gem "rspec_junit_formatter"
   # there are development dependencies because we want to lazy load them
   # in the app. but we want to have them so we can run specs.

@@ -23,10 +23,10 @@ bundle exec jets generate scaffold Post title:string
 # website GUI under project settings
 bundle exec jets db:create db:migrate
 
+# HERE
 bundle exec jets deploy
 
 APP_URL=$(bundle exec jets url)
-
 curl -v ${API_URL}/posts # should have 200 status
 
 # TODO: run capabara rack-test adapter

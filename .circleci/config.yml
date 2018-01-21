@@ -87,6 +87,23 @@ jobs:
           name: install awscli
           command: sudo apt-get update && sudo apt-get install -y awscli groff
 
+      - run:
+          name: configure awscli
+          command: |
+            mkdir ~/.aws
+
+            cat >~/.aws/config <<EOL
+            [default]
+            region = ${AWS_REGION}
+            output = json
+            EOL
+
+            cat >~/.aws/credentials <<EOL
+            [default]
+            aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}
+            aws_access_key_id = ${AWS_ACCESS_KEY_ID}
+            EOL
+
       # collect reports
       - store_test_results:
           path: /tmp/test-results
