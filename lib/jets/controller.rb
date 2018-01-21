@@ -4,5 +4,6 @@ class Jets::Controller
   autoload :Callbacks, "jets/controller/callbacks"
   autoload :Request, "jets/controller/request"
   autoload :Rendering, "jets/controller/rendering"
+  autoload :Redirection, "jets/controller/redirection"
   autoload :Params, "jets/controller/params"
 end
