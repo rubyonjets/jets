@@ -5,14 +5,15 @@ sudo apt-get install -y vim
 cd
 APP_NAME=demo$(date +%s)
 
-# On circleci jets is set up as /usr/local/bundle/bin/jets and has BUNDLE_GEMFILE
-# set to /home/circleci/repo/Gemfile.
+# On circleci, initially jets is set up as /usr/local/bundle/bin/jets and
+# has BUNDLE_GEMFILE set to /home/circleci/repo/Gemfile.
+# Example capture: https://gist.github.com/tongueroo/1b41256d5867d14597f0cb5de67295b3
 # This means that the jets command is the same as the project that circleci is
 # testing.
 # Using this jets to initially create the project
 jets new $APP_NAME
 # jets new calls the following for us automatically:
-# bundle
+# bundle # this overwrites /usr/local/bundle/bin/jets
 # jets webpacker:install
 cd $APP_NAME
 

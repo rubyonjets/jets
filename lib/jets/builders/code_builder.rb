@@ -57,7 +57,10 @@ class Jets::Builders
       return unless webpacker_loaded
 
       sh("yarn install")
-      sh("JETS_ENV=#{Jets.env} bin/webpack")
+      webpack_bin = File.exist?("#{Jets.root}bin/webpack") ?
+          "bin/webpack" :
+          `which webpack`.strip
+      sh("JETS_ENV=#{Jets.env} #{webpack_bin}")
     end
 
     # Most files are kept around after the build process for inspection and
