@@ -149,14 +149,31 @@ class Jets::Builders
     end
 
     def copy_bundle_config
+      ensure_build_root_bundle_config_exists!
+
       # Override project's .bundle/config and ensure that .bundle/config matches
       # at these 2 spots:
       #   app_root/.bundle/config
       #   bundled/gems/.bundle/config
-      new_bundle_config = "#{Jets.build_root}/.bundle/config"
+      root_bundle_config = "#{Jets.build_root}/.bundle/config"
       app_bundle_config = "#{full(tmp_app_root)}/.bundle/config"
       FileUtils.mkdir_p(File.dirname(app_bundle_config))
-      FileUtils.cp(new_bundle_config, app_bundle_config)
+      FileUtils.cp(root_bundle_config, app_bundle_config)
+    end
+
+    # On circleci the "#{Jets.build_root}/.bundle/config" doesnt exist
+    # this only happens with ssh debugging, not when the ci.sh script gets ran.
+    # But on macosx it exists.
+    # Dont know why this is the case.
+    def ensure_build_root_bundle_config_exists!
+      text =<<-EOL
+---
+BUNDLE_PATH: "bundled/gems"
+BUNDLE_WITHOUT: "development:test"
+EOL
+      root_bundle_config = "#{Jets.build_root}/.bundle/config"
+      FileUtils.mkdir_p(File.dirname(root_bundle_config))
+      IO.write(root_bundle_config, text)
     end
 
     def copy_bundled_to_project

@@ -24,6 +24,11 @@ function rewrite_jets_bin() {
   cat >~/bin/jets <<EOL
 #!/bin/bash
 >&2 echo "Using local version at ~/repo/exe/jets"
+unset BUNDLER_VERSION
+unset BUNDLE_PATH
+unset BUNDLE_APP_CONFIG
+unset BUNDLE_SILENCE_ROOT_WARNING
+unset BUNDLE_BIN
 exec ~/repo/exe/jets "\$@"
 EOL
   chmod a+x ~/bin/jets
@@ -33,12 +38,7 @@ cd
 
 sudo apt-get install -y vim
 
-unset BUNDLER_VERSION
-unset BUNDLE_PATH
-unset BUNDLE_APP_CONFIG
-unset BUNDLE_SILENCE_ROOT_WARNING
-unset BUNDLE_BIN
-unset GEM_HOME
+#unset GEM_HOME # dont want to unset in the script but when Im ssh in, need to unset this and re-bundle...
 
 gem install bundler
 rewrite_jets_bin
@@ -71,7 +71,7 @@ jets db:create db:migrate
 jets deploy
 
 APP_URL=$(jets url)
-curl -v ${API_URL}/posts # should have 200 status
+curl -v ${APP_URL}/posts # should have 200 status
 
 # TODO: run capabara rack-test adapter
 # 1. download spec/features/posts_spec.rb
@@ -81,3 +81,5 @@ curl -v ${API_URL}/posts # should have 200 status
 
 # cleanup the database
 jets db:drop
+
+# TODO: delete jets project
