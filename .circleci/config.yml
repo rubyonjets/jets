@@ -19,6 +19,12 @@ jobs:
     steps:
       - checkout
 
+      - submodule
+        name: submodule sync
+          command: |
+            git submodule sync
+            git submodule update --init
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -37,8 +43,8 @@ jobs:
           key: v1-dependencies-{{ checksum "Gemfile.lock" }}
 
       # Database setup
-      - run: bundle exec rake db:create
-      - run: bundle exec rake db:schema:load
+      # - run: bundle exec rake db:create
+      # - run: bundle exec rake db:schema:load
 
       # run tests!
       - run:
