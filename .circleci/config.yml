@@ -71,7 +71,13 @@ jobs:
           name: run tests
           command: |
             mkdir /tmp/test-results
-            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+
+            cat >~/.rspec <<EOL
+            --format documentation
+            --exclude-pattern spec/fixtures/apps/**/*
+            --format RspecJunitFormatter \
+            --out /tmp/test-results/rspec.xml
+            EOL
 
             bundle exec rspec
 
