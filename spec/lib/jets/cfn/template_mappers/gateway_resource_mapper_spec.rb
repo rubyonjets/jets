@@ -45,8 +45,8 @@ describe Jets::Cfn::TemplateMappers::GatewayResourceMapper do
     context("top most root level path") do
       let(:path) { "" }
       it "contains info for CloudFormation API Gateway Resources" do
-        puts "map.path #{map.path.inspect}"
-        puts "map.logical_id #{map.logical_id.inspect}"
+        # puts "map.path #{map.path.inspect}"
+        # puts "map.logical_id #{map.logical_id.inspect}"
         # For the top most root level route, methods part_part and parent_id
         # never caled.
         # puts "map.path_part #{map.path_part.inspect}"
