@@ -15,7 +15,7 @@ class Jets::Cfn::TemplateBuilders
       puts "Building API Gateway Deployment template."
       add_parameter("RestApi", Description: "RestApi")
 
-      map = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.new
+      map = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.new(path=nil,s3_bucket=nil)
       add_resource(map.logical_id, "AWS::ApiGateway::Deployment",
         Description: "Version #{map.timestamp} deployed by jets",
         RestApiId: "!Ref RestApi",
