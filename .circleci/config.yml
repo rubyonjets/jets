@@ -47,13 +47,6 @@ jobs:
       # - run: bundle exec rake db:schema:load
 
       - run:
-          name: install forego
-          command: |
-            wget "https://bin.equinox.io/c/ekMN3bCZFUn/forego-stable-linux-amd64.tgz"
-            tar zxf forego-stable-linux-amd64.tgz
-            sudo mv forego /usr/local/bin/
-
-      - run:
           name: install dynamodb-local
           command: |
             mkdir ~/dynamodb_local_latest
@@ -69,10 +62,9 @@ jobs:
             sudo mv ~/dynamodb-local /usr/local/bin/dynamodb-local
 
       - run:
-          name: run tests
+          name: start dynamodb-local
           command: |
-            cd ~/repo
-            forego start &
+            dynamodb-local &
 
       # run tests!
       - run:
