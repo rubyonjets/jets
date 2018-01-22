@@ -70,7 +70,6 @@ jets generate scaffold Post title:string
 # website GUI under project settings
 jets db:create db:migrate
 
-# HERE
 jets deploy
 
 APP_URL=$(jets url)
