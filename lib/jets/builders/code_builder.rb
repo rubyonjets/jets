@@ -43,7 +43,7 @@ class Jets::Builders
       end
 
       copy_project
-      # Easier reason about the logic by when runrning these commands in
+      # Easier to reason about the logic by when running these commands in
       # the tmp_app_root itself
       Dir.chdir(full(tmp_app_root)) do
         finalize_project
@@ -247,7 +247,7 @@ EOL
 
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_clean_env do
-        # cd /tmp/jets/demo/bundled
+        # cd /tmp/jets/demo
         sh(
           "cd #{Jets.build_root} && " \
           "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
