@@ -24,6 +24,7 @@ function create_jets_bin() {
   cat >~/bin/jets <<EOL
 #!/bin/bash
 >&2 echo "Using local version at ~/repo/exe/jets"
+# unset again in case I forget in ssh shell
 unset BUNDLER_VERSION
 unset BUNDLE_PATH
 unset BUNDLE_APP_CONFIG
@@ -35,6 +36,12 @@ EOL
 }
 
 cd
+
+unset BUNDLER_VERSION
+unset BUNDLE_PATH
+unset BUNDLE_APP_CONFIG
+unset BUNDLE_SILENCE_ROOT_WARNING
+unset BUNDLE_BIN
 
 sudo apt-get install -y vim
 
