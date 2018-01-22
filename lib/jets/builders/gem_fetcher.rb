@@ -17,16 +17,20 @@ class Jets::Builders
       end
     end
 
+    # Use pre-compiled gem because the gem could have development header shared
+    # object file dependencies.  The shared dependencies are packaged up as part
+    # of the pre-compiled gem so it is available in the Lambda execution environment.
+    #
+    # Example paths:
+    # Macosx:
+    #   bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/nokogiri-1.8.1
+    #   bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/byebug-9.1.0
+    # Official AWS Lambda Linux AMI:
+    #   bundled/gems/ruby/2.5.0/extensions/x86_64-linux/2.5.0-static/nokogiri-1.8.1
+    # Circleci Ubuntu based Linux:
+    #   bundled/gems/ruby/2.5.0/extensions/x86_64-linux/2.5.0/pg-0.21.0
     def compiled_gem_paths
-      # We only want to check for darwin extensions.
-      # If the user is compiling native extensions on a linux target
-      # we directly upload them to Lambda.
-      #
-      # Example paths:
-      #   bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/nokogiri-1.8.1
-      #   bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/byebug-9.1.0
-      #   bundled/gems/ruby/2.5.0/extensions/x86_64-linux/2.5.0-static/nokogiri-1.8.1
-      Dir.glob("#{Jets.build_root}/bundled/gems/ruby/*/extensions/*darwin*/**/*.{so,bundle}")
+      Dir.glob("#{Jets.build_root}/bundled/gems/ruby/*/extensions/**/**/*.{so,bundle}")
     end
 
     # Input: bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/byebug-9.1.0
