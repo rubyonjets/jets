@@ -1,8 +1,7 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "jets/version"
 require "jets/pascalize"
-require "active_support/core_ext/string"
-require "active_support/ordered_hash"
+require "active_support/all"
 require "colorize"
 require "fileutils"
 require "pp" # TODO: remove pp after debugging
