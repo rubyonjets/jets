@@ -19,7 +19,7 @@
 #   3. use own jets wrapper script
 #
 
-function rewrite_jets_bin() {
+function create_jets_bin() {
   mkdir -p ~/bin
   cat >~/bin/jets <<EOL
 #!/bin/bash
@@ -40,8 +40,7 @@ sudo apt-get install -y vim
 
 #unset GEM_HOME # dont want to unset in the script but when Im ssh in, need to unset this and re-bundle...
 
-gem install bundler
-rewrite_jets_bin
+create_jets_bin
 export PATH=~/bin:$PATH
 echo "export PATH=~/bin:$PATH" >> ~/.bashrc
 
@@ -53,13 +52,10 @@ echo "export PATH=~/bin:$PATH" >> ~/.bashrc
 # Using this jets to initially create the project
 APP_NAME=demo$(date +%s)
 cd ~/repo
+gem install bundler
 bundle
 cd
-jets new $APP_NAME
-rewrite_jets_bin # since jets new will re-install jets
-# jets new calls the following for us automatically:
-# bundle # this overwrites /usr/local/bundle/bin/jets
-# jets webpacker:install
+jets new $APP_NAME # jets new runs bundle and webpacker:install
 cd $APP_NAME
 
 jets generate scaffold Post title:string
@@ -71,7 +67,9 @@ jets db:create db:migrate
 jets deploy
 
 APP_URL=$(jets url)
-curl -v ${APP_URL}/posts # should have 200 status
+# curl doesnt return error status for 500 errors so will grep for 200
+# to force a return status of false if it fails
+curl -v ${APP_URL}/posts 2>&1 | grep '< HTTP' | grep 200 # should have 200 status
 
 # TODO: run capabara rack-test adapter
 # 1. download spec/features/posts_spec.rb
@@ -82,4 +80,5 @@ curl -v ${APP_URL}/posts # should have 200 status
 # cleanup the database
 jets db:drop
 
-# TODO: delete jets project
+# delete jets project
+jets delete --force
