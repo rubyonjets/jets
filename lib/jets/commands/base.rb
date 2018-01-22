@@ -47,12 +47,13 @@ class Jets::Commands::Base < Thor
         next if !File.file?(path) or path =~ /templates/
 
         class_name = path
-                      .sub('.rb','')
+                      .sub(/\.rb$/,'')
                       .sub(%r{.*/jets/commands}, 'jets/commands')
                       .classify
         class_name.sub!(/Task$/, "Tasks") # special rule here for Tasks class
         # NOTE: Weird thing where Jets::Commands::Db::Task => Thor::Command
         # because Task is a class available to Thor I believe.
+        puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['DEBUG']
         class_name.constantize # dont have to worry about order.
       end
     end
