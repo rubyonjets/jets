@@ -40,6 +40,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "text-table"
   spec.add_dependency "rack"
   spec.add_dependency "json"
+  # there are development dependencies because we want to lazy load them
+  # in the app. but we want to have them so we can run specs.
+  spec.add_dependency "pg", "=0.21"
 
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"

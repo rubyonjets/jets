@@ -25,6 +25,7 @@ PATH
       hashie
       json
       kramdown
+      pg (= 0.21)
       rack
       railties
       recursive-open-struct
@@ -150,7 +151,6 @@ DEPENDENCIES
   bundler
   byebug
   jets!
-  pg (~> 0.21)
   rake
   rspec
   rspec_junit_formatter

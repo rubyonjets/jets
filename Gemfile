@@ -10,7 +10,4 @@ gemspec
 group :development, :test do
   gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
   gem "rspec_junit_formatter"
-  # there are development dependencies because we want to lazy load them
-  # in the app. but we want to have them so we can run specs.
-  gem "pg", "~> 0.21"
 end
