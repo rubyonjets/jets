@@ -19,7 +19,7 @@ class Jets::Builders
     end
 
     def build
-      if ENV['FAKE_CODE_UPLOAD']
+      if ENV['TEST_CODE']
         create_zip_file(fake=true)
         return # early
       end
