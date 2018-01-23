@@ -138,7 +138,7 @@ class Jets::Cfn
       key = Jets::Naming.code_s3_key
       obj = s3_resource.bucket(bucket_name).object(key)
       obj.upload_file(md5_code_zipfile)
-      puts "Took #{pretty_time(Time.now-start_time)} to upload code to s3."
+      puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
 
     # http://stackoverflow.com/questions/4175733/convert-duration-to-hoursminutesseconds-or-similar-in-rails-3-or-ruby

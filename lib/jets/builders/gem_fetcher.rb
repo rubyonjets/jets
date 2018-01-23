@@ -116,6 +116,15 @@ class Jets::Builders
       success = system("tar -xzf #{tarball} -C #{gems_ruby_folder}")
       abort("Unpacking gem #{tarball} failed") unless success
       puts "Unpacking gem successful."
+      # puts running this hack for now
+      clean_pg_hack
+    end
+
+    def clean_pg_hack
+      bundled_folder = "#{Jets.build_root}/bundled"
+      FileUtils.rm_f("#{bundled_folder}/bundled/gems/ruby/2.5.0/gems/pg-0.21.0/lib/pg_ext.so")
+      FileUtils.rm_f"#{bundled_folder}/bundled/gems/ruby/2.5.0/gems/pg-0.21.0/ext/pg_ext.so"
+      FileUtils.rm_f"#{bundled_folder}/bundled/gems/ruby/2.5.0/extensions/x86_64-linux/2.5.0-static/pg-0.21.0/pg_ext.so"
     end
 
     # We check all the availability before even downloading so we can provide a
