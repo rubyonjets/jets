@@ -4,3 +4,6 @@
 [submodule "spec/fixtures/apps/demo"]
 	path = spec/fixtures/apps/demo
 	url = https://github.com/tongueroo/demo.git
+[submodule "vendor/lambdagem"]
+	path = vendor/lambdagem
+	url = git@github.com:tongueroo/lambdagem.git
