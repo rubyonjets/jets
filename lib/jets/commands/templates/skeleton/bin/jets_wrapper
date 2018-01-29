@@ -16,10 +16,6 @@ if [[ "$os" == 'Darwin' ]]; then
   # macosx ruby for development
   exec bundle exec jets "$@"
 else
-
-  # bundled openssl into bundled/ruby
-  export LD_LIBRARY_PATH=/var/task/bundled/ruby/openssl-1.0.2k/lib:$LD_LIBRARY_PATH
-
   # bundled ruby for Lambda
-  exec "$PROJECTDIR/bundled/ruby/bin/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.5.0/bin/jets" "$@"
+  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" -rbundler/setup "$PROJECTDIR/bundled/gems/ruby/2.5.0/bin/jets" "$@"
 fi
