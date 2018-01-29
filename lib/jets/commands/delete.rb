@@ -20,7 +20,7 @@ class Jets::Commands::Delete
     stack_in_progress?(parent_stack_name)
 
     cfn.delete_stack(stack_name: parent_stack_name)
-    puts "Project #{Jets.config.project_namespace} deleted!"
+    puts "Project #{Jets.config.project_namespace.colorize(:green)} deleted!"
   end
 
   def confirm_project_exists
@@ -29,7 +29,7 @@ class Jets::Commands::Delete
     rescue Aws::CloudFormation::Errors::ValidationError
       # Aws::CloudFormation::Errors::ValidationError is thrown when the stack
       # does not exist
-      puts "Config #{Jets.config.project_namespace} does not exist. So it cannot be deleted."
+      puts "The parent stack #{Jets.config.project_namespace.colorize(:green)} for the project #{Jets.config.project_name.colorize(:green)} does not exist. So it cannot be deleted."
       exit 0
     end
   end
