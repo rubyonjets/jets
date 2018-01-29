@@ -51,7 +51,7 @@ class Jets::Builders
       Dir.glob("#{path}/*").each do |path|
         next unless File.directory?(path)
         folder = File.basename(path)
-        if %w[test tests spec features benchmark cache].include?(folder)
+        if %w[test tests spec features benchmark cache doc].include?(folder)
           FileUtils.rm_rf(path)
         end
       end
@@ -59,7 +59,8 @@ class Jets::Builders
       Dir.glob("#{path}/**/*").each do |path|
         next unless File.file?(path)
         ext = File.extname(path)
-        if %w[.rdoc .md].include?(ext)
+        if %w[.rdoc .md .markdown].include?(ext) or
+           path =~ /LICENSE|CHANGELOG|README/
           FileUtils.rm_f(path)
         end
       end
