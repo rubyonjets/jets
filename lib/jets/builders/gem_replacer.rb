@@ -48,7 +48,6 @@ class Jets::Builders
     #  191M test3
     def tidy_gem(path)
       # remove top level tests and cache folders
-      puts "removing test folders"
       Dir.glob("#{path}/*").each do |path|
         next unless File.directory?(path)
         folder = File.basename(path)
@@ -57,7 +56,6 @@ class Jets::Builders
         end
       end
 
-      puts "removing docs"
       Dir.glob("#{path}/**/*").each do |path|
         next unless File.file?(path)
         ext = File.extname(path)
