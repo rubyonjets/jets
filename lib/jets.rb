@@ -38,6 +38,8 @@ end
 
 $:.unshift(File.expand_path("../../vendor/lambdagem/lib", __FILE__))
 require "lambdagem"
+require "gems" # lambdagem dependency
+
 
 # lazy loaded dependencies: depends what project. Mainly determined by Gemfile
 # and config files.

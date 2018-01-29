@@ -44,6 +44,8 @@ Gem::Specification.new do |spec|
   # in the app. but we want to have them so we can run specs.
   spec.add_dependency "pg", "=0.21"
 
+  spec.add_dependency "gems" # lambdagem dependency
+
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

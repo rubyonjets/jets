@@ -5,9 +5,48 @@ require "socket"
 require "net/http"
 require "action_view"
 
-# Builds bundled Linux ruby and shim handlers
+# Some important folders to help understand how jets builds a project:
+#
+# /tmp/jets: build root where different jets projects get built.
+# /tmp/jets/project: each jets project gets built in a different subdirectory.
+#
+# The rest of the folders are subfolders under /tmp/jets/project:
+#
+# cache: Gemfile is here, this is where we run bundle install.
+# cache/bundled/gems: Vendored gems that get created as part of bundled install.
+#   Initially, macosx gems but then get replaced by linux gems where appropriate.
+# cache/downloads/rubies: ruby tarballs.
+# cache/downloads/gems: gem tarballs.
+# app_root: Where project gets copied into in order for us to configure it.
+# app_root/bundled/gems: Where vendored gems finally end up at.  The compiled
+#   gems at this point are only linux gems.
+#
+# Building Steps:
+#
+### copy project
+# * copy project: to app_root
+#
+### setup app_root project
+# * clean project: remove log and ignored files to reduce size
+# * reconfigure webpacker: config/webpacker.yml
+# * generate node shims: handlers
+#
+### build bundled in cache area
+# * bundle install: cache/bundled/gems
+# * extract linux ruby: cache/downloads/rubies:
+#                       cache/bundled/rbenv, cache/bundled/linuxbrew
+# * extract linux gems: cache/downloads/gems:
+#                       cache/bundled/gems, cache/bundled/linuxbrew
+#
+### setup bundled on app root from cache
+# * copy bundled to app_root: app_root/bundled
+# * setup bundled config: app_root/.bundle/config
+#
+### zip
+# * create zip file
 class Jets::Builders
   class CodeBuilder
+    JETS_RUBY_VERSION = "2.5.0"
     RUBY_URL = 'https://s3.amazonaws.com/lambdagems/rubies/ruby-2.5.0-linux-x86_64.tar.gz'.freeze
 
     include ActionView::Helpers::NumberHelper # number_to_human_size
@@ -19,39 +58,61 @@ class Jets::Builders
     end
 
     def build
-      if ENV['TEST_CODE']
-        create_zip_file(fake=true)
-        return # early
-      end
+      return create_zip_file(fake=true) if ENV['TEST_CODE'] # early return
 
-      compile_assets
-
-      clean_start # cleans out non-cached files like code-*.zip in Jets.build_roots
-
-      if File.exist?("#{Jets.build_root}/bundled")
-        puts "The #{Jets.build_root}/bundled folder exists. Incrementally re-building the bundle.  To fully rebundle: rm -rf #{Jets.build_root}/bundled"
-      end
+      cache_check_message
       check_ruby_version
 
-      FileUtils.mkdir_p(Jets.build_root) # /tmp/jets/demo
-      # These commands run from within Jets.build_root
-      Dir.chdir(Jets.build_root) do
-        bundle_install # installs current target gems: both compiled and non-compiled
-        get_linux_ruby
-        get_linux_gems
-        # finally copy project and bundled folder into this project
-      end
-
+      clean_start
+      compile_assets # easier to do before we copy the project
       copy_project
-      # Easier to reason about the logic by when running these commands in
-      # the tmp_app_root itself
-      Dir.chdir(full(tmp_app_root)) do
-        finalize_project
+      Dir.chdir(Jets.build_root) do
+        # These commands run from within Jets.build_root
+        start_app_root_setup
+        bundle_in_cache_area
+        finish_app_root_setup
+        create_zip_file
       end
+    end
+
+    def start_app_root_setup
+      tidy_project
+      reconfigure_development_webpacker
+      generate_node_shims
+    end
+
+    def bundle_in_cache_area
+      bundle_install
+    end
+
+    def finish_app_root_setup
+      copy_bundled_to_app_root
+      setup_bundle_config
+      extract_ruby
+      extract_gems
+    end
+
+    def lambdagem_options
+      {
+        s3: "lambdagems",
+        build_root: cache_area,
+        project_root: full(tmp_app_root),
+      }
+    end
+
+    def extract_ruby
+      headline "Setting up a vendored copy of ruby."
+      Lambdagem::Extract::Ruby.new(JETS_RUBY_VERSION, lambdagem_options).run
+    end
+
+    def extract_gems
+      headline "Replacing compiled gems with AWS Lambda Linux compiled versions."
+      GemReplacer.new(JETS_RUBY_VERSION, lambdagem_options).run
     end
 
     # This happens in the current app directory not the tmp app_root for simplicity
     def compile_assets
+      headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
       webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
       return unless webpacker_loaded
@@ -63,34 +124,23 @@ class Jets::Builders
       sh("JETS_ENV=#{Jets.env} #{webpack_bin}")
     end
 
+
+    # Cleans out non-cached files like code-*.zip in Jets.build_root
+    # for a clean start. Also ensure that the /tmp/jets/project build root exists.
+    #
     # Most files are kept around after the build process for inspection and
     # debugging. So we have to clean out the files. But we only want to clean ou
     # some of the files.
-    #
-    # Cleans out non-cached files like code-*.zip in Jets.build_root
-    # for a clean start.
-    #
     def clean_start
       Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
-    end
-
-    def finalize_project
-      clean_project
-      # clean_project might remove bundled, .bundle/config, handlers, etc
-      # if it is set in .gitignore of the project so always generate
-      # after the project has been cleaned
-      reconfigure_development_webpacker
-      generate_node_shims
-      copy_bundle_config
-      copy_bundled_to_project
-      create_zip_file
+      FileUtils.mkdir_p(Jets.build_root) # /tmp/jets/demo
     end
 
     # Copy project into temporarly directory. Do this so we can keep the project
-    # directory untouched and we can also remove a bunch of needed files like
+    # directory untouched and we can also remove a bunch of unnecessary files like
     # logs before zipping it up.
     def copy_project
-      puts "Copying project to temporary folder to build it: #{full(tmp_app_root)}"
+      headline "Copying current project directory to temporary build area: #{full(tmp_app_root)}"
       FileUtils.rm_rf(full(tmp_app_root)) # remove current app_root folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
@@ -114,8 +164,8 @@ class Jets::Builders
     end
 
     # Because we're removing files (something dangerous) use full paths.
-    def clean_project
-      puts "Cleaning up: removing ignored files before packaging zipfile."
+    def tidy_project
+      headline "Tidying project: removing ignored files to reduce package size."
       excludes.each do |exclude|
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{full(tmp_app_root)}/#{exclude}"
@@ -125,6 +175,7 @@ class Jets::Builders
     end
 
     def generate_node_shims
+      headline "Generating node shims in the handlers folder."
       # Crucial that the Dir.pwd is in the tmp_app_root because for
       # Jets::Builders::app_files because Jets.boot set ups
       # autoload_paths and this is how project classes are loaded.
@@ -138,6 +189,7 @@ class Jets::Builders
     # when they deploy a jets project in development mode
     def reconfigure_development_webpacker
       return unless Jets.env.development?
+      headline "Reconfiguring webpacker's development settings for production."
 
       webpacker_yml = "#{full(tmp_app_root)}/config/webpacker.yml"
       return unless File.exist?(webpacker_yml)
@@ -148,42 +200,42 @@ class Jets::Builders
       IO.write(webpacker_yml, new_yaml)
     end
 
-    def copy_bundle_config
-      ensure_build_root_bundle_config_exists!
-
-      # Override project's .bundle/config and ensure that .bundle/config matches
-      # at these 2 spots:
-      #   app_root/.bundle/config
-      #   bundled/gems/.bundle/config
-      root_bundle_config = "#{Jets.build_root}/.bundle/config"
-      app_bundle_config = "#{full(tmp_app_root)}/.bundle/config"
-      FileUtils.mkdir_p(File.dirname(app_bundle_config))
-      FileUtils.cp(root_bundle_config, app_bundle_config)
-    end
-
-    # On circleci the "#{Jets.build_root}/.bundle/config" doesnt exist
-    # this only happens with ssh debugging, not when the ci.sh script gets ran.
-    # But on macosx it exists.
-    # Dont know why this is the case.
-    def ensure_build_root_bundle_config_exists!
-      text =<<-EOL
----
-BUNDLE_PATH: "bundled/gems"
-BUNDLE_WITHOUT: "development:test"
-EOL
-      root_bundle_config = "#{Jets.build_root}/.bundle/config"
-      FileUtils.mkdir_p(File.dirname(root_bundle_config))
-      IO.write(root_bundle_config, text)
-    end
-
-    def copy_bundled_to_project
+    def copy_bundled_to_app_root
       app_root_bundled = "#{full(tmp_app_root)}/bundled"
       if File.exist?(app_root_bundled)
         puts "Removing current bundled from project"
         FileUtils.rm_rf(app_root_bundled)
       end
       # Leave #{Jets.build_root}/bundled behind to act as cache
-      FileUtils.cp_r("#{Jets.build_root}/bundled", app_root_bundled)
+      FileUtils.cp_r("#{cache_area}/bundled", app_root_bundled)
+    end
+
+    def setup_bundle_config
+      ensure_build_cache_bundle_config_exists!
+
+      # Override project's .bundle/config and ensure that .bundle/config matches
+      # at these 2 spots:
+      #   app_root/.bundle/config
+      #   bundled/gems/.bundle/config
+      cache_bundle_config = "#{cache_area}/.bundle/config"
+      app_bundle_config = "#{full(tmp_app_root)}/.bundle/config"
+      FileUtils.mkdir_p(File.dirname(app_bundle_config))
+      FileUtils.cp(cache_bundle_config, app_bundle_config)
+    end
+
+    # On circleci the "#{Jets.build_root}/.bundle/config" doesnt exist
+    # this only happens with ssh debugging, not when the ci.sh script gets ran.
+    # But on macosx it exists.
+    # Dont know why this is the case.
+    def ensure_build_cache_bundle_config_exists!
+      text =<<-EOL
+---
+BUNDLE_PATH: "bundled/gems"
+BUNDLE_WITHOUT: "development:test"
+EOL
+      bundle_config = "#{cache_area}/.bundle/config"
+      FileUtils.mkdir_p(File.dirname(bundle_config))
+      IO.write(bundle_config, text)
     end
 
     def create_zip_file(fake=nil)
@@ -191,7 +243,7 @@ EOL
       temp_code_zipfile = "#{Jets.build_root}/code/code-temp.zip"
       FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
 
-       # only use if you know what you are doing and are testing mainly cloudformation only
+      # Use fake if testing CloudFormation only
       if fake
         hello_world = "/tmp/hello.js"
         puts "Uploading tiny #{hello_world} file to S3 for quick testing.".colorize(:red)
@@ -225,11 +277,6 @@ EOL
       # Can also just generate a "fake file" for specs
     end
 
-    def get_linux_gems
-      fetcher = GemFetcher.new
-      fetcher.run
-    end
-
     # Installs gems on the current target system: both compiled and non-compiled.
     # If user is on a macosx machine, macosx gems will be installed.
     # If user is on a linux machine, linux gems will be installed.
@@ -242,14 +289,15 @@ EOL
     # project gets built again not all the gems from get installed from the
     # beginning.
     def bundle_install
-      puts 'Installing bundle.'
+      headline "Bundling: running bundle install in cache area: #{cache_area}."
+
       copy_gemfiles
 
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_clean_env do
         # cd /tmp/jets/demo
         sh(
-          "cd #{Jets.build_root} && " \
+          "cd #{cache_area} && " \
           "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
         )
       end
@@ -258,9 +306,9 @@ EOL
     end
 
     def copy_gemfiles
-      FileUtils.mkdir_p(full("bundled"))
-      FileUtils.cp("#{@full_project_path}Gemfile", "#{Jets.build_root}/Gemfile")
-      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{Jets.build_root}/Gemfile.lock")
+      FileUtils.mkdir_p(cache_area)
+      FileUtils.cp("#{@full_project_path}Gemfile", "#{cache_area}/Gemfile")
+      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{cache_area}/Gemfile.lock")
     end
 
     def excludes
@@ -296,54 +344,21 @@ EOL
       (defaults + keep).uniq
     end
 
+    def cache_check_message
+      if File.exist?("#{Jets.build_root}/cache")
+        puts "The #{Jets.build_root}/cache folder exists. Incrementally re-building the jets using the cache.  To clear the cache: rm -rf #{Jets.build_root}/cache"
+      end
+    end
+
     def check_ruby_version
-      if RUBY_VERSION != jets_ruby_version
+      if RUBY_VERSION != JETS_RUBY_VERSION
         puts "You are using ruby version #{RUBY_VERSION}."
-        abort("You must use ruby #{jets_ruby_version} to build the project because it's what Jets uses.".colorize(:red))
+        abort("You must use ruby #{JETS_RUBY_VERSION} to build the project because it's what Jets uses.".colorize(:red))
       end
     end
 
-    def jets_ruby_version
-      RUBY_URL.match(/ruby-(\d+\.\d+\.\d+)-/)[1]
-    end
-
-    def get_linux_ruby
-      if File.exist?(bundled_ruby_dest)
-        puts "Precompiled Linux Ruby #{jets_ruby_version} already downloaded at #{full(bundled_ruby_dest)}."
-      else
-        download_linux_ruby
-        unpack_linux_ruby
-      end
-    end
-
-    def download_linux_ruby
-      puts "Downloading linux ruby from #{RUBY_URL}."
-      download_url(RUBY_URL, ruby_tarfile)
-      puts 'Download complete.'
-    end
-
-    def download_url(source, dest)
-      FileUtils.mkdir_p(File.dirname(dest)) # ensure parent folder exists
-
-      File.open(dest, 'wb') do |saved_file|
-        # the following "open" is provided by open-uri
-        # TODO: remove OpenSSL::SSL::VERIFY_NONE hack. Figure out how to install ssl cert properly
-        open(source, 'rb') do |read_file|
-          saved_file.write(read_file.read)
-        end
-      end
-    end
-
-    def unpack_linux_ruby
-      puts 'Unpacking linux ruby.'
-
-      FileUtils.mkdir_p(bundled_ruby_dest)
-
-      sh("tar -xzf #{ruby_tarfile} -C #{bundled_ruby_dest}")
-      puts 'Unpacking linux ruby successful.'
-
-      puts 'Removing tar.'
-      FileUtils.rm_f(ruby_tarfile)
+    def cache_area
+      "#{Jets.build_root}/cache" # cleaner to use full path for this setting
     end
 
     # Provide pretty clear way to desinate full path.
@@ -361,10 +376,6 @@ EOL
       self.class.tmp_app_root
     end
 
-    def bundled_ruby_dest(full=false)
-      "bundled/ruby"
-    end
-
     def ruby_tarfile
       File.basename(RUBY_URL)
     end
@@ -374,6 +385,10 @@ EOL
       success = system(command)
       abort("#{command} failed to run") unless success
       success
+    end
+
+    def headline(message)
+      puts "=> #{message}".colorize(:cyan)
     end
   end
 end
