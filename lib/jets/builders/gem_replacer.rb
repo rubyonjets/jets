@@ -30,6 +30,41 @@ class Jets::Builders
         gem_extractor = Lambdagem::Extract::Gem.new(gem_name, @options)
         gem_extractor.run
       end
+
+      tidy
+    end
+
+    # remove unnecessary files to reduce package size
+    def tidy
+      gems_path = "#{Jets.build_root}/cache/bundled/gems/ruby/*/gems/*"
+      Dir.glob(gems_path).each do |gem_path|
+        tidy_gem(gem_path)
+      end
+    end
+
+    # Clean up some unneeded files to try to keep the package size down
+    # In a generated jets app this made a decent 9% difference:
+    #  175M test2
+    #  191M test3
+    def tidy_gem(path)
+      # remove top level tests and cache folders
+      puts "removing test folders"
+      Dir.glob("#{path}/*").each do |path|
+        next unless File.directory?(path)
+        folder = File.basename(path)
+        if %w[test tests spec features benchmark cache].include?(folder)
+          FileUtils.rm_rf(path)
+        end
+      end
+
+      puts "removing docs"
+      Dir.glob("#{path}/**/*").each do |path|
+        next unless File.file?(path)
+        ext = File.extname(path)
+        if %w[.rdoc .md].include?(ext)
+          FileUtils.rm_f(path)
+        end
+      end
     end
 
     def cache_area

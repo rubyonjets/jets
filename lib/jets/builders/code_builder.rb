@@ -20,8 +20,12 @@ require "action_view"
 # app_root: Where project gets copied into in order for us to configure it.
 # app_root/bundled/gems: Where vendored gems finally end up at.  The compiled
 #   gems at this point are only linux gems.
+# artifacts/code/code-md5sha.zip: code artifact that gets uploaded to lambda.
 #
 # Building Steps:
+#
+### Before copy
+# * compile assets: easier to do this before the copy
 #
 ### copy project
 # * copy project: to app_root
@@ -33,13 +37,13 @@ require "action_view"
 #
 ### build bundled in cache area
 # * bundle install: cache/bundled/gems
+#
+### setup bundled on app root from cache
+# * copy bundled to app_root: app_root/bundled
 # * extract linux ruby: cache/downloads/rubies:
 #                       cache/bundled/rbenv, cache/bundled/linuxbrew
 # * extract linux gems: cache/downloads/gems:
 #                       cache/bundled/gems, cache/bundled/linuxbrew
-#
-### setup bundled on app root from cache
-# * copy bundled to app_root: app_root/bundled
 # * setup bundled config: app_root/.bundle/config
 #
 ### zip
@@ -47,7 +51,6 @@ require "action_view"
 class Jets::Builders
   class CodeBuilder
     JETS_RUBY_VERSION = "2.5.0"
-    RUBY_URL = 'https://s3.amazonaws.com/lambdagems/rubies/ruby-2.5.0-linux-x86_64.tar.gz'.freeze
 
     include ActionView::Helpers::NumberHelper # number_to_human_size
     attr_reader :full_project_path
@@ -249,9 +252,10 @@ EOL
         puts "Uploading tiny #{hello_world} file to S3 for quick testing.".colorize(:red)
         code = IO.read(File.expand_path("../node-hello.js", __FILE__))
         IO.write(hello_world, code)
-        command = "zip -rq #{temp_code_zipfile} #{hello_world}"
+        command = "zip --symlinks -rq #{temp_code_zipfile} #{hello_world}"
       else
-        command = "cd #{full(tmp_app_root)} && zip -rq #{temp_code_zipfile} ."
+        # https://serverfault.com/questions/265675/how-can-i-zip-compress-a-symlink
+        command = "cd #{full(tmp_app_root)} && zip --symlinks -rq #{temp_code_zipfile} ."
       end
 
       sh(command)
@@ -374,10 +378,6 @@ EOL
 
     def tmp_app_root
       self.class.tmp_app_root
-    end
-
-    def ruby_tarfile
-      File.basename(RUBY_URL)
     end
 
     def sh(command)
