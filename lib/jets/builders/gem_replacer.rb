@@ -36,7 +36,11 @@ class Jets::Builders
 
     # remove unnecessary files to reduce package size
     def tidy
-      gems_path = "#{Jets.build_root}/cache/bundled/gems/ruby/*/gems/*"
+      tidy_gems("#{@options[:project_root]}/bundled/gems/ruby/*/gems/*")
+      tidy_gems("#{@options[:project_root]}/bundled/gems/ruby/*/bundler/gems/*")
+    end
+
+    def tidy_gems(gems_path)
       Dir.glob(gems_path).each do |gem_path|
         tidy_gem(gem_path)
       end
