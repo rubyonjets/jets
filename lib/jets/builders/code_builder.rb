@@ -67,10 +67,10 @@ class Jets::Builders
       check_ruby_version
 
       clean_start
-      compile_assets # easier to do before we copy the project
+      # compile_assets # easier to do before we copy the project
       copy_project
-      Dir.chdir(Jets.build_root) do
-        # These commands run from within Jets.build_root
+      Dir.chdir(full(tmp_app_root)) do
+        # These commands run from project root
         start_app_root_setup
         bundle_in_cache_area
         finish_app_root_setup
@@ -186,6 +186,7 @@ class Jets::Builders
         handler = Jets::Builders::HandlerGenerator.new(path)
         handler.generate
       end
+      exit
     end
 
     # Bit hacky but this saves the user from accidentally forgetting to change this
