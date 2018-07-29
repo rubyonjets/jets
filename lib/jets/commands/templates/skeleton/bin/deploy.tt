@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # Starter wrapper deploy script so you dont forget to set some things when running
-# jets deploy. Meant to be modified to yoru needs.
+# jets deploy. Meant to be modified to your needs.
 #
 # Usage:
 #   bin/deploy production
-#   bin/deploy staging
+#   bin/deploy development
 
 set -ux
 JETS_ENV=$1
 set -e
 
-JETS_ENV="${JETS_ENV:-staging}" # default to staging
+JETS_ENV="${JETS_ENV:-development}" # default to development
 export JETS_ENV
 
 bundle update

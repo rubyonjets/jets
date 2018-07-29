@@ -1,3 +1,3 @@
-task :environment => "db:load_config" do
-  ActiveRecord::Base.establish_connection
+task :environment do
+  Jets.boot!
 end

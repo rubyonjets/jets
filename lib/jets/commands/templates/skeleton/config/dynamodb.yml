@@ -3,18 +3,13 @@
 # This is the default value.
 
 development:
-  # endpoint: http://localhost:8000
   table_namespace: <%= Jets.config.table_namespace %>
   # More examples:
-  # table_namespace: dev
-  # table_namespace: stag
-  # table_namespace: prod
-  # table_namespace: dev-1
-  # table_namespace: demo-dev-1
+  # table_namespace: demo-dev
 
-  # endpoint: http://localhost:8000 # uncomment if deploying to production and test
-  # you can also use DYNAMODB_ENDPOINT environemnt variable to set this
-  # One way to do this if you are actually deploying a development environment is to
+  endpoint: http://localhost:8000 # comment out if want to test with real dynamodb
+  # on AWS. You can also set the DYNAMODB_ENDPOINT environment variable.
+  # You can also are actually deploying a development environment is to
   # change bin/server and export DYNAMODB_ENDPOINT=http://localhost:8000 at the top
   # there.
 

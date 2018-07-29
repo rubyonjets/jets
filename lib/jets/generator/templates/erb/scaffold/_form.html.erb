@@ -20,15 +20,15 @@
   <div class="field">
 <% if attribute.password_digest? -%>
     <%%= label_tag :password %>
-    <%%= password_field_tag :password, <%= singular_table_name %>.<%= attribute.column_name %>, id: :<%= field_id(:password) %> %>
+    <%%= password_field_tag :password, <%= singular_table_name %>.<%= attribute.column_name %> %>
   </div>
 
   <div class="field">
     <%%= label_tag :password_confirmation %>
-    <%%= password_field_tag :password_confirmation, <%= singular_table_name %>.<%= attribute.column_name %>, id: :<%= field_id(:password_confirmation) %> %>
+    <%%= password_field_tag :password_confirmation, <%= singular_table_name %>.<%= attribute.column_name %> %>
 <% else -%>
     <%%= label_tag :<%= attribute.column_name %> %>
-    <%%= <%= attribute.field_type %>_tag "<%= "#{singular_table_name}[#{attribute.column_name}]" %>"<%= ", 'yes'" if attribute.field_type =~ /check_box/ %>, <%= singular_table_name %>.<%= attribute.column_name %>, id: :<%= field_id(attribute.column_name) %> %>
+    <%%= <%= attribute.field_type %>_tag "<%= "#{singular_table_name}[#{attribute.column_name}]" %>"<%= ", 'yes'" if attribute.field_type =~ /check_box/ %>, <%= singular_table_name %>.<%= attribute.column_name %> %>
 <% end -%>
   </div>
 

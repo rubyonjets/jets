@@ -71,6 +71,8 @@ class Jets::Booter
       if current_config.empty?
         abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
       end
+      # Using ActiveRecord rake tasks outside of Rails, so we need to set up the
+      # db connection ourselves
       ActiveRecord::Base.establish_connection(current_config)
     end
 
