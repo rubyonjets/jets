@@ -50,9 +50,10 @@ module Jets::Commands
     def bootstrap_install
       return unless options[:bootstrap]
 
+      # Add jquery and popper plugin to handle Delete of CRUD
       jquery =<<-JS
 const webpack = require('webpack')
-environment.plugins.set('Provide', new webpack.ProvidePlugin({
+environment.plugins.prepend('Provide', new webpack.ProvidePlugin({
   $: 'jquery',
   jQuery: 'jquery',
   Popper: ['popper.js', 'default']
