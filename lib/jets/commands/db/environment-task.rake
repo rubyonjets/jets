@@ -1,3 +1,3 @@
 task :environment do
-  Jets.boot!
+  Jets.boot
 end
