@@ -32,8 +32,8 @@ module Jets::Commands
 
     desc "server", "Runs a local server for development"
     long_desc Help.text(:server)
-    option :port, aliases: :p, default: "8888", desc: "use PORT"
-    option :host, aliases: :h, default: "127.0.0.1", desc: "listen on HOST"
+    option :port, default: "8888", desc: "use PORT"
+    option :host, default: "127.0.0.1", desc: "listen on HOST"
     def server
       # shell out to shotgun for automatic reloading
       o = options
