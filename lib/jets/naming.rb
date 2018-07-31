@@ -15,7 +15,7 @@ class Jets::Naming
 
     # consider moving these methods into cfn/builder/helpers.rb or that area.
     def parent_template_path
-      "#{template_path_prefix}-parent.yml"
+      "#{template_path_prefix}.yml"
     end
 
     # consider moving these methods into cfn/builder/helpers.rb or that area.
