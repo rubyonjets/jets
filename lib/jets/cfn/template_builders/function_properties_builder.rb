@@ -23,6 +23,16 @@ class Jets::Cfn::TemplateBuilders
         .deep_merge(fixed_properties)
     end
 
+    # Global properties example:
+    # jets defaults are in jets/default/application.rb.
+    # Your application's default config/application.rb then get used. Example:
+    #
+    #   Jets.application.configure do
+    #     config.function = ActiveSupport::OrderedOptions.new
+    #     config.function.timeout = 10
+    #     config.function.runtime = "nodejs6.10"
+    #     config.function.memory_size = 3008
+    #   end
     def global_properties
       baseline = {
         Code: {
@@ -39,6 +49,12 @@ class Jets::Cfn::TemplateBuilders
       baseline.deep_merge(app_config_props)
     end
 
+    # Class properties example:
+    #
+    #   class PostsController < ApplicationController
+    #     class_timeout 22
+    #     ...
+    #   end
     def class_properties
       # klass is PostsController, HardJob, GameRule, Hello or HelloFunction
       klass = Jets::Klass.from_task(@task)
@@ -46,6 +62,13 @@ class Jets::Cfn::TemplateBuilders
       Pascalize.pascalize(class_properties.deep_stringify_keys)
     end
 
+    # Function properties example:
+    #
+    # class PostsController < ApplicationController
+    #   timeout 18
+    #   def index
+    #     ...
+    #   end
     def function_properties
       Pascalize.pascalize(@task.properties.deep_stringify_keys)
     end
