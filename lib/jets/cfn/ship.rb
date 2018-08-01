@@ -17,7 +17,7 @@ class Jets::Cfn
 
       stack_in_progress?(@parent_stack_name)
 
-      puts "Deploying CloudFormation stack to deploy jets app!"
+      puts "Deploying CloudFormation stack with jets app!"
       begin
         save_stack
       rescue Aws::CloudFormation::Errors::InsufficientCapabilitiesException => e
@@ -77,6 +77,7 @@ class Jets::Cfn
 
 
     def show_api_endpoint
+      return unless @options[:stack_type] == :full # s3 bucket is available
       return if Jets::Router.routes.empty?
 
       resp = cfn.describe_stack_resources(stack_name: @parent_stack_name)
