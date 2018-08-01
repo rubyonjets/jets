@@ -40,7 +40,7 @@ module Jets::Controller::Renderers
         https = uri.scheme == "https"
       end
       options = {
-        http_host: headers["Host"],
+        http_host: headers["host"],
         https: https,
         # script_name: "",
         # input: ""

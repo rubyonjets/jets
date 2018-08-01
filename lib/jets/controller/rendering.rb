@@ -73,7 +73,7 @@ class Jets::Controller
     end
 
     def actual_host
-      headers["Host"]
+      headers["host"]
     end
 
   end

@@ -40,7 +40,7 @@ class Jets::Controller
       #   spec/fixtures/dumps/api_gateway/posts/create.json
       #   spec/fixtures/dumps/rack/posts/create.json
       protocol = if actual_host.include?("amazonaws.com") # API Gateway
-          headers["X-Forwarded-Proto"]
+          headers["x-forwarded-proto"]
         elsif headers["origin"] # Rack / localhost
           URI.parse(headers["origin"]).scheme
         else

@@ -33,18 +33,22 @@ class Jets::Controller
 
     HEADER_METHODS.each do |meth|
       class_eval <<-METHOD, __FILE__, __LINE__ + 1
-        def #{meth.downcase.underscore}     # def content_type
-          headers["#{meth}"].freeze  #   headers["content-type"]
-        end                                 # end
+        def #{meth.downcase.underscore}       # def content_type
+          headers["#{meth.downcase}"].freeze  #   headers["content-type"]
+        end                                   # end
       METHOD
     end
 
+    # API Gateway is inconsistent about how it cases it keys.
+    # Sometimes it is "x-requested-with" vs "X-Requested-With"
+    # Normalize it with downcase.
     def headers
-      @event["headers"] || {}
+      headers = @event["headers"] || {}
+      headers.transform_keys { |key| key.downcase }
     end
 
     def xhr?
-      headers["X-Requested-With"] == "XMLHttpRequest"
+      headers["x-requested-with"] == "XMLHttpRequest"
     end
 
   end
