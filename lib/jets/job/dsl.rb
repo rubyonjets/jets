@@ -17,12 +17,13 @@ module Jets::Job::Dsl
       # Override register_task.
       # A Job::Task is a Lambda::Task with some added DSL methods like
       # rate and cron.
-      def register_task(meth)
+      def register_task(meth, lang=:ruby)
         if @rate || @cron
           all_tasks[meth] = Jets::Job::Task.new(self.name, meth,
             rate: @rate,
             cron: @cron,
-            properties: @properties)
+            properties: @properties,
+            lang: lang)
           # done storing options, clear out for the next added method
           @rate, @cron = nil, nil
           true

@@ -81,12 +81,12 @@ module Jets::Lambda::Dsl
         # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Dsl behavior.
       end
 
-      def register_task(meth)
+      def register_task(meth, lang=:ruby)
         # Note: for anonymous classes like for app/functions self.name is ""
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          properties: @properties)
+          properties: @properties, lang: lang)
         true
       end
 

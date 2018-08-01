@@ -15,4 +15,5 @@ module Jets::Lambda
   autoload :Function, "jets/lambda/function"
   autoload :Functions, "jets/lambda/functions"
   autoload :Task, "jets/lambda/task"
+  autoload :Poly, "jets/lambda/poly"
 end

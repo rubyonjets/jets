@@ -54,9 +54,9 @@ module Jets::Rule::Dsl
       # Override register_task.
       # Creates instances of Rule::Task instead of a Lambda::Task
       # Also adds the config_rule option that is specific to Rule classes
-      def register_task(meth)
+      def register_task(meth, lang=:ruby)
         all_tasks[meth] = Jets::Rule::Task.new(self.name, meth,
-          properties: @properties, config_rule: @config_rule)
+          properties: @properties, config_rule: @config_rule, lang: lang)
         true
       end
     end

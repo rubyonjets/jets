@@ -18,5 +18,6 @@ module Jets::Lambda
 
     include Dsl # At the end so methods like event, context and method
       # do not trigger method_added
+    include Poly
   end
 end
