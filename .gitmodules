@@ -1,9 +1,9 @@
 [submodule "vendor/dynamodb_model"]
 	path = vendor/dynamodb_model
-	url = https://github.com/tongueroo/dynamodb_model.git
+	url = git@github.com:tongueroo/dynamodb_model.git
 [submodule "spec/fixtures/apps/demo"]
 	path = spec/fixtures/apps/demo
-	url = https://github.com/tongueroo/demo.git
+	url = git@github.com:tongueroo/demo.git
 [submodule "vendor/lambdagem"]
 	path = vendor/lambdagem
 	url = git@github.com:tongueroo/lambdagem.git

@@ -16,6 +16,6 @@ Jets.application.configure do
   config.function = ActiveSupport::OrderedOptions.new
   config.function.timeout = 10
   config.function.runtime = "nodejs6.10"
-  config.function.memory_size = 1536
+  config.function.memory_size = 3008
 end
 
