@@ -17,7 +17,7 @@ class Jets::Cfn
 
       stack_in_progress?(@parent_stack_name)
 
-      puts "Shipping CloudFormation stack!"
+      puts "Deploying CloudFormation stack to deploy jets app!"
       begin
         save_stack
       rescue Aws::CloudFormation::Errors::InsufficientCapabilitiesException => e
@@ -34,6 +34,7 @@ class Jets::Cfn
       end
 
       wait_for_stack
+      show_api_endpoint
     end
 
     def save_stack
@@ -72,6 +73,22 @@ class Jets::Cfn
     # check for /(_COMPLETE|_FAILED)$/ status
     def wait_for_stack
       Jets::Cfn::Status.new(@options).wait
+    end
+
+
+    def show_api_endpoint
+      return if Jets::Router.routes.empty?
+
+      resp = cfn.describe_stack_resources(stack_name: @parent_stack_name)
+      resources = resp.stack_resources
+      api_gateway = resources.find { |resource| resource.logical_resource_id == "ApiGateway" }
+      stack_id = api_gateway["physical_resource_id"]
+
+      resp = cfn.describe_stacks(stack_name: stack_id)
+      stack = resp["stacks"].first
+      output = stack["outputs"].find { |o| o["output_key"] == "RestApiUrl" }
+      endpoint = output["output_value"]
+      puts "API Gateway Endpoint: #{endpoint}"
     end
 
     # All CloudFormation states listed here:

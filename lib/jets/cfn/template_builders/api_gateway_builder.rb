@@ -32,7 +32,10 @@ class Jets::Cfn::TemplateBuilders
       add_resource("RestApi", "AWS::ApiGateway::RestApi",
         Name: Jets::Naming.gateway_api_name
       )
+
+      stage_name = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.stage_name
       add_output("RestApi", Value: "!Ref RestApi")
+      add_output("RestApiUrl", Value: "!Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/#{stage_name}/'")
       add_output("Region", Value: "!Ref AWS::Region")
       add_output("RootResourceId", Value: "!GetAtt RestApi.RootResourceId")
     end

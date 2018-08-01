@@ -10,7 +10,7 @@ class Jets::Cfn::TemplateMappers
 
     # stage_name: stag, stag-1, stag-2, etc
     def stage_name
-      [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
+      self.class.stage_name
     end
 
     def parameters
@@ -39,6 +39,10 @@ class Jets::Cfn::TemplateMappers
     @@timestamp = nil
     def self.timestamp
       @@timestamp ||= Time.now.strftime("%Y%m%d%H%M%S")
+    end
+
+    def self.stage_name
+      [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
     end
   end
 end

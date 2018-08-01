@@ -21,6 +21,8 @@ class Jets::Cfn::TemplateBuilders
         RestApiId: "!Ref RestApi",
         StageName: map.stage_name,
       )
+
+      add_output("RestApiUrl", Value: "!Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/#{map.stage_name}/'")
     end
 
     # template_path is an interface method

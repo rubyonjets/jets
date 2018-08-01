@@ -4,7 +4,7 @@ module Jets::CommonMethods
     if request.host.include?("amazonaws.com") &&
             url.starts_with?('/') &&
             !url.starts_with?('http')
-      stage_name = [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
+      stage_name = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.stage_name
       url = "/#{stage_name}#{url}"
     end
 
