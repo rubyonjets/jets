@@ -20,7 +20,18 @@ class Jets::Commands::Delete
     stack_in_progress?(parent_stack_name)
 
     cfn.delete_stack(stack_name: parent_stack_name)
+    puts "Deleting #{Jets.config.project_namespace.colorize(:green)}..."
+
+    wait_for_stack
     puts "Project #{Jets.config.project_namespace.colorize(:green)} deleted!"
+  end
+
+  def wait_for_stack
+    status = Jets::Cfn::Status.new(@options)
+    start_time = Time.now
+    status.wait
+    took = Time.now - start_time
+    puts "Time took for deletion: #{status.pretty_time(took).green}."
   end
 
   def confirm_project_exists
@@ -69,7 +80,7 @@ class Jets::Commands::Delete
   end
 
   def are_you_sure?
-    if @options[:force]
+    if @options[:sure]
       sure = 'y'
     else
       puts "Are you sure you want to want to delete the '#{Jets.config.project_namespace}' project? (y/N)"

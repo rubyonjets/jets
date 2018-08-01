@@ -71,19 +71,7 @@ class Jets::Cfn
 
     # check for /(_COMPLETE|_FAILED)$/ status
     def wait_for_stack
-      status = ''
-      while status !~ /(_COMPLETE|_FAILED)$/
-        resp, status = stack_status
-        sleep 5
-        print '.'
-      end
-      puts
-      if status =~ /_FAILED/
-        puts "Stack status: #{status}".colorize(:red)
-        puts "Stack reason #{resp.stacks[0].stack_reason}".colorize(:red)
-      else
-        puts "Stack status: #{status}".colorize(:green)
-      end
+      Jets::Cfn::Status.new(@options).wait
     end
 
     # All CloudFormation states listed here:

@@ -25,7 +25,7 @@ module Jets::Commands
 
     desc "delete", "Delete project and all its resources"
     long_desc Help.text(:delete)
-    option :force, type: :boolean, desc: "Skip are you sure prompt."
+    option :sure, type: :boolean, desc: "Skip are you sure prompt."
     def delete
       Delete.new(options).run
     end
@@ -79,6 +79,12 @@ module Jets::Commands
     long_desc Help.text(:generate)
     def generate(generator, *args)
       Jets::Generator.invoke(generator, *args)
+    end
+
+    desc "status", "Shows the current status for the stack."
+    long_desc Help.text(:status)
+    def status
+      Jets::Cfn::Status.new(options).run
     end
 
 
