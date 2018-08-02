@@ -72,7 +72,7 @@ class Jets::Builders
       Dir.chdir(full(tmp_app_root)) do
         # These commands run from project root
         start_app_root_setup
-        bundle_in_cache_area
+        bundle_install
         finish_app_root_setup
         create_zip_file
       end
@@ -82,10 +82,6 @@ class Jets::Builders
       tidy_project
       reconfigure_development_webpacker
       generate_node_shims
-    end
-
-    def bundle_in_cache_area
-      bundle_install
     end
 
     def finish_app_root_setup
@@ -139,7 +135,7 @@ class Jets::Builders
       FileUtils.mkdir_p(Jets.build_root) # /tmp/jets/demo
     end
 
-    # Copy project into temporarly directory. Do this so we can keep the project
+    # Copy project into temporary directory. Do this so we can keep the project
     # directory untouched and we can also remove a bunch of unnecessary files like
     # logs before zipping it up.
     def copy_project
