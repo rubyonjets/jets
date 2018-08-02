@@ -36,8 +36,11 @@ class Jets::Cfn::TemplateMappers
     end
 
     def handler
-      underscored = @app_class.underscore
-      "handlers/#{@task.type.pluralize}/#{underscored}.#{@task.meth}"
+      handler_value(@task.meth)
+    end
+
+    def handler_value(meth)
+      "handlers/#{@task.type.pluralize}/#{@app_class.underscore}.#{meth}"
     end
 
     def code_s3_key

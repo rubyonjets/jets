@@ -5,8 +5,8 @@
 #   buider.properties
 #   buider.map.logical_id # to access Function's logical id
 #
-class Jets::Cfn::TemplateBuilders
-  class FunctionPropertiesBuilder
+module Jets::Cfn::TemplateBuilders::FunctionProperties
+  class BaseBuilder
     def initialize(task)
       @task = task
     end
@@ -16,11 +16,47 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def properties
-      env_file_properties
+      props = env_file_properties
         .deep_merge(global_properties)
         .deep_merge(class_properties)
         .deep_merge(function_properties)
-        .deep_merge(fixed_properties)
+      finalize_properties!(props)
+    end
+
+    # Add properties managed by Jets.
+    def finalize_properties!(props)
+      handler = get_handler(props)
+      runtime = get_runtime(props)
+      props.merge!(
+        "FunctionName" => map.function_name,
+        "Handler" => handler,
+        "Runtime" => runtime,
+      )
+    end
+
+    def get_runtime(props)
+      props["Runtime"] || default_runtime
+    end
+
+    # Ensure that the handler path is normalized.
+    def get_handler(props)
+      if props["Handler"]
+        map.handler_value(props["Handler"])
+      else
+        default_handler
+      end
+    end
+
+    def full_handler
+      return 'tmp/hello.handler' if ENV['TEST_CODE']
+
+      handler = function_properties[:handler]
+      if handler
+        underscored_class = @task.class_name.to_s.underscore
+        "handlers/#{@task.type.pluralize}/#{underscored_class}.#{handler}"
+      else # nil
+        map.handler
+      end
     end
 
     # Global properties example:
@@ -71,16 +107,6 @@ class Jets::Cfn::TemplateBuilders
     #   end
     def function_properties
       Pascalize.pascalize(@task.properties.deep_stringify_keys)
-    end
-
-    # Do not allow overriding of fixed properties. Changing properties will
-    # likely cause issues with Jets.
-    def fixed_properties
-      handler = ENV['TEST_CODE'] ? 'tmp/hello.handler' : map.handler
-      {
-        FunctionName: map.function_name,
-        Handler: handler,
-      }
     end
 
     def env_file_properties
