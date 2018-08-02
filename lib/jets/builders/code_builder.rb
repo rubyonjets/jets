@@ -132,7 +132,7 @@ class Jets::Builders
     # for a clean start. Also ensure that the /tmp/jets/project build root exists.
     #
     # Most files are kept around after the build process for inspection and
-    # debugging. So we have to clean out the files. But we only want to clean ou
+    # debugging. So we have to clean out the files. But we only want to clean out
     # some of the files.
     def clean_start
       Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
@@ -154,7 +154,7 @@ class Jets::Builders
     end
 
     # Move the node modules to the tmp build folder to speed up project copying.
-    # A little bit risk because a ctrl-c in the middle of the project copying
+    # A little bit risky because a ctrl-c in the middle of the project copying
     # results in a missing node_modules but user can easily rebuild that.
     #
     # Tesing shows 6.623413 vs 0.027754 speed improvement.
