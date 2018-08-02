@@ -40,7 +40,7 @@ class Jets::Builders
     end
 
     def get_source_path(original_path, task)
-      folder = original_path.sub(/\.rb$/,'').split('_')[0..-2].join('_')
+      folder = original_path.sub(/\.rb$/,'')
       lang_folder = "#{Jets.root}#{folder}/#{task.lang}"
       "#{lang_folder}/#{task.meth}#{task.lang_ext}"
     end
@@ -51,9 +51,6 @@ class Jets::Builders
       # Handler: handlers/controllers/posts_controller.handle
       map = Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(task)
       dest_path = "#{tmp_app_root}/#{map.poly_handler_path}"
-
-      puts "source_path #{source_path}"
-      puts "dest_path #{dest_path}"
       FileUtils.mkdir_p(File.dirname(dest_path))
       FileUtils.cp(source_path, dest_path)
     end

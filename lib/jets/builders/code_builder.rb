@@ -78,6 +78,13 @@ class Jets::Builders
       end
     end
 
+    # Finds out of the app has polymorphic functions only and zero ruby functions.
+    # In this case, we can skip a lot of the ruby related building and speed up the
+    # deploy process.
+    def poly_only?
+      Jets::Commands::Build.poly_only?
+    end
+
     def start_app_root_setup
       tidy_project
       reconfigure_development_webpacker
@@ -85,6 +92,8 @@ class Jets::Builders
     end
 
     def finish_app_root_setup
+      return if poly_only?
+
       copy_bundled_to_app_root
       setup_bundle_config
       extract_ruby
@@ -122,7 +131,6 @@ class Jets::Builders
           `which webpack`.strip
       sh("JETS_ENV=#{Jets.env} #{webpack_bin}")
     end
-
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
     # for a clean start. Also ensure that the /tmp/jets/project build root exists.
@@ -169,7 +177,7 @@ class Jets::Builders
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{full(tmp_app_root)}/#{exclude}"
         FileUtils.rm_rf(remove_path)
-        puts "  rm -rf #{remove_path}"
+        # puts "  rm -rf #{remove_path}" # uncomment to debug
       end
     end
 
@@ -289,6 +297,8 @@ EOL
     # project gets built again not all the gems from get installed from the
     # beginning.
     def bundle_install
+      return if poly_only?
+
       headline "Bundling: running bundle install in cache area: #{cache_area}."
 
       copy_gemfiles

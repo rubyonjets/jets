@@ -57,7 +57,7 @@ class Jets::Cfn::TemplateMappers
     end
 
     def poly_handler_base_path
-      folder = @app_class.underscore.split('_')[0..-2].join('_') # remove _controller, _job or _rule
+      folder = @app_class.underscore
       "handlers/#{@task.type.pluralize}/#{folder}/#{@task.meth}"
     end
     private :poly_handler_base_path
