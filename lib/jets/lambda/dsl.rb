@@ -136,6 +136,14 @@ module Jets::Lambda::Dsl
       def defpoly(lang, meth)
         register_task(meth, lang)
       end
+
+      def python(meth)
+        defpoly(:python, meth)
+      end
+
+      def node(meth)
+        defpoly(:node, meth)
+      end
     end
   end
 end
