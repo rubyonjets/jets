@@ -14,6 +14,15 @@ class Jets::Lambda::Task
     @meth
   end
 
+  @@lang_exts = {
+    ruby: '.rb',
+    python: '.py',
+    node: '.js',
+  }
+  def lang_ext
+    @@lang_exts[@lang]
+  end
+
   # The get_type method works for controller and job classes.
   #
   # Usually able to get the type from the class name. Examples:
@@ -44,7 +53,7 @@ class Jets::Lambda::Task
   # Returns: "controller", "job" or nil
   def get_type
     unless @class_name.empty? # when anonymous class is created with Class.new
-      @class_name.underscore.split('_').last # controller or job
+      @class_name.underscore.split('_').last # controller, job or rule
     end
   end
 
