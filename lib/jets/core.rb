@@ -8,12 +8,16 @@ module Jets::Core
   # Calling application triggers load of configs.
   # Jets' the default config/application.rb is loaded,
   # then the project's config/application.rb is loaded.
+  @@application = nil
   def application
-    application = Jets::Application.new
-    application.setup!
-    application
+    return @@application if @@application
+
+    @@application = Jets::Application.new
+    @@application.setup!
+    @@application
   end
-  memoize :application
+  # For some reason memoize doesnt work with application, think there's
+  # some circular dependency issue. Figure this out later.
 
   def config
     application.config
@@ -27,6 +31,15 @@ module Jets::Core
   # Ensures trailing slash
   # Useful for appending a './' in front of a path or leaving it alone.
   # Returns: '/path/with/trailing/slash/' or './'
+  # @@root = nil
+  # def root
+  #   return @@root if @@root
+  #   @@root = ENV['JETS_ROOT'].to_s
+  #   @@root = '.' if @@root == ''
+  #   @@root = "#{@@root}/" unless @@root.ends_with?('/')
+  #   @@root = Pathname.new(@@root)
+  # end
+
   def root
     root = ENV['JETS_ROOT'].to_s
     root = '.' if root == ''
@@ -52,16 +65,17 @@ module Jets::Core
   end
   memoize :logger
 
-  def load_tasks
-    Jets::Commands::RakeTasks.load!
-  end
-
   def webpacker?
     Gem.loaded_specs.keys.include?("webpacker")
   end
   memoize :webpacker?
 
+  def load_tasks
+    Jets::Commands::RakeTasks.load!
+  end
+
   def version
     Jets::VERSION
   end
+
 end

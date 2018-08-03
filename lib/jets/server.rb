@@ -1,6 +1,6 @@
 require 'rack'
 require 'rack/server'
-require "jets/server/webpacker_setup"
+require "jets/server/webpacker_setup" if Jets.webpacker?
 
 class Jets::Server
   autoload :RouteMatcher, "jets/server/route_matcher"
