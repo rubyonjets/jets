@@ -41,8 +41,9 @@ class Jets::Builders
 
     def get_source_path(original_path, task)
       folder = original_path.sub(/\.rb$/,'')
-      lang_folder = "#{Jets.root}#{folder}/#{task.lang}"
-      "#{lang_folder}/#{task.meth}#{task.lang_ext}"
+      lang_folder = "#{folder}/#{task.lang}"
+      root = Jets.root unless original_path.include?("lib/jets/internal")
+      "#{root}#{lang_folder}/#{task.meth}#{task.lang_ext}"
     end
 
     # Builds and copies over the native source code: python or node
