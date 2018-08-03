@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
   let(:builder) do
     Jets::Cfn::TemplateBuilders::ControllerBuilder.new(app_class)

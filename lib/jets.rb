@@ -21,6 +21,7 @@ module Jets
   autoload :Job, 'jets/job'
   autoload :Lambda, 'jets/lambda'
   autoload :Naming, 'jets/naming'
+  autoload :PolyFun, 'jets/poly_fun'
   autoload :Processors, 'jets/processors'
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"

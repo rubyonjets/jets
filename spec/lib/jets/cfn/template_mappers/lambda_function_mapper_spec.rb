@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateMappers::LambdaFunctionMapper do
   context "controller" do
     let(:map) do

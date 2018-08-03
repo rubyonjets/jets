@@ -1,5 +1,3 @@
-require "spec_helper"
-
 # Example with the full config_rule syntax
 class FullPropertiesRule < Jets::Rule::Base
   config_rule(

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Builders::Deducer do
   context "controller without namespace" do
     let(:deducer) do

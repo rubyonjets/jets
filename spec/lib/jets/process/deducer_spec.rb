@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "Deducer" do
   context "controller" do
     let(:deducer) do

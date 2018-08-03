@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::BaseChildBuilder do
   let(:builder) do
     Jets::Cfn::TemplateBuilders::BaseChildBuilder.new(app_class)

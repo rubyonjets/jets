@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Controller::Base do
   let(:controller) {
     controller = StoresController.new({}, nil, "new")

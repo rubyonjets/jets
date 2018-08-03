@@ -1,5 +1,3 @@
-require "spec_helper"
-
 class FakeController < Jets::Controller::Base
   before_action :find_article
   def find_article; end

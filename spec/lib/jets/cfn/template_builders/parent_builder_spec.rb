@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::ParentBuilder do
   context "first run" do
     let(:builder) do

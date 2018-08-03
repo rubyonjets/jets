@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Lambda::FunctionConstructor do
   let(:constructor) { Jets::Lambda::FunctionConstructor.new(code_path) }
   let(:code_path) { "app/functions/hello.rb" }

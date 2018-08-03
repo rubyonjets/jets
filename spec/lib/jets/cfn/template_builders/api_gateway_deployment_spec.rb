@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::ApiGatewayDeploymentBuilder do
   let(:builder) do
     Jets::Cfn::TemplateBuilders::ApiGatewayDeploymentBuilder.new({})

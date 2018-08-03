@@ -1,5 +1,3 @@
-require "spec_helper"
-
 class SimpleController < Jets::Controller::Base
   layout :application
 

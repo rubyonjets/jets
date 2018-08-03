@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Builders::CodeBuilder do
   context "general" do
     let(:builder) do

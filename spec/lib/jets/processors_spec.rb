@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Processors do
   describe "jets" do
     it "process:controller event context handler" do

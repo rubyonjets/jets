@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "jets generate" do
   describe "migration" do
     it "creates a migration file" do
@@ -12,6 +10,5 @@ describe "jets generate" do
       expect(migration_exist).to be true
       FileUtils.rm_f(migration_path)
     end
-
   end
 end

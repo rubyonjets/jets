@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::RuleBuilder do
   let(:builder) do
     Jets::Cfn::TemplateBuilders::RuleBuilder.new(GameRule)

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Rule::Task do
 
   it "conventional_config_rule_name" do

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::Ship do
   let(:ship) do
     Jets::Cfn::Ship.new(noop: true)

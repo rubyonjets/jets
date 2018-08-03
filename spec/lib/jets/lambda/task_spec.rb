@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Lambda::Task do
   context "PostsController" do
     let(:task) do

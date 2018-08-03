@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Builders::GemFetcher do
   context "already downloaded" do
     let(:fetcher) do

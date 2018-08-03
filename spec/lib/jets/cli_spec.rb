@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::CLI do
   let(:command) { Jets::CLI.new(given_args) }
 

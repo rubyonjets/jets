@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Naming do
   it "provides some names used throughout jets" do
     naming = Jets::Naming

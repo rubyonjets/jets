@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "HandlerGenerator" do
   context "controller" do
     let(:generator) do

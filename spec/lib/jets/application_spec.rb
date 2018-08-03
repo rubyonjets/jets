@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Application do
   context "Jets::Application.new" do
     let(:app) do
