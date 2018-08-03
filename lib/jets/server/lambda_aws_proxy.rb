@@ -20,7 +20,7 @@ class Jets::Server
       controller_action = find_controller_action
       # controller = PostsController.new(event, content)
       # resp = controller.edit
-      resp = controller_class.process(event, context, find_controller_action)
+      resp = controller_class.process(event, context, controller_action)
 
       # Map lambda proxy response format to rack format
       status = resp["statusCode"]
