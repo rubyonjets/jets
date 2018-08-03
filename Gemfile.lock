@@ -26,6 +26,7 @@ PATH
       hashie
       json
       kramdown
+      memoist
       pg (= 0.21)
       rack
       railties
@@ -62,11 +63,11 @@ GEM
       tzinfo (~> 1.1)
     arel (9.0.0)
     aws-eventstream (1.0.1)
-    aws-partitions (1.96.0)
+    aws-partitions (1.97.0)
     aws-sdk-cloudformation (1.6.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.22.1)
+    aws-sdk-core (3.23.0)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
@@ -74,7 +75,7 @@ GEM
     aws-sdk-dynamodb (1.9.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-kms (1.6.0)
+    aws-sdk-kms (1.7.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sdk-lambda (1.8.0)
@@ -104,6 +105,7 @@ GEM
     loofah (2.2.2)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
+    memoist (0.16.0)
     method_source (0.9.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -162,4 +164,4 @@ DEPENDENCIES
   webpacker!
 
 BUNDLED WITH
-   1.16.1
+   1.16.3

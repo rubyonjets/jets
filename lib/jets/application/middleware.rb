@@ -1,5 +1,6 @@
 module Jets::Application::Middleware
   def call(env)
+    raise "the roof"
     # Only require when necessary because middleware is only used for development
     # Requring here instead of top of file because Jets::Application::Middleware
     # gets autoloaded when Jets::Application gets autoloaded.
@@ -7,7 +8,8 @@ module Jets::Application::Middleware
     #
     #   require "jets"
     #   run Jets.application
-    require "jets/server/webpacker_setup" # makes "use Webpacker::DevServerProxy" works
+    exit
+    require "jets/server/webpacker_setup" if Jets.webpacker? # makes "use Webpacker::DevServerProxy" works
     triplet = assemble_app.call(env)
   end
 
@@ -15,7 +17,7 @@ module Jets::Application::Middleware
     Rack::Builder.new do
       map("/") do
         use Jets::Server::TimingMiddleware
-        use Webpacker::DevServerProxy
+        use Webpacker::DevServerProxy if Jets.webpacker?
         run Jets::Server
       end
     end
