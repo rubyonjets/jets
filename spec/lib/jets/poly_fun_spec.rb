@@ -13,8 +13,8 @@ describe Jets::PolyFun do
   context("failed python command") do
     let(:action) { :error_test }
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/books/show.json") }
-    it "raises an custom Jets::PythonError exception" do
-      expect { fun.run(event) }.to raise_error(Jets::PythonError)
+    it "raises an custom PythonError exception" do
+      expect { fun.run(event) }.to raise_error(Jets::PolyFun::PythonError)
     end
   end
 end

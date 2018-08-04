@@ -1,13 +1,7 @@
 module Jets
-  class PythonError < StandardError
-    def initialize(message, backtrace)
-      super(message)
-      set_backtrace(backtrace)
-    end
-  end
-
   class PolyFun
     autoload :LambdaExecutor, 'jets/poly_fun/lambda_executor' # main class delegates to other classes
+    autoload :PythonError, 'jets/poly_fun/python_error'
     autoload :PythonExecutor, 'jets/poly_fun/python_executor' # main class delegates to other classes
     autoload :NodeExecutor, 'jets/poly_fun/node_executor' # main class delegates to other classes
 
