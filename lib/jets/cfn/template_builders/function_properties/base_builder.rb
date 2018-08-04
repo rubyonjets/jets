@@ -1,7 +1,7 @@
 # Jets::Cfn::TemplateBuilders does not stick to the TemplateBuilders::Interface.
 # It builds the properties of a function. Usage:
 #
-#   builder = FunctionPropertiesBuilder.new(task)
+#   builder = FunctionProperties::PythonBuilder.new(task)
 #   buider.properties
 #   buider.map.logical_id # to access Function's logical id
 #

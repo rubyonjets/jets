@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::FunctionPropertiesBuilder do
+describe Jets::Cfn::TemplateBuilders::FunctionProperties::PythonBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::FunctionPropertiesBuilder.new(task)
+    Jets::Cfn::TemplateBuilders::FunctionProperties::PythonBuilder.new(task)
   end
 
   context "HardJob#dig" do
