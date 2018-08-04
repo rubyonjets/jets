@@ -18,6 +18,7 @@ class Jets::PolyFun
       copy_src_to_temp
       generate_lambda_executor
       run_lambda_executor(event, context)
+      cleanup
     end
 
     def create_tmpdir
@@ -74,6 +75,11 @@ EOL
         {error: stderr}
         # TODO mimic lambda error response
       end
+    end
+
+    def cleanup
+      puts "Removing #{@temp_dir}"
+      FileUtils.rm_rf(@temp_dir)
     end
 
     def lambda_executor_script
