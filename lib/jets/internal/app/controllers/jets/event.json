@@ -1,6 +1,6 @@
 {
   "resource": "/{catchall+}",
-  "path": "/test/all.html",
+  "path": "/test/main.css",
   "httpMethod": "GET",
   "headers": {
     "Accept": "*/*",
