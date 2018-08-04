@@ -5,7 +5,6 @@ describe Jets::PolyFun::PythonExecutor do
   context("failed python command") do
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/books/show.json") }
     it "produces lambda format error response" do
-
       stdout = ""
       stderr = stderr_data
       status = double(:null).as_null_object
