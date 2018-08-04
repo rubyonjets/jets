@@ -1,27 +1,28 @@
 from pprint import pprint
 import json
 
-def response(message, status_code):
+import os.path
+
+def response(body, status_code=200):
     return {
         'statusCode': str(status_code),
-        'body': json.dumps(message),
+        'body': body,
         'headers': {
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/html',
             'Access-Control-Allow-Origin': '*'
             },
         }
 
+def render(file=None):
+    with open(file,'r') as f:
+        return(f.read())
+
 def handle(event, context):
-    print("hot")
-    pprint(event)
+    # html = render(file="public/foo.html")
+    # return response(html, 200)
 
-
-    try:
-        # print("value1 = " + event['key1'])
-        # print("value2 = " + event['key2'])
-        return response({'message': 'Jets::PublicController#show'}, 200)
-    except Exception as e:
-        return response({'message': e.message}, 400)
+    print(event)
+    return response(json.dumps(event), 200)
 
 if __name__ == '__main__':
-    print(handle({"test": "1"}, {}))
+    print(handle({"test": 1}, {}))
