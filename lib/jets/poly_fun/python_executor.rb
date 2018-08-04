@@ -35,10 +35,14 @@ class Jets::PolyFun
       # puts "handler path #{@task.handler_path}"
 
       src = "#{Jets.root}#{@task.poly_src_path}"
-      filename = File.basename(@task.poly_src_path)
-      dest = "#{@temp_dir}/#{filename}"
+      dest = "#{@temp_dir}/#{@task.poly_src_path}"
+      FileUtils.mkdir_p(File.dirname(dest))
       FileUtils.cp(src, dest)
-      # puts "dest #{dest}"
+      puts "dest #{dest}"
+    end
+
+    def lambda_executor_script
+      File.dirname("#{@temp_dir}/#{@task.poly_src_path}") + "/lambda_executor.py"
     end
 
     # Generates a wrapper script that mimics lambda execution. Wrapper script usage:
@@ -117,10 +121,6 @@ EOL
 
     def cleanup
       # FileUtils.rm_rf(@temp_dir)
-    end
-
-    def lambda_executor_script
-      "#{@temp_dir}/lambda_executor.py"
     end
 
     def handler
