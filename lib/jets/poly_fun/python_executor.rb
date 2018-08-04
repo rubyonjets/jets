@@ -17,8 +17,9 @@ class Jets::PolyFun
       @temp_dir = create_tmpdir
       copy_src_to_temp
       generate_lambda_executor
-      run_lambda_executor(event, context)
+      result = run_lambda_executor(event, context)
       cleanup
+      result
     end
 
     def create_tmpdir
@@ -78,7 +79,6 @@ EOL
     end
 
     def cleanup
-      puts "Removing #{@temp_dir}"
       FileUtils.rm_rf(@temp_dir)
     end
 
