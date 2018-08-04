@@ -1,6 +1,6 @@
 {
-  "resource": "/books",
-  "path": "/books",
+  "resource": "/books/1",
+  "path": "/books/1",
   "httpMethod": "GET",
   "headers": {
     "Accept": "*/*",
@@ -49,7 +49,7 @@
       "userAgent": "PostmanRuntime/6.4.1",
       "user": null
     },
-    "resourcePath": "/books",
+    "resourcePath": "/books/1",
     "httpMethod": "GET",
     "apiId": "uhghn8z6t1"
   },

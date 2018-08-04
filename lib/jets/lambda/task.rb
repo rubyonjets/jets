@@ -66,6 +66,12 @@ class Jets::Lambda::Task
   end
 
   def handler_base
-    "handlers/#{@type.pluralize}/#{@class_name.underscore}/#{@meth}"
+    base = "handlers/#{@type.pluralize}/#{@class_name.underscore}"
+    base += "/#{@lang}" if @lang != :ruby
+    base += "/#{@meth}"
+  end
+
+  def poly_src_path
+    handler_path.sub("handlers/", "app/")
   end
 end

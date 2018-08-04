@@ -6,6 +6,7 @@ require "active_support/ordered_hash"
 require "colorize"
 require "fileutils"
 require "pp" # TODO: remove pp after debugging
+require "memoist"
 
 module Jets
   autoload :CLI, "jets/cli"

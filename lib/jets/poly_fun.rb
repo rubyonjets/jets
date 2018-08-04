@@ -11,7 +11,7 @@ module Jets
       @app_meth = app_meth
     end
 
-    def process(event, context={})
+    def run(event, context={})
       if task.lang == :ruby
         @app_class.process(event, context, @app_meth)
       else
