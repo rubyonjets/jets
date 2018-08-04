@@ -57,4 +57,15 @@ class Jets::Lambda::Task
     end
   end
 
+  def poly_handler_value(handler_function)
+    "#{poly_handler_base_path}.#{handler_function}"
+  end
+
+  def poly_handler_path
+    "#{poly_handler_base_path}#{@task.lang_ext}"
+  end
+
+  def poly_handler_base_path
+    "handlers/#{@type.pluralize}/#{@class_name.underscore}/#{@meth}"
+  end
 end

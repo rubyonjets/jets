@@ -5,8 +5,8 @@ class Jets::PolyFun
     end
 
     def run(event, context)
-      executor_class = "#{task.lang}_executor".classify.constantize
-      executor = executor_class.new(task)
+      executor_class = "Jets::PolyFun::#{@task.lang.capitalize}Executor".constantize
+      executor = executor_class.new(@task)
       executor.run(event, context)
     end
   end

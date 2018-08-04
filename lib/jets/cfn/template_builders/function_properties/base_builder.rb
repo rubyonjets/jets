@@ -47,18 +47,6 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       end
     end
 
-    def full_handler
-      return 'tmp/hello.handler' if ENV['TEST_CODE']
-
-      handler = function_properties[:handler]
-      if handler
-        underscored_class = @task.class_name.to_s.underscore
-        "handlers/#{@task.type.pluralize}/#{underscored_class}.#{handler}"
-      else # nil
-        map.handler
-      end
-    end
-
     # Global properties example:
     # jets defaults are in jets/default/application.rb.
     # Your application's default config/application.rb then get used. Example:

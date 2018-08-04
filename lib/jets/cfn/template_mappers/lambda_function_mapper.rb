@@ -43,25 +43,6 @@ class Jets::Cfn::TemplateMappers
       "handlers/#{@task.type.pluralize}/#{@app_class.underscore}.#{meth}"
     end
 
-    # def poly_handler_value(handler_function)
-    #   folder = @app_class.underscore.split('_')[0..-2].join('_') # remove _controller, _job or _rule
-    #   "handlers/#{@task.type.pluralize}/#{folder}/#{@task.meth}.#{handler_function}"
-    # end
-
-    def poly_handler_value(handler_function)
-      "#{poly_handler_base_path}.#{handler_function}"
-    end
-
-    def poly_handler_path
-      "#{poly_handler_base_path}#{@task.lang_ext}"
-    end
-
-    def poly_handler_base_path
-      folder = @app_class.underscore
-      "handlers/#{@task.type.pluralize}/#{folder}/#{@task.meth}"
-    end
-    private :poly_handler_base_path
-
     def code_s3_key
       Jets::Naming.code_s3_key
     end
