@@ -99,7 +99,7 @@ EOL
         error_message = error_lines.pop
         error_type = error_message.split(':').first
         error_lines.shift # remove first line that has the Traceback
-        stack_trace = error_lines.reverse
+        stack_trace = error_lines.reverse # python shows stack trace in opposite order from ruby
         JSON.dump(
           "errorMessage" => error_message,
           "errorType" => error_type, # hardcode
