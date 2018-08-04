@@ -70,8 +70,8 @@ EOL
       IO.write(lambda_executor_script, code)
     end
 
-    # When polymorphic method errors, this method reproduces an error  format that is close
-    # to the lambda error format.  Here's some examples to help example:
+    # When polymorphic method errors, this method reproduces an error in the lambda format
+    # Here's some examples to help example:
     #
     # Example of what the raw python prints out to stderr:
     #
