@@ -66,12 +66,12 @@ EOL
     def run_lambda_executor(event, context)
       command = %Q|python #{lambda_executor_script} '#{JSON.dump(event)}' '#{JSON.dump(context)}'|
       stdout, stderr, status = Open3.capture3(command)
-      puts "=> #{command}".colorize(:green)
-      puts "stdout #{stdout}"
-      puts "stderr #{stderr}"
-      puts "status #{status}"
+      # puts "=> #{command}".colorize(:green)
+      # puts "stdout #{stdout}"
+      # puts "stderr #{stderr}"
+      # puts "status #{status}"
       if status
-        JSON.load(stdout)
+        stdout
       else
         $stderr.puts(stderr)
         {error: stderr}
