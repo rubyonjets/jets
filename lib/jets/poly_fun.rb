@@ -8,11 +8,13 @@ module Jets
 
     def initialize(app_class, app_meth)
       @app_class = app_class # already a Constant, IE: PostController
-      @app_meth = app_meth
+      @app_meth = app_meth.to_sym
     end
 
     def run(event, context={})
       if task.lang == :ruby
+        # controller = PostsController.new(event, content)
+        # resp = controller.edit
         @app_class.process(event, context, @app_meth)
       else
         executor = LambdaExecutor.new(task)

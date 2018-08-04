@@ -49,10 +49,11 @@ class Jets::PolyFun
     #
     #   python /tmp/jets/demo/executor/20180804-12816-imqb9/lambda_executor.py '{}'
     def generate_lambda_executor
+      meth = @task.meth
       code =<<-EOL
 import sys
 import json
-from show import #{handler}
+from #{meth} import #{handler}
 event = json.loads(sys.argv[1])
 context = {}
 resp = #{handler}(event, context)
@@ -65,12 +66,12 @@ EOL
     def run_lambda_executor(event, context)
       command = %Q|python #{lambda_executor_script} '#{JSON.dump(event)}' '#{JSON.dump(context)}'|
       stdout, stderr, status = Open3.capture3(command)
-      # puts "=> #{command}".colorize(:green)
-      # puts "stdout #{stdout}"
-      # puts "stderr #{stderr}"
-      # puts "status #{status}"
+      puts "=> #{command}".colorize(:green)
+      puts "stdout #{stdout}"
+      puts "stderr #{stderr}"
+      puts "status #{status}"
       if status
-        stdout
+        JSON.load(stdout)
       else
         $stderr.puts(stderr)
         {error: stderr}
@@ -79,7 +80,7 @@ EOL
     end
 
     def cleanup
-      FileUtils.rm_rf(@temp_dir)
+      # FileUtils.rm_rf(@temp_dir)
     end
 
     def lambda_executor_script
