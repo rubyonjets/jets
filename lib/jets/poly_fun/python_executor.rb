@@ -70,6 +70,37 @@ EOL
       IO.write(lambda_executor_script, code)
     end
 
+    # When polymorphic method errors, this method reproduces an error  format that is close
+    # to the lambda error format.  Here's some examples to help example:
+    #
+    # Example of what the raw python prints out to stderr:
+    #
+    #   Traceback (most recent call last):
+    #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/lambda_executor.py", line 6, in <module>
+    #       resp = handle(event, context)
+    #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/index.py", line 22, in handle
+    #       return response({'message': e.message}, 400)
+    #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/index.py", line 5, in response
+    #       badcode
+    #   NameError: global name 'badcode' is not defined
+    #
+    # So last line has the error summary info.  Other lines have stack trace after the Traceback indicator.
+    #
+    # Example of the reproduced lambda error format:
+    #
+    #   {
+    #     "errorMessage": "'NameError' object has no attribute 'message'",
+    #     "errorType": "AttributeError",
+    #     "stackTrace": [
+    #       [
+    #         "/var/task/handlers/controllers/posts_controller/python/index.py",
+    #         22,
+    #         "handle",
+    #         "return response({'message': e.message}, 400)"
+    #       ]
+    #     ]
+    #   }
+    #
     def run_lambda_executor(event, context)
       command = %Q|python #{lambda_executor_script} '#{JSON.dump(event)}' '#{JSON.dump(context)}'|
       stdout, stderr, status = Open3.capture3(command)
@@ -80,25 +111,9 @@ EOL
       if status.success?
         stdout
       else
-        # Example of what python prints out to stderr:
-        #
-        #   Traceback (most recent call last):
-        #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/lambda_executor.py", line 6, in <module>
-        #       resp = handle(event, context)
-        #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/index.py", line 22, in handle
-        #       return response({'message': e.message}, 400)
-        #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/index.py", line 5, in response
-        #       badcode
-        #   NameError: global name 'badcode' is not defined
-        #
-        # So last line has the error summary info.  Other lines have stack trace after the Traceback indicator.
-        #
         # We'll mimic the way lambda displays an error.
         # $stderr.puts(stderr) # uncomment to debug
         error_lines = stderr.split("\n")
-        # puts "*" * 30
-        # pp error_lines
-        # puts "*" * 30
         error_message = error_lines.pop
         error_type = error_message.split(':').first
         error_lines.shift # remove first line that has the Traceback
@@ -111,22 +126,8 @@ EOL
       end
     end
 
-    # Example of lambda error format:
-    # {
-    #   "errorMessage": "'NameError' object has no attribute 'message'",
-    #   "errorType": "AttributeError",
-    #   "stackTrace": [
-    #     [
-    #       "/var/task/handlers/controllers/posts_controller/python/index.py",
-    #       22,
-    #       "handle",
-    #       "return response({'message': e.message}, 400)"
-    #     ]
-    #   ]
-    # }
-
     def cleanup
-      # FileUtils.rm_rf(@temp_dir)
+      FileUtils.rm_rf(@temp_dir) unless ENV['KEEP_LAMBDA_WRAPPER']
     end
 
     def handler
