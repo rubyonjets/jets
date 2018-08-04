@@ -57,12 +57,12 @@ class Jets::Lambda::Task
     end
   end
 
-  def get_handler(handler_function)
+  def full_handler(handler_function)
     "#{handler_base}.#{handler_function}"
   end
 
   def handler_path
-    "#{handler_base}#{@task.lang_ext}"
+    "#{handler_base}#{lang_ext}"
   end
 
   def handler_base

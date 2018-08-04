@@ -25,7 +25,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
 
     # Add properties managed by Jets.
     def finalize_properties!(props)
-      handler = get_handler(props)
+      handler = full_handler(props)
       runtime = get_runtime(props)
       props.merge!(
         "FunctionName" => map.function_name,
@@ -39,7 +39,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     end
 
     # Ensure that the handler path is normalized.
-    def get_handler(props)
+    def full_handler(props)
       if props["Handler"]
         map.handler_value(props["Handler"])
       else
