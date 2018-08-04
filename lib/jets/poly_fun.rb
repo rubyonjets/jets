@@ -27,16 +27,9 @@ module Jets
         executor = LambdaExecutor.new(task)
         resp = executor.run(event, context)
         if resp["errorMessage"]
-          # puts resp["errorMessage"]
-          # puts resp["stackTrace"]
-          puts "here1"
-          # pp resp["stackTrace"]
           backtrace = resp["stackTrace"] + caller
           backtrace = backtrace.map { |l| l.sub(/^\s+/,'') }
           raise PythonError.new(resp["errorMessage"], backtrace)
-          puts "here2"
-          # raise
-          # raise
         end
         resp
       end

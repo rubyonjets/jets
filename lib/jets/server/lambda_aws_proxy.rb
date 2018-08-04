@@ -20,7 +20,7 @@ class Jets::Server
       controller_action = find_controller_action
 
       fun = Jets::PolyFun.new(controller_class, controller_action)
-      resp = fun.run(event, context)
+      resp = fun.run(event, context) # check the logs for polymorphic function errors
 
       # Map lambda proxy response format to rack format
       status = resp["statusCode"]
