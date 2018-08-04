@@ -1,4 +1,11 @@
 module Jets
+  class PythonError < StandardError
+    def initialize(message, backtrace)
+      super(message)
+      set_backtrace(backtrace)
+    end
+  end
+
   class PolyFun
     autoload :LambdaExecutor, 'jets/poly_fun/lambda_executor' # main class delegates to other classes
     autoload :PythonExecutor, 'jets/poly_fun/python_executor' # main class delegates to other classes
@@ -18,7 +25,16 @@ module Jets
         @app_class.process(event, context, @app_meth)
       else
         executor = LambdaExecutor.new(task)
-        executor.run(event, context)
+        resp = executor.run(event, context)
+        if resp["errorMessage"]
+          # puts resp["errorMessage"]
+          # puts resp["stackTrace"]
+          puts "here1"
+          raise PythonError.new(resp["errorMessage"], resp["stackTrace"])
+          puts "here2"
+          # raise
+          # raise
+        end
       end
     end
 

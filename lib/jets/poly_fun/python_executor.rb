@@ -66,18 +66,54 @@ EOL
     def run_lambda_executor(event, context)
       command = %Q|python #{lambda_executor_script} '#{JSON.dump(event)}' '#{JSON.dump(context)}'|
       stdout, stderr, status = Open3.capture3(command)
-      # puts "=> #{command}".colorize(:green)
-      # puts "stdout #{stdout}"
-      # puts "stderr #{stderr}"
-      # puts "status #{status}"
-      if status
+      puts "=> #{command}".colorize(:green)
+      puts "stdout #{stdout}"
+      puts "stderr #{stderr}"
+      puts "status #{status}"
+      if status.success?
         stdout
       else
+        # Example of what python prints out to stderr:
+        #
+        #   Traceback (most recent call last):
+        #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/lambda_executor.py", line 6, in <module>
+        #       resp = handle(event, context)
+        #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/index.py", line 22, in handle
+        #       return response({'message': e.message}, 400)
+        #     File "/tmp/jets/lite/executor/20180804-10727-mcs6qk/index.py", line 5, in response
+        #       badcode
+        #   NameError: global name 'badcode' is not defined
+        #
+        # So last line has the error summary info.  Other lines have stack trace after the Traceback indicator.
+        #
+        # We'll mimic the way lambda displays an error.
         $stderr.puts(stderr)
-        {error: stderr}
-        # TODO mimic lambda error response
+        error_lines = stderr.split("\n")
+        error_message = error_lines.pop
+        error_type = error_message.split(':').first
+        error_lines.shift # remove first line that has the Traceback
+        stack_trace = error_lines
+        JSON.dump(
+          "errorMessage" => error_message,
+          "errorType" => error_type, # hardcode
+          "stackTrace" => stack_trace
+        )
       end
     end
+
+    # Example of lambda error format:
+    # {
+    #   "errorMessage": "'NameError' object has no attribute 'message'",
+    #   "errorType": "AttributeError",
+    #   "stackTrace": [
+    #     [
+    #       "/var/task/handlers/controllers/posts_controller/python/index.py",
+    #       22,
+    #       "handle",
+    #       "return response({'message': e.message}, 400)"
+    #     ]
+    #   ]
+    # }
 
     def cleanup
       # FileUtils.rm_rf(@temp_dir)
