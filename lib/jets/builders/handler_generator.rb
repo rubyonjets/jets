@@ -50,7 +50,7 @@ class Jets::Builders
     def native_function(original_path, task)
       source_path = get_source_path(original_path, task)
       # Handler: handlers/controllers/posts_controller.handle
-      dest_path = "#{tmp_app_root}/#{task.poly_handler_path}"
+      dest_path = "#{tmp_app_root}/#{task.handler_path}"
       FileUtils.mkdir_p(File.dirname(dest_path))
       FileUtils.cp(source_path, dest_path)
     end
