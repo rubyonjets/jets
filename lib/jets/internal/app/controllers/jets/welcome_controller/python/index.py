@@ -3,13 +3,12 @@ import json
 
 import os.path
 
-
-def response(message, status_code):
+def response(body, status_code):
     return {
         'statusCode': str(status_code),
-        'body': json.dumps(message),
+        'body': body,
         'headers': {
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/html',
             'Access-Control-Allow-Origin': '*'
             },
         }

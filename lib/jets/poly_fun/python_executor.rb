@@ -33,12 +33,15 @@ class Jets::PolyFun
       # Must use FunctionProperties to get the handler because that the class that combines
       # the mutiple sources of how the handler can get set.
       # puts "handler path #{@task.handler_path}"
-
-      src = "#{Jets.root}#{@task.poly_src_path}"
+      app_class = @task.class_name.constantize
+      internal = app_class.respond_to?(:internal) && app_class.internal
+      src = internal ?
+        "#{File.expand_path("../internal", File.dirname(__FILE__))}/#{@task.poly_src_path}" :
+        "#{Jets.root}#{@task.poly_src_path}"
       dest = "#{@temp_dir}/#{@task.poly_src_path}"
+
       FileUtils.mkdir_p(File.dirname(dest))
       FileUtils.cp(src, dest)
-      puts "dest #{dest}"
     end
 
     def lambda_executor_script

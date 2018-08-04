@@ -6,6 +6,7 @@ require "rack/mime"
 # same way as browsers.
 class Jets::PublicController < Jets::Controller::Base
   layout false
+  internal true
 
   # Use python for deployment speed mainly.
   python :show

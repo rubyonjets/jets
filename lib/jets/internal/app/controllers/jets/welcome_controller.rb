@@ -1,5 +1,6 @@
 class Jets::WelcomeController < Jets::Controller::Base
   layout false
+  internal true
 
   python :index
   # TODO: Leave ruby implementation here, switch to it when ruby lambda is supported
