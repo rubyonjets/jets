@@ -30,7 +30,10 @@ module Jets
           # puts resp["errorMessage"]
           # puts resp["stackTrace"]
           puts "here1"
-          raise PythonError.new(resp["errorMessage"], resp["stackTrace"])
+          # pp resp["stackTrace"]
+          backtrace = resp["stackTrace"] + caller
+          backtrace = backtrace.map { |l| l.sub(/^\s+/,'') }
+          raise PythonError.new(resp["errorMessage"], backtrace)
           puts "here2"
           # raise
           # raise

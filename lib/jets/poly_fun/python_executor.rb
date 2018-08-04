@@ -71,9 +71,9 @@ EOL
       command = %Q|python #{lambda_executor_script} '#{JSON.dump(event)}' '#{JSON.dump(context)}'|
       stdout, stderr, status = Open3.capture3(command)
       puts "=> #{command}".colorize(:green)
-      puts "stdout #{stdout}"
-      puts "stderr #{stderr}"
-      puts "status #{status}"
+      # puts "stdout #{stdout}"
+      # puts "stderr #{stderr}"
+      # puts "status #{status}"
       if status.success?
         stdout
       else
@@ -91,12 +91,15 @@ EOL
         # So last line has the error summary info.  Other lines have stack trace after the Traceback indicator.
         #
         # We'll mimic the way lambda displays an error.
-        $stderr.puts(stderr)
+        # $stderr.puts(stderr) # uncomment to debug
         error_lines = stderr.split("\n")
+        # puts "*" * 30
+        # pp error_lines
+        # puts "*" * 30
         error_message = error_lines.pop
         error_type = error_message.split(':').first
         error_lines.shift # remove first line that has the Traceback
-        stack_trace = error_lines
+        stack_trace = error_lines.reverse
         JSON.dump(
           "errorMessage" => error_message,
           "errorType" => error_type, # hardcode
