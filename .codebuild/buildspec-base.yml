@@ -7,7 +7,7 @@ phases:
       - docker build -t tongueroo/jets:base -f Dockerfile.base .
       - # TODO: docker login commamnds with env vars'
       - mkdir ~/.docker
-      - aws s3 cp s3://$S3_BUCKET/codebuild/jets/docker-config.json ~/.docker/config.json
+      - aws s3 cp s3://S3_BUCKET_DOCKER_CONFIG/codebuild/jets/docker-config.json ~/.docker/config.json
       - docker push tongueroo/jets
 
 artifacts:
