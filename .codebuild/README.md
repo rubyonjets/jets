@@ -36,3 +36,11 @@
 
     STREAM=$(aws codebuild batch-get-builds --ids $BUILD_ID | jq -r '.builds[0].logs.streamName')
     cw tail -f /aws/codebuild/JetsMain $STREAM
+
+## Run CodeBuild Locally
+
+time docker run -it -v /var/run/docker.sock:/var/run/docker.sock \
+  -e "IMAGE_NAME=tongueroo/jets:base" \
+  -e "ARTIFACTS=/tmp/artifacts" \
+  -e "SOURCE=/home/ec2-user/environment/jets" \
+  amazon/aws-codebuild-local

@@ -50,5 +50,6 @@ COPY .codebuild/scripts /tmp/scripts
 RUN bash -eux /tmp/scripts/install-docker-compose.sh
 RUN bash -exu /tmp/scripts/install-java.sh
 RUN bash -exu /tmp/scripts/install-dynamodb-local.sh
+RUN bash -exu /tmp/scripts/install-node.sh
 
 CMD ["/bin/bash"]

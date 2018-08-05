@@ -9,7 +9,9 @@ phases:
       - git submodule update --init
       - /usr/local/bin/dynamodb-local &
       - bundle install
-      - bundle exec rspec
+      - env
+      # - bundle exec rspec
+      - bash -eux .codebuild/integration.sh
 
 artifacts:
   files:

@@ -1,5 +1,41 @@
 #!/bin/bash -exu
 
+cp .codebuild/bin/jets /usr/local/bin/jets
+chmod a+x /usr/local/bin/jets
+export PATH=/usr/local/bin:$PATH
+
+which jets
+
+APP_NAME=demo$(date +%s)
+jets new $APP_NAME # jets new runs bundle and webpacker:install
+cd $APP_NAME
+
+jets generate scaffold Post title:string
+# The DB_ environment variables are set up in the circleci environment variables
+# website GUI under project settings
+jets db:create db:migrate
+
+jets deploy
+
+APP_URL=$(jets url)
+# curl doesnt return error status for 500 errors so will grep for 200
+# to force a return status of false if it fails
+curl -v ${APP_URL}/posts 2>&1 | grep '< HTTP' | grep 200 # should have 200 status
+
+# TODO: run capabara rack-test adapter
+# 1. download spec/features/posts_spec.rb
+# 2. rspec
+# This tests CR of CRUD.  UPDATE and DELETE are WIP because they use PUT and DELETE
+# http methods.
+
+# cleanup the database
+jets db:drop
+
+# delete jets project
+jets delete --force
+
+exit 0
+
 # Interesting, circleci has a custom /usr/local/bundle/bin files that changes
 # how executables work. Example capture:
 # https://gist.github.com/tongueroo/1b41256d5867d14597f0cb5de67295b3
