@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - docker version
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - /bin/true
+      # sync vendor
+      - git submodule sync
+      - git submodule update --init
+      - pwd
+      - bash -eux .codebuild/scripts/install-docker-compose.sh
+      - which docker-compose
+      - bundle install
+      - bundle exec rspec
+
+  # post_build:
+  #   commands:
+  #     - docker push $CONTAINER_REPOSITORY_URL
+
+artifacts:
+  files:
+    - README.md
+    # - target/javawebdemo.war
