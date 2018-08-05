@@ -7,6 +7,8 @@
 
 ## JetsBase
 
+The JetsBase codebuild project projects builds the Docker base image and pushes it to Docker hub.  Here are the commands to manage the codebuild project.
+
     aws codebuild create-project --cli-input-json file://.codebuild/definitions/jets_base.json
     aws codebuild update-project --cli-input-json file://.codebuild/definitions/jets_base.json
 
@@ -20,6 +22,11 @@
 
     STREAM=$(aws codebuild batch-get-builds --ids $BUILD_ID | jq -r '.builds[0].logs.streamName')
     cw tail -f /aws/codebuild/JetsBase $STREAM
+
+If you want to manually build the Docker base image.  Run:
+
+    docker build -t tongueroo/jets:base -f Dockerfile.base .
+    docker push tongueroo/jets:base
 
 ## JetsMain
 
@@ -39,8 +46,12 @@
 
 ## Run CodeBuild Locally
 
-time docker run -it -v /var/run/docker.sock:/var/run/docker.sock \
-  -e "IMAGE_NAME=tongueroo/jets:base" \
-  -e "ARTIFACTS=/tmp/artifacts" \
-  -e "SOURCE=/home/ec2-user/environment/jets" \
-  amazon/aws-codebuild-local
+    time docker run -it -v /var/run/docker.sock:/var/run/docker.sock \
+      -e "IMAGE_NAME=tongueroo/jets:base" \
+      -e "ARTIFACTS=/tmp/artifacts" \
+      -e "SOURCE=/home/ec2-user/environment/jets" \
+      amazon/aws-codebuild-local
+
+## Docker base image
+
+
