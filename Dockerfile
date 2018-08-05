@@ -42,4 +42,13 @@ RUN bundle install --jobs=4 --retry=3 && rm -rf /root/.bundle/cache
 # COPY config/home/irbrc /root/.irbrc
 ENV TERM xterm
 
+# https://docs.docker.com/install/linux/docker-ce/debian/#install-using-the-convenience-script
+# Install docker client because we're going to use docker to
+RUN curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
+
+COPY .codebuild/scripts /tmp/scripts
+RUN bash -eux /tmp/scripts/install-docker-compose.sh
+RUN bash -exu /tmp/scripts/install-java.sh
+RUN bash -exu /tmp/scripts/install-dynamodb-local.sh
+
 CMD ["/bin/bash"]

@@ -1,21 +1,22 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - docker version
+#   pre_build:
+#     commands:
+#       - docker info
+#       - docker ps
 
   build:
     commands:
       - echo Build started on `date`
-      - /bin/true
+      # - docker info
+      # - docker ps
       # sync vendor
       - git submodule sync
       - git submodule update --init
-      - pwd
-      - bash -eux .codebuild/scripts/install-docker-compose.sh
-      - which docker-compose
+      # - which docker-compose
       - bundle install
+      - /usr/local/bin/dynamodb-local &
       - bundle exec rspec
 
   # post_build:
