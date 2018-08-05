@@ -1,27 +1,15 @@
 version: 0.2
 
 phases:
-#   pre_build:
-#     commands:
-#       - docker info
-#       - docker ps
-
   build:
     commands:
       - echo Build started on `date`
-      # - docker info
-      # - docker ps
       # sync vendor
       - git submodule sync
       - git submodule update --init
-      # - which docker-compose
-      - bundle install
       - /usr/local/bin/dynamodb-local &
+      - bundle install
       - bundle exec rspec
-
-  # post_build:
-  #   commands:
-  #     - docker push $CONTAINER_REPOSITORY_URL
 
 artifacts:
   files:
