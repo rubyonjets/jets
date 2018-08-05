@@ -50,6 +50,8 @@ require "action_view"
 # * create zip file
 class Jets::Builders
   class CodeBuilder
+    # When we update JETS_RUBY_VERSION, need to update `def jets_ruby_version` in
+    # vendor/lambdagem/lib/lambdagem/base.rb also.
     JETS_RUBY_VERSION = "2.5.0"
 
     include ActionView::Helpers::NumberHelper # number_to_human_size
