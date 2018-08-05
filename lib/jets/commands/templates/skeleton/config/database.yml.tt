@@ -6,6 +6,7 @@ default: &default
   username: <%%= ENV['DB_USER'] || ENV['USER'] %>
   password: <%%= ENV['DB_PASS'] %>
   host: <%%= ENV["DB_HOST"] %>
+  url: <%%= ENV['DATABASE_URL'] %> # takes higher precedence than other settings
 
 development:
   <<: *default

@@ -361,10 +361,21 @@ EOL
     end
 
     def check_ruby_version
-      if RUBY_VERSION != JETS_RUBY_VERSION
+      unless ruby_version_supported?
         puts "You are using ruby version #{RUBY_VERSION}."
-        abort("You must use ruby #{JETS_RUBY_VERSION} to build the project because it's what Jets uses.".colorize(:red))
+        ruby_variant = JETS_RUBY_VERSION.split('.')[0..1].join('.') + '.x'
+        abort("Jets uses ruby #{JETS_RUBY_VERSION}.  You should use a variant of #{ruby_variant}".colorize(:red))
       end
+    end
+
+    def ruby_version_supported?
+      pattern = /(\d+)\.(\d+)\.(\d+)/
+      md = RUBY_VERSION.match(pattern)
+      ruby = {major: md[1], minor: md[2]}
+      md = JETS_RUBY_VERSION.match(pattern)
+      jets = {major: md[1], minor: md[2]}
+
+      ruby[:major] == jets[:major] && ruby[:minor] == jets[:minor]
     end
 
     def cache_area
