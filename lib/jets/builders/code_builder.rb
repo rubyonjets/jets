@@ -362,9 +362,9 @@ EOL
 
     def check_ruby_version
       unless ruby_version_supported?
-        puts "You are using ruby version #{RUBY_VERSION}."
+        puts "You are using ruby version #{RUBY_VERSION} which is not supported by Jets."
         ruby_variant = JETS_RUBY_VERSION.split('.')[0..1].join('.') + '.x'
-        abort("Jets uses ruby #{JETS_RUBY_VERSION}.  You should use a variant of #{ruby_variant}".colorize(:red))
+        abort("Jets uses ruby #{JETS_RUBY_VERSION}.  You should use a variant of ruby #{ruby_variant}".colorize(:red))
       end
     end
 
