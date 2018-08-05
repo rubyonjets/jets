@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - docker build -t tongueroo/jets:base -f Dockerfile.base .
+      - # TODO: docker login commamnds with env vars
+      - docker push tongueroo/jets
+
+artifacts:
+  files:
+    - README.md
