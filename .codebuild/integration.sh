@@ -4,6 +4,12 @@ cp .codebuild/bin/jets /usr/local/bin/jets
 chmod a+x /usr/local/bin/jets
 export PATH=/usr/local/bin:$PATH
 
+cat >>.env.development <<EOL
+DB_USER=$DB_USER
+DB_PASS=$DB_PASS
+DB_HOST=$DB_HOST
+EOL
+
 which jets
 
 APP_NAME=demo$(date +%s)

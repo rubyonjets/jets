@@ -165,6 +165,8 @@ Add -h to any of the commands for more help.  Examples:
 
   jets call -h
   jets routes -h
+  jets deploy -h
+  jets status -h
   jets dynamodb:create -h
   jets db:create -h
 

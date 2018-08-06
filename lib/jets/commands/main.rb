@@ -88,7 +88,7 @@ module Jets::Commands
     end
 
 
-    desc "url [JETS_ENV]", "App url if routes are defined", hide: true
+    desc "url", "App url if routes are defined"
     long_desc Help.text(:url)
     def url
       Jets::Commands::Url.new(options).display

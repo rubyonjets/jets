@@ -90,6 +90,7 @@ class Jets::Builders
     def start_app_root_setup
       tidy_project
       reconfigure_development_webpacker
+      reconfigure_ruby_version
       generate_node_shims
     end
 
@@ -207,6 +208,14 @@ class Jets::Builders
       config["development"]["compile"] = false # force this to be false for deployment
       new_yaml = YAML.dump(config)
       IO.write(webpacker_yml, new_yaml)
+    end
+
+    # This is in case the user has a 2.5.x variant.
+    # Force usage of ruby version that jets supports
+    # The lambda server only has ruby 2.5.0 installed.
+    def reconfigure_ruby_version
+      webpacker_yml = "#{full(tmp_app_root)}/.ruby-version"
+      IO.write(webpacker_yml, JETS_RUBY_VERSION)
     end
 
     def copy_bundled_to_app_root
