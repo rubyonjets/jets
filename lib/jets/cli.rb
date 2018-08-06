@@ -71,7 +71,6 @@ class Jets::CLI
     args = @given_args.clone
 
     help_args = args & help_flags
-    puts "hi1"
     unless help_args.empty?
       # Allow using help flags at the end of the command to trigger help menu
       args -= help_flags # remove "help" and help flags from args
