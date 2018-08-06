@@ -4,17 +4,17 @@ cp .codebuild/bin/jets /usr/local/bin/jets
 chmod a+x /usr/local/bin/jets
 export PATH=/usr/local/bin:$PATH
 
-cat >>.env.development <<EOL
-DB_USER=$DB_USER
-DB_PASS=$DB_PASS
-DB_HOST=$DB_HOST
-EOL
-
 which jets
 
 APP_NAME=demo$(date +%s)
 jets new $APP_NAME # jets new runs bundle and webpacker:install
 cd $APP_NAME
+
+cat >>.env.development <<EOL
+DB_USER=$DB_USER
+DB_PASS=$DB_PASS
+DB_HOST=$DB_HOST
+EOL
 
 jets generate scaffold Post title:string
 # The DB_ environment variables are set up in the circleci environment variables
@@ -42,7 +42,7 @@ cat > jets.postman_environment.json <<EOL
   "_postman_exported_using": "Postman/6.2.3"
 }
 EOL
-cp .codebuild/jets.postman_collection.json .
+cp $CODEBUILD_SRC_DIR/.codebuild/jets.postman_collection.json .
 
 npm install -g newman
 newman run jets.postman_collection.json -e jets.postman_environment.json
@@ -51,4 +51,4 @@ newman run jets.postman_collection.json -e jets.postman_environment.json
 jets db:drop
 
 # delete jets project
-# jets delete --sure
+jets delete --sure

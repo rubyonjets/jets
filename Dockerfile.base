@@ -48,4 +48,6 @@ RUN bash -exu /tmp/scripts/install-java.sh
 RUN bash -exu /tmp/scripts/install-dynamodb-local.sh
 RUN bash -exu /tmp/scripts/install-node.sh
 
+RUN apt-get install -y zip
+
 CMD ["/bin/bash"]
