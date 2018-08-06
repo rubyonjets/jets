@@ -87,11 +87,16 @@ module Jets::Commands
       Jets::Cfn::Status.new(options).run
     end
 
-
     desc "url", "App url if routes are defined"
     long_desc Help.text(:url)
     def url
       Jets::Commands::Url.new(options).display
+    end
+
+    desc "version", "Prints Jets version"
+    long_desc Help.text(:version)
+    def version
+      puts Jets.version
     end
 
     long_desc Help.text(:new)
