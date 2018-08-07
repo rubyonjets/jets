@@ -88,7 +88,7 @@ class Jets::Commands::Delete
     end
 
     unless sure =~ /^y/
-      puts "Phew! Config was not deleted."
+      puts "Phew! Jets '#{Jets.config.project_namespace}' project was not deleted."
       exit 0
     end
   end
