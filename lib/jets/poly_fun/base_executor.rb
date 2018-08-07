@@ -23,7 +23,7 @@ class Jets::PolyFun
     end
 
     def write_code(code)
-      # puts "lambda_executor_script #{lambda_executor_script}"
+      puts "lambda_executor_script #{lambda_executor_script}" if ENV['KEEP_LAMBDA_WRAPPER']
       IO.write(lambda_executor_script, code)
     end
 
