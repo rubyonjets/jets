@@ -1,6 +1,3 @@
-require 'open3'
-require 'tmpdir'
-
 class Jets::PolyFun
   class PythonExecutor < BaseExecutor
     # Code for wrapper script that mimics lambda execution. Wrapper script usage:

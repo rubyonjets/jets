@@ -1,3 +1,6 @@
+require 'open3'
+require 'tmpdir'
+
 class Jets::PolyFun
   class BaseExecutor
     extend Memoist
