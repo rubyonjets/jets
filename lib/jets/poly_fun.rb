@@ -1,9 +1,13 @@
 module Jets
   class PolyFun
     autoload :LambdaExecutor, 'jets/poly_fun/lambda_executor' # main class delegates to other classes
-    autoload :PythonError, 'jets/poly_fun/python_error'
+
+    autoload :BaseExecutor, 'jets/poly_fun/base_executor'
     autoload :PythonExecutor, 'jets/poly_fun/python_executor' # main class delegates to other classes
     autoload :NodeExecutor, 'jets/poly_fun/node_executor' # main class delegates to other classes
+
+    autoload :PythonError, 'jets/poly_fun/python_error'
+    autoload :NodeError, 'jets/poly_fun/node_error'
 
     extend Memoist
 
@@ -21,15 +25,22 @@ module Jets
         executor = LambdaExecutor.new(task)
         resp = executor.run(event, context)
         if resp["errorMessage"]
-          backtrace = resp["stackTrace"] + caller
-          backtrace = backtrace.map { |l| l.sub(/^\s+/,'') }
-          raise PythonError.new(resp["errorMessage"], backtrace)
+          raise_error(resp)
         end
         resp
       end
     end
 
+    def raise_error(resp)
+      backtrace = resp["stackTrace"] + caller
+      backtrace = backtrace.map { |l| l.sub(/^\s+/,'') }
+      # IE: Jets::PolyFun::PythonError
+      error_class = "Jets::PolyFun::#{task.lang.to_s.classify}Error".constantize
+      raise error_class.new(resp["errorMessage"], backtrace)
+    end
+
     def task
+      # @app_class.all_tasks[@app_meth]
       @app_class.tasks.find { |t| t.meth == @app_meth }
     end
     memoize :task
