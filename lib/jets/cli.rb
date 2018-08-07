@@ -77,6 +77,7 @@ class Jets::CLI
       args[0] = meth # first command will always be the meth now since
         # we removed the help flags
       args.unshift("help")
+      args.compact!
       return args
     end
 
