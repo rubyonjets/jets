@@ -26,6 +26,7 @@ module Jets::Commands
     desc "delete", "Delete project and all its resources"
     long_desc Help.text(:delete)
     option :sure, type: :boolean, desc: "Skip are you sure prompt."
+    option :wait, type: :boolean, default: true, desc: "Wait for stack deletion to complete."
     def delete
       Delete.new(options).run
     end
