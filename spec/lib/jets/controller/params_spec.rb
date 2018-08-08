@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Controller::Params do
   let(:controller) {
     controller = PostsController.new(event, nil, "update")

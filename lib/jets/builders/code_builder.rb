@@ -50,6 +50,8 @@ require "action_view"
 # * create zip file
 class Jets::Builders
   class CodeBuilder
+    # When we update JETS_RUBY_VERSION, need to update `def jets_ruby_version` in
+    # vendor/lambdagem/lib/lambdagem/base.rb also.
     JETS_RUBY_VERSION = "2.5.0"
 
     include ActionView::Helpers::NumberHelper # number_to_human_size
@@ -72,23 +74,29 @@ class Jets::Builders
       Dir.chdir(full(tmp_app_root)) do
         # These commands run from project root
         start_app_root_setup
-        bundle_in_cache_area
+        bundle_install
         finish_app_root_setup
         create_zip_file
       end
     end
 
+    # Finds out of the app has polymorphic functions only and zero ruby functions.
+    # In this case, we can skip a lot of the ruby related building and speed up the
+    # deploy process.
+    def poly_only?
+      Jets::Commands::Build.poly_only?
+    end
+
     def start_app_root_setup
       tidy_project
       reconfigure_development_webpacker
+      reconfigure_ruby_version
       generate_node_shims
     end
 
-    def bundle_in_cache_area
-      bundle_install
-    end
-
     def finish_app_root_setup
+      return if poly_only?
+
       copy_bundled_to_app_root
       setup_bundle_config
       extract_ruby
@@ -127,19 +135,18 @@ class Jets::Builders
       sh("JETS_ENV=#{Jets.env} #{webpack_bin}")
     end
 
-
     # Cleans out non-cached files like code-*.zip in Jets.build_root
     # for a clean start. Also ensure that the /tmp/jets/project build root exists.
     #
     # Most files are kept around after the build process for inspection and
-    # debugging. So we have to clean out the files. But we only want to clean ou
+    # debugging. So we have to clean out the files. But we only want to clean out
     # some of the files.
     def clean_start
       Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
       FileUtils.mkdir_p(Jets.build_root) # /tmp/jets/demo
     end
 
-    # Copy project into temporarly directory. Do this so we can keep the project
+    # Copy project into temporary directory. Do this so we can keep the project
     # directory untouched and we can also remove a bunch of unnecessary files like
     # logs before zipping it up.
     def copy_project
@@ -154,7 +161,7 @@ class Jets::Builders
     end
 
     # Move the node modules to the tmp build folder to speed up project copying.
-    # A little bit risk because a ctrl-c in the middle of the project copying
+    # A little bit risky because a ctrl-c in the middle of the project copying
     # results in a missing node_modules but user can easily rebuild that.
     #
     # Tesing shows 6.623413 vs 0.027754 speed improvement.
@@ -173,7 +180,7 @@ class Jets::Builders
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{full(tmp_app_root)}/#{exclude}"
         FileUtils.rm_rf(remove_path)
-        puts "  rm -rf #{remove_path}"
+        # puts "  rm -rf #{remove_path}" # uncomment to debug
       end
     end
 
@@ -201,6 +208,14 @@ class Jets::Builders
       config["development"]["compile"] = false # force this to be false for deployment
       new_yaml = YAML.dump(config)
       IO.write(webpacker_yml, new_yaml)
+    end
+
+    # This is in case the user has a 2.5.x variant.
+    # Force usage of ruby version that jets supports
+    # The lambda server only has ruby 2.5.0 installed.
+    def reconfigure_ruby_version
+      ruby_version = "#{full(tmp_app_root)}/.ruby-version"
+      IO.write(ruby_version, JETS_RUBY_VERSION)
     end
 
     def copy_bundled_to_app_root
@@ -293,6 +308,8 @@ EOL
     # project gets built again not all the gems from get installed from the
     # beginning.
     def bundle_install
+      return if poly_only?
+
       headline "Bundling: running bundle install in cache area: #{cache_area}."
 
       copy_gemfiles
@@ -355,10 +372,21 @@ EOL
     end
 
     def check_ruby_version
-      if RUBY_VERSION != JETS_RUBY_VERSION
-        puts "You are using ruby version #{RUBY_VERSION}."
-        abort("You must use ruby #{JETS_RUBY_VERSION} to build the project because it's what Jets uses.".colorize(:red))
+      unless ruby_version_supported?
+        puts "You are using ruby version #{RUBY_VERSION} which is not supported by Jets."
+        ruby_variant = JETS_RUBY_VERSION.split('.')[0..1].join('.') + '.x'
+        abort("Jets uses ruby #{JETS_RUBY_VERSION}.  You should use a variant of ruby #{ruby_variant}".colorize(:red))
       end
+    end
+
+    def ruby_version_supported?
+      pattern = /(\d+)\.(\d+)\.(\d+)/
+      md = RUBY_VERSION.match(pattern)
+      ruby = {major: md[1], minor: md[2]}
+      md = JETS_RUBY_VERSION.match(pattern)
+      jets = {major: md[1], minor: md[2]}
+
+      ruby[:major] == jets[:major] && ruby[:minor] == jets[:minor]
     end
 
     def cache_area

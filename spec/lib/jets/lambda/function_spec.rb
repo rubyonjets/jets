@@ -1,5 +1,3 @@
-require "spec_helper"
-
 class TestHelloFunction < Jets::Lambda::Function
   # first method is automatically used as the handler
   def handler(event, context={})

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Server::ApiGateway do
   it "call" do
     env = { "PATH_INFO" => "/posts/tung/edit", "REQUEST_METHOD" => "GET" }

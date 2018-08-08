@@ -7,7 +7,7 @@ module Jets::Application::Middleware
     #
     #   require "jets"
     #   run Jets.application
-    require "jets/server/webpacker_setup" # makes "use Webpacker::DevServerProxy" works
+    require "jets/server/webpacker_setup" if Jets.webpacker? # makes "use Webpacker::DevServerProxy" works
     triplet = assemble_app.call(env)
   end
 
@@ -15,7 +15,7 @@ module Jets::Application::Middleware
     Rack::Builder.new do
       map("/") do
         use Jets::Server::TimingMiddleware
-        use Webpacker::DevServerProxy
+        use Webpacker::DevServerProxy if Jets.webpacker?
         run Jets::Server
       end
     end

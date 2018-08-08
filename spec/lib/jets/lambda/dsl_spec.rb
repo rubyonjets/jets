@@ -1,5 +1,3 @@
-require "spec_helper"
-
 class TestPropertiesController < ApplicationController
   properties(
     dead_letter_config: "arn", timeout: 20, role: "myrole", memory_size: 1000

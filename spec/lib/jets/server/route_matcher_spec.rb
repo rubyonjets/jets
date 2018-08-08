@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Server::RouteMatcher do
   let(:matcher) { Jets::Server::RouteMatcher.new(env) }
 

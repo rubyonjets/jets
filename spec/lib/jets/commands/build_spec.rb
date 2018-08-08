@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Commands::Build do
   before(:each) do
     FileUtils.rm_f("spec/fixtures/project/handlers/controllers/posts.js")

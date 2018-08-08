@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::FunctionBuilder do
   let(:builder) do
     Jets::Cfn::TemplateBuilders::FunctionBuilder.new(klass)

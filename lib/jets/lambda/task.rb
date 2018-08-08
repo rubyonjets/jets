@@ -1,16 +1,26 @@
 class Jets::Lambda::Task
   attr_accessor :class_name, :type
-  attr_reader :meth, :properties
+  attr_reader :meth, :properties, :lang
   def initialize(class_name, meth, options={})
     @class_name = class_name.to_s # use at EventsRuleMapper#full_task_name
     @meth = meth
     @options = options
     @type = options[:type] || get_type  # controller, job, or function
     @properties = options[:properties] || {}
+    @lang = options[:lang] || :ruby
   end
 
   def name
     @meth
+  end
+
+  @@lang_exts = {
+    ruby: '.rb',
+    python: '.py',
+    node: '.js',
+  }
+  def lang_ext
+    @@lang_exts[@lang]
   end
 
   # The get_type method works for controller and job classes.
@@ -43,8 +53,25 @@ class Jets::Lambda::Task
   # Returns: "controller", "job" or nil
   def get_type
     unless @class_name.empty? # when anonymous class is created with Class.new
-      @class_name.underscore.split('_').last # controller or job
+      @class_name.underscore.split('_').last # controller, job or rule
     end
   end
 
+  def full_handler(handler_function)
+    "#{handler_base}.#{handler_function}"
+  end
+
+  def handler_path
+    "#{handler_base}#{lang_ext}"
+  end
+
+  def handler_base
+    base = "handlers/#{@type.pluralize}/#{@class_name.underscore}"
+    base += "/#{@lang}" if @lang != :ruby
+    base += "/#{@meth}"
+  end
+
+  def poly_src_path
+    handler_path.sub("handlers/", "app/")
+  end
 end

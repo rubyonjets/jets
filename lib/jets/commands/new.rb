@@ -10,7 +10,7 @@ module Jets::Commands
         [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
-        [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap"], # same option in WebpackerTemplate
+        [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
       ]
     end

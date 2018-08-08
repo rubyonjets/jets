@@ -1,5 +1,3 @@
-require "spec_helper"
-
 class RedirectionController < Jets::Controller::Base
 end
 

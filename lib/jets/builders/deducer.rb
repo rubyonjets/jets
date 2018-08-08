@@ -48,11 +48,15 @@ class Jets::Builders
       @klass ||= Jets::Klass.from_path(@relative_path)
     end
 
+    def lang(meth)
+      klass.tasks.find
+    end
+
     # This gets called in the node shim js template
-    def handler_for(method)
+    def handler_for(meth)
       # possibly not include _function
       underscored_name = @relative_path.sub(%r{app/(\w+)/},'').sub('.rb','')
-      "handlers/#{process_type.pluralize}/#{underscored_name}.#{method}"
+      "handlers/#{process_type.pluralize}/#{underscored_name}.#{meth}"
     end
 
     # Example return: "handlers/controllers/posts.js"

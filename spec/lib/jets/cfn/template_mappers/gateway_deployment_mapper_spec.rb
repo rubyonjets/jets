@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper do
   let(:map) do
     Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.new("path", "s3-bucket")

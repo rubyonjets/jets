@@ -43,7 +43,9 @@ class Jets::Commands::Call
     # Example:
     #   PostsController.process(event, context, meth)
     event = JSON.load(transformed_event) || {} # transformed_event is JSON text String
-    result = klass.process(event, {}, guesser.method_name)
+
+    fun = Jets::PolyFun.new(klass, guesser.method_name)
+    result = fun.run(event) # check the logs for polymorphic function errors
     # Note: even though data might not always be json, the JSON.dump does a
     # good job of not bombing, so always calling it to simplify code.
 

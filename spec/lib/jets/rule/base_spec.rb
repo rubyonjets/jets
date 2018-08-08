@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Rule::Base do
   let(:null) { double(:null).as_null_object }
 

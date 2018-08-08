@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Klass do
   it "class_name" do
     class_name = Jets::Klass.class_name("app/functions/hello_function.rb")

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Server::LambdaAwsProxy do
   let(:proxy) { Jets::Server::LambdaAwsProxy.new(route, env) }
   let(:route) do

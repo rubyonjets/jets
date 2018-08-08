@@ -19,9 +19,18 @@ class Jets::CLI
     if command_class
       boot_jets
       command_class.perform(full_command, thor_args)
+    elsif version_requested?
+      puts Jets.version
     else
       main_help
     end
+  end
+
+  def version_requested?
+    #   jets --version
+    #   jets -v
+    version_flags = ["--version", "-v"]
+    @given_args.length == 1 && !(@given_args & version_flags).empty?
   end
 
   # The commands new and help do not call Jets.boot. Main reason is that
@@ -62,15 +71,18 @@ class Jets::CLI
     args = @given_args.clone
 
     help_args = args & help_flags
-    if help_args.empty?
-      args[0] = meth # reassigns the command without the namespace
-    else
+    unless help_args.empty?
       # Allow using help flags at the end of the command to trigger help menu
       args -= help_flags # remove "help" and help flags from args
       args[0] = meth # first command will always be the meth now since
         # we removed the help flags
       args.unshift("help")
+      args.compact!
+      return args
     end
+
+    # reassigns the command without the namespace if reached here
+    args[0] = meth
     args.compact
   end
 
@@ -165,6 +177,8 @@ Add -h to any of the commands for more help.  Examples:
 
   jets call -h
   jets routes -h
+  jets deploy -h
+  jets status -h
   jets dynamodb:create -h
   jets db:create -h
 

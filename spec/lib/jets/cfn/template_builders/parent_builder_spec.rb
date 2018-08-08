@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::ParentBuilder do
   context "first run" do
     let(:builder) do
@@ -21,7 +19,7 @@ describe Jets::Cfn::TemplateBuilders::ParentBuilder do
         expect(resource_types).to include("AWS::IAM::Role")
         expect(resource_types).not_to include("AWS::CloudFormation::Stack")
 
-        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-parent.yml"
+        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test.yml"
       end
     end
   end

@@ -37,5 +37,14 @@ class Jets::Controller
       super
       @request = Request.new(event)
     end
+
+    class_attribute :internal_controller
+    def self.internal(value=nil)
+      if !value.nil?
+        self.internal_controller = value
+      else
+        self.internal_controller
+      end
+    end
   end
 end

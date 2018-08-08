@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "Route" do
   it "evaluates route info" do
     route = Jets::Route.new(path: "posts", method: :get, to: "posts#index")

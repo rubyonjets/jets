@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateMappers::ConfigRuleMapper do
   let(:map) do
     Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(task)

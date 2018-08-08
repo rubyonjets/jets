@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
   let(:map) do
     Jets::Cfn::TemplateMappers::GatewayMethodMapper.new(route)

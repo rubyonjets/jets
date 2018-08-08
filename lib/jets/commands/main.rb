@@ -26,6 +26,7 @@ module Jets::Commands
     desc "delete", "Delete project and all its resources"
     long_desc Help.text(:delete)
     option :sure, type: :boolean, desc: "Skip are you sure prompt."
+    option :wait, type: :boolean, default: true, desc: "Wait for stack deletion to complete."
     def delete
       Delete.new(options).run
     end
@@ -87,11 +88,16 @@ module Jets::Commands
       Jets::Cfn::Status.new(options).run
     end
 
-
-    desc "url [JETS_ENV]", "App url if routes are defined", hide: true
+    desc "url", "App url if routes are defined"
     long_desc Help.text(:url)
     def url
       Jets::Commands::Url.new(options).display
+    end
+
+    desc "version", "Prints Jets version"
+    long_desc Help.text(:version)
+    def version
+      puts Jets.version
     end
 
     long_desc Help.text(:new)

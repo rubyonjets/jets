@@ -26,7 +26,11 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_function(task)
-      builder = FunctionPropertiesBuilder.new(task)
+      # Examples:
+      #   FunctionProperties::RubyBuilder
+      #   FunctionProperties::PythonBuilder
+      builder_class = "Jets::Cfn::TemplateBuilders::FunctionProperties::#{task.lang.to_s.classify}Builder".constantize
+      builder = builder_class.new(task)
       logical_id = builder.map.logical_id
       add_resource(logical_id, "AWS::Lambda::Function", builder.properties)
     end

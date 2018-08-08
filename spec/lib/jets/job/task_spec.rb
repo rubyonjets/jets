@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Job::Task do
 
   context "rate used" do

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Commands::RakeCommand do
   context Jets::Commands::RakeCommand do
 

@@ -58,6 +58,14 @@ module Jets::Lambda::Dsl
       end
       alias_method :memory, :memory_size
 
+      def handler(value)
+        properties(handler: value)
+      end
+
+      def runtime(value)
+        properties(runtime: value)
+      end
+
       def properties(options={})
         @properties ||= {}
         @properties.deep_merge!(options)
@@ -70,6 +78,15 @@ module Jets::Lambda::Dsl
         return unless public_method_defined?(meth)
 
         register_task(meth)
+      end
+
+      def register_task(meth, lang=:ruby)
+        # Note: for anonymous classes like for app/functions self.name is ""
+        # We adjust the class name when we build the functions later in
+        # FunctionContstructor#adjust_tasks.
+        all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
+          properties: @properties, lang: lang)
+
         # Done storing options, clear out for the next added method.
         clear_properties
         # Important to clear @properties at the end of registering outside of
@@ -79,14 +96,7 @@ module Jets::Lambda::Dsl
         #
         # Both Jets::Job::Base and Jets::Lambda::Functions have Dsl modules included.
         # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Dsl behavior.
-      end
 
-      def register_task(meth)
-        # Note: for anonymous classes like for app/functions self.name is ""
-        # We adjust the class name when we build the functions later in
-        # FunctionContstructor#adjust_tasks.
-        all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          properties: @properties)
         true
       end
 
@@ -120,6 +130,19 @@ module Jets::Lambda::Dsl
       #   [:index, :new, :create, :show]
       def lambda_functions
         all_tasks.keys
+      end
+
+      # Polymorphic support
+      def defpoly(lang, meth)
+        register_task(meth, lang)
+      end
+
+      def python(meth)
+        defpoly(:python, meth)
+      end
+
+      def node(meth)
+        defpoly(:node, meth)
       end
     end
   end

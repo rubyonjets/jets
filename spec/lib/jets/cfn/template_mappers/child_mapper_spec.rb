@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateMappers::ChildMapper do
   let(:map) do
     Jets::Cfn::TemplateMappers::ChildMapper.new("#{Jets.build_root}/templates/#{Jets.config.project_namespace}-posts-controller.yml", "s3-bucket")

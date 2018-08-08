@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateBuilders::JobBuilder do
   let(:builder) do
     Jets::Cfn::TemplateBuilders::JobBuilder.new(HardJob)

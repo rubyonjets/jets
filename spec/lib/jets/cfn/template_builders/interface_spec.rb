@@ -1,5 +1,3 @@
-require "spec_helper"
-
 class InterfaceTest
   include Jets::Cfn::TemplateBuilders::Interface
 end

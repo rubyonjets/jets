@@ -6,6 +6,7 @@ require "active_support/ordered_hash"
 require "colorize"
 require "fileutils"
 require "pp" # TODO: remove pp after debugging
+require "memoist"
 
 module Jets
   autoload :CLI, "jets/cli"
@@ -21,6 +22,7 @@ module Jets
   autoload :Job, 'jets/job'
   autoload :Lambda, 'jets/lambda'
   autoload :Naming, 'jets/naming'
+  autoload :PolyFun, 'jets/poly_fun'
   autoload :Processors, 'jets/processors'
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
@@ -55,6 +57,6 @@ if File.exist?("#{Jets.root}config/database.yml")
   # Note: think this is only needed for specs
   # Apps require pg in their own Gemfile via bundler
   exists = File.exist?("/var/task/bundled/gems/ruby/2.5.0/gems/pg-0.21.0/lib/pg_ext.so")
-  Jets.logger.info("pg_ext.so exists #{exists.inspect}")
+  # Jets.logger.info("pg_ext.so exists #{exists.inspect}")
   require "pg" if Gem.loaded_specs.has_key?('pg')
 end

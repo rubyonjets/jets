@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Commands::Call::AnonymousGuesser do
   let(:guesser) { Jets::Commands::Call::AnonymousGuesser.new(function_name) }
 

@@ -1,0 +1,3 @@
+#!/bin/bash -eux
+
+exec $CODEBUILD_SRC_DIR/exe/jets "$@"

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateMappers::ApiGatewayMapper do
   let(:map) do
     Jets::Cfn::TemplateMappers::ApiGatewayMapper.new("#{Jets.build_root}/templates/#{Jets.config.project_namespace}-api-gateway.yml", "s3-bucket")

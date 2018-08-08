@@ -16,3 +16,4 @@ test/version_tmp
 tmp
 
 spec/fixtures/project/handlers
+.codebuild/definitions

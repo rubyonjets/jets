@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Cfn::TemplateMappers::EventsRuleMapper do
   let(:map) do
     Jets::Cfn::TemplateMappers::EventsRuleMapper.new(task)

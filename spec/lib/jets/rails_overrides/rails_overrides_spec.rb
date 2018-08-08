@@ -1,4 +1,3 @@
-require "spec_helper"
 require "jets/rails_overrides"
 
 class FakeView

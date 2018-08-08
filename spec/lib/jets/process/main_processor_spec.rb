@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Processors::MainProcessor do
   let(:processor) do
     Jets::Processors::MainProcessor.new(

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 # to run specs with what"s remembered from vcr
 #   $ rake
 #

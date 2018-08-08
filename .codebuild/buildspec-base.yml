@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - mkdir ~/.docker
+      - aws s3 cp s3://S3_BUCKET_DOCKER_CONFIG/codebuild/jets/docker-config.json ~/.docker/config.json
+      - docker build -t tongueroo/jets:base -f Dockerfile.base .
+      - docker push tongueroo/jets
+
+artifacts:
+  files:
+    - README.md

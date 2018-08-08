@@ -1,12 +1,12 @@
 # Jets::Cfn::TemplateBuilders does not stick to the TemplateBuilders::Interface.
 # It builds the properties of a function. Usage:
 #
-#   builder = FunctionPropertiesBuilder.new(task)
+#   builder = FunctionProperties::PythonBuilder.new(task)
 #   buider.properties
 #   buider.map.logical_id # to access Function's logical id
 #
-class Jets::Cfn::TemplateBuilders
-  class FunctionPropertiesBuilder
+module Jets::Cfn::TemplateBuilders::FunctionProperties
+  class BaseBuilder
     def initialize(task)
       @task = task
     end
@@ -16,13 +16,47 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def properties
-      env_file_properties
+      props = env_file_properties
         .deep_merge(global_properties)
         .deep_merge(class_properties)
         .deep_merge(function_properties)
-        .deep_merge(fixed_properties)
+      finalize_properties!(props)
     end
 
+    # Add properties managed by Jets.
+    def finalize_properties!(props)
+      handler = full_handler(props)
+      runtime = get_runtime(props)
+      props.merge!(
+        "FunctionName" => map.function_name,
+        "Handler" => handler,
+        "Runtime" => runtime,
+      )
+    end
+
+    def get_runtime(props)
+      props["Runtime"] || default_runtime
+    end
+
+    # Ensure that the handler path is normalized.
+    def full_handler(props)
+      if props["Handler"]
+        map.handler_value(props["Handler"])
+      else
+        default_handler
+      end
+    end
+
+    # Global properties example:
+    # jets defaults are in jets/default/application.rb.
+    # Your application's default config/application.rb then get used. Example:
+    #
+    #   Jets.application.configure do
+    #     config.function = ActiveSupport::OrderedOptions.new
+    #     config.function.timeout = 10
+    #     config.function.runtime = "nodejs8.10"
+    #     config.function.memory_size = 3008
+    #   end
     def global_properties
       baseline = {
         Code: {
@@ -39,6 +73,12 @@ class Jets::Cfn::TemplateBuilders
       baseline.deep_merge(app_config_props)
     end
 
+    # Class properties example:
+    #
+    #   class PostsController < ApplicationController
+    #     class_timeout 22
+    #     ...
+    #   end
     def class_properties
       # klass is PostsController, HardJob, GameRule, Hello or HelloFunction
       klass = Jets::Klass.from_task(@task)
@@ -46,18 +86,15 @@ class Jets::Cfn::TemplateBuilders
       Pascalize.pascalize(class_properties.deep_stringify_keys)
     end
 
+    # Function properties example:
+    #
+    # class PostsController < ApplicationController
+    #   timeout 18
+    #   def index
+    #     ...
+    #   end
     def function_properties
       Pascalize.pascalize(@task.properties.deep_stringify_keys)
-    end
-
-    # Do not allow overriding of fixed properties. Changing properties will
-    # likely cause issues with Jets.
-    def fixed_properties
-      handler = ENV['TEST_CODE'] ? 'tmp/hello.handler' : map.handler
-      {
-        FunctionName: map.function_name,
-        Handler: handler,
-      }
     end
 
     def env_file_properties

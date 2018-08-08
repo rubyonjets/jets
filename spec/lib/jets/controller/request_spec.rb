@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Controller::Request do
   let(:request) { Jets::Controller::Request.new(event) }
 

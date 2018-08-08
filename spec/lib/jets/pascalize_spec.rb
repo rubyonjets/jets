@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "pascalize" do
   it "pascalize keys" do
     h = {"foo_bar" => 1}

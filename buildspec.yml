@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      # sync vendor
+      - git submodule sync
+      - git submodule update --init
+      - /usr/local/bin/dynamodb-local &
+      - bundle install
+      - bundle exec rspec # unit tests
+      # uncomment integration test for now
+      # - bash -eux .codebuild/integration.sh # test with newman and postman
+
+artifacts:
+  files:
+    - README.md

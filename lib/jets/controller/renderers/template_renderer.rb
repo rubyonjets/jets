@@ -87,7 +87,7 @@ module Jets::Controller::Renderers
 
       ActionController::Base.append_view_path("#{Jets.root}app/views")
 
-      setup_webpacker
+      setup_webpacker if Jets.webpacker?
     end
 
     def setup_webpacker

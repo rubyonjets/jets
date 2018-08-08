@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Jets::Router do
   let(:router) { Jets::Router.new }
 
