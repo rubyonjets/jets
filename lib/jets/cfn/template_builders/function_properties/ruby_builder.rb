@@ -1,7 +1,7 @@
 module Jets::Cfn::TemplateBuilders::FunctionProperties
   class RubyBuilder < BaseBuilder
     def default_runtime
-      "nodejs6.10" # using node shim for ruby support
+      "nodejs8.10" # using node shim for ruby support
     end
 
     # Override this in subclasses like PythonBuilder.
