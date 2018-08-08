@@ -51,4 +51,4 @@ newman run jets.postman_collection.json -e jets.postman_environment.json
 jets db:drop
 
 # delete jets project
-jets delete --sure
+jets delete --sure --no-wait

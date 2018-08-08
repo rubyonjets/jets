@@ -9,11 +9,9 @@ phases:
       - git submodule update --init
       - /usr/local/bin/dynamodb-local &
       - bundle install
-      - env
-      # - bundle exec rspec
-      - bash -eux .codebuild/integration.sh
+      - bundle exec rspec # unit tests
+      - bash -eux .codebuild/integration.sh # test with newman and postman
 
 artifacts:
   files:
     - README.md
-    # - target/javawebdemo.war

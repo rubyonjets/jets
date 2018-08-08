@@ -120,7 +120,7 @@ module Jets::Commands
 
     def self.poly_only?
       # Scans all the app code and look for any methods that are ruby.
-      # If any method is written in written then we know the app is not a
+      # If any method is written in ruby then we know the app is not a
       # soley polymorphic non-ruby app.
       has_ruby = app_files.detect do |path|
         # 1. remove app/controllers or app/jobs, etc

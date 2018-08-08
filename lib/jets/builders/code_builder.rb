@@ -214,8 +214,8 @@ class Jets::Builders
     # Force usage of ruby version that jets supports
     # The lambda server only has ruby 2.5.0 installed.
     def reconfigure_ruby_version
-      webpacker_yml = "#{full(tmp_app_root)}/.ruby-version"
-      IO.write(webpacker_yml, JETS_RUBY_VERSION)
+      ruby_version = "#{full(tmp_app_root)}/.ruby-version"
+      IO.write(ruby_version, JETS_RUBY_VERSION)
     end
 
     def copy_bundled_to_app_root
