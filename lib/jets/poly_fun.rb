@@ -3,8 +3,8 @@ module Jets
     autoload :LambdaExecutor, 'jets/poly_fun/lambda_executor' # main class delegates to other classes
 
     autoload :BaseExecutor, 'jets/poly_fun/base_executor'
-    autoload :PythonExecutor, 'jets/poly_fun/python_executor' # main class delegates to other classes
-    autoload :NodeExecutor, 'jets/poly_fun/node_executor' # main class delegates to other classes
+    autoload :PythonExecutor, 'jets/poly_fun/python_executor'
+    autoload :NodeExecutor, 'jets/poly_fun/node_executor'
 
     autoload :PythonError, 'jets/poly_fun/python_error'
     autoload :NodeError, 'jets/poly_fun/node_error'
@@ -40,8 +40,7 @@ module Jets
     end
 
     def task
-      # @app_class.all_tasks[@app_meth]
-      @app_class.tasks.find { |t| t.meth == @app_meth }
+      @app_class.all_tasks[@app_meth]
     end
     memoize :task
   end
