@@ -1,0 +1,102 @@
+// Global styling for this template
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    @include body-font;
+}
+
+a {
+    color: #0275d8;
+    @include transition-all;
+    &:hover,
+    &:focus {
+        color: darken(#0275d8, 10%);
+    }
+}
+
+hr {
+    max-width: 100px;
+    margin: 25px auto 0;
+    border-width: 1px;
+    border-color: fade-out($gray-darker, .9);
+}
+
+hr.light {
+    border-color: white;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    @include heading-font;
+}
+
+p {
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    @media (min-width:992px) {
+        font-size: 1.1em;
+    }
+}
+
+li {
+    font-size: 16px;
+    @media (min-width:992px) {
+        font-size: 18px;
+    }
+}
+
+// code blocks
+pre {
+    font-size: 12px;
+}
+
+table td {
+    vertical-align: top;
+}
+
+code {
+    font-size: 80%;
+}
+
+
+section {
+    padding: 60px 0;
+    h2 {
+        // font-size: 50px;
+    }
+}
+
+::-moz-selection {
+    color: white;
+    background: $gray-darker;
+    text-shadow: none;
+}
+
+::selection {
+    color: white;
+    background: $gray-darker;
+    text-shadow: none;
+}
+
+img::selection {
+    color: white;
+    background: transparent;
+}
+
+img::-moz-selection {
+    color: white;
+    background: transparent;
+}
+
+body {
+    -webkit-tap-highlight-color: $gray-darker;
+}

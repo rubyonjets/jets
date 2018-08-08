@@ -1,0 +1,146 @@
+---
+layout: default
+---
+
+    <header class="masthead">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <h1>Lono CloudFormation Framework</h1>
+                            <h2>Learning to build infrastructure as code is challenging. Lono makes it much easier and more fun. It includes everything you need to develop CloudFormation templates and manage the entire stack lifecycle.</h2>
+                            <a href="{% link quick-start.md %}" class="btn btn-outline btn-xl">Learn More!</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <img src="/img/logos/lono-logo.png" class="homepage-logo" />
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="download bg-primary text-center" id="download">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>What Is Lono?</h2>
+                    <hr class="star-light">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>Lono is a CloudFormation framework tool that helps you build your CloudFormation templates and manage the entire CloudFormation stack lifecycle. It enables you to craft the templates and takes you all the way to the final infrastructure provisioning step.</p>
+                </div>
+                <div class="col-lg-6">
+                    <p>Lono was built directly from real-life use cases and asking the right questions.  It has been successfully used to manage over hundreds of CloudFormation templates. It automates an otherwise painstakingly manual process of managing your CloudFormation workflow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>Overview</h2>
+                <p class="text-muted">Commands are short and easy to learn</p>
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Commands</h3>
+                                <div class="commands">
+{% highlight sh %}
+lono new infra
+
+lono import
+
+lono generate
+
+lono cfn create
+
+lono cfn update
+
+lono cfn preview
+
+lono cfn delete
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>app/definitions/base/lono.rb</h3>
+                                <div class="commands">
+{% highlight ruby %}
+template "single-instance" do
+  source "instance"
+end
+
+template "instance-and-route53" do
+  source "instance"
+  variables(
+    route53: true
+  )
+end
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>templates/instance.yml</h3>
+                                <div class="commands">
+{% highlight yaml %}
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+<% if @route53 %>
+  DnsRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: !Ref 'HostedZoneName'
+      Comment: DNS name for my instance.
+      Name: !Ref 'Subdomain'
+      Type: CNAME
+      TTL: '900'
+      ResourceRecords:
+      - !GetAtt EC2Instance.PublicIp
+<% end %>
+Outputs:
+  InstanceId:
+    Description: InstanceId of the EC2 instance
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>params/base/instance.txt</h3>
+                                <div class="commands">
+{% highlight yaml %}
+InstanceType=t2.micro
+KeyName=tutorial
+App=hello
+Role=world
+Environment=production
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include timeline.html %}
+
+    <section class="cta">
+        <div class="cta-content">
+            <div class="container">
+                <h2>Learn More</h2>
+                <a href="{% link quick-start.md %}" class="btn btn-outline btn-xl">Quick Start</a>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </section>

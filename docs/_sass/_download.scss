@@ -1,0 +1,31 @@
+// Styling for the download section
+section.download {
+    color: white;
+    position: relative;
+    padding: 80px 0;
+    h2 {
+        font-size: 50px;
+        margin-top: 0;
+    }
+    .badges {
+        .badge-link {
+            display: block;
+            margin-bottom: 25px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            img {
+                height: 60px;
+            }
+            @media(min-width: 768px) {
+                display: inline-block;
+                margin-bottom: 0;
+            }
+        }
+    }
+    @media(min-width: 768px) {
+        h2 {
+            font-size: 70px;
+        }
+    }
+}
