@@ -10,8 +10,7 @@ def handle(event, context):
 
     body = None
     if os.path.exists(public_path):
-        with open(public_path, 'r') as f:
-            body = f.read()
+        body = render(public_path)
 
     if body:
         mimetype = mimetypes.guess_type(public_path)
@@ -44,6 +43,5 @@ if __name__ == '__main__':
     with open('event.json') as f:
         data = json.load(f)
     # pprint(data)
-
     # print(handle(data, {}))
     print(json.dumps(handle(data, {}))) # if result is json

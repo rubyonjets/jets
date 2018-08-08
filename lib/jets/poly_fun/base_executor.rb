@@ -16,13 +16,13 @@ class Jets::PolyFun
     def run(event, context)
       @temp_dir = create_tmpdir
       copy_src_to_temp
-      write_code(lambda_executor_code)
+      write(code)
       result = run_lambda_executor(event, context)
       cleanup
       result
     end
 
-    def write_code(code)
+    def write(code)
       puts "lambda_executor_script #{lambda_executor_script}" if ENV['KEEP_LAMBDA_WRAPPER']
       IO.write(lambda_executor_script, code)
     end
@@ -35,9 +35,6 @@ class Jets::PolyFun
     end
 
     def copy_src_to_temp
-      # Must use FunctionProperties to get the handler because that the class that combines
-      # the mutiple sources of how the handler can get set.
-      # puts "handler path #{@task.handler_path}"
       app_class = @task.class_name.constantize
       internal = app_class.respond_to?(:internal) && app_class.internal
       src = internal ?
@@ -115,6 +112,10 @@ class Jets::PolyFun
     end
 
     def handler
+      # Must use FunctionProperties to get the handler because that the class that combines
+      # the mutiple sources of how the handler can get set.
+      # puts "handler path #{@task.handler_path}"
+      #
       # IE: Jets::Cfn::TemplateBuilders::FunctionProperties::PythonBuilder
       builder_class = "Jets::Cfn::TemplateBuilders::FunctionProperties::#{@task.lang.to_s.classify}Builder".constantize
       builder = builder_class.new(@task)

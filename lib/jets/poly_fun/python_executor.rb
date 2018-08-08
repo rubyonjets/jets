@@ -7,12 +7,11 @@ class Jets::PolyFun
     # Example:
     #
     #   python /tmp/jets/demo/executor/20180804-12816-imqb9/lambda_executor.py '{}'
-    def lambda_executor_code
-      meth = @task.meth
-      code =<<-EOL
+    def code
+      <<-EOL
 import sys
 import json
-from #{meth} import #{handler}
+from #{@task.meth} import #{handler}
 event = json.loads(sys.argv[1])
 context = {}
 resp = #{handler}(event, context)

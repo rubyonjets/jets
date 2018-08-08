@@ -8,7 +8,7 @@ class Jets::PolyFun
     #
     #   node /tmp/jets/demo/executor/20180804-12816-imqb9/lambda_executor.js '{}'
     #
-    def lambda_executor_code
+    def code
       if async_syntax?
         async_code
       else
@@ -24,7 +24,7 @@ class Jets::PolyFun
     end
 
     def async_code
-      code =<<-EOL
+      <<-EOL
 var event = process.argv[2]
 event = JSON.parse(event)
 var context = {}
@@ -36,7 +36,7 @@ EOL
 
 
     def callback_code
-      code =<<-EOL
+      <<-EOL
 function callback(error, response) {
   var text = JSON.stringify(response)
   console.log(text)
