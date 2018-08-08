@@ -6,7 +6,7 @@ describe Jets::PolyFun::NodeExecutor do
     context("lets see the script") do
       let(:action) { :node }
       it "generates code" do
-        code = fun.lambda_executor_code
+        code = fun.code
         expect(code).to include("var app = require")
       end
     end
