@@ -34,6 +34,20 @@ module Jets
     def raise_error(resp)
       backtrace = resp["stackTrace"] + caller
       backtrace = backtrace.map { |l| l.sub(/^\s+/,'') }
+      # Adjust the paths from the tmp path to the app path to improve user debugging
+      # experience. Example:
+      # From:
+      #   File "/tmp/jets/lite/executor/20180917-16777-43a9e48/app/controllers/jets/public_controller/python/show.py", line 32
+      # To:
+      #   File "app/controllers/jets/public_controller/python/show.py", line 32      backtrace =
+      backtrace = backtrace.map do |l|
+        if l.include?(Jets.build_root) && !l.include?("lambda_executor.")
+          l.sub(/\/tmp\/jets.*executor\/\d{8}-+.*?\//, '')
+        else
+          l
+        end
+      end
+
       # IE: Jets::PolyFun::PythonError
       error_class = "Jets::PolyFun::#{task.lang.to_s.classify}Error".constantize
       raise error_class.new(resp["errorMessage"], backtrace)
