@@ -84,7 +84,7 @@ class Jets::Builders
     # In this case, we can skip a lot of the ruby related building and speed up the
     # deploy process.
     def poly_only?
-      return true if ENV['POLY_TRUE'] # bypass to allow rapid development of handlers
+      return true if ENV['POLY_ONLY'] # bypass to allow rapid development of handlers
       Jets::Commands::Build.poly_only?
     end
 
