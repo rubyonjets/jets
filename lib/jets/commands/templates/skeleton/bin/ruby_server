@@ -17,5 +17,6 @@ if [[ "$os" == 'Darwin' ]]; then
   exec bundle exec jets "$@"
 else
   # bundled ruby for Lambda
-  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" "$@"
+  # exec ruby "simple.rb"
+  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" "$PROJECTDIR/bin/ruby_server.rb"
 fi
