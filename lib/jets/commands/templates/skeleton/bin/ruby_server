@@ -11,12 +11,8 @@ unset BUNDLE_IGNORE_CONFIG
 # We want that to be used.
 
 # Run the actual app using the bundled Ruby interpreter, with Bundler activated.
-os=$(uname)
-if [[ "$os" == 'Darwin' ]]; then
-  # macosx ruby for development
-  exec bundle exec jets "$@"
+if [ -n "$C9_USER" ]; then
+  exec ruby -rbundler/setup bin/ruby_server.rb
 else
-  # bundled ruby for Lambda
-  # exec ruby "simple.rb"
-  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" "$PROJECTDIR/bin/ruby_server.rb"
+  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" -rbundler/setup "$PROJECTDIR/bin/ruby_server.rb"
 fi
