@@ -37,14 +37,7 @@ class Jets::Processors::MainProcessor
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
-      text = Jets::Util.normalize_result(result)
-
-      # TODO: figure a way to silence this output for specs wihtout breaking process_spec.rb
-      # TODO: no need to write this to stdout anymore because result is passing back to the TCPServer in memory
-      # Butwe might need to fix the specs.  Comment out for now.
-      # STDOUT.puts text # only place where we write to stdout.
-
-      text
+      Jets::Util.normalize_result(result) # String
     rescue Exception => e
       # Customize error message slightly so nodejs shim can process the
       # returned error message.

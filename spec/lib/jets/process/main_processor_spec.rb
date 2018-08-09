@@ -15,7 +15,7 @@ describe Jets::Processors::MainProcessor do
       result = processor.run
       data = JSON.load(result)
       # pp data
-      expect(data["statusCode"]).to eq 200
+      expect(data["statusCode"]).to eq "200"
       expect(data["body"]).to be_a(String)
     end
   end
