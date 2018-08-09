@@ -61,11 +61,11 @@ module Jets
             '{}', # context
             handler).run
         rescue Exception => e
-          result = {
+          result = JSON.dump(
             "stackTrace" => e.backtrace,
             "errorMessage" => e.message,
             "errorType" => "RubyError",
-          }
+          )
         end
 
         client.puts(result)
