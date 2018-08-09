@@ -84,6 +84,7 @@ class Jets::Builders
     # In this case, we can skip a lot of the ruby related building and speed up the
     # deploy process.
     def poly_only?
+      # return true
       Jets::Commands::Build.poly_only?
     end
 
