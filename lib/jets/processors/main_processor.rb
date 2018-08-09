@@ -52,11 +52,12 @@ class Jets::Processors::MainProcessor
       $stderr.puts("RubyError: #{e.class}: #{e.message}") # js needs this as the first line
       backtrace = e.backtrace.map {|l| "  #{l}" }
       $stderr.puts(backtrace)
+      # No need to having error in stderr above anymore because errors are handled in memory
+      # at ruby_server.rb but keeping around for posterity.
 
-      raise
+      raise # raise error to ruby_server.rb to rescue and handle
 
-      # $stderr.puts("END OF RUBY OUTPUT")
-      # exit 1 # instead of re-raising to control the error backtrace output
+      # $stderr.puts("END OF RUBY OUTPUT") # uncomment for debugging
     end
   end
 
