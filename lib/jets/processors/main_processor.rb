@@ -37,10 +37,7 @@ class Jets::Processors::MainProcessor
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
-      text = Jets::Util.normalize_result(result)
-      # TODO: figure a way to silence this output for specs wihtout breaking process_spec.rb
-      STDOUT.puts text # only place where we write to stdout.
-      text
+      Jets::Util.normalize_result(result) # String
     rescue Exception => e
       # Customize error message slightly so nodejs shim can process the
       # returned error message.
@@ -48,8 +45,12 @@ class Jets::Processors::MainProcessor
       $stderr.puts("RubyError: #{e.class}: #{e.message}") # js needs this as the first line
       backtrace = e.backtrace.map {|l| "  #{l}" }
       $stderr.puts(backtrace)
-      # $stderr.puts("END OF RUBY OUTPUT")
-      exit 1 # instead of re-raising to control the error backtrace output
+      # No need to having error in stderr above anymore because errors are handled in memory
+      # at ruby_server.rb but keeping around for posterity.
+
+      raise # raise error to ruby_server.rb to rescue and handle
+
+      # $stderr.puts("END OF RUBY OUTPUT") # uncomment for debugging
     end
   end
 

@@ -16,6 +16,7 @@ module Jets::Controller::Renderers
     def render
       # we do some normalization here
       status = map_status_code(@options[:status]) || 200
+      status = status.to_s # API Gateway requires a string but rack is okay with either
       body = @options[:body]
       base64 = normalized_base64_option(@options)
 

@@ -40,7 +40,7 @@ describe Jets::Controller::Base do
       expect(resp).to be_a(Hash)
       expect(resp.keys).to include("statusCode")
       expect(resp.keys).to include("body")
-      expect(resp["statusCode"]).to eq 200
+      expect(resp["statusCode"]).to eq "200"
       expect(resp["body"]).to be_a(String)
     end
 

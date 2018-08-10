@@ -36,6 +36,8 @@ module Jets
   autoload :Klass, 'jets/klass'
   autoload :Util, "jets/util"
   extend Core # root, logger, etc
+
+  autoload :RubyServer, "jets/ruby_server"
 end
 
 $:.unshift(File.expand_path("../../vendor/lambdagem/lib", __FILE__))

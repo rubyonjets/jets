@@ -52,7 +52,7 @@ describe Jets::Controller::Base do
     it "render status: 404" do
       resp = controller.render(status: 404)
       # pp resp
-      expect(resp["statusCode"]).to eq 404
+      expect(resp["statusCode"]).to eq "404"
     end
   end
 

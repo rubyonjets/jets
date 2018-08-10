@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+# Figure out where this script is located.
+PROJECTDIR="`dirname \"$0\"`"
+PROJECTDIR="`cd \"$PROJECTDIR/..\" && pwd`"
+
+unset BUNDLE_IGNORE_CONFIG
+# When jets packages the app code it creates .bundle/config in the project root.
+# We want that to be used.
+
+# Run the actual app using the bundled Ruby interpreter, with Bundler activated.
+if [ -n "$C9_USER" ]; then
+  exec ruby -rbundler/setup bin/ruby_server.rb
+else
+  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" -rbundler/setup "$PROJECTDIR/bin/ruby_server.rb"
+fi

@@ -27,11 +27,13 @@ class Jets::PolyFun
       IO.write(lambda_executor_script, code)
     end
 
+    # Mimic Dir.mktmpdir randomness, not using Dir.mktmpdir because that generates
+    # the folder at the /tmp level only.
     def create_tmpdir
-      build_dir = "#{Jets.build_root}/executor/"
-      FileUtils.mkdir_p(build_dir)
-      prefix = build_dir.sub('/tmp/','')
-      Dir.mktmpdir(prefix)
+      random = "#{Time.now.strftime("%Y%d%H")}-#{Process.pid}-#{SecureRandom.hex[0..6]}"
+      tmpdir = "#{Jets.build_root}/executor/#{random}"
+      FileUtils.mkdir_p(tmpdir)
+      tmpdir
     end
 
     def copy_src_to_temp
