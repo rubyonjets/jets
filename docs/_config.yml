@@ -1,15 +1,15 @@
 # Site settings
-title: Lono
+title: Jets
 email: tongueroo@gmail.com
-url: http://lono-cloud.com
-description: "Manage CloudFormation templates easily with Lono"
-keywords: "Lono, AWS CloudFormation, DevOps, Infrastructure, BoltOps, Tools, Producitivity, Documentation"
+url: http://rubyonjets.com
+description: "Ruby Serverless Framework"
+keywords: "AWS Lambda, AWS Serverless, Ruby, Framework"
 skills: ""
 meta_author: Tung Nguyen
 
 # Google webmaster tools
 google_verify:
-google_analytics: UA-98684555-3
+google_analytics: 
 
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 bing_verify:

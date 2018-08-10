@@ -5,9 +5,10 @@ header.masthead {
     width: 100%;
     min-height: auto;
     color: white;
-    background: url('../img/bg-pattern.png'), $theme-secondary;
-    background: url('../img/bg-pattern.png'), -webkit-linear-gradient(to left, $theme-secondary, $theme-tertiary);
-    background: url('../img/bg-pattern.png'), linear-gradient(to left, $theme-secondary, $theme-tertiary);
+    background-color: #2d2db9db;
+    // background: url('../img/bg-pattern.png'), $theme-secondary;
+    // background: url('../img/bg-pattern.png'), -webkit-linear-gradient(to left, $theme-secondary, $theme-tertiary);
+    // background: url('../img/bg-pattern.png'), linear-gradient(to left, $theme-secondary, $theme-tertiary);
     .header-content {
         position: relative;
         padding: 100px 0 50px;

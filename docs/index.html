@@ -8,14 +8,14 @@ layout: default
                 <div class="col-sm-8 col-sm-offset-2">
                     <div class="header-content">
                         <div class="header-content-inner">
-                            <h1>Lono CloudFormation Framework</h1>
-                            <h2>Learning to build infrastructure as code is challenging. Lono makes it much easier and more fun. It includes everything you need to develop CloudFormation templates and manage the entire stack lifecycle.</h2>
+                            <h1>Jets: Ruby Serverless Framework</h1>
+                            <h2>Jets is a Serverless Framework that allows you to create applications with Ruby on AWS Lambda. It includes everything required to build an application and deploy it. Jets makes serverless accessible to all.</h2>
                             <a href="{% link quick-start.md %}" class="btn btn-outline btn-xl">Learn More!</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-4">
-                    <img src="/img/logos/lono-logo.png" class="homepage-logo" />
+                    <img src="/img/logos/jets-logo.png" class="homepage-logo" />
                 </div>
             </div>
         </div>
@@ -25,16 +25,16 @@ layout: default
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>What Is Lono?</h2>
+                    <h2>What Is Jets?</h2>
                     <hr class="star-light">
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <p>Lono is a CloudFormation framework tool that helps you build your CloudFormation templates and manage the entire CloudFormation stack lifecycle. It enables you to craft the templates and takes you all the way to the final infrastructure provisioning step.</p>
+                    <p>Building AWS Lambda Serverless can be challenging.  Jets makes it simple and fun. It includes everything required to build and deploy a serverless application to AWS Lambda. Focus on your business logic while Jets handles the mundane gruntwork.</p>
                 </div>
                 <div class="col-lg-6">
-                    <p>Lono was built directly from real-life use cases and asking the right questions.  It has been successfully used to manage over hundreds of CloudFormation templates. It automates an otherwise painstakingly manual process of managing your CloudFormation workflow.</p>
+                    <p>Jets was built to allow you to quickly build serverless applications with a beautiful language: ruby.  While at the same time, it allows you to use other languages like node and python allowing you to incrementally use Jets.</p>
                 </div>
             </div>
         </div>
@@ -55,35 +55,34 @@ layout: default
                                 <h3>Commands</h3>
                                 <div class="commands">
 {% highlight sh %}
-lono new infra
-
-lono import
-
-lono generate
-
-lono cfn create
-
-lono cfn update
-
-lono cfn preview
-
-lono cfn delete
+jets new
+jets generate scaffold Post title:string
+jets server
+jets console
+jets build
+jets deploy
+jets routes
+jets call
+jets url
 {% endhighlight %}
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <h3>app/definitions/base/lono.rb</h3>
+                                <h3>Controllers</h3>
                                 <div class="commands">
 {% highlight ruby %}
-template "single-instance" do
-  source "instance"
-end
+class PostsController < ApplicationController
+  def index
+    # renders Lambda Proxy structure compatiable with API Gateway
+    render json: {hello: "world", action: "index"}
+  end
 
-template "instance-and-route53" do
-  source "instance"
-  variables(
-    route53: true
-  )
+  def show
+    id = params[:id] # params available
+    # puts goes to the lambda logs
+    puts event # raw lambda event available
+    render json: {action: "show", id: id}
+  end
 end
 {% endhighlight %}
                                 </div>
@@ -91,38 +90,40 @@ end
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
-                                <h3>templates/instance.yml</h3>
+                                <h3>Jobs</h3>
                                 <div class="commands">
-{% highlight yaml %}
-  InstanceSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-<% if @route53 %>
-  DnsRecord:
-    Type: AWS::Route53::RecordSet
-    Properties:
-      HostedZoneName: !Ref 'HostedZoneName'
-      Comment: DNS name for my instance.
-      Name: !Ref 'Subdomain'
-      Type: CNAME
-      TTL: '900'
-      ResourceRecords:
-      - !GetAtt EC2Instance.PublicIp
-<% end %>
-Outputs:
-  InstanceId:
-    Description: InstanceId of the EC2 instance
+{% highlight ruby %}
+class HardJob < ApplicationJob
+  rate "10 hours" # every 10 hours
+  def dig
+    {done: "digging"}
+  end
+
+  cron "0 */12 * * ? *" # every 12 hours
+  def lift
+    {done: "lifting"}
+  end
+end
 {% endhighlight %}
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <h3>params/base/instance.txt</h3>
+                                <h3>Routes</h3>
                                 <div class="commands">
 {% highlight yaml %}
-InstanceType=t2.micro
-KeyName=tutorial
-App=hello
-Role=world
-Environment=production
+Jets.application.routes.draw do
+  get  "posts", to: "posts#index"
+  get  "posts/new", to: "posts#new"
+  get  "posts/:id", to: "posts#show"
+  post "posts", to: "posts#create"
+  get  "posts/:id/edit", to: "posts#edit"
+  put  "posts", to: "posts#update"
+  delete  "posts", to: "posts#delete"
+
+  resources :comments # expands to the RESTful routes above
+
+  any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
+end
 {% endhighlight %}
                                 </div>
                             </div>
@@ -133,7 +134,7 @@ Environment=production
         </div>
     </section>
 
-    {% include timeline.html %}
+    {% include example.html %}
 
     <section class="cta">
         <div class="cta-content">

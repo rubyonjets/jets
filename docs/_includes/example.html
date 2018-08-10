@@ -1,0 +1,73 @@
+<section id="timeline">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Example: jets deploy</h2>
+                <!-- <h3 class="section-subheading text-muted">Lono workflow process.</h3> -->
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-offset-1 col-lg-10">
+{% highlight sh %}
+$ jets deploy
+Deploying to Lambda lite-dev environment...
+The /tmp/jets/lite/cache folder exists. Incrementally re-building the jets using the cache.  To clear the cache: rm -rf /tmp/jets/lite/cache
+=> Compling assets in current project directory
+=> Copying current project directory to temporary build area: /tmp/jets/lite/app_root
+=> Tidying project: removing ignored files to reduce package size.
+=> Reconfiguring webpacker's development settings for production.
+=> Generating node shims in the handlers folder.
+=> Bundling: running bundle install in cache area: /tmp/jets/lite/cache.
+Bundle complete! 8 Gemfile dependencies, 47 gems now installed.
+Gems in the groups development and test were not installed.
+Bundled gems are installed into `./bundled/gems`
+Bundle install success.
+=> Setting up a vendored copy of ruby.
+=> Replacing compiled gems with AWS Lambda Linux compiled versions.
+=> Creating zip file.
+=> cd /tmp/jets/lite/app_root && zip --symlinks -rq /tmp/jets/lite/code/code-temp.zip .
+Building Lambda functions as CloudFormation templates.
+Building API Gateway template.
+Building API Gateway Deployment template.
+Building parent template.
+Uploading child CloudFormation templates to S3
+Uploading /tmp/jets/lite/code/code-39fe28af.zip (79.1 MB) to S3
+Time to upload code to s3: 1s
+Deploying CloudFormation stack with jets app!
+05:34:42AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack lite-dev User Initiated
+05:34:45AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack ApiGateway
+05:34:46AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack ConfigRuleJob
+05:34:46AM UPDATE_COMPLETE AWS::CloudFormation::Stack ApiGateway
+05:34:48AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack JetsWelcomeController
+05:34:48AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack PostsController
+05:34:49AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack JetsPublicController
+05:35:00AM UPDATE_COMPLETE AWS::CloudFormation::Stack JetsPublicController
+05:35:08AM UPDATE_COMPLETE AWS::CloudFormation::Stack ConfigRuleJob
+05:35:11AM UPDATE_COMPLETE AWS::CloudFormation::Stack JetsWelcomeController
+05:35:11AM UPDATE_COMPLETE AWS::CloudFormation::Stack PostsController
+05:35:13AM CREATE_IN_PROGRESS AWS::CloudFormation::Stack ApiGatewayDeployment20180810053440
+05:35:14AM CREATE_IN_PROGRESS AWS::CloudFormation::Stack ApiGatewayDeployment20180810053440 Resource creation Initiated
+05:35:25AM CREATE_COMPLETE AWS::CloudFormation::Stack ApiGatewayDeployment20180810053440
+05:35:27AM UPDATE_COMPLETE_CLEANUP_IN_PROGRESS AWS::CloudFormation::Stack lite-dev
+05:35:28AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack PostsController
+05:35:29AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack ConfigRuleJob
+05:35:29AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack JetsPublicController
+05:35:29AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack JetsWelcomeController
+05:35:29AM DELETE_IN_PROGRESS AWS::CloudFormation::Stack ApiGatewayDeployment20180809235000
+05:35:39AM UPDATE_COMPLETE AWS::CloudFormation::Stack PostsController
+05:35:39AM UPDATE_COMPLETE AWS::CloudFormation::Stack ConfigRuleJob
+05:35:40AM UPDATE_COMPLETE AWS::CloudFormation::Stack JetsPublicController
+05:35:40AM UPDATE_COMPLETE AWS::CloudFormation::Stack JetsWelcomeController
+05:35:40AM DELETE_COMPLETE AWS::CloudFormation::Stack ApiGatewayDeployment20180809235000
+05:35:41AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack ApiGateway
+05:35:41AM UPDATE_COMPLETE AWS::CloudFormation::Stack ApiGateway
+05:35:41AM UPDATE_COMPLETE AWS::CloudFormation::Stack lite-dev
+Stack success status: UPDATE_COMPLETE
+Time took for stack deployment: 1m 1s.
+API Gateway Endpoint: https://whc5hydu84.execute-api.us-west-2.amazonaws.com/dev/
+$
+{% endhighlight %}
+            </div>
+        </div>
+    </div>
+</section>
