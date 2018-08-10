@@ -22,7 +22,7 @@ class Jets::Commands::Delete
     cfn.delete_stack(stack_name: parent_stack_name)
     puts "Deleting #{Jets.config.project_namespace.colorize(:green)}..."
 
-    wait_for_stack if options[:wait]
+    wait_for_stack if @options[:wait]
     puts "Project #{Jets.config.project_namespace.colorize(:green)} deleted!"
   end
 
