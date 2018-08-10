@@ -6,7 +6,7 @@ A Jets controller handles a web request and renders a response. Here's an exampl
 
 app/controllers/posts_controller.rb:
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   def index
     # renders Lambda Proxy structure compatiable with API Gateway
@@ -20,7 +20,7 @@ class PostsController < ApplicationController
     render json: {action: "show", id: id}
   end
 end
-{% endhighlight %}
+```
 
 Jets creates Lambda functions each the public method in your controller.
 
