@@ -4,25 +4,25 @@ title: Installation
 
 ## RubyGems
 
-You can also install lono via RubyGems.
+You can also install jets via RubyGems.
 
-```sh
-gem install lono
-```
+{% highlight sh %}
+gem install jets
+{% endhighlight %}
 
-Or you can add lono to your Gemfile in your project if you are working with a ruby project.  It is not required for your project to be a ruby project to use lono.
+Or you can add jets to your Gemfile in your project if you are working with a ruby project.  It is not required for your project to be a ruby project to use jets.
 
 {% highlight ruby %}
-gem "lono"
+gem "jets"
 {% endhighlight %}
 
 ## Bolts Toolbelt
 
-If you want to install lono without having to worry about lono's ruby dependency you can install the Bolts Toolbelt which has lono included.
+If you want to install jets without having to worry about jets's ruby dependency you can install the Bolts Toolbelt which has jets included.
 
-```sh
+{% highlight sh %}
 brew cask install boltopslabs/software/bolts
-```
+{% endhighlight %}
 
 For more information about the Bolts Toolbelt or to get an installer for another operating system visit: [https://boltops.com/toolbelt](https://boltops.com/toolbelt)
 
