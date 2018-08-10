@@ -2,39 +2,30 @@
 title: Quick Start
 ---
 
-In a hurry? No problem!  Here's a quick start to using jets that will get you going.
+In a hurry? No problem!  Here's a quick start to get you going now.
 
 {% highlight bash %}
 jets new demo
 cd demo
 jets generate scaffold Post title:string
+edit .env.development # adjust to your local database creds
 jets db:create db:migrate
 jets server
-open http://localhost:8888/posts
+open http://localhost:8888/posts # check out the site
 {% endhighlight %}
 
-The last command does a few things:
+The `jets server` command starts a server that mimics API Gateway so you can test locally.  Once you're ready, deploy to AWS.
 
-1. Generate templates and params files from `app/definitions` and `app/templates` to `output/templates`.
-2. Generate parameter files from `config/params` to `output/params`.
-3. Use the `output` files to launch a CloudFormation stack.
+{% highlight bash %}
+edit .env.development.deploy # adjust to your remote database creds
+jets deploy
+{% endhighlight %}
 
-The example launches an EC2 instance with a security group. Check out the newly launch stack in the AWS console:
+Jets deploy will launch a few CloudFormation templates that will deploy your app as lambda functions and API Gateway routes.
 
-<img src="/img/tutorial/stack-created.png" alt="Stack Created" class="doc-photo">
+IMAGE OF API GATEWAY AND LAMBDA AND CLOUDFORMATION HERE
 
-Congratulations!  You have successfully created a CloudFormation stack with lono. It's that simple. 😁
-
-## Summarized Commands
-
-Here are the commands again in compact summarized form for copy and paste:
-
-```sh
-gem install lono
-TEMPLATE=ec2 lono new infra
-cd infra
-lono cfn create example # launches stack
-```
+Congratulations!  You have successfully deployed your serverless ruby application. It's that simple. 😁
 
 <a id="next" class="btn btn-primary" href="{% link docs.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

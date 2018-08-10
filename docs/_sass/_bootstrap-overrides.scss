@@ -2,7 +2,7 @@
 .bg-primary {
     background: $theme-primary;
     background: -webkit-linear-gradient($theme-primary, darken($theme-primary, 5%));
-    background: linear-gradient($theme-primary, darken($theme-primary, 5%));
+    background: linear-gradient(#960a0a, darken($theme-primary, 5%));
 }
 
 .text-primary {
