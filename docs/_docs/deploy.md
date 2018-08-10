@@ -1,6 +1,16 @@
 ---
-title: Local Server
+title: Deploy
 ---
+
+Once you are ready to deploy your app to lambda, it's one command to do so:
+
+```
+jets deploy
+```
+
+After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
+
+IMAGE OF LAMBDA FUNCTIONS and CLOUDFORMATION STACK
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/repl-console.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/database-dynamodb.md %}">Next Step</a>
