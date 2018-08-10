@@ -1,5 +1,5 @@
 begin
-  require "dynamodb_model"
+  require "dynomite"
 rescue LoadError # Commands::Base.eager_load
   nil
 end

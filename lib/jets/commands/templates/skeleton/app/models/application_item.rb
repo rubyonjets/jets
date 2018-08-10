@@ -1,2 +1,2 @@
-class ApplicationItem < DynamodbModel::Item
+class ApplicationItem < Dynomite::Item
 end

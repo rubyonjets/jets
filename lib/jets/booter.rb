@@ -57,7 +57,7 @@ class Jets::Booter
 
     # Only connects connect to database for ActiveRecord and when
     # config/database.yml exists.
-    # DynamodbModel handles connecting to the clients lazily.
+    # Dynomite handles connecting to the clients lazily.
     def setup_db
       return unless File.exist?("#{Jets.root}config/database.yml")
 

@@ -48,8 +48,8 @@ require "gems" # lambdagem dependency
 # lazy loaded dependencies: depends what project. Mainly determined by Gemfile
 # and config files.
 if File.exist?("#{Jets.root}config/dynamodb.yml")
-  $:.unshift(File.expand_path("../../vendor/dynamodb_model/lib", __FILE__))
-  require "dynamodb_model"
+  $:.unshift(File.expand_path("../../vendor/dynomite/lib", __FILE__))
+  require "dynomite"
 end
 
 # https://makandracards.com/makandra/42521-detecting-if-a-ruby-gem-is-loaded

@@ -16,7 +16,7 @@ module Jets::Commands
     option :table_name, desc: "override the the conventional table name"
     option :table_action, desc: "create_table or update_table. Defaults to convention based on the name of the migration."
     def generate(name)
-      DynamodbModel::Migration::Generator.new(name, options).generate
+      Dynomite::Migration::Generator.new(name, options).generate
     end
   end
 end
