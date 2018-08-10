@@ -5,7 +5,6 @@ require "recursive-open-struct"
 class Jets::Commands::Db::Tasks
   # Ugly but it loads ActiveRecord database tasks
   def self.load!
-    Jets.boot
     db_configs = Jets.application.config.database
     ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = ["db/migrate"]
