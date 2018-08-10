@@ -64,6 +64,7 @@
       <div class="code"><pre><code>
         $ jets generate scaffold Post title:string
         $ jets db:create db:migrate
+        $ jets server
         $ open http://localhost:8888/posts
         $ jets help
       </code></pre></div>
