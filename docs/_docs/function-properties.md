@@ -22,7 +22,7 @@ class PostsController < ApplicationController
 end
 {% endhighlight %}
 
-## Class Wide Fucntion Properties
+## Class Wide Function Properties
 
 Class wide function properties set in the same class file and with a prefix of `class_`.
 
