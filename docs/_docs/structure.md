@@ -41,7 +41,6 @@ output  | The folder w
 
 Now that you know where the ufo configurations are located and what they look like, let’s use ufo!
 
-<a id="prev" class="btn btn-basic" href="">Back</a>
-<a id="next" class="btn btn-primary" href="">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/install.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/local-server.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
-

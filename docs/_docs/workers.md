@@ -20,6 +20,6 @@ end
 
 `HardJob#dig` will be ran every 10 hours and `HardJob#lift` will be ran every 12 hours.
 
-<a id="prev" class="btn btn-basic" href="{% link quick-start.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link import-templates.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/routing.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/install.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
