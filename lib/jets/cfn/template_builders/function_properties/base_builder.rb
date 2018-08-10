@@ -98,7 +98,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     end
 
     def env_file_properties
-      env_vars = Jets::Dotenv.load!
+      env_vars = Jets::Dotenv.load!(true)
       Pascalize.pascalize(environment: { variables: env_vars })
     end
   end
