@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 if File.exist?("dev.mode")
-  gem "jets", path: "#{ENV['HOME']}/src/tongueroo/jets"
+  gem "jets", path: "#{ENV['HOME']}/environment/jets"
 else
   gem "jets", git: "https://github.com/tongueroo/jets.git", submodules: true
 end
