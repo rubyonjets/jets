@@ -2,7 +2,7 @@
 title: Structure
 ---
 
-Ufo creates a `.ufo` folder within your project which contains the required files used by ufo to build and deploy docker images to ECS.  The standard directory structure of the `.ufo` folder looks like this:
+The `jets new` command generates the initial folder structure for a Jets project. The structure looks like this:
 
 ```sh
 .
