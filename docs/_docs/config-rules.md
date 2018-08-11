@@ -68,6 +68,6 @@ end
 
 Jets will create Python lambda functions using the files in the `app/rules/protect_rule/python` folder and associate the Config Rules with these functions.  This saves you time from rewriting the python code.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/function-properties.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/env-files.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

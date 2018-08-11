@@ -1,8 +1,8 @@
 ---
-title: Workers
+title: Jobs
 ---
 
-A Jets worker handles background jobs. They run outside of the web request/response cycle. Here's an example:
+A Jets job handles background jobs. They run outside of the web request/response cycle. Here's an example:
 
 ```ruby
 class HardJob < ApplicationJob

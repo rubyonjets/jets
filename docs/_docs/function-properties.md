@@ -91,5 +91,5 @@ role | class_role
 For the latest list, refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/app-config.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/config-rules.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/env-files.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

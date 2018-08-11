@@ -25,7 +25,7 @@ File / Directory  | Description
 app/controllers  | Contains controller code that handles API Gateway web requests. For more info refer to [controllers]({% link _docs/controllers.md %})
 app/helpers  | Contains helpers methods that can be used to assist view code.
 app/javascript  | Contains javascript, CSS and images files that webpacker compiles for you. The javascript files live in `javascript/packs`, the CSS in `javascript/src` and images in `javascript/images`. Refer to [webpacker](https://github.com/rails/webpacker) for more info.
-app/jobs  | Contains job code. This code usually execute on a scheduled basis asynchronously outside of the request-response cycle.  For more info refer to [workers]({% link _docs/workers.md %})
+app/jobs  | Contains job code. This code usually execute on a scheduled basis asynchronously outside of the request-response cycle.  For more info refer to the [jobs docs]({% link _docs/jobs.md %})
 app/models  | Contains model code, usually classes that interact with database.
 app/views  | Contains view code, usually HTML pages and forms.
 bin  | Contains helper executables that help Jets run.
