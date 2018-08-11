@@ -2,10 +2,10 @@
 title: Next Steps
 ---
 
-Hopefully you have a good feel for how Jets works now.From here, there are a few resources that can help you continue along:
+Hopefully, you have a good feel for how Jets works now. From here, there are a few resources that can help you continue along:
 
 * Check out the [jets](https://github.com/tongueroo/jets) repo on GitHub
-* Write a blog post describing how you are using jets, or a problem jets has allowed you to solve
+* Write a blog post describing how you are using Jets, or a problem Jets has allowed you to solve
 * Submit an issue
 
 Everyone can contribute to making jets better, including the documentation. These docs are the jets repo located the [docs folder](https://github.com/tongueroo/jets/tree/master/docs). Please fork the project and open a pull request!  We love your pull requests. Contributions are encouraged and welcomed!

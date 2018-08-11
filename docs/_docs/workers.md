@@ -2,7 +2,7 @@
 title: Workers
 ---
 
-A Jets worker handles background jobs. It is performed outside of the web request/response cycle. Here's an example:
+A Jets worker handles background jobs. They run outside of the web request/response cycle. Here's an example:
 
 ```ruby
 class HardJob < ApplicationJob
@@ -18,7 +18,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-`HardJob#dig` will be ran every 10 hours and `HardJob#lift` will be ran every 12 hours.
+`HardJob#dig` will run every 10 hours and `HardJob#lift` will run every 12 hours.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/routing.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/install.md %}">Next Step</a>

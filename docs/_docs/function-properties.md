@@ -5,7 +5,7 @@ title: Function Properties
 Jets ultimately translate ruby code into Lambda functions. Each [Lambda function's properties](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) can be controlled with Jets. Here are the ways to set the function properties and their order of precedence:
 
 1. function specific properties - highest precedence
-2. class wide function properties
+2. class-wide function properties
 3. global function properties set - lowest precedence
 
 ## Function Specific Properties
@@ -22,9 +22,9 @@ class PostsController < ApplicationController
 end
 ```
 
-## Class Wide Function Properties
+## Class-wide Function Properties
 
-Class wide function properties set in the same class file and with a prefix of `class_`.
+Class-wide function properties set in the same class file and with a prefix of `class_`.
 
 ```ruby
 class PostsController < ApplicationController
@@ -65,10 +65,11 @@ end
 
 ## Function Properties Method
 
-In the above example, we use the `timeout` and `class_timeout` method to set function properties. These convenience methods simply call a `properties` method that allows you to change any property for the lambda function. So you could had done this also:
+In the above example, we use the `timeout` and `class_timeout` method to set function properties. These convenience methods call the `properties` and `class_properties` methods respectively.  These methods allow you to change any property for the lambda function. So you could have done this also:
 
 ```ruby
 class PostsController < ApplicationController
+  class_properties(timeout: 22)
   properties(timeout: 18) # function specific property for the index lambda function
   def index
     posts = Post.scan # should not use scan for production

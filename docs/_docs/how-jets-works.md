@@ -4,7 +4,7 @@ title: How Jets Works
 
 AWS Lambda does not yet officially support ruby. There's an online petition to encourage AWS to add Ruby support for Lambda: [We want FaaS for Ruby!](https://www.serverless-ruby.org/) Rumors suggest that AWS is working on it.
 
-To run ruby on AWS Lambda today, we can resort to using a shim. This was detailed in in the AWS Blog post [Scripting Languages for AWS Lambda: Running PHP, Ruby, and Go
+To run Ruby on AWS Lambda today, we can resort to using a shim. This was detailed in the AWS Blog post [Scripting Languages for AWS Lambda: Running PHP, Ruby, and Go
 ](https://aws.amazon.com/blogs/compute/scripting-languages-for-aws-lambda-running-php-ruby-and-go/).  Essentially, you write a lambda function in a natively supported Lambda language like node and then have that function shell out to ruby. Additionally, the ruby interpreter itself is packaged with the lambda code zip file.
 
 One of the issues with shelling out to a ruby interpreter is the overhead in doing so is pretty high. If your lambda function is allocated only 128MB the overhead is a nasty 5+ seconds. Vlad Holubiev discovered that if you allocate more memory to your Lambda functions, then the functions get faster CPU hardware: [My Accidental 3–5x Speed Increase of AWS Lambda Functions
@@ -15,21 +15,17 @@ To get around this, Jets uses a shim that loads the ruby interpreter into [Lambd
 
 Ruby function after the cold start:
 
-```
-time curl -so /dev/null https://1192eablz8.execute-api.us-west-2.amazonaws.com/dev/ruby_example
-real    0m0.164s
-user    0m0.039s
-sys     0m0.063s
-```
+    time curl -so /dev/null https://1192eablz8.execute-api.us-west-2.amazonaws.com/dev/ruby_example
+    real    0m0.164s
+    user    0m0.039s
+    sys     0m0.063s
 
 Python function after the cold start:
 
-```
-time curl -so /dev/null https://1192eablz8.execute-api.us-west-2.amazonaws.com/dev/python_example
-real    0m0.178s
-user    0m0.047s
-sys     0m0.054s
-```
+    time curl -so /dev/null https://1192eablz8.execute-api.us-west-2.amazonaws.com/dev/python_example
+    real    0m0.178s
+    user    0m0.047s
+    sys     0m0.054s
 
 In the case above, the ruby function happened to be faster than the python function. Generally, it's a tie.
 
