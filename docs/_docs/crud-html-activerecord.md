@@ -2,7 +2,11 @@
 title: CRUD HTML ActiveRecord
 ---
 
-The easiest way to get a CRUD HTML ActiveRecord app running by using the scaffold.  Here's a summary of the commands:
+The easiest way to get a CRUD HTML ActiveRecord app running by using the scaffold.
+
+## Summary
+
+Here's a summary of the commands:
 
 ```
 jets new demo
@@ -10,13 +14,12 @@ cd demo
 jets generate scaffold Post title:string
 edit .env.development # adjust to your local database creds
 jets db:create db:migrate
-jets server
-# Check out site at http://localhost:8888/posts
+jets server # Check out site at http://localhost:8888/posts
 ```
 
 Let's go through in a little more detail.
 
-### Generate a new project
+## Generate a new project
 
 ```
 $ jets new demo
@@ -42,7 +45,7 @@ To deploy to AWS Lambda:
 $
 ```
 
-### CRUD Scaffold
+## CRUD Scaffold
 
 ```
 $ cd demo
@@ -68,7 +71,7 @@ $
 
 This generates a Post ActiveRecord model and the view code for a simple CRUD app.
 
-### Edit Config for Database
+## Edit Database Config
 
 In the next step, we'll update the .env.development and set the local database config. For this step, it is helpful to take a quick look at `database.yml`:
 
@@ -103,7 +106,7 @@ If you have a password the format would look like this:
 DATABASE_URL=postgres://ec2-user:mypassword@localhost/demo_dev
 ```
 
-### Create DB and Tables
+## Create DB and Tables
 
 ```sh
 $ jets db:drop db:migrate
@@ -116,12 +119,12 @@ Dropped database 'demo_test'
 $
 ```
 
-### Start the Server
+## Start the Server
 
 Let's start the server.
 
 ```sh
-jets server
+$ jets server
 => bundle exec shotgun --port 8888 --host 127.0.0.1
 Jets booting up in development mode!
 == Shotgun/WEBrick on http://127.0.0.1:8888/
@@ -130,13 +133,13 @@ Jets booting up in development mode!
 [2018-08-10 23:01:05] INFO  WEBrick::HTTPServer#start: pid=13999 port=8888
 ```
 
-### Check out the CRUD app
+## Check out the CRUD App
 
-1. Go to http://localhost:8888/posts
-2. Click around and create some items
+1. Go to [http://localhost:8888/posts](http://localhost:8888/posts)
+2. Create some items
+3. You should end up have some posts that look something like below:
 
-
-
+![](/img/docs/crud/posts-index.png)
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/crud-tutorials.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/crud-json-activerecord.md %}">Next Step</a>
