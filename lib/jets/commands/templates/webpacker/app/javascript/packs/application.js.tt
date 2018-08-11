@@ -7,7 +7,7 @@
 // To reference this file, add <%%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-<% if options[:bootstrap] -%>
+<% if @bootstrap -%>
 import 'bootstrap/dist/js/bootstrap';
 <% end -%>
 import '../src/jets/crud'

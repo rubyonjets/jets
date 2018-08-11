@@ -16,7 +16,7 @@ export JETS_ENV
 
 bundle update
 
-<% if options[:webpacker] %>
+<% if @webpacker %>
 yarn install
 bin/webpack
 <% end %>

@@ -38,9 +38,20 @@ module Jets::Commands
       end
     end
 
+    def set_api_mode
+      # options is a frozen hash by Thor so cannot modify it.
+      # Also had trouble unfreezing it with .dup. So using instance variables instead
+      if options[:api]
+        @webpacker = false
+        @bootstrap = false
+      else
+        @webpacker = options[:webpacker]
+        @bootstrap = options[:bootstrap]
+      end
+    end
+
     def webpacker_install
-      return if options[:api]
-      return unless options[:webpacker]
+      return unless @webpacker
 
       command = "jets webpacker:install"
       command += " FORCE=1" if options[:force]
@@ -50,8 +61,7 @@ module Jets::Commands
     # bootstrap is dependent on webpacker, options[:bootstrap] is used
     # in webpacker_install.
     def bootstrap_install
-      return if options[:api]
-      return unless options[:bootstrap]
+      return unless @bootstrap
 
       # Add jquery and popper plugin to handle Delete of CRUD
       jquery =<<-JS

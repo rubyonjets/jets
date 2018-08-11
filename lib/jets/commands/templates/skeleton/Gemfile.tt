@@ -6,7 +6,7 @@ else
   gem "jets", git: "https://github.com/tongueroo/jets.git", submodules: true
 end
 
-<% if options[:webpacker] -%>
+<% if @webpacker -%>
 # Include webpacker if you are you are building html pages
 gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
 <% end -%>
