@@ -9,11 +9,14 @@ reference: true
 
 ## Description
 
-Runs a local server for development
+Runs a local server that mimics API Gateway for development.
 
-Starts a local server for development.  The server mimics API Gateway and provides a way to test your app locally without deploying to AWS.
+The local server for mimics API Gateway and provides a way to test your app locally without deploying to AWS.
 
-$ jets server
+## Examples
+
+    $ jets server
+    $ jets server --host 0.0.0.0
 
 ## Options
 

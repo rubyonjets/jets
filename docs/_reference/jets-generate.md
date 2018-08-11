@@ -9,11 +9,13 @@ reference: true
 
 ## Description
 
-Generates things like scaffolds
+Generates things like scaffolds.
 
-Generate things like scaffolds. This piggy backs off of rails generators.  Example:
+This piggy backs off of rails generators.
 
-jets generate scaffold Post title:string body:text published:boolean
+## Example
+
+    jets generate scaffold Post title:string body:text published:boolean
 
 ## Options
 

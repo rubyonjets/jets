@@ -1,3 +1,5 @@
-Builds and deploys project to AWS Lambda.  This creates and or updates the CloudFormation stack.
+This packages up the project and deploys it AWS Lambda. This essentially updating the CloudFormation stack.
 
-$ jets deploy
+## Example
+
+    $ jets deploy

@@ -9,7 +9,9 @@ reference: true
 
 ## Description
 
-Shows the current status for the stack.
+Shows the current status of the Jets app..
+
+Essentially the events of the CloudFormation stack update. If the CloudFormation stack is currently updating, this will tail the events logs.
 
 ## Options
 

@@ -1,1 +1,1 @@
-Lono is a CloudFormation framework tool that helps you manage your templates. Lono handles the entire CloudFormation lifecycle. It starts with helping you develop your templates and helps you all the way to the infrastructure provisioning step.
+Jets is a Serverless Framework that allows you to create applications with Ruby on AWS Lambda. It includes everything required to build an application and deploy it. Jets makes serverless accessible to all.

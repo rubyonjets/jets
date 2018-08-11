@@ -9,14 +9,11 @@ reference: true
 
 ## Description
 
-Runs migrations
-
 Runs migrations.
 
-Example:
+## Examples
 
-jets dynamodb:migrate path/to/migration
-
-jets dynamodb:migrate db/migrate/posts_migration.rb
+    jets dynamodb:migrate path/to/migration
+    jets dynamodb:migrate db/migrate/posts_migration.rb
 
 

@@ -1,4 +1,4 @@
-REPL console with Jets environment loaded.
+## Example
 
-$ jets console
-> Post.find("myid")
+    $ jets console
+    > Post.find("myid")

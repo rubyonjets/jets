@@ -1,0 +1,1 @@
+Essentially the events of the CloudFormation stack update. If the CloudFormation stack is currently updating, this will tail the events logs.

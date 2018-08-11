@@ -9,11 +9,17 @@ reference: true
 
 ## Description
 
-Delete project and all its resources
+Delete the Jets project and all its resources.
 
-Deletes project and all its resources. You can bypass the are you sure prompt with the `--sure` flag.
+This essentially deletes the associated CloudFormation stacks.
 
-$ jets delete --sure
+## Examples
+
+    $ jets delete
+
+You can bypass the are you sure prompt with the `--sure` flag.
+
+    $ jets delete --sure
 
 ## Options
 

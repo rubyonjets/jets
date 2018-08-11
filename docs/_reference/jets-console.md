@@ -9,12 +9,12 @@ reference: true
 
 ## Description
 
-REPL console with Jets environment loaded
-
 REPL console with Jets environment loaded.
 
-$ jets console
-> Post.find("myid")
+## Example
+
+    $ jets console
+    > Post.find("myid")
 
 ## Options
 

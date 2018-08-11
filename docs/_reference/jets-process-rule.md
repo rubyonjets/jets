@@ -9,13 +9,13 @@ reference: true
 
 ## Description
 
-Processes node shim rule handler
+Processes node shim rule handler.
 
-Processes node shim rule handler. The node shim spawns out to this command.
+The node shim spawns out to this command.
 
-Example:
+## Example
 
-$ jets process:rule file://config_change.json '{"context":"data"}' "handlers/rules/game_rule.protect"
+    $ jets process:rule file://config_change.json '{"context":"data"}' "handlers/rules/game_rule.protect"
 
 ## Options
 

@@ -102,7 +102,7 @@ EOL
       <<-EOL
 ## Description
 
-#{description}
+#{description}.
 
 #{long_description}
 EOL

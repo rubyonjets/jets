@@ -9,12 +9,11 @@ reference: true
 
 ## Description
 
-Print out your application routes
+Print out your application routes.
 
-Prints your apps routes.
+## Example
 
-$ jets routes
-EOL
+    $ jets routes
 
 ## Options
 

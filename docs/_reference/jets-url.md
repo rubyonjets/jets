@@ -9,11 +9,13 @@ reference: true
 
 ## Description
 
-App url if routes are defined
+App url if routes are defined.
 
 Provides the app url if routes have been configured.
 
-$ jets url
+## Example
+
+    $ jets url
 
 ## Options
 

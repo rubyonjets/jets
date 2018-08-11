@@ -1,3 +1,5 @@
-Generate things like scaffolds. This piggy backs off of rails generators.  Example:
+This piggy backs off of rails generators.
 
-jets generate scaffold Post title:string body:text published:boolean
+## Example
+
+    jets generate scaffold Post title:string body:text published:boolean
