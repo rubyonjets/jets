@@ -24,7 +24,7 @@ You can test your app at http://localhost:8888. Here's a curl command to create 
       }
     }
 
-You can find examples of all the CRUD actions at [Jets CRUD Tutorials]({% link _docs/crud-tutorials.md %}).
+You can find examples of all the CRUD actions at [Jets CRUD Tutorials]({% link _docs/tutorials.md %}).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/structure.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/repl-console.md %}">Next Step</a>
