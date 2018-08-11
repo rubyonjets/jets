@@ -9,7 +9,7 @@ meta_author: Tung Nguyen
 
 # Google webmaster tools
 google_verify:
-google_analytics: 
+google_analytics: UA-98684555-7
 
 # https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
 bing_verify:

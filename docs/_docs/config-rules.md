@@ -4,7 +4,7 @@ title: Config Rules
 
 Jets supports creating [AWS Config Rules](https://aws.amazon.com/config/) and associating them with lambda functions.  Example:
 
-{% highlight ruby %}
+```ruby
 class SecurityGroupRule < Jets::Rule::Base
   desc "ensures security groups are hardened"
   scope "AWS::EC2::SecurityGroup"
@@ -13,11 +13,11 @@ class SecurityGroupRule < Jets::Rule::Base
     check.run
   end
 end
-{% endhighlight %}
+```
 
 In `app/models`, the SecurityGroupCheck class might look something like this:
 
-{% highlight ruby %}
+```ruby
 class SecurityGroupCheck
   APPLICABLE_RESOURCES = ["AWS::EC2::SecurityGroup"]
 
@@ -43,7 +43,7 @@ class SecurityGroupCheck
   end
   ...
 end
-{% endhighlight %}
+```
 
 ## Polymorphic Rules
 
@@ -56,7 +56,7 @@ app/rules/protect_rule/python/iam_mfa.py
 
 Then in your Rule class, you would use Jet's polymorphic ability:
 
-{% highlight ruby %}
+```ruby
 class ProtectRule < Jets::Rule::Base
   scope "AWS::EC2::Instance"
   python :ec2_exposed_instance
@@ -64,7 +64,7 @@ class ProtectRule < Jets::Rule::Base
   scope "AWS::IAM::User"
   python :iam_mfa
 end
-{% endhighlight %}
+```
 
 Jets will create Python lambda functions using the files in the `app/rules/protect_rule/python` folder and associate the Config Rules with these functions.  This saves you time from rewriting the python code.
 

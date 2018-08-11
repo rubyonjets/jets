@@ -4,7 +4,7 @@ title: Workers
 
 A Jets worker handles background jobs. It is performed outside of the web request/response cycle. Here's an example:
 
-{% highlight ruby %}
+```ruby
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def dig
@@ -16,7 +16,7 @@ class HardJob < ApplicationJob
     {done: "lifting"}
   end
 end
-{% endhighlight %}
+```
 
 `HardJob#dig` will be ran every 10 hours and `HardJob#lift` will be ran every 12 hours.
 

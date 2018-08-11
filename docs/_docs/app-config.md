@@ -6,7 +6,7 @@ You can set application wide configurations in the `config/application.rb` file.
 
 `config/application.rb`:
 
-{% highlight ruby %}
+```ruby
 Jets.application.configure do
   config.project_name = "demo"
   # config.env_extra = 2
@@ -32,7 +32,7 @@ Jets.application.configure do
   # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
   # Underscored format can be used for keys to make it look more ruby-ish.
 end
-{% endhighlight %}
+```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/database-activerecord.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/function-properties.md %}">Next Step</a>

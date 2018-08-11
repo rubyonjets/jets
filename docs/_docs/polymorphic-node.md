@@ -6,17 +6,17 @@ To use write your Jets Lambda functions in node it would look like this:
 
 `app/controllers/posts_controller.rb`:
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   node :node_example
 end
-{% endhighlight %}
+```
 
 You add your corresponding node code in the `posts_controller/node` folder:
 
 `app/controllers/posts_controller/node/node_example.js`:
 
-{% highlight javascript %}
+```javascript
 'use strict';
 
 exports.handle = function(event, context, callback) {
@@ -31,7 +31,7 @@ exports.handle = function(event, context, callback) {
     };
     callback(null, response);
 };
-{% endhighlight %}
+```
 
 Notice, how with the node code, you must handle returning the proper lambda proxy structure to API Gateway.
 
@@ -41,20 +41,20 @@ The default handler name is `handle`. This can be changed with the `handler` met
 
 `app/controllers/posts_controller.rb`:
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   handler :handler
   node :node_example
 end
-{% endhighlight %}
+```
 
 The node code would then look something like this:
 
-{% highlight javascript %}
+```javascript
 exports.handler = function(event, context, callback) {
   ...
 };
-{% endhighlight %}
+```
 
 
 

@@ -4,7 +4,7 @@ title: Structure
 
 Ufo creates a `.ufo` folder within your project which contains the required files used by ufo to build and deploy docker images to ECS.  The standard directory structure of the `.ufo` folder looks like this:
 
-{% highlight sh %}
+```sh
 .
 ├── app
 │   ├── controllers
@@ -18,7 +18,7 @@ Ufo creates a `.ufo` folder within your project which contains the required file
 ├── db
 ├── public
 └── spec
-{% endhighlight %}
+```
 
 The table below covers the purpose of each folder and file.
 

@@ -6,17 +6,17 @@ Polymorphic support for python works like so for the controller code:
 
 `app/controllers/posts_controller.rb`:
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   python :python_example
 end
-{% endhighlight %}
+```
 
 You add your corresponding python code in the `posts_controller/python` folder:
 
 `app/controllers/posts_controller/python/python_example.py`:
 
-{% highlight python %}
+```python
 from pprint import pprint
 import json
 import platform
@@ -33,7 +33,7 @@ def response(message, status_code):
             'Content-Type': 'application/json'
             },
         }
-{% endhighlight %}
+```
 
 Notice, how with the python code, you must handle returning the proper lambda proxy structure to API Gateway.
 
@@ -43,20 +43,20 @@ The default handler name is `handle`. This can be changed with the `handler` met
 
 `app/controllers/posts_controller.rb`:
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   handler :lambda_handler
   python :python_example
 end
-{% endhighlight %}
+```
 
 The python code would then look something like this:
 
-{% highlight python %}
+```python
 def lambda_handler(event, context):
   ...
 end
-{% endhighlight %}
+```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/polymorphic-support.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-node.md %}">Next Step</a>

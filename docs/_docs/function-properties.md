@@ -12,7 +12,7 @@ Jets ultimately translate ruby code into Lambda functions. Each [Lambda function
 
 Specific function properties are set right above the method definition like so:
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   timeout 18 # function specific property for the index lambda function
   def index
@@ -20,13 +20,13 @@ class PostsController < ApplicationController
     render json: {action: "index", posts: posts}
   end
 end
-{% endhighlight %}
+```
 
 ## Class Wide Function Properties
 
 Class wide function properties set in the same class file and with a prefix of `class_`.
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   class_timeout 22
   timeout 18 # function specific property for the index lambda function
@@ -39,7 +39,7 @@ class PostsController < ApplicationController
     render json: params.merge(action: "new")
   end
 end
-{% endhighlight %}
+```
 
 For the code above, the `new` method will have a function timeout of 22 seconds and the `index` method will have a function timeout of 18 seconds.
 
@@ -49,7 +49,7 @@ To set function properties globally, edit the function key under the config obje
 
 `config/application.rb`:
 
-{% highlight ruby %}
+```ruby
 Jets.application.configure do
   ...
   config.function.timeout = 10
@@ -61,13 +61,13 @@ Jets.application.configure do
     global_app_key2: "global_app_value2",
   }
 end
-{% endhighlight %}
+```
 
 ## Function Properties Method
 
 In the above example, we use the `timeout` and `class_timeout` method to set function properties. These convenience methods simply call a `properties` method that allows you to change any property for the lambda function. So you could had done this also:
 
-{% highlight ruby %}
+```ruby
 class PostsController < ApplicationController
   properties(timeout: 18) # function specific property for the index lambda function
   def index
@@ -75,7 +75,7 @@ class PostsController < ApplicationController
     render json: {action: "index", posts: posts}
   end
 end
-{% endhighlight %}
+```
 
 
 ### Available Function Convenience Methods
