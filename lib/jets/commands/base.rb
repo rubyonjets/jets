@@ -25,6 +25,17 @@ class Jets::Commands::Base < Thor
       dispatch(nil, thor_args, nil, config)
     end
 
+    # Hacky way to handle error for 'jets new' when no project name is passed in to avoid
+    # this error:
+    #
+    #   required arguments 'project_name' (Thor::RequiredArgumentMissingError)
+    def dispatch(command, given_args, given_opts, config)
+      if given_args == ['new']
+        given_args = ['help', 'new']
+      end
+      super
+    end
+
     # Track all command subclasses.
     def subclasses
       @subclasses ||= []
