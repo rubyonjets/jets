@@ -200,7 +200,7 @@ class Jets::Builders
     # when they deploy a jets project in development mode
     def reconfigure_development_webpacker
       return unless Jets.env.development?
-      headline "Reconfiguring webpacker's development settings for production."
+      headline "Reconfiguring webpacker development settings for AWS Lambda."
 
       webpacker_yml = "#{full(tmp_app_root)}/config/webpacker.yml"
       return unless File.exist?(webpacker_yml)
