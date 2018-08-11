@@ -17,7 +17,7 @@ jets db:create db:migrate
 jets server # Check out site at http://localhost:8888/posts
 ```
 
-Let's go through in a little more detail.
+Let's go through each in a little more detail.
 
 ## Generate a new project
 

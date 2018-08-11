@@ -30,7 +30,7 @@ class Jets::Commands::Base < Thor
     #
     #   required arguments 'project_name' (Thor::RequiredArgumentMissingError)
     def dispatch(command, given_args, given_opts, config)
-      if given_args == ['new'] # user forgot to pass a project name
+      if given_args.reject{|s| s =~ /^-/} == ['new'] # user forgot to pass a project name
         given_args = ['help', 'new']
       end
       super
