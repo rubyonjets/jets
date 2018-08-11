@@ -18,4 +18,5 @@ module Jets::Commands
   autoload :StackInfo, "jets/commands/stack_info"
   autoload :Dbconsole, "jets/commands/dbconsole"
   autoload :Url, "jets/commands/url"
+  autoload :Markdown, "jets/commands/markdown"
 end

@@ -55,7 +55,7 @@ class Jets::Commands::Base < Thor
     def eager_load!
       path = File.expand_path("../../", __FILE__)
       Dir.glob("#{path}/commands/**/*.rb").select do |path|
-        next if !File.file?(path) or path =~ /templates/
+        next if !File.file?(path) or path =~ /templates/ or path =~ %r{/markdown/}
 
         class_name = path
                       .sub(/\.rb$/,'')
