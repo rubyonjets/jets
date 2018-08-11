@@ -29,7 +29,7 @@ module Jets
         return
       end
 
-      # Reaching here mean we'll run the server in the background
+      # Reaching here means we'll run the server in the background
       pid = Process.fork
       if pid.nil?
         serve
