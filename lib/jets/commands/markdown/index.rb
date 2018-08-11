@@ -5,10 +5,11 @@ module Jets::Commands::Markdown
     end
 
     def command_list
-      Jets::Commands::Base.namespaced_commands.sort.map do |full_command|
+      commands = Jets::Commands::Base.namespaced_commands.sort.reject {|c| c.include?('help') }
+      commands.map do |full_command|
         # Example: [jets deploy]({% link _reference/jets-deploy.md %})
         link = full_command.gsub(':','-')
-        "* [jets #{full_command}]({% link _reference/#{link}.md %})"
+        "* [jets #{full_command}]({% link _reference/jets-#{link}.md %})"
       end.join("\n")
     end
 
