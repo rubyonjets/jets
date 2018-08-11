@@ -6,11 +6,11 @@ It can print out the last 4KB of the lambda logs. The logging output is directed
 
 For controllers, the event you pass at the CLI is automatically transformed into Lambda Proxy payload that contains the params as the queryStringParameters.  For example:
 
-  {"test":1}
+    {"test":1}
 
 Gets changed to:
 
-{"queryStringParameters":{"test":1}}
+    {"queryStringParameters":{"test":1}}
 
 This spares you from assembling the event payload manually to the payload that Jets controllers normally recieve.  If you would like to disable this Lambda Proxy transformation then use the `--no-lambda-proxy` flag.
 

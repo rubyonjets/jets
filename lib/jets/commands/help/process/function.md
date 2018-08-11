@@ -1,5 +1,5 @@
-Processes node shim job handler. The node shim spawns out to this command.
+The node shim spawns out to this command.
 
-Example:
+## Example
 
-$ jets process function '{"key1":"value1"}' '{}' "handlers/function/hello.world"
+    $ jets process function '{"key1":"value1"}' '{}' "handlers/function/hello.world"

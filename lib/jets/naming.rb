@@ -45,7 +45,8 @@ class Jets::Naming
     #
     # md5_code_zipfile: /tmp/jets/demo/code/code-2e0e18f6.zip
     def md5_code_zipfile
-      IO.read("#{Jets.build_root}/code/current-md5-filename.txt")
+      path = "#{Jets.build_root}/code/current-md5-filename.txt"
+      File.exist?(path) ? IO.read(path) : "current-md5-filename-doesnt-exist"
     end
     # The current-md5-filename.txt gets created as a part of CodeBuilder's build
     # process.

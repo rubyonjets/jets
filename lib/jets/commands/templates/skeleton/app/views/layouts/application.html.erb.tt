@@ -10,6 +10,15 @@
   <%%= stylesheet_pack_tag "theme" %>
 </head>
 <body>
-  <%%= yield %>
+<section class="starter">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9 content-body">
+        <%% if @title %><h1><%%= @title %></h1><%% end %>
+        <%%= yield %>
+      </div>
+    </div>
+  </div>
+</section>
 </body>
 </html>

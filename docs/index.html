@@ -1,0 +1,148 @@
+---
+layout: default
+subnav: false
+---
+
+    <header class="masthead">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <h1>Jets: Ruby Serverless Framework</h1>
+                            <h2>Jets is a Serverless Framework that allows you to create applications with Ruby on AWS Lambda. It includes everything required to build an application and deploy it. Jets makes serverless accessible to all.</h2>
+                            <a href="{% link quick-start.md %}" class="btn btn-outline btn-xl">Learn More!</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <img src="/img/logos/jets-logo.png" class="homepage-logo" />
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="download bg-primary text-center" id="download">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>What Is Jets?</h2>
+                    <hr class="star-light">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>Building AWS Lambda Serverless can be challenging.  Jets makes it simple and fun. It includes everything required to build and deploy a serverless application to AWS Lambda. Focus on your business logic while Jets handles the mundane gruntwork.</p>
+                </div>
+                <div class="col-lg-6">
+                    <p>Jets was built to allow you to quickly build serverless applications with a beautiful language: ruby.  While at the same time, it allows you to use other languages like node and python allowing you to incrementally use Jets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>Overview</h2>
+                <p class="text-muted">Commands are short and easy to learn</p>
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Commands</h3>
+                                <div class="commands">
+{% highlight sh %}
+jets new
+jets generate scaffold
+jets server
+jets console
+jets build
+jets deploy
+jets routes
+jets call
+jets url
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>Controllers</h3>
+                                <div class="commands">
+{% highlight ruby %}
+class PostsController < ApplicationController
+  def index
+    # renders Lambda Proxy structure compatiable with API Gateway
+    render json: {hello: "world", action: "index"}
+  end
+
+  def show
+    id = params[:id] # params available
+    # puts goes to the lambda logs
+    puts event # raw lambda event available
+    render json: {action: "show", id: id}
+  end
+end
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Jobs</h3>
+                                <div class="commands">
+{% highlight ruby %}
+class HardJob < ApplicationJob
+  rate "10 hours" # every 10 hours
+  def dig
+    {done: "digging"}
+  end
+
+  cron "0 */12 * * ? *" # every 12 hours
+  def lift
+    {done: "lifting"}
+  end
+end
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>Routes</h3>
+                                <div class="commands">
+{% highlight yaml %}
+Jets.application.routes.draw do
+  get  "posts", to: "posts#index"
+  get  "posts/new", to: "posts#new"
+  get  "posts/:id", to: "posts#show"
+  post "posts", to: "posts#create"
+  get  "posts/:id/edit", to: "posts#edit"
+  put  "posts", to: "posts#update"
+  delete  "posts", to: "posts#delete"
+
+  resources :comments # expands to the RESTful routes above
+
+  any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
+end
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include example.html %}
+
+    <section class="cta">
+        <div class="cta-content">
+            <div class="container">
+                <h2>Learn More</h2>
+                <a href="{% link quick-start.md %}" class="btn btn-outline btn-xl">Quick Start</a>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </section>

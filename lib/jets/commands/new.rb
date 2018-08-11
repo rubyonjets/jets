@@ -9,6 +9,7 @@ module Jets::Commands
       [
         [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
+        [:api, type: :boolean, default: false, desc: "API mode."],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
@@ -17,6 +18,18 @@ module Jets::Commands
 
     cli_options.each do |args|
       class_option *args
+    end
+
+    def set_api_mode
+      # options is a frozen hash by Thor so cannot modify it.
+      # Also had trouble unfreezing it with .dup. So using instance variables instead
+      if options[:api]
+        @webpacker = false
+        @bootstrap = false
+      else
+        @webpacker = options[:webpacker]
+        @bootstrap = options[:bootstrap]
+      end
     end
 
     def create_project
@@ -38,7 +51,7 @@ module Jets::Commands
     end
 
     def webpacker_install
-      return unless options[:webpacker]
+      return unless @webpacker
 
       command = "jets webpacker:install"
       command += " FORCE=1" if options[:force]
@@ -48,7 +61,7 @@ module Jets::Commands
     # bootstrap is dependent on webpacker, options[:bootstrap] is used
     # in webpacker_install.
     def bootstrap_install
-      return unless options[:bootstrap]
+      return unless @bootstrap
 
       # Add jquery and popper plugin to handle Delete of CRUD
       jquery =<<-JS

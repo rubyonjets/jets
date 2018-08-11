@@ -25,6 +25,17 @@ class Jets::Commands::Base < Thor
       dispatch(nil, thor_args, nil, config)
     end
 
+    # Hacky way to handle error for 'jets new' when no project name is passed in to avoid
+    # this error:
+    #
+    #   required arguments 'project_name' (Thor::RequiredArgumentMissingError)
+    def dispatch(command, given_args, given_opts, config)
+      if given_args.reject{|s| s =~ /^-/} == ['new'] # user forgot to pass a project name
+        given_args = ['help', 'new']
+      end
+      super
+    end
+
     # Track all command subclasses.
     def subclasses
       @subclasses ||= []
@@ -44,7 +55,7 @@ class Jets::Commands::Base < Thor
     def eager_load!
       path = File.expand_path("../../", __FILE__)
       Dir.glob("#{path}/commands/**/*.rb").select do |path|
-        next if !File.file?(path) or path =~ /templates/
+        next if !File.file?(path) or path =~ /templates/ or path =~ %r{/markdown/}
 
         class_name = path
                       .sub(/\.rb$/,'')

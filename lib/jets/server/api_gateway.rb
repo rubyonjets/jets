@@ -31,7 +31,6 @@ class Jets::Server
       text = "Verb | Path | Controller#action\n"
       text << "--- | --- | ---\n"
       routes.each do |route|
-        puts "route #{route.inspect}"
         text << "#{route.method} | #{route.path} | #{route.to}\n"
       end
       Kramdown::Document.new(text).to_html

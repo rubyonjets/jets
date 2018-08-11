@@ -1,3 +1,5 @@
-Starts DB REPL console, like running the psql command with the config/database.yml parsed and loaded for you.
+This is like running the psql command with the `config/database.yml` values and set for you.
 
-$ jets dbconsole
+## Example
+
+    jets dbconsole

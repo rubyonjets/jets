@@ -1,4 +1,3 @@
-Prints your apps routes.
+## Example
 
-$ jets routes
-EOL
+    $ jets routes

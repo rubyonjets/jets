@@ -1,0 +1,24 @@
+// Variables
+
+// Gray and Brand Colors for use across theme
+
+$theme-primary:    #777;
+$theme-secondary:  #7b4397;
+$theme-tertiary:   #dc2430;
+
+$gray-base:        #000;
+$gray-darker:      lighten($gray-base, 13.5%); // #222
+$gray-dark:        lighten($gray-base, 20%);   // #333
+$gray:             lighten($gray-base, 33.5%); // #555
+$gray-light:       lighten($gray-base, 46.7%); // #777
+$gray-lighter:     lighten($gray-base, 93.5%); // #eee
+
+$brand-twitter:		#1da1f2;
+$brand-facebook:	#3b5998;
+$brand-google-plus:	#dd4b39;
+
+$site-color-primary: #3972c7;
+$site-color-primary-rgb: #18FF9C;
+$site-color-secondary: #2c3e50;
+$site-color-secondary-dark: #233140;
+$site-color-links: #a3c8ff;

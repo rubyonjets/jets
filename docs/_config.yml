@@ -1,0 +1,73 @@
+# Site settings
+title: Jets Ruby Serverless Framework
+email: tongueroo@gmail.com
+url: http://rubyonjets.com
+description: "Ruby Serverless Framework"
+keywords: "AWS Lambda, AWS Serverless, Ruby, Framework"
+skills: ""
+meta_author: Tung Nguyen
+
+# Google webmaster tools
+google_verify:
+google_analytics: UA-98684555-7
+
+# https://ssl.bing.com/webmaster/configure/verify/ownership Option 2 content= goes here
+bing_verify:
+
+# Contact form:
+# - static : pass through formspree.io to validate email sending
+# - disqus : replace contact form by disqus thread
+# - comment the line below if you want to stick with the default PHP contact form
+contact: static
+
+# If you use disqus you need disqus shortname
+# https://help.disqus.com/customer/portal/articles/466208
+disqus_shortname:
+
+# Color settings (hex-codes without the leading hash-tag)
+color:
+  primary: 3972c7
+  primary-rgb: "24,288,156" #"128,179,255"
+  secondary: 2c3e50 #FD6E8A
+  secondary-dark: 233140 #A2122F
+  links: a3c8ff
+
+# Footer settings
+footer:
+  copyright: BoltOps, LLC
+  location: San Francisco, CA
+  social: BoltOps
+  credits:
+  contact: contact@boltops.com
+  phone:
+
+# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
+social:
+  - title: twitter
+    url: http://twitter.com/boltopslabs
+  - title: github
+    url: http://github.com/boltopslabs
+
+# Credits content
+credits:
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+gh_url: "https://github.com/tongueroo/jets"
+
+collections:
+  docs:
+    name: "Documentation"
+    output: true
+  reference:
+    name: "Reference"
+    output: true
+
+defaults:
+  - values:
+      layout: default
+
+plugins_dir:
+ - jekyll-coffeescript

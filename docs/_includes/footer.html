@@ -1,0 +1,41 @@
+    <footer class="text-center">
+        <div class="footer-above">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col col-md-4">
+                        <h3>More Tools</h3>
+                        <ul class="list-unstyled tools">
+                            <li><a href="http://ufoships.com">Ufo</a></li>
+                            <li><a href="http://lono.cloud">Lono</a></li>
+                            <li><a href="http://sonic-screwdriver.cloud">Sonic</a></li>
+                            <li><a href="http://jack-eb.com">Jack</a></li>
+                            <li><a href="https://boltops.com/toolbelt">Toolbelt</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3><a href="https://boltops.com"><img class="footer-logo" src="/img/logos/boltops-logo-full.png" /></a></h3>
+                        <ul class="list-inline">
+                            {% for network in site.social %}
+                            <li>
+                                <a href="{{ network.url }}" class="btn-social btn-outline"><i class="fa fa-fw fa-{{ network.title }}"></i></a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <h3>Contact</h3>
+                        <p>{{ site.footer.contact }}</p>
+                        <p>{{ site.footer.phone }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <footer>
+        <div class="container">
+            <div class="footer-below">
+            <p>Maintained by {{ site.footer.copyright }}  20{{ site.time | date: '%y' }}</p>
+            </div>
+        </div>
+    </footer>

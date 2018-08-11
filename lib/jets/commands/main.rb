@@ -5,14 +5,14 @@ module Jets::Commands
 
     class_option :noop, type: :boolean
 
-    desc "build", "Builds and prepares project for Lambda"
+    desc "build", "Builds and prepares project for AWS Lambda"
     long_desc Help.text(:build)
     option :templates_only, type: :boolean, default: false, desc: "provide a way to skip building the code and only build the CloudFormation templates"
     def build
       Build.new(options).run
     end
 
-    desc "deploy [environment]", "Deploys project to Lambda"
+    desc "deploy [environment]", "Builds and deploys project to AWS Lambda"
     long_desc Help.text(:deploy)
     option :capabilities, type: :array, desc: "iam capabilities. Ex: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
     option :iam, type: :boolean, desc: "Shortcut for common IAM capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
@@ -23,7 +23,7 @@ module Jets::Commands
       Deploy.new(options).run
     end
 
-    desc "delete", "Delete project and all its resources"
+    desc "delete", "Delete the Jets project and all its resources"
     long_desc Help.text(:delete)
     option :sure, type: :boolean, desc: "Skip are you sure prompt."
     option :wait, type: :boolean, default: true, desc: "Wait for stack deletion to complete."
@@ -31,7 +31,7 @@ module Jets::Commands
       Delete.new(options).run
     end
 
-    desc "server", "Runs a local server for development"
+    desc "server", "Runs a local server that mimics API Gateway for development"
     long_desc Help.text(:server)
     option :port, default: "8888", desc: "use PORT"
     option :host, default: "127.0.0.1", desc: "listen on HOST"
@@ -56,7 +56,7 @@ module Jets::Commands
       Console.run
     end
 
-    desc "dbconsole", "DB REPL console"
+    desc "dbconsole", "Starts DB REPL console"
     long_desc Help.text(:dbconsole)
     def dbconsole
       Dbconsole.start(*args)
@@ -82,7 +82,7 @@ module Jets::Commands
       Jets::Generator.invoke(generator, *args)
     end
 
-    desc "status", "Shows the current status for the stack."
+    desc "status", "Shows the current status of the Jets app."
     long_desc Help.text(:status)
     def status
       Jets::Cfn::Status.new(options).run
@@ -104,6 +104,6 @@ module Jets::Commands
     Jets::Commands::New.cli_options.each do |args|
       option *args
     end
-    register(Jets::Commands::New, "new", "new", "Creates new starter project")
+    register(Jets::Commands::New, "new", "new", "Creates a starter skeleton jets project")
   end
 end
