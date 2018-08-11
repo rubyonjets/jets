@@ -9,6 +9,7 @@ module Jets::Commands
       [
         [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
+        [:api, type: :boolean, default: false, desc: "API mode."],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
@@ -38,6 +39,7 @@ module Jets::Commands
     end
 
     def webpacker_install
+      return if options[:api]
       return unless options[:webpacker]
 
       command = "jets webpacker:install"
@@ -48,6 +50,7 @@ module Jets::Commands
     # bootstrap is dependent on webpacker, options[:bootstrap] is used
     # in webpacker_install.
     def bootstrap_install
+      return if options[:api]
       return unless options[:bootstrap]
 
       # Add jquery and popper plugin to handle Delete of CRUD

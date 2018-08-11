@@ -27,6 +27,7 @@ class Jets::Generator
     g.stylesheets     false
     g.javascripts     false
     g.assets          false
+    g.api             Jets.config.api_generator
     g.resource_route  true
     g.templates.unshift(template_paths)
     g
