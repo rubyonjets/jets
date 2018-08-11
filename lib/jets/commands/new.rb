@@ -20,6 +20,18 @@ module Jets::Commands
       class_option *args
     end
 
+    def set_api_mode
+      # options is a frozen hash by Thor so cannot modify it.
+      # Also had trouble unfreezing it with .dup. So using instance variables instead
+      if options[:api]
+        @webpacker = false
+        @bootstrap = false
+      else
+        @webpacker = options[:webpacker]
+        @bootstrap = options[:bootstrap]
+      end
+    end
+
     def create_project
       options[:repo] ? clone_project : copy_project
 
@@ -35,18 +47,6 @@ module Jets::Commands
     def bundle_install
       Bundler.with_clean_env do
         system("BUNDLE_IGNORE_CONFIG=1 bundle install")
-      end
-    end
-
-    def set_api_mode
-      # options is a frozen hash by Thor so cannot modify it.
-      # Also had trouble unfreezing it with .dup. So using instance variables instead
-      if options[:api]
-        @webpacker = false
-        @bootstrap = false
-      else
-        @webpacker = options[:webpacker]
-        @bootstrap = options[:bootstrap]
       end
     end
 
