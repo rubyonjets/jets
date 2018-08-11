@@ -9,7 +9,7 @@ class Jets::Cfn
       reset
     end
 
-    # used for the lono cfn status command
+    # used for the jets status command
     def run
       unless stack_exists?(@stack_name)
         puts "The stack #{@stack_name.colorize(:green)} does not exist."

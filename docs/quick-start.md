@@ -2,7 +2,7 @@
 title: Quick Start
 ---
 
-In a hurry? No problem!  Here's a quick start to get you going now.
+In a hurry? No problem!  Here's a quick start to get going.
 
 {% highlight bash %}
 jets new demo

@@ -55,7 +55,7 @@ credits:
 markdown: kramdown
 permalink: pretty
 
-gh_url: "https://github.com/tongueroo/lono"
+gh_url: "https://github.com/tongueroo/jets"
 
 collections:
   docs:
