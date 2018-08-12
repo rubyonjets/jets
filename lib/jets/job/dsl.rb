@@ -14,8 +14,9 @@ module Jets::Job::Dsl
         @cron = expression
       end
 
+      # This is a property of the AWS::Events::Rule not the Lambda function
       def state(value)
-        properties(state: value)
+        @state = value
       end
 
       # Override register_task.
@@ -26,6 +27,7 @@ module Jets::Job::Dsl
           all_tasks[meth] = Jets::Job::Task.new(self.name, meth,
             rate: @rate,
             cron: @cron,
+            state: @state,
             properties: @properties,
             lang: lang)
           # done storing options, clear out for the next added method

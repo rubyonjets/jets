@@ -20,7 +20,7 @@ class Jets::Cfn::TemplateBuilders
     def add_event_rule(task, map)
       add_resource(map.logical_id, "AWS::Events::Rule",
         ScheduleExpression: task.schedule_expression,
-        State: "ENABLED",
+        State: task.state,
         Targets: [
           {
             Arn: "!GetAtt #{map.lambda_function_logical_id}.Arn",
