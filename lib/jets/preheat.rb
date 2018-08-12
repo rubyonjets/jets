@@ -34,6 +34,9 @@ module Jets
         end
       end
       threads.each { |t| t.join }
+      # return the funciton names so we can see in the Lambda console
+      # the functions being prewarmed
+      all_functions
     end
 
     # Returns:
