@@ -143,13 +143,16 @@ module Jets::Commands
     # Add internal Jets controllers if they are being used
     def self.internal_app_files
       paths = []
-      internal = File.expand_path("../../internal/app/controllers/jets", __FILE__)
+      controllers = File.expand_path("../../internal/app/controllers/jets", __FILE__)
 
       welcome = Jets::Router.has_controller?("Jets::WelcomeController")
-      paths << "#{internal}/public_controller.rb" if welcome
+      paths << "#{controllers}/public_controller.rb" if welcome
 
       public_catchall = Jets::Router.has_controller?("Jets::PublicController")
-      paths << "#{internal}/welcome_controller.rb" if public_catchall
+      paths << "#{controllers}/welcome_controller.rb" if public_catchall
+
+      jobs = File.expand_path("../../internal/app/jobs/jets", __FILE__)
+      paths << "#{jobs}/prewarm_job.rb"
 
       paths
     end

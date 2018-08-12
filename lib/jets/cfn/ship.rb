@@ -35,6 +35,7 @@ class Jets::Cfn
       end
 
       wait_for_stack
+      prewarm
       show_api_endpoint
     end
     time :run
@@ -79,6 +80,14 @@ class Jets::Cfn
       Jets::Cfn::Status.new(@options).wait
     end
     time :wait_for_stack
+
+    def prewarm
+      # IE: function_name: posts_controller-index
+      function_name = "jets-prewarm_job-heat"
+      event = '{}'
+      options = {mute_output: true}
+      Jets::Commands::Call.new(function_name, event, options).run
+    end
 
     def show_api_endpoint
       return unless @options[:stack_type] == :full # s3 bucket is available
