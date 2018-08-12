@@ -35,6 +35,7 @@ module Jets
   autoload :Dotenv, 'jets/dotenv'
   autoload :Klass, 'jets/klass'
   autoload :Util, "jets/util"
+  autoload :Timing, "jets/timing"
   extend Core # root, logger, etc
 
   autoload :RubyServer, "jets/ruby_server"
