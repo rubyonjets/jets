@@ -14,6 +14,10 @@ module Jets::Job::Dsl
         @cron = expression
       end
 
+      def state(value)
+        properties(state: value)
+      end
+
       # Override register_task.
       # A Job::Task is a Lambda::Task with some added DSL methods like
       # rate and cron.

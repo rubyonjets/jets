@@ -152,7 +152,7 @@ module Jets::Commands
       paths << "#{controllers}/welcome_controller.rb" if public_catchall
 
       jobs = File.expand_path("../../internal/app/jobs/jets", __FILE__)
-      paths << "#{jobs}/prewarm_job.rb"
+      paths << "#{jobs}/preheat_job.rb"
 
       paths
     end

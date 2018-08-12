@@ -1,6 +1,7 @@
 require "active_support/ordered_options"
 
 class Jets::Application
+  extend Memoist
   # Middleware used for development only
   autoload :Middleware, "jets/application/middleware"
   include Middleware
@@ -16,8 +17,11 @@ class Jets::Application
   end
 
   def config
-    @config ||= ActiveSupport::OrderedOptions.new
+    config = ActiveSupport::OrderedOptions.new
+    config.prewarm = ActiveSupport::OrderedOptions.new
+    config
   end
+  memoize :config
 
   def setup_auto_load_paths
     autoload_paths = config.autoload_paths + config.extra_autoload_paths

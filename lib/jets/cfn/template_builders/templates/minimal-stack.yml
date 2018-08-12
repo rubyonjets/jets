@@ -31,7 +31,7 @@ Resources:
             Action:
             - dynamodb:*
             Resource: "*"
-            # required for PrewarmJob which calls the other lambda functions repeatedly
+            # required for PreheatJob which calls the other lambda functions repeatedly
           - Effect: Allow
             Action:
             - lambda:*
