@@ -82,10 +82,7 @@ class Jets::Cfn
     time :wait_for_stack
 
     def prewarm
-      Jets::Preheat.warm_all(
-        mute: true,
-        mute_output: true,
-      )
+      Jets::Preheat.warm_all(mute: true)
     end
 
     def show_api_endpoint
