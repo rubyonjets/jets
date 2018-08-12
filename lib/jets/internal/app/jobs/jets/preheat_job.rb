@@ -23,7 +23,7 @@ class Jets::PreheatJob < ApplicationJob
         # intentionally calling remote lambda for concurrency
         # avoid passing the _prewarm=1 flag because we want the job to do the work
         function_name = "jets-preheat_job-warm"
-        Jets::Commands::Call.new(function_name, '{}', @options).run unless ENV['TEST']
+        Jets::Commands::Call.new(function_name, '{}').run unless ENV['TEST']
       end
     end
     threads.each { |t| t.join }
