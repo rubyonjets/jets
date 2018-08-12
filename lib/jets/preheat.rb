@@ -17,7 +17,6 @@ module Jets
 
     def initialize(options)
       @options = options # passed to Call.new options
-      @options[:mute_output] = true if @options[:mute_output].nil?
     end
 
     def warm(function_name)
