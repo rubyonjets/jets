@@ -20,19 +20,19 @@ module Jets::Commands
       # deploy full nested stack when stack already exists
       ship(stack_type: :full, s3_bucket: s3_bucket)
     end
-    record :run
+    time :run
 
     def build_code
       Jets::Commands::Build.new(@options).build_code
     end
-    record :build_code
+    time :build_code
 
     def ship(stack_options)
       options = @options.merge(stack_options) # includes stack_type and s3_bucket
       Jets::Commands::Build.new(options).build_templates
       Jets::Cfn::Ship.new(options).run
     end
-    record :ship
+    time :ship
 
     # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
     def exit_unless_updateable!

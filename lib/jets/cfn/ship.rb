@@ -37,7 +37,7 @@ class Jets::Cfn
       wait_for_stack
       show_api_endpoint
     end
-    record :run
+    time :run
 
     def save_stack
       if stack_exists?(@parent_stack_name)
@@ -52,7 +52,7 @@ class Jets::Cfn
       template_body = IO.read(@template_path)
       cfn.create_stack(stack_options)
     end
-    record :create_stack
+    time :create_stack
 
     def update_stack
       begin
@@ -62,7 +62,7 @@ class Jets::Cfn
         error = true
       end
     end
-    record :update_stack
+    time :update_stack
 
     # options common to both create_stack and update_stack
     def stack_options
@@ -78,7 +78,7 @@ class Jets::Cfn
     def wait_for_stack
       Jets::Cfn::Status.new(@options).wait
     end
-    record :wait_for_stack
+    time :wait_for_stack
 
     def show_api_endpoint
       return unless @options[:stack_type] == :full # s3 bucket is available
@@ -150,7 +150,7 @@ class Jets::Cfn
       obj.upload_file(md5_code_zipfile)
       puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
-    record :upload_to_s3
+    time :upload_to_s3
 
     # http://stackoverflow.com/questions/4175733/convert-duration-to-hoursminutesseconds-or-similar-in-rails-3-or-ruby
     def pretty_time(total_seconds)

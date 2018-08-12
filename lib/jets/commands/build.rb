@@ -17,18 +17,18 @@ module Jets::Commands
       @options.merge!(stack_type: stack_type, s3_bucket: s3_bucket)
       build
     end
-    record :run
+    time :run
 
     def build
       build_code unless @options[:templates_only]
       build_templates
     end
-    record :build
+    time :build
 
     def build_code
       Jets::Builders::CodeBuilder.new.build unless @options[:noop]
     end
-    record :build_code
+    time :build_code
 
     def build_templates
       if @options[:stack_type] == :minimal
@@ -37,7 +37,7 @@ module Jets::Commands
         build_all_templates
       end
     end
-    record :build_templates
+    time :build_templates
 
     def build_all_templates
       clean_templates

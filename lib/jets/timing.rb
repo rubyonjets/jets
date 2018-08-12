@@ -46,7 +46,7 @@ module Jets
     end
 
     included do
-      def self.record(meth)
+      def self.time(meth)
         unrecorded_meth = "unrecorded_#{meth}"
         alias_method unrecorded_meth, meth
 
