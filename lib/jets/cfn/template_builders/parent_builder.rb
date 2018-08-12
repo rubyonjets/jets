@@ -27,8 +27,8 @@ class Jets::Cfn::TemplateBuilders
       # variables for minimal-stack.yml
       path = File.expand_path("../templates/minimal-stack.yml", __FILE__)
       variables = {
-        policy_name: "lamdba-#{Jets.config.project_namespace}-policy",
-        role_name: "lamdba-#{Jets.config.project_namespace}-role",
+        policy_name: "lambda-#{Jets.config.project_namespace}-policy",
+        role_name: "lambda-#{Jets.config.project_namespace}-role",
       }
       rendered_result = Jets::Erb.result(path, variables)
       minimal_template = YAML.load(rendered_result)

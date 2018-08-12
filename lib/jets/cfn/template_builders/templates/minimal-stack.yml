@@ -31,6 +31,11 @@ Resources:
             Action:
             - dynamodb:*
             Resource: "*"
+            # required for PrewarmJob which calls the other lambda functions repeatedly
+          - Effect: Allow
+            Action:
+            - lambda:*
+            Resource: "*"
       Path: "/"
       RoleName: <%= @role_name %>
 Outputs:
