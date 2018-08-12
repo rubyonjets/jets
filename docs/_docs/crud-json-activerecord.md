@@ -8,60 +8,54 @@ The easiest way to get a CRUD JSON API ActiveRecord app running by using the jet
 
 Here's a summary of the commands:
 
-```
-jets new demo --api
-cd demo
-jets generate scaffold Post title:string
-edit .env.development # adjust to your local database creds
-jets db:create db:migrate
-jets server # Check out site at http://localhost:8888/posts
-```
+    jets new demo --api
+    cd demo
+    jets generate scaffold Post title:string
+    edit .env.development # adjust to your local database creds
+    jets db:create db:migrate
+    jets server # Check out site at http://localhost:8888/posts
 
 Let's go through each in a little more detail.
 
 ## Generate a new project
 
-```
-$ jets new demo --api
-Creating new project called demo.
-      create  demo/app/controllers/application_controller.rb
-      create  demo/app/helpers/application_helper.rb
-      create  demo/app/jobs/application_job.rb
-...
-================================================================
-Congrats  You have successfully created a Jets project.
+    $ jets new demo --api
+    Creating new project called demo.
+          create  demo/app/controllers/application_controller.rb
+          create  demo/app/helpers/application_helper.rb
+          create  demo/app/jobs/application_job.rb
+    ...
+    ================================================================
+    Congrats  You have successfully created a Jets project.
 
-Cd into the project directory:
-  cd demo
+    Cd into the project directory:
+      cd demo
 
-To start a server and test locally:
-  jets server # localhost:8888 should have the Jets welcome page
+    To start a server and test locally:
+      jets server # localhost:8888 should have the Jets welcome page
 
-Scaffold example:
-  jets generate scaffold Post title:string body:text published:boolean
+    Scaffold example:
+      jets generate scaffold Post title:string body:text published:boolean
 
-To deploy to AWS Lambda:
-  jets deploy
-$
-```
+    To deploy to AWS Lambda:
+      jets deploy
+    $
 
 ## CRUD Scaffold
 
-```
-$ cd demo
-$ jets generate scaffold Post title:string
-      invoke  active_record
-      create    db/migrate/20180811022404_create_posts.rb
-      create    app/models/post.rb
-      invoke  resource_route
-       route    resources :posts
-      invoke  scaffold_controller
-      create    app/controllers/posts_controller.rb
-      invoke    erb
-      invoke    helper
-      create      app/helpers/posts_helper.rb
-$
-```
+    $ cd demo
+    $ jets generate scaffold Post title:string
+          invoke  active_record
+          create    db/migrate/20180811022404_create_posts.rb
+          create    app/models/post.rb
+          invoke  resource_route
+           route    resources :posts
+          invoke  scaffold_controller
+          create    app/controllers/posts_controller.rb
+          invoke    erb
+          invoke    helper
+          create      app/helpers/posts_helper.rb
+    $
 
 This generates a Post ActiveRecord model and the post controller a simple CRUD app.
 
@@ -88,30 +82,24 @@ development:
 
 So we can adjust environment variables to configure a local database. My `.env.development` to looks like this:
 
-`.env.development`:
+.env.development:
 
-```sh
-DATABASE_URL=postgres://ec2-user@localhost/demo_dev
-```
+    DATABASE_URL=postgres://ec2-user@localhost/demo_dev
 
 If you have a password the format would look like this:
 
-```sh
-DATABASE_URL=postgres://ec2-user:mypassword@localhost/demo_dev
-```
+    DATABASE_URL=postgres://ec2-user:mypassword@localhost/demo_dev
 
 ## Create DB and Tables
 
-```sh
-$ jets db:drop db:migrate
-Dropped database 'demo_dev'
-Dropped database 'demo_test'
-== 20180810215214 CreatePosts: migrating ======================================
--- create_table(:posts)
-   -> 0.0062s
-== 20180810215214 CreatePosts: migrated (0.0062s) =============================
-$
-```
+    $ jets db:create db:migrate
+    Created database 'demo_dev'
+    Created database 'demo_test'
+    == 20180810215214 CreatePosts: migrating ======================================
+    -- create_table(:posts)
+       -> 0.0062s
+    == 20180810215214 CreatePosts: migrated (0.0062s) =============================
+    $
 
 ## Start the Server
 

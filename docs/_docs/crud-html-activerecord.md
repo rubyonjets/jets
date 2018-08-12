@@ -94,44 +94,36 @@ development:
 
 So we can adjust environment variables to configure a local database. My `.env.development` to looks like this:
 
-`.env.development`:
+.env.development:
 
-```sh
-DATABASE_URL=postgres://ec2-user@localhost/demo_dev
-```
+    DATABASE_URL=postgres://ec2-user@localhost/demo_dev
 
 If you have a password the format would look like this:
 
-```sh
-DATABASE_URL=postgres://ec2-user:mypassword@localhost/demo_dev
-```
+    DATABASE_URL=postgres://ec2-user:mypassword@localhost/demo_dev
 
 ## Create DB and Tables
 
-```sh
-$ jets db:drop db:migrate
-Dropped database 'demo_dev'
-Dropped database 'demo_test'
-== 20180810215214 CreatePosts: migrating ======================================
--- create_table(:posts)
-   -> 0.0062s
-== 20180810215214 CreatePosts: migrated (0.0062s) =============================
-$
-```
+    $ jets db:create db:migrate
+    Created database 'demo_dev'
+    Created database 'demo_test'
+    == 20180810215214 CreatePosts: migrating ======================================
+    -- create_table(:posts)
+       -> 0.0062s
+    == 20180810215214 CreatePosts: migrated (0.0062s) =============================
+    $
 
 ## Start the Server
 
 Let's start the server.
 
-```sh
-$ jets server
-=> bundle exec shotgun --port 8888 --host 127.0.0.1
-Jets booting up in development mode!
-== Shotgun/WEBrick on http://127.0.0.1:8888/
-[2018-08-10 23:01:05] INFO  WEBrick 1.4.2
-[2018-08-10 23:01:05] INFO  ruby 2.5.1 (2018-03-29) [x86_64-linux]
-[2018-08-10 23:01:05] INFO  WEBrick::HTTPServer#start: pid=13999 port=8888
-```
+    $ jets server
+    => bundle exec shotgun --port 8888 --host 127.0.0.1
+    Jets booting up in development mode!
+    == Shotgun/WEBrick on http://127.0.0.1:8888/
+    [2018-08-10 23:01:05] INFO  WEBrick 1.4.2
+    [2018-08-10 23:01:05] INFO  ruby 2.5.1 (2018-03-29) [x86_64-linux]
+    [2018-08-10 23:01:05] INFO  WEBrick::HTTPServer#start: pid=13999 port=8888
 
 ## Check out the CRUD App
 
