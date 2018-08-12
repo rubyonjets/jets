@@ -5,7 +5,7 @@ module Jets::Commands
 
     class_option :noop, type: :boolean
 
-    desc "build", "Builds and prepares project for AWS Lambda"
+    desc "build", "Builds and packages project for AWS Lambda"
     long_desc Help.text(:build)
     option :templates_only, type: :boolean, default: false, desc: "provide a way to skip building the code and only build the CloudFormation templates"
     def build

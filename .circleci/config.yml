@@ -84,6 +84,19 @@ jobs:
 
             bundle exec rspec
 
+      # commit_docs.sh requires this
+      - run:
+          name: configure git
+          command: |
+            git config --global user.email "tongueroo@gmail.com"
+            git config --global user.name "Tung Nguyen"
+
+      - run:
+          name: commit cli reference docs
+          command: |
+            chmod a+x -R .circleci/bin
+            .circleci/bin/commit_docs.sh
+
       - run:
           name: install awscli
           command: sudo apt-get update && sudo apt-get install -y awscli groff
