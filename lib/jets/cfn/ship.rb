@@ -82,11 +82,8 @@ class Jets::Cfn
     time :wait_for_stack
 
     def prewarm
-      # IE: function_name: posts_controller-index
-      function_name = "jets-prewarm_job-heat"
-      event = '{}'
-      options = {mute_output: true}
-      Jets::Commands::Call.new(function_name, event, options).run
+      puts "Preheating application"
+      Jets::Preheat.warm_all(mute: true)
     end
 
     def show_api_endpoint
