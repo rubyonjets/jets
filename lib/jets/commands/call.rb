@@ -78,7 +78,9 @@ class Jets::Commands::Call
 
     add_console_link_to_clipboard
     result = resp.payload.read # already been normalized/JSON.dump by AWS
-    STDOUT.puts result # only thing that goes to stdout
+    unless @options[:mute_output]
+      STDOUT.puts result # only thing that goes to stdout
+    end
   end
 
   def guesser
