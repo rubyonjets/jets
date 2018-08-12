@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'json'
+require 'active_support/concern'
 
 # Used to record timing on how long `jets deploy` takes.
 # So we can continually improve it.
