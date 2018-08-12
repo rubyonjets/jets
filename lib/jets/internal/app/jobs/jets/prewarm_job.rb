@@ -2,7 +2,7 @@
 class Jets::PrewarmJob < ApplicationJob
   timeout 300
   memory 3008
-  rate '5 minutes'
+  rate '30 minutes'
   def heat
     # load all classes
     # loop through all methods fo each class
