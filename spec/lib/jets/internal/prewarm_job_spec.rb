@@ -1,11 +1,11 @@
-describe Jets::WarmJob do
+describe Jets::PrewarmJob do
   let(:job) do
-    Jets::WarmJob.new(nil,nil,nil)
+    Jets::PrewarmJob.new(nil,nil,nil)
   end
 
   context "warm job" do
     it "calls all lambda functions with a prewarm request" do
-      job.preheat
+      job.heat
     end
   end
 end
