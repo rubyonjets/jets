@@ -18,7 +18,7 @@ class Jets::Application
 
   def config
     config = ActiveSupport::OrderedOptions.new
-    config.prewarm = ActiveSupport::OrderedOptions.new
+    config.preheat = ActiveSupport::OrderedOptions.new
     config
   end
   memoize :config
