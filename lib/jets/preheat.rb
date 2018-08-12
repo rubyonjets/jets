@@ -43,12 +43,12 @@ module Jets
     #     ...
     #   ]
     def all_functions
-      classes.each do |klass|
+      classes.map do |klass|
         klass.all_tasks.keys.map do |meth|
           underscored = klass.to_s.underscore.gsub('/','-')
           "#{underscored}-#{meth}" # function_name
         end
-      end
+      end.flatten.uniq.compact
     end
     memoize :all_functions
 

@@ -13,7 +13,7 @@ class Jets::PreheatJob < ApplicationJob
   # Creating all jobs upfront to avoid the Jets Warning:
   #   created without a rate or cron expression
   # The private doesn't currently work after the method.
-  # TODO: make private work to silence this warning check.
+  # TODO: make private work with a silencing of the warning check.
   rate(RATE)
   state(torching ? "ENABLED" : "DISABLED")
   def torch
