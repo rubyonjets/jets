@@ -15,7 +15,7 @@ end
 
 ## Prewarm After Deployment
 
-After a deployment finishes, Jets automatically prewarms the app with a concurrency of 1.  This keeps your application nice and fast immediately.
+After a deployment finishes, Jets automatically prewarms the app.  This keeps your application nice and fast immediately.
 
 ## Custom Prewarming
 
@@ -41,10 +41,6 @@ class PrewarmJob < ApplicationJob
   end
 end
 ```
-
-
-Jets::Commands::Call.new(function_name, '{"_prewarm": "1"}', @options).run unless ENV['TEST']
-
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/function-properties.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/env-files.md %}">Next Step</a>
