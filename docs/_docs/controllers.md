@@ -22,7 +22,7 @@ class PostsController < ApplicationController
 end
 ```
 
-Jets creates Lambda functions each the public method in your controller.
+Jets creates Lambda functions for each the public method in your controller.
 
 <a id="prev" class="btn btn-basic" href="{% link docs.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/routing.md %}">Next Step</a>
