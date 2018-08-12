@@ -8,7 +8,7 @@ You can also install jets via RubyGems.
 
     gem install jets
 
-Or you can add jets to your Gemfile in your project if you are working with a ruby project.  It is not required for your project to be a ruby project to use jets.
+Or you can add jets to your Gemfile in your project.
 
 ```ruby
 gem "jets"
