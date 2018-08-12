@@ -55,23 +55,31 @@ module Jets
           input_completed = true
         end
 
-        begin
-          result = Jets::Processors::MainProcessor.new(
-            event,
-            '{}', # context
-            handler).run
-        rescue Exception => e
-          result = JSON.dump(
-            "stackTrace" => e.backtrace,
-            "errorMessage" => e.message,
-            "errorType" => "RubyError",
-          )
-        end
+        result = event['_prewarm'] ?
+          prewarm_request(event) :
+          standard_request(event, '{}', handler)
 
         client.puts(result)
         client.close
         input_completed = false
       end
+    end
+
+    def prewarm_request(event)
+      JSON.dump("prewarm" => Time.now.to_s)
+    end
+
+    def standard_request(event, context, handler)
+      Jets::Processors::MainProcessor.new(
+        event,
+        context,
+        handler).run
+    rescue Exception => e
+      JSON.dump(
+        "stackTrace" => e.backtrace,
+        "errorMessage" => e.message,
+        "errorType" => "RubyError",
+      )
     end
 
     def self.run
