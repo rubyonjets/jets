@@ -1,8 +1,8 @@
-Invoke the lambda function on AWS. The `jets call` command can do a few extra things for your convenience:
+Invoke the lambda function on AWS. The `jets call` command does a few extra things for your convenience:
 
 It adds the function namespace to the function name.  So, you pass in "posts_controller-index" and the Lambda function is "demo-dev-posts_controller-index".
 
-It can print out the last 4KB of the lambda logs. The logging output is directed to stderr.  The response output from the lambda function itself is directed to stdout.  This is done so you can safely pipe the results of the call command to other tools like jq.
+It can print out the last 4KB of the lambda logs with the `--show-logs` option. The logging output is directed to stderr.  The response output from the lambda function itself is directed to stdout.  This is done so you can safely pipe the results of the call command to other tools like jq.
 
 For controllers, the event you pass at the CLI is automatically transformed into Lambda Proxy payload that contains the params as the queryStringParameters.  For example:
 
