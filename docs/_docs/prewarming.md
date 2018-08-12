@@ -33,7 +33,7 @@ class PrewarmJob < ApplicationJob
     threads = []
     10.times do
       threads << Thread.new do
-        Jets::Commands::Call.new(function_name, '{}').run
+        Jets::Preheat.warm(function_name)
       end
     end
     threads.each { |t| t.join }
