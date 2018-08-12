@@ -117,30 +117,26 @@ $
 
 Let's start the server.
 
-```sh
-$ jets server
-=> bundle exec shotgun --port 8888 --host 127.0.0.1
-Jets booting up in development mode!
-== Shotgun/WEBrick on http://127.0.0.1:8888/
-[2018-08-10 23:01:05] INFO  WEBrick 1.4.2
-[2018-08-10 23:01:05] INFO  ruby 2.5.1 (2018-03-29) [x86_64-linux]
-[2018-08-10 23:01:05] INFO  WEBrick::HTTPServer#start: pid=13999 port=8888
-```
+    $ jets server
+    => bundle exec shotgun --port 8888 --host 127.0.0.1
+    Jets booting up in development mode!
+    == Shotgun/WEBrick on http://127.0.0.1:8888/
+    [2018-08-10 23:01:05] INFO  WEBrick 1.4.2
+    [2018-08-10 23:01:05] INFO  ruby 2.5.1 (2018-03-29) [x86_64-linux]
+    [2018-08-10 23:01:05] INFO  WEBrick::HTTPServer#start: pid=13999 port=8888
 
 ## Test the API
 
 Here's a curl command that will create posts:
 
-```sh
-curl -X POST http://localhost:8888/posts \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "post": {
-    "title": "My Test Post 1"
-  }
-}
-'
-```
+    curl -X POST http://localhost:8888/posts \
+      -H 'Content-Type: application/json' \
+      -d '{
+      "post": {
+        "title": "My Test Post 1"
+      }
+    }
+    '
 
 Create a couple of posts and you see something like this when you open [http://localhost:8888/posts](http://localhost:8888/posts) in a browser:
 
@@ -152,22 +148,19 @@ Here are a few more curl commands for reference:
 
 If you want to update the posts, here's the curl command:
 
-```sh
-curl -X PUT http://localhost:8888/posts/1 \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "post": {
-    "title": "My Test Post 1"
-  }
-}
-'
-```
+    curl -X PUT http://localhost:8888/posts/1 \
+      -H 'Content-Type: application/json' \
+      -d '{
+      "post": {
+        "title": "My Test Post 1"
+      }
+    }
+    '
 
 To delete the, here's the curl command:
-```
-$ curl -X DELETE http://localhost:8888/posts/1
-{"deleted":true}
-```
+
+    $ curl -X DELETE http://localhost:8888/posts/1
+    {"deleted":true}
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/crud-html-activerecord.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/how-jets-works.md %}">Next Step</a>
