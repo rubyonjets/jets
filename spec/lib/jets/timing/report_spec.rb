@@ -7,8 +7,8 @@ describe Jets::Timing::Report do
     let(:log) { "spec/fixtures/timing/update_stack.log" }
     it "report timing info" do
       output = report.process
-      # puts output # uncomment to see report and debug
-      expect(output).to include("deploy:")
+      puts output # uncomment to see report and debug
+      expect(output).to include("overall:")
     end
   end
 end

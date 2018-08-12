@@ -22,6 +22,7 @@ module Jets::Commands
     def deploy(environment=nil)
       Jets::Timing.clear # must happen outside Deploy#run
       Deploy.new(options).run
+      Jets::Timing.report
     end
 
     desc "delete", "Delete the Jets project and all its resources"

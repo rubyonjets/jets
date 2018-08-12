@@ -40,6 +40,11 @@ module Jets
       FileUtils.cp("/dev/null", RECORD_LOG_PATH)
     end
 
+    def self.report
+      return unless ENV['JETS_TIMING']
+      Report.new.results
+    end
+
     included do
       def self.record(meth)
         unrecorded_meth = "unrecorded_#{meth}"

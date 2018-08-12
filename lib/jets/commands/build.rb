@@ -17,6 +17,7 @@ module Jets::Commands
       @options.merge!(stack_type: stack_type, s3_bucket: s3_bucket)
       build
     end
+    record :run
 
     def build
       build_code unless @options[:templates_only]
