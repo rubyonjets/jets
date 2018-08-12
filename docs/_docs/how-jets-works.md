@@ -13,14 +13,14 @@ Lambda [Functions with more than 1.8GB of memory are multi core](https://www.jer
 
 To get around this, Jets uses a shim that loads the ruby interpreter into [Lambda Function Execution Context](https://docs.aws.amazon.com/lambda/latest/dg/running-lambda-code.html) memory. Subsequent lambda function executions we do not pay the overhead costs repeatedly. This makes Jets support of Ruby as fast as native languages supported by AWS Lambda.  Here's an example:
 
-Ruby function after the cold start:
+Ruby function speed:
 
     time curl -so /dev/null https://1192eablz8.execute-api.us-west-2.amazonaws.com/dev/ruby_example
     real    0m0.164s
     user    0m0.039s
     sys     0m0.063s
 
-Python function after the cold start:
+Python function speed:
 
     time curl -so /dev/null https://1192eablz8.execute-api.us-west-2.amazonaws.com/dev/python_example
     real    0m0.178s
@@ -28,6 +28,8 @@ Python function after the cold start:
     sys     0m0.054s
 
 In the case above, the ruby function happened to be faster than the python function. Generally, it's a tie.
+
+Additionally, Jets automatically prewarms your application: [Prewarming]({% link _docs/prewarming.md %}).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/crud-json-activerecord.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/lambdagems.md %}">Next Step</a>
