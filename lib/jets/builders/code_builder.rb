@@ -50,6 +50,7 @@ require "action_view"
 # * create zip file
 class Jets::Builders
   class CodeBuilder
+    include Jets::Timing
     # When we update JETS_RUBY_VERSION, need to update `def jets_ruby_version` in
     # vendor/lambdagem/lib/lambdagem/base.rb also.
     JETS_RUBY_VERSION = "2.5.0"
@@ -79,6 +80,7 @@ class Jets::Builders
         create_zip_file
       end
     end
+    time :build
 
     # Finds out of the app has polymorphic functions only and zero ruby functions.
     # In this case, we can skip a lot of the ruby related building and speed up the
@@ -94,6 +96,7 @@ class Jets::Builders
       reconfigure_ruby_version
       generate_node_shims
     end
+    time :start_app_root_setup
 
     def finish_app_root_setup
       return if poly_only?
@@ -103,6 +106,7 @@ class Jets::Builders
       extract_ruby
       extract_gems
     end
+    time :finish_app_root_setup
 
     def lambdagem_options
       {
@@ -135,6 +139,7 @@ class Jets::Builders
           `which webpack`.strip
       sh("JETS_ENV=#{Jets.env} #{webpack_bin}")
     end
+    time :compile_assets
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
     # for a clean start. Also ensure that the /tmp/jets/project build root exists.
@@ -160,6 +165,7 @@ class Jets::Builders
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
       end
     end
+    time :copy_project
 
     # Move the node modules to the tmp build folder to speed up project copying.
     # A little bit risky because a ctrl-c in the middle of the project copying
@@ -296,6 +302,7 @@ EOL
       # file that can be read from any places where this is needed.
       # Can also just generate a "fake file" for specs
     end
+    time :create_zip_file
 
     # Installs gems on the current target system: both compiled and non-compiled.
     # If user is on a macosx machine, macosx gems will be installed.
@@ -326,6 +333,7 @@ EOL
 
       puts 'Bundle install success.'
     end
+    time :bundle_install
 
     def copy_gemfiles
       FileUtils.mkdir_p(cache_area)

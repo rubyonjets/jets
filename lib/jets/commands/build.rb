@@ -2,6 +2,7 @@ require 'digest'
 
 module Jets::Commands
   class Build
+    include Jets::Timing
     include StackInfo
 
     def initialize(options)
@@ -16,15 +17,18 @@ module Jets::Commands
       @options.merge!(stack_type: stack_type, s3_bucket: s3_bucket)
       build
     end
+    time :run
 
     def build
       build_code unless @options[:templates_only]
       build_templates
     end
+    time :build
 
     def build_code
       Jets::Builders::CodeBuilder.new.build unless @options[:noop]
     end
+    time :build_code
 
     def build_templates
       if @options[:stack_type] == :minimal
@@ -33,6 +37,7 @@ module Jets::Commands
         build_all_templates
       end
     end
+    time :build_templates
 
     def build_all_templates
       clean_templates

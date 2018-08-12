@@ -20,7 +20,9 @@ module Jets::Commands
     # environment parameter. It is not actually set here.  It is set earlier
     # in cli.rb: set_jets_env_for_deploy_command!
     def deploy(environment=nil)
+      Jets::Timing.clear # must happen outside Deploy#run
       Deploy.new(options).run
+      Jets::Timing.report
     end
 
     desc "delete", "Delete the Jets project and all its resources"
