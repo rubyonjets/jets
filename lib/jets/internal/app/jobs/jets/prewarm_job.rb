@@ -5,12 +5,10 @@ class Jets::PrewarmJob < ApplicationJob
   rate '5 minutes'
   def heat
     # load all classes
-    # loop through all methods
+    # loop through all methods fo each class
     # make the special prewarm call to keep them warm
-
     threads = []
     Jets::Commands::Build.app_files.each do |path|
-      puts "path #{path}"
       next if path.include?("prewarm_job.rb") # dont want to cause an infinite loop
       next if path =~ %r{app/functions} # dont support app/functions
       class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
@@ -21,7 +19,6 @@ class Jets::PrewarmJob < ApplicationJob
       klass.all_tasks.keys.each do |meth|
         underscored = class_name.underscore.gsub('/','-')
         function_name = "#{underscored}-#{meth}"
-        puts "function_name #{function_name}"
         threads << Thread.new do
           Jets::Commands::Call.new(function_name, '{"_prewarm": "1"}').run unless ENV['TEST']
         end
