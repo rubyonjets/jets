@@ -32,6 +32,7 @@ class Jets::Application
     paths = %w[
       app/controllers
       app/models
+      app/jobs
     ]
     paths.map { |path| "#{internal}/#{path}" }
   end

@@ -66,7 +66,8 @@ module Jets
     end
 
     def prewarm_request(event)
-      JSON.dump("prewarm" => Time.now.to_s)
+      # JSON.dump("prewarmed_at" => Time.now.to_s)
+      %Q|{"prewarmed_at":"#{Time.now.to_s}"}| # raw json for speed
     end
 
     def standard_request(event, context, handler)
