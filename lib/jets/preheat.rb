@@ -47,7 +47,9 @@ module Jets
     #   ]
     def all_functions
       classes.map do |klass|
-        klass.all_tasks.keys.map do |meth|
+        tasks = klass.tasks.select { |t| t.lang == :ruby } # only prewarm ruby functions
+        tasks.map do |task|
+          meth = task.meth
           underscored = klass.to_s.underscore.gsub('/','-')
           "#{underscored}-#{meth}" # function_name
         end
