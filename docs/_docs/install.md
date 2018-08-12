@@ -16,7 +16,7 @@ gem "jets"
 
 ## Dependencies
 
-For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets requires node's yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended to install a desired version of node. Once node is installed, install yarn with:
+For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets which requires node's yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended to install a desired version of node. Once node is installed, install yarn with:
 
     npm install -g yarn
 
