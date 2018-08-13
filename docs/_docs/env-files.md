@@ -2,7 +2,7 @@
 title: Env Files
 ---
 
-Jets can load environment variables from `.env` files. There can be few different dotenv files that get loaded and combined. An example best explains now the dotenv files work.
+Jets can load environment variables from `.env` files. There can be few different dotenv files that get loaded and combined. An example best explains how dotenv files work.
 
 Say you have a Jets project that has the following dotenv files:
 
@@ -18,9 +18,10 @@ The `.env` file will always get loaded.
 
 ## Environment specific variables
 
-THE second word is the `JETS_ENV` value. So:
+The second word is the `JETS_ENV` value. So:
 
 * `JETS_ENV=development` corresponds to `.env.development`
+* `JETS_ENV=test` corresponds to `.env.test`
 * `JETS_ENV=production` corresponds to `.env.production`
 
 These files only get loaded for the configured valued of `JETS_ENV`. This allows you to use different environment variables for development vs production environments.
