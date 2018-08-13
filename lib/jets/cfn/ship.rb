@@ -82,6 +82,7 @@ class Jets::Cfn
     time :wait_for_stack
 
     def prewarm
+      return unless @options[:stack_type] == :full # s3 bucket is available
       puts "Prewarming application"
       Jets::Preheat.warm_all(mute: true)
     end

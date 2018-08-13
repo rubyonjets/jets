@@ -38,6 +38,10 @@ module Jets::Lambda::Dsl
         class_properties(role: name)
       end
 
+      def class_handler(name)
+        class_properties(handler: name)
+      end
+
       # convenience method that set properties
       def timeout(value)
         properties(timeout: value)
