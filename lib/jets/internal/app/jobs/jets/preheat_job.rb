@@ -24,7 +24,7 @@ class Jets::PreheatJob < ApplicationJob
         end
       end
       threads.each { |t| t.join }
-      "Finished prewarming your application with a concurrency of #{concurrency}."
+      "Finished prewarming your application with a concurrency of #{CONCURRENCY}."
     end
 
     warming ? rate(PREWARM_RATE) : disable(true)
