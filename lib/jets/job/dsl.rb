@@ -14,6 +14,11 @@ module Jets::Job::Dsl
         @cron = expression
       end
 
+      # Explicitly disable scheduling for the function
+      def disable(value)
+        @disable = value
+      end
+
       # This is a property of the AWS::Events::Rule not the Lambda function
       def state(value)
         @state = value
@@ -23,15 +28,14 @@ module Jets::Job::Dsl
       # A Job::Task is a Lambda::Task with some added DSL methods like
       # rate and cron.
       def register_task(meth, lang=:ruby)
-        if @rate || @cron
+        if @rate || @cron || @disable
+          # Job lambda function.
           all_tasks[meth] = Jets::Job::Task.new(self.name, meth,
             rate: @rate,
             cron: @cron,
             state: @state,
             properties: @properties,
             lang: lang)
-          # done storing options, clear out for the next added method
-          @rate, @cron = nil, nil
           true
         else
           task_name = "#{name}##{meth}" # IE: HardJob#dig
@@ -41,6 +45,13 @@ module Jets::Job::Dsl
             "#{task_name} defined at #{caller[1].inspect}."
           false
         end
+        # Done storing options, clear out for the next added method.
+        clear_properties
+      end
+
+      def clear_properties
+        super
+        @rate, @cron, @state, @disable = nil, nil, nil, nil
       end
     end
   end

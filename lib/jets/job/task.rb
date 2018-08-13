@@ -4,7 +4,7 @@ class Jets::Job::Task < Jets::Lambda::Task
     super
     @rate = options[:rate]
     @cron = options[:cron]
-    @state = options[:state]
+    @state = options[:state] || 'ENABLED'
   end
 
   def schedule_expression

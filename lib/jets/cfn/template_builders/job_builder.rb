@@ -11,11 +11,13 @@ class Jets::Cfn::TemplateBuilders
       @app_klass.tasks.each do |task|
         map = Jets::Cfn::TemplateMappers::EventsRuleMapper.new(task)
 
-        add_event_rule(task, map)
-        add_permission(map)
+        # If there's no scheduled expression dont add a scheduled Events::Rule
+        if task.schedule_expression
+          add_event_rule(task, map)
+          add_permission(map)
+        end
       end
     end
-
 
     def add_event_rule(task, map)
       add_resource(map.logical_id, "AWS::Events::Rule",
