@@ -25,8 +25,8 @@ app/jobs/prewarm_job.rb:
 
 ```ruby
 class PrewarmJob < ApplicationJob
-  class_timeout 300
-  class_memory 3008
+  class_timeout 30
+  class_memory 512
   rate '30 minutes'
   def hot_page
     function_name = "posts_controller-index"
