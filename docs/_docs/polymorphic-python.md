@@ -21,7 +21,7 @@ from pprint import pprint
 import json
 import platform
 
-def handle(event, context):
+def lambda_handler(event, context):
     message = 'PostsController#python_example hi from python %s' % platform.python_version()
     return response({'message': message}, 200)
 
@@ -39,13 +39,13 @@ Notice, how with the python code, you must handle returning the proper lambda pr
 
 ## Default Handler Name
 
-The default handler name is `handle`. This can be changed with the `handler` method.  Example:
+The default handler name is `lambda_handler`. This can be changed with the `handler` method.  Example:
 
 `app/controllers/posts_controller.rb`:
 
 ```ruby
 class PostsController < ApplicationController
-  handler :lambda_handler
+  handler :handle
   python :python_example
 end
 ```
@@ -53,7 +53,7 @@ end
 The python code would then look something like this:
 
 ```python
-def lambda_handler(event, context):
+def handle(event, context):
   ...
 end
 ```

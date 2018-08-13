@@ -82,7 +82,7 @@ class Jets::Cfn
     time :wait_for_stack
 
     def prewarm
-      puts "Preheating application"
+      puts "Prewarming application"
       Jets::Preheat.warm_all(mute: true)
     end
 
