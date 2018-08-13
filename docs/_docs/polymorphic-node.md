@@ -2,7 +2,7 @@
 title: Polymorphic Node
 ---
 
-To use write your Jets Lambda functions in node it would look like this:
+To write your Jets Lambda functions in node, it would look like this:
 
 `app/controllers/posts_controller.rb`:
 
