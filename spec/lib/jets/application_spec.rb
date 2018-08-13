@@ -10,10 +10,9 @@ describe Jets::Application do
           config.test1 = "value1"
           config.test2 = "value2"
         end
-        expect(app.config.to_hash).to eq(
-          test1: "value1",
-          test2: "value2",
-        )
+        h = app.config.to_hash
+        expect(h[:test1]).to eq("value1")
+        expect(h[:test2]).to eq("value2")
       end
     end
   end

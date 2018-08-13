@@ -44,6 +44,7 @@ describe Jets::Commands::Build do
     it "internal_app_files" do
       router = Jets::Router.drawn_router
       files = Jets::Commands::Build.internal_app_files
+      files.reject! { |p| p.include?("preheat_job") }
       expect(files).to eq([])
 
       router.draw do
@@ -51,6 +52,7 @@ describe Jets::Commands::Build do
         any "*catchall", to: "jets/public#show"
       end
       files = Jets::Commands::Build.internal_app_files
+      files.reject! { |p| p.include?("preheat_job") }
       expect(files.size).to eq 2
     end
   end

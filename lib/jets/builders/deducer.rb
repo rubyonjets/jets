@@ -37,8 +37,12 @@ class Jets::Builders
     # Returns the public methods of the child_class.
     # Example: [:create, :update]
     def functions
-      # Example: require: /tmp/jets/demo/app_root/app/controllers/posts_controller.rb
-      require @full_path
+      # Example: require: /tmp/jets/demo/app_root/app/controllers/admin/posts_controller.rb
+      class_name = @full_path.sub(/.*\/app\/\w+\//,'').sub(/\.rb/,'') # admin/posts_controller
+      class_name = class_name.classify # Admin::PostsController
+      # Autoload instead of require to avoid accidentallly double requiring and
+      # it resulting WARNINGs when there are constants already defined
+      klass = class_name.constantize # autoload
 
       klass.lambda_functions
     end
