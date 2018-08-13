@@ -2,7 +2,7 @@
 title: Prewarming
 ---
 
-Jets supports prewarming your application to remedy the Lambda cold start issue.  Prewarming with a concurrency of 1 is enabled by default.  To adjust the prewarming settings, edit your `config/application.rb`. Example:
+Jets supports prewarming your application to remedy the Lambda cold start issue.  Prewarming is enabled by default.  To adjust the prewarming settings, edit your `config/application.rb`. Example:
 
 ```ruby
 Jets.application.configure do
