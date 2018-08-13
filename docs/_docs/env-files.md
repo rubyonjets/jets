@@ -24,7 +24,7 @@ The second word is the `JETS_ENV` value. So:
 * `JETS_ENV=test` corresponds to `.env.test`
 * `JETS_ENV=production` corresponds to `.env.production`
 
-These files only get loaded for the configured valued of `JETS_ENV`. This allows you to use different environment variables for development vs production environments.
+These files only get loaded for the configured valued of `JETS_ENV`. This allows you to use different environment variables for different environments.
 
 ## Deploy specific variables
 
