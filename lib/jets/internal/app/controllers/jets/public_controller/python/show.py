@@ -5,7 +5,7 @@ import os.path
 import mimetypes
 import sys
 
-def handle(event, context):
+def lambda_handler(event, context):
     public_path = "public%s" % event["path"]
 
     body = None
@@ -43,5 +43,5 @@ if __name__ == '__main__':
     with open('event.json') as f:
         data = json.load(f)
     # pprint(data)
-    # print(handle(data, {}))
-    print(json.dumps(handle(data, {}))) # if result is json
+    # print(lambda_handler(data, {}))
+    print(json.dumps(lambda_handler(data, {}))) # if result is json

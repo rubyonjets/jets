@@ -2,7 +2,7 @@ from pprint import pprint
 import json
 import os.path
 
-def handle(event, context):
+def lambda_handler(event, context):
     homepage = "public/index.html"
     html = None
     if os.path.exists(homepage):
@@ -21,4 +21,4 @@ def response(body, status_code):
         }
 
 if __name__ == '__main__':
-    print(handle({}, {}))
+    print(lambda_handler({}, {}))
