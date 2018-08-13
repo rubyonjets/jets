@@ -85,9 +85,9 @@ class Jets::Cfn
       return unless @options[:stack_type] == :full # s3 bucket is available
       puts "Prewarming application..."
       if Jets::PreheatJob::CONCURRENCY > 1
-        Jets::PreheatJob.perform_now(:torch, {})
+        Jets::PreheatJob.perform_now(:torch, {quiet: true})
       else
-        Jets::PreheatJob.perform_now(:warm, {})
+        Jets::PreheatJob.perform_now(:warm, {quiet: true})
       end
     end
 

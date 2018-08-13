@@ -20,7 +20,9 @@ class Jets::PreheatJob < ApplicationJob
           # avoid passing the _prewarm=1 flag because we want the job to do the work
           # So do not use Jets::Preheat.warm(function_name) here
           function_name = "jets-preheat_job-warm"
-          Jets::Commands::Call.new(function_name, '{}').run unless ENV['TEST']
+          event_json = JSON.dump(event)
+          call_options = event[:quiet] ? {mute: true} : {}
+          Jets::Commands::Call.new(function_name, event_json, call_options).run unless ENV['TEST']
         end
       end
       threads.each { |t| t.join }
@@ -29,7 +31,8 @@ class Jets::PreheatJob < ApplicationJob
 
     warming ? rate(PREWARM_RATE) : disable(true)
     def warm
-      Jets::Preheat.warm_all
+      options = event[:quiet] ? {mute: true} : {}
+      Jets::Preheat.warm_all(options)
     end
   end
 end
