@@ -10,24 +10,26 @@ class Jets::PreheatJob < ApplicationJob
   class_timeout 30
   class_memory 1024
 
-  torching ? rate(prewarm_rate) : disable(true)
-  def torch
-    threads = []
-    concurrency.times do
-      threads << Thread.new do
-        # intentionally calling remote lambda for concurrency
-        # avoid passing the _prewarm=1 flag because we want the job to do the work
-        # So do not use Jets::Preheat.warm(function_name) here
-        function_name = "jets-preheat_job-warm"
-        Jets::Commands::Call.new(function_name, '{}').run unless ENV['TEST']
+  unless Jets::Commands::Build.poly_only?
+    torching ? rate(prewarm_rate) : disable(true)
+    def torch
+      threads = []
+      concurrency.times do
+        threads << Thread.new do
+          # intentionally calling remote lambda for concurrency
+          # avoid passing the _prewarm=1 flag because we want the job to do the work
+          # So do not use Jets::Preheat.warm(function_name) here
+          function_name = "jets-preheat_job-warm"
+          Jets::Commands::Call.new(function_name, '{}').run unless ENV['TEST']
+        end
       end
+      threads.each { |t| t.join }
+      "Finished prewarming your application with a concurrency of #{concurrency}."
     end
-    threads.each { |t| t.join }
-    "Finished prewarming your application with a concurrency of #{concurrency}."
-  end
 
-  warming ? rate(prewarm_rate) : disable(true)
-  def warm
-    Jets::Preheat.warm_all
+    warming ? rate(prewarm_rate) : disable(true)
+    def warm
+      Jets::Preheat.warm_all
+    end
   end
 end
