@@ -1,4 +1,3 @@
-# Simple initial implementation of a prewarmer
 class Jets::PreheatJob < ApplicationJob
   enabled = Jets.config.prewarm.enabled
   ENABLED = enabled.nil? ? true : enabled # defaults to enabled
