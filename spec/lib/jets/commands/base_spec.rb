@@ -14,7 +14,6 @@ describe Jets::Commands::Base do
       expect(commands).to include "routes"
       expect(commands).to include "dynamodb:generate"
       expect(commands).to include "dynamodb:migrate:down"
-      expect(commands).to include "process:controller"
     end
 
     it "klass_from_namespace" do
