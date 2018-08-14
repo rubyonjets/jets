@@ -114,9 +114,15 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Local Jets Server](http://rubyonjets.com/docs/local-server/)
 * [REPL Console](http://rubyonjets.com/docs/repl-console/)
 * [Jets Call](http://rubyonjets.com/docs/jets-call/)
+* [Project Structure](http://rubyonjets.com/project-structure/)
+* [App Configuration](http://rubyonjets.com/app-config/)
 * [Database Support](http://rubyonjets.com/docs/database-support/)
+* [Polymorphic Support](http://rubyonjets.com/docs/polymorphic-support/)
+* [Tutorials](http://rubyonjets.com/docs/tutorials/)
 * [How Jets Works](http://rubyonjets.com/docs/how-jets-works/)
-* [Install](http://rubyonjets.com/docs/install/)
+* [Prewarming](http://rubyonjets.com/docs/prewarming/)
+* [Installation](http://rubyonjets.com/docs/install/)
+* [CLI Reference](http://rubyonjets.com/reference/)
 
 ## Contributing
 
