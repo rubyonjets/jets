@@ -111,8 +111,8 @@ class Jets::Builders
     def lambdagem_options
       {
         s3: "lambdagems",
-        build_root: cache_area,
-        project_root: full(tmp_app_root),
+        build_root: cache_area, # used in lambdagem
+        project_root: full(tmp_app_root), # used in gem_replacer and lambdagem
       }
     end
 
