@@ -16,23 +16,15 @@ class Jets::Builders
     end
 
     def run
-      # If there are subfolders compiled_gem_paths might have files deeper
-      # in the directory tree.  So lets grab the gem name and figure out the
-      # unique paths of the compiled gems from there.
-      puts "compiled_gems:"
-      pp compiled_gems
-      pp "lambdagems sources:"
-      pp Jets.config.lambdagems.sources
-
-      # Checks whether the gem is found on at least one of the lambdagems sources
-      # found_gems holds map of found compiled gems
-      # By the time the loop finishes, it will hold a map of gem names to found
+      # Checks whether the gem is found on at least one of the lambdagems sources.
+      # By the time the loop finishes, found_gems will hold a map of gem names to found
       # url sources. Example:
       #
-      #   {
+      #   found_gems = {
       #     "nokogiri-1.8.4" => "https://lambdagems.com",
       #     "pg-0.21.0" => "https://anothersource.com",
       #   }
+      #
       found_gems = {}
       compiled_gems.each do |gem_name|
         gem_exists = false
@@ -46,8 +38,6 @@ class Jets::Builders
             break
           end
         end
-        # puts "checks #{checks.inspect}"
-        # puts "gem_exists #{gem_exists.inspect}"
         unless gem_exists
           @missing_gems << gem_name
         end
@@ -60,9 +50,6 @@ class Jets::Builders
         puts missing_gems_message
         exit 1
       end
-
-      puts "found_gems:"
-      pp found_gems
 
       # Reaching here means we can download and extract the gems
       found_gems.each do |gem_name, source|
@@ -133,6 +120,9 @@ EOL
       end
     end
 
+    # If there are subfolders compiled_gem_paths might have files deeper
+    # in the directory tree.  So lets grab the gem name and figure out the
+    # unique paths of the compiled gems from there.
     def compiled_gems
       compiled_gem_paths.map { |p| gem_name_from_path(p) }.uniq# + ["whatever-0.0.1"]
     end
