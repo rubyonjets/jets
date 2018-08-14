@@ -31,5 +31,5 @@ These files only get loaded for the configured valued of `JETS_ENV`. This allows
 The last example file is `.env.development.deploy`.  The values from this file only get loaded for the deployed remote Lambda Functions. It can be useful if you need different values on the lambda function and would like to keep the same `JETS_ENV`.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/prewarming.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/config-rules.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
