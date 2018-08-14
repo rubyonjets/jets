@@ -37,7 +37,7 @@ Notice, how with the node code, you must handle returning the proper lambda prox
 
 ## Default Handler Name
 
-The default handler name is `handler`. This can be changed with the `handler` method.  Example:
+The default node handler name is `handler`. This can be changed with the `handler` method.  Example:
 
 `app/controllers/posts_controller.rb`:
 

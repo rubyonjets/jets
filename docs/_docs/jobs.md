@@ -30,9 +30,9 @@ HardJob.perform_now(:dig, event)
 HardJob.perform_later(:lift, event)
 ```
 
-In the example above, the `perform_now` results in the job running in the same process.
+In the example above, the `perform_now` results in the job running in the **same process**.
 
-The `perform_later` runs the job by calling the AWS Lambda function associate with it.  So `perform_later` runs in new process.  It usually runs a few seconds later.
+The `perform_later` runs the job by calling the AWS Lambda function associate with it in a **new process**.  It usually runs a few seconds later.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/routing.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/install.md %}">Next Step</a>

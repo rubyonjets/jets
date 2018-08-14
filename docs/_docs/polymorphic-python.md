@@ -39,7 +39,7 @@ Notice, how with the python code, you must handle returning the proper lambda pr
 
 ## Default Handler Name
 
-The default handler name is `lambda_handler`. This can be changed with the `handler` method.  Example:
+The default python handler name is `lambda_handler`. This can be changed with the `handler` method.  Example:
 
 `app/controllers/posts_controller.rb`:
 
