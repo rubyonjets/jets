@@ -1,3 +1,7 @@
+<div align="center">
+  <link href="http://rubyonjets.com"><img src="http://rubyonjets.com/img/logos/jets-logo.png" /></img>
+</div>
+
 ![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiUE12K3ljQTFQUjVpRW0reGhGVHVQdkplTHlOdUtENnBya2JhVWVXaFIvTU92MlBtV3hIUE9pb25jWGw0MS9jN2RXMERKRHh5Nzhvd01Za0NyeUs5SCtzPSIsIml2UGFyYW1ldGVyU3BlYyI6IkMybEJFaXdzejJEaHNWVmEiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 [![CircleCI](https://circleci.com/gh/tongueroo/jets.svg?style=svg)](https://circleci.com/gh/tongueroo/jets)
 
@@ -5,16 +9,16 @@ Ruby and Lambda splat out a baby and that child's name is Jets.
 
 ## What is Jets?
 
-Jets is a Serverless Framework that allows you to create applications with Ruby on AWS Lambda.  It includes everything required to build an application and deploy it.
+Jets is a Ruby Serverless Framework that allows you to create applications.  It includes everything required to build an application and deploy it to on AWS Lambda.
 
 It is key to understand AWS Lambda and API Gateway to understand Jets conceptually.  Jets maps your code to Lambda functions and API Gateway resources.
 
 * **AWS Lambda** is Functions as a Service. It allows you to upload and run functions without worrying about the underlying infrastructure.
 * **API Gateway** is the routing layer for Lambda. It is used to route REST URL endpoints to Lambda functions.
 
-## How It Works
+The official documentation is at: [Ruby on Jets](http://rubyonjets.com).
 
-You focus on your application logic and Jets does the mundane work. You write code called controllers and workers.  Jets turns the code into Lambda functions and uploads them to AWS Lambda and API Gateway.
+Refer to the official docs for more info, but here's a quick intro.
 
 ### Jets Controllers
 
@@ -64,19 +68,17 @@ end
 
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
-```sh
-$ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | jq .
-{
-  "hello": "world",
-  "action": "index"
-}
-```
+	$ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/dev/posts" | jq .
+	{
+	  "hello": "world",
+	  "action": "index"
+	}
 
 ### Jets Workers
 
 A Jets worker handles background jobs.  It is performed outside of the web request/response cycle. Here's an example:
 
-```
+```ruby
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def dig
@@ -92,134 +94,29 @@ end
 
 `HardJob#dig` will be ran every 10 hours and `HardJob#lift` will be ran every 12 hours.
 
-### Project Structure
-
-Here's an overview of a Jets project structure.
-
-File / Directory  | Description
-------------- | -------------
-app/controllers  | Contains controller code that handles web requests.  The controllers render API Gateway Lambda Proxy compatible responses.
-app/jobs  | Job code for background jobs.  Jobs are ran as Lambda functions, so they are subject to Lambda limits.
-app/functions  | Generic function code that looks more like the traditional Lambda function handler format.
-config/application.rb  | Application wide configurations.  Where you can globally configure things like project_name, extra_autoload_paths, function timeout, memory size, etc.
-config/routes.rb  | Where you set up routes for your application.
-
 ### Jets Deployment
 
-You deploy the code with:
+You can test your application with a local server that mimics API Gateway: [Jets Local Server](http://rubyonjets.com/docs/local-server/). Once ready, deploying to AWS Lambda is a single command.
 
-```sh
-jets deploy
-```
+	jets deploy
 
 After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
 
-### AWS Lambda Console test
+### AWS Lambda Console
 
 ![Lambda Console](https://s3.amazonaws.com/boltops-demo/images/screenshots/lambda-console-posts-controller-index.png)
 
-### CLI test
+### More Info
 
-You can use `jets call` to test with the CLI:
+For more documentation, check out the official docs: [Ruby on Jets](http://rubyonjets.com/).  Here's a list of useful links:
 
-```
-$ jets call posts-controller-index '{"test":1}' | jq '.body | fromjson'
-{
-  "hello": "world",
-  "action": "index"
-}
-$ jets call help # for more info like passing the payload via a file
-                 # or how to call the functions locally with --local
-```
-
-The corresponding `aws lambda` CLI commands would be:
-
-```
-aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt
-cat outfile.txt | jq '.body | fromjson'
-rm outfile.txt
-aws lambda invoke help
-```
-
-For controllers, the `jets call` method wraps the parameters in the lambda [proxy integration input format structure](http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format).
-
-## Usage
-
-### Quick Start
-
-You can generate a starter project and deploy it to AWS Lambda with:
-
-```sh
-jets new demo
-cd demo
-export JETS_ENV=staging
-jets dynamodb:generate create_posts # generates migration
-jets dynamodb:migrate dynamodb/migrate/20171112194549-create_posts_migration.rb # run migration. replace with your timestamp
-jets deploy
-```
-
-This creates and deploys a simple CRUD application on AWS so you can get a feel for how Jets works.  Here's a curl command to get posts:
-
-```sh
-$ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/stag/posts" | jq .
-{
-  "hello": "world",
-  "action": "index"
-}
-```
-
-### Local Test Server
-
-To speed up development, you can run a local server which mimics API Gateway. Test your application code locally and then deploy to AWS when ready.
-
-```sh
-jets server
-```
-
-You can test your app at [http://localhost:8888](http://localhost:8888).  Here's a curl command to create a post:
-
-```sh
-$ curl -s -X POST http://localhost:8888/posts -d '{
-  "id": "myid",
-  "title": "test title",
-  "desc": "test desc"
-}' | jq .
-{
-  "action": "create",
-  "post": {
-    "id": "myid",
-    "title": "test title",
-    "desc": "test desc",
-    "created_at": "2017-11-04T01:46:03Z",
-    "updated_at": "2017-11-04T01:46:03Z"
-  }
-}
-```
-
-You can find examples of all the CRUD actions at [CRUD Curl Jets Tutorial](https://github.com/tongueroo/jets/wiki/CRUD-Curl-Jets-Tutorial).
-
-### Database Support
-
-Jets supports PostgreSQL and DynamoDB.  Both can coexist in the same application. If you are using DynamoDB it can be useful to use DynamoDB Local, just like you would use a local SQL server. Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) that takes about 5 minutes.
-
-### REPL Console
-
-You can test things out in a REPL console:
-
-```sh
-jets console
-> Post.table_name
-```
-
-## Install
-
-```sh
-gem install jets
-```
-
-## Under the hood
-
-Lambda does not yet support Ruby. So Jets uses a node shim and a bundled version of Ruby to add support.
+* [Quick Start](http://rubyonjets.com/quick-start/)
+* [Local Jets Server](http://rubyonjets.com/docs/local-server/)
+* [REPL Console](http://rubyonjets.com/docs/repl-console/)
+* [Jets Call](http://rubyonjets.com/docs/jets-call/)
+* [Database Support](http://rubyonjets.com/docs/database-support/)
+* [How Jets Works](http://rubyonjets.com/docs/how-jets-works/)
+* [Install](http://rubyonjets.com/docs/install/)
 
 ## Contributing
 
