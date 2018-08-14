@@ -57,15 +57,16 @@ class Jets::Commands::Call
     puts "Calling lambda function #{function_name} on AWS" unless @options[:mute]
     return if @options[:noop]
 
+    options = {
+      # client_context: client_context,
+      function_name: function_name,
+      invocation_type: @invocation_type, # "Event", # RequestResponse
+      log_type: @log_type, # pretty sweet
+      payload: transformed_event, # "fileb://file-path/input.json", <= JSON
+      qualifier: @qualifier, # "1",
+    }
     begin
-      resp = lambda.invoke(
-        # client_context: client_context,
-        function_name: function_name,
-        invocation_type: @invocation_type, # "Event", # RequestResponse
-        log_type: @log_type, # pretty sweet
-        payload: transformed_event, # "fileb://file-path/input.json", <= JSON
-        qualifier: @qualifier, # "1",
-      )
+      resp = lambda.invoke(options)
     rescue Aws::Lambda::Errors::ResourceNotFoundException
       puts "The function #{function_name} was not found.  Maybe check the spelling?".colorize(:red)
       exit

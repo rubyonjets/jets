@@ -17,12 +17,13 @@ class Jets::PreheatJob < ApplicationJob
       CONCURRENCY.times do
         threads << Thread.new do
           # intentionally calling remote lambda for concurrency
-          # avoid passing the _prewarm=1 flag because we want the job to do the work
-          # So do not use Jets::Preheat.warm(function_name) here
+          # avoid passing the _prewarm=1 flag because we want the PreheatJob#warm
+          # to run it's normal workload.
+          # Do not use Jets::Preheat.warm(function_name) here as that passes the _prewarm=1.
           function_name = "jets-preheat_job-warm"
           event_json = JSON.dump(event)
-          call_options = event[:quiet] ? {mute: true} : {}
-          Jets::Commands::Call.new(function_name, event_json, call_options).run unless ENV['TEST']
+          options = call_options(event[:quiet])
+          Jets::Commands::Call.new(function_name, event_json, options).run unless ENV['TEST']
         end
       end
       threads.each { |t| t.join }
@@ -31,8 +32,21 @@ class Jets::PreheatJob < ApplicationJob
 
     warming ? rate(PREWARM_RATE) : disable(true)
     def warm
-      options = event[:quiet] ? {mute: true} : {}
+      options = call_options(event[:quiet])
       Jets::Preheat.warm_all(options)
+      "Finished prewarming your application."
+    end
+
+  private
+    def call_options(quiet)
+      options = {}
+      options.merge!(mute: true, mute_output: true) if quiet
+      # All the methods in this Job class leads to Jets::Commands::Call.
+      # This is true for the Jets::Preheat.warm_all also.
+      # These jobs delegate out to Lambda function calls. We do not need/want
+      # the invocation type: RequestResponse in this case.
+      options.merge!(invocation_type: "Event")
+      options
     end
   end
 end
