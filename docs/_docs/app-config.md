@@ -9,9 +9,10 @@ You can set application-wide configurations in the `config/application.rb` file.
 ```ruby
 Jets.application.configure do
   config.project_name = "demo"
-  # config.env_extra = 2
+  # config.prewarm.rate = '30 minutes' # default is '30 minutes'
+  # config.prewarm.concurrency = 1 # default is 1
+  # config.env_extra = 2 # change also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
-  # config.global_iam_role = # TODO: implement this
 
   config.function.timeout = 10
   # config.function.role = "arn:aws:iam::#{ENV['AWS_ACCOUNT_ID']}:role/service-role/pre-created"
