@@ -19,6 +19,10 @@ class Jets::Application
   def config
     config = ActiveSupport::OrderedOptions.new
     config.prewarm = ActiveSupport::OrderedOptions.new
+    config.lambdagems = ActiveSupport::OrderedOptions.new
+    config.lambdagems.sources = [
+      'https://gems.lambdagems.com'
+    ]
     config
   end
   memoize :config

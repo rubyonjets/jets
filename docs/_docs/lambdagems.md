@@ -12,7 +12,7 @@ The Lambda Gems service is currently available for free. Bandwidth and maintaini
 Jets.application.configure do
   # checks the list in order
   config.lambdagems.sources = [
-    "https://lambdagems.com",
+    "https://gems.lambdagems.com",
     "https://yoursource.com",
   ]
   # ...

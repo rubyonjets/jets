@@ -1,37 +1,100 @@
 # def extract_gems
 #   headline "Replacing compiled gems with Lambda Linux versions."
 #   Lambdagem::Extract::Gem.new(JETS_RUBY_VERSION,
-#     build_root: full(cache_area),
 #     s3: "lambdagems",
 #     dest: full(cache_area),
 #   ).run
 # end
 class Jets::Builders
   class GemReplacer
+    extend Memoist
+    attr_reader :missing_gems
     def initialize(ruby_version, options)
       @ruby_version = ruby_version
       @options = options
+      @missing_gems = [] # keeps track of gems that are not found in any of the lambdagems sources
     end
 
     def run
       # If there are subfolders compiled_gem_paths might have files deeper
       # in the directory tree.  So lets grab the gem name and figure out the
       # unique paths of the compiled gems from there.
-      gem_names = compiled_gem_paths.map { |p| gem_name_from_path(p) }.uniq
+      puts "compiled_gems:"
+      pp compiled_gems
+      pp "lambdagems sources:"
+      pp Jets.config.lambdagems.sources
 
-      # Exits early if not all the linux gems are available
-      # It better to error now then later on Lambda
-      # Provide users with instructions on how to compile gems
-      # TODO: set lambdagems_url from config/application.rb.
-      exist = Lambdagem::Exist.new(lambdagems_url: Jets.config.lambdagems_url)
-      exist.check(gem_names)
+      # Checks whether the gem is found on at least one of the lambdagems sources
+      # found_gems holds map of found compiled gems
+      # By the time the loop finishes, it will hold a map of gem names to found
+      # url sources. Example:
+      #
+      #   {
+      #     "nokogiri-1.8.4" => "https://lambdagems.com",
+      #     "pg-0.21.0" => "https://anothersource.com",
+      #   }
+      found_gems = {}
+      compiled_gems.each do |gem_name|
+        gem_exists = false
+        Jets.config.lambdagems.sources.each do |source|
+          exist = Lambdagem::Exist.new(lambdagems_url: source)
+          found = exist.check(gem_name)
+          # gem exists on at least of the lambdagem sources
+          if found
+            gem_exists = true
+            found_gems[gem_name] = source
+            break
+          end
+        end
+        # puts "checks #{checks.inspect}"
+        # puts "gem_exists #{gem_exists.inspect}"
+        unless gem_exists
+          @missing_gems << gem_name
+        end
+      end
 
-      gem_names.each do |gem_name|
-        gem_extractor = Lambdagem::Extract::Gem.new(gem_name, @options)
+      # Exits early if not all the linux gems are available.
+      # It better to error now than deploy a broken package to AWS Lambda.
+      # Provide users with message about using their own lambdagems source.
+      unless @missing_gems.empty?
+        puts missing_gems_message
+        exit 1
+      end
+
+      puts "found_gems:"
+      pp found_gems
+
+      # Reaching here means we can download and extract the gems
+      found_gems.each do |gem_name, source|
+        gem_extractor = Lambdagem::Extract::Gem.new(gem_name, @options.merge(lambdagems_url: source))
         gem_extractor.run
       end
 
       tidy
+    end
+
+    def missing_gems_message
+      template = <<-EOL
+Your project requires compiled gems were not available in any of your lambdagems sources.  Unavailable pre-compiled gems:
+<% missing_gems.each do |gem| %>
+* <%= gem -%>
+<% end %>
+
+Your current lambdagems sources:
+<% Jets.config.lambdagems.sources.map do |source| %>
+* <%= source -%>
+<% end %>
+
+Jets is unable to build a deployment package that will work on AWS Lambda without the required pre-compiled gems. To remedy this, you can:
+
+* Build the gem yourself and add it to your own custom lambdagems sources. Refer to the Lambda Gems Docs: http://rubyonjets.com/docs/lambdagems
+* Wait until it added to lambdagems.com. No need to report this to us, as we've already been notified.
+* Use another gem that does not require compilation.
+
+Compiled gems usually take some time to figure out how to build as they each depend on different libraries and packages. We make an effort add new gems as soon as we can. You can support us by going to: http://rubyonjets.com/support-jets/
+EOL
+      erb = ERB.new(template, nil, '-') # trim mode https://stackoverflow.com/questions/4632879/erb-template-removing-the-trailing-line
+      erb.result(binding)
     end
 
     # remove unnecessary files to reduce package size
@@ -70,9 +133,10 @@ class Jets::Builders
       end
     end
 
-    def cache_area
-      "#{Jets.build_root}/cache" # cleaner to use full path for this setting
+    def compiled_gems
+      compiled_gem_paths.map { |p| gem_name_from_path(p) }.uniq# + ["whatever-0.0.1"]
     end
+    memoize :compiled_gems
 
     # Use pre-compiled gem because the gem could have development header shared
     # object file dependencies.  The shared dependencies are packaged up as part
