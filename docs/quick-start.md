@@ -21,9 +21,9 @@ Create some posts records. The posts page should look something like this:
 
 ## Deploy to AWS Lambda
 
-Once you're ready, edit the `.env.development.deploy` with your remote database settings and deploy to AWS.
+Once you're ready, edit the `.env.development.remote` with your remote database settings and deploy to AWS.
 
-    $ vim .env.development.deploy # adjust with remote db settings
+    $ vim .env.development.remote # adjust with remote db settings
     $ jets deploy
     API Gateway Endpoint: https://puc3xyk4cj.execute-api.us-west-2.amazonaws.com/dev/
 

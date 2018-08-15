@@ -8,7 +8,7 @@ Say you have a Jets project that has the following dotenv files:
 
     .env
     .env.development
-    .env.development.deploy
+    .env.development.remote
     .env.test
     .env.production
 
@@ -28,7 +28,7 @@ These files only get loaded for the configured valued of `JETS_ENV`. This allows
 
 ## Deploy specific variables
 
-The last example file is `.env.development.deploy`.  The values from this file only get loaded for the deployed remote Lambda Functions. It can be useful if you need different values on the lambda function and would like to keep the same `JETS_ENV`.
+The last example file is `.env.development.remote`.  The values from this file only get loaded for the deployed remote Lambda Functions. It can be useful if you need different values on the lambda function and would like to keep the same `JETS_ENV`.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/prewarming.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>

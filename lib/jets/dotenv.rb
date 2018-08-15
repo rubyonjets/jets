@@ -27,7 +27,7 @@ class Jets::Dotenv
       root.join(".env.#{Jets.env}"),
       root.join(".env.#{Jets.env}.local"),
     ]
-    files << root.join(".env.#{Jets.env}.deploy") if @deploy
+    files << root.join(".env.#{Jets.env}.remote") if @deploy
     files.compact
   end
 
