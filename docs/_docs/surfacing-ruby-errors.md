@@ -20,10 +20,10 @@ end
 
 Here's what the stack trace appears like in the Lambda Console.
 
-
+![](/img/docs/surfacing-ruby-errors.png)
 
 You keep your mental context in Ruby land the entire time 😁
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/routes-workaround.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/dev-speed.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
