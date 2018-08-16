@@ -29,7 +29,7 @@ The `jets call` command supports a local testing with the `--local` option.  Thi
 
     jets call posts-controller-index '{"test":1}' --local
 
-For more info and `jets call` examples, check out the CLI refernce: [jets call cli](http://rubyonjets.com/reference/jets-call/).
+For more info and `jets call` examples, check out the CLI reference: [jets call cli](http://rubyonjets.com/reference/jets-call/).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/deploy.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/app-config.md %}">Next Step</a>
