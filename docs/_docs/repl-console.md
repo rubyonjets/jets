@@ -5,7 +5,13 @@ title: REPL Console
 You can test things out in a REPL console:
 
     jets console
-    > Post.table_name
+    >> Post.table_name
+    => "posts"
+    >> ActiveRecord::Base.connection.tables
+    => ["schema_migrations", "ar_internal_metadata", "posts"]
+    >> Jets.env
+    => "development"
+    >>
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/local-server.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/deploy.md %}">Next Step</a>

@@ -17,6 +17,14 @@ end
 
 After a deployment finishes, Jets automatically prewarms the app immediately.  This keeps your application nice and fast.
 
+## Prewarm Custom Headers
+
+Jets appends a `x-jets-prewarm-count` header to the response to help you see if the lambda function was prewarmed. The header looks like this:
+
+![](/img/docs/prewarm-header.png)
+
+We can see that the lambda function had been prewarmed once and called 4 times since the last time AWS Lambda recycled the Lambda function.
+
 ## Custom Prewarming
 
 Jets prewarms all Ruby functions in your application with the same weight. If you want to prewarm a specific function that gets a high volume of traffic, you can create a custom prewarm job.  Here's a starter example:
