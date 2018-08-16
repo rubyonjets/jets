@@ -51,9 +51,7 @@ require "action_view"
 class Jets::Builders
   class CodeBuilder
     include Jets::Timing
-    # When we update JETS_RUBY_VERSION, need to update `def jets_ruby_version` in
-    # vendor/lambdagem/lib/lambdagem/base.rb also.
-    JETS_RUBY_VERSION = "2.5.0"
+    Jets::RUBY_VERSION
 
     include ActionView::Helpers::NumberHelper # number_to_human_size
     attr_reader :full_project_path

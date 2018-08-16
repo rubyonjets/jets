@@ -9,6 +9,9 @@ require "pp" # TODO: remove pp after debugging
 require "memoist"
 
 module Jets
+  # When we update Jets::RUBY_VERSION, need to update lambdagem/base.rb: def jets_ruby_version also
+  RUBY_VERSION = "2.5.0"
+
   autoload :CLI, "jets/cli"
   autoload :Commands, "jets/commands"
 

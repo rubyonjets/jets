@@ -32,6 +32,11 @@
     .title {
       font-size: 1.5em;
     }
+    @media (max-width: 500px) {
+      .title {
+        font-size: 1.3em;
+      }
+    }
     .intro {
       text-align: left;
       font-size: large;
@@ -48,6 +53,12 @@
       width: 99%;
       overflow: auto;
     }
+    @media (max-width: 500px) {
+      pre {
+        margin-left: -30px;
+        font-size: 0.8em;
+      }
+    }
   </style>
 </head>
 
@@ -55,7 +66,7 @@
   <div class="container">
     <header class="header">
       <img src="https://s3.amazonaws.com/jets-public/jets/images/jets.png" class="logo" alt="logo" />
-      <h1 class="title">Welcome. Congrats on setting up Jets.</h1>
+      <h1 class="title">Welcome and congrats 🎉<br /> Jets is running.</h1>
     </header>
     <div class="intro">
       <p>
@@ -68,11 +79,12 @@
         $ open http://localhost:8888/posts
         $ jets help
       </code></pre></div>
-      <p>More on: <a href="http://rubyonjets.com">rubyonjets.com</a></p>
+      <p>More on info: <a href="http://rubyonjets.com">rubyonjets.com</a></p>
+      <p>Also check out the <a href="http://rubyonjets.com/reference">Jets CLI reference</a>.</p>
     </div>
     <p class="version">
       <strong>Jets version:</strong> <%= Jets.version %><br />
-      <strong>Ruby version:</strong> <%= RUBY_VERSION %> (<%= RUBY_PLATFORM %>)
+      <strong>Ruby version:</strong> <%= Jets::RUBY_VERSION %>
     </p>
   </div>
 </body>
