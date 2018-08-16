@@ -1,5 +1,5 @@
 class Jets::PreheatJob < ApplicationJob
-  enabled = Jets.config.prewarm.enabled
+  enabled = Jets.config.prewarm.enable
   ENABLED = enabled.nil? ? true : enabled # defaults to enabled
   CONCURRENCY = Jets.config.prewarm.concurrency || 2
   PREWARM_RATE = Jets.config.prewarm.rate || '30 minutes'
