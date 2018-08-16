@@ -14,9 +14,10 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   vendor_files       = Dir.glob("vendor/**/*")
-  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features|docs)/}) + vendor_files
+  gem_files          = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features|docs)/})
   end
+  spec.files         = gem_files + vendor_files
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})

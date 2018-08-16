@@ -3,7 +3,7 @@ Jets.application.configure do
   config.api_generator = <%= !!@options[:api] %>
   # config.prewarm.rate = '30 minutes' # default is '30 minutes'
   # config.prewarm.concurrency = 1 # default is 1
-  # config.env_extra = 2 # change also set this with JETS_ENV_EXTRA
+  # config.env_extra = 2 # can also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
 
   config.function.timeout = 10

@@ -10,39 +10,30 @@
             <div class="col-lg-offset-1 col-lg-10">
 {% highlight sh %}
 $ jets deploy
-Deploying to Lambda lite-dev environment...
-The /tmp/jets/lite/cache folder exists. Incrementally re-building the jets using the cache.  To clear the cache: rm -rf /tmp/jets/lite/cache
+Deploying to Lambda demo-dev environment...
 => Compling assets in current project directory
-=> Copying current project directory to temporary build area: /tmp/jets/lite/app_root
+=> Copying current project directory to temporary build area: /tmp/jets/demo/app_root
 => Tidying project: removing ignored files to reduce package size.
-=> Reconfiguring webpacker development settings for production.
 => Generating node shims in the handlers folder.
-=> Bundling: running bundle install in cache area: /tmp/jets/lite/cache.
-Bundle complete! 8 Gemfile dependencies, 47 gems now installed.
-Gems in the groups development and test were not installed.
-Bundled gems are installed into `./bundled/gems`
-Bundle install success.
+=> Bundling: running bundle install in cache area: /tmp/jets/demo/cache.
 => Setting up a vendored copy of ruby.
 => Replacing compiled gems with AWS Lambda Linux compiled versions.
-=> Creating zip file.
-=> cd /tmp/jets/lite/app_root && zip --symlinks -rq /tmp/jets/lite/code/code-temp.zip .
-Building Lambda functions as CloudFormation templates.
-Building API Gateway template.
-Building API Gateway Deployment template.
+Creating zip file.
+=> cd /tmp/jets/demo/app_root && zip --symlinks -rq /tmp/jets/demo/code/code-temp.zip .
 Building parent template.
-Uploading child CloudFormation templates to S3
-Uploading /tmp/jets/lite/code/code-39fe28af.zip (79.1 MB) to S3
+Deploying CloudFormation stack with jets app!
+Uploading /tmp/jets/demo/code/code-7169d0ac.zip (88.8 MB) to S3
 Time to upload code to s3: 1s
 Deploying CloudFormation stack with jets app!
-05:34:42AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack lite-dev User Initiated
-05:34:45AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack ApiGateway
-05:34:46AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack ConfigRuleJob
+02:08:20AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack demo-dev User Initiated
+02:08:23AM CREATE_IN_PROGRESS AWS::CloudFormation::Stack ApiGateway
 ...
-05:35:41AM UPDATE_COMPLETE AWS::CloudFormation::Stack ApiGateway
-05:35:41AM UPDATE_COMPLETE AWS::CloudFormation::Stack lite-dev
+02:08:48AM CREATE_IN_PROGRESS AWS::CloudFormation::Stack PostsController
+02:10:03AM UPDATE_COMPLETE AWS::CloudFormation::Stack demo-dev
 Stack success status: UPDATE_COMPLETE
-Time took for stack deployment: 1m 1s.
-API Gateway Endpoint: https://whc5hydu84.execute-api.us-west-2.amazonaws.com/dev/
+Time took for stack deployment: 1m 46s.
+Prewarming application...
+API Gateway Endpoint: https://ewwnealfk0.execute-api.us-west-2.amazonaws.com/dev/
 $
 {% endhighlight %}
             </div>

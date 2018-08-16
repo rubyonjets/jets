@@ -16,6 +16,12 @@ gem "jets"
 
 ## Dependencies
 
+### Ruby
+
+Jets uses Ruby 2.5.0 and supports patch variants of it.
+
+### Yarn
+
 For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets which requires node's yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended to install a desired version of node. Once node is installed, install yarn with:
 
     npm install -g yarn

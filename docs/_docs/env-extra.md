@@ -1,0 +1,35 @@
+---
+title: Env Extra
+---
+
+Jets has an concept of extra environments. This is controlled by the `JETS_ENV_EXTRA` variable.  By setting `JETS_ENV_EXTRA` you can create additional identical environments.
+
+    jets deploy # first environment demo-dev
+    JETS_ENV_EXTRA=2 jets deploy # creates a demo-dev-2 environment
+
+The `JETS_ENV_EXTRA` can also be set in the `config/application.rb` file:
+
+```ruby
+Jets.application.configure do
+  # ...
+  config.env_extra = 2 # can also set this with JETS_ENV_EXTRA
+end
+```
+
+## Precedence
+
+1. JETS_ENV_EXTRA - takes highest precedence
+2. `config/application.rb` env_extra setting - takes lower precedence
+
+## Blue Green Deployments
+
+With the ability to create entire applications with just a variable change, you can use it to perform blue green deployments.
+
+1. Create another environment
+2. Test it to your hearts content
+3. Switch the DNS over to the new stack
+4. Delete the old environment
+
+<a id="prev" class="btn btn-basic" href="{% link _docs/env-files.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/routes-workaround.md %}">Next Step</a>
+<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
