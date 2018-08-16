@@ -37,7 +37,14 @@ class Jets::Processors::MainProcessor
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
-      Jets::Util.normalize_result(result) # String
+      Jets.increase_call_count
+      # puts "Jets.call_count #{Jets.call_count}"
+      # pp result
+      if result.is_a?(Hash) && result["headers"]
+        result["headers"]["x-call-count"] = Jets.call_count
+      end
+
+      resp = Jets::Util.normalize_result(result) # String
     rescue Exception => e
       # Customize error message slightly so nodejs shim can process the
       # returned error message.
