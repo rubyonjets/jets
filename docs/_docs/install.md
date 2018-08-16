@@ -18,7 +18,7 @@ gem "jets"
 
 ### Ruby
 
-Jets uses Ruby 2.5.0 and supports patch variants of it.
+Jets uses Ruby 2.5.0 and code written with patch variants of it will work.
 
 ### Yarn
 

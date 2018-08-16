@@ -8,66 +8,60 @@ The easiest way to get a CRUD HTML ActiveRecord app running by using the scaffol
 
 Here's a summary of the commands:
 
-```
-jets new demo
-cd demo
-jets generate scaffold Post title:string
-edit .env.development # adjust to your local database creds
-jets db:create db:migrate
-jets server # Check out site at http://localhost:8888/posts
-```
+    jets new demo
+    cd demo
+    jets generate scaffold Post title:string
+    edit .env.development # adjust to your local database creds
+    jets db:create db:migrate
+    jets server # Check out http://localhost:8888/posts
 
-Let's go through each in a little more detail.
+Let's go through the commands in a little more detail.
 
 ## Generate a new project
 
-```
-$ jets new demo
-Creating new project called demo.
-      create  demo/app/controllers/application_controller.rb
-      create  demo/app/helpers/application_helper.rb
-      create  demo/app/jobs/application_job.rb
-...
-================================================================
-Congrats  You have successfully created a Jets project.
+    $ jets new demo
+    Creating new project called demo.
+          create  demo/app/controllers/application_controller.rb
+          create  demo/app/helpers/application_helper.rb
+          create  demo/app/jobs/application_job.rb
+    ...
+    ================================================================
+    Congrats  You have successfully created a Jets project.
 
-Cd into the project directory:
-  cd demo
+    Cd into the project directory:
+      cd demo
 
-To start a server and test locally:
-  jets server # localhost:8888 should have the Jets welcome page
+    To start a server and test locally:
+      jets server # localhost:8888 should have the Jets welcome page
 
-Scaffold example:
-  jets generate scaffold Post title:string body:text published:boolean
+    Scaffold example:
+      jets generate scaffold Post title:string body:text published:boolean
 
-To deploy to AWS Lambda:
-  jets deploy
-$
-```
+    To deploy to AWS Lambda:
+      jets deploy
+    $
 
 ## CRUD Scaffold
 
-```
-$ cd demo
-$ jets generate scaffold Post title:string
-      invoke  active_record
-      create    db/migrate/20180810215214_create_posts.rb
-      create    app/models/post.rb
-      invoke  resource_route
-       route    resources :posts
-      invoke  scaffold_controller
-      create    app/controllers/posts_controller.rb
-      invoke    erb
-      create      app/views/posts
-      create      app/views/posts/index.html.erb
-      create      app/views/posts/edit.html.erb
-      create      app/views/posts/show.html.erb
-      create      app/views/posts/new.html.erb
-      create      app/views/posts/_form.html.erb
-      invoke    helper
-      create      app/helpers/posts_helper.rb
-$
-```
+    $ cd demo
+    $ jets generate scaffold Post title:string
+          invoke  active_record
+          create    db/migrate/20180810215214_create_posts.rb
+          create    app/models/post.rb
+          invoke  resource_route
+           route    resources :posts
+          invoke  scaffold_controller
+          create    app/controllers/posts_controller.rb
+          invoke    erb
+          create      app/views/posts
+          create      app/views/posts/index.html.erb
+          create      app/views/posts/edit.html.erb
+          create      app/views/posts/show.html.erb
+          create      app/views/posts/new.html.erb
+          create      app/views/posts/_form.html.erb
+          invoke    helper
+          create      app/helpers/posts_helper.rb
+    $
 
 This generates a Post ActiveRecord model and the view code for a simple CRUD app.
 

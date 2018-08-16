@@ -4,7 +4,7 @@ title: Polymorphic Support
 
 ## What is polymorphic support?
 
-Polymorphic support is the Jets ability to write the your lambda functions in other languages like python or node.
+Polymorphic support is the Jets ability to write your lambda functions in other languages like python or node.
 
 ## Why polymorphic support?
 

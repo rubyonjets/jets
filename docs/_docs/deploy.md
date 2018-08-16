@@ -4,9 +4,7 @@ title: Deploy
 
 Once you are ready to deploy your app to lambda, it's one command to do so:
 
-```
-jets deploy
-```
+    jets deploy
 
 After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
 

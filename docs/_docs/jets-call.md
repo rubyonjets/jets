@@ -25,7 +25,7 @@ For controllers, the `jets call` method wraps the parameters in the lambda [prox
 
 ## Local Function
 
-The `jets call` command supports a local testing with the `--local` option.  This allows you to test locally before deploying.  Here's an example:
+The `jets call` command supports a local testing mode with the `--local` option.  This allows you to test locally before deploying.  Here's an example:
 
     jets call posts-controller-index '{"test":1}' --local
 

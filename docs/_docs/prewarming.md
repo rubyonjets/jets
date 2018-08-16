@@ -15,11 +15,11 @@ end
 
 ## Prewarm After Deployment
 
-After a deployment finishes, Jets automatically prewarms the app.  This keeps your application nice and fast immediately.
+After a deployment finishes, Jets automatically prewarms the app immediately.  This keeps your application nice and fast.
 
 ## Custom Prewarming
 
-Jets prewarms all ruby functions in your application with the same weight. If you want to prewarm a specific function that gets a high volume of traffic, you can create a custom prewarm job.  Here's a starter example:
+Jets prewarms all Ruby functions in your application with the same weight. If you want to prewarm a specific function that gets a high volume of traffic, you can create a custom prewarm job.  Here's a starter example:
 
 app/jobs/prewarm_job.rb:
 
