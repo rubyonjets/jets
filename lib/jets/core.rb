@@ -77,5 +77,19 @@ module Jets::Core
   def version
     Jets::VERSION
   end
+  
+  def eager_load!
+    Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
+      next if !File.file?(path) or path =~ /javascript/ or path =~ %r{/views/}
+
+      class_name = path
+                    .sub(/\.rb$/,'') # remove .rb
+                    .sub(/^\.\//,'') # remove ./
+                    .sub(/app\/\w+\//,'') # remove app/controllers or app/jobs etc
+                    .classify
+      puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['DEBUG']
+      class_name.constantize # dont have to worry about order.
+    end
+  end
 
 end

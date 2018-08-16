@@ -17,6 +17,7 @@ module Jets
     def run
       $stdout.sync = true
       Jets.boot # outside of child process for COW
+      Jets.eager_load!
 
       # INT - ^C
       trap('INT') do
