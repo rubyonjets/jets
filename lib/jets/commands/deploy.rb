@@ -13,6 +13,8 @@ module Jets::Commands
       return if @options[:noop]
 
       build_code
+      validate_routes!
+
       # first time will deploy minimal stack
       exit_unless_updateable!
 
@@ -26,6 +28,18 @@ module Jets::Commands
       Jets::Commands::Build.new(@options).build_code
     end
     time :build_code
+
+    # Checks that all routes are validate and have corresponding lambda functions
+    def validate_routes!
+      return if Jets::Router.all_routes_valid
+
+      puts "Deploy fail: The jets application contain invalid routes.".colorize(:red)
+      puts "Please double check the routes below map to valid controllers:"
+      Jets::Router.invalid_routes.each do |route|
+        puts "  /#{route.path} => #{route.controller_name}##{route.action_name}"
+      end
+      exit 1
+    end
 
     def ship(stack_options)
       options = @options.merge(stack_options) # includes stack_type and s3_bucket

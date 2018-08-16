@@ -48,6 +48,17 @@ class Jets::Route
     to.sub(/.*#/,'')
   end
 
+  # Checks to see if the corresponding controller exists. Useful to validate routes
+  # before deploying to CloudFormation and then rolling back.
+  def valid?
+    controller_class = begin
+      controller_name.constantize
+    rescue NameError
+      return false
+    end
+    controller_class.all_tasks.keys.include?(action_name.to_sym)
+  end
+
   # Extracts the path parameters from the actual path
   # Only supports extracting 1 parameter. So:
   #

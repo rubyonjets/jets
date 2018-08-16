@@ -111,5 +111,13 @@ module Jets
       end
       table
     end
+
+    def self.all_routes_valid
+      invalid_routes.empty?
+    end
+
+    def self.invalid_routes
+      routes.select { |r| !r.valid? }
+    end
   end
 end
