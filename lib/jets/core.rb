@@ -80,7 +80,7 @@ module Jets::Core
   
   def eager_load!
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
-      next if !File.file?(path) or path =~ /javascript/ or path =~ %r{/views/}
+      next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
 
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
@@ -90,6 +90,15 @@ module Jets::Core
       puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['DEBUG']
       class_name.constantize # dont have to worry about order.
     end
+  end
+
+  @@call_count = 0
+  def increase_call_count
+    @@call_count += 1
+  end
+
+  def call_count
+    @@call_count
   end
 
 end

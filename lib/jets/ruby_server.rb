@@ -18,6 +18,7 @@ module Jets
       $stdout.sync = true
       Jets.boot # outside of child process for COW
       Jets.eager_load!
+      Jets.increase_call_count
 
       # INT - ^C
       trap('INT') do
@@ -72,6 +73,7 @@ module Jets
     end
 
     def standard_request(event, context, handler)
+      puts "Jets.call_count #{Jets.call_count}"
       Jets::Processors::MainProcessor.new(
         event,
         context,
