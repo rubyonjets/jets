@@ -123,14 +123,5 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Prewarming](http://rubyonjets.com/docs/prewarming/)
 * [Installation](http://rubyonjets.com/docs/install/)
 * [CLI Reference](http://rubyonjets.com/reference/)
-
-## Contributing
-
-I love pull requests! Happy to answer questions to help.
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
+* [Contributing](http://rubyonjets.com/docs/contributing/)
+* [Support Jets](http://rubyonjets.com/support-jets/)

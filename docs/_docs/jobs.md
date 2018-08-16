@@ -20,6 +20,14 @@ end
 
 `HardJob#dig` will run every 10 hours and `HardJob#lift` will run every 12 hours.
 
+You can check for the job functions in the Lambda console:
+
+![](/img/docs/demo-lambda-functions-jobs.png)
+
+You can also see associated CloudWatch Event Rule in the CloudWatch console:
+
+![](/img/docs/demo-job-cloudwatch-rule.png)
+
 ## Running Jobs Explicitly
 
 You can run jobs explicitly with code. Example:
