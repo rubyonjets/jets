@@ -43,7 +43,7 @@ module Jets
     def serve
       # child process
       server = TCPServer.new(8080) # Server bind to port 8080
-      puts "TCPServer started on port #{PORT}"
+      puts "Ruby server started on port #{PORT}"
       input_completed = false
       loop do
         event, handler = nil, nil
