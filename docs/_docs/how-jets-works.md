@@ -2,7 +2,7 @@
 title: How Jets Works
 ---
 
-AWS Lambda does not yet officially support ruby. There's an online petition to encourage AWS to add Ruby support for Lambda: [We want FaaS for Ruby!](https://www.serverless-ruby.org/) Rumors suggest that AWS is working on it.
+AWS Lambda does not yet officially support Ruby. There's an online petition to encourage AWS to add Ruby support for Lambda: [We want FaaS for Ruby!](https://www.serverless-ruby.org/) Rumors suggest that AWS is working on it.
 
 To run Ruby on AWS Lambda today, we can resort to using a shim. This was detailed in the AWS Blog post [Scripting Languages for AWS Lambda: Running PHP, Ruby, and Go
 ](https://aws.amazon.com/blogs/compute/scripting-languages-for-aws-lambda-running-php-ruby-and-go/).  Essentially, you write a lambda function in a natively supported Lambda language like node and then have that function shell out to ruby. Additionally, the ruby interpreter itself is packaged with the lambda code zip file.
