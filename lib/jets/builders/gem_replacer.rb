@@ -1,6 +1,6 @@
 # def extract_gems
 #   headline "Replacing compiled gems with Lambda Linux versions."
-#   Lambdagem::Extract::Gem.new(JETS_RUBY_VERSION,
+#   Lambdagem::Extract::Gem.new(Jets::RUBY_VERSION,
 #     s3: "lambdagems",
 #     dest: full(cache_area),
 #   ).run

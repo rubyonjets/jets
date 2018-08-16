@@ -51,9 +51,8 @@ require "action_view"
 class Jets::Builders
   class CodeBuilder
     include Jets::Timing
-    Jets::RUBY_VERSION
-
     include ActionView::Helpers::NumberHelper # number_to_human_size
+
     attr_reader :full_project_path
     def initialize
       # Expanding to the full path and capture now.
@@ -116,12 +115,12 @@ class Jets::Builders
 
     def extract_ruby
       headline "Setting up a vendored copy of ruby."
-      Lambdagem::Extract::Ruby.new(JETS_RUBY_VERSION, lambdagem_options).run
+      Lambdagem::Extract::Ruby.new(Jets::RUBY_VERSION, lambdagem_options).run
     end
 
     def extract_gems
       headline "Replacing compiled gems with AWS Lambda Linux compiled versions."
-      GemReplacer.new(JETS_RUBY_VERSION, lambdagem_options).run
+      GemReplacer.new(Jets::RUBY_VERSION, lambdagem_options).run
     end
 
     # This happens in the current app directory not the tmp app_root for simplicity
@@ -220,7 +219,7 @@ class Jets::Builders
     # The lambda server only has ruby 2.5.0 installed.
     def reconfigure_ruby_version
       ruby_version = "#{full(tmp_app_root)}/.ruby-version"
-      IO.write(ruby_version, JETS_RUBY_VERSION)
+      IO.write(ruby_version, Jets::RUBY_VERSION)
     end
 
     def copy_bundled_to_app_root
@@ -381,8 +380,8 @@ EOL
     def check_ruby_version
       unless ruby_version_supported?
         puts "You are using ruby version #{RUBY_VERSION} which is not supported by Jets."
-        ruby_variant = JETS_RUBY_VERSION.split('.')[0..1].join('.') + '.x'
-        abort("Jets uses ruby #{JETS_RUBY_VERSION}.  You should use a variant of ruby #{ruby_variant}".colorize(:red))
+        ruby_variant = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.x'
+        abort("Jets uses ruby #{Jets::RUBY_VERSION}.  You should use a variant of ruby #{ruby_variant}".colorize(:red))
       end
     end
 
@@ -390,7 +389,7 @@ EOL
       pattern = /(\d+)\.(\d+)\.(\d+)/
       md = RUBY_VERSION.match(pattern)
       ruby = {major: md[1], minor: md[2]}
-      md = JETS_RUBY_VERSION.match(pattern)
+      md = Jets::RUBY_VERSION.match(pattern)
       jets = {major: md[1], minor: md[2]}
 
       ruby[:major] == jets[:major] && ruby[:minor] == jets[:minor]
