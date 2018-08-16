@@ -31,13 +31,19 @@ class Jets::Processors::MainProcessor
       result = instance_eval(deducer.code, deducer.path)
       # result = PostsController.process(event, context, "create")
 
+      Jets.increase_call_count
+      if result.is_a?(Hash) && result["headers"]
+        result["headers"]["x-jets-call-count"] = Jets.call_count
+        result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count
+      end
+
       # Puts the return value of project code to stdout because this is
       # what eventually gets used by API Gateway.
       # Explicitly using $stdout since puts has been redirected to $stderr.
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
-      Jets::Util.normalize_result(result) # String
+      resp = Jets::Util.normalize_result(result) # String
     rescue Exception => e
       # Customize error message slightly so nodejs shim can process the
       # returned error message.
