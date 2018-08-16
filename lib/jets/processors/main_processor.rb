@@ -41,7 +41,8 @@ class Jets::Processors::MainProcessor
       # puts "Jets.call_count #{Jets.call_count}"
       # pp result
       if result.is_a?(Hash) && result["headers"]
-        result["headers"]["x-call-count"] = Jets.call_count
+        result["headers"]["x-jets-call-count"] = Jets.call_count
+        result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count
       end
 
       resp = Jets::Util.normalize_result(result) # String

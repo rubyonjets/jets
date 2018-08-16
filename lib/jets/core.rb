@@ -92,6 +92,8 @@ module Jets::Core
     end
   end
 
+  # NOTE: In development this will always be 1 because the app gets reloaded.
+  # On AWS Lambda, this will be ever increasing until the container gets replaced.
   @@call_count = 0
   def increase_call_count
     @@call_count += 1
@@ -99,6 +101,15 @@ module Jets::Core
 
   def call_count
     @@call_count
+  end
+
+  @@prewarm_count = 0
+  def increase_prewarm_count
+    @@prewarm_count += 1
+  end
+
+  def prewarm_count
+    @@prewarm_count
   end
 
 end
