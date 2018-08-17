@@ -18,11 +18,17 @@ class Jets::Application
 
   def config
     config = ActiveSupport::OrderedOptions.new
+
     config.prewarm = ActiveSupport::OrderedOptions.new
+    config.prewarm.enable = true
+    config.prewarm.concurrency = 2
+    config.prewarm.rate = '30 minutes'
+
     config.lambdagems = ActiveSupport::OrderedOptions.new
     config.lambdagems.sources = [
       'https://gems.lambdagems.com'
     ]
+
     config
   end
   memoize :config
