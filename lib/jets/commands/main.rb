@@ -84,7 +84,7 @@ module Jets::Commands
       Jets::Generator.invoke(generator, *args)
     end
 
-    desc "status", "Shows the current status of the Jets app."
+    desc "status", "Shows the current status of the Jets app"
     long_desc Help.text(:status)
     def status
       Jets::Cfn::Status.new(options).run
