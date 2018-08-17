@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.5.5]
+- clean old git submodules from cache to reduce cache bloat
+- dont prewarm after deploy if disabled :pull request #12
+- update docs
+
 ## [0.5.4]
 - add route check before cloudformation update: pull request #11
 - hide confusing debugging logs for node shim for user
