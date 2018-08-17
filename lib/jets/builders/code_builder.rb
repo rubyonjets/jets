@@ -73,7 +73,7 @@ class Jets::Builders
       Dir.chdir(full(tmp_app_root)) do
         # These commands run from project root
         start_app_root_setup
-        bundler
+        bundle
         finish_app_root_setup
         create_zip_file
       end
@@ -302,11 +302,11 @@ EOL
     end
     time :create_zip_file
 
-    def bundler
+    def bundle
       clean_old_submodules
       bundle_install
     end
-    time :bundler
+    time :bundle
 
     # Installs gems on the current target system: both compiled and non-compiled.
     # If user is on a macosx machine, macosx gems will be installed.
