@@ -2,7 +2,7 @@
 .bundle
 .byebug_history
 .DS_Store
-.env.*.deploy
+.env.*.remote
 .env.production
 .env.staging
 /node_modules

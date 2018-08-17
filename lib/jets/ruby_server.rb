@@ -43,7 +43,7 @@ module Jets
     def serve
       # child process
       server = TCPServer.new(8080) # Server bind to port 8080
-      puts "Ruby server started on port #{PORT}"
+      puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG']
       input_completed = false
       loop do
         event, handler = nil, nil
