@@ -1,5 +1,5 @@
 ---
-title: Development Speed
+title: Faster Development
 ---
 
 Development speed with AWS Lambda can be slow due to having to upload the Ruby interpreter and gems as part of the deployment package. The recommendation for this is to use [Cloud9](https://aws.amazon.com/cloud9/) to take advantage of the blazing EC2 internet pipe.
