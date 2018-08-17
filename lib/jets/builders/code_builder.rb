@@ -263,7 +263,7 @@ EOL
     end
 
     def create_zip_file(fake=nil)
-      puts "Creating zip file."
+      headline "Creating zip file."
       temp_code_zipfile = "#{Jets.build_root}/code/code-temp.zip"
       FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
 

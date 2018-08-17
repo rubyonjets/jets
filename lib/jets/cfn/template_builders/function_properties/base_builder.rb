@@ -55,7 +55,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     #     config.function = ActiveSupport::OrderedOptions.new
     #     config.function.timeout = 10
     #     config.function.runtime = "nodejs8.10"
-    #     config.function.memory_size = 3008
+    #     config.function.memory_size = 1536
     #   end
     def global_properties
       baseline = {

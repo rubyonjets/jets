@@ -1,5 +1,5 @@
 Jets.application.configure do
-  config.project_name = "proj"
+  config.project_name = "project"
   # config.env_extra = 2 # Optional. Any value works: 1,2,abc,xyz
     # Allows creation of multiple instances of env.
   config.cors = true
@@ -15,6 +15,8 @@ Jets.application.configure do
   # function properties defaults
   config.function = ActiveSupport::OrderedOptions.new
   config.function.timeout = 10
-  config.function.memory_size = 3008
+  # default memory setting based on:
+  # https://medium.com/epsagon/how-to-make-lambda-faster-memory-performance-benchmark-be6ebc41f0fc
+  config.function.memory_size = 1536
 end
 
