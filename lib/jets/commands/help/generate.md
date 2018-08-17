@@ -1,4 +1,4 @@
-This piggy backs off of [rails scaffold generator](https://guides.rubyonrails.org/command_line.html#rails-generate).
+This piggy backs off of the [rails scaffold generator](https://guides.rubyonrails.org/command_line.html#rails-generate).
 
 ## Example
 
