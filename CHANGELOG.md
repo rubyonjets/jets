@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.5.4]
+- add route check before cloudformation update: pull request #11
+- hide confusing debugging logs for node shim for user
+- update docs, grammar fixes
+- update initial welcome page, improve mobile, use encoding: utf-8 for starter index page
+- update to use Jets::RUBY_VERSION
+
 ## [0.5.3]
 - add x-jets-prewarm-count and x-jets-call-count headers: pull request #10 from tongueroo/call-count
 - adjust default prewarming concurrency to 2
@@ -19,7 +26,7 @@ This project *tries* to adhere to [Semantic Versioning](http://semver.org/), eve
 - update docs
 
 ## [0.5.0]
-- First good release
+- First big good release
 
 ## [0.1.2]
 - Fix bundled gems.
