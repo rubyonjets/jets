@@ -4,6 +4,7 @@ require "colorize"
 require "socket"
 require "net/http"
 require "action_view"
+require "bundler" # for clean_old_submodules only
 
 # Some important folders to help understand how jets builds a project:
 #
@@ -72,7 +73,7 @@ class Jets::Builders
       Dir.chdir(full(tmp_app_root)) do
         # These commands run from project root
         start_app_root_setup
-        bundle_install
+        bundle
         finish_app_root_setup
         create_zip_file
       end
@@ -301,6 +302,12 @@ EOL
     end
     time :create_zip_file
 
+    def bundle
+      clean_old_submodules
+      bundle_install
+    end
+    time :bundle
+
     # Installs gems on the current target system: both compiled and non-compiled.
     # If user is on a macosx machine, macosx gems will be installed.
     # If user is on a linux machine, linux gems will be installed.
@@ -330,7 +337,38 @@ EOL
 
       puts 'Bundle install success.'
     end
-    time :bundle_install
+
+    # When using submodules, bundler leaves old submodules behind. Over time this inflates
+    # the size of the the bundled gems.  So we'll clean it up.
+    def clean_old_submodules
+      lockfile = "#{cache_area}/Gemfile.lock"
+      # https://stackoverflow.com/questions/38800129/parsing-a-gemfile-lock-with-bundler
+      parser = Bundler::LockfileParser.new(Bundler.read_file(Bundler.default_lockfile))
+      specs = parser.specs
+
+      # specs = Bundler.load.specs
+      # IE: spec.source.to_s: "https://github.com/tongueroo/webpacker.git (at jets@a8c4661)"
+      submoduled_specs = specs.select do |spec|
+        spec.source.to_s =~ /@\w+\)/
+      end
+
+      # find git shas to keep
+      # IE: ["a8c4661", "abc4661"]
+      git_shas = submoduled_specs.map do |spec|
+        md = spec.source.to_s.match(/@(\w+)\)/)
+        git_sha = md[1]
+      end
+      puts "git_shas #{git_shas.inspect}"
+
+      # IE: /tmp/jets/demo/cache/bundled/gems/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
+      Dir.glob("#{cache_area}/bundled/gems/ruby/2.5.0/bundler/gems/*").each do |path|
+        sha = path.split('-').last[0..6] # only first 7 chars of the git sha
+        unless git_shas.include?(sha)
+          puts "Removing old submoduled gem: #{path}"
+          FileUtils.rm_rf(path) # REMOVE old submodule directory
+        end
+      end
+    end
 
     def copy_gemfiles
       FileUtils.mkdir_p(cache_area)
