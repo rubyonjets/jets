@@ -116,6 +116,7 @@ class Jets::Builders
 
     def extract_ruby
       headline "Setting up a vendored copy of ruby."
+      Lambdagem.log_level = :info
       Lambdagem::Extract::Ruby.new(Jets::RUBY_VERSION, lambdagem_options).run
     end
 
