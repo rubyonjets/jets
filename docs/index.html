@@ -35,7 +35,7 @@ subnav: false
                     <p>Building serverless applications can be challenging.  Jets makes it simple and fun. It includes everything required to build and deploy a serverless application to AWS Lambda. Focus on your business logic while Jets handles the mundane gruntwork.</p>
                 </div>
                 <div class="col-lg-6">
-                    <p>Jets was built to allow you to quickly build serverless applications with a beautiful language: ruby. While at the same time, it allows you to use other languages like node and python for certain use cases. Jets offers native-like Lambda performance for Ruby and powerful tools to help you develop in the serverless world.</p>
+                    <p>Jets was built to allow you to quickly build serverless applications with a beautiful language: ruby. Jets offers native-like Lambda performance for Ruby and powerful tools to help you develop in the serverless world. While at the same time, it allows you to use other languages like node and python for certain use cases.</p>
                 </div>
             </div>
         </div>
@@ -58,13 +58,15 @@ subnav: false
 {% highlight sh %}
 jets new
 jets generate scaffold
+jets db:migrate
 jets server
 jets console
-jets build
 jets deploy
 jets routes
 jets call
+jets status
 jets url
+jets delete
 {% endhighlight %}
                                 </div>
                             </div>
