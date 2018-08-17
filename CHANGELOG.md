@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.5.8]
+- fix config.prewarm defaults
+
 ## [0.5.7]
 - adjust default function memory size to 1536
 
