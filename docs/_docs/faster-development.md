@@ -7,12 +7,11 @@ Development speed with AWS Lambda can be slow due to having to upload the Ruby i
 EC2 Instance Internet Speed:
 
     $ curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -
-    Testing download speed...................................................................
-    Download: 443.69 Mbit/s
-    Testing upload speed.......................................................................
-    Upload: 438.73 Mbit/s
+    Testing download speed............................................................
+    Download: 2399.01 Mbit/s
+    Testing upload speed..................................................................
+    Upload: 1103.04 Mbit/s
     $
-
 
 Typical Home Internet Speed:
 
@@ -23,7 +22,7 @@ Typical Home Internet Speed:
     Upload: 6.78 Mbit/s
     $
 
-There is no comparison. It's the upload speed that destroys productivity. I've actually come to enjoy using Cloud9 and have been pretty happy with it, it even has some nice built-in Lambda local debugging features.
+In these case there's a 162x upload speed difference. There is no comparison. It's the upload speed that destroys productivity. I've actually come to enjoy using Cloud9 and have been pretty happy with it, it even has some nice built-in Lambda local debugging features.
 
 Another approach for a team is to set up a CI/CD pipeline that will deploy when git commits are pushed.
 
