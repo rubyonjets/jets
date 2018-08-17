@@ -1,4 +1,10 @@
 ## Example
 
     $ jets console
-    > Post.find("myid")
+    >> Post.table_name
+    => "posts"
+    >> ActiveRecord::Base.connection.tables
+    => ["schema_migrations", "ar_internal_metadata", "posts"]
+    >> Jets.env
+    => "development"
+    >>

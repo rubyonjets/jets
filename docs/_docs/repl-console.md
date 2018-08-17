@@ -4,7 +4,7 @@ title: REPL Console
 
 You can test things out in a REPL console:
 
-    jets console
+    $ jets console
     >> Post.table_name
     => "posts"
     >> ActiveRecord::Base.connection.tables
