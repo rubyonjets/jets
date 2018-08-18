@@ -5,7 +5,7 @@ require "active_support/core_ext/string"
 require "active_support/ordered_hash"
 require "colorize"
 require "fileutils"
-require "pp" # TODO: remove pp after debugging
+require "pp" # TODO: Remove pp after debugging
 require "memoist"
 
 module Jets
@@ -57,7 +57,7 @@ if File.exist?("#{Jets.root}config/dynamodb.yml")
   require "dynomite"
 end
 
-# https://makandracards.com/makandra/42521-detecting-if-a-ruby-gem-is-loaded
+# Thanks: https://makandracards.com/makandra/42521-detecting-if-a-ruby-gem-is-loaded
 # TODO: move require "pg" into loader class and abstract to support more gems
 if File.exist?("#{Jets.root}config/database.yml")
   require "active_record"

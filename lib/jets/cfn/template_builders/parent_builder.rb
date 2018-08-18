@@ -68,9 +68,6 @@ class Jets::Cfn::TemplateBuilders
       end
     end
 
-    # Each shared stacks has different logic.
-    # Handle in ugly case statement until we see the common patterns between them.
-    # TODO: clean up the add_shared_stack logical after we figure out the common interface pattern
     def add_api_gateway
       path = "#{Jets.config.project_namespace}-api-gateway.yml"
       map = Jets::Cfn::TemplateMappers::ApiGatewayMapper.new(path, @options[:s3_bucket])

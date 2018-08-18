@@ -25,14 +25,7 @@ describe Jets::CLI do
       out = execute("exe/jets delete #{@args}")
       # puts out
       expect(out).to include("Deleting project")
-    end
-
-    # TODO: figure out how to test out jets new without too much work
-    # it "new" do
-    #   out = execute("exe/jets new demo #{@args}")
-    #   # puts out
-    #   expect(out).to include("Creating new project")
-    # end
+  end
 
     it "routes" do
       out = execute("exe/jets routes #{@args}")

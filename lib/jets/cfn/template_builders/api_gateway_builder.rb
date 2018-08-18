@@ -43,9 +43,8 @@ class Jets::Cfn::TemplateBuilders
     # Adds route related Resources and Outputs
     def add_gateway_routes
       # The routes required a Gateway Resource to contain them.
-      # TODO: outputing all routes in 1 template will hit the 60 routes limit
-      # Will have to either output them as a joined string or
-      # break this up to multiple tempaltes.
+      # TODO: Support more routes. Right now outputing all routes in 1 template will hit the 60 routes limit.
+      # Will have to either output them as a joined string or break this up to multiple tempaltes.
       # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
       # Outputs: Maximum number of outputs that you can declare in your AWS CloudFormation template. 60 outputs
       # Output name: Maximum size of an output name. 255 characters.

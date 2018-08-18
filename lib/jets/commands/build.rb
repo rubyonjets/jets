@@ -41,7 +41,7 @@ module Jets::Commands
 
     def build_all_templates
       clean_templates
-      # TODO: move this build.rb logic to cfn/builder.rb
+      # TODO: Maybe  move this tbuild.rb template related logic to cfn/builder.rb
       ## CloudFormation templates
       puts "Building Lambda functions as CloudFormation templates."
       # 1. Shared templates - child templates needs them
@@ -107,7 +107,7 @@ module Jets::Commands
     # Crucial that the Dir.pwd is in the tmp_app_root because for
     # because Jets.boot set ups autoload_paths and this is how project
     # classes are loaded.
-    # TODO: rework code so this is not the case.
+    # TODO: rework code so that Dir.pwd does not have to be in tmp_app_root for build to work.
     def self.app_files
       paths = []
       expression = "#{Jets.root}app/**/**/*.rb"

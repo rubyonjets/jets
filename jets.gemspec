@@ -31,8 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionpack"
   spec.add_dependency "activerecord"
   spec.add_dependency "railties" # ActiveRecord database_tasks.rb require this
-  # TODO: only load the database adapters that the app uses, so generate this
-  # in the app's Gemfile
   spec.add_dependency "dotenv"
 
   spec.add_dependency "recursive-open-struct"
@@ -45,8 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "text-table"
   spec.add_dependency "rack"
   spec.add_dependency "json"
-  # there are development dependencies because we want to lazy load them
-  # in the app. but we want to have them so we can run specs.
+  # TODO: only load the database adapters that app's Gemfile instead of jets.gemspec
   spec.add_dependency "pg", "=0.21"
 
   spec.add_dependency "gems" # lambdagem dependency
