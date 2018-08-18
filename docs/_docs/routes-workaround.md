@@ -14,5 +14,5 @@ For some resources,  the way CloudFormation updates can sometimes cause problems
 When we create new environments, we will not run into existing route conflicts because no routes exist. The application is brand new.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/env-extra.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/surfacing-ruby-errors.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/debug-ruby-errors.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

@@ -1,5 +1,5 @@
 ---
-title: Surfacing Ruby Errors
+title: Debugging Ruby Errors
 ---
 
 In [How Jets Works]({% link _docs/native-performance.md %}), we cover that  AWS Lambda does not currently support Ruby natively.  Jets adds Ruby Support by using a node shim. You might think that this means you will need to debug node errors. But this is not the case at all. Jets surfaces the Ruby stack trace error up through the node shim all the way to the Lambda Console.

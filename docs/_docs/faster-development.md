@@ -28,6 +28,6 @@ Another approach for a team is to set up a CI/CD pipeline that will deploy when 
 
 Would like to improve the speed of the deploying these large packages though and would love to try some ideas around this.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/surfacing-ruby-errors.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/debug-ruby-errors.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
