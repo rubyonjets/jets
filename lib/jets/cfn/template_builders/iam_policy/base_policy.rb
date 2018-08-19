@@ -10,6 +10,7 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
         "Version" => "2012-10-17",
         "Statement" => []
       }
+      # https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html
       @sid = 0 # counter
     end
 

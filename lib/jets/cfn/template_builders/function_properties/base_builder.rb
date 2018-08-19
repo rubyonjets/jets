@@ -90,7 +90,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       class_properties = klass.class_properties
       if klass.class_iam_policy
         map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(klass)
-        class_properties[:Role] = {Ref: map.logical_id}
+        class_properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
       end
       Pascalize.pascalize(class_properties.deep_stringify_keys)
     end
@@ -114,7 +114,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       properties = @task.properties
       if @task.iam_policy
         map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(@task)
-        properties[:Role] = {Ref: map.logical_id}
+        properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
       end
       Pascalize.pascalize(properties.deep_stringify_keys)
     end
