@@ -17,10 +17,10 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     # Example: PostsControllerLambdaFunction
     # Note there are is no "Show" action in the name
     def logical_id
-      # "#{namespace}_application_iam_role".camelize
-      "IamRole"
+      "IamRole" # very simple logical ideal for the application-wide logical id
     end
 
+    # There should be namespace in the role_name.
     def role_name
       "#{namespace}_application_iam_role".underscore.dasherize
     end

@@ -9,7 +9,7 @@ describe Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper do
   describe "IamPolicy::FunctionPolicyMapper" do
     it "contains info for iam policy resource" do
       expect(map.logical_id).to eq "PostsControllerNewIamRole"
-      expect(map.role_name).to eq "posts-controller-new-iam-role"
+      expect(map.role_name).to eq "demo-test-posts-controller-new-iam-role"
       iam_policy = YAML.dump(map.properties)
       # puts iam_policy # uncomment to debug
       expected_iam_policy = <<~EOL
@@ -39,7 +39,7 @@ describe Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper do
               - ec2:*
               Effect: Allow
               Resource: "*"
-        RoleName: posts-controller-new-iam-role
+        RoleName: demo-test-posts-controller-new-iam-role
       EOL
       expect(iam_policy).to eq expected_iam_policy
     end
