@@ -14,7 +14,7 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
     # Example: PostsControllerPolicy or SleepJobPolicy
     # Note: There is no "method" in the name
     def policy_name
-      "#{namespace}_#{@app_class}_policy".camelize
+      "#{@app_class}_policy".camelize
     end
   end
 end

@@ -28,5 +28,9 @@ module Jets::Cfn::TemplateMappers::IamPolicy
       properties.deep_stringify_keys!
       properties
     end
+
+    def namespace
+      Jets.config.project_namespace.underscore
+    end
   end
 end

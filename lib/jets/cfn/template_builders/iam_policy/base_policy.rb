@@ -26,10 +26,6 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
     end
     memoize :policy_document # only process policy_document once
 
-    def namespace
-      Jets.config.project_namespace.underscore
-    end
-
     def standardize(definition)
       @sid += 1
       case definition

@@ -20,11 +20,11 @@ module Jets::Cfn::TemplateMappers::IamPolicy
 
     # Example: PostsControllerShowLambdaFunction
     def logical_id
-      "#{@app_class}_#{@task.meth}_iam_role".camelize
+      "#{namespace}_#{@app_class}_#{@task.meth}_iam_role".camelize
     end
 
     def role_name
-      "#{@app_class}_#{@task.meth}_iam_role".underscore.dasherize
+      "#{namespace}_#{@app_class}_#{@task.meth}_iam_role".underscore.dasherize
     end
   end
 end

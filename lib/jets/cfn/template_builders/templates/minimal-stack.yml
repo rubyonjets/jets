@@ -2,42 +2,6 @@
 Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
-  IamRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - lambda.amazonaws.com
-          Action:
-          - sts:AssumeRole
-      Policies:
-      - PolicyName: <%= @policy_name %>
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Effect: Allow
-            Action:
-            - logs:*
-            Resource: '*'
-            # TODO: Make IAM permissions more fine grain for mimimal stack
-            # - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/quiz-dev-hello:*:*
-            # - Fn::Sub: arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/quiz-dev-quiz:*:*
-            # TODO: Allow hook so user can configure IAM themselves and support managed polices
-          - Effect: Allow
-            Action:
-            - dynamodb:*
-            Resource: "*"
-            # required for PreheatJob which calls the other lambda functions repeatedly
-          - Effect: Allow
-            Action:
-            - lambda:*
-            Resource: "*"
-      Path: "/"
-      RoleName: <%= @role_name %>
 Outputs:
   S3Bucket:
     Value: "!Ref S3Bucket" # not a valid cfn notation, surrounding double quotes is handled by post processing.
