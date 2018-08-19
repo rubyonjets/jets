@@ -40,32 +40,10 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_iam_policy(task)
-      iam_policy = IamPolicy.new(task)
-      pp iam_policy.policy_document
-
-      # COPIED FROM GENERATED TEMPLATE, TODO: move into a mapper?
-      properties = {
-        AssumeRolePolicyDocument: {
-          Version: '2012-10-17',
-          Statement: [{
-            Effect: Allow,
-            Principal: {Service: ["lambda.amazonaws.com"],
-            Action: ["sts:AssumeRole"]
-          }]
-        },
-        Path: "/",
-        RoleName: "TODO: MAP THIS ROLE NAME" # IE: posts-controller-new-iam-role
-      }
-      properties[:Policies] = [
-        PolicyName: iam_policy.policy_name,
-        PolicyDocument: iam_policy.policy_document,
-      ]
-      properties.deep_stringify_keys! # needed?
-
-      logical_id = iam_policy.logical_id
+      map = Jets::Cfn::TemplateMappers::IamPolicyMapper.new(task)
+      logical_id = map.logical_id
+      properties = map.properties
       add_resource(logical_id, "AWS::IAM::Role", properties)
-      # TODO: still need to have the funciton now reference this custom role!
-      # TODO: what about class level roles then?
     end
   end
 end

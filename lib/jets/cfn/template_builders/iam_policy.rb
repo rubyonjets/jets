@@ -4,9 +4,9 @@ class Jets::Cfn::TemplateBuilders
 
     attr_reader :definitions
     def initialize(task)
-      @task = task # TODO: will break specs, fix specs
+      @task = task
       @app_class = task.class_name.to_s
-      # @app_class examples: PostsController, HardJob, Hello, HelloFunction
+      # IE: @app_class: PostsController, HardJob, Hello, HelloFunction
 
       @definitions = task.iam_policy # iam_policy contains definitions
       # empty starting policy that will be changed
@@ -15,16 +15,6 @@ class Jets::Cfn::TemplateBuilders
         "Statement" => []
       }
       @sid = 0 # counter
-    end
-
-    # Example: SleepJobPerformLambdaFunction
-    def logical_id
-      "#{class_action}LambdaFunction".gsub('::','')
-    end
-
-    # Example: PostsControllerIndex or SleepJobPerform
-    def class_action
-      "#{@app_class}_#{@task.meth}".camelize
     end
 
     def policy_document
