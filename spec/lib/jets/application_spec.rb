@@ -33,7 +33,7 @@ describe Jets::Application do
     it "should have defaults" do
       expect(config.function).to be_a(ActiveSupport::OrderedOptions)
       expect(config.function.timeout).to eq 10
-      expect(config.function.memory_size).to eq 3008
+      expect(config.function.memory_size).to eq 1536
     end
 
     it "routes should be loaded" do
