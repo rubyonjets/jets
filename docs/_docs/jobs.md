@@ -4,6 +4,8 @@ title: Jobs
 
 A Jets job handles background jobs. They run outside of the web request/response cycle. Here's an example:
 
+app/jobs/hard_job.rb:
+
 ```ruby
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
