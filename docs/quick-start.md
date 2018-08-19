@@ -6,6 +6,7 @@ In a hurry? No problem!  Here's a quick start to get going.
 
 ## Local Testing
 
+    gem install jets
     jets new demo
     cd demo
     jets generate scaffold Post title:string
