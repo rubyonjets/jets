@@ -15,6 +15,10 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       @map ||= Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(@task)
     end
 
+    def iam_policy_map
+      @iam_policy_map ||= Jets::Cfn::TemplateMappers::IamPolicyMapper.new(@task)
+    end
+
     def properties
       props = env_file_properties
         .deep_merge(global_properties)
@@ -79,10 +83,18 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     #     class_timeout 22
     #     ...
     #   end
+    #
+    # Also handles iam policy override at the class level. Example:
+    #
+    #   class_iam_policy("logs:*")
+    #
     def class_properties
       # klass is PostsController, HardJob, GameRule, Hello or HelloFunction
       klass = Jets::Klass.from_task(@task)
       class_properties = klass.class_properties
+      if klass.class_iam_policy
+        class_properties[:Role] = {Ref: iam_policy_map.class_logical_id}
+      end
       Pascalize.pascalize(class_properties.deep_stringify_keys)
     end
 
@@ -93,18 +105,18 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     #   def index
     #     ...
     #   end
+    #
+    # Also handles iam policy override at the function level. Example:
+    #
+    #   iam_policy("ec2:*")
+    #   def new
+    #     render json: params.merge(action: "new")
+    #   end
+    #
     def function_properties
       properties = @task.properties
-      # Override the iam policy with the function level policy. Example:
-      #
-      #   iam_policy("ec2:*")
-      #   def new
-      #     render json: params.merge(action: "new")
-      #   end
-      #
       if @task.iam_policy
-        map = Jets::Cfn::TemplateMappers::IamPolicyMapper.new(@task)
-        properties[:Role] = {Ref: map.logical_id}
+        properties[:Role] = {Ref: iam_policy_map.logical_id}
       end
       Pascalize.pascalize(properties.deep_stringify_keys)
     end

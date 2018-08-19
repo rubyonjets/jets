@@ -13,13 +13,19 @@ class Jets::Cfn::TemplateMappers
     end
     memoize :iam_policy
 
-    # Example: SleepJobPerformLambdaFunction
+    # Example: PostsControllerShowLambdaFunction
     def logical_id
       "#{@app_class}_#{@task.meth}_iam_role".camelize
     end
 
     def role_name
       "#{@app_class}_#{@task.meth}_iam_role".underscore.dasherize
+    end
+
+    # Example: PostsControllerLambdaFunction
+    # Note there are is no "Show" action in the name
+    def class_logical_id
+      "#{@app_class}_iam_role".camelize
     end
 
     def properties
