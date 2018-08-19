@@ -7,6 +7,7 @@ class Jets::PreheatJob < ApplicationJob
 
   class_timeout 30
   class_memory 1024
+  class_iam_policy("logs:*", "lambda:*")
 
   unless Jets::Commands::Build.poly_only?
     torching ? rate(PREWARM_RATE) : disable(true)

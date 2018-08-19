@@ -54,7 +54,7 @@ Summary of the different expansion styles:
 2. Statement Hash
 3. Full Policy Hash: most complex
 
-It is suggested that you start off with the simplest `iam_policy` definition style and resort to the more complex versions when you need to. Here examples of each style with their expansion:
+It is suggested that you start off with the simplest `iam_policy` definition style and resort to the more complex styles only when you need to. Here are examples of each style with their expansion:
 
 ### IAM Policy Simple Statement
 
