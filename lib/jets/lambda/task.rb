@@ -7,6 +7,7 @@ class Jets::Lambda::Task
     @options = options
     @type = options[:type] || get_type  # controller, job, or function
     @properties = options[:properties] || {}
+    @iam_policy = options[:iam_policy]
     @lang = options[:lang] || :ruby
   end
 

@@ -15,7 +15,8 @@ class Jets::Cfn
 
     autoload :ApiGatewayBuilder, "jets/cfn/template_builders/api_gateway_builder"
     autoload :ApiGatewayDeploymentBuilder, "jets/cfn/template_builders/api_gateway_deployment_builder"
-    # separate beast:
+    # separate beasts:
     autoload :FunctionProperties, "jets/cfn/template_builders/function_properties"
+    autoload :IamPolicy, "jets/cfn/template_builders/iam_policy"
   end
 end

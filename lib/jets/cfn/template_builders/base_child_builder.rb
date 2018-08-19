@@ -22,6 +22,10 @@ class Jets::Cfn::TemplateBuilders
     def add_functions
       @app_klass.tasks.each do |task|
         add_function(task)
+
+        if iam_policy(task.iam_policy)
+          add_iam_policy(task.iam_policy)
+        end
       end
     end
 
@@ -33,6 +37,11 @@ class Jets::Cfn::TemplateBuilders
       builder = builder_class.new(task)
       logical_id = builder.map.logical_id
       add_resource(logical_id, "AWS::Lambda::Function", builder.properties)
+    end
+
+    def add_iam_policy(iam_policy)
+      iam = IamPolicy.new(iam_policy)
+      iam.resource
     end
   end
 end
