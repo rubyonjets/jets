@@ -1,10 +1,15 @@
 describe Jets::Cfn::TemplateBuilders::IamPolicy do
   let(:iam_policy) do
-    Jets::Cfn::TemplateBuilders::IamPolicy.new(iam_policies)
+    iam_policy = Jets::Cfn::TemplateBuilders::IamPolicy.new(task)
+    allow(iam_policy).to receive(:definitions).and_return(definitions)
+    iam_policy
+  end
+  let(:task) do
+    PostsController.all_tasks[:new]
   end
 
   context "single string" do
-    let(:iam_policies) { ["ec2:*"] }
+    let(:definitions) { ["ec2:*"] }
     it "provides the resource definition" do
       iam_policy_json = <<~EOL
       {
@@ -27,7 +32,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
   end
 
   context "multiple strings" do
-    let(:iam_policies) { ["ec2:*", "logs:*"] }
+    let(:definitions) { ["ec2:*", "logs:*"] }
     it "provides the resource definition" do
       iam_policy_json = <<~EOL
       {
@@ -59,7 +64,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
 
   context "single hash" do
     context "string keys" do
-      let(:iam_policies) do
+      let(:definitions) do
         [{
           "Sid" => "MyStmt1",
           "Action" => ["lambda:*"],
@@ -87,7 +92,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
     end
 
     context "symbol keys" do
-      let(:iam_policies) do
+      let(:definitions) do
         [{
           Sid: "MyStmt1",
           Action: ["lambda:*"],
@@ -115,7 +120,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
     end
 
     context "symbol keys with lowercase" do
-      let(:iam_policies) do
+      let(:definitions) do
         [{
           sid: "MyStmt1",
           action: ["lambda:*"],
@@ -145,7 +150,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
 
   context "multiple hashes" do
     context "symbol keys" do
-      let(:iam_policies) do
+      let(:definitions) do
         [{
           Sid: "MyStmt1",
           Action: ["lambda:*"],
@@ -187,7 +192,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
 
   context "special case hash with Version key" do
     context "symbol keys" do
-      let(:iam_policies) do
+      let(:definitions) do
         [{
           Version: "2012-10-17", # special case, a Version key will replace the entire policy
                                  # assumes that only one policy is passed in

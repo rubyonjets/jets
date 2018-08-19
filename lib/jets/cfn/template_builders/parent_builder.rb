@@ -48,7 +48,6 @@ class Jets::Cfn::TemplateBuilders
         #
         #   map = Jets::Cfn::TemplateMappers::ControllerMapper.new(path, s3_bucket)
         #   map = Jets::Cfn::TemplateMappers::JobMapper.new(path, s3_bucket)
-        #   map = Jets::Cfn::TemplateMappers::FunctionMapper.new(path, s3_bucket)
         #
         mapper_class_name = File.basename(path, '.yml').split('_').last
         mapper_class_name = mapper_class_name.classify

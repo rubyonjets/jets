@@ -1,6 +1,6 @@
 class Jets::Lambda::Task
   attr_accessor :class_name, :type
-  attr_reader :meth, :properties, :lang
+  attr_reader :meth, :properties, :iam_policy, :lang
   def initialize(class_name, meth, options={})
     @class_name = class_name.to_s # use at EventsRuleMapper#full_task_name
     @meth = meth
