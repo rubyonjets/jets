@@ -20,6 +20,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_functions
+      add_class_iam_policy if @app_klass.class_iam_policy
       @app_klass.tasks.each do |task|
         add_function(task)
         add_iam_policy(task) if task.iam_policy
@@ -36,8 +37,15 @@ class Jets::Cfn::TemplateBuilders
       add_resource(logical_id, "AWS::Lambda::Function", builder.properties)
     end
 
+    def add_class_iam_policy
+      map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(@app_klass)
+      logical_id = map.logical_id
+      properties = map.properties
+      add_resource(logical_id, "AWS::IAM::Role", properties)
+    end
+
     def add_iam_policy(task)
-      map = Jets::Cfn::TemplateMappers::IamPolicyMapper.new(task)
+      map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(task)
       logical_id = map.logical_id
       properties = map.properties
       add_resource(logical_id, "AWS::IAM::Role", properties)

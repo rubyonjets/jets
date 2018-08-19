@@ -1,12 +1,12 @@
-describe Jets::Cfn::TemplateMappers::IamPolicyMapper do
+describe Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper do
   let(:map) do
-    Jets::Cfn::TemplateMappers::IamPolicyMapper.new(task)
+    Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(task)
   end
   let(:task) do
     PostsController.all_tasks[:new]
   end
 
-  describe "IamPolicyMapper" do
+  describe "IamPolicy::FunctionPolicyMapper" do
     it "contains info for iam policy resource" do
       expect(map.logical_id).to eq "PostsControllerNewIamRole"
       expect(map.role_name).to eq "posts-controller-new-iam-role"
@@ -30,6 +30,11 @@ describe Jets::Cfn::TemplateMappers::IamPolicyMapper do
             Version: '2012-10-17'
             Statement:
             - Sid: Stmt1
+              Action:
+              - lambda:*
+              Effect: Allow
+              Resource: "*"
+            - Sid: Stmt2
               Action:
               - ec2:*
               Effect: Allow

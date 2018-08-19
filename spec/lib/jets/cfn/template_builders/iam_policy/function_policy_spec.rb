@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::IamPolicy do
+describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
   let(:iam_policy) do
-    iam_policy = Jets::Cfn::TemplateBuilders::IamPolicy.new(task)
+    iam_policy = Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy.new(task)
     allow(iam_policy).to receive(:definitions).and_return(definitions)
     iam_policy
   end

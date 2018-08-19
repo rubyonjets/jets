@@ -15,10 +15,6 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       @map ||= Jets::Cfn::TemplateMappers::LambdaFunctionMapper.new(@task)
     end
 
-    def iam_policy_map
-      @iam_policy_map ||= Jets::Cfn::TemplateMappers::IamPolicyMapper.new(@task)
-    end
-
     def properties
       props = env_file_properties
         .deep_merge(global_properties)
@@ -93,7 +89,8 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       klass = Jets::Klass.from_task(@task)
       class_properties = klass.class_properties
       if klass.class_iam_policy
-        class_properties[:Role] = {Ref: iam_policy_map.class_logical_id}
+        map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(klass)
+        class_properties[:Role] = {Ref: map.logical_id}
       end
       Pascalize.pascalize(class_properties.deep_stringify_keys)
     end
@@ -116,7 +113,8 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     def function_properties
       properties = @task.properties
       if @task.iam_policy
-        properties[:Role] = {Ref: iam_policy_map.logical_id}
+        map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(@task)
+        properties[:Role] = {Ref: map.logical_id}
       end
       Pascalize.pascalize(properties.deep_stringify_keys)
     end
