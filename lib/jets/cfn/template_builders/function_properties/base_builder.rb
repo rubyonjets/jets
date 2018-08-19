@@ -94,7 +94,19 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     #     ...
     #   end
     def function_properties
-      Pascalize.pascalize(@task.properties.deep_stringify_keys)
+      properties = @task.properties
+      # Override the iam policy with the function level policy. Example:
+      #
+      #   iam_policy("ec2:*")
+      #   def new
+      #     render json: params.merge(action: "new")
+      #   end
+      #
+      if @task.iam_policy
+        map = Jets::Cfn::TemplateMappers::IamPolicyMapper.new(@task)
+        properties[:Role] = {Ref: map.logical_id}
+      end
+      Pascalize.pascalize(properties.deep_stringify_keys)
     end
 
     def env_file_properties

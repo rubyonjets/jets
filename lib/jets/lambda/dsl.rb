@@ -76,6 +76,7 @@ module Jets::Lambda::Dsl
       end
       alias_method :props, :properties
 
+      # definitions: one more many definitions
       def iam_policy(*definitions)
         if definitions.empty?
           @iam_policy

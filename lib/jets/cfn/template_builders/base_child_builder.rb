@@ -22,10 +22,7 @@ class Jets::Cfn::TemplateBuilders
     def add_functions
       @app_klass.tasks.each do |task|
         add_function(task)
-
-        if task.iam_policy
-          add_iam_policy(task)
-        end
+        add_iam_policy(task) if task.iam_policy
       end
     end
 
