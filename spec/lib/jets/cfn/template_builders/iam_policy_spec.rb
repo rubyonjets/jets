@@ -27,7 +27,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
       }
       EOL
       expected_policy = JSON.load(iam_policy_json)
-      expect(iam_policy.resource).to eq expected_policy
+      expect(iam_policy.policy_document).to eq expected_policy
     end
   end
 
@@ -58,7 +58,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
       }
       EOL
       expected_policy = JSON.load(iam_policy_json)
-      expect(iam_policy.resource).to eq expected_policy
+      expect(iam_policy.policy_document).to eq expected_policy
     end
   end
 
@@ -87,7 +87,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
         }
         EOL
         expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.resource).to eq expected_policy
+        expect(iam_policy.policy_document).to eq expected_policy
       end
     end
 
@@ -115,7 +115,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
         }
         EOL
         expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.resource).to eq expected_policy
+        expect(iam_policy.policy_document).to eq expected_policy
       end
     end
 
@@ -143,7 +143,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
         }
         EOL
         expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.resource).to eq expected_policy
+        expect(iam_policy.policy_document).to eq expected_policy
       end
     end
   end
@@ -184,7 +184,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
         }
         EOL
         expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.resource).to eq expected_policy
+        expect(iam_policy.policy_document).to eq expected_policy
       end
     end
   end
@@ -219,7 +219,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy do
         }
         EOL
         expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.resource).to eq expected_policy
+        expect(iam_policy.policy_document).to eq expected_policy
       end
     end
   end

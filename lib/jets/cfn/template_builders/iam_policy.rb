@@ -27,12 +27,17 @@ class Jets::Cfn::TemplateBuilders
       "#{@app_class}_#{@task.meth}".camelize
     end
 
-    def resource
+    def policy_document
       definitions.map { |definition| standardize(definition) }
       # Thanks: https://www.mnishiguchi.com/2017/11/29/rails-hash-camelize-and-underscore-keys/
       @policy.deep_transform_keys! { |key| key.to_s.camelize }
     end
-    memoize :resource # only process resource once
+    memoize :policy_document # only process policy_document once
+
+    # Example: PostsControllerIndexPolicy or SleepJobPerformPolicy
+    def policy_name
+      "#{@app_class}_#{@task.meth}_policy".camelize
+    end
 
     def standardize(definition)
       @sid += 1
