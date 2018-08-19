@@ -23,7 +23,7 @@ end
 
 ## Blue-Green Deployments
 
-With the ability to create entire applications with just a variable change, you can use it to perform blue0green deployments.
+With the ability to create entire applications with just a variable change, you can use it to perform blue-green deployments.
 
 1. Create another environment
 2. Test it to your heart's content
