@@ -15,7 +15,7 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
 
     # Example: PostsControllerIndexPolicy or SleepJobPerformPolicy
     def policy_name
-      "#{@app_class}_#{@task.meth}_policy".camelize
+      "#{@app_class}_#{@task.meth}_policy".gsub('::','_').camelize
     end
   end
 end

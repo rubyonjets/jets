@@ -2,7 +2,7 @@ require 'active_support/core_ext/hash'
 require 'yaml'
 
 class Jets::Cfn
-  # TODO: These builder classes sort of all work a little differently and a bit of a mess. Refactor this.
+  # TODO: Refactor builder classes. They all work slightly differently.
   class TemplateBuilders
     autoload :Interface, "jets/cfn/template_builders/interface"
     autoload :ParentBuilder, "jets/cfn/template_builders/parent_builder"
