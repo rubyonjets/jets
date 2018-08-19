@@ -1,3 +1,7 @@
+# Implements:
+#   initialize
+#   policy_name
+#
 module Jets::Cfn::TemplateBuilders::IamPolicy
   class FunctionPolicy < BasePolicy
     def initialize(task)
@@ -11,7 +15,7 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
 
     # Example: PostsControllerIndexPolicy or SleepJobPerformPolicy
     def policy_name
-      "#{@app_class}_#{@task.meth}_policy".camelize
+      "#{namespace}_#{@app_class}_#{@task.meth}_policy".camelize
     end
   end
 end

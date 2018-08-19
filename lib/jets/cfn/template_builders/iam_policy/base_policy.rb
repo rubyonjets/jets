@@ -1,3 +1,8 @@
+# Classes that inherit this Base class should implement:
+#
+#   initialize - should call setup in it
+#   policy_name
+#
 module Jets::Cfn::TemplateBuilders::IamPolicy
   class BasePolicy
     extend Memoist
@@ -20,6 +25,10 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
       @policy.deep_transform_keys! { |key| key.to_s.camelize }
     end
     memoize :policy_document # only process policy_document once
+
+    def namespace
+      Jets.config.project_namespace.underscore
+    end
 
     def standardize(definition)
       @sid += 1

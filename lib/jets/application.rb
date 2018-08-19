@@ -29,6 +29,8 @@ class Jets::Application
       'https://gems.lambdagems.com'
     ]
 
+    config.iam_policy = ["logs:*"]
+
     config
   end
   memoize :config

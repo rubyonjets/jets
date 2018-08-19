@@ -1,3 +1,7 @@
+# Implements:
+#   initialize
+#   policy_name
+#
 module Jets::Cfn::TemplateBuilders::IamPolicy
   class ClassPolicy < BasePolicy
     def initialize(app_class)
@@ -10,7 +14,7 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
     # Example: PostsControllerPolicy or SleepJobPolicy
     # Note: There is no "method" in the name
     def policy_name
-      "#{@app_class}_policy".camelize
+      "#{namespace}_#{@app_class}_policy".camelize
     end
   end
 end
