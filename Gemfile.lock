@@ -12,10 +12,10 @@ PATH
   remote: .
   specs:
     jets (0.6.1)
-      actionpack
-      actionview
-      activerecord
-      activesupport
+      actionpack (>= 5.2.1)
+      actionview (>= 5.2.1)
+      activerecord (>= 5.2.1)
+      activesupport (>= 5.2.1)
       aws-sdk-cloudformation
       aws-sdk-dynamodb
       aws-sdk-lambda
@@ -29,7 +29,7 @@ PATH
       memoist
       pg (= 0.21)
       rack
-      railties
+      railties (>= 5.2.1)
       recursive-open-struct
       text-table
       thor

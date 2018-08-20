@@ -26,11 +26,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor"
   spec.add_dependency "hashie"
   spec.add_dependency "colorize"
-  spec.add_dependency "activesupport"
-  spec.add_dependency "actionview"
-  spec.add_dependency "actionpack"
-  spec.add_dependency "activerecord"
-  spec.add_dependency "railties" # ActiveRecord database_tasks.rb require this
+  spec.add_dependency "activesupport", ">= 5.2.1"
+  spec.add_dependency "actionview", ">= 5.2.1"
+  spec.add_dependency "actionpack", ">= 5.2.1"
+  spec.add_dependency "activerecord", ">= 5.2.1"
+  spec.add_dependency "railties", ">= 5.2.1" # ActiveRecord database_tasks.rb require this
   spec.add_dependency "dotenv"
 
   spec.add_dependency "recursive-open-struct"
