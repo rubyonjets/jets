@@ -359,7 +359,6 @@ EOL
         md = spec.source.to_s.match(/@(\w+)\)/)
         git_sha = md[1]
       end
-      puts "git_shas #{git_shas.inspect}"
 
       # IE: /tmp/jets/demo/cache/bundled/gems/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
       Dir.glob("#{cache_area}/bundled/gems/ruby/2.5.0/bundler/gems/*").each do |path|
