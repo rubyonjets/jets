@@ -107,7 +107,7 @@ module Jets::Lambda::Dsl
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          properties: @properties, lang: lang, iam_policy: @iam_policy)
+          properties: @properties, iam_policy: @iam_policy, lang: lang)
 
         # Done storing options, clear out for the next added method.
         clear_properties
