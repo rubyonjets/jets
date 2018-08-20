@@ -21,12 +21,12 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     # Note there are is no "Show" action in the name
     # There should be no namespace in the logical_id.
     def logical_id
-      "#{@app_class}_iam_role".gsub('::','_').camelize
+      classify_name("#{@app_class}_iam_role")
     end
 
     # There should be namespace in the role_name.
     def role_name
-      "#{namespace}_#{@app_class}_iam_role".gsub('::','_').underscore.dasherize
+      classify_name("#{namespace}_#{@app_class}_iam_role").underscore.dasherize
     end
   end
 end

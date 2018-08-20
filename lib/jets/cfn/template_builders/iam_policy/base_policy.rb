@@ -31,9 +31,10 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
       case definition
       when String
         @policy["Statement"] << {
-          "Sid"=>"Stmt#{@sid}",
-          "Action"=>[definition],
-          "Effect"=>"Allow", "Resource"=>"*",
+          sid: "Stmt#{@sid}",
+          action: [definition],
+          effect: "Allow",
+          resource: "*",
         }
       when Hash
         definition = definition.stringify_keys
@@ -43,6 +44,14 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
           @policy["Statement"] << definition
         end
       end
+    end
+
+    # Need to underscore and then classify again for this case:
+    #   Jets::PreheatJob_policy => JetsPreheatJobPolicy
+    # Or else you we get this:
+    #   Jets::PreheatJob_policy => JetsPreheatjobPolicy
+    def classify_name(text)
+      text.gsub('::','_').underscore.classify
     end
   end
 end

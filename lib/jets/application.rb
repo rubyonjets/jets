@@ -126,4 +126,9 @@ class Jets::Application
     require routes_file if File.exist?(routes_file)
   end
 
+  def aws
+    Jets::AwsInfo.new
+  end
+  memoize :aws
+
 end
