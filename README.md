@@ -24,7 +24,7 @@ Refer to the official docs for more info, but here's a quick intro.
 
 A Jets controller handles a web request and renders a response.  Here's an example:
 
-`app/controllers/posts_controller.rb`:
+app/controllers/posts_controller.rb:
 
 ```ruby
 class PostsController < ApplicationController
@@ -48,7 +48,7 @@ Jets creates Lambda functions each the public method in your controller.
 
 You connect Lambda functions to API Gateway URL endpoints with a routes file:
 
-`config/routes.rb`:
+config/routes.rb:
 
 ```ruby
 Jets.application.routes.draw do
@@ -74,9 +74,11 @@ Test your API Gateway endpoints with curl or postman. Note, replace the URL endp
 	  "action": "index"
 	}
 
-### Jets Workers
+### Jets Jobs
 
-A Jets worker handles background jobs.  It is performed outside of the web request/response cycle. Here's an example:
+A Jets job handles asynchrous background jobs performed outside of the web request/response cycle. Here's an example:
+
+app/jobs/hard_job.rb:
 
 ```ruby
 class HardJob < ApplicationJob
@@ -92,7 +94,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-`HardJob#dig` will be ran every 10 hours and `HardJob#lift` will be ran every 12 hours.
+`HardJob#dig` runs every 10 hours and `HardJob#lift` runs every 12 hours.
 
 ### Jets Deployment
 
