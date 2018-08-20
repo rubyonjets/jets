@@ -90,7 +90,7 @@ module Jets::Lambda::Dsl
         if definitions.empty?
           @iam_policy
         else
-          @iam_policy = definitions
+          @iam_policy = definitions.flatten
         end
       end
 
