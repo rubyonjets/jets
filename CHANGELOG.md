@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.6.2]
+- add versions to gemspec dependencies
+
 ## [0.6.1]
 - only prewarm if Jets::PreheatJob.warm available
 
