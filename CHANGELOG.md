@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.6.0]
+- fine grain iam policy abilities: pull request #13 from tongueroo/iam-policy
+- changed quite a few logical ids in the CloudFormation templates
+
 ## [0.5.8]
 - fix config.prewarm defaults
 
