@@ -5,7 +5,7 @@ module Jets
     include AwsServices
 
     def region
-      return 'us-east-1' if ENV['TEST']
+      return 'us-east-1' if test?
 
       region = nil
 
@@ -28,9 +28,13 @@ module Jets
 
     # aws sts get-caller-identity
     def account
-      return '123456789' if ENV['TEST']
+      return '123456789' if test?
       sts.get_caller_identity.account
     end
     memoize :account
+
+    def test?
+      ENV['TEST'] || ENV['CIRCLECI']
+    end
   end
 end

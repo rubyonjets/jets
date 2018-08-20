@@ -1,6 +1,6 @@
 describe Jets::PreheatJob do
   let(:job) do
-    Jets::PreheatJob.new(nil,nil,nil)
+    Jets::PreheatJob.new({},{},nil)
   end
 
   context "warm" do
