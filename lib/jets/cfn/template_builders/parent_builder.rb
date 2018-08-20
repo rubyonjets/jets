@@ -32,9 +32,11 @@ class Jets::Cfn::TemplateBuilders
       }
       rendered_result = Jets::Erb.result(path, variables)
       minimal_template = YAML.load(rendered_result)
-
-      # minimal_template = YAML.load(IO.read(path))
       @template.deep_merge!(minimal_template)
+
+      # Add application-wide IAM policy from Jets.config.iam_role
+      map = Jets::Cfn::TemplateMappers::IamPolicy::ApplicationPolicyMapper.new
+      add_resource(map.logical_id, "AWS::IAM::Role", map.properties)
     end
 
     def add_child_resources
@@ -48,7 +50,6 @@ class Jets::Cfn::TemplateBuilders
         #
         #   map = Jets::Cfn::TemplateMappers::ControllerMapper.new(path, s3_bucket)
         #   map = Jets::Cfn::TemplateMappers::JobMapper.new(path, s3_bucket)
-        #   map = Jets::Cfn::TemplateMappers::FunctionMapper.new(path, s3_bucket)
         #
         mapper_class_name = File.basename(path, '.yml').split('_').last
         mapper_class_name = mapper_class_name.classify

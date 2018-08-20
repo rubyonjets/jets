@@ -15,6 +15,7 @@ module Jets
   autoload :CLI, "jets/cli"
   autoload :Commands, "jets/commands"
 
+  autoload :AwsInfo, "jets/aws_info"
   autoload :AwsServices, "jets/aws_services"
   autoload :Builders, 'jets/builders'
   autoload :Call, "jets/call"

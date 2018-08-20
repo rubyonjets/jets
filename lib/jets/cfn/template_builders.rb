@@ -2,6 +2,7 @@ require 'active_support/core_ext/hash'
 require 'yaml'
 
 class Jets::Cfn
+  # TODO: Refactor builder classes. They all work slightly differently.
   class TemplateBuilders
     autoload :Interface, "jets/cfn/template_builders/interface"
     autoload :ParentBuilder, "jets/cfn/template_builders/parent_builder"
@@ -15,7 +16,9 @@ class Jets::Cfn
 
     autoload :ApiGatewayBuilder, "jets/cfn/template_builders/api_gateway_builder"
     autoload :ApiGatewayDeploymentBuilder, "jets/cfn/template_builders/api_gateway_deployment_builder"
-    # separate beast:
-    autoload :FunctionProperties, "jets/cfn/template_builders/function_properties"
+
+    # separate beasts:
+    autoload :FunctionProperties, "jets/cfn/template_builders/function_properties" # sort of a builder
+    autoload :IamPolicy, "jets/cfn/template_builders/iam_policy" # resource only
   end
 end

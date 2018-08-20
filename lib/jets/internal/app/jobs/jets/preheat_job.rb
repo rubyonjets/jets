@@ -7,6 +7,20 @@ class Jets::PreheatJob < ApplicationJob
 
   class_timeout 30
   class_memory 1024
+  class_iam_policy(
+    {
+      sid: "Statement1",
+      action: ["logs:*"],
+      effect: "Allow",
+      resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{Jets.config.project_namespace}-*",
+    },
+    {
+      sid: "Statement2",
+      action: ["lambda:InvokeFunction", "lambda:InvokeAsync"],
+      effect: "Allow",
+      resource: "arn:aws:lambda:#{Jets.aws.region}:#{Jets.aws.account}:function:#{Jets.config.project_namespace}-*",
+    }
+  )
 
   unless Jets::Commands::Build.poly_only?
     torching ? rate(PREWARM_RATE) : disable(true)

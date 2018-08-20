@@ -23,6 +23,10 @@ module Jets::Core
     application.config
   end
 
+  def aws
+    application.aws
+  end
+
   # Load all application base classes and project classes
   def boot
     Jets::Booter.boot!
@@ -77,7 +81,7 @@ module Jets::Core
   def version
     Jets::VERSION
   end
-  
+
   def eager_load!
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}

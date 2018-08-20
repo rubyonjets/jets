@@ -19,5 +19,7 @@ class Jets::Cfn
 
     autoload :EventsRuleMapper, "jets/cfn/template_mappers/events_rule_mapper"
     autoload :ConfigRuleMapper, "jets/cfn/template_mappers/config_rule_mapper"
+
+    autoload :IamPolicy, "jets/cfn/template_mappers/iam_policy"
   end
 end

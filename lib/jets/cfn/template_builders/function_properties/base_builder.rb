@@ -79,10 +79,19 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     #     class_timeout 22
     #     ...
     #   end
+    #
+    # Also handles iam policy override at the class level. Example:
+    #
+    #   class_iam_policy("logs:*")
+    #
     def class_properties
       # klass is PostsController, HardJob, GameRule, Hello or HelloFunction
       klass = Jets::Klass.from_task(@task)
       class_properties = klass.class_properties
+      if klass.class_iam_policy
+        map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(klass)
+        class_properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
+      end
       Pascalize.pascalize(class_properties.deep_stringify_keys)
     end
 
@@ -93,8 +102,21 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     #   def index
     #     ...
     #   end
+    #
+    # Also handles iam policy override at the function level. Example:
+    #
+    #   iam_policy("ec2:*")
+    #   def new
+    #     render json: params.merge(action: "new")
+    #   end
+    #
     def function_properties
-      Pascalize.pascalize(@task.properties.deep_stringify_keys)
+      properties = @task.properties
+      if @task.iam_policy
+        map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(@task)
+        properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
+      end
+      Pascalize.pascalize(properties.deep_stringify_keys)
     end
 
     def env_file_properties

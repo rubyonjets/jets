@@ -43,7 +43,7 @@ class Jets::Cfn::TemplateBuilders
       results.join("\n") + "\n"
     end
 
-    # add_resource handles an options Hash with both only Rroperties
+    # add_resource handles an options Hash with both only Properties
     # and also one with a nested Properties.
 
     # Example:

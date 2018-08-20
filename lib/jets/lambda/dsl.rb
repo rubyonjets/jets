@@ -76,6 +76,24 @@ module Jets::Lambda::Dsl
       end
       alias_method :props, :properties
 
+      # definitions: one more many definitions
+      def class_iam_policy(*definitions)
+        if definitions.empty?
+          @class_iam_policy
+        else
+          @class_iam_policy = definitions.flatten
+        end
+      end
+
+      # definitions: one more many definitions
+      def iam_policy(*definitions)
+        if definitions.empty?
+          @iam_policy
+        else
+          @iam_policy = definitions.flatten
+        end
+      end
+
       # meth is a Symbol
       def method_added(meth)
         return if %w[initialize method_missing].include?(meth.to_s)
@@ -89,7 +107,7 @@ module Jets::Lambda::Dsl
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          properties: @properties, lang: lang)
+          properties: @properties, iam_policy: @iam_policy, lang: lang)
 
         # Done storing options, clear out for the next added method.
         clear_properties
@@ -106,6 +124,7 @@ module Jets::Lambda::Dsl
 
       def clear_properties
         @properties = nil
+        @iam_policy = nil
       end
 
       # Returns the all tasks for this class with their method names as keys.

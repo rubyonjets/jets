@@ -82,9 +82,21 @@ class Jets::Application
     # IE: With env_extra: project-dev-1
     #     Without env_extra: project-dev
     config.short_env = ENV_MAP[Jets.env.to_sym] || Jets.env
-    config.project_namespace = [config.project_name, config.short_env, config.env_extra].compact.join('-')
     # table_namespace does not have the env_extra, more common case desired.
     config.table_namespace = [config.project_name, config.short_env].compact.join('-')
+
+    project_namespace = [config.project_name, config.short_env, config.env_extra].compact.join('-')
+    config.project_namespace = project_namespace
+
+    # config.iam_policy = ["logs2:*"]
+    # Must set defaul t iam_policy here instead of `def config` because we need access to
+    # the project_namespace and if we call it from `def config` we get an infinit loop
+    config.iam_policy = [{
+      sid: "Statement1",
+      action: ["logs:*"],
+      effect: "Allow",
+      resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{project_namespace}-*",
+    }]
   end
 
   # It is pretty easy to attempt to set environment variables without
@@ -123,5 +135,10 @@ class Jets::Application
     routes_file = "#{Jets.root}config/routes.rb"
     require routes_file if File.exist?(routes_file)
   end
+
+  def aws
+    Jets::AwsInfo.new
+  end
+  memoize :aws
 
 end
