@@ -46,7 +46,7 @@ end
 
 ## IAM Policy Definition Styles
 
-You might have noticed that the above `iam_policy` examples used different parameter styles. Jets allows for a variety of different IAM Policy Definiition styles for your convenience. The `iam_policy` takes a single parameter or list of parameters.  Jets expands each parameter in the list to Policy Statements in an IAM Policy Document.
+You might have noticed that the above `iam_policy` examples used different parameter styles. Jets allows for a variety of different IAM Policy Definition styles for your convenience. The `iam_policy` takes a single parameter or list of parameters.  Jets expands each parameter in the list to Policy Statements in an IAM Policy Document.
 
 Summary of the different expansion styles:
 
