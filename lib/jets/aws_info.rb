@@ -5,6 +5,8 @@ module Jets
     include AwsServices
 
     def region
+      return 'us-east-1' if ENV['TEST']
+
       region = nil
 
       # First try to get it from the ~/.aws/config
@@ -24,10 +26,11 @@ module Jets
     end
     memoize :region
 
-    def account_id
-      # aws sts get-caller-identity
+    # aws sts get-caller-identity
+    def account
+      return '123456789' if ENV['TEST']
       sts.get_caller_identity.account
     end
-    memoize :account_id
+    memoize :account
   end
 end

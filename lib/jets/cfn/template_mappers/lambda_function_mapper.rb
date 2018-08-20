@@ -13,7 +13,9 @@ class Jets::Cfn::TemplateMappers
 
     def environment
       env = Jets.config.environment ? Jets.config.environment.to_h : {}
-      env.deep_merge(JETS_ENV: Jets.env.to_s)
+      jets_env_options = {JETS_ENV: Jets.env.to_s}
+      jets_env_options[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
+      env.deep_merge(jets_env_options)
     end
 
     # Example: PostsControllerIndex or SleepJobPerform
