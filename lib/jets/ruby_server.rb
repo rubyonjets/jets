@@ -4,6 +4,7 @@ require 'stringio'
 
 $normal_stdout ||= $stdout # save copy of old stdout
 $normal_stderr ||= $stderr # save copy of old stdout
+# So we can use $normal_stdout.puts for debugging
 
 # https://ruby-doc.org/stdlib-2.3.0/libdoc/socket/rdoc/TCPServer.html
 # https://stackoverflow.com/questions/806267/how-to-fire-and-forget-a-subprocess
@@ -61,20 +62,14 @@ module Jets
           input_completed = true
         end
 
-        $normal_stdout.puts "here1"
-
         result = event['_prewarm'] ?
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
         flush_output # must call before client connection closed
 
-        $normal_stdout.puts "here2"
         client.puts('{"test": 1}')
         client.close
-
-        $normal_stdout.puts "here3"
-        $normal_stdout.puts "here4"
       end
     end
 
@@ -115,7 +110,7 @@ module Jets
 
     def flush_output
       IO.write("/tmp/jets-output.log", $stdout.string)
-      $stdout = $stderr = StringIO.new
+      redirect_output
     end
 
     def self.run
