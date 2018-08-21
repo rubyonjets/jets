@@ -1,10 +1,10 @@
 class Jets::Booter
   class << self
     @booted = false
-    def boot!
+    def boot!(options={})
       return if @booted
 
-      stdout_to_stderr
+      redirect_output(options)
       confirm_jets_project!
       require_bundle_gems
       Jets::Dotenv.load!
@@ -14,16 +14,37 @@ class Jets::Booter
       @booted = true
     end
 
-    # Override for Lambda processing.
-    # $stdout = $stderr might seem weird but we want puts to write to stderr which
-    # is set in the node shim to write to stderr.  This directs the output to
-    # Lambda logs.
-    # Printing to stdout managles up the payload returned from Lambda function.
-    # This is not desired when returning payload to API Gateway eventually.
-    def stdout_to_stderr
+    # TODO: Reconsider if we should redirect stdout to stderr globally for local request.
+    # Dont think we need to anymore now that we're not using the old shim.
+    #
+    # So for `{stringio: false}` and `jets call --local`, redirecting helps
+    # but we can also just go fix that jets call method. Though there might be a lot
+    # of other places where we might have to fix puts calls.
+    def redirect_output(options={})
       $stdout.sync = true
       $stderr.sync = true
-      $stdout = $stderr
+      if options[:stringio]
+        # Set both $stdout and $stdout to a StringIO object as a buffer.
+        # At the end of the request, write this buffer to the filesystem.
+        # In the node shim, read it back and write it to AWS Lambda logs.
+        #
+        # This allows using `puts` to write to CloudWatch.
+        $stdout = $stderr = StringIO.new # for ruby_server and AWS Lambda to capture log
+      else
+        # Printing to stdout can mangle up the response if we're piping the value to
+        # jq. For exampe, `jets call --local .. | jq`
+        # By redirecting stderr we can use jq.
+        #
+        $stdout = $stderr # jets call and local jets operation
+      end
+    end
+
+    # Used in ruby_server.rb
+    def flush_output
+      IO.write("/tmp/jets-output.log", $stdout.string)
+      # Thanks: https://stackoverflow.com/questions/28445000/how-can-i-clear-a-stringio-instance
+      $stdout.truncate(0)
+      $stdout.rewind
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It

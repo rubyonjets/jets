@@ -1,4 +1,5 @@
 require 'json'
+require 'stringio'
 
 # Node shim calls this class to process both controllers and jobs
 class Jets::Processors::MainProcessor
@@ -59,5 +60,4 @@ class Jets::Processors::MainProcessor
       # $stderr.puts("END OF RUBY OUTPUT") # uncomment for debugging
     end
   end
-
 end

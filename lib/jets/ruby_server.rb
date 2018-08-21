@@ -1,5 +1,11 @@
 require 'socket'
 require 'json'
+require 'stringio'
+
+# Save copy of old stdout, since Jets.boot messes with it.
+# So we can use $normal_stdout.puts for debugging.
+$normal_stdout ||= $stdout
+$normal_stderr ||= $stderr
 
 # https://ruby-doc.org/stdlib-2.3.0/libdoc/socket/rdoc/TCPServer.html
 # https://stackoverflow.com/questions/806267/how-to-fire-and-forget-a-subprocess
@@ -15,8 +21,7 @@ module Jets
     PORT = 8080
 
     def run
-      $stdout.sync = true
-      Jets.boot # outside of child process for COW
+      Jets.boot(stringio: true) # outside of child process for COW
       Jets.eager_load!
 
       # INT - ^C
@@ -44,10 +49,11 @@ module Jets
       # child process
       server = TCPServer.new(8080) # Server bind to port 8080
       puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG'] || ENV['C9_USER']
-      input_completed = false
+
       loop do
-        event, handler = nil, nil
         client = server.accept    # Wait for a client to connect
+
+        input_completed, event, handler = nil, nil, nil
         unless input_completed
           event = client.gets.strip # text
           # puts event # uncomment for debugging, Jets has changed stdout to stderr
@@ -60,9 +66,10 @@ module Jets
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
-        client.puts(result)
+        Jets::Booter.flush_output # flushing output as soon we dont need it anymore
+
+        client.puts('{"test": 1}')
         client.close
-        input_completed = false
       end
     end
 
@@ -90,4 +97,3 @@ module Jets
     end
   end
 end
-
