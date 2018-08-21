@@ -47,10 +47,12 @@ module Jets
       # child process
       server = TCPServer.new(8080) # Server bind to port 8080
       puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG'] || ENV['C9_USER']
-      input_completed = false
+      redirect_output
+
       loop do
-        event, handler = nil, nil
         client = server.accept    # Wait for a client to connect
+
+        input_completed, event, handler = nil, nil, nil
         unless input_completed
           event = client.gets.strip # text
           # puts event # uncomment for debugging, Jets has changed stdout to stderr
@@ -60,20 +62,19 @@ module Jets
         end
 
         $normal_stdout.puts "here1"
-        redirect_output
 
         result = event['_prewarm'] ?
           prewarm_request(event) :
           standard_request(event, '{}', handler)
+
+        flush_output # must call before client connection closed
 
         $normal_stdout.puts "here2"
         client.puts('{"test": 1}')
         client.close
 
         $normal_stdout.puts "here3"
-        flush_output
         $normal_stdout.puts "here4"
-        input_completed = false
       end
     end
 
