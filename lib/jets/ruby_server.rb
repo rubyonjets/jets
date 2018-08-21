@@ -48,7 +48,7 @@ module Jets
       # child process
       server = TCPServer.new(8080) # Server bind to port 8080
       puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG'] || ENV['C9_USER']
-      redirect_output
+      redirect_output # must be outside the loop
 
       loop do
         client = server.accept    # Wait for a client to connect
@@ -66,7 +66,7 @@ module Jets
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
-        flush_output # must call before client connection closed
+        flush_output # flushing output as soon we dont need it anymore
 
         client.puts('{"test": 1}')
         client.close
@@ -110,7 +110,7 @@ module Jets
 
     def flush_output
       IO.write("/tmp/jets-output.log", $stdout.string)
-      redirect_output
+      $stdout.truncate(0)
     end
 
     def self.run
