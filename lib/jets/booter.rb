@@ -1,9 +1,10 @@
 class Jets::Booter
   class << self
     @booted = false
-    def boot!
+    def boot!(options={})
       return if @booted
 
+      redirect_output(options)
       confirm_jets_project!
       require_bundle_gems
       Jets::Dotenv.load!
@@ -11,6 +12,32 @@ class Jets::Booter
       setup_db
 
       @booted = true
+    end
+
+    # Override for Lambda processing.
+    # $stdout = $stderr might seem weird but we want puts to write to stderr which
+    # is set in the node shim to write to stderr.  This directs the output to
+    # Lambda logs.
+    # Printing to stdout managles up the payload returned from Lambda function.
+    # This is not desired when returning payload to API Gateway eventually.
+    #
+    # Additionally, set both $stdout and $stdout to a StringIO object as a buffer.
+    # At the end of the request, write this buffer to the filesystem.
+    # In the node shim, read it back and write it to AWS Lambda logs.
+    def redirect_output(options={})
+      $stdout.sync = true
+      $stderr.sync = true
+      if options[:stringio]
+        $stdout = $stderr = StringIO.new # for ruby_server and AWS Lambda to capture log
+      else
+        $stdout = $stderr # jets call and local jets operation
+      end
+    end
+
+    # Used in ruby_server.rb
+    def flush_output
+      IO.write("/tmp/jets-output.log", $stdout.string)
+      $stdout.truncate(0)
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It

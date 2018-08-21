@@ -28,8 +28,8 @@ module Jets::Core
   end
 
   # Load all application base classes and project classes
-  def boot
-    Jets::Booter.boot!
+  def boot(options={})
+    Jets::Booter.boot!(options)
   end
 
   # Ensures trailing slash

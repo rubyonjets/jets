@@ -20,7 +20,7 @@ module Jets
     PORT = 8080
 
     def run
-      Jets.boot # outside of child process for COW
+      Jets.boot(stringio: true) # outside of child process for COW
       Jets.eager_load!
 
       # INT - ^C
@@ -48,7 +48,6 @@ module Jets
       # child process
       server = TCPServer.new(8080) # Server bind to port 8080
       puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG'] || ENV['C9_USER']
-      redirect_output # must be outside the loop
 
       loop do
         client = server.accept    # Wait for a client to connect
@@ -66,7 +65,7 @@ module Jets
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
-        flush_output # flushing output as soon we dont need it anymore
+        Jets::Booter.flush_output # flushing output as soon we dont need it anymore
 
         client.puts('{"test": 1}')
         client.close
@@ -90,27 +89,6 @@ module Jets
         "errorMessage" => e.message,
         "errorType" => "RubyError",
       )
-    end
-
-    # Override for Lambda processing.
-    # $stdout = $stderr might seem weird but we want puts to write to stderr which
-    # is set in the node shim to write to stderr.  This directs the output to
-    # Lambda logs.
-    # Printing to stdout managles up the payload returned from Lambda function.
-    # This is not desired when returning payload to API Gateway eventually.
-    #
-    # Additionally, set both $stdout and $stdout to a StringIO object as a buffer.
-    # At the end of the request, write this buffer to the filesystem.
-    # In the node shim, read it back and write it to AWS Lambda logs.
-    def redirect_output
-      $stdout.sync = true
-      $stderr.sync = true
-      $stdout = $stderr = StringIO.new
-    end
-
-    def flush_output
-      IO.write("/tmp/jets-output.log", $stdout.string)
-      $stdout.truncate(0)
     end
 
     def self.run
