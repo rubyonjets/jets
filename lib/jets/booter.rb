@@ -37,7 +37,9 @@ class Jets::Booter
     # Used in ruby_server.rb
     def flush_output
       IO.write("/tmp/jets-output.log", $stdout.string)
+      # Thanks: https://stackoverflow.com/questions/28445000/how-can-i-clear-a-stringio-instance
       $stdout.truncate(0)
+      $stdout.rewind
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It
