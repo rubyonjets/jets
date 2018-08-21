@@ -114,7 +114,7 @@ module Jets
 
     def flush_output
       IO.write("/tmp/jets-output.log", $stdout.string)
-      $stdout = ''
+      $stdout = $stderr = StringIO.new
     end
 
     def self.run
