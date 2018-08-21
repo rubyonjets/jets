@@ -14,22 +14,27 @@ class Jets::Booter
       @booted = true
     end
 
-    # Override for Lambda processing.
-    # $stdout = $stderr might seem weird but we want puts to write to stderr which
-    # is set in the node shim to write to stderr.  This directs the output to
-    # Lambda logs.
-    # Printing to stdout managles up the payload returned from Lambda function.
-    # This is not desired when returning payload to API Gateway eventually.
+    # TODO: Reconsider if we should redirect stdout to stderr globally for local request.
+    # Dont think we need to anymore now that we're not using the old shim.
     #
-    # Additionally, set both $stdout and $stdout to a StringIO object as a buffer.
-    # At the end of the request, write this buffer to the filesystem.
-    # In the node shim, read it back and write it to AWS Lambda logs.
+    # So for `{stringio: false}` and `jets call --local`, redirecting helps
+    # but we can also just go fix that jets call method. Though there might be a lot
+    # of other places where we might have to fix puts calls.
     def redirect_output(options={})
       $stdout.sync = true
       $stderr.sync = true
       if options[:stringio]
+        # Set both $stdout and $stdout to a StringIO object as a buffer.
+        # At the end of the request, write this buffer to the filesystem.
+        # In the node shim, read it back and write it to AWS Lambda logs.
+        #
+        # This allows using `puts` to write to CloudWatch.
         $stdout = $stderr = StringIO.new # for ruby_server and AWS Lambda to capture log
       else
+        # Printing to stdout can mangle up the response if we're piping the value to
+        # jq. For exampe, `jets call --local .. | jq`
+        # By redirecting stderr we can use jq.
+        #
         $stdout = $stderr # jets call and local jets operation
       end
     end
