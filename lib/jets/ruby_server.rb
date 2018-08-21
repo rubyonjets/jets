@@ -1,5 +1,6 @@
 require 'socket'
 require 'json'
+require 'stringio'
 
 # https://ruby-doc.org/stdlib-2.3.0/libdoc/socket/rdoc/TCPServer.html
 # https://stackoverflow.com/questions/806267/how-to-fire-and-forget-a-subprocess
@@ -10,7 +11,19 @@ require 'json'
 #    bin/ruby_server # background
 #    FOREGROUND=1 bin/ruby_server # foreground
 #
+
+# save copy of old stdout and stderr
+$normal_stdout ||= $stdout
+$normal_stderr ||= $stderr
+
 module Jets
+  class IO < StringIO
+    def puts(text)
+      $normal_stdout.puts(text) if ENV['JETS_DEBUG']
+      super
+    end
+  end
+
   class RubyServer
     PORT = 8080
 
@@ -103,9 +116,10 @@ module Jets
     # At the end of the request, write this buffer to the filesystem.
     # In the node shim, read it back and write it to AWS Lambda logs.
     def self.redirect_all_output
+      # yes, we want to reset whats in $stdout every time this method gets called
+      $stdout = $stderr = Jets::IO.new # reset $stdout
       $stdout.sync = true
       $stderr.sync = true
-      $stdout = $stderr = StringIO.new
     end
 
     def self.write_output_log
