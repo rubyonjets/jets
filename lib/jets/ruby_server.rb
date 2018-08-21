@@ -2,6 +2,9 @@ require 'socket'
 require 'json'
 require 'stringio'
 
+$normal_stdout ||= $stdout # save copy of old stdout
+$normal_stderr ||= $stderr # save copy of old stdout
+
 # https://ruby-doc.org/stdlib-2.3.0/libdoc/socket/rdoc/TCPServer.html
 # https://stackoverflow.com/questions/806267/how-to-fire-and-forget-a-subprocess
 #
@@ -11,25 +14,11 @@ require 'stringio'
 #    bin/ruby_server # background
 #    FOREGROUND=1 bin/ruby_server # foreground
 #
-
-# save copy of old stdout and stderr
-$normal_stdout ||= $stdout
-$normal_stderr ||= $stderr
-
 module Jets
-  class IO < StringIO
-    def puts(text)
-      $normal_stdout.puts(text) if ENV['JETS_DEBUG']
-      super
-    end
-  end
-
   class RubyServer
     PORT = 8080
 
     def run
-      $stdout.sync = true
-      Jets::RubyServer.redirect_all_output
       Jets.boot # outside of child process for COW
       Jets.eager_load!
 
@@ -70,14 +59,20 @@ module Jets
           input_completed = true
         end
 
+        $normal_stdout.puts "here1"
+        redirect_output
+
         result = event['_prewarm'] ?
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
-        Jets::RubyServer.write_output_log
-
-        client.puts(result)
+        $normal_stdout.puts "here2"
+        client.puts('{"test": 1}')
         client.close
+
+        $normal_stdout.puts "here3"
+        flush_output
+        $normal_stdout.puts "here4"
         input_completed = false
       end
     end
@@ -101,10 +96,6 @@ module Jets
       )
     end
 
-    def self.run
-      new.run
-    end
-
     # Override for Lambda processing.
     # $stdout = $stderr might seem weird but we want puts to write to stderr which
     # is set in the node shim to write to stderr.  This directs the output to
@@ -115,17 +106,19 @@ module Jets
     # Additionally, set both $stdout and $stdout to a StringIO object as a buffer.
     # At the end of the request, write this buffer to the filesystem.
     # In the node shim, read it back and write it to AWS Lambda logs.
-    def self.redirect_all_output
-      # yes, we want to reset whats in $stdout every time this method gets called
-      $stdout = $stderr = Jets::IO.new # reset $stdout
+    def redirect_output
       $stdout.sync = true
       $stderr.sync = true
+      $stdout = $stderr = StringIO.new
     end
 
-    def self.write_output_log
+    def flush_output
       IO.write("/tmp/jets-output.log", $stdout.string)
-      redirect_all_output
+      $stdout = ''
+    end
+
+    def self.run
+      new.run
     end
   end
 end
-
