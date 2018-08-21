@@ -16,6 +16,7 @@ module Jets
 
     def run
       $stdout.sync = true
+      Jets::RubyServer.redirect_all_output
       Jets.boot # outside of child process for COW
       Jets.eager_load!
 
@@ -60,6 +61,8 @@ module Jets
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
+        Jets::RubyServer.write_output_log
+
         client.puts(result)
         client.close
         input_completed = false
@@ -87,6 +90,27 @@ module Jets
 
     def self.run
       new.run
+    end
+
+    # Override for Lambda processing.
+    # $stdout = $stderr might seem weird but we want puts to write to stderr which
+    # is set in the node shim to write to stderr.  This directs the output to
+    # Lambda logs.
+    # Printing to stdout managles up the payload returned from Lambda function.
+    # This is not desired when returning payload to API Gateway eventually.
+    #
+    # Additionally, set both $stdout and $stdout to a StringIO object as a buffer.
+    # At the end of the request, write this buffer to the filesystem.
+    # In the node shim, read it back and write it to AWS Lambda logs.
+    def self.redirect_all_output
+      $stdout.sync = true
+      $stderr.sync = true
+      $stdout = $stderr = StringIO.new
+    end
+
+    def self.write_output_log
+      IO.write("/tmp/jets-output.log", $stdout.string)
+      redirect_all_output
     end
   end
 end

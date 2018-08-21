@@ -38,10 +38,6 @@ class Jets::Processors::MainProcessor
         result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count
       end
 
-      # Both jets $stdout and $stderr from the StringIO buffer
-      IO.write("/tmp/jets-output.log", $stdout.string)
-      $stdout = $stderr = StringIO.new
-
       # Puts the return value of project code to stdout because this is
       # what eventually gets used by API Gateway.
       # Explicitly using $stdout since puts has been redirected to $stderr.
@@ -64,5 +60,4 @@ class Jets::Processors::MainProcessor
       # $stderr.puts("END OF RUBY OUTPUT") # uncomment for debugging
     end
   end
-
 end
