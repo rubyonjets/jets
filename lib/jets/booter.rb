@@ -1,5 +1,3 @@
-require 'stringio'
-
 class Jets::Booter
   class << self
     @booted = false
