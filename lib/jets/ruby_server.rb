@@ -2,9 +2,10 @@ require 'socket'
 require 'json'
 require 'stringio'
 
-$normal_stdout ||= $stdout # save copy of old stdout
-$normal_stderr ||= $stderr # save copy of old stdout
-# So we can use $normal_stdout.puts for debugging
+# Save copy of old stdout, since Jets.boot messes with it.
+# So we can use $normal_stdout.puts for debugging.
+$normal_stdout ||= $stdout
+$normal_stderr ||= $stderr
 
 # https://ruby-doc.org/stdlib-2.3.0/libdoc/socket/rdoc/TCPServer.html
 # https://stackoverflow.com/questions/806267/how-to-fire-and-forget-a-subprocess
