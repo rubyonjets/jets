@@ -68,7 +68,7 @@ module Jets
 
         Jets::Booter.flush_output # flushing output as soon we dont need it anymore
 
-        client.puts('{"test": 1}')
+        client.puts(result)
         client.close
       end
     end
