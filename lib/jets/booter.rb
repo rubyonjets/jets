@@ -1,3 +1,5 @@
+require 'stringio'
+
 class Jets::Booter
   class << self
     @booted = false
@@ -20,10 +22,14 @@ class Jets::Booter
     # Lambda logs.
     # Printing to stdout managles up the payload returned from Lambda function.
     # This is not desired when returning payload to API Gateway eventually.
+    #
+    # Additionally, set both $stdout and $stdout to a StringIO object as a buffer.
+    # At the end of the request, write this buffer to the filesystem.
+    # In the node shim, read it back and write it to AWS Lambda logs.
     def stdout_to_stderr
       $stdout.sync = true
       $stderr.sync = true
-      $stdout = $stderr
+      $stdout = $stderr = StringIO.new
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It

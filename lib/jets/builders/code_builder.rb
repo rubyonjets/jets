@@ -342,9 +342,11 @@ EOL
     # When using submodules, bundler leaves old submodules behind. Over time this inflates
     # the size of the the bundled gems.  So we'll clean it up.
     def clean_old_submodules
-      lockfile = "#{cache_area}/Gemfile.lock"
       # https://stackoverflow.com/questions/38800129/parsing-a-gemfile-lock-with-bundler
-      parser = Bundler::LockfileParser.new(Bundler.read_file(Bundler.default_lockfile))
+      lockfile = "#{cache_area}/Gemfile.lock"
+      return unless File.exist?(lockfile)
+
+      parser = Bundler::LockfileParser.new(Bundler.read_file(lockfile))
       specs = parser.specs
 
       # specs = Bundler.load.specs

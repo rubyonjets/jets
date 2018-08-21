@@ -1,4 +1,5 @@
 require 'json'
+require 'stringio'
 
 # Node shim calls this class to process both controllers and jobs
 class Jets::Processors::MainProcessor
@@ -36,6 +37,10 @@ class Jets::Processors::MainProcessor
         result["headers"]["x-jets-call-count"] = Jets.call_count
         result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count
       end
+
+      # Both jets $stdout and $stderr from the StringIO buffer
+      IO.write("/tmp/jets-output.log", $stdout.string)
+      $stdout = $stderr = StringIO.new
 
       # Puts the return value of project code to stdout because this is
       # what eventually gets used by API Gateway.
