@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (0.6.2)
+    jets (0.6.3)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -72,7 +72,7 @@ GEM
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-dynamodb (1.10.0)
+    aws-sdk-dynamodb (1.11.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sdk-kms (1.7.0)
