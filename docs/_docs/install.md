@@ -4,7 +4,7 @@ title: Installation
 
 ## RubyGems
 
-You can also install jets via RubyGems.
+You can install jets via RubyGems.
 
     gem install jets
 
