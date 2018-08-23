@@ -82,6 +82,54 @@ module Jets::Core
   end
 
   def eager_load!
+    eager_load_jets
+    eager_load_app
+  end
+
+  # Eager load jet's lib and classes
+  def eager_load_jets
+    lib_jets = File.expand_path(".", File.dirname(__FILE__))
+    Dir.glob("#{lib_jets}/**/*.rb").select do |path|
+      # puts "path #{path}"
+      next if !File.file?(path)
+      next if skip_eager_load_paths?(path)
+
+      path = path.sub("#{lib_jets}/","jets/")
+      class_name = path
+                    .sub(/\.rb$/,'') # remove .rb
+                    .sub(/^\.\//,'') # remove ./
+                    .sub(/app\/\w+\//,'') # remove app/controllers or app/jobs etc
+                    .camelize
+      # special class mappings
+      class_name = class_mappings(class_name)
+
+      # puts "eager_load! loading path: #{path} class_name: #{class_name}" #if ENV['DEBUG']
+      # puts "class_name: #{class_name.inspect}" #if ENV['DEBUG']
+      class_name.constantize # dont have to worry about order.
+    end
+  end
+
+  # Skip these paths because eager loading doesnt work for them.
+  def skip_eager_load_paths?(path)
+    path =~ %r{/templates/} ||
+    path =~ %r{/version} ||
+    path =~ %r{/rails_overrides} ||
+    path =~ %r{/default/application} ||
+    path =~ %r{/internal/app} ||
+    path =~ %r{/webpacker} ||
+    path =~ %r{/cli} ||
+    path =~ %r{/core_ext}
+  end
+
+  def class_mappings(class_name)
+    map = {
+      "Jets::Io" => "Jets::IO",
+    }
+    map[class_name] || class_name
+  end
+
+  # Eager load user's application
+  def eager_load_app
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
 

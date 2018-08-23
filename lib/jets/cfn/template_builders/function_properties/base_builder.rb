@@ -68,7 +68,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       }.deep_stringify_keys
 
       app_config_props = Jets.application.config.function.to_h
-      app_config_props = Pascalize.pascalize(app_config_props.deep_stringify_keys)
+      app_config_props = Jets::Pascalize.pascalize(app_config_props.deep_stringify_keys)
 
       baseline.deep_merge(app_config_props)
     end
@@ -92,7 +92,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
         map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(klass)
         class_properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
       end
-      Pascalize.pascalize(class_properties.deep_stringify_keys)
+      Jets::Pascalize.pascalize(class_properties.deep_stringify_keys)
     end
 
     # Function properties example:
@@ -116,12 +116,12 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
         map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(@task)
         properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
       end
-      Pascalize.pascalize(properties.deep_stringify_keys)
+      Jets::Pascalize.pascalize(properties.deep_stringify_keys)
     end
 
     def env_file_properties
       env_vars = Jets::Dotenv.load!(true)
-      Pascalize.pascalize(environment: { variables: env_vars })
+      Jets::Pascalize.pascalize(environment: { variables: env_vars })
     end
   end
 end
