@@ -66,7 +66,7 @@ module Jets
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
-        Jets::Booter.flush_output # flushing output as soon we dont need it anymore
+        Jets::IO.flush # flush output and write to disk for node shim
 
         client.puts(result)
         client.close
@@ -76,6 +76,7 @@ module Jets
     def prewarm_request(event)
       # JSON.dump("prewarmed_at" => Time.now.to_s)
       Jets.increase_prewarm_count
+      Jets.logger.info("Prewarm request")
       %Q|{"prewarmed_at":"#{Time.now.to_s}"}| # raw json for speed
     end
 

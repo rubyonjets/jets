@@ -1,4 +1,3 @@
-require 'logger'
 require 'active_support/dependencies'
 require 'memoist'
 
@@ -65,7 +64,7 @@ module Jets::Core
   memoize :build_root
 
   def logger
-    Logger.new($stderr)
+    Jets::Logger.new($stderr)
   end
   memoize :logger
 
