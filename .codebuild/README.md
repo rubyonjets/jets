@@ -50,8 +50,19 @@ If you want to manually build the Docker base image.  Run:
       -e "IMAGE_NAME=tongueroo/jets:base" \
       -e "ARTIFACTS=/tmp/artifacts" \
       -e "SOURCE=/home/ec2-user/environment/jets" \
+      -e "DB_USER=$DB_USER" \
+      -e "DB_PASS=$DB_PASS" \
+      -e "DB_HOST=$DB_HOST" \
       amazon/aws-codebuild-local
 
-## Docker base image
+## Run ingreration.sh
 
+Can run the integration.sh test locally by running:
 
+    export DB_NAME=demo
+    export DB_USER=dbuser
+    export DB_PASS=dbpass
+    export DB_HOST=rdshost
+    .codebuild/integration.sh
+
+Note, you'll need to use a real RDS db instance.  Make sure DATABASE_URL is not set, this is working with the DB_* vars.
