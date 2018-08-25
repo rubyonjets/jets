@@ -4,7 +4,6 @@ module Kernel
 
   alias_method :original_puts, :puts
   def puts(message)
-    message = "=> #{message}"
     @@io_buffer << message
     original_puts(message)
   end
