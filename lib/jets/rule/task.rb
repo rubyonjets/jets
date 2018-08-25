@@ -15,7 +15,7 @@ class Jets::Rule::Task < Jets::Lambda::Task
   end
 
   def config_rule_properties
-    props = Pascalize.pascalize(@config_rule)
+    props = Jets::Pascalize.pascalize(@config_rule)
     props = config_rule_defaults.merge(props)
     props
   end
