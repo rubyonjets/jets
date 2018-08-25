@@ -12,6 +12,7 @@ module Jets::Commands
       puts "Deploying to Lambda #{deployment_env} environment..."
       return if @options[:noop]
 
+      check_dev_mode
       build_code
       validate_routes!
 
@@ -23,6 +24,13 @@ module Jets::Commands
       ship(stack_type: :full, s3_bucket: s3_bucket)
     end
     time :run
+
+    def check_dev_mode
+      if File.exist?("#{Jets.root}dev.mode")
+        puts "The dev.mode file exists. Please removed it and run bundle update before you deploy.".colorize(:red)
+        exit 1
+      end
+    end
 
     def build_code
       Jets::Commands::Build.new(@options).build_code
