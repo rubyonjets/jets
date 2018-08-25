@@ -8,6 +8,12 @@ if [ -n "$CODEBUILD_SRC_DIR" ]; then
   export PATH=/usr/local/bin:$PATH
   which jets
 fi
+
+# Locally set the CODEBUILD_SRC_DIR to make script simpler
+# Do this before the cd-ing into the newly created directory.
+if [ -z $CODEBUILD_SRC_DIR ]; then
+  CODEBUILD_SRC_DIR=$(pwd)
+fi
 set -u
 
 APP_NAME=demo$(date +%s)
@@ -54,12 +60,6 @@ cat > jets.postman_environment.json <<EOL
 }
 EOL
 
-# locally set the CODEBUILD_SRC_DIR to make script simpler
-set +u
-if [ -z $CODEBUILD_SRC_DIR ]; then
-  CODEBUILD_SRC_DIR=$(pwd)
-fi
-set -u
 cp $CODEBUILD_SRC_DIR/.codebuild/jets.postman_collection.json .
 
 npm install -g newman
