@@ -102,10 +102,7 @@ module Jets::Core
                     .camelize
       # special class mappings
       class_name = class_mappings(class_name)
-
-      # puts "eager_load! loading path: #{path} class_name: #{class_name}" #if ENV['DEBUG']
-      # puts "class_name: #{class_name.inspect}" #if ENV['DEBUG']
-      class_name.constantize # dont have to worry about order.
+      class_name.constantize # use constantize instead of require so dont have to worry about order.
     end
   end
 
@@ -139,7 +136,7 @@ module Jets::Core
                     .sub(/app\/\w+\//,'') # remove app/controllers or app/jobs etc
                     .classify
       puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['DEBUG']
-      class_name.constantize # dont have to worry about order.
+      class_name.constantize # use constantize instead of require so dont have to worry about order.
     end
   end
 
