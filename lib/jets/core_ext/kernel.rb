@@ -8,6 +8,10 @@ module Kernel
     original_puts(message)
   end
 
+  # TODO: implement other methods that write output:
+  # p, print, printf, putc, puts, sprintf?
+  # Also, would be nice to figure out pp method also.
+
   def io_buffer
     @@io_buffer
   end
