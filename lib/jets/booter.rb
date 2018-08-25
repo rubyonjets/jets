@@ -4,7 +4,7 @@ class Jets::Booter
     def boot!(options={})
       return if @booted
 
-      redirect_output(options)
+      redirect_output
       confirm_jets_project!
       require_bundle_gems
       Jets::Dotenv.load!
@@ -14,37 +14,21 @@ class Jets::Booter
       @booted = true
     end
 
-    # TODO: Reconsider if we should redirect stdout to stderr globally for local request.
-    # Dont think we need to anymore now that we're not using the old shim.
+    # AWS Lambda for natively supported languages prints to CloudWatch instead of
+    # mungling up the response. We'll redirect stdout to stderr to mimic AWS Lambda
+    # behavior.
     #
-    # So for `{stringio: false}` and `jets call --local`, redirecting helps
-    # but we can also just go fix that jets call method. Though there might be a lot
-    # of other places where we might have to fix puts calls.
-    def redirect_output(options={})
+    # Also, for local use, printing to stdout can mangle up the response when piping
+    # the value to jq. For example:
+    #
+    #   `jets call --local .. | jq`
+    #
+    # By redirecting stderr we can use jq safely.
+    #
+    def redirect_output
       $stdout.sync = true
       $stderr.sync = true
-      if options[:stringio]
-        # Set both $stdout and $stdout to a StringIO object as a buffer.
-        # At the end of the request, write this buffer to the filesystem.
-        # In the node shim, read it back and write it to AWS Lambda logs.
-        #
-        # This allows using `puts` to write to CloudWatch.
-        $stdout = $stderr = StringIO.new # for ruby_server and AWS Lambda to capture log
-      else
-        # Printing to stdout can mangle up the response if we're piping the value to
-        # jq. For exampe, `jets call --local .. | jq`
-        # By redirecting stderr we can use jq.
-        #
-        $stdout = $stderr # jets call and local jets operation
-      end
-    end
-
-    # Used in ruby_server.rb
-    def flush_output
-      IO.write("/tmp/jets-output.log", $stdout.string)
-      # Thanks: https://stackoverflow.com/questions/28445000/how-can-i-clear-a-stringio-instance
-      $stdout.truncate(0)
-      $stdout.rewind
+      $stdout = $stderr # jets call and local jets operation
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It

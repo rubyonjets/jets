@@ -66,7 +66,7 @@ module Jets
           prewarm_request(event) :
           standard_request(event, '{}', handler)
 
-        Jets::Booter.flush_output # flushing output as soon we dont need it anymore
+        Jets::IO.flush # flush output and write to disk for node shim
 
         client.puts(result)
         client.close
