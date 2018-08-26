@@ -14,6 +14,8 @@ class Jets::Commands::Clean
     include Jets::AwsServices
 
     def clean
+      are_you_sure?("delete CloudWatch logs")
+
       say "Removing CloudWatch logs for #{prefix_guess}..."
       log_groups.each do |g|
         next if keep_log_group?(g.log_group_name)

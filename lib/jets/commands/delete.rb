@@ -38,7 +38,7 @@ class Jets::Commands::Delete
   end
 
   def delete_logs
-    log = Jets::Commands::Commands.Log.new(mute: true)
+    log = Jets::Commands::Commands.Log.new(mute: true, sure: true)
     log.clean
   end
 
