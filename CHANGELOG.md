@@ -1,7 +1,11 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-This project *tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
+This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
+
+## [0.6.8]
+- add jets clean:log and clean:build commands pull request #17
+- allow integration.sh test script to run locally
 
 ## [0.6.7]
 - eager load jets lib also, pull request #16
