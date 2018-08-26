@@ -23,6 +23,9 @@ class Jets::Commands::Delete
     puts "Deleting #{Jets.config.project_namespace.colorize(:green)}..."
 
     wait_for_stack if @options[:wait]
+
+    delete_logs
+
     puts "Project #{Jets.config.project_namespace.colorize(:green)} deleted!"
   end
 
@@ -32,6 +35,11 @@ class Jets::Commands::Delete
     status.wait
     took = Time.now - start_time
     puts "Time took for deletion: #{status.pretty_time(took).green}."
+  end
+
+  def delete_logs
+    log = Jets::Commands::Commands.Log.new(mute: true)
+    log.clean
   end
 
   def confirm_project_exists

@@ -5,6 +5,7 @@ describe Jets::CLI do
     it "tracks subclasses" do
       # trigger classes to autload for spec
       classes = [
+        Jets::Commands::Clean,
         Jets::Commands::Dynamodb,
         Jets::Commands::Dynamodb::Migrate,
         Jets::Commands::Main,

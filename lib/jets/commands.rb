@@ -19,4 +19,5 @@ module Jets::Commands
   autoload :Dbconsole, "jets/commands/dbconsole"
   autoload :Url, "jets/commands/url"
   autoload :Markdown, "jets/commands/markdown"
+  autoload :Clean, "jets/commands/clean"
 end
