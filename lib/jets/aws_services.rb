@@ -1,5 +1,6 @@
 require "aws-sdk-s3"
 require "aws-sdk-cloudformation"
+require "aws-sdk-cloudwatchlogs"
 require "aws-sdk-lambda"
 require "aws-sdk-sts"
 
@@ -22,6 +23,10 @@ module Jets::AwsServices
 
   def sts
     @sts ||= Aws::STS::Client.new
+  end
+
+  def logs
+    @logs ||= Aws::CloudWatchLogs::Client.new
   end
 
   def stack_exists?(stack_name)

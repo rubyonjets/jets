@@ -17,6 +17,7 @@ PATH
       activerecord (>= 5.2.1)
       activesupport (>= 5.2.1)
       aws-sdk-cloudformation
+      aws-sdk-cloudwatchlogs
       aws-sdk-dynamodb
       aws-sdk-lambda
       aws-sdk-s3
@@ -65,6 +66,9 @@ GEM
     aws-eventstream (1.0.1)
     aws-partitions (1.100.0)
     aws-sdk-cloudformation (1.6.0)
+      aws-sdk-core (~> 3)
+      aws-sigv4 (~> 1.0)
+    aws-sdk-cloudwatchlogs (1.5.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sdk-core (3.24.1)
