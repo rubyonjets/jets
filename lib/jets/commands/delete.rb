@@ -38,7 +38,8 @@ class Jets::Commands::Delete
   end
 
   def delete_logs
-    log = Jets::Commands::Commands.Log.new(mute: true, sure: true)
+    puts "Deleting CloudWatch logs"
+    log = Jets::Commands::Clean::Log.new(mute: true, sure: true)
     log.clean
   end
 
