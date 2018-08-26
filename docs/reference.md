@@ -5,6 +5,8 @@ title: CLI Reference
 
 * [jets build]({% link _reference/jets-build.md %})
 * [jets call]({% link _reference/jets-call.md %})
+* [jets clean:build]({% link _reference/jets-clean-build.md %})
+* [jets clean:log]({% link _reference/jets-clean-log.md %})
 * [jets console]({% link _reference/jets-console.md %})
 * [jets db:generate]({% link _reference/jets-db-generate.md %})
 * [jets dbconsole]({% link _reference/jets-dbconsole.md %})
