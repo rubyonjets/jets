@@ -18,10 +18,10 @@ require "aws-sdk-lambda" # for Aws.config.update
 
 module Helpers
   def execute(cmd)
-    puts "Running: TEST=1 JETS_ROOT=#{ENV['JETS_ROOT']} #{cmd}" if ENV["DEBUG"]
+    puts "Running: TEST=1 JETS_ROOT=#{ENV['JETS_ROOT']} #{cmd}" if ENV['JETS_DEBUG']
     exit
     out = `#{cmd}`
-    puts out if ENV["DEBUG"]
+    puts out if ENV['JETS_DEBUG']
     out
   end
 

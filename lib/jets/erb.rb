@@ -15,7 +15,7 @@ class Jets::Erb
         ERB.new(template, nil, "-").result(binding)
       rescue Exception => e
         puts e
-        puts e.backtrace if ENV['DEBUG']
+        puts e.backtrace if ENV['JETS_DEBUG']
 
         # how to know where ERB stopped? - https://www.ruby-forum.com/topic/182051
         # syntax errors have the (erb):xxx info in e.message

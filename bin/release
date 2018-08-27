@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Wrapper release script so we don't forget to add submodules.
+# Should still update the CHANGELOG.md and version.rb before running this script.
+
+git submodule init
+git submodule update
+bundle update
+rake release
