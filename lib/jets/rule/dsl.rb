@@ -63,7 +63,6 @@ module Jets::Rule::Dsl
       def clear_properties
         super
         @config_rule = nil
-        @all_managed_rules = nil
       end
 
       ## aws managed rules work different enough to merit their own storage
