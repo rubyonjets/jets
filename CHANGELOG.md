@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.6.9]
+- add aws managed rule support, pull request #18
+
 ## [0.6.8]
 - add jets clean:log and clean:build commands pull request #17
 - allow integration.sh test script to run locally

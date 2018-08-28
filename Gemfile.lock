@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (0.6.8)
+    jets (0.6.9)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -64,7 +64,7 @@ GEM
       tzinfo (~> 1.1)
     arel (9.0.0)
     aws-eventstream (1.0.1)
-    aws-partitions (1.100.0)
+    aws-partitions (1.102.0)
     aws-sdk-cloudformation (1.6.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
