@@ -147,6 +147,7 @@ module Jets::Lambda::Dsl
       end
 
       # Used in Jets::Cfn::TemplateBuilders::Interface#build
+      # Overridden in rule/dsl.rb
       def build?
         !tasks.empty?
       end

@@ -73,13 +73,6 @@ module Jets::Rule::Dsl
         all_managed_rules[meth] = Jets::Rule::AwsManagedRule.new(self.name, meth,
           properties: @properties, config_rule: @config_rule)
         true
-        # in RuleBuilder#add_config_rules
-        # add loop through
-
-        # CODE:
-        # @app_klass.manged_rules.each do |managed_rule|
-        #   add_config_managed_rule(managed_rule)
-        # end
       end
 
       # Override Lambda::Dsl.build? to account of possible managed_rules

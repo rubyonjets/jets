@@ -16,14 +16,10 @@ class Jets::Cfn::TemplateBuilders
         add_permission(map)
       end
 
-      puts "@app_klass #{@app_klass.inspect}"
-      puts "@app_klass.managed_rules #{@app_klass.managed_rules.inspect}"
       # Handle config_rules associated with aws managed rules.
       # List List of AWS Config Managed Rules: https://amzn.to/2BOt9KN
       @app_klass.managed_rules.each do |rule|
-        puts "rule #{rule.inspect}"
         map = Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(rule)
-
         add_aws_managed_rule(rule, map)
       end
     end

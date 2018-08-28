@@ -22,7 +22,7 @@ class Jets::Builders
       missing = []
 
       deducer = Jets::Builders::Deducer.new(@path)
-      poly_tasks = deducer.klass.tasks.select { |t| t.lang != :ruby && t.lang != :aws_managed_rule }
+      poly_tasks = deducer.klass.tasks.select { |t| t.lang != :ruby }
       poly_tasks.each do |task|
         source_path = get_source_path(@path, task)
         if File.exist?(source_path)

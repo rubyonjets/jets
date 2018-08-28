@@ -87,7 +87,6 @@ module Jets::Commands
       #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(Hello)
       #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(HelloFunction)
       app_klass = Jets::Klass.from_path(path)
-      puts "builder_class #{builder_class}".colorize(:cyan)
       builder = builder_class.new(app_klass)
       builder.build
     end
