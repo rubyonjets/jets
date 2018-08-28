@@ -56,7 +56,14 @@ module Jets::Rule::Dsl
       def register_task(meth, lang=:ruby)
         all_tasks[meth] = Jets::Rule::Task.new(self.name, meth,
           properties: @properties, config_rule: @config_rule, lang: lang)
+        clear_properties
         true
+      end
+
+      def clear_properties
+        super
+        @config_rule = nil
+        @all_managed_rules = nil
       end
 
       ## aws managed rules work different enough to merit their own storage
@@ -72,6 +79,7 @@ module Jets::Rule::Dsl
       def managed_rule(meth)
         all_managed_rules[meth] = Jets::Rule::AwsManagedRule.new(self.name, meth,
           properties: @properties, config_rule: @config_rule)
+        clear_properties
         true
       end
 
