@@ -17,7 +17,7 @@ class Jets::Cfn::TemplateBuilders
       end
 
       # Handle config_rules associated with aws managed rules.
-      # List List of AWS Config Managed Rules: https://amzn.to/2BOt9KN
+      # List of AWS Config Managed Rules: https://amzn.to/2BOt9KN
       @app_klass.managed_rules.each do |rule|
         map = Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(rule)
         add_aws_managed_rule(rule, map)
