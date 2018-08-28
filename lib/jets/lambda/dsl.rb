@@ -146,6 +146,11 @@ module Jets::Lambda::Dsl
         all_tasks.values
       end
 
+      # Used in Jets::Cfn::TemplateBuilders::Interface#build
+      def build?
+        !tasks.empty?
+      end
+
       # The public methods defined in the project app class ulimately become
       # lambda functions.
       #
