@@ -41,7 +41,6 @@ module Jets::Rule::Dsl
         config_rule(maximum_execution_frequency: value)
       end
 
-      # not really meant to be used but provided for completeness
       def source(value)
         config_rule(source: value)
       end
@@ -57,7 +56,35 @@ module Jets::Rule::Dsl
       def register_task(meth, lang=:ruby)
         all_tasks[meth] = Jets::Rule::Task.new(self.name, meth,
           properties: @properties, config_rule: @config_rule, lang: lang)
+        clear_properties
         true
+      end
+
+      def clear_properties
+        super
+        @config_rule = nil
+      end
+
+      ## aws managed rules work different enough to merit their own storage
+
+      def all_managed_rules
+        @all_managed_rules ||= ActiveSupport::OrderedHash.new
+      end
+
+      def managed_rules
+        all_managed_rules.values
+      end
+
+      def managed_rule(meth)
+        all_managed_rules[meth] = Jets::Rule::AwsManagedRule.new(self.name, meth,
+          properties: @properties, config_rule: @config_rule)
+        clear_properties
+        true
+      end
+
+      # Override Lambda::Dsl.build? to account of possible managed_rules
+      def build?
+        !tasks.empty? || !managed_rules.empty?
       end
     end
   end

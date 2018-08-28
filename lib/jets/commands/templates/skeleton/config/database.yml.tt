@@ -16,11 +16,6 @@ test:
   <<: *default
   database: <%= project_name %>_test
 
-staging:
-  <<: *default
-  database: <%= project_name %>_stag
-  url: <%%= ENV['DATABASE_URL'] %>
-
 production:
   <<: *default
   database: <%= project_name %>_prod

@@ -42,6 +42,10 @@ module Jets::Lambda::Dsl
         class_properties(handler: name)
       end
 
+      def class_runtime(value)
+        class_properties(runtime: value)
+      end
+
       # convenience method that set properties
       def timeout(value)
         properties(timeout: value)
@@ -144,6 +148,12 @@ module Jets::Lambda::Dsl
       #
       def tasks
         all_tasks.values
+      end
+
+      # Used in Jets::Cfn::TemplateBuilders::Interface#build
+      # Overridden in rule/dsl.rb
+      def build?
+        !tasks.empty?
       end
 
       # The public methods defined in the project app class ulimately become
