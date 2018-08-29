@@ -15,6 +15,7 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     end
 
     def iam_policy
+      puts "@task.iam_policy #{@task.iam_policy.inspect}"
       return unless @task.iam_policy
       Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy.new(@task)
     end

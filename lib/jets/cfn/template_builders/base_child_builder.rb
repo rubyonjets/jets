@@ -38,7 +38,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_class_iam_policy
-      return unless @app_klass.class_iam_policy || @app_klass.class_managed_iam_policy
+      return unless @app_klass.build_class_iam?
 
       map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(@app_klass)
       logical_id = map.logical_id

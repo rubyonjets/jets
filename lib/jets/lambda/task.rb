@@ -12,6 +12,10 @@ class Jets::Lambda::Task
     @lang = options[:lang] || :ruby
   end
 
+  def build_function_iam?
+    !!(@iam_policy || @managed_iam_policy)
+  end
+
   def name
     @meth
   end

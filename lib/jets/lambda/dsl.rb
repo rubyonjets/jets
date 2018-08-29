@@ -81,20 +81,20 @@ module Jets::Lambda::Dsl
       alias_method :props, :properties
 
       # definitions: one or more definitions
-      def class_iam_policy(*definitions)
-        if definitions.empty?
-          @class_iam_policy
-        else
-          @class_iam_policy = definitions.flatten
-        end
-      end
-
-      # definitions: one or more definitions
       def iam_policy(*definitions)
         if definitions.empty?
           @iam_policy
         else
           @iam_policy = definitions.flatten
+        end
+      end
+
+      # definitions: one or more definitions
+      def class_iam_policy(*definitions)
+        if definitions.empty?
+          @class_iam_policy
+        else
+          @class_iam_policy = definitions.flatten
         end
       end
 
@@ -114,6 +114,10 @@ module Jets::Lambda::Dsl
         else
           @class_managed_iam_policy = definitions.flatten
         end
+      end
+
+      def build_class_iam?
+        !!(class_iam_policy || class_managed_iam_policy)
       end
 
       # meth is a Symbol

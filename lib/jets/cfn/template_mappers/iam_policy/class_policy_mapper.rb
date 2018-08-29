@@ -14,15 +14,15 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     end
 
     def iam_policy
+      return unless @app_class.class_iam_policy
+
       Jets::Cfn::TemplateBuilders::IamPolicy::ClassPolicy.new(@app_class)
     end
     memoize :iam_policy
 
     def managed_iam_policy
-      # TODO: implement managed_iam_policy
-      return nil
-
       return unless @app_class.class_managed_iam_policy
+
       Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ClassPolicy.new(@app_class)
     end
     memoize :managed_iam_policy
