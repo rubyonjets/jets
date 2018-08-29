@@ -1,6 +1,6 @@
 class Jets::Lambda::Task
   attr_accessor :class_name, :type
-  attr_reader :meth, :properties, :iam_policy, :lang
+  attr_reader :meth, :properties, :iam_policy, :managed_iam_policy, :lang
   def initialize(class_name, meth, options={})
     @class_name = class_name.to_s # use at EventsRuleMapper#full_task_name
     @meth = meth
@@ -8,7 +8,12 @@ class Jets::Lambda::Task
     @type = options[:type] || get_type  # controller, job, or function
     @properties = options[:properties] || {}
     @iam_policy = options[:iam_policy]
+    @managed_iam_policy = options[:managed_iam_policy]
     @lang = options[:lang] || :ruby
+  end
+
+  def build_function_iam?
+    !!(@iam_policy || @managed_iam_policy)
   end
 
   def name

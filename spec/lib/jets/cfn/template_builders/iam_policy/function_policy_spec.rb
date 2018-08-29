@@ -5,13 +5,13 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
     iam_policy
   end
   let(:task) do
-    PostsController.all_tasks[:new]
+    PostsController.all_tasks[:new] # has an iam_policy definition
   end
 
   context "single string" do
     let(:definitions) { ["ec2:*"] }
     it "provides the resource definition" do
-      iam_policy_json = <<~EOL
+      policy_document_json = <<~EOL
       {
         "Version": "2012-10-17",
         "Statement": [
@@ -26,15 +26,15 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
         ]
       }
       EOL
-      expected_policy = JSON.load(iam_policy_json)
-      expect(iam_policy.policy_document).to eq expected_policy
+      expected_policy_document = JSON.load(policy_document_json)
+      expect(iam_policy.policy_document).to eq expected_policy_document
     end
   end
 
   context "multiple strings" do
     let(:definitions) { ["ec2:*", "logs:*"] }
     it "provides the resource definition" do
-      iam_policy_json = <<~EOL
+      policy_document_json = <<~EOL
       {
         "Version": "2012-10-17",
         "Statement": [
@@ -57,8 +57,8 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
         ]
       }
       EOL
-      expected_policy = JSON.load(iam_policy_json)
-      expect(iam_policy.policy_document).to eq expected_policy
+      expected_policy_document = JSON.load(policy_document_json)
+      expect(iam_policy.policy_document).to eq expected_policy_document
     end
   end
 
@@ -73,7 +73,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
         }]
       end
       it "provides the resource definition" do
-        iam_policy_json = <<~EOL
+        policy_document_json = <<~EOL
         {
           "Version": "2012-10-17",
           "Statement": [
@@ -86,8 +86,8 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
           ]
         }
         EOL
-        expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.policy_document).to eq expected_policy
+        expected_policy_document = JSON.load(policy_document_json)
+        expect(iam_policy.policy_document).to eq expected_policy_document
       end
     end
 
@@ -101,7 +101,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
         }]
       end
       it "provides the resource definition" do
-        iam_policy_json = <<~EOL
+        policy_document_json = <<~EOL
         {
           "Version": "2012-10-17",
           "Statement": [
@@ -114,8 +114,8 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
           ]
         }
         EOL
-        expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.policy_document).to eq expected_policy
+        expected_policy_document = JSON.load(policy_document_json)
+        expect(iam_policy.policy_document).to eq expected_policy_document
       end
     end
 
@@ -129,7 +129,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
         }]
       end
       it "provides the resource definition" do
-        iam_policy_json = <<~EOL
+        policy_document_json = <<~EOL
         {
           "Version": "2012-10-17",
           "Statement": [
@@ -142,8 +142,8 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
           ]
         }
         EOL
-        expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.policy_document).to eq expected_policy
+        expected_policy_document = JSON.load(policy_document_json)
+        expect(iam_policy.policy_document).to eq expected_policy_document
       end
     end
   end
@@ -164,7 +164,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
         }]
       end
       it "provides the resource definition" do
-        iam_policy_json = <<~EOL
+        policy_document_json = <<~EOL
         {
           "Version": "2012-10-17",
           "Statement": [
@@ -183,8 +183,8 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
           ]
         }
         EOL
-        expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.policy_document).to eq expected_policy
+        expected_policy_document = JSON.load(policy_document_json)
+        expect(iam_policy.policy_document).to eq expected_policy_document
       end
     end
   end
@@ -205,7 +205,7 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
         }]
       end
       it "provides the resource definition" do
-        iam_policy_json = <<~EOL
+        policy_document_json = <<~EOL
         {
           "Version": "2012-10-17",
           "Statement": [
@@ -218,8 +218,8 @@ describe Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy do
           ]
         }
         EOL
-        expected_policy = JSON.load(iam_policy_json)
-        expect(iam_policy.policy_document).to eq expected_policy
+        expected_policy_document = JSON.load(policy_document_json)
+        expect(iam_policy.policy_document).to eq expected_policy_document
       end
     end
   end

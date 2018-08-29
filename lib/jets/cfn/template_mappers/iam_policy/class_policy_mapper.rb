@@ -2,6 +2,7 @@
 #
 #   initialize
 #   iam_policy
+#   managed_iam_policy
 #   logical_id
 #   role_name
 #
@@ -13,9 +14,18 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     end
 
     def iam_policy
+      return unless @app_class.class_iam_policy
+
       Jets::Cfn::TemplateBuilders::IamPolicy::ClassPolicy.new(@app_class)
     end
     memoize :iam_policy
+
+    def managed_iam_policy
+      return unless @app_class.class_managed_iam_policy
+
+      Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ClassPolicy.new(@app_class)
+    end
+    memoize :managed_iam_policy
 
     # Example: PostsControllerLambdaFunction
     # Note there are is no "Show" action in the name

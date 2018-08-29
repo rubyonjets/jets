@@ -88,7 +88,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
       # klass is PostsController, HardJob, GameRule, Hello or HelloFunction
       klass = Jets::Klass.from_task(@task)
       class_properties = klass.class_properties
-      if klass.class_iam_policy
+      if klass.build_class_iam?
         map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(klass)
         class_properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
       end
@@ -112,7 +112,7 @@ module Jets::Cfn::TemplateBuilders::FunctionProperties
     #
     def function_properties
       properties = @task.properties
-      if @task.iam_policy
+      if @task.build_function_iam?
         map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(@task)
         properties[:Role] = "!GetAtt #{map.logical_id}.Arn"
       end
