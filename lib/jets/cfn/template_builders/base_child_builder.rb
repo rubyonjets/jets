@@ -47,7 +47,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_function_iam_policy(task)
-      return unless task.iam_policy || task.managed_iam_policy
+      return unless task.build_function_iam?
 
       map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(task)
       logical_id = map.logical_id
