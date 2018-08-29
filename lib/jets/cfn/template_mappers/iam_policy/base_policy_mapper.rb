@@ -22,16 +22,11 @@ module Jets::Cfn::TemplateMappers::IamPolicy
         Path: "/"
       }
 
-      puts "iam_policy: #{iam_policy.inspect}"
       properties[:Policies] = [
         PolicyName: iam_policy.policy_name,
         PolicyDocument: iam_policy.policy_document,
       ] if iam_policy
 
-      if @app_class
-        puts "@app_class #{@app_class}"
-        puts "managed_iam_policy #{managed_iam_policy.inspect}"
-      end
       properties[:ManagedPolicyArns] = managed_iam_policy.arns if managed_iam_policy
 
       properties[:RoleName] = role_name
