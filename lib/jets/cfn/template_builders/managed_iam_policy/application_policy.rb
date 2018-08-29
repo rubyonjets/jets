@@ -4,7 +4,8 @@
 module Jets::Cfn::TemplateBuilders::ManagedIamPolicy
   class ApplicationPolicy < BasePolicy
     def initialize
-      @definitions = Jets.config.managed_iam_policy # config.iam_policy contains definitions
+      @definitions = Jets.config.managed_iam_policy # config.managed_iam_policy contains definitions
+      @definitions = [@definitions].flatten if @definitions
     end
   end
 end

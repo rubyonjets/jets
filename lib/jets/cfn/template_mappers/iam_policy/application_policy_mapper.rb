@@ -10,15 +10,15 @@ module Jets::Cfn::TemplateMappers::IamPolicy
   class ApplicationPolicyMapper < BasePolicyMapper
     def initialize; end # does nothing
 
+    # Assume we always have at least some baseline iam policy permissions.
     def iam_policy
       Jets::Cfn::TemplateBuilders::IamPolicy::ApplicationPolicy.new
     end
     memoize :iam_policy
 
     def managed_iam_policy
-      # return unless @app_class.class_managed_iam_policy
-      # TODO: check the config itself here?
-      return nil
+      return unless Jets.config.managed_iam_policy
+
       Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ApplicationPolicy.new
     end
     memoize :managed_iam_policy

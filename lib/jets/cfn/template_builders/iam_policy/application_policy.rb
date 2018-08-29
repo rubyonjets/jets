@@ -7,6 +7,7 @@ module Jets::Cfn::TemplateBuilders::IamPolicy
     def initialize
       setup
       @definitions = Jets.config.iam_policy # config.iam_policy contains definitions
+      @definitions = [@definitions].flatten if @definitions
     end
 
     # Example: PostsControllerPolicy or SleepJobPolicy
