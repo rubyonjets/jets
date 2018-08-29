@@ -2,6 +2,7 @@
 #
 #   initialize
 #   iam_policy
+#   managed_iam_policy
 #   logical_id
 #   role_name
 #
@@ -20,10 +21,14 @@ module Jets::Cfn::TemplateMappers::IamPolicy
           ]},
         Path: "/"
       }
+
       properties[:Policies] = [
         PolicyName: iam_policy.policy_name,
         PolicyDocument: iam_policy.policy_document,
-      ]
+      ] if iam_policy
+
+      properties[:ManagedPolicyArns] = managed_iam_policy.arns if managed_iam_policy
+
       properties[:RoleName] = role_name
       properties.deep_stringify_keys!
       properties

@@ -20,5 +20,6 @@ class Jets::Cfn
     # separate beasts:
     autoload :FunctionProperties, "jets/cfn/template_builders/function_properties" # sort of a builder
     autoload :IamPolicy, "jets/cfn/template_builders/iam_policy" # resource only
+    autoload :ManagedIamPolicy, "jets/cfn/template_builders/managed_iam_policy" # resource only
   end
 end

@@ -80,7 +80,7 @@ module Jets::Lambda::Dsl
       end
       alias_method :props, :properties
 
-      # definitions: one more many definitions
+      # definitions: one or more definitions
       def class_iam_policy(*definitions)
         if definitions.empty?
           @class_iam_policy
@@ -89,12 +89,30 @@ module Jets::Lambda::Dsl
         end
       end
 
-      # definitions: one more many definitions
+      # definitions: one or more definitions
       def iam_policy(*definitions)
         if definitions.empty?
           @iam_policy
         else
           @iam_policy = definitions.flatten
+        end
+      end
+
+      # definitions: one or more definitions
+      def managed_iam_policy(*definitions)
+        if definitions.empty?
+          @managed_iam_policy
+        else
+          @managed_iam_policy = definitions.flatten
+        end
+      end
+
+      # definitions: one or more definitions
+      def class_managed_iam_policy(*definitions)
+        if definitions.empty?
+          @class_managed_iam_policy
+        else
+          @class_managed_iam_policy = definitions.flatten
         end
       end
 
@@ -111,7 +129,10 @@ module Jets::Lambda::Dsl
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          properties: @properties, iam_policy: @iam_policy, lang: lang)
+          properties: @properties,
+          iam_policy: @iam_policy,
+          managed_iam_policy: @managed_iam_policy,
+          lang: lang)
 
         # Done storing options, clear out for the next added method.
         clear_properties
@@ -129,6 +150,7 @@ module Jets::Lambda::Dsl
       def clear_properties
         @properties = nil
         @iam_policy = nil
+        @managed_iam_policy = nil
       end
 
       # Returns the all tasks for this class with their method names as keys.
