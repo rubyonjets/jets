@@ -15,14 +15,15 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     end
 
     def iam_policy
-      puts "@task.iam_policy #{@task.iam_policy.inspect}"
       return unless @task.iam_policy
+
       Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy.new(@task)
     end
     memoize :iam_policy
 
     def managed_iam_policy
       return unless @task.managed_iam_policy
+
       Jets::Cfn::TemplateBuilders::ManagedIamPolicy::FunctionPolicy.new(@task)
     end
     memoize :managed_iam_policy
