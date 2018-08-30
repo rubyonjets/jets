@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.7.1]
+- fix application-wide config.iam_policy ability
+
 ## [0.7.0]
 - add managed_iam_policy concept, pull request #19
 - bump to 0.7.0, enough changes since 0.6.x
