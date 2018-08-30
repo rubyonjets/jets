@@ -88,9 +88,9 @@ class Jets::Application
     project_namespace = [config.project_name, config.short_env, config.env_extra].compact.join('-')
     config.project_namespace = project_namespace
 
-    # Must set defaul t iam_policy here instead of `def config` because we need access to
+    # Must set default iam_policy here instead of `def config` because we need access to
     # the project_namespace and if we call it from `def config` we get an infinit loop
-    config.iam_policy = [{
+    config.iam_policy ||= [{
       sid: "Statement1",
       action: ["logs:*"],
       effect: "Allow",
