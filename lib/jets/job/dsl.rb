@@ -28,16 +28,7 @@ module Jets::Job::Dsl
       # A Job::Task is a Lambda::Task with some added DSL methods like
       # rate and cron.
       def register_task(meth, lang=:ruby)
-        if @rate || @cron || @disable
-          # Job lambda function.
-          all_tasks[meth] = Jets::Job::Task.new(self.name, meth,
-            rate: @rate,
-            cron: @cron,
-            state: @state,
-            properties: @properties,
-            lang: lang)
-          true
-        else
+        unless @rate || @cron || @disable
           task_name = "#{name}##{meth}" # IE: HardJob#dig
           puts "[WARNING] #{task_name} created without a rate or cron expression. " \
             "Add a rate or cron expression above the method definition if you want this method to be scheduled. " \
@@ -45,6 +36,16 @@ module Jets::Job::Dsl
             "#{task_name} defined at #{caller[1].inspect}."
           false
         end
+
+        # Always create Job lambda function.
+        all_tasks[meth] = Jets::Job::Task.new(self.name, meth,
+          rate: @rate,
+          cron: @cron,
+          state: @state,
+          properties: @properties,
+          lang: lang)
+        true
+
         # Done storing options, clear out for the next added method.
         clear_properties
       end
