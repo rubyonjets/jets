@@ -11,7 +11,7 @@ class Jets::Cfn::TemplateBuilders
     def add_resources
       puts "ADD_RESOURCES"
       @app_klass.resources.each do |resource|
-        pp resource
+        pp standarize(resource)
       end
     end
 

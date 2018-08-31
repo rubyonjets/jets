@@ -46,6 +46,8 @@ module Jets
   autoload :RubyServer, "jets/ruby_server"
   autoload :IO, "jets/io"
   autoload :Logger, "jets/logger"
+
+  autoload :ResourceCreator, "jets/resource_creator"
 end
 
 require "jets/core_ext/kernel"
