@@ -16,14 +16,14 @@ class Jets::Cfn::TemplateBuilders
       # end
 
       @app_klass.tasks.each do |task|
-        puts "task: #{task}"
+        # puts "task: #{task}"
         task.resources.each do |definition|
-          puts "definition: #{definition}"
+          # puts "definition: #{definition}"
           creator = Jets::Resource::Creator.new(definition, task)
           resource = creator.resource
-          logical_id = resource.keys.first
-          attributes = resource.values.first # attributes is the "resource definition"
-          add_resource(logical_id, attributes['Type'], attributes['Properties'])
+          add_resource(resource.logical_id, resource.type, resource.properties)
+          resource = creator.permission.resource
+          add_resource(resource.logical_id, resource.type, resource.properties)
         end
       end
     end

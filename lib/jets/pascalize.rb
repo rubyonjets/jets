@@ -23,9 +23,13 @@ module Jets
         if parent_key == "Variables" # do not pascalize keys anything under Variables
           k
         else
-          k = k.to_s.camelize
-          k.slice(0,1).capitalize + k.slice(1..-1) # capitalize first letter only
+          pascalize_string(k)
         end
+      end
+
+      def pascalize_string(s)
+        s = s.to_s.camelize
+        s.slice(0,1).capitalize + s.slice(1..-1) # capitalize first letter only
       end
     end
   end
