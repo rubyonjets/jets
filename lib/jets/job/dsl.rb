@@ -42,6 +42,7 @@ module Jets::Job::Dsl
           rate: @rate,
           cron: @cron,
           state: @state,
+          resources: @resources,
           properties: @properties,
           lang: lang)
         true

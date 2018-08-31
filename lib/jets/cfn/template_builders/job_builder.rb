@@ -10,8 +10,21 @@ class Jets::Cfn::TemplateBuilders
     #
     def add_resources
       puts "ADD_RESOURCES"
-      @app_klass.resources.each do |resource|
-        pp standarize(resource)
+      # @app_klass.resources.each do |definition|
+      #   creator = Jets::ResourceCreator.new(definition)
+      #   pp creator.resource
+      # end
+
+      @app_klass.tasks.each do |task|
+        puts "task: #{task}"
+        task.resources.each do |definition|
+          puts "definition: #{definition}"
+          creator = Jets::Resource::Creator.new(definition, task)
+          resource = creator.resource
+          logical_id = resource.keys.first
+          attributes = resource.values.first # attributes is the "resource definition"
+          add_resource(logical_id, attributes['Type'], attributes['Properties'])
+        end
       end
     end
 

@@ -165,6 +165,7 @@ module Jets::Lambda::Dsl
       end
 
       def clear_properties
+        @resources = nil
         @properties = nil
         @iam_policy = nil
         @managed_iam_policy = nil

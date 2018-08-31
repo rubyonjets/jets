@@ -47,7 +47,7 @@ module Jets
   autoload :IO, "jets/io"
   autoload :Logger, "jets/logger"
 
-  autoload :ResourceCreator, "jets/resource_creator"
+  autoload :Resource, "jets/resource"
 end
 
 require "jets/core_ext/kernel"

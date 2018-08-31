@@ -1,5 +1,10 @@
 describe Jets::ResourceCreator do
-  let(:creator) { Jets::ResourceCreator.new(definition) }
+  let(:creator) { Jets::ResourceCreator.new(definition, task) }
+  let(:task) do
+    task = double(:task).as_null_object
+    allow(task).to receive(:meth).and_return(:disable_unused_credentials)
+    task
+  end
 
   context "raw cloudformation definition" do
     let(:definition) do
