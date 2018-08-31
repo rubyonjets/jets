@@ -120,6 +120,18 @@ module Jets::Lambda::Dsl
         !!(class_iam_policy || class_managed_iam_policy)
       end
 
+      #############################
+      # Generic method that registers a resource to be associated with the Lambda function.
+      # In the future all DSL methods can lead here.
+      def resources(*definitions)
+        if definitions == [nil]
+          @resources || []
+        else
+          @resources ||= definitions
+        end
+      end
+      alias_method :resource, :resources
+
       # meth is a Symbol
       def method_added(meth)
         return if %w[initialize method_missing].include?(meth.to_s)
@@ -133,6 +145,7 @@ module Jets::Lambda::Dsl
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
+          resources: @resources,
           properties: @properties,
           iam_policy: @iam_policy,
           managed_iam_policy: @managed_iam_policy,

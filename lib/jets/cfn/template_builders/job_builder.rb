@@ -3,7 +3,16 @@ class Jets::Cfn::TemplateBuilders
     def compose
       add_common_parameters
       add_functions
+      add_resources
       add_scheduled_tasks
+    end
+
+    #
+    def add_resources
+      puts "ADD_RESOURCES"
+      @app_klass.resources.each do |resource|
+        pp resource
+      end
     end
 
     def add_scheduled_tasks
