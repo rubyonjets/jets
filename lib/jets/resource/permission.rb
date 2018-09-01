@@ -53,12 +53,14 @@ module Jets::Resource
     def principal_map
       {
         "AWS::Events::Rule" => "events.amazonaws.com",
+        "AWS::Config::ConfigRule" => "config.amazonaws.com",
       }
     end
 
     def source_arn_map(type, associated_resource_id)
       map = {
         "AWS::Events::Rule" => "!GetAtt #{associated_resource_id}.Arn",
+        "AWS::Config::ConfigRule" => "!GetAtt #{associated_resource_id}.Arn",
       }
       map[type]
     end

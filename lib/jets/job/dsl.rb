@@ -15,7 +15,7 @@ module Jets::Job::Dsl
       end
 
       def scheduled_event(expression)
-        resource("{namespace}ScheduledEvent" => {
+        resource("{namespace}EventsRule" => {
           type: "AWS::Events::Rule",
           properties: {
             schedule_expression: expression,

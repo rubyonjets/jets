@@ -6,26 +6,29 @@ module Jets::Rule::Dsl
 
   included do
     class << self
-      def config_rule
+      def declare_config_rule(props={})
+        default_props = {
+          config_rule_name: "{config_rule_name}",
+          source: {
+            owner: "CUSTOM_LAMBDA",
+            source_identifier: "{namespace}LambdaFunction.Arn",
+            source_details: [
+              {
+                event_source: "aws.config",
+                message_type: "ConfigurationItemChangeNotification"
+              },
+              {
+                event_source: "aws.config",
+                message_type: "OversizedConfigurationItemChangeNotification"
+              }
+            ]
+          }
+        }
+        properties = default_props.deep_merge(props)
+
         resource("{namespace}ConfigRule" => {
           type: "AWS::Config::ConfigRule",
-          properties: {
-            config_rule_name: "{config_rule_name}",
-            source: {
-              owner: "CUSTOM_LAMBDA",
-              source_identifier: "{namespace}LambdaFunction.Arn",
-              source_details: [
-                {
-                  event_source: "aws.config",
-                  message_type: "ConfigurationItemChangeNotification"
-                },
-                {
-                  event_source: "aws.config",
-                  message_type: "OversizedConfigurationItemChangeNotification"
-                }
-              ]
-            }
-          }
+          properties: properties
         })
       end
 
@@ -73,19 +76,9 @@ module Jets::Rule::Dsl
         @config_rule.deep_merge!(options)
       end
 
-      # Override register_task.
-      # Creates instances of Rule::Task instead of a Lambda::Task
-      # Also adds the config_rule option that is specific to Rule classes
-      def register_task(meth, lang=:ruby)
-        all_tasks[meth] = Jets::Rule::Task.new(self.name, meth,
-          properties: @properties, config_rule: @config_rule, lang: lang)
-        clear_properties
-        true
-      end
-
       def clear_properties
         super
-        @config_rule = nil
+        @all_managed_rules = nil
       end
 
       ## aws managed rules work different enough to merit their own storage

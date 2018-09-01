@@ -10,7 +10,7 @@ module Jets::Resource::Replacer
 
     # conventional config rule name
     def config_rule_name
-      name_without_rule = @class_name.underscore.gsub(/_rule$/,'')
+      name_without_rule = @app_class.underscore.gsub(/_rule$/,'')
       "#{name_without_rule}_#{@task.meth}".dasherize
     end
   end
