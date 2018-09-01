@@ -132,6 +132,21 @@ module Jets::Lambda::Dsl
       end
       alias_method :resource, :resources
 
+      # Main method that the convenience methods call for to create resources associated
+      # with the Lambda function. References the first resource and updates it inplace.
+      # Useful for associated resources that are meant to be declare and associated
+      # with only one Lambda function.
+      #
+      # Example:
+      #   Config Rule <=> Lambda function is 1-to-1
+      def update_properties(values={})
+        @resources ||= default_associated_resource # The Rule and Job DSL classes must implement default_associated_resource
+        definition = @resources.first # singleton
+        attributes = definition.values.first
+        attributes[:properties].merge!(values)
+        @resources
+      end
+
       # meth is a Symbol
       def method_added(meth)
         return if %w[initialize method_missing].include?(meth.to_s)

@@ -1,12 +1,57 @@
 # Jets::Rule::Base < Jets::Lambda::Functions
 # Both Jets::Rule::Base and Jets::Lambda::Functions have Dsl modules included.
 # So the Jets::Rule::Dsl overrides some of the Jets::Lambda::Functions behavior.
+#
+# Implements:
+#   default_associated_resource
 module Jets::Rule::Dsl
   extend ActiveSupport::Concern
 
   included do
     class << self
-      def declare_config_rule(props={})
+      # Allows for different types of values. Examples:
+      #
+      # String: scope "AWS::EC2::SecurityGroup"
+      # Array:  scope ["AWS::EC2::SecurityGroup"]
+      # Hash:   scope {"ComplianceResourceTypes" => ["AWS::EC2::SecurityGroup"]}
+      def scope(value)
+        scope = case value
+          when String
+            {compliance_resource_types: [value]}
+          when Array
+            {compliance_resource_types: value}
+          else # default to hash
+            value
+          end
+        update_properties(scope: scope)
+      end
+
+      def config_rule_name(value)
+        update_properties(config_rule_name: value)
+      end
+
+      def description(value)
+        update_properties(description: value)
+      end
+      alias_method :desc, :description
+
+      def input_parameters(value)
+        update_properties(input_parameters: value)
+      end
+
+      def maximum_execution_frequency(value)
+        update_properties(maximum_execution_frequency: value)
+      end
+
+      def source(value)
+        update_properties(source: value)
+      end
+
+      def default_associated_resource
+        config_rule
+      end
+
+      def config_rule(props={})
         default_props = {
           config_rule_name: "{config_rule_name}",
           source: {
@@ -30,50 +75,6 @@ module Jets::Rule::Dsl
           type: "AWS::Config::ConfigRule",
           properties: properties
         })
-      end
-
-      # Allows for different types of values. Examples:
-      #
-      # String: scope "AWS::EC2::SecurityGroup"
-      # Array:  scope ["AWS::EC2::SecurityGroup"]
-      # Hash:   scope {"ComplianceResourceTypes" => ["AWS::EC2::SecurityGroup"]}
-      def scope(value)
-        scope = case value
-          when String
-            {"ComplianceResourceTypes" => [value]}
-          when Array
-            {"ComplianceResourceTypes" => value}
-          else # default to hash
-            value
-          end
-
-        config_rule(scope: scope)
-      end
-
-      def config_rule_name(value)
-        config_rule(config_rule_name: value)
-      end
-
-      def description(value)
-        config_rule(description: value)
-      end
-      alias_method :desc, :description
-
-      def input_parameters(value)
-        config_rule(input_parameters: value)
-      end
-
-      def maximum_execution_frequency(value)
-        config_rule(maximum_execution_frequency: value)
-      end
-
-      def source(value)
-        config_rule(source: value)
-      end
-
-      def config_rule(options={})
-        @config_rule ||= {}
-        @config_rule.deep_merge!(options)
       end
 
       def clear_properties

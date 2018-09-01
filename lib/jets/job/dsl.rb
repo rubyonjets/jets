@@ -1,30 +1,39 @@
 # Jets::Job::Base < Jets::Lambda::Functions
 # Both Jets::Job::Base and Jets::Lambda::Functions have Dsl modules included.
 # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
+#
+# Implements:
+#   default_associated_resource
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
 
   included do
     class << self
       def rate(expression)
-        scheduled_event(expression)
+        update_properties(schedule_expression: expression)
       end
 
       def cron(expression)
-        scheduled_event(expression)
+        update_properties(schedule_expression: expression)
       end
 
-      def scheduled_event(expression)
+      def default_associated_resource
+        events_rule
+      end
+
+      def events_rule(props={})
+        default_props = {
+          state: "ENABLED",
+          targets: [{
+            arn: "!GetAtt {namespace}LambdaFunction.Arn",
+            id: "{namespace}RuleTarget"
+          }]
+        }
+        properties = default_props.deep_merge(props)
+
         resource("{namespace}EventsRule" => {
           type: "AWS::Events::Rule",
-          properties: {
-            schedule_expression: expression,
-            state: "ENABLED",
-            targets: [{
-              arn: "!GetAtt {namespace}LambdaFunction.Arn",
-              id: "{namespace}RuleTarget"
-            }]
-          }
+          properties: properties
         })
       end
     end
