@@ -95,10 +95,10 @@ module Jets::Rule::Dsl
         properties = default_props.deep_merge(props)
         # The key is to use update_properties to update the current resource and maintain
         # the added properties from the convenience methods like scope and description.
-        # But no register the task to all_tasks to avoid creating a Lambda function.
+        # At the same time, we do not register the task to all_tasks to avoid creating a Lambda function.
+        # Instead we store it in all_managed_rules.
         update_properties(properties)
-
-        definition = resources.last
+        definition = resources.first
 
         register_managed_rule(name, definition)
       end
@@ -110,10 +110,6 @@ module Jets::Rule::Dsl
         task = Jets::Lambda::Task.new(self.name, name, resources: @resources)
         all_managed_rules[name] = { definition: definition, task: task }
         clear_properties
-      end
-
-      def clear_properties
-        super
       end
 
       # AWS managed rules are not actual Lambda functions and require their own storage.
@@ -129,7 +125,6 @@ module Jets::Rule::Dsl
       def build?
         !tasks.empty? || !managed_rules.empty?
       end
-
     end
   end
 end
