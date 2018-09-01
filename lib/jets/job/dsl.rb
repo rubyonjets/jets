@@ -7,41 +7,33 @@ module Jets::Job::Dsl
   included do
     class << self
       def rate(expression)
-        @rate = expression
+        scheduled_event(expression)
       end
 
       def cron(expression)
-        @cron = expression
+        scheduled_event(expression)
       end
 
-      # Explicitly disable scheduling for the function
-      def disable(value)
-        @disable = value
-      end
-
-      # This is a property of the AWS::Events::Rule not the Lambda function
-      def state(value)
-        @state = value
+      def scheduled_event(expression)
+        resource("{namespace}ScheduledEvent" => {
+          type: "AWS::Events::Rule",
+          properties: {
+            schedule_expression: expression,
+            state: "ENABLED",
+            targets: [{
+              arn: "!GetAtt {namespace}LambdaFunction.Arn",
+              id: "{namespace}RuleTarget"
+            }]
+          }
+        })
       end
 
       # Override register_task.
       # A Job::Task is a Lambda::Task with some added DSL methods like
       # rate and cron.
       def register_task(meth, lang=:ruby)
-        unless @rate || @cron || @disable
-          task_name = "#{name}##{meth}" # IE: HardJob#dig
-          puts "[WARNING] #{task_name} created without a rate or cron expression. " \
-            "Add a rate or cron expression above the method definition if you want this method to be scheduled. " \
-            "If #{task_name} is not meant to be a scheduled lambda function, you can put the method under after a private keyword to get rid of this warning. " \
-            "#{task_name} defined at #{caller[1].inspect}."
-          false
-        end
-
         # Always create Job lambda function.
         all_tasks[meth] = Jets::Job::Task.new(self.name, meth,
-          rate: @rate,
-          cron: @cron,
-          state: @state,
           resources: @resources,
           properties: @properties,
           lang: lang)
@@ -53,7 +45,7 @@ module Jets::Job::Dsl
 
       def clear_properties
         super
-        @rate, @cron, @state, @resources, @disable = nil, nil, nil, nil, nil
+        @resources = nil
       end
     end
   end
