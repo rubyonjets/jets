@@ -10,11 +10,11 @@ module Jets::Job::Dsl
   included do
     class << self
       def rate(expression)
-        update_properties(schedule_expression: expression)
+        update_properties(schedule_expression: "rate(#{expression})")
       end
 
       def cron(expression)
-        update_properties(schedule_expression: expression)
+        update_properties(schedule_expression: "cron(#{expression}")
       end
 
       def default_associated_resource
