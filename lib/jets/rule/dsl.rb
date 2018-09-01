@@ -77,13 +77,44 @@ module Jets::Rule::Dsl
         })
       end
 
-      def clear_properties
-        super
-        @all_managed_rules = nil
+      def managed_rule(name, props={})
+        name = name.to_s
+        config_rule_name = name.dasherize # TODO: prepend check- and allow for customization
+        source_identifier = name.upcase
+
+
+        default_props = {
+          config_rule_name: config_rule_name,
+          source: {
+            owner: "AWS",
+            source_identifier: source_identifier,
+          }
+        }
+        properties = default_props.deep_merge(props)
+        # The key is to use update_properties to update the current resource and maintain
+        # the added properties from the convenience methods like scope and description.
+        # But no register the task to all_tasks to avoid creating a Lambda function.
+        update_properties(properties)
+
+        definition = resources.last
+
+        register_managed_rule(name, definition)
       end
 
-      ## aws managed rules work different enough to merit their own storage
+      # Creates a task but registers it to all_managed_rules instead of all_tasks
+      # because we do not want Lambda functions to be created.
+      def register_managed_rule(name, definition)
+        # A task object is needed to build {namespace} for later replacing.
+        task = Jets::Lambda::Task.new(self.name, name, resources: @resources)
+        all_managed_rules[name] = { definition: definition, task: task }
+        clear_properties
+      end
 
+      def clear_properties
+        super
+      end
+
+      # AWS managed rules are not actual Lambda functions and require their own storage.
       def all_managed_rules
         @all_managed_rules ||= ActiveSupport::OrderedHash.new
       end
@@ -92,17 +123,11 @@ module Jets::Rule::Dsl
         all_managed_rules.values
       end
 
-      def managed_rule(meth)
-        all_managed_rules[meth] = Jets::Rule::AwsManagedRule.new(self.name, meth,
-          properties: @properties, config_rule: @config_rule)
-        clear_properties
-        true
-      end
-
       # Override Lambda::Dsl.build? to account of possible managed_rules
       def build?
         !tasks.empty? || !managed_rules.empty?
       end
+
     end
   end
 end
