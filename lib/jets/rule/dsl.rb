@@ -79,9 +79,11 @@ module Jets::Rule::Dsl
 
       def managed_rule(name, props={})
         name = name.to_s
-        config_rule_name = name.dasherize # TODO: prepend check- and allow for customization
-        source_identifier = name.upcase
 
+        # Similar logic in Replacer::ConfigRule#config_rule_name
+        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
+        config_rule_name = "#{name_without_rule}_#{name}".dasherize
+        source_identifier = name.upcase
 
         default_props = {
           config_rule_name: config_rule_name,
