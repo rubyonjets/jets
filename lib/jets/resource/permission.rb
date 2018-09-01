@@ -6,7 +6,7 @@ module Jets::Resource
       @task = task
     end
 
-    # REPLACEMENTS FOR: logical_id, function_name, source_arn
+    # Replacements occur for: logical_id, function_name, principal, source_arn
     def resource
       attributes = {
         "{namespace}Permission" => {
@@ -36,15 +36,7 @@ module Jets::Resource
       source_arns.size == 1 ? source_arns.first : source_arns
     end
 
-    def source_arn_map(type, associated_resource_id)
-      map = {
-        "AWS::Events::Rule" => "!GetAtt #{associated_resource_id}.Arn",
-      }
-      map[type]
-    end
-
     # Auto-detect principal from the associated resources.
-    # TODO: add ability to explicitly override principal.
     def principal
       principals = @task.resources.map do |definition|
         creator = Jets::Resource::Creator.new(definition, @task)
@@ -53,11 +45,22 @@ module Jets::Resource
       principals.size == 1 ? principals.first : principals
     end
 
-    # TODO: fill out logical_id to service principal map
+    ##################################
+    # Maps
+    # TODOs:
+    # * fill out these maps, logical_id to service principal map.
+    # * add ability to explicitly override principal and source_arn.
     def principal_map
       {
         "AWS::Events::Rule" => "events.amazonaws.com",
       }
+    end
+
+    def source_arn_map(type, associated_resource_id)
+      map = {
+        "AWS::Events::Rule" => "!GetAtt #{associated_resource_id}.Arn",
+      }
+      map[type]
     end
   end
 end

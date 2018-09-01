@@ -6,7 +6,6 @@ class Jets::Cfn::TemplateBuilders
       add_resources
     end
 
-    #
     def add_resources
       @app_klass.tasks.each do |task|
         task.resources.each do |definition|
