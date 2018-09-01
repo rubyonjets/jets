@@ -3,17 +3,16 @@ class Jets::Cfn::TemplateBuilders
     def compose
       add_common_parameters
       add_functions
-      add_config_rules
+      add_resources
     end
 
-    def add_config_rules
-      # Handle config_rules associated with lambda functions.
-      # @app_klass is PostsController, HardRule, Hello, or HelloFunction, or GameRule
+    def add_resources
       @app_klass.tasks.each do |task|
-        map = Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(task)
-
-        add_config_rule(task, map)
-        add_permission(map)
+        task.resources.each do |definition|
+          creator = Jets::Resource::Creator.new(definition, task)
+          add_associated_resource(creator.resource)
+          add_associated_resource(creator.permission.resource)
+        end
       end
 
       # Handle config_rules associated with aws managed rules.
@@ -22,6 +21,10 @@ class Jets::Cfn::TemplateBuilders
         map = Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(rule)
         add_aws_managed_rule(rule, map)
       end
+    end
+
+    def add_associated_resource(resource)
+      add_resource(resource.logical_id, resource.type, resource.properties)
     end
 
     def add_aws_managed_rule(rule, map)

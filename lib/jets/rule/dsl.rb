@@ -6,6 +6,29 @@ module Jets::Rule::Dsl
 
   included do
     class << self
+      def config_rule
+        resource("{namespace}ConfigRule" => {
+          type: "AWS::Config::ConfigRule",
+          properties: {
+            config_rule_name: "{config_rule_name}",
+            source: {
+              owner: "CUSTOM_LAMBDA",
+              source_identifier: "{namespace}LambdaFunction.Arn",
+              source_details: [
+                {
+                  event_source: "aws.config",
+                  message_type: "ConfigurationItemChangeNotification"
+                },
+                {
+                  event_source: "aws.config",
+                  message_type: "OversizedConfigurationItemChangeNotification"
+                }
+              ]
+            }
+          }
+        })
+      end
+
       # Allows for different types of values. Examples:
       #
       # String: scope "AWS::EC2::SecurityGroup"
