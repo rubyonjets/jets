@@ -20,12 +20,14 @@ class Jets::Cfn::TemplateBuilders
         task.resources.each do |definition|
           # puts "definition: #{definition}"
           creator = Jets::Resource::Creator.new(definition, task)
-          resource = creator.resource
-          add_resource(resource.logical_id, resource.type, resource.properties)
-          resource = creator.permission.resource
-          add_resource(resource.logical_id, resource.type, resource.properties)
+          add_associated_resource(creator.resource)
+          add_associated_resource(creator.permission.resource)
         end
       end
+    end
+
+    def add_associated_resource(resource)
+      add_resource(resource.logical_id, resource.type, resource.properties)
     end
 
     def add_scheduled_tasks

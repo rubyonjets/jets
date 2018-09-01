@@ -45,15 +45,15 @@ module Jets::Job::Dsl
           resources: @resources,
           properties: @properties,
           lang: lang)
-        true
 
         # Done storing options, clear out for the next added method.
         clear_properties
+        true
       end
 
       def clear_properties
         super
-        @rate, @cron, @state, @disable = nil, nil, nil, nil
+        @rate, @cron, @state, @resources, @disable = nil, nil, nil, nil, nil
       end
     end
   end

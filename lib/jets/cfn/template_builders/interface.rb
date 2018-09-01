@@ -4,6 +4,8 @@
 #   * template_path
 class Jets::Cfn::TemplateBuilders
   module Interface
+    extend Memoist
+
     def build
       # Do not bother building
       # or writing the template unless there are functions defined

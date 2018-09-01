@@ -7,7 +7,7 @@ module Jets::Resource
     end
 
     # TODO: auto-detect using the principal from the associated resource
-    # replacements for: logical_id, function_name, source_arn
+    # REPLACEMENTS FOR: logical_id, function_name, source_arn
     def resource
       attributes = {
         "{namespace}Permission" => {
