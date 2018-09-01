@@ -22,8 +22,15 @@ module Jets
       def pascal_key(k, parent_keys=[])
         if parent_keys.include?("Variables") # do not pascalize keys anything under Variables
           k.to_s
-        elsif parent_keys.include?("EventPattern")
+        elsif parent_keys.last == "EventPattern" # top-level
           k.to_s.dasherize
+        elsif parent_keys.include?("EventPattern")
+          # any keys at 2nd level under EventPattern will be camelize
+          key = k.to_s.camelize # an earlier pascalize has made the first char upcase
+          # so we need to downcase it again
+          first_char = key[0..0].downcase
+          key[0] = first_char
+          key
         else
           pascalize_string(k)
         end

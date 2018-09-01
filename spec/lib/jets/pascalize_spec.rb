@@ -12,17 +12,18 @@ describe "pascalize" do
     expect(result).to eq("FooBar"=>1, "Variables"=>{"dont_touch"=>2})
   end
 
-  it "dasherize anything under EventPattern" do
+  # CloudWatch Event patterns have slightly different casing
+  it "dasherize anything under EventPattern at the top level" do
     h = {foo_bar: 1, event_pattern: {dash_me: 2}}
     result = Jets::Pascalize.pascalize(h)
     # pp result
     expect(result).to eq("FooBar"=>1, "EventPattern"=>{"dash-me"=>2})
   end
 
-  it "dasherize anything under EventPattern deeply" do
-    h = {foo_bar: 1, event_pattern: {dash_me: {dash_me_too: 3}}}
+  it "camelize anything under EventPattern at any level beyond the top level" do
+    h = {foo_bar: 1, event_pattern: {dash_me: {camelize_me: 3}}}
     result = Jets::Pascalize.pascalize(h)
     # pp result
-    expect(result).to eq("FooBar"=>1, "EventPattern"=>{"dash-me"=>{"dash-me-too"=>3}})
+    expect(result).to eq("FooBar"=>1, "EventPattern"=>{"dash-me"=>{"camelizeMe"=>3}})
   end
 end
