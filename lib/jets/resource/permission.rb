@@ -10,13 +10,13 @@ module Jets::Resource
     # replacements for: logical_id, function_name, source_arn
     def resource
       attributes = {
-        SecurityJobDisableUnusedCredentialsEventsRulePermission: {
+        "{namespace}Permission" => {
           type: "AWS::Lambda::Permission",
           properties: {
-            function_name: "LAMBDA_PERMISSION_ARN",
+            function_name: "!GetAtt {namespace}EventsRulePermission.Arn",
             action: "lambda:InvokeFunction",
             principal: "events.amazonaws.com",
-            source_arn: "SOURCE_ARN"
+            source_arn: "!GetAtt {namespace}ScheduledEvent.Arn"
           }
         }
       }

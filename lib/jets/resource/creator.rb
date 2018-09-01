@@ -14,8 +14,7 @@ module Jets::Resource
     memoize :resource
 
     def permission
-      permission = Permission.new(@task)
-      permission
+      Permission.new(@task)
     end
     memoize :permission
   end
