@@ -135,12 +135,21 @@ module Jets::Lambda::Dsl
       # Main method that the convenience methods call for to create resources associated
       # with the Lambda function. References the first resource and updates it inplace.
       # Useful for associated resources that are meant to be declare and associated
-      # with only one Lambda function.
+      # with only one Lambda function. Example:
       #
-      # Example:
       #   Config Rule <=> Lambda function is 1-to-1
+      #
+      # Note: This methods calls default_associated_resource. The inheriting DSL class
+      # must implement default_associated_resource. The default_associated_resource should
+      # wrap another method that is nicely name so that the nicely name method is
+      # available in the DSL. Example:
+      #
+      #   def default_associated_resource
+      #     config_rule
+      #   end
+      #
       def update_properties(values={})
-        @resources ||= default_associated_resource # The Rule and Job DSL classes must implement default_associated_resource
+        @resources ||= default_associated_resource
         definition = @resources.first # singleton
         attributes = definition.values.first
         attributes[:properties].merge!(values)
