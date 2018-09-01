@@ -4,14 +4,14 @@ module Jets
       # Specialized pascalize that will not pascalize keys under the
       # Variables part of the hash structure.
       # Based on: https://stackoverflow.com/questions/8706930/converting-nested-hash-keys-from-camelcase-to-snake-case-in-ruby
-      def pascalize(value, parent_key=nil)
+      def pascalize(value, parent_keys=[])
         case value
           when Array
             value.map { |v| pascalize(v) }
           when Hash
             initializer = value.map do |k, v|
-              new_key = pascal_key(k, parent_key)
-              [new_key, pascalize(v, new_key)]
+              new_key = pascal_key(k, parent_keys)
+              [new_key, pascalize(v, parent_keys+[new_key])]
             end
             Hash[initializer]
           else
@@ -19,9 +19,11 @@ module Jets
          end
       end
 
-      def pascal_key(k, parent_key=nil)
-        if parent_key == "Variables" # do not pascalize keys anything under Variables
-          k
+      def pascal_key(k, parent_keys=[])
+        if parent_keys.include?("Variables") # do not pascalize keys anything under Variables
+          k.to_s
+        elsif parent_keys.include?("EventPattern")
+          k.to_s.dasherize
         else
           pascalize_string(k)
         end
