@@ -39,6 +39,9 @@ class Jets::Cfn::TemplateBuilders
         if line.include?(': "!') # IE: IamRole: "!Ref IamRole",
            # IamRole: "!Ref IamRole" => IamRole: !Ref IamRole
           line.sub(/: "(.*)"/, ': \1')
+        elsif line.include?('- "!') # IE: - "!GetAtt Foo.Arn"
+           # IamRole: - "!GetAtt Foo.Arn" => - !GetAtt Foo.Arn
+          line.sub(/- "(.*)"/, '- \1')
         else
           line
         end
