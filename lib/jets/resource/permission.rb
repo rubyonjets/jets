@@ -7,7 +7,6 @@ module Jets::Resource
       @resource_attributes = resource
     end
 
-    # Replacements occur for: logical_id, function_name, principal, source_arn
     def attributes
       logical_id = "{namespace}Permission"
       md = @resource_attributes.logical_id.match(/(\d+)/)

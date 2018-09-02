@@ -6,15 +6,13 @@ describe Jets::Resource::Route do
 
   context "route" do
     it "attributes" do
-      pp resource.attributes
-
-      # attributes = permission.attributes # attributes
-      # # the class shows up as the fake double class, which is fine for the spec
-      # expect(attributes.logical_id).to eq "#[Double :task]DisableUnusedCredentialsPermission1"
-      # properties = attributes.properties
-      # # pp properties # uncomment to debug
-      # expect(properties["Principal"]).to eq "events.amazonaws.com"
-      # expect(properties["SourceArn"]).to eq "!GetAtt #[Double :task]DisableUnusedCredentialsEventsRule1.Arn"
+      attributes = resource.attributes
+      expect(attributes.logical_id).to eq "PostsGetApiMethod"
+      properties = attributes.properties
+      # pp properties # uncomment to debug
+      expect(properties["RestApiId"]).to eq "!Ref RestApi"
+      expect(properties["ResourceId"]).to eq "!Ref PostsApiResource"
+      expect(properties["HttpMethod"]).to eq "GET"
     end
   end
 end
