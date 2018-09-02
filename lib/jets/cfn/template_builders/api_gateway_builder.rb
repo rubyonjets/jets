@@ -37,7 +37,7 @@ class Jets::Cfn::TemplateBuilders
       add_output("RestApi", Value: "!Ref RestApi")
       add_output("RestApiUrl", Value: "!Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/#{stage_name}/'")
       add_output("Region", Value: "!Ref AWS::Region")
-      add_output("RootApiResource", Value: "!GetAtt RestApi.RootResourceId")
+      add_output("RootResourceId", Value: "!GetAtt RestApi.RootResourceId")
     end
 
     # Adds route related Resources and Outputs
@@ -53,7 +53,7 @@ class Jets::Cfn::TemplateBuilders
       # build the parent ApiGateway::Resource nodes also
       Jets::Router.all_paths.each do |path|
         homepage = path == ''
-        next if homepage # handled by RootApiResource output already
+        next if homepage # handled by RootResourceId output already
 
         map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
 

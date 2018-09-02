@@ -49,7 +49,7 @@ module Jets::Resource
 
     def resource_id
       @route.path == '' ?
-       "RootApiResource" :
+       "RootResourceId" :
        "#{resource_logical_id}ApiResource"
     end
 

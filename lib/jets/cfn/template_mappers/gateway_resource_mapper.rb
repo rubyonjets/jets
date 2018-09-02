@@ -8,7 +8,7 @@ class Jets::Cfn::TemplateMappers
     def logical_id
       homepage = @path == ''
       if homepage
-        "RootApiResource"
+        "RootResourceId"
       else
         "#{path_logical_id(@path)}ApiResource"
       end

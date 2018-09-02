@@ -45,7 +45,7 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
 
       it "contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "RootPathHomepageGetApiMethod"
-        expect(map.gateway_resource_logical_id).to eq "RootApiResource"
+        expect(map.gateway_resource_logical_id).to eq "RootResourceId"
         expect(map.lambda_function_logical_id).to eq "HomeControllerShowLambdaFunction"
       end
     end
