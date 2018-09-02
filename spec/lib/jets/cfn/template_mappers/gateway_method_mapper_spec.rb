@@ -8,7 +8,7 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
       let(:route) { Jets::Route.new(path: "posts", method: :get, to: "posts#index") }
       it "posts contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "PostsGetApiMethod"
-        expect(map.gateway_resource_logical_id).to eq "PostsApiGatewayResource"
+        expect(map.gateway_resource_logical_id).to eq "PostsApiResource"
         expect(map.lambda_function_logical_id).to eq "PostsControllerIndexLambdaFunction"
       end
 
@@ -26,7 +26,7 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
       let(:route) { Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit") }
       it "posts/:id/edit contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "PostsIdEditGetApiMethod"
-        expect(map.gateway_resource_logical_id).to eq "PostsIdEditApiGatewayResource"
+        expect(map.gateway_resource_logical_id).to eq "PostsIdEditApiResource"
         expect(map.lambda_function_logical_id).to eq "PostsControllerEditLambdaFunction"
       end
     end
@@ -35,7 +35,7 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
       let(:route) { Jets::Route.new(path: "admin/pages/:id/edit", method: :get, to: "admin/pages#edit") }
       it "admin/pages/:id/edit contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "AdminPagesIdEditGetApiMethod"
-        expect(map.gateway_resource_logical_id).to eq "AdminPagesIdEditApiGatewayResource"
+        expect(map.gateway_resource_logical_id).to eq "AdminPagesIdEditApiResource"
         expect(map.lambda_function_logical_id).to eq "AdminPagesControllerEditLambdaFunction"
       end
     end
@@ -45,7 +45,7 @@ describe Jets::Cfn::TemplateMappers::GatewayMethodMapper do
 
       it "contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "RootPathHomepageGetApiMethod"
-        expect(map.gateway_resource_logical_id).to eq "HomepageApiGatewayResource"
+        expect(map.gateway_resource_logical_id).to eq "HomepageApiResource"
         expect(map.lambda_function_logical_id).to eq "HomeControllerShowLambdaFunction"
       end
     end

@@ -13,11 +13,11 @@ module Jets::Resource
 
     def attributes
       resource_id = @path == '' ?
-        "HomepageApiGatewayResource" :
-        "#{method_logical_id}ApiGatewayResource"
+        "HomepageApiResource" :
+        "#{resource_logical_id}ApiResource"
 
       attributes = {
-        "{namespace}ApiMethod" => {
+        "#{method_logical_id}ApiMethod" => {
           type: "AWS::ApiGateway::Method",
           properties: {
             http_method: @route.method,
@@ -48,7 +48,13 @@ module Jets::Resource
     def method_logical_id
       path = @route.path
       path = path.gsub('/','_')
-      path += "_#{@route.action_name}"
+      path += "_#{@route.method}"
+      path.gsub(':','').gsub('*','').camelize
+    end
+
+    def resource_logical_id
+      path = @route.path
+      path = path.gsub('/','_')
       path.gsub(':','').gsub('*','').camelize
     end
   end

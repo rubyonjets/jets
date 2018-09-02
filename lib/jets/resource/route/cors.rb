@@ -1,18 +1,14 @@
 class Jets::Resource::Route
-  class Cors < Jets::Resource::Permission
-    def attributes
-    end
-
+  # Cors acts like both Route and Permission
+  class Cors < Jets::Resource::Route
     # Replacements occur for: logical_id
     def attributes
-      resource_id = @resource_attributes.logical_id.sub('ApiGatewayResource','CorsApiGatewayResource')
-
       attributes = {
-        "{namespace}CorsApiMethod" => {
+        "#{resource_logical_id}CorsApiMethod" => {
           type: "AWS::ApiGateway::Method",
 
           properties: {
-            resource_id: "!Ref #{resource_id}",
+            resource_id: "!Ref #{resource_logical_id}ApiResource",
             rest_api_id: "!Ref RestApi",
             authorization_type: "NONE",
             http_method: "OPTIONS",
@@ -50,7 +46,7 @@ class Jets::Resource::Route
       } # closes attributes
 
       definitions = attributes # to emphasize that its the same thing
-      task = Jets::Lambda::Task.new(@task.class_name, @task.meth,
+      task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
                resources: definitions)
       Attributes.new(attributes, task)
     end

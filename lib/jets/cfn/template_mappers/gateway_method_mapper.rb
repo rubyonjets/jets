@@ -19,9 +19,9 @@ class Jets::Cfn::TemplateMappers
     end
 
     # Example returns:
-    #   ApiGatewayResourcePostsIdEdit or
-    #   ApiGatewayResourcePostsId or
-    #   ApiGatewayResourcePosts
+    #   ApiResourcePostsIdEdit or
+    #   ApiResourcePostsId or
+    #   ApiResourcePosts
     def gateway_resource_logical_id
       resource_map.logical_id
     end

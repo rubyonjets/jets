@@ -10,12 +10,12 @@ describe Jets::Resource::Route::Cors do
   end
   let(:data) do
     {
-      "{namespace}ApiGatewayResource": {
+      "{namespace}ApiResource": {
         type: "AWS::ApiGateway::Method",
         properties: {
           http_method: "GET",
           request_parameters: {},
-          resource_id: "!Ref PostsApiGatewayResource",
+          resource_id: "!Ref PostsApiResource",
           rest_api_id: "!Ref RestApi",
           authorization_type: "NONE",
           integration: {

@@ -26,7 +26,7 @@ class Jets::Cfn::TemplateBuilders
         # puts "resource_route.resource #{resource_route.resource.inspect}"
         add_associated_resource(resource_route.resource)
         add_associated_resource(resource_route.resource.permission.attributes)
-        add_associated_resource(resource_route.resource.cors.attributes)
+        add_associated_resource(resource_route.resource.cors(route).attributes)
 
         # map = Jets::Cfn::TemplateMappers::GatewayMethodMapper.new(route)
         # add_route(route, map)
