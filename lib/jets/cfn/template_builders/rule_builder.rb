@@ -3,7 +3,7 @@ class Jets::Cfn::TemplateBuilders
     def compose
       add_common_parameters
       add_functions
-      add_resources
+      add_associated_resources
       add_managed_rules
     end
 
