@@ -17,6 +17,24 @@ module Jets::Job::Dsl
         update_properties(schedule_expression: "cron(#{expression}")
       end
 
+      def event_pattern(details={})
+        event_rule(event_pattern: details)
+        add_descriptions # useful: generic description in the Event Rule console
+      end
+
+      def add_descriptions
+        numbered_resources = []
+        n = 1
+        @resources.map do |definition|
+          logical_id = definition.keys.first
+          attributes = definition.values.first
+          attributes[:properties][:description] = "#{self.name} Event Rule #{n}"
+          numbered_resources << { "#{logical_id}" => attributes }
+          n += 1
+        end
+        @resources = numbered_resources
+      end
+
       def default_associated_resource
         event_rule
       end
