@@ -8,7 +8,7 @@ class Jets::Resource::Route
           type: "AWS::ApiGateway::Method",
 
           properties: {
-            resource_id: "!Ref #{resource_logical_id}ApiResource",
+            resource_id: "!Ref #{resource_id}",
             rest_api_id: "!Ref RestApi",
             authorization_type: "NONE",
             http_method: "OPTIONS",

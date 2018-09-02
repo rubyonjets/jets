@@ -12,18 +12,14 @@ module Jets::Resource
     end
 
     def attributes
-      resource_id = @path == '' ?
-        "RootApiResource" :
-        "#{resource_logical_id}ApiResource"
-
       attributes = {
         "#{method_logical_id}ApiMethod" => {
           type: "AWS::ApiGateway::Method",
           properties: {
-            http_method: @route.method,
-            request_parameters: {},
             resource_id: "!Ref #{resource_id}",
             rest_api_id: "!Ref RestApi",
+            http_method: @route.method,
+            request_parameters: {},
             authorization_type: "NONE",
             integration: {
               integration_http_method: "POST",
@@ -45,17 +41,27 @@ module Jets::Resource
 
   private
     # Similar path_logical_id method in template_mappers/gateway_resource_mapper.rb
+    # Example: PostsGet
     def method_logical_id
-      path = @route.path
-      path = path.gsub('/','_')
-      path += "_#{@route.method}"
-      path.gsub(':','').gsub('*','').camelize
+      path = camelized_path
+      path + "#{@route.method.to_s.downcase.camelize}"
     end
 
+    def resource_id
+      @route.path == '' ?
+       "RootApiResource" :
+       "#{resource_logical_id}ApiResource"
+    end
+
+    # Example: Posts
     def resource_logical_id
+      camelized_path
+    end
+
+    def camelized_path
       path = @route.path
-      path = path.gsub('/','_')
-      path.gsub(':','').gsub('*','').camelize
+      path = "homepage" if path == ''
+      path.gsub('/','_').gsub(':','').gsub('*','')
     end
   end
 end
