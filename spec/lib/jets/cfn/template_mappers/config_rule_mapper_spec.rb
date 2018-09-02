@@ -3,7 +3,7 @@ describe Jets::Cfn::TemplateMappers::ConfigRuleMapper do
     Jets::Cfn::TemplateMappers::ConfigRuleMapper.new(task)
   end
   let(:task) do
-    Jets::Rule::Task.new("GameRule", :protect)
+    Jets::Lambda::Task.new("GameRule", :protect)
   end
 
   describe "maps" do

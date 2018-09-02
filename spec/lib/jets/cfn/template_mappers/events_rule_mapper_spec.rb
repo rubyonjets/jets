@@ -3,7 +3,7 @@ describe Jets::Cfn::TemplateMappers::EventsRuleMapper do
     Jets::Cfn::TemplateMappers::EventsRuleMapper.new(task)
   end
   let(:task) do
-    Jets::Job::Task.new("HardJob", :dig,
+    Jets::Lambda::Task.new("HardJob", :dig,
       rate: "1 minute")
   end
 
