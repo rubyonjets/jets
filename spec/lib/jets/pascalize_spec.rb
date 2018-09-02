@@ -26,4 +26,18 @@ describe "pascalize" do
     # pp result
     expect(result).to eq("FooBar"=>1, "EventPattern"=>{"dash-me"=>{"camelizeMe"=>3}})
   end
+
+  it "dont touch anything under ResponseParameters" do
+    h = {foo_bar: 1, response_parameters: {dont_touch: 3}}
+    result = Jets::Pascalize.pascalize(h)
+    # pp result
+    expect(result).to eq("FooBar"=>1, "ResponseParameters"=>{"dont_touch"=>3})
+  end
+
+  it "dont touch anything with - or /" do
+    h = {foo_bar: 1, "has-dash": 2, "has/slash": 3,"application/json":4}
+    result = Jets::Pascalize.pascalize(h)
+    # pp result
+    expect(result).to eq("FooBar"=>1, "has-dash"=>2,"has/slash"=>3,"application/json"=>4)
+  end
 end

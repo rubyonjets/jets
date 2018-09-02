@@ -1,6 +1,9 @@
 # Converts a Jets::Route to a CloudFormation resource
 module Jets::Resource
   class Route
+    autoload :Attributes, 'jets/resource/route/attributes'
+    autoload :Cors, 'jets/resource/route/cors'
+
     extend Memoist
 
     # route - Jets::Route
@@ -42,6 +45,7 @@ module Jets::Resource
     memoize :resource
 
   private
+    # Similar method in route/cors.rb
     def path_logical_id(path)
       path.gsub('/','_').gsub(':','').gsub('*','').camelize
     end
