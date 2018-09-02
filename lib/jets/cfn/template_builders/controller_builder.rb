@@ -20,10 +20,17 @@ class Jets::Cfn::TemplateBuilders
 
     def add_routes
       scoped_routes.each_with_index do |route, i|
-        map = Jets::Cfn::TemplateMappers::GatewayMethodMapper.new(route)
-        add_route(route, map)
-        add_cors(map)
-        add_permission(map)
+        resource_route = Jets::Resource::Route.new(route)
+        # pp resource_route.attributes
+        puts "resource_route.attributes.logical_id #{resource_route.attributes.logical_id}"
+        add_associated_resource(resource_route.resource)
+        add_associated_resource(resource_route.resource.permission.attributes)
+        # add_associated_resource(resource_route.resource.cors.attributes)
+
+        # map = Jets::Cfn::TemplateMappers::GatewayMethodMapper.new(route)
+        # add_route(route, map)
+        # add_cors(map)
+        # add_permission(map)
       end
     end
 

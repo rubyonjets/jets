@@ -33,7 +33,7 @@ module Jets::Resource
 
     # Auto-detect principal from the associated resources.
     def principal
-      Replacer.principal_map[@resource_attributes.type]
+      Replacer.principal_map(@resource_attributes.type)
     end
   end
 end

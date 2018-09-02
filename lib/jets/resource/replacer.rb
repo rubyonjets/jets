@@ -11,8 +11,7 @@ module Jets::Resource
       end
 
       # Maps
-      # TODOs:
-      # * fill out these maps for jets native supported resources.
+      # TODO: get rid of this map, and use a convention
       # * connect a plugin to figure out interface.
       # * add ability to explicitly override principal and source_arn.
       def replacer_map
@@ -21,11 +20,13 @@ module Jets::Resource
         }
       end
 
-      def principal_map
-        {
-          "AWS::Events::Rule" => "events.amazonaws.com",
-          "AWS::Config::ConfigRule" => "config.amazonaws.com",
-        }
+      # Examples:
+      #   "AWS::Events::Rule" => "events.amazonaws.com",
+      #   "AWS::Config::ConfigRule" => "config.amazonaws.com",
+      #   "AWS::ApiGateway::Method" => "apigateway.amazonaws.com"
+      def principal_map(type)
+        service = type.split('::')[1].downcase
+        "#{service}.amazonaws.com"
       end
     end
   end
