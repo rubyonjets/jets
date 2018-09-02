@@ -5,9 +5,7 @@ class Jets::Resource::Route
 
     # Replacements occur for: logical_id
     def attributes
-      resource_id = @path == '' ?
-        "HomepageCorsApiGatewayResource" :
-        "#{path_logical_id(@route.path)}CorsApiGatewayResource"
+      resource_id = @resource_attributes.logical_id.sub('ApiGatewayResource','CorsApiGatewayResource')
 
       attributes = {
         "{namespace}CorsApiGatewayMethod" => {
@@ -52,7 +50,7 @@ class Jets::Resource::Route
       } # closes attributes
 
       definitions = attributes # to emphasize that its the same thing
-      task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
+      task = Jets::Lambda::Task.new(@task.class_name, @task.meth,
                resources: definitions)
       Attributes.new(attributes, task)
     end

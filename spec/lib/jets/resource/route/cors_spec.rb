@@ -33,10 +33,10 @@ describe Jets::Resource::Route::Cors do
     it "attributes" do
       attributes = cors.attributes # attributes
       # the class shows up as the fake double class, which is fine for the spec
-      expect(attributes.logical_id).to eq "#[Double :task]ApiGatewayResource"
+      expect(attributes.logical_id).to eq "#[Double :task]IndexCorsApiGatewayMethod"
       properties = attributes.properties
-      pp properties # uncomment to debug
-      expect(properties["http_method"]).to eq "GET"
+      # pp properties # uncomment to debug
+      expect(properties["HttpMethod"]).to eq "OPTIONS"
     end
   end
 end
