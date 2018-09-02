@@ -12,7 +12,7 @@ class Jets::Resource::Route
             rest_api_id: "!Ref RestApi",
             authorization_type: "NONE",
             http_method: "OPTIONS",
-            method_responses: {
+            method_responses: [{
               status_code: '200',
               response_parameters: {
                 "method.response.header.Access-Control-AllowOrigin": true,
@@ -21,14 +21,14 @@ class Jets::Resource::Route
                 "method.response.header.Access-Control-AllowCredentials": true,
               },
               response_models: {},
-            },
+            }],
             request_parameters: {},
             integration: {
               type: "MOCK",
               request_templates: {
                 "application/json": "{statusCode:200}",
               },
-              integration_responses: {
+              integration_responses: [{
                 status_code: '200',
                 response_parameters: {
                   "method.response.header.Access-Control-AllowOrigin": "'*'",
@@ -39,7 +39,7 @@ class Jets::Resource::Route
                 response_templates: {
                   "application/json": '',
                 },
-              } # closes integration_responses
+              }] # closes integration_responses
             } # closes integration
           } # closes properties
         } # closes logical id

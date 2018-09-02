@@ -61,7 +61,7 @@ module Jets::Resource
     def camelized_path
       path = @route.path
       path = "homepage" if path == ''
-      path.gsub('/','_').gsub(':','').gsub('*','')
+      path.gsub('/','_').gsub(':','').gsub('*','').camelize
     end
   end
 end
