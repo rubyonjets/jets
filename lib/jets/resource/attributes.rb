@@ -34,5 +34,10 @@ module Jets::Resource
       Replacer::ConfigRule.new(@task)
     end
     memoize :replacer
+
+    def permission
+      Permission.new(@task, self)
+    end
+    memoize :permission
   end
 end

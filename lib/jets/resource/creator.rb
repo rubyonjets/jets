@@ -8,14 +8,11 @@ module Jets::Resource
     end
 
     # Template snippet that gets injected into the CloudFormation template.
-    def resource
+    def attributes
       Attributes.new(@definition, @task)
     end
+    alias_method :resource, :attributes
     memoize :resource
-
-    def permission
-      Permission.new(@task)
-    end
-    memoize :permission
+    memoize :attributes
   end
 end

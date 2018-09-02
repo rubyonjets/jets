@@ -2,14 +2,22 @@ module Jets::Resource
   class Permission
     extend Memoist
 
-    def initialize(task)
+    def initialize(task, resource)
       @task = task
+      @resource = resource
     end
 
     # Replacements occur for: logical_id, function_name, principal, source_arn
-    def resource
+    def attributes
+      logical_id = "{namespace}Permission"
+      md = @resource.logical_id.match(/(\d+)/)
+      if md
+        counter = md[1]
+      end
+      logical_id = [logical_id, counter].compact.join('')
+
       attributes = {
-        "{namespace}Permission" => {
+        logical_id => {
           type: "AWS::Lambda::Permission",
           properties: {
             function_name: "!GetAtt {namespace}LambdaFunction.Arn",
@@ -21,7 +29,7 @@ module Jets::Resource
       }
       Attributes.new(attributes, @task)
     end
-    memoize :resource
+    memoize :attributes
 
     # SourceArn: !GetAtt SecurityJobDisableUnusedCredentialsScheduledEvent.Arn
     #
@@ -29,20 +37,12 @@ module Jets::Resource
     # generic resource at all.
     # SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*
     def source_arn
-      source_arns = @task.resources.map do |definition|
-        creator = Jets::Resource::Creator.new(definition, @task)
-        source_arn_map(creator.resource.type, creator.resource.logical_id)
-      end
-      source_arns.size == 1 ? source_arns.first : source_arns
+      source_arn_map(@resource.type, @resource.logical_id)
     end
 
     # Auto-detect principal from the associated resources.
     def principal
-      principals = @task.resources.map do |definition|
-        creator = Jets::Resource::Creator.new(definition, @task)
-        principal_map[creator.resource.type]
-      end
-      principals.size == 1 ? principals.first : principals.uniq
+      principal_map[@resource.type]
     end
 
     ##################################

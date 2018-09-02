@@ -11,7 +11,7 @@ class Jets::Cfn::TemplateBuilders
         task.resources.each do |definition|
           creator = Jets::Resource::Creator.new(definition, task)
           add_associated_resource(creator.resource)
-          add_associated_resource(creator.permission.resource)
+          add_associated_resource(creator.resource.permission.attributes)
         end
       end
     end
