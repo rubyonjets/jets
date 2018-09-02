@@ -52,7 +52,7 @@ class Jets::Resource::Route
     def allow_origin
       if Jets.config.cors == true
         '*'
-      elsif
+      elsif Jets.config.cors
         Jets.config.cors
       end
     end
