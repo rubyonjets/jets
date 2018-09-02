@@ -17,7 +17,7 @@ module Jets::Resource
         "#{path_logical_id(@route.path)}ApiGatewayResource"
 
       attributes = {
-        "{namespace}ApiGatewayMethod" => {
+        "{namespace}ApiMethod" => {
           type: "AWS::ApiGateway::Method",
           properties: {
             http_method: @route.method,

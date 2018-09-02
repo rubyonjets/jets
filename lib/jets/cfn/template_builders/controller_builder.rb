@@ -37,7 +37,7 @@ class Jets::Cfn::TemplateBuilders
 
     def add_route(route, map)
       # AWS::ApiGateway::Method
-      # Example map.logical_id: ApiGatewayMethodPostsControllerIndex
+      # Example map.logical_id: PostsControllerIndexApiMethod
       add_resource(map.logical_id, "AWS::ApiGateway::Method",
         HttpMethod: route.method,
         RequestParameters: {},

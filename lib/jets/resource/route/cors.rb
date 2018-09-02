@@ -8,7 +8,7 @@ class Jets::Resource::Route
       resource_id = @resource_attributes.logical_id.sub('ApiGatewayResource','CorsApiGatewayResource')
 
       attributes = {
-        "{namespace}CorsApiGatewayMethod" => {
+        "{namespace}CorsApiMethod" => {
           type: "AWS::ApiGateway::Method",
 
           properties: {
