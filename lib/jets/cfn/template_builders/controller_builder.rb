@@ -23,7 +23,6 @@ class Jets::Cfn::TemplateBuilders
         resource_route = Jets::Resource::Route.new(route)
         add_associated_resource(resource_route.resource)
         add_associated_resource(resource_route.resource.permission.attributes)
-        # TODO: allow specifying specific CORs domains
         add_associated_resource(resource_route.resource.cors(route).attributes) if Jets.config.cors
       end
     end

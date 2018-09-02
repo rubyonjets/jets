@@ -1,7 +1,5 @@
 class Jets::Resource::Route
-  # Cors acts like both Route and Permission
   class Cors < Jets::Resource::Route
-    # Replacements occur for: logical_id
     def attributes
       attributes = {
         "#{resource_logical_id}CorsApiMethod" => {
@@ -31,7 +29,7 @@ class Jets::Resource::Route
               integration_responses: [{
                 status_code: '200',
                 response_parameters: {
-                  "method.response.header.Access-Control-AllowOrigin": "'*'",
+                  "method.response.header.Access-Control-AllowOrigin": "'#{allow_origin}'",
                   "method.response.header.Access-Control-AllowHeaders": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
                   "method.response.header.Access-Control-AllowMethods": "'OPTIONS,GET'",
                   "method.response.header.Access-Control-AllowCredentials": "'false'",
@@ -49,6 +47,14 @@ class Jets::Resource::Route
       task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
                resources: definitions)
       Attributes.new(attributes, task)
+    end
+
+    def allow_origin
+      if Jets.config.cors == true
+        '*'
+      elsif
+        Jets.config.cors
+      end
     end
   end
 end

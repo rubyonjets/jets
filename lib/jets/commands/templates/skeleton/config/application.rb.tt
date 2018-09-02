@@ -6,10 +6,13 @@ Jets.application.configure do
   # config.env_extra = 2 # can also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
 
+  config.cors = true # for '*''
+  # config.cors = '*.mydomain.com' # for specific domain
+
   config.function.timeout = 10
   # config.function.role = "arn:aws:iam::#{Jets.aws.account}:role/service-role/pre-created"
   # config.function.memory_size= 1536
-  # config.function.cors = true
+
   config.function.environment = {
     global_app_key1: "global_app_value1",
     global_app_key2: "global_app_value2",
