@@ -17,9 +17,6 @@ class Jets::Cfn
     autoload :GatewayResourceMapper, "jets/cfn/template_mappers/gateway_resource_mapper"
     autoload :LambdaFunctionMapper, "jets/cfn/template_mappers/lambda_function_mapper"
 
-    autoload :EventsRuleMapper, "jets/cfn/template_mappers/events_rule_mapper"
-    autoload :ConfigRuleMapper, "jets/cfn/template_mappers/config_rule_mapper"
-
     autoload :IamPolicy, "jets/cfn/template_mappers/iam_policy"
   end
 end
