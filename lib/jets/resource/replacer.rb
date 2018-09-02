@@ -8,7 +8,7 @@ module Jets::Resource
       # Plugin registration future use
       def map_registry
         {
-          "AWS::Events::Rule" => "Jets::Resource::Replacer::ConfigRule"
+          "AWS::Config::ConfigRule" => "Jets::Resource::Replacer::ConfigRule"
         }
       end
 

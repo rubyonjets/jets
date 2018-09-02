@@ -31,7 +31,8 @@ module Jets::Resource
 
     def replacer
       # Use raw @data to avoid infinite loop from using attributes
-      type = @data.values.first['Type']
+      attributes = Jets::Pascalize.pascalize(@data.values.first)
+      type = attributes['Type']
       replacer_class = Replacer.lookup(type)
       replacer_class.new(@task)
     end
