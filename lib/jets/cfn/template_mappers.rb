@@ -7,6 +7,8 @@ class Jets::Cfn
     autoload :ChildMapper, "jets/cfn/template_mappers/child_mapper"
     autoload :ControllerMapper, "jets/cfn/template_mappers/controller_mapper"
     autoload :FunctionMapper, "jets/cfn/template_mappers/function_mapper"
+    autoload :JobMapper, "jets/cfn/template_mappers/job_mapper"
+    autoload :RuleMapper, "jets/cfn/template_mappers/rule_mapper"
 
     autoload :ApiGatewayMapper, "jets/cfn/template_mappers/api_gateway_mapper"
     autoload :ApiGatewayDeploymentMapper, "jets/cfn/template_mappers/api_gateway_deployment_mapper"
