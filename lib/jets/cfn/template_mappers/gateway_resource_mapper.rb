@@ -55,6 +55,7 @@ class Jets::Cfn::TemplateMappers
     end
 
   private
+    # Similar path_logical_id method in resource/route.rb
     def path_logical_id(path)
       path.gsub('/','_').gsub(':','').gsub('*','').camelize
     end

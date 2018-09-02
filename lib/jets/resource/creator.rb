@@ -12,7 +12,6 @@ module Jets::Resource
       Attributes.new(@definition, @task)
     end
     alias_method :resource, :attributes
-    memoize :resource
     memoize :attributes
   end
 end

@@ -54,12 +54,5 @@ class Jets::Resource::Route
                resources: definitions)
       Attributes.new(attributes, task)
     end
-    memoize :attributes
-
-  private
-    # Similar method in resource/route.rb
-    def path_logical_id(path)
-      path.gsub('/','_').gsub(':','').gsub('*','').camelize
-    end
   end
 end

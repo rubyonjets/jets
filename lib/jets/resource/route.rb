@@ -14,7 +14,7 @@ module Jets::Resource
     def attributes
       resource_id = @path == '' ?
         "HomepageApiGatewayResource" :
-        "#{path_logical_id(@route.path)}ApiGatewayResource"
+        "#{method_logical_id}ApiGatewayResource"
 
       attributes = {
         "{namespace}ApiMethod" => {
@@ -42,12 +42,14 @@ module Jets::Resource
     end
     alias_method :resource, :attributes
     memoize :attributes
-    memoize :resource
 
   private
-    # Similar method in route/cors.rb
-    def path_logical_id(path)
-      path.gsub('/','_').gsub(':','').gsub('*','').camelize
+    # Similar path_logical_id method in template_mappers/gateway_resource_mapper.rb
+    def method_logical_id
+      path = @route.path
+      path = path.gsub('/','_')
+      path += "_#{@route.action_name}"
+      path.gsub(':','').gsub('*','').camelize
     end
   end
 end

@@ -28,6 +28,13 @@ module Jets::Resource
         service = type.split('::')[1].downcase
         "#{service}.amazonaws.com"
       end
+
+      def source_arn_map(type)
+        map = {
+          "AWS::ApiGateway::Method" => "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*",
+        }
+        map[type]
+      end
     end
   end
 end

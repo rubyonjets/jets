@@ -23,7 +23,7 @@ module Jets::Resource
             function_name: "!GetAtt {namespace}LambdaFunction.Arn",
             action: "lambda:InvokeFunction",
             principal: principal,
-            source_arn: "!GetAtt #{@resource_attributes.logical_id}.Arn",
+            source_arn: source_arn,
           }
         }
       }
@@ -34,6 +34,11 @@ module Jets::Resource
     # Auto-detect principal from the associated resources.
     def principal
       Replacer.principal_map(@resource_attributes.type)
+    end
+
+    def source_arn
+      default_arn = "!GetAtt #{@resource_attributes.logical_id}.Arn"
+      Replacer.source_arn_map(@resource_attributes.type) || default_arn
     end
   end
 end
