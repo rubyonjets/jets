@@ -36,7 +36,7 @@ describe Jets::Cfn::TemplateMappers::GatewayResourceMapper do
       it "contains info for CloudFormation API Gateway Resources" do
         expect(map.logical_id).to eq "PostsApiResource"
         expect(map.path_part).to eq "posts"
-        expect(map.parent_id).to eq "!GetAtt RestApi.HomepageApiResource"
+        expect(map.parent_id).to eq "!GetAtt RestApi.RootResourceId"
       end
     end
 

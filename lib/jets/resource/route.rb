@@ -13,7 +13,7 @@ module Jets::Resource
 
     def attributes
       resource_id = @path == '' ?
-        "HomepageApiResource" :
+        "RootApiResource" :
         "#{resource_logical_id}ApiResource"
 
       attributes = {

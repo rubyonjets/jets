@@ -8,7 +8,7 @@ class Jets::Cfn::TemplateMappers
     def logical_id
       homepage = @path == ''
       if homepage
-        "HomepageApiResource"
+        "RootApiResource"
       else
         "#{path_logical_id(@path)}ApiResource"
       end
@@ -45,7 +45,7 @@ class Jets::Cfn::TemplateMappers
         parent_logical_id = path_logical_id(parent_path)
         "!Ref #{parent_logical_id}ApiResource"
       else
-        "!GetAtt RestApi.HomepageApiResource"
+        "!GetAtt RestApi.RootResourceId"
       end
     end
 
