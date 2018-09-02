@@ -124,10 +124,12 @@ module Jets::Lambda::Dsl
       # Generic method that registers a resource to be associated with the Lambda function.
       # In the future all DSL methods can lead here.
       def resources(*definitions)
-        if definitions == [nil]
+        if definitions == [nil] # when resources called with no arguments
           @resources || []
         else
-          @resources ||= definitions
+          @resources ||= []
+          @resources += definitions
+          @resources.flatten!
         end
       end
       alias_method :resource, :resources
@@ -169,8 +171,8 @@ module Jets::Lambda::Dsl
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          resources: @resources,
-          properties: @properties,
+          resources: @resources, # associated resources
+          properties: @properties, # lambda function properties
           iam_policy: @iam_policy,
           managed_iam_policy: @managed_iam_policy,
           lang: lang)

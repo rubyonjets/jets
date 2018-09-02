@@ -30,6 +30,7 @@ module Jets::Resource
     end
 
     def replacer
+      # TODO: look up replace dynamically
       Replacer::ConfigRule.new(@task)
     end
     memoize :replacer

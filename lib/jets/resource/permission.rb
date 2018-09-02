@@ -42,7 +42,7 @@ module Jets::Resource
         creator = Jets::Resource::Creator.new(definition, @task)
         principal_map[creator.resource.type]
       end
-      principals.size == 1 ? principals.first : principals
+      principals.size == 1 ? principals.first : principals.uniq
     end
 
     ##################################

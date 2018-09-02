@@ -18,10 +18,10 @@ module Jets::Job::Dsl
       end
 
       def default_associated_resource
-        events_rule
+        event_rule
       end
 
-      def events_rule(props={})
+      def event_rule(props={})
         default_props = {
           state: "ENABLED",
           targets: [{
@@ -35,6 +35,22 @@ module Jets::Job::Dsl
           type: "AWS::Events::Rule",
           properties: properties
         })
+
+        add_logical_id_counter if @resources.size > 1
+      end
+
+      # Loop back through the resources and add a counter to the end of the id
+      # to handle multiple events.
+      # Then replace @resources entirely
+      def add_logical_id_counter
+        numbered_resources = []
+        n = 1
+        @resources.map do |definition|
+          logical_id = definition.keys.first
+          numbered_resources << { "#{logical_id}#{n}" => definition.values.first }
+          n += 1
+        end
+        @resources = numbered_resources
       end
     end
   end
