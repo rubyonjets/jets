@@ -1,5 +1,7 @@
 module Jets::Resource::Replacer
   class Base
+    extend Memoist
+
     def initialize(task)
       @task = task
       @app_class = task.class_name.to_s

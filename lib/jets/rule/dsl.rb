@@ -3,7 +3,7 @@
 # So the Jets::Rule::Dsl overrides some of the Jets::Lambda::Functions behavior.
 #
 # Implements:
-#   default_associated_resource
+#   default_associated_resource: must return @resources
 module Jets::Rule::Dsl
   extend ActiveSupport::Concern
 
@@ -75,6 +75,7 @@ module Jets::Rule::Dsl
           type: "AWS::Config::ConfigRule",
           properties: properties
         })
+        @resources # must return @resoures for update_properties
       end
 
       def managed_rule(name, props={})
@@ -98,7 +99,7 @@ module Jets::Rule::Dsl
         # At the same time, we do not register the task to all_tasks to avoid creating a Lambda function.
         # Instead we store it in all_managed_rules.
         update_properties(properties)
-        definition = resources.first
+        definition = @resources.first
 
         register_managed_rule(name, definition)
       end

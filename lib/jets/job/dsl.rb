@@ -3,7 +3,7 @@
 # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
 #
 # Implements:
-#   default_associated_resource
+#   default_associated_resource: must return @resources
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
 
@@ -37,6 +37,7 @@ module Jets::Job::Dsl
 
       def default_associated_resource
         event_rule
+        @resources # must return @resoures for update_properties
       end
 
       def event_rule(props={})

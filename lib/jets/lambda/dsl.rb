@@ -1,3 +1,5 @@
+# Other dsl that rely on this must implement
+#   default_associated_resource: must return @resources
 module Jets::Lambda::Dsl
   extend ActiveSupport::Concern
 
