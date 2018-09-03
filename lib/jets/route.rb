@@ -4,6 +4,8 @@
 #   to: "posts#index",
 # )
 class Jets::Route
+  CAPTURE_REGEX = "([a-zA\\-Z0-9_.]*)" # as string
+
   def initialize(options)
     @options = options
   end
@@ -104,7 +106,7 @@ class Jets::Route
     # changes path to a string used for a regexp
     # posts/:id/edit => posts\/(.*)\/edit
     regexp_string = path.split('/').map do |s|
-                      s.include?(':') ? "([a-zA-Z0-9_]*)" : s
+                      s.include?(':') ? CAPTURE_REGEX : s
                     end.join('\/')
     # make sure beginning and end of the string matches
     regexp_string = "^#{regexp_string}$"

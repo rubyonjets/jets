@@ -56,6 +56,28 @@ describe Jets::Server::RouteMatcher do
     end
   end
 
+  context "get posts/:id with extension" do
+    let(:env) do
+      { "PATH_INFO" => "/posts/tung.png", "REQUEST_METHOD" => "GET" }
+    end
+    it "find_route" do
+      route = matcher.find_route
+      expect(route.path).to eq "posts/:id"
+      expect(route.method).to eq "GET"
+    end
+  end
+
+  context "get posts/:id with dash" do
+    let(:env) do
+      { "PATH_INFO" => "/posts/tung-nguyen", "REQUEST_METHOD" => "GET" }
+    end
+    it "find_route" do
+      route = matcher.find_route
+      expect(route.path).to eq "posts/:id"
+      expect(route.method).to eq "GET"
+    end
+  end
+
   context "get posts/new" do
     let(:env) do
       { "PATH_INFO" => "/posts/new", "REQUEST_METHOD" => "GET" }
