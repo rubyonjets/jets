@@ -64,7 +64,7 @@ class Jets::Commands::Base < Thor
         class_name.sub!(/Task$/, "Tasks") # special rule here for Tasks class
         # NOTE: Weird thing where Jets::Commands::Db::Task => Thor::Command
         # because Task is a class available to Thor I believe.
-        puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
+        # puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
         class_name.constantize # dont have to worry about order.
       end
     end

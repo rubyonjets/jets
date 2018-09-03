@@ -20,12 +20,12 @@ module Jets
       @options[:mute_output] = true if @options[:mute_output].nil?
     end
 
+    # Makes remote call to the Lambda function.
     def warm(function_name)
       Jets::Commands::Call.new(function_name, '{"_prewarm": "1"}', @options).run unless ENV['TEST']
     end
 
-    # loop through all methods fo each class
-    # make the special prewarm call to keep them warm
+    # Loop through all methods for each class and makes special prewarm call to each method.
     def warm_all
       threads = []
       all_functions.each do |function_name|

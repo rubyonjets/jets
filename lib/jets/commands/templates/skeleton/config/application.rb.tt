@@ -9,7 +9,7 @@ Jets.application.configure do
   config.cors = true # for '*''
   # config.cors = '*.mydomain.com' # for specific domain
 
-  config.function.timeout = 10
+  config.function.timeout = 20
   # config.function.role = "arn:aws:iam::#{Jets.aws.account}:role/service-role/pre-created"
   # config.function.memory_size= 1536
 
