@@ -2,9 +2,9 @@
 title: CloudWatch Events
 ---
 
-AWS Lambda supports [CloudWatch Event Rules](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/Create-CloudWatch-Events-Rule.html). This ability allows you to have a Lambda function run when there's a change to your AWS resources.  Here's a long list of supported [Event Types](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html).
+AWS Lambda supports [CloudWatch Event Rules](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/Create-CloudWatch-Events-Rule.html). This allows you to have a Lambda function run when there's a change to AWS resources.  Here's an extensive list of supported [Event Types](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html).
 
-An example might be getting notified whenever an unwanted security group port gets opened up.
+An example might be getting notified when an unwanted security group port gets opened.
 
 ```ruby
 class SecurityJob < ApplicationJob
@@ -32,7 +32,7 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-You can further simplify the code `event_pattern`. Here's another example that detects when an instance goes into stopping.
+You can further simplify the code with `event_pattern`. Here's another example that detects when an instance goes into stopping state.
 
 ```ruby
 class SecurityJob < ApplicationJob
@@ -49,11 +49,11 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-This pattern of watching CloudWatch events be used for automating things like automatically closing back up security group ports that get unintentionally get opened. CloudWatch Events opens up a world of possible uses.
+This pattern of watching CloudWatch events can be used for things like automatically closing security group ports that get unintentionally opened. CloudWatch Events opens up a world of possible use cases.
 
 ## Multiple Events Support
 
-Registering multiple events to the same lambda function are supported. Just add as many as you need. Example:
+Registering multiple events to the same lambda function are supported. Add as multiple event rules above the method definition. Example:
 
 ```ruby
 class SecurityJob < ApplicationJob
