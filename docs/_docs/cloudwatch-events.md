@@ -42,14 +42,44 @@ class SecurityJob < ApplicationJob
     detail: {
       state: ["stopping"],
     }
-    def instance_stopping
-      # logic goes here
-    end
   )
+  def instance_stopping
+    # logic goes here
+  end
 end
 ```
 
 This pattern of watching CloudWatch events be used for automating things like automatically closing back up security group ports that get unintentionally get opened. CloudWatch Events opens up a world of possible uses.
+
+## Multiple Events Support
+
+Registering multiple events to the same lambda function are supported. Just add as many as you need. Example:
+
+```ruby
+class SecurityJob < ApplicationJob
+  event_pattern(
+    source: ["aws.ec2"],
+    detail_type: ["EC2 Instance State-change Notification"],
+    detail: {
+      state: ["stopping"],
+    }
+  )
+  event_pattern(
+    detail_type: ["AWS API Call via CloudTrail"]
+    detail: {
+      userIdentity: {
+        type: ["Root"]
+      }
+    }
+  )
+  rate "10 hours"
+  def perform_some_logic
+    # logic goes here
+  end
+end
+```
+
+Notice in the above example that you can even mix in the `rate` declaration and associated scheduled events with the Lambda function.
 
 ## Related links
 
