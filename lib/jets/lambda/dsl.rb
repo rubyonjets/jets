@@ -1,3 +1,5 @@
+# Other dsl that rely on this must implement
+#   default_associated_resource: must return @resources
 module Jets::Lambda::Dsl
   extend ActiveSupport::Concern
 
@@ -120,6 +122,44 @@ module Jets::Lambda::Dsl
         !!(class_iam_policy || class_managed_iam_policy)
       end
 
+      #############################
+      # Generic method that registers a resource to be associated with the Lambda function.
+      # In the future all DSL methods can lead here.
+      def resources(*definitions)
+        if definitions == [nil] # when resources called with no arguments
+          @resources || []
+        else
+          @resources ||= []
+          @resources += definitions
+          @resources.flatten!
+        end
+      end
+      alias_method :resource, :resources
+
+      # Main method that the convenience methods call for to create resources associated
+      # with the Lambda function. References the first resource and updates it inplace.
+      # Useful for associated resources that are meant to be declare and associated
+      # with only one Lambda function. Example:
+      #
+      #   Config Rule <=> Lambda function is 1-to-1
+      #
+      # Note: This methods calls default_associated_resource. The inheriting DSL class
+      # must implement default_associated_resource. The default_associated_resource should
+      # wrap another method that is nicely name so that the nicely name method is
+      # available in the DSL. Example:
+      #
+      #   def default_associated_resource
+      #     config_rule
+      #   end
+      #
+      def update_properties(values={})
+        @resources ||= default_associated_resource
+        definition = @resources.first # singleton
+        attributes = definition.values.first
+        attributes[:properties].merge!(values)
+        @resources
+      end
+
       # meth is a Symbol
       def method_added(meth)
         return if %w[initialize method_missing].include?(meth.to_s)
@@ -133,7 +173,8 @@ module Jets::Lambda::Dsl
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          properties: @properties,
+          resources: @resources, # associated resources
+          properties: @properties, # lambda function properties
           iam_policy: @iam_policy,
           managed_iam_policy: @managed_iam_policy,
           lang: lang)
@@ -152,6 +193,7 @@ module Jets::Lambda::Dsl
       end
 
       def clear_properties
+        @resources = nil
         @properties = nil
         @iam_policy = nil
         @managed_iam_policy = nil

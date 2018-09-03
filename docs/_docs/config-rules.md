@@ -68,6 +68,22 @@ end
 
 Jets will create Python lambda functions using the files in the `app/rules/protect_rule/python` folder and associate the Config Rules with these functions.  This saves you time from rewriting the python code.
 
+## Managed Config Rules
+
+[AWS Config Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html) are rules pre-built rules created by AWS.  For example, there's a [iam-password-policy](https://docs.aws.amazon.com/config/latest/developerguide/iam-password-policy.html) rule that you can set up to prove that your AWS account follows a strong password policy. AWS support a ton of [Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html).  It is simple to use Config Managed Rules with Jets, here's an example:
+
+```ruby
+class CheckRule < Jets::Rule::Base
+  desc "CIS 4.1 - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"
+  scope "AWS::EC2::SecurityGroup"
+  managed_rule :incoming_ssh_disabled
+end
+```
+
+It is perfectly fine to use AWS managed rules and custom lambda based rules in the same Rule class.  Here's a screenshot example of the both types of rules mixed together:
+
+![](/img/docs/aws-config-rules.png)
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/database-activerecord.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-support.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/cors-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

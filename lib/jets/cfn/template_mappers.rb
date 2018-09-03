@@ -6,8 +6,8 @@ class Jets::Cfn
     # used in the parent_template.rb
     autoload :ChildMapper, "jets/cfn/template_mappers/child_mapper"
     autoload :ControllerMapper, "jets/cfn/template_mappers/controller_mapper"
-    autoload :JobMapper, "jets/cfn/template_mappers/job_mapper"
     autoload :FunctionMapper, "jets/cfn/template_mappers/function_mapper"
+    autoload :JobMapper, "jets/cfn/template_mappers/job_mapper"
     autoload :RuleMapper, "jets/cfn/template_mappers/rule_mapper"
 
     autoload :ApiGatewayMapper, "jets/cfn/template_mappers/api_gateway_mapper"
@@ -16,9 +16,6 @@ class Jets::Cfn
     autoload :GatewayMethodMapper, "jets/cfn/template_mappers/gateway_method_mapper"
     autoload :GatewayResourceMapper, "jets/cfn/template_mappers/gateway_resource_mapper"
     autoload :LambdaFunctionMapper, "jets/cfn/template_mappers/lambda_function_mapper"
-
-    autoload :EventsRuleMapper, "jets/cfn/template_mappers/events_rule_mapper"
-    autoload :ConfigRuleMapper, "jets/cfn/template_mappers/config_rule_mapper"
 
     autoload :IamPolicy, "jets/cfn/template_mappers/iam_policy"
   end

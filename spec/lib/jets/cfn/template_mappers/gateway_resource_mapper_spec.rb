@@ -7,17 +7,17 @@ describe Jets::Cfn::TemplateMappers::GatewayResourceMapper do
     context("edit path") do
       let(:path) { "posts/:id/edit" }
       it "contains info for CloudFormation API Gateway Resources" do
-        expect(map.logical_id).to eq "PostsIdEditApiGatewayResource"
-        expect(map.cors_logical_id).to eq "PostsIdEditCorsApiGatewayResource"
+        expect(map.logical_id).to eq "PostsIdEditApiResource"
+        expect(map.cors_logical_id).to eq "PostsIdEditCorsApiResource"
         expect(map.path_part).to eq "edit"
-        expect(map.parent_id).to eq "!Ref PostsIdApiGatewayResource"
+        expect(map.parent_id).to eq "!Ref PostsIdApiResource"
       end
     end
 
     context("*catchall") do
       let(:path) { "*catchall" }
       it "uses valid characters for logical id" do
-        expect(map.logical_id).to eq "CatchallApiGatewayResource"
+        expect(map.logical_id).to eq "CatchallApiResource"
         expect(map.path_part).to eq "{catchall+}"
       end
     end
@@ -25,16 +25,16 @@ describe Jets::Cfn::TemplateMappers::GatewayResourceMapper do
     context("show path with path_part that has the capture") do
       let(:path) { "posts/:id" }
       it "contains info for CloudFormation API Gateway Resources" do
-        expect(map.logical_id).to eq "PostsIdApiGatewayResource"
+        expect(map.logical_id).to eq "PostsIdApiResource"
         expect(map.path_part).to eq "{id}"
-        expect(map.parent_id).to eq "!Ref PostsApiGatewayResource"
+        expect(map.parent_id).to eq "!Ref PostsApiResource"
       end
     end
 
     context("posts index is a root level path") do
       let(:path) { "posts" }
       it "contains info for CloudFormation API Gateway Resources" do
-        expect(map.logical_id).to eq "PostsApiGatewayResource"
+        expect(map.logical_id).to eq "PostsApiResource"
         expect(map.path_part).to eq "posts"
         expect(map.parent_id).to eq "!GetAtt RestApi.RootResourceId"
       end

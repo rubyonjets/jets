@@ -4,6 +4,8 @@
 #   * template_path
 class Jets::Cfn::TemplateBuilders
   module Interface
+    extend Memoist
+
     def build
       # Do not bother building
       # or writing the template unless there are functions defined
@@ -37,6 +39,9 @@ class Jets::Cfn::TemplateBuilders
         if line.include?(': "!') # IE: IamRole: "!Ref IamRole",
            # IamRole: "!Ref IamRole" => IamRole: !Ref IamRole
           line.sub(/: "(.*)"/, ': \1')
+        elsif line.include?('- "!') # IE: - "!GetAtt Foo.Arn"
+           # IamRole: - "!GetAtt Foo.Arn" => - !GetAtt Foo.Arn
+          line.sub(/- "(.*)"/, '- \1')
         else
           line
         end

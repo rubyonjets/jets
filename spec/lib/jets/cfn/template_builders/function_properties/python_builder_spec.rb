@@ -5,7 +5,7 @@ describe Jets::Cfn::TemplateBuilders::FunctionProperties::PythonBuilder do
 
   context "HardJob#dig" do
     let(:task) do
-      Jets::Job::Task.new("HardJob", :dig, rate: "1 minute")
+      Jets::Lambda::Task.new("HardJob", :dig, rate: "1 minute")
     end
 
     describe "properties" do

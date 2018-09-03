@@ -147,10 +147,10 @@ module Jets::Commands
       controllers = File.expand_path("../../internal/app/controllers/jets", __FILE__)
 
       welcome = Jets::Router.has_controller?("Jets::WelcomeController")
-      paths << "#{controllers}/public_controller.rb" if welcome
+      paths << "#{controllers}/welcome_controller.rb" if welcome
 
       public_catchall = Jets::Router.has_controller?("Jets::PublicController")
-      paths << "#{controllers}/welcome_controller.rb" if public_catchall
+      paths << "#{controllers}/public_controller.rb" if public_catchall
 
       jobs = File.expand_path("../../internal/app/jobs/jets", __FILE__)
       paths << "#{jobs}/preheat_job.rb"

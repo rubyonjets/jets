@@ -97,6 +97,8 @@ class Jets::Cfn
     def show_api_endpoint
       return unless @options[:stack_type] == :full # s3 bucket is available
       return if Jets::Router.routes.empty?
+      resp, status = stack_status
+      return if status.include?("ROLLBACK")
 
       resp = cfn.describe_stack_resources(stack_name: @parent_stack_name)
       resources = resp.stack_resources

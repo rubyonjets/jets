@@ -9,7 +9,7 @@ class Jets::Cfn::TemplateMappers
 
     # common parameters to all child stacks
     def parameters
-      parameters = {
+      {
         # YAML.dump converts it to a string
         # !GetAtt Base.Outputs.IamRole => "!GetAtt Base.Outputs.IamRole"
         # But post processing of the template fixes this

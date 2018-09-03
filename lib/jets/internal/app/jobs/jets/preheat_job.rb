@@ -23,7 +23,7 @@ class Jets::PreheatJob < ApplicationJob
   )
 
   unless Jets::Commands::Build.poly_only?
-    torching ? rate(PREWARM_RATE) : disable(true)
+    rate(PREWARM_RATE) if torching
     def torch
       threads = []
       CONCURRENCY.times do
@@ -42,7 +42,7 @@ class Jets::PreheatJob < ApplicationJob
       "Finished prewarming your application with a concurrency of #{CONCURRENCY}."
     end
 
-    warming ? rate(PREWARM_RATE) : disable(true)
+    rate(PREWARM_RATE) if warming
     def warm
       options = call_options(event[:quiet])
       Jets::Preheat.warm_all(options)

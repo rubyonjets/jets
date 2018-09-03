@@ -12,11 +12,11 @@ Say you have a Jets project that has the following dotenv files:
     .env.test
     .env.production
 
-## Always loaded
+## Always Loaded
 
 The `.env` file will always get loaded.
 
-## Environment specific variables
+## Environment Specific Variables
 
 The second word is the `JETS_ENV` value. So:
 
@@ -26,7 +26,7 @@ The second word is the `JETS_ENV` value. So:
 
 These files only get loaded for the configured valued of `JETS_ENV`. This allows you to use different environment variables for different environments.
 
-## Deploy specific variables
+## Remote Only Variables
 
 The last example file is `.env.development.remote`.  The values from this file only get loaded for the deployed remote Lambda Functions. It can be useful if you need different values on the lambda function and would like to keep the same `JETS_ENV`.
 
