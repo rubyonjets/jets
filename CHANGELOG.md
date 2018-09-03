@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.0]
+- Introduce core resource, pull request #20
+- Future template generation will lead to core resource. Start the move away from the older cfn template generator logic.
+- Allows for more control and customization of the associated resources with the lambda functions.
+- Allows multiple associated resources to be connected to a lambda function.
+- Support for CloudWatch event patterns, not just scheduled expression
+
 ## [0.7.1]
 - fix application-wide config.iam_policy ability
 
