@@ -53,7 +53,7 @@ This pattern of watching CloudWatch events can be used for things like automatic
 
 ## Multiple Events Support
 
-Registering multiple events to the same lambda function are supported. Add as multiple event rules above the method definition. Example:
+Registering multiple events to the same lambda function are supported. Add multiple event rules above the method definition. Example:
 
 ```ruby
 class SecurityJob < ApplicationJob
