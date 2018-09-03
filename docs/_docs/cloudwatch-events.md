@@ -79,7 +79,7 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-Notice in the above example that you can even mix in the `rate` declaration and associated scheduled events with the Lambda function.
+Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.
 
 ## Related links
 
