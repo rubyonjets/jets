@@ -12,6 +12,6 @@ Jets is a Ruby Serverless Framework.  While it strongly encouraged to use Ruby w
 
 For example, there are a ton of lambda examples written in other languages. In these cases, it is convenient to take the lambda functions wholesale, add it to your Jets project, and move on with life.  This is a reason why Jets has polymorphic support.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/config-rules.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/cors-support.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-python.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
