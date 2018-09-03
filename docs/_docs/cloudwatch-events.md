@@ -49,7 +49,7 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-This pattern of watching CloudWatch events can be used for things like automatically closing security group ports that get unintentionally opened. CloudWatch Events opens up a world of possible use cases.
+This pattern of watching CloudWatch events can be used for things like automatically closing security group ports that get unintentionally opened. CloudWatch Events opens up a world of possibilities.
 
 ## Multiple Events Support
 
