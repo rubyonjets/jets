@@ -8,18 +8,18 @@ module Jets::Commands
 
     def display
       stack_name = Jets::Naming.parent_stack_name
-      stack = cfn.describe_stacks(stack_name: stack_name).stacks.first
-
-      unless stack
-        puts "Stack for '#{Jets.config.project_name} project for environment #{Jets.env}.  Couldn't find '#{stack_name}' stack."
+      unless stack_exists?(stack_name)
+        puts "Stack for #{Jets.config.project_name.colorize(:green)} project for environment #{Jets.env.colorize(:green)}.  Couldn't find #{stack_name.colorize(:green)} stack."
         exit
       end
+
+      stack = cfn.describe_stacks(stack_name: stack_name).stacks.first
 
       api_gateway_stack_arn = lookup(stack[:outputs], "ApiGateway")
       if api_gateway_stack_arn
         STDOUT.puts get_url(api_gateway_stack_arn)
       else
-        puts "API Gateway not found. This jets app does have an API Gateway associated with it.  Please double check your config/routes.rb if you were expecting to see a url for the app."
+        puts "API Gateway not found. This jets app does have an API Gateway associated with it.  Please double check your config/routes.rb if you were expecting to see a url for the app. Also check that #{stack_name.colorize(:green)} is a jets app."
       end
     end
 
@@ -39,7 +39,7 @@ module Jets::Commands
     # Lookup output value
     def lookup(outputs, key)
       o = outputs.find { |o| o.output_key == key }
-      o.output_value
+      o&.output_value
     end
   end
 end
