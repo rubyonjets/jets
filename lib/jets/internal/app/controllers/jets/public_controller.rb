@@ -28,7 +28,7 @@ class Jets::PublicController < Jets::Controller::Base
         if binary
           encoded_content = Base64.encode64(IO.read(catchall_path))
           # encoded_content = "encoded_content.."
-          render plain: encoded_content, content_type: content_type
+          render plain: encoded_content, content_type: content_type, base64: true
         else
           render file: catchall_path, content_type: content_type
         end
