@@ -2,7 +2,7 @@
 title: CloudWatch Events
 ---
 
-AWS Lambda supports on [CloudWatch Event Rules](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/Create-CloudWatch-Events-Rule.html). This ability allows you to have a Lambda function run when there's a change to your AWS resources.  Here's a long list of supported [Event Types](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html).
+AWS Lambda supports [CloudWatch Event Rules](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/Create-CloudWatch-Events-Rule.html). This ability allows you to have a Lambda function run when there's a change to your AWS resources.  Here's a long list of supported [Event Types](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html).
 
 An example might be getting notified whenever an unwanted security group port gets opened up.
 
