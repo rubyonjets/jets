@@ -1,11 +1,12 @@
 class Jets::Resource
   extend Memoist
 
+  autoload :Base, 'jets/resource/base'
   autoload :Replacer, 'jets/resource/replacer'
   autoload :Permission, 'jets/resource/permission'
   autoload :Route, 'jets/resource/route'
   autoload :Cors, 'jets/resource/cors'
-  autoload :RestApi, 'jets/resource/rest_api'
+  autoload :ApiGateway, 'jets/resource/api_gateway'
 
   def initialize(definition, replacements={})
     @definition = definition

@@ -1,22 +1,8 @@
 # add_resource("RestApi", "AWS::ApiGateway::RestApi",
 #   Name: Jets::Naming.gateway_api_name
 # )
-class Jets::Resource
-  class RestApi
-    extend Memoist
-    delegate :logical_id, :type, :properties, :attributes,
-      to: :resource
-
-    def initialize
-      @definition = definition
-      @replacements = {}
-    end
-
-    def resource
-      Jets::Resource.new(definition, replacements)
-    end
-    memoize :resource
-
+module Jets::Resource::ApiGateway
+  class RestApi < Jets::Resource::Base
     def definition
       {
         rest_api: {
@@ -27,10 +13,6 @@ class Jets::Resource
           }
         }
       }
-    end
-
-    def replacements
-      {}
     end
   end
 end

@@ -29,7 +29,7 @@ class Jets::Cfn::TemplateBuilders
 
     # If the are routes in config/routes.rb add Gateway API in parent stack
     def add_gateway_rest_api
-      rest_api = Jets::Resource::RestApi.new
+      rest_api = Jets::Resource::ApiGateway::RestApi.new
       add_associated_resource(rest_api)
 
       stage_name = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.stage_name
@@ -54,17 +54,9 @@ class Jets::Cfn::TemplateBuilders
         homepage = path == ''
         next if homepage # handled by RootResourceId output already
 
-        map = Jets::Cfn::TemplateMappers::GatewayResourceMapper.new(path)
-
-        unless homepage # no AWS::ApiGateway::Resource for the top level route
-          add_resource(map.logical_id, "AWS::ApiGateway::Resource",
-            ParentId: map.parent_id,
-            PathPart: map.path_part,
-            RestApiId: "!Ref RestApi"
-          )
-        end
-
-        add_output(map.logical_id, Value: "!Ref #{map.logical_id}")
+        resource = Jets::Resource::ApiGateway::Resource.new(path)
+        add_associated_resource(resource)
+        add_output(resource.logical_id, Value: "!Ref #{resource.logical_id}")
       end
     end
   end
