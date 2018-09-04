@@ -44,29 +44,21 @@ class Jets::Cfn::TemplateBuilders
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
-        next if path =~ /api-gateway/ # treated specially
+        next if path =~ /api-gateway/ # specially treated
 
-        # Example of produced code:
-        #
-        #   map = Jets::Cfn::TemplateMappers::ControllerMapper.new(path, s3_bucket)
-        #   map = Jets::Cfn::TemplateMappers::JobMapper.new(path, s3_bucket)
-        #
-        mapper_class_name = File.basename(path, '.yml').split('_').last
-        mapper_class_name = mapper_class_name.classify
-        mapper_class = "Jets::Cfn::TemplateMappers::#{mapper_class_name}Mapper".constantize # ControllerMapper or JobMapper
-        map = mapper_class.new(path, @options[:s3_bucket])
-
-        # map.logical_id example: PostsController, HardJob, Hello, HelloFunction
-        add_resource(map.logical_id, "AWS::CloudFormation::Stack",
-          TemplateURL: map.template_url,
-          Parameters: map.parameters,
-        )
+        add_app_class_stack(path)
       end
 
       if @options[:stack_type] == :full and !Jets::Router.routes.empty?
         add_api_gateway
         add_api_deployment
       end
+    end
+
+    def add_app_class_stack(path)
+      resource = Jets::Resource::ChildStack::AppClass.new(path, @options[:s3_bucket])
+      add_associated_resource(resource)
+      add_outputs(resource.outputs)
     end
 
     def add_api_gateway

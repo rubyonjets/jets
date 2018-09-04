@@ -70,7 +70,7 @@ class Jets::Cfn::TemplateBuilders
     def add_resource(logical_id, type, options)
       base = { Type: type }
 
-      options = if options.include?(:Properties)
+      options = if options.include?('Properties')
                   base.merge(options)
                 else
                   {
@@ -79,7 +79,7 @@ class Jets::Cfn::TemplateBuilders
                   }
                 end
 
-      @template[:Resources][logical_id] = options
+      @template['Resources'][logical_id] = options
     end
 
     def add_parameters(attributes)
