@@ -117,7 +117,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_associated_resource(resource)
-      add_resource(resource.logical_id, resource.type, resource.properties)
+      add_resource(resource.logical_id, resource.type, resource.attributes)
     end
   end
 end
