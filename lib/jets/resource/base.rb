@@ -5,11 +5,6 @@ class Jets::Resource
              to: :resource
 
     # Usually overridden
-    def initialize
-      @definition = definition
-      @replacements = replacements
-    end
-
     def resource
       Jets::Resource.new(definition, replacements)
     end
