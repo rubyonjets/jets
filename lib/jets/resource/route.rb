@@ -3,10 +3,7 @@ require "active_support/core_ext/object"
 # Converts a Jets::Route to a CloudFormation resource
 class Jets::Resource
   class Route
-    # autoload :Cors, 'jets/resource/route/cors'
-
     extend Memoist
-
     delegate :logical_id, :type, :properties, :attributes, :permission,
       to: :resource
 

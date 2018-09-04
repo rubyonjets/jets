@@ -3,12 +3,19 @@
 # )
 class Jets::Resource
   class RestApi
-    include Interface
+    extend Memoist
+    delegate :logical_id, :type, :properties, :attributes,
+      to: :resource
 
     def initialize
       @definition = definition
       @replacements = {}
     end
+
+    def resource
+      Jets::Resource.new(definition, replacements)
+    end
+    memoize :resource
 
     def definition
       {
@@ -20,6 +27,10 @@ class Jets::Resource
           }
         }
       }
+    end
+
+    def replacements
+      {}
     end
   end
 end
