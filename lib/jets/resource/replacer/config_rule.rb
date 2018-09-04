@@ -1,6 +1,6 @@
 # Overrides
 #   replace_core_values
-module Jets::Resource::Replacer
+class Jets::Resource::Replacer
   class ConfigRule < Base
     def core_replacements
       {

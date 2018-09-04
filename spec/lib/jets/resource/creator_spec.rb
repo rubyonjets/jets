@@ -33,4 +33,3 @@ describe Jets::Resource::Creator do
     end
   end
 end
-

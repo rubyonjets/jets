@@ -1,5 +1,5 @@
 # Converts a Jets::Route to a CloudFormation resource
-module Jets::Resource
+class Jets::Resource
   class Route
     autoload :Attributes, 'jets/resource/route/attributes'
     autoload :Cors, 'jets/resource/route/cors'

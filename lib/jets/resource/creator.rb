@@ -1,4 +1,4 @@
-module Jets::Resource
+class Jets::Resource
   class Creator
     extend Memoist
 
@@ -11,7 +11,7 @@ module Jets::Resource
     def attributes
       Attributes.new(@definition, @task)
     end
-    alias_method :resource, :attributes
     memoize :attributes
+    alias_method :resource, :attributes
   end
 end

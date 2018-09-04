@@ -1,4 +1,4 @@
-module Jets::Resource
+class Jets::Resource
   class Permission
     extend Memoist
 

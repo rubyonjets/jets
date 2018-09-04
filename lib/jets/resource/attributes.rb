@@ -1,4 +1,4 @@
-module Jets::Resource
+class Jets::Resource
   class Attributes
     extend Memoist
 
@@ -11,7 +11,7 @@ module Jets::Resource
     def logical_id
       id = @data.keys.first
       # replace possible {namespace} in the logical id
-      id = replacer.replace_value(id)
+      # id = replacer.replace_value(id)
       Jets::Pascalize.pascalize_string(id)
     end
 
@@ -25,7 +25,7 @@ module Jets::Resource
 
     def attributes
       attributes = @data.values.first
-      attributes = replacer.replace_placeholders(attributes, @replacements)
+      # attributes = replacer.replace_placeholders(attributes, @replacements)
       Jets::Pascalize.pascalize(attributes)
     end
 

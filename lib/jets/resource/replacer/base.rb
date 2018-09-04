@@ -1,10 +1,9 @@
-module Jets::Resource::Replacer
+class Jets::Resource::Replacer
   class Base
     extend Memoist
 
-    def initialize(task)
-      @task = task
-      @app_class = task.class_name.to_s
+    def initialize(replacements={})
+      @replacements = replacements
     end
 
     # Replace placeholder hash values with replacements.  This does a deep replacement
@@ -22,77 +21,31 @@ module Jets::Resource::Replacer
     #   replace_placeholders(attributes, {})
     #   => {whatever: "foo PostsControllerIndexLambdaFunction bar" }
     #
-    def replace_placeholders(attributes, replacements={})
-      update_values(attributes, replacements)
+    def replace_placeholders(attributes)
+      update_values(attributes)
     end
 
-    def update_values(original, replacements={})
+    def update_values(original)
       case original
       when Array
-        original.map { |v| update_values(v, replacements) }
+        original.map { |v| update_values(v) }
       when Hash
         initializer = original.map do |k, v|
-          [k, update_values(v, replacements)]
+          [k, update_values(v)]
         end
         Hash[initializer]
       else
-        replace_value(original, replacements)
+        replace_value(original)
       end
     end
 
-    def replace_value(text, replacements={})
+    def replace_value(text)
       text = text.to_s # normalize to String
-      # custom replacements
-      replacements.each do |k,v|
-        text = text.gsub(k.to_s, v)
-      end
-      # Values to always replace
-      text = replace_core_values(text)
-      text
-    end
-
-    # Values to always replace.
-    def replace_core_values(text)
-      text = text.gsub('{namespace}', namespace) # always replace namespace
-      core_replacements.each do |k,v|
+      @replacements.each do |k,v|
+        # IE: Replaces {namespace} => SecurityJobCheck
         text = text.gsub("{#{k}}", v)
       end
       text
-    end
-
-    # Meant to beoverriden by different resource types in the child class.
-    # These values replace the variables in the resource template.
-    #
-    # Example:
-    #
-    # In child class:
-    #
-    #   def core_replacements
-    #     { config_rule_name: "my-config-rule" }
-    #   end
-    #
-    # And we declare these properties in the resource:
-    #
-    #   properties: {
-    #     config_rule_name: "{config_rule_name}",
-    #   ...
-    #
-    # The replacements result in:
-    #
-    #   properties: {
-    #     config_rule_name: "my-config-rule",
-    #   ...
-    #
-    def core_replacements
-      {}
-    end
-
-    # Full camelized namespace
-    # Example: HardJobDig, PostsControllerIndex, SleepJobPerform
-    def namespace
-      class_name = @task.class_name.gsub('::','')
-      function_name = @task.meth.to_s.camelize
-      "#{class_name}#{function_name}"
     end
   end
 end

@@ -1,14 +1,14 @@
 describe Jets::Resource::Route::Cors do
   let(:cors) { Jets::Resource::Route::Cors.new(task, resource_attributes) }
   let(:resource_attributes) do
-    Jets::Resource::Route::Attributes.new(data, task)
+    Jets::Resource::Route::Attributes.new(definition, task)
   end
   let(:task) do
     task = double(:task).as_null_object
     allow(task).to receive(:meth).and_return(:index)
     task
   end
-  let(:data) do
+  let(:definition) do
     {
       "{namespace}ApiResource": {
         type: "AWS::ApiGateway::Method",
