@@ -28,13 +28,8 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_function(task)
-      # Examples:
-      #   FunctionProperties::RubyBuilder
-      #   FunctionProperties::PythonBuilder
-      builder_class = "Jets::Cfn::TemplateBuilders::FunctionProperties::#{task.lang.to_s.classify}Builder".constantize
-      builder = builder_class.new(task)
-      logical_id = builder.map.logical_id
-      add_resource(logical_id, "AWS::Lambda::Function", builder.properties)
+      resource = Jets::Resource::Function.new(task)
+      add_associated_resource(resource) # TODO: rename add_associated_resource to add_resource
     end
 
     def add_class_iam_policy
