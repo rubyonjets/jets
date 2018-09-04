@@ -52,20 +52,20 @@ class Jets::Cfn::TemplateBuilders
 
     def add_app_class_stack(path)
       resource = Jets::Resource::ChildStack::AppClass.new(path, @options[:s3_bucket])
-      add_child_resources(resource)
+      build_child_resources(resource)
     end
 
     def add_api_gateway
       resource = Jets::Resource::ChildStack::ApiGateway.new(@options[:s3_bucket])
-      add_child_resources(resource)
+      build_child_resources(resource)
     end
 
     def add_api_deployment
       resource = Jets::Resource::ChildStack::ApiDeployment.new(@options[:s3_bucket])
-      add_child_resources(resource)
+      build_child_resources(resource)
     end
 
-    def add_child_resources(resource)
+    def build_child_resources(resource)
       add_associated_resource(resource)
       add_outputs(resource.outputs)
     end

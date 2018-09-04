@@ -41,8 +41,7 @@ module Jets::Commands
 
     def build_all_templates
       clean_templates
-      # TODO: Maybe  move this tbuild.rb template related logic to cfn/builder.rb
-      ## CloudFormation templates
+      # CloudFormation templates
       puts "Building Lambda functions as CloudFormation templates."
       # 1. Shared templates - child templates needs them
       build_api_gateway_templates
@@ -53,15 +52,12 @@ module Jets::Commands
     end
 
     def build_minimal_template
-      parent = Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options)
-      parent.build
+      Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options).build
     end
 
     def build_api_gateway_templates
-      gateway = Jets::Cfn::TemplateBuilders::ApiGatewayBuilder.new(@options)
-      gateway.build
-      deployment = Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder.new(@options)
-      deployment.build
+      Jets::Cfn::TemplateBuilders::ApiGatewayBuilder.new(@options).build
+      Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder.new(@options).build
     end
 
     def build_child_templates
@@ -82,8 +78,9 @@ module Jets::Commands
       builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Builder".constantize
 
       # Examples:
-      #   Jets::Cfn::TemplateBuilders::JobBuilder.new(EasyJob)
       #   Jets::Cfn::TemplateBuilders::ControllerBuilder.new(PostsController)
+      #   Jets::Cfn::TemplateBuilders::JobBuilder.new(EasyJob)
+      #   Jets::Cfn::TemplateBuilders::RuleBuilder.new(CheckRule)
       #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(Hello)
       #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(HelloFunction)
       app_klass = Jets::Klass.from_path(path)
@@ -92,8 +89,7 @@ module Jets::Commands
     end
 
     def build_parent_template
-      parent = Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options)
-      parent.build
+      Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options).build
     end
 
     def clean_templates
