@@ -54,19 +54,5 @@ class Jets::Cfn::TemplateBuilders
       properties = map.properties
       add_resource(logical_id, "AWS::IAM::Role", properties)
     end
-
-    def add_associated_resources
-      @app_klass.tasks.each do |task|
-        task.resources.each do |definition|
-          resource = Jets::Resource.new(definition, task.replacements)
-          add_associated_resource(resource)
-          add_associated_resource(resource.permission)
-        end
-      end
-    end
-
-    def add_associated_resource(resource)
-      add_resource(resource.logical_id, resource.type, resource.properties)
-    end
   end
 end

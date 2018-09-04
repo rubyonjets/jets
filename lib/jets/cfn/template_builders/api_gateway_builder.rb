@@ -29,9 +29,8 @@ class Jets::Cfn::TemplateBuilders
 
     # If the are routes in config/routes.rb add Gateway API in parent stack
     def add_gateway_rest_api
-      add_resource("RestApi", "AWS::ApiGateway::RestApi",
-        Name: Jets::Naming.gateway_api_name
-      )
+      rest_api = Jets::Resource::RestApi.new
+      add_associated_resource(rest_api)
 
       stage_name = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.stage_name
       add_output("RestApi", Value: "!Ref RestApi")
