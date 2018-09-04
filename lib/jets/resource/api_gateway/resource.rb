@@ -53,6 +53,11 @@ module Jets::Resource::ApiGateway
       text
     end
 
+    # For parameter description
+    def desc
+      path.empty? ? 'Homepage route: /' : "Route for: /#{path}"
+    end
+
   private
     # Similar path_logical_id method in resource/route.rb
     def path_logical_id(path)

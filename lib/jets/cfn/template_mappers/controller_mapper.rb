@@ -8,8 +8,8 @@ class Jets::Cfn::TemplateMappers
       # Add the API Gateway parameters
       parameters[:RestApi] = "!GetAtt ApiGateway.Outputs.RestApi"
       scoped_routes.each do |route|
-        map = GatewayResourceMapper.new(route.path)
-        parameters[map.logical_id] = "!GetAtt ApiGateway.Outputs.#{map.logical_id}"
+        resource = Jets::Resource::ApiGateway::Resource.new(route.path)
+        parameters[resource.logical_id] = "!GetAtt ApiGateway.Outputs.#{resource.logical_id}"
       end
 
       parameters
