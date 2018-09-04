@@ -20,10 +20,10 @@ class Jets::Cfn::TemplateBuilders
 
     def add_routes
       scoped_routes.each_with_index do |route, i|
-        route_resource = Jets::Resource::Route.new(route)
-        add_associated_resource(route_resource)
-        add_associated_resource(route_resource.permission)
-        add_associated_resource(route_resource.cors) if Jets.config.cors
+        method = Jets::Resource::ApiGateway::Method.new(route)
+        add_associated_resource(method)
+        add_associated_resource(method.permission)
+        add_associated_resource(method.cors) if Jets.config.cors
       end
     end
 

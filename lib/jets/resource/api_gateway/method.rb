@@ -1,21 +1,17 @@
 require "active_support/core_ext/object"
 
-# Converts a Jets::Route to a CloudFormation resource
-class Jets::Resource
-  class Route
-    extend Memoist
-    delegate :logical_id, :type, :properties, :attributes, :permission,
-      to: :resource
+# Converts a Jets::Route to a CloudFormation Jets::Resource::ApiGateway::Method resource
+module Jets::Resource::ApiGateway
+  class Method < Jets::Resource::Base
+    # also delegate permission for a method
+    delegate :permission,
+             to: :resource
 
     # route - Jets::Route
     def initialize(route)
       @route = route
+      super() # super initializer takes 0 arguments
     end
-
-    def resource
-      Jets::Resource.new(definition, replacements)
-    end
-    memoize :resource
 
     def definition
       {

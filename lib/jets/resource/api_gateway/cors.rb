@@ -1,7 +1,7 @@
-class Jets::Resource
-  # A little bit weird inheriting from Route because Route has Route#cors also
-  # but Cors is essentially a Route class.
-  class Cors < Route
+module Jets::Resource::ApiGateway
+  # Might be weird inheriting from Method because Method has Method#cors also
+  # but Cors is essentially a Method class.
+  class Cors < Method
     def definition
       {
         "#{resource_logical_id}CorsApiMethod" => {

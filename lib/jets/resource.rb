@@ -4,8 +4,6 @@ class Jets::Resource
   autoload :Base, 'jets/resource/base'
   autoload :Replacer, 'jets/resource/replacer'
   autoload :Permission, 'jets/resource/permission'
-  autoload :Route, 'jets/resource/route'
-  autoload :Cors, 'jets/resource/cors'
   autoload :ApiGateway, 'jets/resource/api_gateway'
 
   def initialize(definition, replacements={})
