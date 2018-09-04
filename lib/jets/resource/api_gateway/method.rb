@@ -10,7 +10,6 @@ module Jets::Resource::ApiGateway
     # route - Jets::Route
     def initialize(route)
       @route = route
-      super() # super initializer takes 0 arguments
     end
 
     def definition

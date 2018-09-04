@@ -2,7 +2,6 @@ module Jets::Resource::ApiGateway
   class Resource < Jets::Resource::Base
     def initialize(path)
       @path = path # Examples: "posts/:id/edit" or "posts"
-      super() # super initializer takes no arguments
     end
 
     def definition
