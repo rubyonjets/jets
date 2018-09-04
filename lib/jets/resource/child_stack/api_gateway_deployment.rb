@@ -24,16 +24,6 @@ module Jets::Resource::ChildStack
       }
     end
 
-# path = "#{Jets.config.project_namespace}-api-gateway-deployment.yml"
-# map = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.new(path, @options[:s3_bucket])
-# add_resource(map.logical_id, "AWS::CloudFormation::Stack",
-#   Properties: {
-#     TemplateURL: map.template_url,
-#     Parameters: map.parameters
-#   },
-#   DependsOn: map.depends_on
-# )
-
     def depends_on
       expression = "#{Jets::Naming.template_path_prefix}-*_controller*"
       controller_logical_ids = []
