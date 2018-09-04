@@ -26,7 +26,7 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
     describe "show function properties" do
       it "overrides global properties with function properties" do
         builder.compose
-        # puts builder.text # uncomment to see template text
+        puts builder.text # uncomment to see template text
         resources = builder.template["Resources"]
         properties = resources["StoresControllerShowLambdaFunction"]["Properties"]
 

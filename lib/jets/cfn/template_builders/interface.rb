@@ -68,18 +68,19 @@ class Jets::Cfn::TemplateBuilders
     #   DependsOn: ["AnotherResource"]
     # )
     def add_resource(logical_id, type, options)
-      base = { Type: type }
+      options = Jets::Pascalize.pascalize(options)
 
-      options = if options.include?('Properties')
-                  base.merge(options)
-                else
-                  {
-                    Type: type,
-                    Properties: options # options are properties
-                  }
-                end
+      base = { 'Type' => type }
+      attributes = if options.include?('Properties')
+                    base.merge(options)
+                  else
+                    {
+                      'Type' => type,
+                      'Properties' => options # options are properties
+                    }
+                  end
 
-      @template['Resources'][logical_id] = options
+      @template['Resources'][logical_id] = attributes
     end
 
     def add_parameters(attributes)

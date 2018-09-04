@@ -1,21 +1,7 @@
-# # Example of produced code:
-# #
-# #   map = Jets::Cfn::TemplateMappers::ControllerMapper.new(path, s3_bucket)
-# #   map = Jets::Cfn::TemplateMappers::JobMapper.new(path, s3_bucket)
-# #
-# mapper_class_name = File.basename(path, '.yml').split('_').last
-# mapper_class_name = mapper_class_name.classify
-# mapper_class = "Jets::Cfn::TemplateMappers::#{mapper_class_name}Mapper".constantize # ControllerMapper or JobMapper
-# map = mapper_class.new(path, @options[:s3_bucket])
-#
-# # map.logical_id example: PostsController, HardJob, Hello, HelloFunction
-# add_resource(map.logical_id, "AWS::CloudFormation::Stack",
-#   TemplateURL: map.template_url,
-#   Parameters: map.parameters,
-# )
 module Jets::Resource::ChildStack
   class AppClass < Jets::Resource::Base
     def initialize(path, s3_bucket)
+      puts "AppClass path #{path}"
       @path = path
       @s3_bucket = s3_bucket
     end
@@ -34,10 +20,43 @@ module Jets::Resource::ChildStack
     end
 
     def parameters
-      {
+      common = {
         IamRole: "!GetAtt IamRole.Arn",
         S3Bucket: "!Ref S3Bucket",
       }
+      common.merge!(controller_params) if controller?
+      common
+    end
+
+    def controller_params
+      return {} if Jets::Router.routes.empty?
+
+      params = {
+        RestApi: "!GetAtt ApiGateway.Outputs.RestApi",
+      }
+      scoped_routes.each do |route|
+        resource = Jets::Resource::ApiGateway::Resource.new(route.path)
+        params[resource.logical_id] = "!GetAtt ApiGateway.Outputs.#{resource.logical_id}"
+      end
+      params
+    end
+
+    def controller?
+      @path.include?('_controller.yml')
+    end
+
+    def scoped_routes
+      @routes ||= Jets::Router.routes.select do |route|
+        route.controller_name == current_app_class
+      end
+    end
+
+    def current_app_class
+      templates_prefix = "#{Jets::Naming.template_path_prefix}-"
+      @path.sub(templates_prefix, '')
+        .sub(/\.yml$/,'')
+        .gsub('-','/')
+        .classify
     end
 
     def outputs
