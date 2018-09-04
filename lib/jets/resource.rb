@@ -1,11 +1,9 @@
 class Jets::Resource
   extend Memoist
   autoload :Replacer, 'jets/resource/replacer'
-
-  # autoload :Attributes, 'jets/resource/attributes'
-  # autoload :Creator, 'jets/resource/creator'
-  # autoload :Permission, 'jets/resource/permission'
-  # autoload :Route, 'jets/resource/route'
+  autoload :Permission, 'jets/resource/permission'
+  autoload :Route, 'jets/resource/route'
+  autoload :Cors, 'jets/resource/cors'
 
   def initialize(definition, replacements={})
     @definition = definition
@@ -33,12 +31,13 @@ class Jets::Resource
     Jets::Pascalize.pascalize(attributes)
   end
 
+  def permission
+    Permission.new(@replacements, self)
+  end
+  memoize :permission
+
   def replacer
-    # Use raw @definition to avoid infinite loop from using attributes
-    # TODO: dont think there's any infinite loop anymore
-    attributes = Jets::Pascalize.pascalize(@definition.values.first)
-    type = attributes['Type']
-    replacer_class = Replacer.lookup(type)
+    replacer_class = Replacer.lookup(@definition)
     replacer_class.new(@replacements)
   end
   memoize :replacer

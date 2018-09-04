@@ -1,18 +1,27 @@
+require "active_support/core_ext/object"
+
 # Converts a Jets::Route to a CloudFormation resource
 class Jets::Resource
   class Route
-    autoload :Attributes, 'jets/resource/route/attributes'
-    autoload :Cors, 'jets/resource/route/cors'
+    # autoload :Cors, 'jets/resource/route/cors'
 
     extend Memoist
+
+    delegate :logical_id, :type, :properties, :attributes, :permission,
+      to: :resource
 
     # route - Jets::Route
     def initialize(route)
       @route = route
     end
 
-    def attributes
-      attributes = {
+    def resource
+      Jets::Resource.new(definition, replacements)
+    end
+    memoize :resource
+
+    def definition
+      {
         "#{method_logical_id}ApiMethod" => {
           type: "AWS::ApiGateway::Method",
           properties: {
@@ -30,14 +39,21 @@ class Jets::Resource
           }
         }
       }
-
-      definitions = attributes # to emphasize that its the same thing
-      task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
-               resources: definitions)
-      Attributes.new(attributes, task)
     end
-    alias_method :resource, :attributes
-    memoize :attributes
+
+    def replacements
+      # mimic task to grab replacements
+      resources = [definition]
+      task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
+               resources: resources)
+      task.replacements
+    end
+    memoize :replacements
+
+    def cors
+      Cors.new(@route)
+    end
+    memoize :cors
 
   private
     # Similar path_logical_id method in template_mappers/gateway_resource_mapper.rb

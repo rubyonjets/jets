@@ -5,19 +5,15 @@ class Jets::Resource
     # TODO: handle autoloading for plugins
 
     class << self
-      def lookup(type)
-        klass = replacer_map[type] || "Jets::Resource::Replacer::Base"
-        klass.constantize
-      end
+      # TODO: dont really need this lookup anymore
+      def lookup(definition)
+        Jets::Resource::Replacer::Base
 
-      # Maps
-      # TODO: get rid of this map, and use a convention
-      # * connect a plugin to figure out interface.
-      # * add ability to explicitly override principal and source_arn.
-      def replacer_map
-        {
-          "AWS::Config::ConfigRule" => "Jets::Resource::Replacer::ConfigRule"
-        }
+        # keeping logic around just in case but will delete shortly
+        # attributes = Jets::Pascalize.pascalize(definition.values.first)
+        # type = attributes['Type']
+        # klass = replacer_map[type] || "Jets::Resource::Replacer::Base"
+        # klass.constantize
       end
 
       # Examples:

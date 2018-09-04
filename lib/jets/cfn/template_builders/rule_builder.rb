@@ -11,10 +11,9 @@ class Jets::Cfn::TemplateBuilders
     # List of AWS Config Managed Rules: https://amzn.to/2BOt9KN
     def add_managed_rules
       @app_klass.managed_rules.each do |rule|
-        creator = Jets::Resource::Creator.new(rule[:definition], rule[:task])
-        add_associated_resource(creator.resource)
+        resource = Jets::Resource.new(rule[:definition], rule[:replacements])
+        add_associated_resource(resource)
       end
     end
   end
 end
-

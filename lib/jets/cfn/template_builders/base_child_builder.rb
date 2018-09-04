@@ -58,9 +58,9 @@ class Jets::Cfn::TemplateBuilders
     def add_associated_resources
       @app_klass.tasks.each do |task|
         task.resources.each do |definition|
-          creator = Jets::Resource::Creator.new(definition, task)
-          add_associated_resource(creator.resource)
-          add_associated_resource(creator.resource.permission.attributes)
+          resource = Jets::Resource.new(definition, task.replacements)
+          add_associated_resource(resource)
+          add_associated_resource(resource.permission)
         end
       end
     end

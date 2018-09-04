@@ -81,4 +81,12 @@ class Jets::Lambda::Task
   def poly_src_path
     handler_path.sub("handlers/", "app/")
   end
+
+  ###
+  # Useful for Jets::Resource late building.
+  def replacements
+    {
+      namespace: "#{@class_name}#{@meth.to_s.camelize}",
+    }
+  end
 end

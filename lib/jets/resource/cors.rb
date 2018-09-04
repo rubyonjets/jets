@@ -1,7 +1,9 @@
-class Jets::Resource::Route
-  class Cors < Jets::Resource::Route
-    def attributes
-      attributes = {
+class Jets::Resource
+  # A little bit weird inheriting from Route because Route has Route#cors also
+  # but Cors is essentially a Route class.
+  class Cors < Route
+    def definition
+      {
         "#{resource_logical_id}CorsApiMethod" => {
           type: "AWS::ApiGateway::Method",
 
@@ -41,12 +43,7 @@ class Jets::Resource::Route
             } # closes integration
           } # closes properties
         } # closes logical id
-      } # closes attributes
-
-      definitions = attributes # to emphasize that its the same thing
-      task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
-               resources: definitions)
-      Attributes.new(attributes, task)
+      } # closes definition
     end
 
     def allow_origin
