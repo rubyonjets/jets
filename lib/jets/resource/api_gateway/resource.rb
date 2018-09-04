@@ -21,6 +21,12 @@ module Jets::Resource::ApiGateway
       }
     end
 
+    def outputs
+      {
+        logical_id => "!Ref #{logical_id}",
+      }
+    end
+
     def parent_id
       if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')

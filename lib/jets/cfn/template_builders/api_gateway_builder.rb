@@ -33,9 +33,8 @@ class Jets::Cfn::TemplateBuilders
       add_associated_resource(rest_api)
       add_outputs(rest_api.outputs)
 
-      # TODO: Update this to core resource
-      stage_name = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.stage_name
-      add_output("RestApiUrl", Value: "!Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/#{stage_name}/'")
+      deployment = Jets::Resource::ApiGateway::Deployment.new
+      add_output("RestApiUrl", Value: deployment.outputs["RestApiUrl"])
     end
 
     # Adds route related Resources and Outputs
@@ -55,7 +54,7 @@ class Jets::Cfn::TemplateBuilders
 
         resource = Jets::Resource::ApiGateway::Resource.new(path)
         add_associated_resource(resource)
-        add_output(resource.logical_id, Value: "!Ref #{resource.logical_id}")
+        add_outputs(resource.outputs)
       end
     end
   end

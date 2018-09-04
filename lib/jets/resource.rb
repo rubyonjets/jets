@@ -34,6 +34,10 @@ class Jets::Resource
     Jets::Pascalize.pascalize(attributes)
   end
 
+  def parameters
+    {}
+  end
+
   def outputs
     {}
   end

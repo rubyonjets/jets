@@ -13,16 +13,10 @@ class Jets::Cfn::TemplateBuilders
       return if @options[:stack_type] == :minimal
 
       puts "Building API Gateway Deployment template."
-      add_parameter("RestApi", Description: "RestApi")
-
-      map = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.new(path=nil,s3_bucket=nil)
-      add_resource(map.logical_id, "AWS::ApiGateway::Deployment",
-        Description: "Version #{map.timestamp} deployed by jets",
-        RestApiId: "!Ref RestApi",
-        StageName: map.stage_name,
-      )
-
-      add_output("RestApiUrl", Value: "!Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/#{map.stage_name}/'")
+      deployment = Jets::Resource::ApiGateway::Deployment.new
+      add_associated_resource(deployment)
+      add_parameters(deployment.parameters)
+      add_outputs(deployment.outputs)
     end
 
     # template_path is an interface method

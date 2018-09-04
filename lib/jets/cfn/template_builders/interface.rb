@@ -82,6 +82,12 @@ class Jets::Cfn::TemplateBuilders
       @template[:Resources][logical_id] = options
     end
 
+    def add_parameters(attributes)
+      attributes.each do |name,value|
+        add_parameter(name.to_s.camelize, Description: value)
+      end
+    end
+
     def add_parameter(name, options={})
       defaults = { Type: "String" }
       options = defaults.merge(options)

@@ -1,6 +1,3 @@
-# add_resource("RestApi", "AWS::ApiGateway::RestApi",
-#   Name: Jets::Naming.gateway_api_name
-# )
 module Jets::Resource::ApiGateway
   class RestApi < Jets::Resource::Base
     def definition
@@ -17,9 +14,9 @@ module Jets::Resource::ApiGateway
 
     def outputs
       {
-        RestApi: "!Ref RestApi",
-        Region: "!Ref AWS::Region",
-        RootResourceId: "!GetAtt RestApi.RootResourceId",
+        "RestApi" => "!Ref RestApi",
+        "Region" => "!Ref AWS::Region",
+        "RootResourceId" => "!GetAtt RestApi.RootResourceId",
       }
     end
   end
