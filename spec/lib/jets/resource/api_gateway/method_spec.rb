@@ -1,10 +1,10 @@
-describe Jets::Resource::Route do
-  let(:resource) { Jets::Resource::Route.new(route) }
-  let(:route) do
-    Jets::Route.new(path: "posts", method: :get, to: "posts#index")
-  end
+describe Jets::Resource::ApiGateway::Method do
+  let(:resource) { Jets::Resource::ApiGateway::Method.new(route) }
 
-  context "route" do
+  context "post#index" do
+    let(:route) do
+      Jets::Route.new(path: "posts", method: :get, to: "posts#index")
+    end
     it "resource" do
       expect(resource.logical_id).to eq "PostsGetApiMethod"
       properties = resource.properties

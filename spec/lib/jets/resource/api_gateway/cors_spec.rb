@@ -1,5 +1,5 @@
-describe Jets::Resource::Cors do
-  let(:resource) { Jets::Resource::Cors.new(route) }
+describe Jets::Resource::ApiGateway::Cors do
+  let(:resource) { Jets::Resource::ApiGateway::Cors.new(route) }
   let(:route) do
     Jets::Route.new(path: "posts", method: :get, to: "posts#index")
   end
