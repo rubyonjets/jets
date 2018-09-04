@@ -14,5 +14,13 @@ module Jets::Resource::ApiGateway
         }
       }
     end
+
+    def outputs
+      {
+        RestApi: "!Ref RestApi",
+        Region: "!Ref AWS::Region",
+        RootResourceId: "!GetAtt RestApi.RootResourceId",
+      }
+    end
   end
 end

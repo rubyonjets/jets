@@ -89,6 +89,12 @@ class Jets::Cfn::TemplateBuilders
       @template[:Parameters][name.camelize] = options
     end
 
+    def add_outputs(attributes)
+      attributes.each do |name,value|
+        add_output(name.to_s.camelize, Value: value)
+      end
+    end
+
     def add_output(name, options={})
       @template[:Outputs] ||= {}
       @template[:Outputs][name.camelize] = options

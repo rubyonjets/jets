@@ -34,6 +34,10 @@ class Jets::Resource
     Jets::Pascalize.pascalize(attributes)
   end
 
+  def outputs
+    {}
+  end
+
   def replacer
     Replacer.new(@replacements)
   end

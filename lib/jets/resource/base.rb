@@ -1,8 +1,8 @@
 class Jets::Resource
   class Base
     extend Memoist
-    delegate :logical_id, :type, :properties, :attributes,
-      to: :resource
+    delegate :logical_id, :type, :properties, :attributes, :outputs,
+             to: :resource
 
     # Usually overridden
     def initialize
