@@ -51,7 +51,7 @@ class Jets::Resource
     end
 
     def replacer
-      Replacer::Base.new(@replacements)
+      Replacer.new(@replacements)
     end
     memoize :replacer
   end

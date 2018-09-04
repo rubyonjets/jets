@@ -37,8 +37,7 @@ class Jets::Resource
   memoize :permission
 
   def replacer
-    replacer_class = Replacer.lookup(@definition)
-    replacer_class.new(@replacements)
+    Replacer.new(@replacements)
   end
   memoize :replacer
 end
