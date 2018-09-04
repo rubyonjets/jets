@@ -26,7 +26,7 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
     describe "show function properties" do
       it "overrides global properties with function properties" do
         builder.compose
-        puts builder.text # uncomment to see template text
+        # puts builder.text # uncomment to see template text
         resources = builder.template["Resources"]
         properties = resources["StoresControllerShowLambdaFunction"]["Properties"]
 
@@ -35,7 +35,7 @@ describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
         keys = properties["Environment"]["Variables"]
         # Just testing for some keys since we keep changing .env files
         test_keys = %w[env_key1 env_key2 global_app_key1 global_app_key2
-          JETS_ENV key1 key2 my_test]
+          ENV_KEY key1 key2 my_test]
         test_keys.each do |test_key|
           expect(keys).to include(test_key)
         end

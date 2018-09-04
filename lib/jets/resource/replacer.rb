@@ -39,13 +39,17 @@ class Jets::Resource
       end
     end
 
-    def replace_value(text)
-      text = text.to_s # normalize to String
+    def replace_value(value)
+      # Dont perform replacement on Integers
+      return value if value.is_a?(Integer)
+      # return value unless value.is_a?(String) or value.is_a?(Symbol)
+
+      value = value.to_s # normalize to String
       @replacements.each do |k,v|
         # IE: Replaces {namespace} => SecurityJobCheck
-        text = text.gsub("{#{k}}", v)
+        value = value.gsub("{#{k}}", v)
       end
-      text
+      value
     end
 
     class << self

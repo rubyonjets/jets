@@ -98,7 +98,7 @@ class Jets::Resource
         iam_policy = Jets::Resource::Iam::FunctionPolicy.new(@task)
         properties[:role] = "!GetAtt #{iam_policy.logical_id}.Arn"
       end
-      Jets::Pascalize.pascalize(properties.deep_stringify_keys)
+      properties
     end
 
     # Properties managed by Jets with more finality.
