@@ -41,18 +41,25 @@ describe Jets::Resource::ApiGateway::Resource do
     end
   end
 
-  # Unsure if this spec is valid
-  # context("top most root level path") do
-  #   let(:path) { "" }
-  #   it "contains info for CloudFormation API Gateway Resources" do
-  #     expect(resource.logical_id).to eq "RootResourceId"
-  #
-  #     # puts "resource.logical_id #{resource.logical_id.inspect}"
-  #     # For the top most root level route, methods part_part and parent_id
-  #     # never caled.
-  #     # puts "properties["PathPart" #{properties["PathPart".inspect}"
-  #     # puts "properties["ParentId" #{properties["ParentId".inspect}"
+  # So a resource for the root path is never really created but we have this
+  # spec because the definitions get initialized right away and we dont
+  # want initialization to crash.
+  # Controllers use a an '' path route to add a parameter:
+  #   scoped_routes.each do |route|
+  #     resource = Jets::Resource::ApiGateway::Resource.new(route.path)
+  #     add_parameter(resource.logical_id, Description: resource.desc)
   #   end
-  # end
+  context("top most root level path") do
+    let(:path) { "" }
+    it "contains info for CloudFormation API Gateway Resources" do
+      expect(resource.logical_id).to eq "RootResourceId"
+
+      # puts "resource.logical_id #{resource.logical_id.inspect}"
+      # For the top most root level route, methods part_part and parent_id
+      # never caled.
+      # puts "properties["PathPart" #{properties["PathPart".inspect}"
+      # puts "properties["ParentId" #{properties["ParentId".inspect}"
+    end
+  end
 end
 

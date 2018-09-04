@@ -13,8 +13,6 @@ class Jets::Cfn::TemplateBuilders
 
       add_parameter("RestApi", Description: "RestApi")
       scoped_routes.each do |route|
-        puts "route #{route.inspect}"
-        puts "route.path #{route.path.inspect}"
         resource = Jets::Resource::ApiGateway::Resource.new(route.path)
         add_parameter(resource.logical_id, Description: resource.desc)
       end

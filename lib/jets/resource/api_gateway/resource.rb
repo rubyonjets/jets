@@ -39,7 +39,7 @@ module Jets::Resource::ApiGateway
 
     def path_part
       last_part = path.split('/').last
-      last_part.split('/').map {|s| transform_capture(s) }.join('/')
+      last_part.split('/').map {|s| transform_capture(s) }.join('/') if last_part
     end
 
     # Modify the path to conform to API Gateway capture expressions
