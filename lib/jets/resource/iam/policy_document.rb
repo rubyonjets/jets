@@ -1,19 +1,14 @@
-# Classes that inherit this Base class should implement:
-#
-#   initialize - should call setup in it
-#   policy_name
-#
 module Jets::Resource::Iam
-  class BasePolicy
+  class PolicyDocument
     extend Memoist
 
     attr_reader :definitions
-    # Not using initialize because method signature is different
-    def setup
-      # empty starting policy that will be changed
+    def initialize(*definitions)
+      @definitions = definitions.flatten
+      # empty starting policy that will be altered
       @policy = {
-        "Version" => "2012-10-17",
-        "Statement" => []
+        version: "2012-10-17",
+        statement: []
       }
       # https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html
       @sid = 0 # counter
@@ -21,8 +16,7 @@ module Jets::Resource::Iam
 
     def policy_document
       definitions.map { |definition| standardize(definition) }
-      # Thanks: https://www.mnishiguchi.com/2017/11/29/rails-hash-camelize-and-underscore-keys/
-      @policy.deep_transform_keys! { |key| key.to_s.camelize }
+      Jets::Pascalize.pascalize(@policy)
     end
     memoize :policy_document # only process policy_document once
 
@@ -30,7 +24,7 @@ module Jets::Resource::Iam
       @sid += 1
       case definition
       when String
-        @policy["Statement"] << {
+        @policy[:statement] << {
           sid: "Stmt#{@sid}",
           action: [definition],
           effect: "Allow",
@@ -41,7 +35,7 @@ module Jets::Resource::Iam
         if definition.key?("Version") # special case where we replace the policy entirely
           @policy = definition
         else
-          @policy["Statement"] << definition
+          @policy[:statement] << definition
         end
       end
     end

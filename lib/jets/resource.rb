@@ -7,6 +7,7 @@ class Jets::Resource
   autoload :ApiGateway, 'jets/resource/api_gateway'
   autoload :ChildStack, 'jets/resource/child_stack'
   autoload :Function, 'jets/resource/function'
+  autoload :Iam, 'jets/resource/iam'
 
   attr_reader :definition, :replacements
   def initialize(definition, replacements={})

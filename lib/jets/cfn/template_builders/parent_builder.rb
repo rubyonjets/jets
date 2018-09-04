@@ -30,8 +30,8 @@ class Jets::Cfn::TemplateBuilders
       @template.deep_merge!(minimal_template)
 
       # Add application-wide IAM policy from Jets.config.iam_role
-      map = Jets::Cfn::TemplateMappers::IamPolicy::ApplicationPolicyMapper.new
-      add_resource(map.logical_id, "AWS::IAM::Role", map.properties)
+      resource = Jets::Resource::Iam::ApplicationPolicy.new
+      add_associated_resource(resource)
     end
 
     def add_child_resources

@@ -35,19 +35,15 @@ class Jets::Cfn::TemplateBuilders
     def add_class_iam_policy
       return unless @app_klass.build_class_iam?
 
-      map = Jets::Cfn::TemplateMappers::IamPolicy::ClassPolicyMapper.new(@app_klass)
-      logical_id = map.logical_id
-      properties = map.properties
-      add_resource(logical_id, "AWS::IAM::Role", properties)
+      resource = Jets::Resource::Iam::ClassPolicy.new(@app_klass)
+      add_associated_resource(resource)
     end
 
     def add_function_iam_policy(task)
       return unless task.build_function_iam?
 
-      map = Jets::Cfn::TemplateMappers::IamPolicy::FunctionPolicyMapper.new(task)
-      logical_id = map.logical_id
-      properties = map.properties
-      add_resource(logical_id, "AWS::IAM::Role", properties)
+      resource = Jets::Resource::Iam::FunctionPolicy.new(task)
+      add_associated_resource(resource)
     end
   end
 end
