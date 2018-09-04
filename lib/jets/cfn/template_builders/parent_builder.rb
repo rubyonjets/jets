@@ -24,13 +24,8 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_minimal_resources
-      # variables for minimal-stack.yml
       path = File.expand_path("../templates/minimal-stack.yml", __FILE__)
-      variables = {
-        policy_name: "lambda-#{Jets.config.project_namespace}-policy",
-        role_name: "lambda-#{Jets.config.project_namespace}-role",
-      }
-      rendered_result = Jets::Erb.result(path, variables)
+      rendered_result = Jets::Erb.result(path)
       minimal_template = YAML.load(rendered_result)
       @template.deep_merge!(minimal_template)
 
@@ -57,18 +52,20 @@ class Jets::Cfn::TemplateBuilders
 
     def add_app_class_stack(path)
       resource = Jets::Resource::ChildStack::AppClass.new(path, @options[:s3_bucket])
-      add_associated_resource(resource)
-      add_outputs(resource.outputs)
+      add_child_resources(resource)
     end
 
     def add_api_gateway
       resource = Jets::Resource::ChildStack::ApiGateway.new(@options[:s3_bucket])
-      add_associated_resource(resource)
-      add_outputs(resource.outputs)
+      add_child_resources(resource)
     end
 
     def add_api_deployment
       resource = Jets::Resource::ChildStack::ApiDeployment.new(@options[:s3_bucket])
+      add_child_resources(resource)
+    end
+
+    def add_child_resources(resource)
       add_associated_resource(resource)
       add_outputs(resource.outputs)
     end

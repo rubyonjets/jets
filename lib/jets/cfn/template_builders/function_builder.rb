@@ -15,6 +15,5 @@ class Jets::Cfn::TemplateBuilders
       end
       path
     end
-
   end
 end
