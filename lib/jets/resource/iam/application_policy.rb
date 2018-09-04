@@ -7,8 +7,8 @@ module Jets::Resource::Iam
 
     def definition
       {
-        "ApplicationIamPolicy" => {
-          type: "AWS::IAM::Policy",
+        "IamRole" => {
+          type: "AWS::IAM::Role",
           properties: {
             policy_name: "ApplicationPolicy",
             policy_document: policy_document,
