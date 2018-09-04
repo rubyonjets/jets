@@ -65,7 +65,7 @@ class Jets::Cfn::TemplateBuilders
 
       if @options[:stack_type] == :full and !Jets::Router.routes.empty?
         add_api_gateway
-        add_api_gateway_deployment
+        add_api_deployment
       end
     end
 
@@ -75,8 +75,8 @@ class Jets::Cfn::TemplateBuilders
       add_outputs(resource.outputs)
     end
 
-    def add_api_gateway_deployment
-      resource = Jets::Resource::ChildStack::ApiGatewayDeployment.new(@options[:s3_bucket])
+    def add_api_deployment
+      resource = Jets::Resource::ChildStack::ApiDeployment.new(@options[:s3_bucket])
       add_associated_resource(resource)
       add_outputs(resource.outputs)
     end

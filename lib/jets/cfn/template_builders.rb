@@ -15,7 +15,7 @@ class Jets::Cfn
     autoload :RuleBuilder, "jets/cfn/template_builders/rule_builder"
 
     autoload :ApiGatewayBuilder, "jets/cfn/template_builders/api_gateway_builder"
-    autoload :ApiGatewayDeploymentBuilder, "jets/cfn/template_builders/api_gateway_deployment_builder"
+    autoload :ApiDeploymentBuilder, "jets/cfn/template_builders/api_deployment_builder"
 
     # separate beasts:
     autoload :FunctionProperties, "jets/cfn/template_builders/function_properties" # sort of a builder

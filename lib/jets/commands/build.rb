@@ -60,7 +60,7 @@ module Jets::Commands
     def build_api_gateway_templates
       gateway = Jets::Cfn::TemplateBuilders::ApiGatewayBuilder.new(@options)
       gateway.build
-      deployment = Jets::Cfn::TemplateBuilders::ApiGatewayDeploymentBuilder.new(@options)
+      deployment = Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder.new(@options)
       deployment.build
     end
 

@@ -1,9 +1,9 @@
-describe Jets::Cfn::TemplateBuilders::ApiGatewayDeploymentBuilder do
+describe Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::ApiGatewayDeploymentBuilder.new({})
+    Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder.new({})
   end
 
-  describe "ApiGatewayDeploymentBuilder" do
+  describe "ApiDeploymentBuilder" do
     it "builds a child stack the deployment" do
       builder.compose
       # puts builder.text # uncomment to see template text

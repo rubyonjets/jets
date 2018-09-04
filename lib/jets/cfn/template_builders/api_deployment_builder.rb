@@ -1,5 +1,5 @@
 class Jets::Cfn::TemplateBuilders
-  class ApiGatewayDeploymentBuilder
+  class ApiDeploymentBuilder
     include Interface
     include Jets::AwsServices
 
@@ -21,7 +21,7 @@ class Jets::Cfn::TemplateBuilders
 
     # template_path is an interface method
     def template_path
-      Jets::Naming.api_gateway_deployment_template_path
+      Jets::Naming.api_deployment_template_path
     end
 
     # do not bother writing a template if routes are empty

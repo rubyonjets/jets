@@ -65,7 +65,7 @@ module Jets::Resource::ApiGateway
     end
 
     def self.logical_id
-      "ApiGatewayDeployment#{timestamp}"
+      "ApiDeployment#{timestamp}"
     end
   end
 end

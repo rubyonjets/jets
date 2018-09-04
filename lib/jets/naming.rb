@@ -23,7 +23,7 @@ class Jets::Naming
       "#{template_path_prefix}-api-gateway.yml"
     end
 
-    def api_gateway_deployment_template_path
+    def api_deployment_template_path
       "#{template_path_prefix}-api-gateway-deployment.yml"
     end
 
