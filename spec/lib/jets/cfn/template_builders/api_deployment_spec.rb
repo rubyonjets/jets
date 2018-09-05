@@ -12,7 +12,7 @@ describe Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder do
       resource_types = resources.values.map { |i| i["Type"] }
       expect(resource_types).to include("AWS::ApiGateway::Deployment")
 
-      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-api-gateway-deployment.yml"
+      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-api-deployment.yml"
     end
   end
 end

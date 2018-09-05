@@ -86,7 +86,7 @@ class Jets::Lambda::Task
   # Useful for Jets::Resource late building.
   def replacements
     {
-      namespace: "#{@class_name.gsub('::','')}#{@meth.to_s.camelize}",
+      namespace: "#{@class_name.gsub('::','')}#{@meth.to_s.camelize}", # camelized because used in not just keys but also values
     }
   end
 end
