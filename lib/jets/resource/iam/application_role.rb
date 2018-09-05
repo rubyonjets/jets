@@ -17,5 +17,11 @@ module Jets::Resource::Iam
     def role_name
       "ApplicationRole"
     end
+
+    def outputs
+      {
+        "IamRole" => "!Ref IamRole",
+      }
+    end
   end
 end

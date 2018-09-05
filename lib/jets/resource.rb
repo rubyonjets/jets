@@ -8,6 +8,7 @@ class Jets::Resource
   autoload :ChildStack, 'jets/resource/child_stack'
   autoload :Function, 'jets/resource/function'
   autoload :Iam, 'jets/resource/iam'
+  autoload :S3, 'jets/resource/s3'
 
   attr_reader :definition, :replacements
   def initialize(definition, replacements={})

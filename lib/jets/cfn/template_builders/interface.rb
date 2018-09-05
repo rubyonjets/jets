@@ -71,8 +71,8 @@ class Jets::Cfn::TemplateBuilders
       options = Jets::Pascalize.pascalize(options)
 
       base = { 'Type' => type }
-      attributes = if options.include?('Properties')
-                    base.merge(options)
+      attributes = if options.include?('Type')
+                    base.merge(options) # options are top-level attributes
                   else
                     {
                       'Type' => type,

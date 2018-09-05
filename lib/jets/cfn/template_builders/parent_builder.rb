@@ -24,14 +24,15 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def add_minimal_resources
-      path = File.expand_path("../templates/minimal-stack.yml", __FILE__)
-      rendered_result = Jets::Erb.result(path)
-      minimal_template = YAML.load(rendered_result)
-      @template.deep_merge!(minimal_template)
+      # Initial s3 bucket, used to store code zipfile and templates Jets generates
+      resource = Jets::Resource::S3.new
+      add_associated_resource(resource)
+      add_outputs(resource.outputs)
 
       # Add application-wide IAM policy from Jets.config.iam_role
       resource = Jets::Resource::Iam::ApplicationRole.new
       add_associated_resource(resource)
+      add_outputs(resource.outputs)
     end
 
     def add_child_resources
