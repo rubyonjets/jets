@@ -25,7 +25,7 @@ end
 ```ruby
 class PostsController < ApplicationController
   class_iam_policy(
-    "dynamodb:*"
+    "dynamodb:*",
     {
       sid: "MyStmt1",
       action: ["logs:*"],
