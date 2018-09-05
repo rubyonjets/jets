@@ -3,7 +3,7 @@ describe Jets::Resource::Iam::PolicyDocument do
     Jets::Resource::Iam::PolicyDocument.new(definitions)
   end
 
-  # Most of the specs around IamPolicy is in function_policy_spec.rb.
+  # Most of the specs around IamPolicy is in function_role_spec.rb.
   # Writing a spec here as a sanity check.
   context "single string" do
     let(:definitions) { "logs:*" }

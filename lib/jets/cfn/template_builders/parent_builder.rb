@@ -30,7 +30,7 @@ class Jets::Cfn::TemplateBuilders
       @template.deep_merge!(minimal_template)
 
       # Add application-wide IAM policy from Jets.config.iam_role
-      resource = Jets::Resource::Iam::ApplicationPolicy.new
+      resource = Jets::Resource::Iam::ApplicationRole.new
       add_associated_resource(resource)
     end
 

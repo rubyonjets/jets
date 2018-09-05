@@ -35,14 +35,14 @@ class Jets::Cfn::TemplateBuilders
     def add_class_iam_policy
       return unless @app_klass.build_class_iam?
 
-      resource = Jets::Resource::Iam::ClassPolicy.new(@app_klass)
+      resource = Jets::Resource::Iam::ClassRole.new(@app_klass)
       add_associated_resource(resource)
     end
 
     def add_function_iam_policy(task)
       return unless task.build_function_iam?
 
-      resource = Jets::Resource::Iam::FunctionPolicy.new(task)
+      resource = Jets::Resource::Iam::FunctionRole.new(task)
       add_associated_resource(resource)
     end
   end

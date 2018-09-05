@@ -1,6 +1,6 @@
 module Jets::Cfn::TemplateMappers::IamPolicy
-  autoload :ApplicationPolicyMapper, "jets/cfn/template_mappers/iam_policy/application_policy_mapper"
+  autoload :ApplicationRoleMapper, "jets/cfn/template_mappers/iam_policy/application_role_mapper"
   autoload :BasePolicyMapper, "jets/cfn/template_mappers/iam_policy/base_policy_mapper"
-  autoload :ClassPolicyMapper, "jets/cfn/template_mappers/iam_policy/class_policy_mapper"
-  autoload :FunctionPolicyMapper, "jets/cfn/template_mappers/iam_policy/function_policy_mapper"
+  autoload :ClassRoleMapper, "jets/cfn/template_mappers/iam_policy/class_role_mapper"
+  autoload :FunctionRoleMapper, "jets/cfn/template_mappers/iam_policy/function_role_mapper"
 end

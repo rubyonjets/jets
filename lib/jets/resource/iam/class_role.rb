@@ -1,8 +1,8 @@
 module Jets::Resource::Iam
-  class FunctionPolicy < Jets::Resource::Base
-    def initialize(task)
-      @task = task
-      @policy_definitions = task.iam_policy || [] # iam_policy contains policy definitions
+  class ClassRole < Jets::Resource::Base
+    def initialize(app_class)
+      @app_class = app_class.to_s # IE: PostsController, HardJob, Hello, HelloFunction
+      @policy_definitions = app_class.class_iam_policy || [] # class_iam_policy contains policy definitions
     end
 
     def definition
@@ -19,7 +19,7 @@ module Jets::Resource::Iam
 
     def replacements
       {
-        namespace: "#{@task.class_name}#{@task.meth.to_s.camelize}",
+        namespace: @app_class.camelize,
       }
     end
 

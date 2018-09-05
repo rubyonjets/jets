@@ -7,19 +7,19 @@
 #   role_name
 #
 module Jets::Cfn::TemplateMappers::IamPolicy
-  class ApplicationPolicyMapper < BasePolicyMapper
+  class ApplicationRoleMapper < BasePolicyMapper
     def initialize; end # does nothing
 
     # Assume we always have at least some baseline iam policy permissions.
     def iam_policy
-      Jets::Cfn::TemplateBuilders::IamPolicy::ApplicationPolicy.new
+      Jets::Cfn::TemplateBuilders::IamPolicy::ApplicationRole.new
     end
     memoize :iam_policy
 
     def managed_iam_policy
       return unless Jets.config.managed_iam_policy
 
-      Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ApplicationPolicy.new
+      Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ApplicationRole.new
     end
     memoize :managed_iam_policy
 

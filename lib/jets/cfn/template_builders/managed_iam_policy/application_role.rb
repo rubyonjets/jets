@@ -2,7 +2,7 @@
 #   initialize
 #
 module Jets::Cfn::TemplateBuilders::ManagedIamPolicy
-  class ApplicationPolicy < BasePolicy
+  class ApplicationRole < BasePolicy
     def initialize
       @definitions = Jets.config.managed_iam_policy # config.managed_iam_policy contains definitions
       @definitions = [@definitions].flatten if @definitions

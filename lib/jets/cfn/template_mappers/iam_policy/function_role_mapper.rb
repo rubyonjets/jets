@@ -7,7 +7,7 @@
 #   role_name
 #
 module Jets::Cfn::TemplateMappers::IamPolicy
-  class FunctionPolicyMapper < BasePolicyMapper
+  class FunctionRoleMapper < BasePolicyMapper
     def initialize(task)
       @task = task
       @app_class = task.class_name.to_s
@@ -17,14 +17,14 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     def iam_policy
       return unless @task.iam_policy
 
-      Jets::Cfn::TemplateBuilders::IamPolicy::FunctionPolicy.new(@task)
+      Jets::Cfn::TemplateBuilders::IamPolicy::FunctionRole.new(@task)
     end
     memoize :iam_policy
 
     def managed_iam_policy
       return unless @task.managed_iam_policy
 
-      Jets::Cfn::TemplateBuilders::ManagedIamPolicy::FunctionPolicy.new(@task)
+      Jets::Cfn::TemplateBuilders::ManagedIamPolicy::FunctionRole.new(@task)
     end
     memoize :managed_iam_policy
 

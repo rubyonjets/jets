@@ -71,7 +71,7 @@ class Jets::Resource
       klass = Jets::Klass.from_task(@task)
       class_properties = klass.class_properties
       if klass.build_class_iam?
-        iam_policy = Jets::Resource::Iam::ClassPolicy.new(klass)
+        iam_policy = Jets::Resource::Iam::ClassRole.new(klass)
         class_properties[:role] = "!GetAtt #{iam_policy.logical_id}.Arn"
       end
       class_properties
@@ -95,7 +95,7 @@ class Jets::Resource
     def function_properties
       properties = @task.properties
       if @task.build_function_iam?
-        iam_policy = Jets::Resource::Iam::FunctionPolicy.new(@task)
+        iam_policy = Jets::Resource::Iam::FunctionRole.new(@task)
         properties[:role] = "!GetAtt #{iam_policy.logical_id}.Arn"
       end
       properties

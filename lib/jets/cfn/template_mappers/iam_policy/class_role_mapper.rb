@@ -7,7 +7,7 @@
 #   role_name
 #
 module Jets::Cfn::TemplateMappers::IamPolicy
-  class ClassPolicyMapper < BasePolicyMapper
+  class ClassRoleMapper < BasePolicyMapper
     def initialize(app_class)
       @app_class = app_class
       # IE: @app_class: PostsController, HardJob, Hello, HelloFunction
@@ -16,14 +16,14 @@ module Jets::Cfn::TemplateMappers::IamPolicy
     def iam_policy
       return unless @app_class.class_iam_policy
 
-      Jets::Cfn::TemplateBuilders::IamPolicy::ClassPolicy.new(@app_class)
+      Jets::Cfn::TemplateBuilders::IamPolicy::ClassRole.new(@app_class)
     end
     memoize :iam_policy
 
     def managed_iam_policy
       return unless @app_class.class_managed_iam_policy
 
-      Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ClassPolicy.new(@app_class)
+      Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ClassRole.new(@app_class)
     end
     memoize :managed_iam_policy
 

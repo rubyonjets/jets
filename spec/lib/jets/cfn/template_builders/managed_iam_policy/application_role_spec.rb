@@ -1,11 +1,11 @@
-describe Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ApplicationPolicy do
+describe Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ApplicationRole do
   let(:iam_policy) do
-    iam_policy = Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ApplicationPolicy.new
+    iam_policy = Jets::Cfn::TemplateBuilders::ManagedIamPolicy::ApplicationRole.new
     allow(iam_policy).to receive(:definitions).and_return(definitions)
     iam_policy
   end
 
-  # Most of the specs around ManagedIamPolicy is in function_policy_spec.rb.
+  # Most of the specs around ManagedIamPolicy is in function_role_spec.rb.
   # Writing a spec here as a sanity check.
   context "single string" do
     let(:definitions) { ["AmazonEC2ReadOnlyAccess"] }

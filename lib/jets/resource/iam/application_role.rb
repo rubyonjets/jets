@@ -1,5 +1,5 @@
 module Jets::Resource::Iam
-  class ApplicationPolicy < Jets::Resource::Base
+  class ApplicationRole < Jets::Resource::Base
     def initialize
       @policy_definitions = Jets.config.iam_policy # config.iam_policy contains definitions
       @policy_definitions = [@policy_definitions].flatten if @policy_definitions
@@ -10,7 +10,7 @@ module Jets::Resource::Iam
         "IamRole" => {
           type: "AWS::IAM::Role",
           properties: {
-            policy_name: "ApplicationPolicy",
+            policy_name: "ApplicationRole",
             policy_document: policy_document,
           }
         }
