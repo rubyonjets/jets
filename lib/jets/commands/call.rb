@@ -68,8 +68,8 @@ class Jets::Commands::Call
     begin
       resp = lambda.invoke(options)
     rescue Aws::Lambda::Errors::ResourceNotFoundException
-      puts "The function #{function_name} was not found.  Maybe check the spelling?".colorize(:red)
-      exit
+      puts "The function #{function_name} was not found.  Maybe check the spelling or the AWS_PROFILE?".colorize(:red)
+      return
     end
 
     if @options[:show_log]

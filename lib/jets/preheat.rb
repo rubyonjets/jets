@@ -34,9 +34,31 @@ module Jets
         end
       end
       threads.each { |t| t.join }
+
+      # Warm the jets-public_controller more since it gets called more naturally
+      warm_public_controller_more
+
       # return the funciton names so we can see in the Lambda console
       # the functions being prewarmed
       all_functions
+    end
+
+    def warm_public_controller_more
+      function_name = 'jets-public_controller-show' # key function name
+      return unless all_functions.include?(function_name)
+
+      public_ratio = Jets.config.prewarm.public_ratio
+      return if public_ratio == 0
+
+      puts "Prewarming the public controller extra at a ratio of #{public_ratio}" unless @options[:mute]
+
+      threads = []
+      public_ratio.times do
+        threads << Thread.new do
+          warm(function_name)
+        end
+      end
+      threads.each { |t| t.join }
     end
 
     # Returns:
