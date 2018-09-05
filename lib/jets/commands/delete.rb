@@ -85,6 +85,7 @@ class Jets::Commands::Delete
     end
   end
 
+  # Thanks: https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/s3-example-does-bucket-exist.html
   def bucket_exists?
     bucket_exists = false
     begin
