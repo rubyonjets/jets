@@ -48,7 +48,6 @@ module Jets::Resource::ApiGateway
     memoize :cors
 
   private
-    # Similar path_logical_id method in template_mappers/gateway_resource_mapper.rb
     # Example: PostsGet
     def method_logical_id
       path = camelized_path
