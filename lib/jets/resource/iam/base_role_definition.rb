@@ -26,9 +26,9 @@ module Jets::Resource::Iam
         policy_document: policy_document,
       ] if policy_document
 
-      # if managed_iam_policy.arns
-      #   definition[logical_id][:properties][:managed_policy_arns] = managed_iam_policy.arns
-      # end
+      unless managed_policy_arns.empty?
+        definition[logical_id][:properties][:managed_policy_arns] = managed_policy_arns
+      end
 
       definition
     end
@@ -37,7 +37,7 @@ module Jets::Resource::Iam
       PolicyDocument.new(@policy_definitions).policy_document
     end
 
-    def managed_iam_policy
+    def managed_policy_arns
       ManagedPolicy.new(@managed_policy_definitions).arns
     end
   end
