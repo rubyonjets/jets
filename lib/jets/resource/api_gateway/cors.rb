@@ -4,7 +4,7 @@ module Jets::Resource::ApiGateway
   class Cors < Method
     def definition
       {
-        "#{resource_logical_id}CorsApiMethod" => {
+        cors_logical_id => {
           type: "AWS::ApiGateway::Method",
 
           properties: {
@@ -44,6 +44,10 @@ module Jets::Resource::ApiGateway
           } # closes properties
         } # closes logical id
       } # closes definition
+    end
+
+    def cors_logical_id
+      "#{resource_logical_id}_cors_api_method"
     end
 
     def allow_origin

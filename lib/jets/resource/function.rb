@@ -7,11 +7,15 @@ class Jets::Resource
 
     def definition
       {
-        "{namespace}LambdaFunction" => {
+        function_logical_id => {
           type: "AWS::Lambda::Function",
           properties: combined_properties
         }
       }
+    end
+
+    def function_logical_id
+      "{namespace}_lambda_function".underscore
     end
 
     def replacements

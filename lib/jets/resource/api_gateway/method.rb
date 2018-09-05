@@ -14,7 +14,7 @@ module Jets::Resource::ApiGateway
 
     def definition
       {
-        "#{method_logical_id}ApiMethod" => {
+        method_logical_id => {
           type: "AWS::ApiGateway::Method",
           properties: {
             resource_id: "!Ref #{resource_id}",
@@ -33,14 +33,18 @@ module Jets::Resource::ApiGateway
       }
     end
 
-    def replacements
-      # mimic task to grab replacements
-      resources = [definition]
-      task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
-               resources: resources)
-      task.replacements
+    def method_logical_id
+      "{namespace}_api_method"
     end
-    memoize :replacements
+
+    def replacements
+      # Example namespace: PostsGet
+      namespace = camelized_path
+      namespace = namespace + "#{@route.method.to_s.downcase.camelize}"
+      {
+        namespace: namespace
+      }
+    end
 
     def cors
       Cors.new(@route)
@@ -48,12 +52,6 @@ module Jets::Resource::ApiGateway
     memoize :cors
 
   private
-    # Example: PostsGet
-    def method_logical_id
-      path = camelized_path
-      path + "#{@route.method.to_s.downcase.camelize}"
-    end
-
     def resource_id
       @route.path == '' ?
        "RootResourceId" :
@@ -62,7 +60,7 @@ module Jets::Resource::ApiGateway
 
     # Example: Posts
     def resource_logical_id
-      camelized_path
+      camelized_path.underscore
     end
 
     def camelized_path

@@ -6,7 +6,7 @@ module Jets::Resource::ChildStack
 
     def definition
       {
-        Jets::Resource::ApiGateway::Deployment.logical_id => {
+        deployment_id => {
           type: "AWS::CloudFormation::Stack",
           properties: {
             template_url: template_url,
@@ -44,6 +44,10 @@ module Jets::Resource::ChildStack
       {
         logical_id => "!Ref #{logical_id}",
       }
+    end
+
+    def deployment_id
+      Jets::Resource::ApiGateway::Deployment.logical_id
     end
 
     def template_url

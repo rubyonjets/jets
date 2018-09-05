@@ -2,7 +2,7 @@ module Jets::Resource::ApiGateway
   class Deployment < Jets::Resource::Base
     def definition
       {
-        self.class.logical_id => {
+        deployment_logical_id => {
           type: "AWS::ApiGateway::Deployment",
           properties: {
             description: "Version #{timestamp} deployed by jets",
@@ -62,6 +62,10 @@ module Jets::Resource::ApiGateway
     @@timestamp = nil
     def self.timestamp
       @@timestamp ||= Time.now.strftime("%Y%m%d%H%M%S")
+    end
+
+    def deployment_logical_id
+      self.class.logical_id.underscore
     end
 
     def self.logical_id

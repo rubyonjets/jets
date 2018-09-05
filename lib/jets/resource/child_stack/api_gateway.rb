@@ -6,7 +6,7 @@ module Jets::Resource::ChildStack
 
     def definition
       {
-        ApiGateway: {
+        api_gateway: {
           type: "AWS::CloudFormation::Stack",
           properties: {
             template_url: template_url,

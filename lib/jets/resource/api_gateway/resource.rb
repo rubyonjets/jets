@@ -5,11 +5,8 @@ module Jets::Resource::ApiGateway
     end
 
     def definition
-      logical_id = @path == '' ?
-        "RootResourceId" : # homepage
-        "#{path_logical_id(@path)}ApiResource"
       {
-        logical_id => {
+        resource_logical_id => {
           type: "AWS::ApiGateway::Resource",
           properties: {
             parent_id: parent_id,
@@ -24,6 +21,19 @@ module Jets::Resource::ApiGateway
       {
         logical_id => "!Ref #{logical_id}",
       }
+    end
+
+    def resource_logical_id
+      if @path == ''
+        "RootResourceId"
+      else
+        "#{path_logical_id(@path)}ApiResource"
+      end
+    end
+
+    # For parameter description
+    def desc
+      path.empty? ? 'Homepage route: /' : "Route for: /#{path}"
     end
 
     def parent_id
@@ -56,11 +66,6 @@ module Jets::Resource::ApiGateway
         text = "{#{text}+}" # *foo => {foo+}
       end
       text
-    end
-
-    # For parameter description
-    def desc
-      path.empty? ? 'Homepage route: /' : "Route for: /#{path}"
     end
 
   private
