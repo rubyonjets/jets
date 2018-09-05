@@ -53,7 +53,7 @@ This pattern of watching CloudWatch events can be used for things like automatic
 
 ## Multiple Events Support
 
-Registering multiple events to the same lambda function are supported. Add multiple event rules above the method definition. Example:
+Registering multiple events to the same Lambda function is supported. Add multiple event rules above the method definition. Example:
 
 ```ruby
 class SecurityJob < ApplicationJob
@@ -79,7 +79,7 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.
+Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.  Underneath the hood rate delegates to the event_rule method.
 
 ## Related links
 
