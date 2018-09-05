@@ -11,7 +11,7 @@ class Jets::Resource
     memoize :resource
 
     def replacements
-      {}
+      @replacements || {}
     end
   end
 end
