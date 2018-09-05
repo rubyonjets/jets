@@ -6,7 +6,7 @@ module Jets::Resource::ApiGateway
           type: "AWS::ApiGateway::RestApi",
           properties: {
             name: Jets::Naming.gateway_api_name,
-            binary_media_types: ['*/*'], # TODO: possibly make configurable
+            # binary_media_types: ['*/*'], # TODO: comment out, breaking form post
           }
         }
       }
