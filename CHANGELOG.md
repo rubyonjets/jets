@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.4]
+- fix custom iam policies
+- fix edge case: allow stack to be delete in rollback completed state
+
 ## [0.8.3]
 - adjust prewarm.public_ratio default to 10
 
