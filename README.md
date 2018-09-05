@@ -108,6 +108,10 @@ After deployment, you can test the Lambda functions with the AWS Lambda console 
 
 ![Lambda Console](https://s3.amazonaws.com/boltops-demo/images/screenshots/lambda-console-posts-controller-index.png)
 
+### Live Demo
+
+Here's a [Live Demo](https://demo.rubyonjets.com/posts) of the quintessential CRUD Jets app.
+
 ### More Info
 
 For more documentation, check out the official docs: [Ruby on Jets](http://rubyonjets.com/).  Here's a list of useful links:
