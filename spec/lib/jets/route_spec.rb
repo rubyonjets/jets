@@ -17,7 +17,6 @@ describe "Route" do
     end
   end
 
-
   context "route with captures" do
     let(:route) do
       Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit")
@@ -27,9 +26,25 @@ describe "Route" do
       expect(parameters).to eq("id" => "tung")
     end
 
+    it "extract_parameters with dash" do
+      parameters = route.extract_parameters("posts/tung-nguyen/edit")
+      expect(parameters).to eq("id" => "tung-nguyen")
+    end
+
     it "api_gateway_format" do
       api_gateway_path = route.send(:api_gateway_format, route.path)
       expect(api_gateway_path).to eq "posts/{id}/edit"
+    end
+  end
+
+  context "route with captures and extension" do
+    let(:route) do
+      Jets::Route.new(path: "posts/:id", method: :get, to: "posts#show")
+    end
+
+    it "extract_parameters" do
+      parameters = route.extract_parameters("posts/tung.png")
+      expect(parameters).to eq("id" => "tung.png")
     end
   end
 

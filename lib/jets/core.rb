@@ -135,7 +135,7 @@ module Jets::Core
                     .sub(/^\.\//,'') # remove ./
                     .sub(/app\/\w+\//,'') # remove app/controllers or app/jobs etc
                     .classify
-      puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
+      # puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
       class_name.constantize # use constantize instead of require so dont have to worry about order.
     end
   end

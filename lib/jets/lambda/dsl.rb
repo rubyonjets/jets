@@ -218,7 +218,7 @@ module Jets::Lambda::Dsl
         all_tasks.values
       end
 
-      # Used in Jets::Cfn::TemplateBuilders::Interface#build
+      # Used in Jets::Cfn::Builders::Interface#build
       # Overridden in rule/dsl.rb
       def build?
         !tasks.empty?

@@ -109,7 +109,13 @@ module Jets::Rule::Dsl
       def register_managed_rule(name, definition)
         # A task object is needed to build {namespace} for later replacing.
         task = Jets::Lambda::Task.new(self.name, name, resources: @resources)
-        all_managed_rules[name] = { definition: definition, task: task }
+
+        # TODO: figure out better way for specific replacements for different classes
+        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
+        config_rule_name = "#{name_without_rule}_#{name}".dasherize
+        replacements = task.replacements.merge(config_rule_name: config_rule_name)
+
+        all_managed_rules[name] = { definition: definition, replacements: replacements }
         clear_properties
       end
 

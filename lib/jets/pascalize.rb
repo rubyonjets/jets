@@ -43,7 +43,15 @@ module Jets
 
       def pascalize_string(s)
         s = s.to_s.camelize
-        s.slice(0,1).capitalize + s.slice(1..-1) # capitalize first letter only
+        s = s.slice(0,1).capitalize + s.slice(1..-1) # capitalize first letter only
+        special_map[s] || s
+      end
+
+      # Some keys have special mappings
+      def special_map
+        {
+          "TemplateUrl" => "TemplateURL"
+        }
       end
     end
   end

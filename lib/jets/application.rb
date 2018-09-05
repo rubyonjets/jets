@@ -94,7 +94,7 @@ class Jets::Application
       sid: "Statement1",
       action: ["logs:*"],
       effect: "Allow",
-      resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{project_namespace}-*",
+      resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
     }]
   end
 

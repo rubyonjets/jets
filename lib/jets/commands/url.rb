@@ -27,19 +27,17 @@ module Jets::Commands
       stack = cfn.describe_stacks(stack_name: api_gateway_stack_arn).stacks.first
       rest_api = lookup(stack[:outputs], "RestApi")
       region_id = lookup(stack[:outputs], "Region")
-      # Abusing ApiGatewayDeploymentMapper
-      #   set path=nil,s3_bucket=nil
-      #   not using any methods that rely on the initialization parameters
-      map = Jets::Cfn::TemplateMappers::ApiGatewayDeploymentMapper.new(path=nil,s3_bucket=nil)
+      stage_name = Jets::Resource::ApiGateway::Deployment.stage_name
+
       # https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-call-api.html
       # https://my-api-id.execute-api.region-id.amazonaws.com/stage-name/{resourcePath}
-      "https://#{rest_api}.execute-api.#{region_id}.amazonaws.com/#{map.stage_name}"
+      "https://#{rest_api}.execute-api.#{region_id}.amazonaws.com/#{stage_name}"
     end
 
     # Lookup output value
     def lookup(outputs, key)
-      o = outputs.find { |o| o.output_key == key }
-      o&.output_value
+      out = outputs.find { |o| o.output_key == key }
+      out&.output_value
     end
   end
 end

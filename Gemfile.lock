@@ -28,6 +28,7 @@ PATH
       json
       kramdown
       memoist
+      mimemagic
       pg (= 0.21)
       rack
       railties (>= 5.2.1)
@@ -111,6 +112,7 @@ GEM
       nokogiri (>= 1.5.9)
     memoist (0.16.0)
     method_source (0.9.0)
+    mimemagic (0.3.2)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     nokogiri (1.8.4)

@@ -1,9 +1,0 @@
----
-Resources:
-  S3Bucket:
-    Type: AWS::S3::Bucket
-Outputs:
-  S3Bucket:
-    Value: "!Ref S3Bucket" # not a valid cfn notation, surrounding double quotes is handled by post processing.
-  IamRole:
-    Value: "!Ref IamRole"

@@ -25,8 +25,8 @@ class Jets::Controller
       resp = controller.ensure_render
       controller.run_after_actions
 
-      time = Time.now - t1
-      Jets.logger.info "Completed Status Code #{resp["statusCode"]} in #{time}s"
+      took = Time.now - t1
+      Jets.logger.info "Completed Status Code #{resp["statusCode"]} in #{took}s"
 
       resp
     end

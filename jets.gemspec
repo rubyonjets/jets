@@ -44,6 +44,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "text-table"
   spec.add_dependency "rack"
   spec.add_dependency "json"
+  spec.add_dependency "mimemagic"
+
   # TODO: only load the database adapters that app's Gemfile instead of jets.gemspec
   spec.add_dependency "pg", "=0.21"
 

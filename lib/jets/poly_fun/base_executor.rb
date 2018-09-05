@@ -118,8 +118,8 @@ class Jets::PolyFun
       # the mutiple sources of how the handler can get set.
       # puts "handler path #{@task.handler_path}"
       #
-      # IE: Jets::Cfn::TemplateBuilders::FunctionProperties::PythonBuilder
-      builder_class = "Jets::Cfn::TemplateBuilders::FunctionProperties::#{@task.lang.to_s.classify}Builder".constantize
+      # IE: Jets::Cfn::Builders::FunctionProperties::PythonBuilder
+      builder_class = "Jets::Cfn::Builders::FunctionProperties::#{@task.lang.to_s.classify}Builder".constantize
       builder = builder_class.new(@task)
       full_handler = builder.properties["Handler"] # full handler here
       File.extname(full_handler).sub(/^./,'') # the extension of the full handler is the handler
