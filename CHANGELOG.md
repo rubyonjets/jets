@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.2]
+- add prewarm.public_ratio option: http://rubyonjets.com/docs/prewarming/
+
 ## [0.8.1]
 - Upgrade all cfn resources to use the core jets resource model: request #21 from tongueroo/core-resource2
 - Rid of mimimal-stack.yml and use jets core resource model
