@@ -22,7 +22,7 @@ module Jets::Resource::Iam
       }
 
       definition[logical_id][:properties][:policies] = [
-        policy_name: "#{role_name}Policy",
+        policy_name: "#{role_name}-policy",
         policy_document: policy_document,
       ] unless policy_document['Statement'].empty?
 
