@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.1]
+- Upgrade all cfn resources to use the core jets resource model: request #21 from tongueroo/core-resource2
+- Rid of mimimal-stack.yml and use jets core resource model
+- Rescue encoding exception for the Jets IO flush to prevent process from crashing
+- wip: binary support, set proper isBase64Encoded for binary content, but commented out binary media types due to form post breaking
+
 ## [0.8.0]
 - Introduce core resource, pull request #20
 - Future template generation will lead to core resource. Start the move away from the older cfn template generator logic.
