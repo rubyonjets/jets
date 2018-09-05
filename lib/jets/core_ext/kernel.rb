@@ -18,7 +18,7 @@ module Kernel
 
   # Note: Writing binary data to the log will crash the process with an error like this:
   #   jets/lib/jets/core_ext/kernel.rb:20:in `write': "\x89" from ASCII-8BIT to UTF-8 (Encoding::UndefinedConversionError)
-  # So rescuring it and discarding it to keep the process alive.
+  # Rescue and discard it to keep the process alive.
   def io_flush
     chunk = @@io_buffer.join("\n")
     begin
