@@ -76,7 +76,7 @@ module Jets::Resource::ChildStack
     end
 
     def template_url
-      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{@path}"
+      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{File.basename(@path)}"
     end
   end
 end

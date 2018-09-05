@@ -48,7 +48,7 @@ module Jets::Resource::ChildStack
     end
 
     def template_url
-      path = "#{Jets.config.project_namespace}-api-deployment.yml"
+      path = File.basename("#{Jets.config.project_namespace}-api-deployment.yml")
       "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{path}"
     end
   end

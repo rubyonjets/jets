@@ -40,4 +40,11 @@ describe "pascalize" do
     # pp result
     expect(result).to eq("FooBar"=>1, "has-dash"=>2,"has/slash"=>3,"application/json"=>4)
   end
+
+  it "special map keys" do
+    h = {template_url: 1}
+    result = Jets::Pascalize.pascalize(h)
+    # pp result
+    expect(result).to eq("TemplateURL"=>1)
+  end
 end
