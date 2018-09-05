@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::JobBuilder do
+describe Jets::Cfn::Builders::JobBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::JobBuilder.new(HardJob)
+    Jets::Cfn::Builders::JobBuilder.new(HardJob)
   end
 
   describe "compose" do

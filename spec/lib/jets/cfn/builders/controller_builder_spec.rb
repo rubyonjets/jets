@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::ControllerBuilder do
+describe Jets::Cfn::Builders::ControllerBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::ControllerBuilder.new(app_class)
+    Jets::Cfn::Builders::ControllerBuilder.new(app_class)
   end
 
   context "PostsController" do

@@ -1,8 +1,8 @@
 class InterfaceTest
-  include Jets::Cfn::TemplateBuilders::Interface
+  include Jets::Cfn::Builders::Interface
 end
 
-describe Jets::Cfn::TemplateBuilders::Interface do
+describe Jets::Cfn::Builders::Interface do
   let(:interface) do
     InterfaceTest.new
   end

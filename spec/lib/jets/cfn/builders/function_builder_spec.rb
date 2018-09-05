@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::FunctionBuilder do
+describe Jets::Cfn::Builders::FunctionBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::FunctionBuilder.new(klass)
+    Jets::Cfn::Builders::FunctionBuilder.new(klass)
   end
 
   describe "compose" do

@@ -1,4 +1,4 @@
-class Jets::Cfn::TemplateBuilders
+class Jets::Cfn::Builders
   class FunctionBuilder < BaseChildBuilder
     # compose is an interface method for Interface module
     def compose

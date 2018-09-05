@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::BaseChildBuilder do
+describe Jets::Cfn::Builders::BaseChildBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::BaseChildBuilder.new(app_class)
+    Jets::Cfn::Builders::BaseChildBuilder.new(app_class)
   end
   let(:app_class) { PostsController }
 

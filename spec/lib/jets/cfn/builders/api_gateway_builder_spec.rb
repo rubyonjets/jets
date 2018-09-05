@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::ApiGatewayBuilder do
+describe Jets::Cfn::Builders::ApiGatewayBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::ApiGatewayBuilder.new({})
+    Jets::Cfn::Builders::ApiGatewayBuilder.new({})
   end
 
   describe "ApiGatewayBuilder" do

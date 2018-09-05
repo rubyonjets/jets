@@ -1,7 +1,7 @@
-describe Jets::Cfn::TemplateBuilders::ParentBuilder do
+describe Jets::Cfn::Builders::ParentBuilder do
   context "first run" do
     let(:builder) do
-      Jets::Cfn::TemplateBuilders::ParentBuilder.new({})
+      Jets::Cfn::Builders::ParentBuilder.new({})
     end
 
     describe "compose" do
@@ -33,7 +33,7 @@ describe Jets::Cfn::TemplateBuilders::ParentBuilder do
   #
   # context "second run" do
   #   let(:builder) do
-  #     Jets::Cfn::TemplateBuilders::ParentBuilder.new(stack_type: "full")
+  #     Jets::Cfn::Builders::ParentBuilder.new(stack_type: "full")
   #   end
 
   #   describe "compose" do

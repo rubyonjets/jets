@@ -1,4 +1,4 @@
-class Jets::Cfn::TemplateBuilders
+class Jets::Cfn::Builders
   class JobBuilder < BaseChildBuilder
     def compose
       add_common_parameters

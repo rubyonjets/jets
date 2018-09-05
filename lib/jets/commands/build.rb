@@ -52,12 +52,12 @@ module Jets::Commands
     end
 
     def build_minimal_template
-      Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options).build
+      Jets::Cfn::Builders::ParentBuilder.new(@options).build
     end
 
     def build_api_gateway_templates
-      Jets::Cfn::TemplateBuilders::ApiGatewayBuilder.new(@options).build
-      Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder.new(@options).build
+      Jets::Cfn::Builders::ApiGatewayBuilder.new(@options).build
+      Jets::Cfn::Builders::ApiDeploymentBuilder.new(@options).build
     end
 
     def build_child_templates
@@ -75,21 +75,21 @@ module Jets::Commands
 
       md = path.match(%r{app/(.*?)/}) # extract: controller, job or function
       process_class = md[1].classify
-      builder_class = "Jets::Cfn::TemplateBuilders::#{process_class}Builder".constantize
+      builder_class = "Jets::Cfn::Builders::#{process_class}Builder".constantize
 
       # Examples:
-      #   Jets::Cfn::TemplateBuilders::ControllerBuilder.new(PostsController)
-      #   Jets::Cfn::TemplateBuilders::JobBuilder.new(EasyJob)
-      #   Jets::Cfn::TemplateBuilders::RuleBuilder.new(CheckRule)
-      #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(Hello)
-      #   Jets::Cfn::TemplateBuilders::FunctionBuilder.new(HelloFunction)
+      #   Jets::Cfn::Builders::ControllerBuilder.new(PostsController)
+      #   Jets::Cfn::Builders::JobBuilder.new(EasyJob)
+      #   Jets::Cfn::Builders::RuleBuilder.new(CheckRule)
+      #   Jets::Cfn::Builders::FunctionBuilder.new(Hello)
+      #   Jets::Cfn::Builders::FunctionBuilder.new(HelloFunction)
       app_klass = Jets::Klass.from_path(path)
       builder = builder_class.new(app_klass)
       builder.build
     end
 
     def build_parent_template
-      Jets::Cfn::TemplateBuilders::ParentBuilder.new(@options).build
+      Jets::Cfn::Builders::ParentBuilder.new(@options).build
     end
 
     def clean_templates

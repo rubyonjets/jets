@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::RuleBuilder do
+describe Jets::Cfn::Builders::RuleBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::RuleBuilder.new(GameRule)
+    Jets::Cfn::Builders::RuleBuilder.new(GameRule)
   end
 
   describe "compose" do

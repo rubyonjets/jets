@@ -1,6 +1,6 @@
 require 'erb'
 
-class Jets::Cfn::TemplateBuilders
+class Jets::Cfn::Builders
   class ParentBuilder
     include Interface
     include Jets::AwsServices

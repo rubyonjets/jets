@@ -1,6 +1,6 @@
-describe Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder do
+describe Jets::Cfn::Builders::ApiDeploymentBuilder do
   let(:builder) do
-    Jets::Cfn::TemplateBuilders::ApiDeploymentBuilder.new({})
+    Jets::Cfn::Builders::ApiDeploymentBuilder.new({})
   end
 
   describe "ApiDeploymentBuilder" do
