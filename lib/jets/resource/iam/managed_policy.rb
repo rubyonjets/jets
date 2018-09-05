@@ -1,11 +1,11 @@
-# Classes that inherit this Base class should implement:
-#
-#   initialize - each initializer has a different signature
-#
-module Jets::Cfn::TemplateBuilders::ManagedIamPolicy
-  class BasePolicy
+module Jets::Resource::Iam
+  class ManagedPolicy
     extend Memoist
     attr_reader :definitions
+    def initialize(*definitions)
+      @definitions = definitions.flatten
+    end
+
 
     def arns
       definitions.map { |definition| standardize(definition) }
