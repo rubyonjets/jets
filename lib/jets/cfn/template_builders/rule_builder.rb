@@ -3,7 +3,7 @@ class Jets::Cfn::TemplateBuilders
     def compose
       add_common_parameters
       add_functions
-      add_associated_resources
+      add_resources
       add_managed_rules
     end
 
@@ -12,7 +12,7 @@ class Jets::Cfn::TemplateBuilders
     def add_managed_rules
       @app_klass.managed_rules.each do |rule|
         resource = Jets::Resource.new(rule[:definition], rule[:replacements])
-        add_associated_resource(resource)
+        add_resource(resource)
       end
     end
   end

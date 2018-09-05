@@ -14,7 +14,7 @@ class Jets::Cfn::TemplateBuilders
 
       puts "Building API Gateway Deployment template."
       deployment = Jets::Resource::ApiGateway::Deployment.new
-      add_associated_resource(deployment)
+      add_resource(deployment)
       add_parameters(deployment.parameters)
       add_outputs(deployment.outputs)
     end

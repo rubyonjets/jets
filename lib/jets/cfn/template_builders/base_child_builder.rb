@@ -29,21 +29,21 @@ class Jets::Cfn::TemplateBuilders
 
     def add_function(task)
       resource = Jets::Resource::Function.new(task)
-      add_associated_resource(resource) # TODO: rename add_associated_resource to add_resource
+      add_resource(resource)
     end
 
     def add_class_iam_policy
       return unless @app_klass.build_class_iam?
 
       resource = Jets::Resource::Iam::ClassRole.new(@app_klass)
-      add_associated_resource(resource)
+      add_resource(resource)
     end
 
     def add_function_iam_policy(task)
       return unless task.build_function_iam?
 
       resource = Jets::Resource::Iam::FunctionRole.new(task)
-      add_associated_resource(resource)
+      add_resource(resource)
     end
   end
 end

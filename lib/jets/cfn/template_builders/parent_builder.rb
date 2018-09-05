@@ -26,12 +26,12 @@ class Jets::Cfn::TemplateBuilders
     def add_minimal_resources
       # Initial s3 bucket, used to store code zipfile and templates Jets generates
       resource = Jets::Resource::S3.new
-      add_associated_resource(resource)
+      add_resource(resource)
       add_outputs(resource.outputs)
 
       # Add application-wide IAM policy from Jets.config.iam_role
       resource = Jets::Resource::Iam::ApplicationRole.new
-      add_associated_resource(resource)
+      add_resource(resource)
       add_outputs(resource.outputs)
     end
 
@@ -67,7 +67,7 @@ class Jets::Cfn::TemplateBuilders
     end
 
     def build_child_resources(resource)
-      add_associated_resource(resource)
+      add_resource(resource)
       add_outputs(resource.outputs)
     end
   end

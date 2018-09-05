@@ -30,7 +30,7 @@ class Jets::Cfn::TemplateBuilders
     # If the are routes in config/routes.rb add Gateway API in parent stack
     def add_gateway_rest_api
       rest_api = Jets::Resource::ApiGateway::RestApi.new
-      add_associated_resource(rest_api)
+      add_resource(rest_api)
       add_outputs(rest_api.outputs)
 
       deployment = Jets::Resource::ApiGateway::Deployment.new
@@ -53,7 +53,7 @@ class Jets::Cfn::TemplateBuilders
         next if homepage # handled by RootResourceId output already
 
         resource = Jets::Resource::ApiGateway::Resource.new(path)
-        add_associated_resource(resource)
+        add_resource(resource)
         add_outputs(resource.outputs)
       end
     end

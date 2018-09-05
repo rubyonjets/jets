@@ -49,40 +49,6 @@ class Jets::Cfn::TemplateBuilders
       results.join("\n") + "\n"
     end
 
-    # add_resource handles an options Hash with both only Properties
-    # and also one with a nested Properties.
-
-    # Example:
-    #
-    # Simple options with properties only:
-    # add_resource("MyId", "AWS::CloudFormationStack",
-    #   TemplateURL: "template_url",
-    #   Parameters: {},
-    # )
-    #
-    # More complicated options:
-    # add_resource("MyId", "AWS::ApiGateway::RestApi",
-    #   Properties: {
-    #     Name: "my-api"
-    #   },
-    #   DependsOn: ["AnotherResource"]
-    # )
-    def add_resource(logical_id, type, options)
-      options = Jets::Pascalize.pascalize(options)
-
-      base = { 'Type' => type }
-      attributes = if options.include?('Type')
-                    base.merge(options) # options are top-level attributes
-                  else
-                    {
-                      'Type' => type,
-                      'Properties' => options # options are properties
-                    }
-                  end
-
-      @template['Resources'][logical_id] = attributes
-    end
-
     def add_parameters(attributes)
       attributes.each do |name,value|
         add_parameter(name.to_s.camelize, Description: value)
@@ -107,18 +73,56 @@ class Jets::Cfn::TemplateBuilders
       @template[:Outputs][name.camelize] = options
     end
 
-    def add_associated_resources
+    def add_resources
       @app_klass.tasks.each do |task|
         task.resources.each do |definition|
           resource = Jets::Resource.new(definition, task.replacements)
-          add_associated_resource(resource)
-          add_associated_resource(resource.permission)
+          add_resource(resource)
+          add_resource(resource.permission)
         end
       end
     end
 
-    def add_associated_resource(resource)
-      add_resource(resource.logical_id, resource.type, resource.attributes)
+    def add_resource(resource)
+      add_template_resource(resource.logical_id, resource.type, resource.attributes)
+    end
+
+    # The add_resource method can take an options Hash with both with either
+    # top level attributes or properties.
+    #
+    # Example:
+    #
+    # Top level options:
+    #
+    #   add_template_resource("MyId", "AWS::ApiGateway::RestApi",
+    #     type: "AWS::ApiGateway::RestApi",
+    #     properties: {
+    #       name: "my-api"
+    #     },
+    #     depends_on: ["AnotherResource"]
+    #   )
+    #
+    # Simple options with properties only:
+    #
+    #   add_template_resource("MyId", "AWS::CloudFormationStack",
+    #     template_url: "template_url",
+    #     parameters: {},
+    #   )
+    #
+    def add_template_resource(logical_id, type, options)
+      options = Jets::Pascalize.pascalize(options)
+
+      attributes = if options.include?('Type')
+                     base = { 'Type' => type }
+                     base.merge(options) # options are top-level attributes
+                   else
+                     {
+                       'Type' => type,
+                       'Properties' => options # options are properties
+                     }
+                   end
+
+      @template['Resources'][logical_id] = attributes
     end
   end
 end
