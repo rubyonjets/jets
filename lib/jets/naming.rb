@@ -24,7 +24,7 @@ class Jets::Naming
     end
 
     def api_deployment_template_path
-      "#{template_path_prefix}-api-gateway-deployment.yml"
+      "#{template_path_prefix}-api-deployment.yml"
     end
 
     def parent_stack_name

@@ -19,8 +19,7 @@ module Jets::Resource::ChildStack
 
     def parameters
       {
-        IamRole: "!GetAtt IamRole.Arn",
-        S3Bucket: "!Ref S3Bucket",
+        RestApi: "!GetAtt ApiGateway.Outputs.RestApi",
       }
     end
 

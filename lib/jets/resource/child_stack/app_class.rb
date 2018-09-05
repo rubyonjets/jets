@@ -1,7 +1,6 @@
 module Jets::Resource::ChildStack
   class AppClass < Jets::Resource::Base
     def initialize(path, s3_bucket)
-      puts "AppClass path #{path}"
       @path = path
       @s3_bucket = s3_bucket
     end

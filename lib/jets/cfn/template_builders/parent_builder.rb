@@ -35,12 +35,22 @@ class Jets::Cfn::TemplateBuilders
       add_outputs(resource.outputs)
     end
 
+    def api_gateway_paths
+      files = %w[
+        api-deployment.yml
+        api-gateway.yml
+      ]
+      files.map do |name|
+        "#{Jets::Naming.template_path_prefix}-#{name}"
+      end
+    end
+
     def build_child_resources
       expression = "#{Jets::Naming.template_path_prefix}-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
-        next if path =~ /api-gateway/ # specially treated
+        next if api_gateway_paths.include?(path) # specially treated
 
         add_app_class_stack(path)
       end

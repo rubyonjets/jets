@@ -18,7 +18,7 @@ module Jets::Resource::Iam
 
     def replacements
       {
-        namespace: @app_class.camelize,
+        namespace: @app_class.gsub('::','').camelize,
       }
     end
   end
