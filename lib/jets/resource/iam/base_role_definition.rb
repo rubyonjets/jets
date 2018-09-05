@@ -24,7 +24,7 @@ module Jets::Resource::Iam
       definition[logical_id][:properties][:policies] = [
         policy_name: "#{role_name}Policy",
         policy_document: policy_document,
-      ] if policy_document
+      ] unless policy_document['Statement'].empty?
 
       unless managed_policy_arns.empty?
         definition[logical_id][:properties][:managed_policy_arns] = managed_policy_arns
