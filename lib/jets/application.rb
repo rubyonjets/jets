@@ -23,7 +23,7 @@ class Jets::Application
     config.prewarm.enable = true
     config.prewarm.rate = '2 hours'
     config.prewarm.concurrency = 2
-    config.prewarm.public_ratio = 5
+    config.prewarm.public_ratio = 10
 
     config.lambdagems = ActiveSupport::OrderedOptions.new
     config.lambdagems.sources = [
