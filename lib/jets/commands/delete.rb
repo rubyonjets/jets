@@ -74,6 +74,7 @@ class Jets::Commands::Delete
 
   def s3_bucket_name
     return @s3_bucket_name if defined?(@s3_bucket_name)
+    return unless bucket_exists?
 
     resp = cfn.describe_stacks(stack_name: parent_stack_name)
     outputs = resp.stacks[0].outputs
@@ -82,6 +83,16 @@ class Jets::Commands::Delete
     else
       @s3_bucket_name = outputs.find {|o| o.output_key == 'S3Bucket'}.output_value
     end
+  end
+
+  def bucket_exists?
+    bucket_exists = false
+    begin
+      resp = s3.head_bucket(bucket: @s3_bucket_name, use_accelerate_endpoint: false)
+      bucket_exists = true
+    rescue
+    end
+    bucket_exists
   end
 
   def parent_stack_name
