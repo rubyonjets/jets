@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.3]
+- adjust prewarm.public_ratio default to 10
+
 ## [0.8.2]
 - add prewarm.public_ratio option: http://rubyonjets.com/docs/prewarming/
 
