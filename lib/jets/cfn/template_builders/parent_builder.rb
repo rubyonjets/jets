@@ -35,16 +35,6 @@ class Jets::Cfn::TemplateBuilders
       add_outputs(resource.outputs)
     end
 
-    def api_gateway_paths
-      files = %w[
-        api-deployment.yml
-        api-gateway.yml
-      ]
-      files.map do |name|
-        "#{Jets::Naming.template_path_prefix}-#{name}"
-      end
-    end
-
     def build_child_resources
       expression = "#{Jets::Naming.template_path_prefix}-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
@@ -79,6 +69,16 @@ class Jets::Cfn::TemplateBuilders
     def add_child_resources(resource)
       add_resource(resource)
       add_outputs(resource.outputs)
+    end
+
+    def api_gateway_paths
+      files = %w[
+        api-deployment.yml
+        api-gateway.yml
+      ]
+      files.map do |name|
+        "#{Jets::Naming.template_path_prefix}-#{name}"
+      end
     end
   end
 end
