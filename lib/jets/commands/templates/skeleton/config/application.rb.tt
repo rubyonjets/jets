@@ -1,8 +1,12 @@
 Jets.application.configure do
   config.project_name = "<%= project_name %>"
   config.api_generator = <%= !!@options[:api] %>
-  # config.prewarm.rate = '30 minutes' # default is '30 minutes'
-  # config.prewarm.concurrency = 1 # default is 1
+
+  # config.prewarm.enable = true # default is true
+  # config.prewarm.rate = '2 hours' # default is '2 hours'
+  # config.prewarm.concurrency = 2 # default is 2
+  # config.prewarm.public_ratio = 5 # default is 5
+
   # config.env_extra = 2 # can also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
 

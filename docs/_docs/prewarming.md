@@ -8,10 +8,24 @@ Jets supports prewarming your application to remedy the Lambda cold start issue.
 Jets.application.configure do
   # ...
   config.prewarm.enable = true # default: enabled
-  config.prewarm.rate = "30 minutes" # default: 30 minutes
+  config.prewarm.rate = "2 hours" # default: 2 hours
   config.prewarm.concurrency = 2 # default: 2
+  config.prewarm.public_ratio = 5 # default: 5
 end
 ```
+
+## Rate vs Concurrency
+
+Option | Explanation
+--- | ---
+rate | This controls how often the prewarming job runs.
+concurrent | For each prewarming job run, this controls how many times in parallel to hit the functions with a prewarm request.
+
+For example, with a rate of 2 hours and concurrent of 2, this results in the Lambda functions being called with a prewarm request 24 times after 24 hours (12 hours x 2).
+
+## Public Ratio
+
+The `prewarm.public_ratio` activates extra prewarming for the internal `jets/public_controller.rb`.  The `jets/public_controller.rb` handles serving static files out of the `public` folder. This includes css and js assets that have been packaged up. Generally, each web request usually results in additional assets file requests.  The `prewarm.public_ratio` tells Jets to prewarm the public_controller's lambda function a little bit extra. You can tune the extra prewarming ratio higher or lower according to your needs.
 
 ## Prewarm After Deployment
 
@@ -27,7 +41,7 @@ We can see that the lambda function had been prewarmed once and called 4 times s
 
 ## Custom Prewarming
 
-Jets prewarms all Ruby functions in your application with the same weight. If you want to prewarm a specific function that gets a high volume of traffic, you can create a custom prewarm job.  Here's a starter example:
+Jets prewarms most Ruby functions in your application with the same weight. If you want to prewarm a specific function that gets a high volume of traffic, you can create a custom prewarm job.  Here's a starter example:
 
 app/jobs/prewarm_job.rb:
 
