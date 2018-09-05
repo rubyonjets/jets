@@ -1,11 +1,11 @@
 module Jets::Resource::Iam
   class ManagedPolicy
     extend Memoist
+
     attr_reader :definitions
     def initialize(*definitions)
       @definitions = definitions.flatten
     end
-
 
     def arns
       definitions.map { |definition| standardize(definition) }

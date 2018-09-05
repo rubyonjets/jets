@@ -9,16 +9,16 @@ module Jets::Resource::Iam
     end
 
     def role_logical_id
-      "{namespace}IamRole"
+      "{namespace}_iam_role".underscore
     end
 
     def role_name
-      "{namespace}Role"
+      "{namespace}Role" # camelized because used as template value
     end
 
     def replacements
       {
-        namespace: "#{@task.class_name.gsub('::','')}#{@task.meth.to_s.camelize}",
+        namespace: "#{@task.class_name.gsub('::','')}#{@task.meth.to_s.camelize}", # camelized because can be used as value
       }
     end
   end

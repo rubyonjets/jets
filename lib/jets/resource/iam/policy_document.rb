@@ -39,13 +39,5 @@ module Jets::Resource::Iam
         end
       end
     end
-
-    # Need to underscore and then classify again for this case:
-    #   Jets::PreheatJob_policy => JetsPreheatJobPolicy
-    # Or else you we get this:
-    #   Jets::PreheatJob_policy => JetsPreheatjobPolicy
-    def classify_name(text)
-      text.gsub('::','_').underscore.classify
-    end
   end
 end

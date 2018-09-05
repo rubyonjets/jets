@@ -11,16 +11,16 @@ module Jets::Resource::Iam
     end
 
     def role_logical_id
-      "IamRole"
+      "iam_role"
     end
 
     def role_name
-      "ApplicationRole"
+      "ApplicationRole" # camelized because used as template value
     end
 
     def outputs
       {
-        "IamRole" => "!Ref IamRole",
+        logical_id => "!Ref #{logical_id}",
       }
     end
   end
