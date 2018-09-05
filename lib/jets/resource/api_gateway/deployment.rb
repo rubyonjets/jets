@@ -34,11 +34,11 @@ module Jets::Resource::ApiGateway
         next unless File.file?(path)
 
         regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
-        contoller_name = path.sub(regexp, '').sub('.yml', '')
+        controller_name = path.sub(regexp, '').sub('.yml', '')
         # map the path to a camelized logical_id. Example:
         #   /tmp/jets/demo/templates/demo-dev-2-posts_controller.yml to
         #   PostsController
-        controller_logical_id = contoller_name.underscore.camelize
+        controller_logical_id = controller_name.underscore.camelize
 
         controller_logical_ids << controller_logical_id
       end

@@ -36,8 +36,8 @@ module Jets::Resource::ChildStack
     #   PostsController
     def app_logical_id
       regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
-      contoller_name = @path.sub(regexp, '').sub('.yml', '')
-      contoller_name.underscore.camelize
+      controller_name = @path.sub(regexp, '').sub('.yml', '')
+      controller_name.underscore.camelize
     end
 
     def template_url
