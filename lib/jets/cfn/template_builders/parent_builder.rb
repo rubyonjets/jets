@@ -14,8 +14,8 @@ class Jets::Cfn::TemplateBuilders
     def compose
       puts "Building parent template."
 
-      add_minimal_resources
-      add_child_resources unless @options[:stack_type] == :minimal
+      build_minimal_resources
+      build_child_resources unless @options[:stack_type] == :minimal
     end
 
     # template_path is an interface method
@@ -23,7 +23,7 @@ class Jets::Cfn::TemplateBuilders
       Jets::Naming.parent_template_path
     end
 
-    def add_minimal_resources
+    def build_minimal_resources
       # Initial s3 bucket, used to store code zipfile and templates Jets generates
       resource = Jets::Resource::S3.new
       add_resource(resource)
@@ -35,7 +35,7 @@ class Jets::Cfn::TemplateBuilders
       add_outputs(resource.outputs)
     end
 
-    def add_child_resources
+    def build_child_resources
       expression = "#{Jets::Naming.template_path_prefix}-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
@@ -53,20 +53,20 @@ class Jets::Cfn::TemplateBuilders
 
     def add_app_class_stack(path)
       resource = Jets::Resource::ChildStack::AppClass.new(path, @options[:s3_bucket])
-      build_child_resources(resource)
+      add_child_resources(resource)
     end
 
     def add_api_gateway
       resource = Jets::Resource::ChildStack::ApiGateway.new(@options[:s3_bucket])
-      build_child_resources(resource)
+      add_child_resources(resource)
     end
 
     def add_api_deployment
       resource = Jets::Resource::ChildStack::ApiDeployment.new(@options[:s3_bucket])
-      build_child_resources(resource)
+      add_child_resources(resource)
     end
 
-    def build_child_resources(resource)
+    def add_child_resources(resource)
       add_resource(resource)
       add_outputs(resource.outputs)
     end
