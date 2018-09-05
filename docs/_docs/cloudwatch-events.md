@@ -79,7 +79,7 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.  Underneath the hood rate delegates to the event_rule method.
+Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.  Underneath the hood `rate` delegates to the `event_rule` method.
 
 ## Related links
 
