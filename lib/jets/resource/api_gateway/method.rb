@@ -55,7 +55,7 @@ module Jets::Resource::ApiGateway
     def resource_id
       @route.path == '' ?
        "RootResourceId" :
-       "#{resource_logical_id}ApiResource"
+       "#{resource_logical_id.camelize}ApiResource"
     end
 
     # Example: Posts
