@@ -4,7 +4,7 @@ module Jets::Resource::Iam
 
     attr_reader :definitions
     def initialize(*definitions)
-      @definitions = definitions.flatten
+      @definitions = definitions.flatten.compact
     end
 
     def arns
