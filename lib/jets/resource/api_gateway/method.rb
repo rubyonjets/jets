@@ -38,12 +38,11 @@ module Jets::Resource::ApiGateway
     end
 
     def replacements
-      # Example namespace: PostsGet
-      namespace = camelized_path
-      namespace = namespace + "#{@route.method.to_s.downcase.camelize}"
-      {
-        namespace: namespace
-      }
+      # mimic task to grab replacements, we want the namespace to be the lambda function's namespace
+      resources = [definition]
+      task = Jets::Lambda::Task.new(@route.controller_name, @route.action_name,
+               resources: resources)
+      task.replacements
     end
 
     def cors
