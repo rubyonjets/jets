@@ -56,6 +56,7 @@ class Jets::Commands::Delete
 
   def empty_s3_bucket
     return unless s3_bucket_name # Happens when minimal stack fails to build
+    return unless bucket_exists?(s3_bucket_name)
 
     resp = s3.list_objects(bucket: s3_bucket_name)
     if resp.contents.size > 0
@@ -74,7 +75,6 @@ class Jets::Commands::Delete
 
   def s3_bucket_name
     return @s3_bucket_name if defined?(@s3_bucket_name)
-    return unless bucket_exists?
 
     resp = cfn.describe_stacks(stack_name: parent_stack_name)
     outputs = resp.stacks[0].outputs
@@ -86,10 +86,10 @@ class Jets::Commands::Delete
   end
 
   # Thanks: https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/s3-example-does-bucket-exist.html
-  def bucket_exists?
+  def bucket_exists?(bucket_name)
     bucket_exists = false
     begin
-      resp = s3.head_bucket(bucket: @s3_bucket_name, use_accelerate_endpoint: false)
+      resp = s3.head_bucket(bucket: bucket_name, use_accelerate_endpoint: false)
       bucket_exists = true
     rescue
     end

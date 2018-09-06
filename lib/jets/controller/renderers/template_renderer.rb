@@ -11,8 +11,6 @@ module Jets::Controller::Renderers
     end
 
     def render
-      setup_action_controller # setup only when necessary
-
       # Rails rendering does heavy lifting
       renderer = ActionController::Base.renderer.new(renderer_options)
       body = renderer.render(render_options)
@@ -73,35 +71,55 @@ module Jets::Controller::Renderers
       render_options
     end
 
-    def setup_action_controller
-      require "action_controller"
-      require "jets/rails_overrides"
+    class << self
+      def setup!
+        require "action_controller"
+        require "jets/rails_overrides"
 
-      # laod helpers
-      helper_class = self.class.name.to_s.sub("Controller", "Helper")
-      helper_path = "#{Jets.root}app/helpers/#{helper_class.underscore}.rb"
-      ActiveSupport.on_load :action_view do
-        include ApplicationHelper
-        include helper_class.constantize if File.exist?(helper_path)
+        # Load helpers
+        # Assign local variable because scoe in the `:action_view do` changes
+        app_helper_classes = find_app_helper_classes
+        ActiveSupport.on_load :action_view do
+          include ApplicationHelper # include first
+          app_helper_classes.each do |helper_class|
+            include helper_class
+          end
+        end
+
+        ActionController::Base.append_view_path("#{Jets.root}app/views")
+
+        setup_webpacker if Jets.webpacker?
       end
 
-      ActionController::Base.append_view_path("#{Jets.root}app/views")
-
-      setup_webpacker if Jets.webpacker?
-    end
-
-    def setup_webpacker
-      require 'webpacker'
-      require 'webpacker/helper'
-
-      ActiveSupport.on_load :action_controller do
-        ActionController::Base.helper Webpacker::Helper
+      # Does not include ApplicationHelper, will include ApplicationHelper explicitly first.
+      def find_app_helper_classes
+        klasses = []
+        expression = "#{Jets.root}app/helpers/**/*"
+        Dir.glob(expression).each do |path|
+          next unless File.file?(path)
+          class_name = path.sub("#{Jets.root}app/helpers/","").sub(/\.rb/,'')
+          unless class_name == "application_helper"
+            klasses << class_name.classify.constantize # autoload
+          end
+        end
+        klasses
       end
 
-      ActiveSupport.on_load :action_view do
-        include Webpacker::Helper
+      def setup_webpacker
+        require 'webpacker'
+        require 'webpacker/helper'
+
+        ActiveSupport.on_load :action_controller do
+          ActionController::Base.helper Webpacker::Helper
+        end
+
+        ActiveSupport.on_load :action_view do
+          include Webpacker::Helper
+        end
       end
     end
 
   end
 end
+
+Jets::Controller::Renderers::TemplateRenderer.setup!
