@@ -27,11 +27,7 @@ module Jets
           k.dasherize
         elsif parent_keys.include?("EventPattern")
           # Any keys at 2nd level under EventPattern will be pascalized
-          new_k = k.camelize # an earlier transform has made the first char upcase
-          # so we need to downcase it again
-          first_char = new_k[0..0].downcase
-          new_k[0] = first_char
-          new_k
+          pascalize(k)
         else
           camelize(k)
         end
@@ -47,8 +43,14 @@ module Jets
         return value if value.is_a?(Integer)
 
         value = value.to_s.camelize
-        # s = s.slice(0,1).capitalize + s.slice(1..-1) # capitalize first letter only
         special_map[value] || value
+      end
+
+      def pascalize(value)
+        new_value = value.camelize # an earlier transform might have made the first char lowercase
+        first_char = new_value[0..0].downcase
+        new_value[0] = first_char
+        new_value
       end
 
       # Some keys have special mappings
