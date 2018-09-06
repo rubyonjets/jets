@@ -8,7 +8,7 @@ Jets supports prewarming your application to remedy the Lambda cold start issue.
 Jets.application.configure do
   # ...
   config.prewarm.enable = true # default: enabled
-  config.prewarm.rate = "2 hours" # default: 2 hours
+  config.prewarm.rate = "30 minutes" # default: 30 minutes
   config.prewarm.concurrency = 2 # default: 2
   config.prewarm.public_ratio = 10 # default: 10
 end

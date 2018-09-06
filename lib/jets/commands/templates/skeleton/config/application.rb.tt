@@ -3,7 +3,7 @@ Jets.application.configure do
   config.api_generator = <%= !!@options[:api] %>
 
   # config.prewarm.enable = true # default is true
-  # config.prewarm.rate = '2 hours' # default is '2 hours'
+  # config.prewarm.rate = '30 minutes' # default is '30 minutes'
   # config.prewarm.concurrency = 2 # default is 2
   # config.prewarm.public_ratio = 10 # default is 10
 

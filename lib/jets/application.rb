@@ -21,7 +21,7 @@ class Jets::Application
 
     config.prewarm = ActiveSupport::OrderedOptions.new
     config.prewarm.enable = true
-    config.prewarm.rate = '2 hours'
+    config.prewarm.rate = '30 minutes'
     config.prewarm.concurrency = 2
     config.prewarm.public_ratio = 10
 
