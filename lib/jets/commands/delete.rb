@@ -104,12 +104,12 @@ class Jets::Commands::Delete
     if @options[:sure]
       sure = 'y'
     else
-      puts "Are you sure you want to want to delete the '#{Jets.config.project_namespace}' project? (y/N)"
+      puts "Are you sure you want to want to delete the #{Jets.config.project_namespace.colorize(:green)} project? (y/N)"
       sure = $stdin.gets
     end
 
     unless sure =~ /^y/
-      puts "Phew! Jets '#{Jets.config.project_namespace}' project was not deleted."
+      puts "Phew! Jets #{Jets.config.project_namespace.colorize(:green)} project was not deleted."
       exit 0
     end
   end
