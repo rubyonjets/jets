@@ -31,7 +31,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
         properties = resources["StoresControllerShowLambdaFunction"]["Properties"]
 
         expect(properties["MemorySize"]).to eq 1024
-        # should not pascalize the keys under Variables section
+        # should not transform the keys under Variables section
         keys = properties["Environment"]["Variables"]
         # Just testing for some keys since we keep changing .env files
         test_keys = %w[env_key1 env_key2 global_app_key1 global_app_key2
