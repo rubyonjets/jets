@@ -47,7 +47,7 @@ module Jets
       end
 
       def pascalize(value)
-        new_value = value.camelize # an earlier transform might have made the first char lowercase
+        new_value = value.camelize
         first_char = new_value[0..0].downcase
         new_value[0] = first_char
         new_value
