@@ -16,7 +16,7 @@ module Jets::Resource::Iam
 
     def policy_document
       definitions.map { |definition| standardize(definition) }
-      Jets::Pascalize.pascalize(@policy)
+      Jets::Camelizer.pascalize(@policy)
     end
     memoize :policy_document # only process policy_document once
 

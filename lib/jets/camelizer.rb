@@ -1,9 +1,10 @@
+# Custom Camelizer with CloudFormation specific handling.
+# Based on: https://stackoverflow.com/questions/8706930/converting-nested-hash-keys-from-camelcase-to-snake-case-in-ruby
+#
+#   Variables part of the hash structure.
 module Jets
-  class Pascalize
+  class Camelizer
     class << self
-      # Specialized pascalize that will not pascalize keys under the
-      # Variables part of the hash structure.
-      # Based on: https://stackoverflow.com/questions/8706930/converting-nested-hash-keys-from-camelcase-to-snake-case-in-ruby
       def pascalize(value, parent_keys=[])
         case value
           when Array

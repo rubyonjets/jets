@@ -16,7 +16,7 @@ class Jets::Resource
       logical_id = [logical_id, counter].compact.join('')
       # replace possible {namespace} in the logical id
       logical_id = replacer.replace_value(logical_id)
-      Jets::Pascalize.pascalize_string(logical_id)
+      Jets::Camelizer.pascalize_string(logical_id)
     end
 
     def type
@@ -38,7 +38,7 @@ class Jets::Resource
         }
       }
       attributes = replacer.replace_placeholders(attributes)
-      Jets::Pascalize.pascalize(attributes)
+      Jets::Camelizer.pascalize(attributes)
     end
     memoize :attributes
 
