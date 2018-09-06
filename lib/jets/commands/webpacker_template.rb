@@ -13,7 +13,6 @@ class Jets::Commands::WebpackerTemplate < Thor::Group
   end
 
   def reapply_templates
-    puts "options #{options.inspect}"
     directory "app/javascript", "app/javascript", force: options[:force]#, bootstrap: options[:bootstrap]
   end
 end

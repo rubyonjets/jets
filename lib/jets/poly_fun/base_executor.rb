@@ -114,14 +114,10 @@ class Jets::PolyFun
     end
 
     def handler
-      # Must use FunctionProperties to get the handler because that the class that combines
-      # the mutiple sources of how the handler can get set.
-      # puts "handler path #{@task.handler_path}"
-      #
-      # IE: Jets::Cfn::Builders::FunctionProperties::PythonBuilder
-      builder_class = "Jets::Cfn::Builders::FunctionProperties::#{@task.lang.to_s.classify}Builder".constantize
-      builder = builder_class.new(@task)
-      full_handler = builder.properties["Handler"] # full handler here
+      # Must use the generated CloudFormation template to get the handler because
+      # the handler is derived from mutiple sources.
+      resource = Jets::Resource::Function.new(@task)
+      full_handler = resource.properties["Handler"] # full handler here
       File.extname(full_handler).sub(/^./,'') # the extension of the full handler is the handler
     end
     memoize :handler
