@@ -3,10 +3,10 @@ event:
  "id"=>"baa6a51d-ef92-18fc-cd0f-2d72bcffebbf",
  "detail-type"=>"Scheduled Event",
  "source"=>"aws.events",
- "account"=>"160619113767",
+ "account"=>"123456789012",
  "time"=>"2017-11-07T05:08:58Z",
  "region"=>"us-east-1",
- "resources"=>["arn:aws:events:us-east-1:160619113767:rule/test-cloudwatch-event-rule"],
+ "resources"=>["arn:aws:events:us-east-1:123456789012:rule/test-cloudwatch-event-rule"],
  "detail"=>{}}
 
 context:
@@ -19,4 +19,4 @@ context:
  "invokeid"=>"cd68b58a-c379-11e7-bab1-855c4fa0d379",
  "awsRequestId"=>"cd68b58a-c379-11e7-bab1-855c4fa0d379",
  "invokedFunctionArn"=>
-  "arn:aws:lambda:us-east-1:160619113767:function:demo-test-posts-controller-new"}
+  "arn:aws:lambda:us-east-1:123456789012:function:demo-test-posts-controller-new"}

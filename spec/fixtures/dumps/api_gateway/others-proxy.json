@@ -27,7 +27,7 @@
   "stageVariables": null,
   "requestContext": {
     "path": "/stag/others/my/long/path",
-    "accountId": "160619113767",
+    "accountId": "123456789012",
     "resourceId": "akzef2",
     "stage": "stag",
     "requestId": "1beb529a-cc7b-11e7-8ed0-35ca8e934ce5",

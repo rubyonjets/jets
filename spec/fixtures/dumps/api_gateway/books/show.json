@@ -31,7 +31,7 @@
   "stageVariables": null,
   "requestContext": {
     "path": "/stag/books",
-    "accountId": "160619113767",
+    "accountId": "123456789012",
     "resourceId": "c0yhg8",
     "stage": "stag",
     "requestId": "e5c39604-bc2d-11e7-abbe-1baaa0f8e02e",

@@ -24,7 +24,7 @@
   "stageVariables": null,
   "requestContext": {
     "path": "/prod/posts",
-    "accountId": "160619113767",
+    "accountId": "123456789012",
     "resourceId": "ery965",
     "stage": "prod",
     "requestId": "292fbcc8-c015-11e7-94fa-cd109b693f3c",

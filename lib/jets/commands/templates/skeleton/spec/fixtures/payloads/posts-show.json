@@ -26,7 +26,7 @@
   "stageVariables": null,
   "requestContext": {
     "path": "/prod/posts/tung",
-    "accountId": "160619113767",
+    "accountId": "123456789012",
     "resourceId": "wf2gvu",
     "stage": "prod",
     "requestId": "3feafb4e-c015-11e7-85c9-194f38f4c414",

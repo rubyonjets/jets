@@ -30,7 +30,7 @@
   "requestContext": {
     "requestTime": "21/Jan/2018:00:37:48 +0000",
     "path": "/dev/posts",
-    "accountId": "160619113767",
+    "accountId": "123456789012",
     "protocol": "HTTP/1.1",
     "resourceId": "7yokco",
     "stage": "dev",
