@@ -1,6 +1,6 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "jets/version"
-require "jets/pascalize"
+require "jets/camelizer"
 require "active_support/core_ext/string"
 require "active_support/ordered_hash"
 require "colorize"
