@@ -62,7 +62,7 @@ describe Jets::Resource do
       expect(resource.type).to eq "AWS::Events::Rule"
       properties = resource.properties
       expect(properties['State']).to eq "ENABLED"
-      # properties under EventPattern has specialized dasherized and transformd casing
+      # properties under EventPattern has special dasherized and pascalized casing
       event_pattern = properties['EventPattern']
       expect(event_pattern.key?('detail-type')).to be true
       expect(event_pattern['detail']['eventSource']).to eq ["ec2.amazonaws.com"]
