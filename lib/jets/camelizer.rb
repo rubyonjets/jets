@@ -7,16 +7,16 @@ module Jets
     class << self
       def pascalize(value, parent_keys=[])
         case value
-          when Array
-            value.map { |v| pascalize(v) }
-          when Hash
-            initializer = value.map do |k, v|
-              new_key = pascal_key(k, parent_keys)
-              [new_key, pascalize(v, parent_keys+[new_key])]
-            end
-            Hash[initializer]
-          else
-            value
+        when Array
+          value.map { |v| pascalize(v) }
+        when Hash
+          initializer = value.map do |k, v|
+            new_key = pascal_key(k, parent_keys)
+            [new_key, pascalize(v, parent_keys+[new_key])]
+          end
+          Hash[initializer]
+        else
+          camelize(value)
          end
       end
 
@@ -38,14 +38,16 @@ module Jets
           new_k[0] = first_char
           new_k
         else
-          pascalize_string(k)
+          camelize(k)
         end
       end
 
-      def pascalize_string(s)
-        s = s.to_s.camelize
-        s = s.slice(0,1).capitalize + s.slice(1..-1) # capitalize first letter only
-        special_map[s] || s
+      def camelize(value)
+        return value if value.is_a?(Integer)
+
+        value = value.to_s.camelize
+        # s = s.slice(0,1).capitalize + s.slice(1..-1) # capitalize first letter only
+        special_map[value] || value
       end
 
       # Some keys have special mappings

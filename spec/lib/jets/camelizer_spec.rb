@@ -1,4 +1,10 @@
 describe "Camelizer" do
+  it "simple string" do
+    s = "foo_bar"
+    s = Jets::Camelizer.pascalize(s)
+    expect(s).to eq "FooBar"
+  end
+
   it "pascalize keys" do
     h = {foo_bar: 1}
     result = Jets::Camelizer.pascalize(h)
