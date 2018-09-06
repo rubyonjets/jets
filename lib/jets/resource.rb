@@ -20,7 +20,7 @@ class Jets::Resource
     id = definition.keys.first
     # replace possible {namespace} in the logical id
     id = replacer.replace_value(id)
-    Jets::Camelizer.transform(id)
+    Jets::Camelizer.camelize(id)
   end
 
   def type

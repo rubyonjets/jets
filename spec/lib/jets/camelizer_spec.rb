@@ -1,7 +1,7 @@
 describe "Camelizer" do
   it "simple string" do
     s = "foo_bar"
-    s = Jets::Camelizer.transform(s)
+    s = Jets::Camelizer.camelize(s)
     expect(s).to eq "FooBar"
   end
 

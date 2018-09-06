@@ -16,7 +16,7 @@ class Jets::Resource
       logical_id = [logical_id, counter].compact.join('')
       # replace possible {namespace} in the logical id
       logical_id = replacer.replace_value(logical_id)
-      Jets::Camelizer.transform(logical_id)
+      Jets::Camelizer.camelize(logical_id)
     end
 
     def type
