@@ -72,31 +72,37 @@ module Jets::Controller::Renderers
     end
 
     class << self
-      def setup_action_controller
+      def setup!
         require "action_controller"
         require "jets/rails_overrides"
 
-        # load helpers
-        helper_class = self.name.to_s.sub("Controller", "Helper")
-        helper_path = "#{Jets.root}app/helpers/#{helper_class.underscore}.rb"
-
-        puts "self.class #{self.class}".colorize(:cyan)
-        puts "helper_class #{helper_class}".colorize(:cyan)
-        puts "helper_class #{helper_class}".colorize(:cyan)
-
-        # self.class Jets::Controller::Renderers::TemplateRenderer
-        # helper_class Jets::Helper::Renderers::TemplateRenderer
-        # helper_class Jets::Helper::Renderers::TemplateRenderer
-
-
+        # Load helpers
+        # Assign local variable because scoe in the `:action_view do` changes
+        app_helper_classes = find_app_helper_classes
         ActiveSupport.on_load :action_view do
-          include ApplicationHelper
-          include helper_class.constantize if File.exist?(helper_path)
+          include ApplicationHelper # include first
+          app_helper_classes.each do |helper_class|
+            include helper_class
+          end
         end
 
         ActionController::Base.append_view_path("#{Jets.root}app/views")
 
         setup_webpacker if Jets.webpacker?
+      end
+
+      # Does not include ApplicationHelper, will include ApplicationHelper explicitly first.
+      def find_app_helper_classes
+        klasses = []
+        expression = "#{Jets.root}app/helpers/**/*"
+        Dir.glob(expression).each do |path|
+          next unless File.file?(path)
+          class_name = path.sub("#{Jets.root}app/helpers/","").sub(/\.rb/,'')
+          unless class_name == "application_helper"
+            klasses << class_name.classify.constantize # autoload
+          end
+        end
+        klasses
       end
 
       def setup_webpacker
@@ -116,4 +122,4 @@ module Jets::Controller::Renderers
   end
 end
 
-Jets::Controller::Renderers::TemplateRenderer.setup_action_controller
+Jets::Controller::Renderers::TemplateRenderer.setup!
