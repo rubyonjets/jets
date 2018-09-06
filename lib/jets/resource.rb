@@ -20,7 +20,7 @@ class Jets::Resource
     id = definition.keys.first
     # replace possible {namespace} in the logical id
     id = replacer.replace_value(id)
-    Jets::Camelizer.pascalize_string(id)
+    Jets::Camelizer.transform(id)
   end
 
   def type
@@ -34,7 +34,7 @@ class Jets::Resource
   def attributes
     attributes = definition.values.first
     attributes = replacer.replace_placeholders(attributes)
-    Jets::Camelizer.pascalize(attributes)
+    Jets::Camelizer.transform(attributes)
   end
 
   def parameters

@@ -110,7 +110,7 @@ class Jets::Cfn::Builders
     #   )
     #
     def add_template_resource(logical_id, type, options)
-      options = Jets::Camelizer.pascalize(options)
+      options = Jets::Camelizer.transform(options)
 
       attributes = if options.include?('Type')
                      base = { 'Type' => type }
