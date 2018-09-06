@@ -11,8 +11,6 @@ module Jets::Controller::Renderers
     end
 
     def render
-      setup_action_controller # setup only when necessary
-
       # Rails rendering does heavy lifting
       renderer = ActionController::Base.renderer.new(renderer_options)
       body = renderer.render(render_options)
@@ -73,35 +71,49 @@ module Jets::Controller::Renderers
       render_options
     end
 
-    def setup_action_controller
-      require "action_controller"
-      require "jets/rails_overrides"
+    class << self
+      def setup_action_controller
+        require "action_controller"
+        require "jets/rails_overrides"
 
-      # laod helpers
-      helper_class = self.class.name.to_s.sub("Controller", "Helper")
-      helper_path = "#{Jets.root}app/helpers/#{helper_class.underscore}.rb"
-      ActiveSupport.on_load :action_view do
-        include ApplicationHelper
-        include helper_class.constantize if File.exist?(helper_path)
+        # load helpers
+        helper_class = self.name.to_s.sub("Controller", "Helper")
+        helper_path = "#{Jets.root}app/helpers/#{helper_class.underscore}.rb"
+
+        puts "self.class #{self.class}".colorize(:cyan)
+        puts "helper_class #{helper_class}".colorize(:cyan)
+        puts "helper_class #{helper_class}".colorize(:cyan)
+
+        # self.class Jets::Controller::Renderers::TemplateRenderer
+        # helper_class Jets::Helper::Renderers::TemplateRenderer
+        # helper_class Jets::Helper::Renderers::TemplateRenderer
+
+
+        ActiveSupport.on_load :action_view do
+          include ApplicationHelper
+          include helper_class.constantize if File.exist?(helper_path)
+        end
+
+        ActionController::Base.append_view_path("#{Jets.root}app/views")
+
+        setup_webpacker if Jets.webpacker?
       end
 
-      ActionController::Base.append_view_path("#{Jets.root}app/views")
+      def setup_webpacker
+        require 'webpacker'
+        require 'webpacker/helper'
 
-      setup_webpacker if Jets.webpacker?
-    end
+        ActiveSupport.on_load :action_controller do
+          ActionController::Base.helper Webpacker::Helper
+        end
 
-    def setup_webpacker
-      require 'webpacker'
-      require 'webpacker/helper'
-
-      ActiveSupport.on_load :action_controller do
-        ActionController::Base.helper Webpacker::Helper
-      end
-
-      ActiveSupport.on_load :action_view do
-        include Webpacker::Helper
+        ActiveSupport.on_load :action_view do
+          include Webpacker::Helper
+        end
       end
     end
 
   end
 end
+
+Jets::Controller::Renderers::TemplateRenderer.setup_action_controller
