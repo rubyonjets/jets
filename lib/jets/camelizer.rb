@@ -14,7 +14,7 @@ module Jets
           end
           Hash[initializer]
         else
-          camelize(value)
+          value # do not transform values
          end
       end
 
