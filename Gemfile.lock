@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (0.8.4)
+    jets (0.8.5)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
