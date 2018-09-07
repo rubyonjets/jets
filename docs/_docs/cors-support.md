@@ -2,7 +2,7 @@
 title: CORS Support
 ---
 
-Enabling CORS is very simple with Jets.  You just have to set `config.cors` in the `config/application.rb` file.  Here's an example:
+Enabling CORS is simple.  You just set `config.cors` in the `config/application.rb` file.  Here's an example:
 
 config/application.rb:
 
