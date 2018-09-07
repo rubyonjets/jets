@@ -1,5 +1,5 @@
 ---
-title: Controllers
+title: Routing
 ---
 
 You connect Lambda functions to API Gateway URL endpoints with a routes file:
