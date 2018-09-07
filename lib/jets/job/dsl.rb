@@ -14,7 +14,7 @@ module Jets::Job::Dsl
       end
 
       def cron(expression)
-        update_properties(schedule_expression: "cron(#{expression}")
+        update_properties(schedule_expression: "cron(#{expression})")
       end
 
       def event_pattern(details={})
