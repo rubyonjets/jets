@@ -114,6 +114,7 @@ class Jets::Application
   def load_db_config
     config.database = {}
 
+    Jets::Dotenv.load!
     database_yml = "#{Jets.root}config/database.yml"
     if File.exist?(database_yml)
       text = Jets::Erb.result(database_yml)

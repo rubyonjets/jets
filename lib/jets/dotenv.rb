@@ -1,12 +1,13 @@
 require 'dotenv'
 
 class Jets::Dotenv
-  def self.load!(deploy=false)
-    new(deploy).load!
+  def self.load!(remote=false)
+    new(remote).load!
   end
 
-  def initialize(deploy=false)
-    @deploy = deploy
+  def initialize(remote=false)
+    @remote = remote
+    @remote = ENV['JETS_ENV_REMOTE'] if ENV['JETS_ENV_REMOTE']
   end
 
   def load!
@@ -27,7 +28,7 @@ class Jets::Dotenv
       root.join(".env.#{Jets.env}"),
       root.join(".env.#{Jets.env}.local"),
     ]
-    files << root.join(".env.#{Jets.env}.remote") if @deploy
+    files << root.join(".env.#{Jets.env}.remote") if @remote
     files.compact
   end
 
