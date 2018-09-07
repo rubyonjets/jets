@@ -8,6 +8,8 @@ app/jobs/hard_job.rb:
 
 ```ruby
 class HardJob < ApplicationJob
+  class_timeout 300
+
   rate "10 hours" # every 10 hours
   def dig
     {done: "digging"}
