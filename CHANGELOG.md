@@ -3,12 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.7]
+- add JETS_ENV_REMOTE and fix database config load for jets console
+
 ## [0.8.6]
 - fix local server
 
 ## [0.8.5]
 - Rename to Camelizer PR #23
-- Fix helpers PR #22 from tongueroo/helpers
+- Fix helpers PR #22
 
 ## [0.8.4]
 - fix custom iam policies
