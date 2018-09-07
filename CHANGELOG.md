@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.8]
+- fix cron expression
+
 ## [0.8.7]
 - add JETS_ENV_REMOTE and fix database config load for jets console
 
