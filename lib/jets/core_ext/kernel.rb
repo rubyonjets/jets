@@ -2,15 +2,32 @@
 module Kernel
   @@io_buffer = []
 
-  alias_method :original_puts, :puts
-  def puts(message)
-    @@io_buffer << message
-    original_puts(message)
+  OVERRIDE_METHODS = %w[
+    p
+    pp
+    print
+    printf
+    putc
+    puts
+    sprintf
+  ]
+  OVERRIDE_METHODS.each do |meth|
+    # Example of generated code:
+    #
+    #   alias_method :original_puts, :puts
+    #   def puts(*args, &block)
+    #     @@io_buffer << args.first # message
+    #     original_puts(*args, &block)
+    #   end
+    #
+    class_eval <<~CODE
+      alias_method :original_#{meth}, :#{meth}
+      def #{meth}(*args, &block)
+        @@io_buffer << args.first # message
+        original_#{meth}(*args, &block)
+      end
+    CODE
   end
-
-  # TODO: implement other methods that write output:
-  # p, print, printf, putc, puts, sprintf?
-  # Also, would be nice to figure out pp method also.
 
   def io_buffer
     @@io_buffer
@@ -24,9 +41,8 @@ module Kernel
     begin
       IO.write("/tmp/jets-output.log", chunk)
     # Writing to log with binary content will crash the process so rescuing it and writing an info message.
-    rescue Encoding::UndefinedConversionError => e
-      error_message = "Encoding::UndefinedConversionError: Binary data was written to Jets::IO buffer. Writing binary data to the log will crash the process, so discarding it.  This is an info message only. If you want to return binary data please base64 encode the data."
-      IO.write("/tmp/jets-output.log", error_message)
+    rescue Encoding::UndefinedConversionError
+      IO.write("/tmp/jets-output.log", "[BINARY DATA]")
     end
     @@io_buffer = []
   end
