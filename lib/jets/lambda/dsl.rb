@@ -71,7 +71,7 @@ module Jets::Lambda::Dsl
         #   end
         #
         #   def class_timeout(value)
-        #     properties(class_timeout: value)
+        #     class_properties(timeout: value)
         #   end
         class_eval <<~CODE
           def #{property}(value)
