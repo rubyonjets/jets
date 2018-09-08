@@ -223,3 +223,41 @@ ul.tools li {
         font-size: 0.9em;
     }
 }
+
+
+// https://coolestguidesontheplanet.com/videodrome/youtube/
+// I added another box wrapper to control the width
+.content-body {
+  .video-box {
+    max-width: 600px;
+    text-align: left;
+    margin: 0 auto 0 0;
+    padding-bottom: 20px;
+    .video-container {
+      position:relative;
+      padding-bottom:56.25%;
+      padding-top:30px;
+      height:0;
+      overflow:hidden;
+    }
+
+    .video-container iframe, .video-container object, .video-container embed {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+    }
+  }
+}
+
+.content-body-list {
+  .video-container iframe, .video-container object, .video-container embed {
+    width: 180px;
+    @media (min-width: 768px) {
+      /* 16:9 ratio */
+      width: 300px;
+      height: 169px;
+    }
+  }
+}

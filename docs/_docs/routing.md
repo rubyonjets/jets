@@ -24,17 +24,36 @@ end
 
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
-```sh
-$ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/dev/posts" | jq .
-{
-  "hello": "world",
-  "action": "index"
-}
-```
+    $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/dev/posts" | jq .
+    {
+      "hello": "world",
+      "action": "index"
+    }
 
 You can check the routes on the API Gateway console:
 
 ![](/img/quick-start/demo-api-gateway.png)
+
+## jets routes
+
+You can also check the routes with the `jets routes` cli command. Here's an example:
+
+    $ jets routes
+    +--------+----------------+--------------------+
+    |  Verb  |      Path      | Controller#action  |
+    +--------+----------------+--------------------+
+    | GET    | posts          | posts#index        |
+    | GET    | posts/new      | posts#new          |
+    | GET    | posts/:id      | posts#show         |
+    | POST   | posts          | posts#create       |
+    | GET    | posts/:id/edit | posts#edit         |
+    | PUT    | posts/:id      | posts#update       |
+    | DELETE | posts/:id      | posts#delete       |
+    | GET    |                | jets/welcome#index |
+    | ANY    | *catchall      | jets/public#show   |
+    +--------+----------------+--------------------+
+    $
+
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/controllers.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/jobs.md %}">Next Step</a>
