@@ -75,6 +75,6 @@ The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.co
 
 Jets, by design, allows you to create any resource and associated them with your Lambda functions. Methods like `rate`, `event_rule`, `event_pattern` simply provide some wrapping setup logic and call the `resource` method.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/polymorphic-node.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorials.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/faster-development.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
