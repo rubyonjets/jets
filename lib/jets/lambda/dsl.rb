@@ -130,8 +130,8 @@ module Jets::Lambda::Dsl
       end
 
       #############################
-      # Generic method that registers a resource to be associated with the Lambda function.
-      # In the future all DSL methods can lead here.
+      # Main methood that registers resources associated with the Lambda function.
+      # All resources methods lead here.
       def resources(*definitions)
         if definitions == [nil] # when resources called with no arguments
           @resources || []
