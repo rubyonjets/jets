@@ -19,68 +19,71 @@ module Jets::Lambda::Dsl
       end
       alias_method :class_props, :class_properties
 
-      def class_timeout(value)
-        class_properties(timeout: value)
-      end
-
-      def class_environment(hash)
-        environment = {}
-        environment[:variables] ||= {}
-        environment[:variables].merge!(hash)
-        class_properties(environment: environment)
-      end
-      alias_method :class_env, :class_environment
-
-      def class_memory_size(value)
-        class_properties(memory_size: value)
-      end
-      alias_method :class_memory, :class_memory_size
-
-      def class_role(name)
-        class_properties(role: name)
-      end
-
-      def class_handler(name)
-        class_properties(handler: name)
-      end
-
-      def class_runtime(value)
-        class_properties(runtime: value)
-      end
-
-      # convenience method that set properties
-      def timeout(value)
-        properties(timeout: value)
-      end
-
-      # convenience method that set properties
-      def environment(hash)
-        environment = {}
-        environment[:variables] ||= {}
-        environment[:variables].merge!(hash)
-        properties(environment: environment)
-      end
-      alias_method :env, :environment
-
-      # convenience method that set properties
-      def memory_size(value)
-        properties(memory_size: value)
-      end
-      alias_method :memory, :memory_size
-
-      def handler(value)
-        properties(handler: value)
-      end
-
-      def runtime(value)
-        properties(runtime: value)
-      end
-
       def properties(options={})
         @properties ||= {}
         @properties.deep_merge!(options)
       end
       alias_method :props, :properties
+
+      def class_environment(hash)
+        environment = standardize_env(hash)
+        class_properties(environment: environment)
+      end
+      alias_method :class_env, :class_environment
+
+      def environment(hash)
+        environment = standardize_env(hash)
+        properties(environment: environment)
+      end
+      alias_method :env, :environment
+
+      # Allows use to pass in hash with or without the :variables key.
+      def standardize_env(hash)
+        return hash if hash.key?(:variables)
+
+        environment = {}
+        environment[:variables] ||= {}
+        environment[:variables].merge!(hash)
+        environment
+      end
+
+      # Convenience method that set properties. List based on https://amzn.to/2oSph1P
+      # Not all properites are included because some properties are not meant to be set
+      # directly. For example, function_name is a calculated setting by Jets.
+      PROPERTIES = %W[
+        dead_letter_config
+        description
+        handler
+        kms_key_arn
+        memory_size
+        reserved_concurrent_executions
+        role
+        runtime
+        timeout
+        tracing_config
+        vpc_config
+        tags
+      ]
+      PROPERTIES.each do |property|
+        # Example:
+        #   def timeout(value)
+        #     properties(timeout: value)
+        #   end
+        class_eval <<~CODE
+          def #{property}(value)
+            properties(#{property}: value)
+          end
+
+          def class_#{property}(value)
+            class_properties(#{property}: value)
+          end
+        CODE
+      end
+      # More convenience aliases
+      alias_method :memory, :memory_size
+      alias_method :class_memory, :class_memory_size
+      alias_method :desc, :description
+      alias_method :class_desc, :class_description
 
       # definitions: one or more definitions
       def iam_policy(*definitions)
