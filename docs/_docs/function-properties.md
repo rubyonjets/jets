@@ -78,25 +78,7 @@ class PostsController < ApplicationController
 end
 ```
 
-### Function Convenience Methods
-
-Function level | Class level
---- | ---
-dead_letter_config | class_dead_letter_config
-description | class_description
-environment | class_environment
-handler | class_handler
-kms_key_arn | class_kms_key_arn
-memory_size | class_memory_size
-reserved_concurrent_executions | class_reserved_concurrent_executions
-role | class_role
-runtime | class_runtime
-timeout | class_timeout
-tracing_config | class_tracing_config
-vpc_config | class_vpc_config
-tags | class_tags
-
-For the latest list, refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
+Generally all the properties associated with Lambda functions have equivalent convenience methods. Refer to the [AWS::Lambda::Function](AWS::Lambda::Function) CloudFormation docs for a list of the properties. You can also refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/app-config.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/iam-policies.md %}">Next Step</a>
