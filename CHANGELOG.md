@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.10]
+- allow perform_now to run with default empty event
+- fix env_properties in function resource, fixes stage name
+
 ## [0.8.9]
 - clean up convenience properties and add rest of them PR #24
 
