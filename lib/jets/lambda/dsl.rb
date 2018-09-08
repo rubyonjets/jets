@@ -37,7 +37,7 @@ module Jets::Lambda::Dsl
       end
       alias_method :env, :environment
 
-      # Allows use to pass in hash with or without the :variables key.
+      # Allows user to pass in hash with or without the :variables key.
       def standardize_env(hash)
         return hash if hash.key?(:variables)
 
