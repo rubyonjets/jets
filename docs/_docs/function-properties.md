@@ -78,7 +78,7 @@ class PostsController < ApplicationController
 end
 ```
 
-Generally all the properties associated with Lambda functions have equivalent convenience methods. Refer to the [AWS::Lambda::Function](AWS::Lambda::Function) CloudFormation docs for a list of the properties. You can also refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
+Generally all the properties associated with Lambda functions have equivalent convenience methods. Refer to the [AWS::Lambda::Function](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) CloudFormation docs for a list of the properties. You can also refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/app-config.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/iam-policies.md %}">Next Step</a>
