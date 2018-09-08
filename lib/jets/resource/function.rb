@@ -23,16 +23,24 @@ class Jets::Resource
     end
 
     def combined_properties
-      props = env_file_properties
+      props = env_properties
         .deep_merge(global_properties)
         .deep_merge(class_properties)
         .deep_merge(function_properties)
       finalize_properties!(props)
     end
 
-    def env_file_properties
+    def env_properties
       env_vars = Jets::Dotenv.load!(true)
-      {environment: { variables: env_vars }}
+      variables = environment.merge(env_vars)
+      {environment: { variables: variables }}
+    end
+
+    def environment
+      env = Jets.config.environment ? Jets.config.environment.to_h : {}
+      jets_env_options = {JETS_ENV: Jets.env.to_s}
+      jets_env_options[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
+      env.deep_merge(jets_env_options)
     end
 
     # Global properties example:
@@ -172,13 +180,6 @@ class Jets::Resource
       method = @app_class.underscore
       method = method.sub('/','-') + "-#{@task.meth}"
       "#{Jets.config.project_namespace}-#{method}"
-    end
-
-    def environment
-      env = Jets.config.environment ? Jets.config.environment.to_h : {}
-      jets_env_options = {JETS_ENV: Jets.env.to_s}
-      jets_env_options[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
-      env.deep_merge(jets_env_options)
     end
   end
 end
