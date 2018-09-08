@@ -14,12 +14,18 @@ class Jets::Lambda::Task
     @replacements = options[:replacements] || {} # added to baseline replacements
   end
 
-  def build_function_iam?
-    !!(@iam_policy || @managed_iam_policy)
-  end
-
   def name
     @meth
+  end
+
+  def public_meth?
+    klass = @class_name.constantize
+    public_methods = klass.public_instance_methods - Object.methods
+    public_methods.include?(meth.to_sym)
+  end
+
+  def build_function_iam?
+    !!(@iam_policy || @managed_iam_policy)
   end
 
   @@lang_exts = {

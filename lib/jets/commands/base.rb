@@ -79,6 +79,7 @@ class Jets::Commands::Base < Thor
     def namespaced_commands
       eager_load!
       subclasses.map do |klass|
+        # This all_tasks is part of Thor not the lambda/dsl.rb
         klass.all_tasks.keys.map do |task_name|
           klass = klass.to_s.sub('Jets::Commands::','')
           namespace = klass =~ /^Main/ ? nil : klass.underscore.gsub('/',':')

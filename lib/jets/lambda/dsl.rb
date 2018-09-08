@@ -13,6 +13,8 @@ module Jets::Lambda::Dsl
 
   included do
     class << self
+      extend Memoist
+
       def class_properties(options=nil)
         if options
           @class_properties ||= {}
@@ -259,12 +261,25 @@ module Jets::Lambda::Dsl
       # Returns the all tasks for this class with their method names as keys.
       #
       # ==== Returns
-      # OrderedHash:: An ordered hash with tasks names as keys and JobTask
+      # OrderedHash:: An ordered hash with tasks names as keys and Task
       #               objects as values.
       #
       def all_tasks
         @all_tasks ||= ActiveSupport::OrderedHash.new
       end
+      # Do not call all tasks outside this class, instead use: tasks or lambda functions
+      private :all_tasks
+
+      # Methods can be made private with the :private keyword after the method has been defined.
+      # To account for this, loop back thorugh all the methods and check if the method is indeed public.
+      def all_public_tasks
+        public_tasks = ActiveSupport::OrderedHash.new
+        all_tasks.each do |meth, task|
+          public_tasks[meth] = task if task.public_meth?
+        end
+        public_tasks
+      end
+      memoize :all_public_tasks
 
       # Returns the tasks for this class in Array form.
       #
@@ -272,7 +287,7 @@ module Jets::Lambda::Dsl
       # Array of task objects
       #
       def tasks
-        all_tasks.values
+        all_public_tasks.values
       end
 
       # Used in Jets::Cfn::Builders::Interface#build
@@ -287,7 +302,7 @@ module Jets::Lambda::Dsl
       # Example return value:
       #   [:index, :new, :create, :show]
       def lambda_functions
-        all_tasks.keys
+        all_public_tasks.keys
       end
 
       # Polymorphic support
