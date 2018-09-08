@@ -47,8 +47,6 @@ This builds the project and deploys it AWS Lambda. The deployment is mainly hand
 ## Options
 
 ```
-[--capabilities=one two three]  # iam capabilities. Ex: CAPABILITY_IAM, CAPABILITY_NAMED_IAM
-[--iam], [--no-iam]             # Shortcut for common IAM capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM
-[--noop], [--no-noop]           
+[--noop], [--no-noop]  
 ```
 
