@@ -20,7 +20,7 @@ end
 
 Here's what the stack trace appears like in the Lambda Console.
 
-![](/img/docs/surfacing-ruby-errors.png)
+![](/img/docs/lambda-console-ruby-error.png)
 
 You keep your mental context in Ruby land the entire time 😁
 

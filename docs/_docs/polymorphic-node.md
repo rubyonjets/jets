@@ -35,6 +35,10 @@ exports.handler = function(event, context, callback) {
 
 Notice, how with the node code, you must handle returning the proper lambda proxy structure to API Gateway.
 
+## Lambda console
+
+![](/img/docs/poly/poly-lambda-function-node.png)
+
 ## Default Handler Name
 
 The default node handler name is `handler`. The default can be changed with the `handler` method.  Example:

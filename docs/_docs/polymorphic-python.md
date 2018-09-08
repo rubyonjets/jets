@@ -37,6 +37,14 @@ def response(message, status_code):
 
 Notice, how with the python code, you must handle returning the proper lambda proxy structure to API Gateway.
 
+## Lambda console
+
+![](/img/docs/poly/poly-lambda-functions-list.png)
+
+On the function show page:
+
+![](/img/docs/poly/poly-lambda-function-python.png)
+
 ## Default Handler Name
 
 The default python handler name is `lambda_handler`. The default can be changed with the `handler` method.  Example:
