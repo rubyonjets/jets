@@ -65,7 +65,7 @@ end
 
 ## Function Properties Method
 
-In the above example, we use the `timeout` and `class_timeout` method to set function properties. These convenience methods call the `properties` and `class_properties` methods respectively.  These methods allow you to change any property for the lambda function. So you could have done this also:
+In the above example, we use the `timeout` and `class_timeout` method to set function properties. These convenience methods delegate to the more general `properties` and `class_properties` methods respectively.  The general methods also allow you to change any property for the lambda function. So you could have done this also:
 
 ```ruby
 class PostsController < ApplicationController
@@ -78,15 +78,23 @@ class PostsController < ApplicationController
 end
 ```
 
-
-### Available Function Convenience Methods
+### Function Convenience Methods
 
 Function level | Class level
 --- | ---
-timeout | class_timeout
+dead_letter_config | class_dead_letter_config
+description | class_description
 environment | class_environment
+handler | class_handler
+kms_key_arn | class_kms_key_arn
 memory_size | class_memory_size
+reserved_concurrent_executions | class_reserved_concurrent_executions
 role | class_role
+runtime | class_runtime
+timeout | class_timeout
+tracing_config | class_tracing_config
+vpc_config | class_vpc_config
+tags | class_tags
 
 For the latest list, refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
 
