@@ -81,10 +81,27 @@ class Jets::Resource
     def class_properties
       # klass is PostsController, HardJob, GameRule, Hello or HelloFunction
       klass = Jets::Klass.from_task(@task)
-      class_properties = klass.class_properties
+
+      class_properties = lookup_class_properties(klass)
       if klass.build_class_iam?
         iam_policy = Jets::Resource::Iam::ClassRole.new(klass)
         class_properties[:role] = "!GetAtt #{iam_policy.logical_id}.Arn"
+      end
+
+      class_properties
+    end
+
+    # Accounts for inherited class_properties
+    def lookup_class_properties(klass)
+      all_classes = []
+      while klass != Object
+        all_classes << klass
+        klass = klass.superclass
+      end
+      class_properties = {}
+      # Go back down class heirachry top to down
+      all_classes.reverse.each do |k|
+        class_properties.merge!(k.class_properties)
       end
       class_properties
     end
