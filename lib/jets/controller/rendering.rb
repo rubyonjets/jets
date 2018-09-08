@@ -62,7 +62,7 @@ class Jets::Controller
       return url unless actual_host
 
       if actual_host.include?("amazonaws.com") && url.starts_with?('/')
-        stage_name = [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_') # Stage name only allows a-zA-Z0-9_
+        stage_name = Jets::Resource::ApiGateway::Deployment.stage_name
         url = "/#{stage_name}#{url}"
       end
       url
