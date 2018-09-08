@@ -14,8 +14,6 @@ module Jets::Commands
 
     desc "deploy [environment]", "Builds and deploys project to AWS Lambda"
     long_desc Help.text(:deploy)
-    option :capabilities, type: :array, desc: "iam capabilities. Ex: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
-    option :iam, type: :boolean, desc: "Shortcut for common IAM capabilities: CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
     # Note the environment is here to trick the Thor parser to allowing an
     # environment parameter. It is not actually set here.  It is set earlier
     # in cli.rb: set_jets_env_for_deploy_command!
