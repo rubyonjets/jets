@@ -4,7 +4,6 @@ class Jets::Resource
     delegate :logical_id, :type, :properties, :attributes, :parameters, :outputs,
              to: :resource
 
-    # Usually overridden
     def resource
       Jets::Resource.new(definition, replacements)
     end
