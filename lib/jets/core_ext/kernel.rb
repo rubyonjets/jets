@@ -2,6 +2,9 @@
 module Kernel
   @@io_buffer = []
 
+  # List from https://ruby-doc.org/core-2.5.1/Kernel.html
+  # Note, will lose pp format in the @io_buffer but looks like a lot of work to keep the pp format.
+  # Must override stdout which can be messy quick: https://www.ruby-forum.com/topic/43725
   OVERRIDE_METHODS = %w[
     p
     pp
