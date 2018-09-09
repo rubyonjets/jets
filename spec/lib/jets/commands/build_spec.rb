@@ -48,12 +48,11 @@ describe Jets::Commands::Build do
       expect(files).to eq([])
 
       router.draw do
-        root "jets/welcome#index"
         any "*catchall", to: "jets/public#show"
       end
       files = Jets::Commands::Build.internal_app_files
       files.reject! { |p| p.include?("preheat_job") }
-      expect(files.size).to eq 2
+      expect(files.size).to eq 1
     end
   end
 

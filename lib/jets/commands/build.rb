@@ -123,16 +123,23 @@ module Jets::Commands
       # Scans all the app code and look for any methods that are ruby.
       # If any method is written in ruby then we know the app is not a
       # soley polymorphic non-ruby app.
-      has_ruby = app_files.detect do |path|
-        # 1. remove app/controllers or app/jobs, etc
-        # 2. remove .rb extension
-        app_file = path.sub(%r{app/\w+/},'').sub(/\.rb$/,'')
-        # Internal jets controllers like Welcome and Public need a different regexp
-        app_file = app_file.sub(%r{.*lib/jets/internal/},'')
-        app_klass = app_file.classify.constantize # IE: PostsController, Jets::PublicController
-        langs = app_klass.tasks.map(&:lang)
-        langs.include?(:ruby)
+      files = app_files.select do |path|
+        # Do not include internal jets controllers or jobs like PublicController or PreheatJob
+        # The internal code will generate either Ruby or Python.
+        if path.include?("jets/internal")
+          false
+        else
+          # 1. remove app/controllers or app/jobs, etc
+          # 2. remove .rb extension
+          app_file = path.sub(%r{app/\w+/},'').sub(/\.rb$/,'')
+          app_klass = app_file.classify.constantize # IE: PostsController, Jets::PublicController
+          langs = app_klass.tasks.map(&:lang)
+          langs.include?(:ruby)
+        end
       end
+      puts "files"
+      pp files
+      has_ruby = files
       !has_ruby
     end
 
@@ -140,9 +147,6 @@ module Jets::Commands
     def self.internal_app_files
       paths = []
       controllers = File.expand_path("../../internal/app/controllers/jets", __FILE__)
-
-      welcome = Jets::Router.has_controller?("Jets::WelcomeController")
-      paths << "#{controllers}/welcome_controller.rb" if welcome
 
       public_catchall = Jets::Router.has_controller?("Jets::PublicController")
       paths << "#{controllers}/public_controller.rb" if public_catchall

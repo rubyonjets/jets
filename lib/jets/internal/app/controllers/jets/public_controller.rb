@@ -10,8 +10,10 @@ class Jets::PublicController < Jets::Controller::Base
     python :show
   else
     def show
+      catchall = params[:catchall].blank? ? 'index.html' : params[:catchall].blank
       public_path = Jets.root + "public"
-      catchall_path = "#{public_path}/#{params[:catchall]}"
+      catchall_path = "#{public_path}/#{catchall}"
+
       if File.exist?(catchall_path)
         content_type = Rack::Mime.mime_type(File.extname(catchall_path))
         binary = !MimeMagic.by_path(catchall_path).text?
