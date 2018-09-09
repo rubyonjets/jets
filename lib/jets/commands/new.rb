@@ -94,22 +94,30 @@ JS
     end
 
     def user_message
-      puts <<-EOL
-#{"="*64}
-Congrats 🎉 You have successfully created a Jets project.
+      scaffold_message = if options[:mode] == 'job'
+        "Learn more about jobs here: http://rubyonjets.com/docs/jobs/"
+      else
+        <<~EOL
+          To start a server and test locally:
+            jets server # localhost:8888 should have the Jets welcome page
 
-Cd into the project directory:
-  cd #{project_name}
+          Scaffold example:
+            jets generate scaffold Post title:string body:text published:boolean
+        EOL
+      end
 
-To start a server and test locally:
-  jets server # localhost:8888 should have the Jets welcome page
+      puts <<~EOL
+        #{"="*64}
+        Congrats 🎉 You have successfully created a Jets project.
 
-Scaffold example:
-  jets generate scaffold Post title:string body:text published:boolean
+        Cd into the project directory:
+          cd #{project_name}
 
-To deploy to AWS Lambda:
-  jets deploy
-EOL
+        #{scaffold_message}
+
+        To deploy to AWS Lambda:
+          jets deploy
+      EOL
     end
   end
 end
