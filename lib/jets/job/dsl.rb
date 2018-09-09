@@ -66,6 +66,7 @@ module Jets::Job::Dsl
         n = 1
         @resources.map do |definition|
           logical_id = definition.keys.first
+          logical_id = logical_id.sub(/\d+$/,'')
           numbered_resources << { "#{logical_id}#{n}" => definition.values.first }
           n += 1
         end

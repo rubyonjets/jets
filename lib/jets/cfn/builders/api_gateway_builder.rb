@@ -12,7 +12,6 @@ class Jets::Cfn::Builders
     def compose
       return if @options[:stack_type] == :minimal
 
-      puts "Building API Gateway template."
       add_gateway_rest_api
       add_gateway_routes
     end

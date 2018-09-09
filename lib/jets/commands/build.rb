@@ -42,7 +42,6 @@ module Jets::Commands
     def build_all_templates
       clean_templates
       # CloudFormation templates
-      puts "Building Lambda functions as CloudFormation templates."
       # 1. Shared templates - child templates needs them
       build_api_gateway_templates
       # 2. Child templates - parent template needs them

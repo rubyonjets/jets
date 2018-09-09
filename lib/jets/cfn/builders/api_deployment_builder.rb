@@ -12,7 +12,6 @@ class Jets::Cfn::Builders
     def compose
       return if @options[:stack_type] == :minimal
 
-      puts "Building API Gateway Deployment template."
       deployment = Jets::Resource::ApiGateway::Deployment.new
       add_resource(deployment)
       add_parameters(deployment.parameters)
