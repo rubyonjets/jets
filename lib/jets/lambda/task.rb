@@ -11,6 +11,7 @@ class Jets::Lambda::Task
     @iam_policy = options[:iam_policy]
     @managed_iam_policy = options[:managed_iam_policy]
     @lang = options[:lang] || :ruby
+    @replacements = options[:replacements] || {} # added replacements to the baseline replacements
   end
 
   def build_function_iam?
@@ -82,11 +83,15 @@ class Jets::Lambda::Task
     handler_path.sub("handlers/", "app/")
   end
 
-  ###
-  # Useful for Jets::Resource late building.
   def replacements
+    # Merge in the custom replacements specific to each app class: ConfigRule, Job, etc.
+    baseline_replacements.merge(@replacements)
+  end
+
+  def baseline_replacements
     {
       namespace: "#{@class_name.gsub('::','')}#{@meth.to_s.camelize}", # camelized because used in not just keys but also values
     }
   end
 end
+

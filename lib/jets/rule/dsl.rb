@@ -110,16 +110,17 @@ module Jets::Rule::Dsl
       # Creates a task but registers it to all_managed_rules instead of all_tasks
       # because we do not want Lambda functions to be created.
       def register_managed_rule(name, definition)
-        # A task object is needed to build {namespace} for later replacing.
-        task = Jets::Lambda::Task.new(self.name, name, resources: @resources)
-
-        # TODO: figure out better way for specific replacements for different classes
-        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
-        config_rule_name = "#{name_without_rule}_#{name}".dasherize
-        replacements = task.replacements.merge(config_rule_name: config_rule_name)
-
-        all_managed_rules[name] = { definition: definition, replacements: replacements }
+        all_managed_rules[name] = { definition: definition, replacements: replacements(name) }
         clear_properties
+      end
+
+      # Also used in the normal Lambda backed config rules
+      def replacements(meth)
+        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
+        config_rule_name = "#{name_without_rule}_#{meth}".dasherize
+        {
+          config_rule_name: config_rule_name
+        }
       end
 
       # AWS managed rules are not actual Lambda functions and require their own storage.

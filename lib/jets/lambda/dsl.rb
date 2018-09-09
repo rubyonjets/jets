@@ -184,7 +184,8 @@ module Jets::Lambda::Dsl
           properties: @properties, # lambda function properties
           iam_policy: @iam_policy,
           managed_iam_policy: @managed_iam_policy,
-          lang: lang)
+          lang: lang,
+          replacements: replacements(meth))
 
         # Done storing options, clear out for the next added method.
         clear_properties
@@ -197,6 +198,11 @@ module Jets::Lambda::Dsl
         # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Dsl behavior.
 
         true
+      end
+
+      # Meant to be overridden to add more custom replacements based on the app class type
+      def replacements(meth)
+        {}
       end
 
       def clear_properties
