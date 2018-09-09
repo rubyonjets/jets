@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Jets::VERSION
   spec.authors       = ["Tung Nguyen"]
   spec.email         = ["tongueroo@gmail.com"]
-  spec.description   = %q{Test}
-  spec.summary       = %q{Test}
-  spec.homepage      = "https://github.com/tongueroo/jets"
+  spec.summary       = "Ruby Serverless Framework on AWS Lambda"
+  spec.description   = "Jets is a framework that allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build an application and deploy it to AWS Lambda. Jets makes serverless accessible to everyone."
+  spec.homepage      = "http://rubyonjets.com"
   spec.license       = "MIT"
 
   vendor_files       = Dir.glob("vendor/**/*")
