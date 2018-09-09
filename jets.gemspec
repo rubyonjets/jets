@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://rubyonjets.com"
   spec.license       = "MIT"
 
+  spec.required_ruby_version = '~> 2.5'
+
   vendor_files       = Dir.glob("vendor/**/*")
   gem_files          = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features|docs)/})
