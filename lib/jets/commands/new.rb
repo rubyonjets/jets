@@ -10,7 +10,7 @@ module Jets::Commands
       [
         [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:mode, type: :boolean, default: 'html', desc: "mode: #{VALID_MODES.join(',')}"],
+        [:mode, default: 'html', desc: "mode: #{VALID_MODES.join(',')}"],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
@@ -28,14 +28,12 @@ module Jets::Commands
       when 'html'
         @webpacker = options[:webpacker]
         @bootstrap = options[:bootstrap]
-      when 'api'
-        @webpacker = false
-        @bootstrap = false
-      when 'job'
+      when 'api', 'job'
         @webpacker = false
         @bootstrap = false
       else
-        puts "Invalid mode provided: #{options[:mode].colorize(:red)}. Please pass in an valid mode: #{VALID_MODES.join(',').colorize(:green)}."
+        puts "Invalid mode provided: #{@options[:mode].colorize(:red)}. Please pass in an valid mode: #{VALID_MODES.join(',').colorize(:green)}."
+        exit 1
       end
     end
 

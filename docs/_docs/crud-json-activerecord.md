@@ -8,7 +8,7 @@ The easiest way to get a CRUD JSON API ActiveRecord app running by using the jet
 
 Here's a summary of the commands:
 
-    jets new demo --api
+    jets new demo --mode api
     cd demo
     jets generate scaffold Post title:string
     edit .env.development # adjust to your local database creds
@@ -19,7 +19,7 @@ Let's go through each in a little more detail.
 
 ## Generate a new project
 
-    $ jets new demo --api
+    $ jets new demo --mode api
     Creating new project called demo.
           create  demo/app/controllers/application_controller.rb
           create  demo/app/helpers/application_helper.rb
