@@ -17,9 +17,11 @@ class Jets::PublicController < Jets::Controller::Base
       if File.exist?(catchall_path)
         content_type = Rack::Mime.mime_type(File.extname(catchall_path))
         binary = !MimeMagic.by_path(catchall_path).text?
-        puts "content_type #{content_type.inspect}"
-        puts "binary #{binary}"
 
+        # TODO: binary support doesn't quite work yet.
+        # We have to add '*/*' as a binary media type to the API Gateway RestApi
+        # to enable binary support without having to send a Accept header.
+        # But doing so breaks regular form submission. Figure out how to workaround this.
         if binary
           encoded_content = Base64.encode64(IO.read(catchall_path))
           render plain: encoded_content, content_type: content_type, base64: true
