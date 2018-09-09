@@ -13,7 +13,7 @@ Jets provides several ways to finely control the IAM policies associated with yo
 ```ruby
 class PostsController < ApplicationController
   # ...
-  iam_policy("s3:*", "logs:*")
+  iam_policy("s3", "logs")
   def show
     render json: {action: "show", id: params[:id]}
   end
@@ -25,7 +25,7 @@ end
 ```ruby
 class PostsController < ApplicationController
   class_iam_policy(
-    "dynamodb:*",
+    "dynamodb",
     {
       sid: "MyStmt1",
       action: ["logs:*"],
@@ -40,7 +40,7 @@ end
 
 ```ruby
 Jets.application.configure do |config|
-  config.iam_policy = ["logs:*"]
+  config.iam_policy = ["logs"]
 end
 ```
 
@@ -59,7 +59,7 @@ It is suggested that you start off with the simplest `iam_policy` definition sty
 ### IAM Policy Simple Statement
 
 ```ruby
-iam_policy("s3:*", "logs:*")
+iam_policy("s3", "logs")
 ```
 
 Expands to:
@@ -83,10 +83,10 @@ Statement:
 
 ```ruby
 class_iam_policy(
-  "dynamodb:*"
+  "dynamodb"
   {
     sid: "MyStmt1",
-    action: ["logs:*"],
+    action: ["logs"],
     effect: "Allow",
     resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{Jets.config.project_namespace}-*",
   }
