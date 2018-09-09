@@ -46,7 +46,8 @@ Use the `--repo` flag to clone an example project from GitHub instead.  With thi
 ```
 [--repo=REPO]                    # GitHub repo to use. Format: user/repo
 [--force]                        # Bypass overwrite are you sure prompt for existing files.
-[--api], [--no-api]              # API mode.
+[--mode=MODE]                    # mode: html,api,job
+                                 # Default: html
 [--webpacker], [--no-webpacker]  # Install webpacker
                                  # Default: true
 [--bootstrap], [--no-bootstrap]  # Install bootstrap css
