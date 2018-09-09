@@ -10,7 +10,7 @@ class Jets::PublicController < Jets::Controller::Base
     python :show
   else
     def show
-      catchall = params[:catchall].blank? ? 'index.html' : params[:catchall].blank
+      catchall = params[:catchall].blank? ? 'index.html' : params[:catchall]
       public_path = Jets.root + "public"
       catchall_path = "#{public_path}/#{catchall}"
 
