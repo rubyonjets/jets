@@ -114,7 +114,7 @@ module Jets::Rule::Dsl
         clear_properties
       end
 
-      # Also used in the normal Lambda backed config rules
+      # Override lambda/dsl.rb to add config_rule_name also
       def replacements(meth)
         name_without_rule = self.name.underscore.gsub(/_rule$/,'')
         config_rule_name = "#{name_without_rule}_#{meth}".dasherize
