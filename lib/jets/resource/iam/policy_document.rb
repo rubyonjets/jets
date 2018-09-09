@@ -24,6 +24,8 @@ module Jets::Resource::Iam
       @sid += 1
       case definition
       when String
+        # Expands simple string from: logs => logs:*
+        definition = "#{definition}:*" unless definition.include?(':')
         @policy[:statement] << {
           sid: "Stmt#{@sid}",
           action: [definition],
