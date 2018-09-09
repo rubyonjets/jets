@@ -31,6 +31,6 @@ Print out your application routes.
 ## Options
 
 ```
-[--noop], [--no-noop]
+[--noop], [--no-noop]  
 ```
 
