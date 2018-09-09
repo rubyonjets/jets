@@ -79,6 +79,8 @@ Statement:
   Resource: "*"
 ```
 
+The notation with `:*` also works: `iam_policy("s3:*", "logs:*")`.
+
 ### IAM Policy Statement Hash
 
 ```ruby
