@@ -37,7 +37,6 @@ module Jets::Job::Dsl
 
       def default_associated_resource
         event_rule
-        @resources # must return @resoures for update_properties
       end
 
       def event_rule(props={})
@@ -50,12 +49,14 @@ module Jets::Job::Dsl
         }
         properties = default_props.deep_merge(props)
 
+        # Sets @resources
         resource("{namespace}EventsRule" => {
           type: "AWS::Events::Rule",
           properties: properties
         })
 
         add_logical_id_counter if @resources.size > 1
+        @resources.last
       end
 
       # Loop back through the resources and add a counter to the end of the id

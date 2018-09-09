@@ -26,26 +26,28 @@ module Jets::Rule::Dsl
         update_properties(scope: scope)
       end
 
-      def config_rule_name(value)
-        update_properties(config_rule_name: value)
+      # Convenience method that set properties. List based on https://amzn.to/2oSph1P
+      # Not all properites are included because some properties are not meant to be set
+      # directly. For example, function_name is a calculated setting by Jets.
+      PROPERTIES = %W[
+        config_rule_name
+        description
+        input_parameters
+        maximum_execution_frequency
+      ]
+      PROPERTIES.each do |property|
+        # Example:
+        #   def config_rule_name(value)
+        #     update_properties(config_rule_name: value)
+        #   end
+        class_eval <<~CODE
+          def #{property}(value)
+            update_properties(#{property}: value)
+          end
+        CODE
       end
-
-      def description(value)
-        update_properties(description: value)
-      end
+      # Note: desc and description override the lambda description but think it makes sense.
       alias_method :desc, :description
-
-      def input_parameters(value)
-        update_properties(input_parameters: value)
-      end
-
-      def maximum_execution_frequency(value)
-        update_properties(maximum_execution_frequency: value)
-      end
-
-      def source(value)
-        update_properties(source: value)
-      end
 
       def default_associated_resource
         config_rule
@@ -71,11 +73,12 @@ module Jets::Rule::Dsl
         }
         properties = default_props.deep_merge(props)
 
+        # Sets @resources
         resource("{namespace}ConfigRule" => {
           type: "AWS::Config::ConfigRule",
           properties: properties
         })
-        @resources # must return @resoures for update_properties
+        @resources.last
       end
 
       def managed_rule(name, props={})
@@ -99,7 +102,7 @@ module Jets::Rule::Dsl
         # At the same time, we do not register the task to all_tasks to avoid creating a Lambda function.
         # Instead we store it in all_managed_rules.
         update_properties(properties)
-        definition = @resources.first
+        definition = @resources.first # assume first resource
 
         register_managed_rule(name, definition)
       end
@@ -128,7 +131,7 @@ module Jets::Rule::Dsl
         all_managed_rules.values
       end
 
-      # Override Lambda::Dsl.build? to account of possible managed_rules
+      # Override Lambda::Dsl.build? to account for possible managed_rules
       def build?
         !tasks.empty? || !managed_rules.empty?
       end

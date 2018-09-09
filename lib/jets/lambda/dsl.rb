@@ -160,8 +160,8 @@ module Jets::Lambda::Dsl
       #   end
       #
       def update_properties(values={})
-        @resources ||= default_associated_resource
-        definition = @resources.first # singleton
+        default_associated_resource # sets @resource
+        definition = @resources.first # assume single associated resource
         attributes = definition.values.first
         attributes[:properties].merge!(values)
         @resources
