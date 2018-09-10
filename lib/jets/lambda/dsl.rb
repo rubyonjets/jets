@@ -200,7 +200,12 @@ module Jets::Lambda::Dsl
         # associated resource with the Lambda function.
         if !associated_properties.empty?
           associated_resources(default_associated_resource_definition)
-          add_logical_id_counter if @associated_resources.size > 1
+        end
+
+        # Unsure why but we have to use @associated_resources vs associated_resources
+        # associated_resources is always nil
+        if @associated_resources && @associated_resources.size > 1
+          add_logical_id_counter
         end
 
         puts "register_task2 meth #{meth} associated_resources #{@associated_resources.inspect}"

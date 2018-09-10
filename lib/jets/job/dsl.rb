@@ -8,20 +8,23 @@ module Jets::Job::Dsl
   included do
     class << self
       def rate(expression)
-        @associated_properties = nil
-        associated_properties(schedule_expression: "rate(#{expression})")
+        schedule_job("rate(#{expression})")
       end
 
       def cron(expression)
-        @associated_properties = nil
-        associated_properties(schedule_expression: "cron(#{expression})")
+        schedule_job("cron(#{expression})")
+      end
+
+      def schedule_job(expression)
+        associated_properties(schedule_expression: expression)
+        associated_resources(event_rule_definition) # add associated resources immediately
+        @associated_properties = nil # reset for next one
       end
 
       def event_pattern(details={})
-        @associated_properties = nil
         associated_properties(event_pattern: details)
-        # TODO: FIGURE OUT HOW TO HANDLE MULTIPLE EVENT RULES
-        associated_resources(event_rule_definition) # trigger an add out an associate resources immediately
+        associated_resources(event_rule_definition) # add associated resources immediately
+        @associated_properties = nil # reset for next one
         # TODO: FIGURE OUT HOW TO HANDLE DESCRIPTIONS
         # add_descriptions # useful: generic description in the Event Rule console
       end
