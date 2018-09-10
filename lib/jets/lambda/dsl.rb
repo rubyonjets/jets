@@ -150,6 +150,7 @@ module Jets::Lambda::Dsl
       end
       alias_method :associated_props, :associated_properties
 
+
       # Main method that the convenience methods call for to create resources associated
       # with the Lambda function. References the first resource and updates it inplace.
       # Useful for associated resources that are meant to be declare and associated
@@ -167,6 +168,8 @@ module Jets::Lambda::Dsl
       #   end
       #
       def update_properties(values={})
+        # TODO: update job/dsl.rb and remove this method entirely
+
         # default_associated_resource # sets @resource
         # definition = @resources.first # assume single associated resource
         # attributes = definition.values.first
@@ -187,6 +190,12 @@ module Jets::Lambda::Dsl
         # Note: for anonymous classes like for app/functions self.name is ""
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
+        puts "lambda register task meth #{meth} @resources #{@resources.inspect}".colorize(:cyan)
+
+        if !associated_properties.empty? && @resources.nil?
+          resource(default_associated_resource) # last_resource is a resource definition
+        end
+
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
           resources: @resources, # associated resources
           properties: @properties, # lambda function properties
@@ -218,6 +227,7 @@ module Jets::Lambda::Dsl
         @properties = nil
         @iam_policy = nil
         @managed_iam_policy = nil
+        @last_associated_resource = nil
       end
 
       # Returns the all tasks for this class with their method names as keys.

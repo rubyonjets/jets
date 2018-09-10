@@ -54,8 +54,7 @@ module Jets::Rule::Dsl
 
       def config_rule
         config_rule = Jets::Resource::Config::ConfigRule.new(associated_properties)
-        resource(config_rule.definition) # Sets @resources
-        @resources.last
+        config_rule.definition # return a definition to be added by associated_properties
       end
 
       def managed_rule(name)
@@ -104,6 +103,7 @@ module Jets::Rule::Dsl
 
       # Override Lambda::Dsl.build? to account for possible managed_rules
       def build?
+        puts "tasks #{tasks.inspect}"
         !tasks.empty? || !managed_rules.empty?
       end
     end
