@@ -3,8 +3,8 @@ module Jets
     # Use for both jets.gemspec and rake rdoc task
     def options
       exclude = %w[
-      	docs
-      	spec
+        docs
+        spec
         vendor
         core.rb
         .js
@@ -13,13 +13,13 @@ module Jets
         internal
         support
         Dockerfile
-				Dockerfile.base
-				Gemfile
-				Gemfile.lock
-				Guardfile
-				LICENSE
-				Procfile
-				Rakefile
+        Dockerfile.base
+        Gemfile
+        Gemfile.lock
+        Guardfile
+        LICENSE
+        Procfile
+        Rakefile
         bin
       ]
       exclude = exclude.map { |word| ['-x', word] }.flatten
