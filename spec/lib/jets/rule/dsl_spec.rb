@@ -1,6 +1,6 @@
 # Example with the full config_rule syntax
 class FullPropertiesRule < Jets::Rule::Base
-  resource(config_rule_definition)
+  resource(config_rule_definition(:protect))
   def protect
     puts "protect"
   end

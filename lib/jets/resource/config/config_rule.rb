@@ -1,6 +1,8 @@
 module Jets::Resource::Config
   class ConfigRule < Jets::Resource::Base
-    def initialize(props)
+    def initialize(app_class, meth, props={})
+      @app_class = app_class.to_s
+      @meth = meth
       @props = props # associated_properties from dsl.rb
     end
 
@@ -16,7 +18,7 @@ module Jets::Resource::Config
     # Do not name this method properties, that is a computed method of `Jets::Resource::Base`
     def definition_properties
       {
-        config_rule_name: "{config_rule_name}",
+        config_rule_name: config_rule_name,
         source: {
           owner: "CUSTOM_LAMBDA",
           source_identifier: "!GetAtt {namespace}LambdaFunction.Arn",
@@ -36,6 +38,29 @@ module Jets::Resource::Config
 
     def config_rule_logical_id
       "{namespace}_config_rule"
+    end
+
+    def config_rule_name
+      app_class = @app_class.underscore.gsub(/_rule$/,'')
+      ns = namespace
+      ns = nil if ns == false # for compact
+      [ns, "#{app_class}_#{@meth}"].compact.join('_').dasherize
+    end
+
+    def namespace
+      namespace = nil
+      klass = @app_class.constantize
+      while klass != Jets::Lambda::Functions
+        namespace = klass.rule_namespace
+        break if namespace or namespace == false
+        klass = klass.superclass
+      end
+
+      if namespace.nil?
+        Jets.config.project_namespace
+      else
+        namespace
+      end
     end
   end
 end

@@ -201,7 +201,7 @@ module Jets::Lambda::Dsl
         # At this point we can use the current associated_properties and defined the
         # associated resource with the Lambda function.
         if !associated_properties.empty?
-          associated_resources(default_associated_resource_definition)
+          associated_resources(default_associated_resource_definition(meth))
         end
 
         # Unsure why but we have to use @associated_resources vs associated_resources

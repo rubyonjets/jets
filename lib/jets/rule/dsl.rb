@@ -11,6 +11,14 @@ module Jets::Rule::Dsl
 
   included do
     class << self
+      def rule_namespace(value=nil)
+        if value.nil?
+          @rule_namespace # getter
+        else
+          @rule_namespace = value # # setter
+        end
+      end
+
       # Allows for different types of values. Examples:
       #
       # String: scope "AWS::EC2::SecurityGroup"
@@ -40,12 +48,12 @@ module Jets::Rule::Dsl
       define_associated_properties(ASSOCIATED_PROPERTIES)
       alias_method :desc, :description
 
-      def default_associated_resource_definition
-        config_rule_definition
+      def default_associated_resource_definition(meth)
+        config_rule_definition(meth)
       end
 
-      def config_rule_definition
-        resource = Jets::Resource::Config::ConfigRule.new(associated_properties)
+      def config_rule_definition(meth)
+        resource = Jets::Resource::Config::ConfigRule.new(self, meth, associated_properties)
         resource.definition # returns a definition to be added by associated_resources
       end
 

@@ -78,7 +78,7 @@ module Jets::Job::Dsl
       define_associated_properties(ASSOCIATED_PROPERTIES)
       alias_method :desc, :description
 
-      def default_associated_resource_definition
+      def default_associated_resource_definition(meth)
         event_rule_definition
       end
 
