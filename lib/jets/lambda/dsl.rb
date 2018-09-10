@@ -143,6 +143,13 @@ module Jets::Lambda::Dsl
       end
       alias_method :resource, :resources
 
+      # Properties belonging to the associated resource
+      def associated_properties(options={})
+        @associated_properties ||= {}
+        @associated_properties.deep_merge!(options)
+      end
+      alias_method :associated_props, :associated_properties
+
       # Main method that the convenience methods call for to create resources associated
       # with the Lambda function. References the first resource and updates it inplace.
       # Useful for associated resources that are meant to be declare and associated
@@ -160,11 +167,12 @@ module Jets::Lambda::Dsl
       #   end
       #
       def update_properties(values={})
-        default_associated_resource # sets @resource
-        definition = @resources.first # assume single associated resource
-        attributes = definition.values.first
-        attributes[:properties].merge!(values)
-        @resources
+        # default_associated_resource # sets @resource
+        # definition = @resources.first # assume single associated resource
+        # attributes = definition.values.first
+        # attributes[:properties].merge!(values)
+        # puts "update_properties called @resources #{@resources.inspect} values #{values.inspect}"
+        # @resources
       end
 
       # meth is a Symbol

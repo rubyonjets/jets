@@ -23,11 +23,11 @@ module Jets::Rule::Dsl
           else # default to hash
             value
           end
-        update_properties(scope: scope)
+        associated_properties(scope: scope)
       end
 
       # Convenience method that set properties. List based on https://amzn.to/2oSph1P
-      # Not all properites are included because some properties are not meant to be set
+      # Not all properties are included because some properties are not meant to be set
       # directly. For example, function_name is a calculated setting by Jets.
       PROPERTIES = %W[
         config_rule_name
@@ -38,51 +38,34 @@ module Jets::Rule::Dsl
       PROPERTIES.each do |property|
         # Example:
         #   def config_rule_name(value)
-        #     update_properties(config_rule_name: value)
+        #     associated_properties(config_rule_name: value)
         #   end
         class_eval <<~CODE
           def #{property}(value)
-            update_properties(#{property}: value)
+            associated_properties(#{property}: value)
           end
         CODE
       end
-      # Note: desc and description override the lambda description but think it makes sense.
       alias_method :desc, :description
 
       def default_associated_resource
         config_rule
       end
 
-      def config_rule(props={})
-        config_rule = Jets::Resource::Config::ConfigRule.new(props)
+      def config_rule
+        config_rule = Jets::Resource::Config::ConfigRule.new(associated_properties)
         resource(config_rule.definition) # Sets @resources
         @resources.last
       end
 
-      def managed_rule(name, props={})
+      def managed_rule(name)
         name = name.to_s
+        managed_rule = Jets::Resource::Config::ManagedRule.new(self, name, associated_properties)
+        resource(managed_rule.definition) # Sets @resources
 
-        # Similar logic in Replacer::ConfigRule#config_rule_name
-        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
-        config_rule_name = "#{name_without_rule}_#{name}".dasherize
-        source_identifier = name.upcase
-
-        default_props = {
-          config_rule_name: config_rule_name,
-          source: {
-            owner: "AWS",
-            source_identifier: source_identifier,
-          }
-        }
-        properties = default_props.deep_merge(props)
-        # The key is to use update_properties to update the current resource and maintain
-        # the added properties from the convenience methods like scope and description.
-        # At the same time, we do not register the task to all_tasks to avoid creating a Lambda function.
+        # The key to not register the task to all_tasks to avoid creating a Lambda function.
         # Instead we store it in all_managed_rules.
-        update_properties(properties)
-        definition = @resources.first # assume first resource
-
-        register_managed_rule(name, definition)
+        register_managed_rule(name, managed_rule.definition)
       end
 
       # Creates a task but registers it to all_managed_rules instead of all_tasks

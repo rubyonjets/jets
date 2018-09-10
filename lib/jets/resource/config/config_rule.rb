@@ -1,7 +1,7 @@
 module Jets::Resource::Config
   class ConfigRule < Jets::Resource::Base
     def initialize(props)
-      @props = props # from dsl.rb
+      @props = props # associated_properties from dsl.rb
     end
 
     def definition
@@ -30,7 +30,7 @@ module Jets::Resource::Config
               message_type: "OversizedConfigurationItemChangeNotification"
             }
           ]
-        }
+        },
       }.merge(@props)
     end
 
