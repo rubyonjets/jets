@@ -9,6 +9,15 @@ module Jets::Job::Dsl
 
   included do
     class << self
+      # Public: Creates CloudWatch Event Rule
+      #
+      # expression - The rate expression. 
+      #
+      # Examples
+      #
+      #   rate("10 minutes")
+      #   rate("10 minutes", description: "Hard job")
+      #
       def rate(expression)
         update_properties(schedule_expression: "rate(#{expression})")
       end

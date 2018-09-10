@@ -23,7 +23,7 @@ module Jets
         bin
       ]
       exclude = exclude.map { |word| ['-x', word] }.flatten
-      ["-m", "README.md"] + exclude
+      ["-m", "README.md", "--markup", "tomdoc"] + exclude
     end
     extend self
   end
