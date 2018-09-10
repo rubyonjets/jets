@@ -94,7 +94,7 @@ JS
     end
 
     def user_message
-      scaffold_message = if options[:mode] == 'job'
+      more_info = if options[:mode] == 'job'
         "Learn more about jobs here: http://rubyonjets.com/docs/jobs/"
       else
         <<~EOL
@@ -113,7 +113,7 @@ JS
         Cd into the project directory:
           cd #{project_name}
 
-        #{scaffold_message}
+        #{more_info}
 
         To deploy to AWS Lambda:
           jets deploy
