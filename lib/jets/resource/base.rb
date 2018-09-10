@@ -9,7 +9,7 @@
 # Overriding these methods will remove the computed logical which handles things
 # like camelizing and replacements.
 #
-# The implentation of these methods are in `Jets::Resource`.
+# The implementation of these methods are in `Jets::Resource`.
 class Jets::Resource
   class Base
     extend Memoist
