@@ -166,6 +166,21 @@ module Jets::Lambda::Dsl
         end
       end
 
+      # Loop back through the resources and add a counter to the end of the id
+      # to handle multiple events.
+      # Then replace @associated_resources entirely
+      def add_logical_id_counter
+        numbered_resources = []
+        n = 1
+        @associated_resources.map do |definition|
+          logical_id = definition.keys.first
+          logical_id = logical_id.sub(/\d+$/,'')
+          numbered_resources << { "#{logical_id}#{n}" => definition.values.first }
+          n += 1
+        end
+        @associated_resources = numbered_resources
+      end
+
       # meth is a Symbol
       def method_added(meth)
         return if %w[initialize method_missing].include?(meth.to_s)
@@ -185,6 +200,7 @@ module Jets::Lambda::Dsl
         # associated resource with the Lambda function.
         if !associated_properties.empty?
           associated_resources(default_associated_resource_definition)
+          add_logical_id_counter if @associated_resources.size > 1
         end
 
         puts "register_task2 meth #{meth} associated_resources #{@associated_resources.inspect}"

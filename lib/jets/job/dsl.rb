@@ -46,26 +46,7 @@ module Jets::Job::Dsl
       def event_rule_definition
         resource = Jets::Resource::Events::Rule.new(associated_properties)
         resource.definition # returns a definition to be added by associated_resources
-
-        # TODO: FIGURE OUT HOW TO HANDLE MULTIPLE ASSOCIATED RESOURCES COUNTER
-        # add_logical_id_counter if @associated_resources.size > 1
-        # @associated_resources.last
       end
-
-      # Loop back through the resources and add a counter to the end of the id
-      # to handle multiple events.
-      # Then replace @associated_resources entirely
-      # def add_logical_id_counter
-      #   numbered_resources = []
-      #   n = 1
-      #   @associated_resources.map do |definition|
-      #     logical_id = definition.keys.first
-      #     logical_id = logical_id.sub(/\d+$/,'')
-      #     numbered_resources << { "#{logical_id}#{n}" => definition.values.first }
-      #     n += 1
-      #   end
-      #   @associated_resources = numbered_resources
-      # end
     end
   end
 end
