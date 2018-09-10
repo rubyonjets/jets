@@ -38,11 +38,11 @@ module Jets::Rule::Dsl
       define_associated_properties(ASSOCIATED_PROPERTIES)
       alias_method :desc, :description
 
-      def default_associated_resource
-        config_rule
+      def default_associated_resource_definition
+        config_rule_definition
       end
 
-      def config_rule
+      def config_rule_definition
         resource = Jets::Resource::Config::ConfigRule.new(associated_properties)
         resource.definition # returns a definition to be added by associated_resources
       end

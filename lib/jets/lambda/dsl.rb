@@ -179,12 +179,15 @@ module Jets::Lambda::Dsl
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
 
+        puts "register_task meth #{meth} associated_resources #{@associated_resources.inspect}"
+
         # At this point we can use the current associated_properties and defined the
         # associated resource with the Lambda function.
         if !associated_properties.empty?
-          # default_associated_resource is a resource definition
-          resource(default_associated_resource)
+          associated_resources(default_associated_resource_definition)
         end
+
+        puts "register_task2 meth #{meth} associated_resources #{@associated_resources.inspect}"
 
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
           properties: @properties, # lambda function properties
