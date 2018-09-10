@@ -8,13 +8,13 @@ module Jets::Resource::Config
       {
         config_rule_logical_id => {
           type: "AWS::Config::ConfigRule",
-          properties: merged_properties,
+          properties: definition_properties,
         }
       }
     end
 
     # Do not name this method properties, that is a computed method of `Jets::Resource::Base`
-    def merged_properties
+    def definition_properties
       {
         config_rule_name: "{config_rule_name}",
         source: {
