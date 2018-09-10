@@ -1,27 +1,6 @@
 # Example with the full config_rule syntax
 class FullPropertiesRule < Jets::Rule::Base
-  config_rule(
-    config_rule_name: "protect_rule_custom_name",
-    description: "desc",
-    input_parameters: { "k1" => "v1" },
-    maximum_execution_frequency: "TwentyFour_Hours", # One_Hour | Three_Hours | Six_Hours | Twelve_Hours | TwentyFour_Hours # https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigRule.html
-    scope: { "ComplianceResourceTypes" => [ "AWS::EC2::SecurityGroup" ] },
-    # source: # the method below here automatically is the source
-    source: {
-      "Owner" => "CUSTOM_LAMBDA",
-      "SourceIdentifier" => "arn:aws:lambda:us-east-1:12345689012:function:rules-dev-test_properties_rule-protect",
-      "SourceDetails" => [
-          {
-              "EventSource" => "aws.config",
-              "MessageType" => "ConfigurationItemChangeNotification"
-          },
-          {
-              "EventSource" => "aws.config",
-              "MessageType" => "OversizedConfigurationItemChangeNotification"
-          }
-      ]
-    }
-  )
+  resource(config_rule_definition)
   def protect
     puts "protect"
   end
@@ -38,11 +17,14 @@ describe Jets::Rule::Dsl do
   context "FullPropertiesRule" do
     let(:rule) { FullPropertiesRule.new({}, nil, "protect") }
 
-    it "config_rule_properties" do
+    it "associated_resources" do
       protect_task = FullPropertiesRule.all_tasks[:protect]
-      expect(protect_task).to be_a(Jets::Rule::Task)
-      props = protect_task.config_rule_properties
-      expect(props["ConfigRuleName"]).to eq "protect_rule_custom_name"
+      expect(protect_task).to be_a(Jets::Lambda::Task)
+      resources = protect_task.associated_resources
+      associated_resource = resources.first
+      attributes = associated_resource.values.first
+      props = attributes[:properties]
+      expect(props[:config_rule_name]).to eq "{config_rule_name}" # will eventually be replaced
     end
   end
 
@@ -51,9 +33,12 @@ describe Jets::Rule::Dsl do
 
     it "scope expands to full ComplianceResourceTypes with AWS::EC2::SecurityGroup" do
       protect_task = PrettyPropertiesRule.all_tasks[:protect]
-      expect(protect_task).to be_a(Jets::Rule::Task)
-      props = protect_task.config_rule_properties
-      expect(props["Scope"]["ComplianceResourceTypes"]).to eq(["AWS::EC2::SecurityGroup"])
+      expect(protect_task).to be_a(Jets::Lambda::Task)
+      resources = protect_task.associated_resources
+      associated_resource = resources.first
+      attributes = associated_resource.values.first
+      props = attributes[:properties]
+      expect(props[:scope][:compliance_resource_types]).to eq(["AWS::EC2::SecurityGroup"])
     end
   end
 end
