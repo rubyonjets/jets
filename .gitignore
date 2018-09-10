@@ -18,3 +18,4 @@ tmp
 spec/fixtures/project/handlers
 .codebuild/definitions
 demo1*
+/html

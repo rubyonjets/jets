@@ -2,6 +2,7 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "jets/version"
+require "jets/rdoc"
 
 Gem::Specification.new do |spec|
   spec.name          = "jets"
@@ -14,6 +15,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
 
   spec.required_ruby_version = '~> 2.5'
+  spec.rdoc_options += Jets::Rdoc.options
 
   vendor_files       = Dir.glob("vendor/**/*")
   gem_files          = `git ls-files -z`.split("\x0").reject do |f|
