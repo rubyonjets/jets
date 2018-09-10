@@ -37,18 +37,18 @@ module Jets::Job::Dsl
         schedule_job("cron(#{expression})", props)
       end
 
-      # Eager resource definition
       def schedule_job(expression, props={})
         props = props.merge(schedule_expression: expression)
         associated_properties(props)
+        # Eager define resource
         associated_resources(event_rule_definition) # add associated resources immediately
         @associated_properties = nil # reset for next definition, since we're defining eagerly
       end
 
-      # Eager resource definition
       def event_pattern(details={}, props={})
         props = props.merge(event_pattern: details)
         associated_properties(props)
+        # Eager define resource
         associated_resources(event_rule_definition) # add associated resources immediately
         @associated_properties = nil # reset for next definition, since we're defining eagerly
         add_descriptions # useful: generic description in the Event Rule console

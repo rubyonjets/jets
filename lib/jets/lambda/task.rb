@@ -11,7 +11,7 @@ class Jets::Lambda::Task
     @managed_iam_policy = options[:managed_iam_policy]
     @lang = options[:lang] || :ruby
     @associated_resources = options[:associated_resources] || {}
-    @replacements = options[:replacements] || {} # added replacements to the baseline replacements
+    @replacements = options[:replacements] || {} # added to baseline replacements
   end
 
   def build_function_iam?
