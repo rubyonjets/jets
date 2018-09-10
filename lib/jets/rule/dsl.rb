@@ -95,7 +95,6 @@ module Jets::Rule::Dsl
 
       # Override Lambda::Dsl.build? to account for possible managed_rules
       def build?
-        puts "tasks #{tasks.inspect}"
         !tasks.empty? || !managed_rules.empty?
       end
     end
