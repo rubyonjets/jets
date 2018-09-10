@@ -42,6 +42,13 @@ module Jets::Job::Dsl
       #   @associated_resources = numbered_resources
       # end
 
+      ASSOCIATED_PROPERTIES = %W[
+        description
+        state
+        schedule_expression
+      ]
+      define_associated_properties(ASSOCIATED_PROPERTIES)
+
       def default_associated_resource_definition
         event_rule_definition
       end
