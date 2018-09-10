@@ -3,7 +3,7 @@
 # So the Jets::Rule::Dsl overrides some of the Jets::Lambda::Functions behavior.
 #
 # Implements:
-#   default_associated_resource: must return @resources
+#   default_associated_resource: must return @associated_resources
 module Jets::Rule::Dsl
   extend ActiveSupport::Concern
 
@@ -29,23 +29,13 @@ module Jets::Rule::Dsl
       # Convenience method that set properties. List based on https://amzn.to/2oSph1P
       # Not all properties are included because some properties are not meant to be set
       # directly. For example, function_name is a calculated setting by Jets.
-      PROPERTIES = %W[
+      ASSOCIATED_PROPERTIES = %W[
         config_rule_name
         description
         input_parameters
         maximum_execution_frequency
       ]
-      PROPERTIES.each do |property|
-        # Example:
-        #   def config_rule_name(value)
-        #     associated_properties(config_rule_name: value)
-        #   end
-        class_eval <<~CODE
-          def #{property}(value)
-            associated_properties(#{property}: value)
-          end
-        CODE
-      end
+      define_associated_properties(ASSOCIATED_PROPERTIES)
       alias_method :desc, :description
 
       def default_associated_resource
@@ -53,14 +43,14 @@ module Jets::Rule::Dsl
       end
 
       def config_rule
-        config_rule = Jets::Resource::Config::ConfigRule.new(associated_properties)
-        config_rule.definition # return a definition to be added by associated_properties
+        resource = Jets::Resource::Config::ConfigRule.new(associated_properties)
+        resource.definition # returns a definition to be added by associated_resources
       end
 
       def managed_rule(name)
         name = name.to_s
         managed_rule = Jets::Resource::Config::ManagedRule.new(self, name, associated_properties)
-        resource(managed_rule.definition) # Sets @resources
+        resource(managed_rule.definition) # Sets @associated_resources
 
         # The key to not register the task to all_tasks to avoid creating a Lambda function.
         # Instead we store it in all_managed_rules.

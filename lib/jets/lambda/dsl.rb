@@ -1,5 +1,5 @@
 # Other dsl that rely on this must implement
-#   default_associated_resource: must return @resources
+#   default_associated_resource: must return @associated_resources
 module Jets::Lambda::Dsl
   extend ActiveSupport::Concern
 
@@ -132,16 +132,17 @@ module Jets::Lambda::Dsl
       #############################
       # Main methood that registers resources associated with the Lambda function.
       # All resources methods lead here.
-      def resources(*definitions)
-        if definitions == [nil] # when resources called with no arguments
-          @resources || []
+      def associated_resources(*definitions)
+        if definitions == [nil] # when associated_resources called with no arguments
+          @associated_resources || []
         else
-          @resources ||= []
-          @resources += definitions
-          @resources.flatten!
+          @associated_resources ||= []
+          @associated_resources += definitions
+          @associated_resources.flatten!
         end
       end
-      alias_method :resource, :resources
+      # User-friendly short resource method. Users will use this.
+      alias_method :resource, :associated_resources
 
       # Properties belonging to the associated resource
       def associated_properties(options={})
@@ -150,32 +151,19 @@ module Jets::Lambda::Dsl
       end
       alias_method :associated_props, :associated_properties
 
-
-      # Main method that the convenience methods call for to create resources associated
-      # with the Lambda function. References the first resource and updates it inplace.
-      # Useful for associated resources that are meant to be declare and associated
-      # with only one Lambda function. Example:
-      #
-      #   Config Rule <=> Lambda function is 1-to-1
-      #
-      # Note: This methods calls default_associated_resource. The inheriting DSL class
-      # must implement default_associated_resource. The default_associated_resource should
-      # wrap another method that is nicely name so that the nicely name method is
-      # available in the DSL. Example:
-      #
-      #   def default_associated_resource
-      #     config_rule
-      #   end
-      #
-      def update_properties(values={})
-        # TODO: update job/dsl.rb and remove this method entirely
-
-        # default_associated_resource # sets @resource
-        # definition = @resources.first # assume single associated resource
-        # attributes = definition.values.first
-        # attributes[:properties].merge!(values)
-        # puts "update_properties called @resources #{@resources.inspect} values #{values.inspect}"
-        # @resources
+      # meta definition
+      def self.define_associated_properties(associated_properties)
+        associated_properties.each do |property|
+          # Example:
+          #   def config_rule_name(value)
+          #     associated_properties(config_rule_name: value)
+          #   end
+          class_eval <<~CODE
+            def #{property}(value)
+              associated_properties(#{property}: value)
+            end
+          CODE
+        end
       end
 
       # meth is a Symbol
@@ -190,17 +178,19 @@ module Jets::Lambda::Dsl
         # Note: for anonymous classes like for app/functions self.name is ""
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
-        puts "lambda register task meth #{meth} @resources #{@resources.inspect}".colorize(:cyan)
 
-        if !associated_properties.empty? && @resources.nil?
-          resource(default_associated_resource) # last_resource is a resource definition
+        # At this point we can use the current associated_properties and defined the
+        # associated resource with the Lambda function.
+        if !associated_properties.empty?
+          # default_associated_resource is a resource definition
+          resource(default_associated_resource)
         end
 
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          resources: @resources, # associated resources
           properties: @properties, # lambda function properties
           iam_policy: @iam_policy,
           managed_iam_policy: @managed_iam_policy,
+          associated_resources: @associated_resources,
           lang: lang,
           replacements: replacements(meth))
 
@@ -223,11 +213,10 @@ module Jets::Lambda::Dsl
       end
 
       def clear_properties
-        @resources = nil
         @properties = nil
         @iam_policy = nil
         @managed_iam_policy = nil
-        @last_associated_resource = nil
+        @associated_resources = nil
       end
 
       # Returns the all tasks for this class with their method names as keys.
