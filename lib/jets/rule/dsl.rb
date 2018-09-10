@@ -58,7 +58,7 @@ module Jets::Rule::Dsl
           config_rule_name: "{config_rule_name}",
           source: {
             owner: "CUSTOM_LAMBDA",
-            source_identifier: "{namespace}LambdaFunction.Arn",
+            source_identifier: "!GetAtt {namespace}LambdaFunction.Arn",
             source_details: [
               {
                 event_source: "aws.config",
@@ -110,7 +110,16 @@ module Jets::Rule::Dsl
       # Creates a task but registers it to all_managed_rules instead of all_tasks
       # because we do not want Lambda functions to be created.
       def register_managed_rule(name, definition)
-        all_managed_rules[name] = { definition: definition, replacements: replacements(name) }
+
+        # Mimic task to grab base_replacements, namely namespace.
+        # Do not actually use the task to create a Lambda function for managed rules.
+        # Only using the task for base_replacements.
+        resources = [definition]
+        meth = name
+        task = Jets::Lambda::Task.new(self.name, meth,
+                 resources: resources,
+                 replacements: replacements(meth))
+        all_managed_rules[name] = { definition: definition, replacements: task.replacements }
         clear_properties
       end
 
