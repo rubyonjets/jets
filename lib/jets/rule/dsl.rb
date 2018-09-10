@@ -3,7 +3,9 @@
 # So the Jets::Rule::Dsl overrides some of the Jets::Lambda::Functions behavior.
 #
 # Implements:
-#   default_associated_resource: must return @associated_resources
+#
+#   default_associated_resource_definition
+#
 module Jets::Rule::Dsl
   extend ActiveSupport::Concern
 

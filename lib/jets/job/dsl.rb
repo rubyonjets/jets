@@ -2,6 +2,10 @@
 # Both Jets::Job::Base and Jets::Lambda::Functions have Dsl modules included.
 # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
 #
+# Implements:
+#
+#   default_associated_resource_definition
+#
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
 
@@ -39,7 +43,7 @@ module Jets::Job::Dsl
         @associated_resources.map do |definition|
           logical_id = definition.keys.first
           attributes = definition.values.first
-          attributes[:properties][:description] = "#{self.name} Event Rule #{n}"
+          attributes[:properties][:description] ||= "#{self.name} Event Rule #{n}"
           numbered_resources << { "#{logical_id}" => attributes }
           n += 1
         end
