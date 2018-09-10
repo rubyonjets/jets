@@ -54,30 +54,8 @@ module Jets::Rule::Dsl
       end
 
       def config_rule(props={})
-        default_props = {
-          config_rule_name: "{config_rule_name}",
-          source: {
-            owner: "CUSTOM_LAMBDA",
-            source_identifier: "!GetAtt {namespace}LambdaFunction.Arn",
-            source_details: [
-              {
-                event_source: "aws.config",
-                message_type: "ConfigurationItemChangeNotification"
-              },
-              {
-                event_source: "aws.config",
-                message_type: "OversizedConfigurationItemChangeNotification"
-              }
-            ]
-          }
-        }
-        properties = default_props.deep_merge(props)
-
-        # Sets @resources
-        resource("{namespace}ConfigRule" => {
-          type: "AWS::Config::ConfigRule",
-          properties: properties
-        })
+        config_rule = Jets::Resource::Config::ConfigRule.new(props)
+        resource(config_rule.definition) # Sets @resources
         @resources.last
       end
 

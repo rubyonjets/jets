@@ -9,6 +9,7 @@ class Jets::Resource
   autoload :Function, 'jets/resource/function'
   autoload :Iam, 'jets/resource/iam'
   autoload :S3, 'jets/resource/s3'
+  autoload :Config, 'jets/resource/config'
 
   attr_reader :definition, :replacements
   def initialize(definition, replacements={})
