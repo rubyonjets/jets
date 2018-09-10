@@ -11,10 +11,28 @@ module Jets::Job::Dsl
 
   included do
     class << self
+      # Public: Creates CloudWatch Event Rule
+      #
+      # expression - The rate expression.
+      #
+      # Examples
+      #
+      #   rate("10 minutes")
+      #   rate("10 minutes", description: "Hard job")
+      #
       def rate(expression, props={})
         schedule_job("rate(#{expression})", props)
       end
 
+      # Public: Creates CloudWatch Event Rule
+      #
+      # expression - The cron expression.
+      #
+      # Examples
+      #
+      #   cron("0 */12 * * ? *")
+      #   cron("0 */12 * * ? *", description: "Hard job")
+      #
       def cron(expression, props={})
         schedule_job("cron(#{expression})", props)
       end

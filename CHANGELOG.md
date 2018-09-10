@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.13]
+- even simpler iam policy expansions: pull request #27 from tongueroo/iam
+- specify rdoc options: pull request #28 from tongueroo/rdoc
+- add gem version badge and specify ruby 2.5.x requirement in gemspec
+
 ## [0.8.12]
 - fix jets gem summary and description
 
