@@ -38,18 +38,20 @@ module Jets::Job::Dsl
       end
 
       def schedule_job(expression, props={})
+        @associated_properties = nil # dont use any current associated_properties
         props = props.merge(schedule_expression: expression)
         associated_properties(props)
         # Eager define resource
-        associated_resources(event_rule_definition) # add associated resources immediately
+        resource(event_rule_definition) # add associated resources immediately
         @associated_properties = nil # reset for next definition, since we're defining eagerly
       end
 
       def event_pattern(details={}, props={})
+        @associated_properties = nil # dont use any current associated_properties
         props = props.merge(event_pattern: details)
         associated_properties(props)
         # Eager define resource
-        associated_resources(event_rule_definition) # add associated resources immediately
+        resource(event_rule_definition) # add associated resources immediately
         @associated_properties = nil # reset for next definition, since we're defining eagerly
         add_descriptions # useful: generic description in the Event Rule console
       end
@@ -74,6 +76,7 @@ module Jets::Job::Dsl
         schedule_expression
       ]
       define_associated_properties(ASSOCIATED_PROPERTIES)
+      alias_method :desc, :description
 
       def default_associated_resource_definition
         event_rule_definition
