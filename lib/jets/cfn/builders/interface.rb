@@ -7,9 +7,7 @@ class Jets::Cfn::Builders
     extend Memoist
 
     def build
-      # Do not bother building
-      # or writing the template unless there are functions defined
-      puts "@app_klass #{@app_klass.inspect}"
+      # Do not bother building or writing the template unless there are functions defined
       return if @app_klass && !@app_klass.build?
 
       compose # must be implemented by subclass
