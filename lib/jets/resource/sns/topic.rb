@@ -7,13 +7,12 @@ module Jets::Resource::Sns
     end
 
     def definition
-      @definition # contains the user defined logical id
       logical_id = topic_logical_id
 
       # brand new definition
       base = {
         logical_id => {
-          type: "AWS::Sns::Topic",
+          type: "AWS::SNS::Topic",
           properties: {}
         }
       }

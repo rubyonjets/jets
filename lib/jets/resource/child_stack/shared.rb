@@ -30,7 +30,7 @@ module Jets::Resource::ChildStack
     #   /tmp/jets/demo/templates/demo-dev-2-shared-resources.yml to
     #   PostsController
     def shared_logical_id
-      regexp = Regexp.new(".*#{Jets.config.project_namespace}-shared-")
+      regexp = Regexp.new(".*#{Jets.config.project_namespace}-") # keep the shared
       shared_name = @path.sub(regexp, '').sub('.yml', '')
       shared_name.underscore.camelize
     end

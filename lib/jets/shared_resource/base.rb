@@ -12,7 +12,6 @@ class Jets::SharedResource
         properties = args[1]
         {
           logical_id => {
-            type: "AWS::Sns::Topic",
             properties: properties
           }
         }
