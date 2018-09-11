@@ -8,17 +8,15 @@ module Jets::Resource::Sns
 
     def definition
       logical_id = topic_logical_id
+      properties = @definition.values.first[:properties] || {}
 
       # brand new definition
-      base = {
+      {
         logical_id => {
           type: "AWS::SNS::Topic",
-          properties: {}
+          properties: properties
         }
       }
-      properties = @definition.values.first[:properties]
-      base[logical_id][:properties].deep_merge!(properties)
-      base
     end
 
     def outputs

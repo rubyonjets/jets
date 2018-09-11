@@ -2,7 +2,7 @@
 title: Shared Resources
 ---
 
-Shared resources are how you you create **standalone** custom AWS resources with Jets.  With the [Core Resource Model](http://rubyonjets.com/docs/core-resource/), you can customize and add any AWS resource with corresponding Lambda functions that Jets creates.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with a Lambda function. Instead they are custom standalone resources. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
+Shared resources are how you you create **standalone** custom AWS resources with Jets.  With the [Core Resource Model](http://rubyonjets.com/docs/core-resource/), you can customize and add any AWS resource and correspond them to Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with a Lambda function. Instead they are custom standalone resources. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
 
 ## SNS Topic Example
 
@@ -19,7 +19,7 @@ class Resource < Jets::Resource
 end
 ```
 
-This results in an SNS Topic resource being created before appplication classes like controllers or jobs are created.  You can then reference the SNS Topic with the `Resource.arn` method:
+This results in an SNS Topic resource being created before Lambda functions from application classes like controllers or jobs are created.  You can then reference the SNS Topic with the `Resource.arn` method:
 
 
 ```ruby
