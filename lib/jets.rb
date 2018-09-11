@@ -5,7 +5,6 @@ require "active_support/core_ext/string"
 require "active_support/ordered_hash"
 require "colorize"
 require "fileutils"
-require "pp" # TODO: Remove pp after debugging
 require "memoist"
 
 module Jets
