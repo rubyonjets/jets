@@ -23,7 +23,7 @@ class Jets::SharedResource
       output = stack.outputs.find do |o|
         o.output_key == key
       end
-      output.output_value
+      output&.output_value
     end
 
     def stack_name
