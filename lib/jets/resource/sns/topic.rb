@@ -8,10 +8,7 @@ module Jets::Resource::Sns
 
     def definition
       @definition # contains the user defined logical id
-      user_logical_id = @definition.keys.first
-
-      logical_id = topic_logical_id(user_logical_id)
-      puts "logical_id #{logical_id}".colorize(:cyan)
+      logical_id = topic_logical_id
 
       # brand new definition
       base = {
@@ -25,8 +22,15 @@ module Jets::Resource::Sns
       base
     end
 
-    def topic_logical_id(user_logical_id)
+    def outputs
+      {
+        topic_logical_id => "!GetAtt #{topic_logical_id}.Arn",
+      }
+    end
+
+    def topic_logical_id
       shared_class = @shared_class.underscore
+      user_logical_id = @definition.keys.first
       ["shared_#{shared_class}_#{user_logical_id}", counter].compact.join('_')
     end
 

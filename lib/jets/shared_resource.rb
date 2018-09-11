@@ -1,5 +1,6 @@
 module Jets
   class SharedResource
+    autoload :Base, 'jets/shared_resource/base'
     autoload :Sns, 'jets/shared_resource/sns'
 
     class << self

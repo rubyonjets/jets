@@ -18,7 +18,10 @@ module Jets::Resource::ChildStack
 
     def template_url
       basename = File.basename(template_filename)
-      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
+      url = "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{basename}"
+      puts "template_filename #{template_filename}"
+      puts "url #{url}"
+      url
     end
   end
 end

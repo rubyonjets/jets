@@ -41,16 +41,17 @@ class Jets::Cfn::Builders
       expression = "#{Jets::Naming.template_path_prefix}-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
-        puts "path #{path}".colorize(:cyan)
         next unless File.file?(path)
         next if api_gateway_paths.include?(path) # treated specially
         next if shared_resource?(path) # treated specially
 
+        puts "build_child_resources path: #{path}"
+
         add_app_class_stack(path)
       end
 
-      expression = "#{Jets::Naming.template_path_prefix}-shared_*"
-      # IE: path: #{Jets.build_root}/templates/demo-dev-2-shared_resources.yml
+      expression = "#{Jets::Naming.template_path_prefix}-shared-*"
+      # IE: path: #{Jets.build_root}/templates/demo-dev-2-shared-resources.yml
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
@@ -69,7 +70,6 @@ class Jets::Cfn::Builders
     end
 
     def add_shared_resources(path)
-      puts "add_shared_resources #{path}"
       resource = Jets::Resource::ChildStack::Shared.new(@options[:s3_bucket], path: path)
       add_child_resources(resource)
     end
@@ -100,7 +100,7 @@ class Jets::Cfn::Builders
     end
 
     def shared_resource?(path)
-      path =~ /-shared_/
+      path =~ /-shared-/
     end
   end
 end

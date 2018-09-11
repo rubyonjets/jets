@@ -90,7 +90,6 @@ module Jets::Core
   def eager_load_jets
     lib_jets = File.expand_path(".", File.dirname(__FILE__))
     Dir.glob("#{lib_jets}/**/*.rb").select do |path|
-      # puts "path #{path}"
       next if !File.file?(path)
       next if skip_eager_load_paths?(path)
 

@@ -90,6 +90,10 @@ For the logical id, we're using the underscored form because the `arn` internall
 
 Understanding the general `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanation above helps.
 
+## IAM Permission
+
+The shared `Resource.arn` lookup method requires read permission to the CloudFormation stack. This is automatically added to your application default IAM permissions when you are using resources.
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/core-resource.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

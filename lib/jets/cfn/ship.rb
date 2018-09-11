@@ -50,7 +50,7 @@ class Jets::Cfn
 
     def create_stack
       # parent stack template is on filesystem and child stacks templates is on s3
-      template_body = IO.read(@template_path)
+      IO.read(@template_path) # template_body
       cfn.create_stack(stack_options)
     end
     time :create_stack
@@ -60,7 +60,7 @@ class Jets::Cfn
         cfn.update_stack(stack_options)
       rescue Aws::CloudFormation::Errors::ValidationError => e
         puts "ERROR: #{e.message}".red
-        error = true
+        true # error = true
       end
     end
     time :update_stack
