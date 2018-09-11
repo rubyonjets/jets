@@ -2,7 +2,7 @@
 title: Shared Resources
 ---
 
-Shared resources are how you you create standalone custom AWS resources with Jets.  With the [Core Resource Model](http://rubyonjets.com/docs/core-resource/), you can customize and add any AWS resource associated with each Lambda function that Jets creates as part of the application classes.  Shared resources are also fully customizable AWS resources, but they are not meant to associated with Lambda functions. Instead they are custom standalone resources. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
+Shared resources are how you you create **standalone** custom AWS resources with Jets.  With the [Core Resource Model](http://rubyonjets.com/docs/core-resource/), you can customize and add any AWS resource associated with each Lambda function that Jets creates.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with the Lambda functions. Instead they are custom standalone resources. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
 
 ## SNS Topic Example
 
@@ -86,7 +86,7 @@ The code to look up the shared resource would look the same, here's the specific
 
 For the logical id, we're using the underscored form because the `arn` internally camelizes and prepends the `{namespace}` appropriately.
 
-Understanding the general `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanation above is clear.
+Understanding the general `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanation above helps.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/core-resource.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>

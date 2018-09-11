@@ -2,7 +2,7 @@
 title: Core Resource Model
 ---
 
-At the core of Jets is the resource model. Understanding the core `resource` model and method will allow you to create any resource supported via CloudFormation with Jets.
+At the core of Jets is the resource model. Understanding the core `resource` model and method will allow you to create any resource via CloudFormation with Jets.
 
 ## All Paths Lead to resource
 
@@ -19,7 +19,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-What's happens is that Jets takes the `rate` method and calls the core `resource` method.  In other words, the code could also be written like so:
+What's happens is that Jets takes the `rate` method, performs some wrapper logic, and calls the core `resource` method.  In other words, the code could also be written like so:
 
 ```ruby
 class HardJob < ApplicationJob
@@ -73,9 +73,9 @@ end
 
 The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource. The keys of the Hash structure use the underscore format following Ruby naming convention. As part of CloudFormation template processing, the underscored keys are camelized before deploying to CloudFormation.
 
-With this design, Jets allows you to create any resource associated with your Lambda functions. Methods like `rate`, `cron`, `event_rule`, `event_pattern` simply run some setup logic and call the `resource` method.
+With this design, Jets allows you to create any resource associated with your Lambda functions. Once you see how the `resource` method works, you can define any resource that you required. Methods like `rate`, `cron`, `event_rule`, `event_pattern` simply run some setup logic and call the `resource` method.
 
-Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. It is also the how you would start defining your own custom shorthand resource methods.
+Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you would start defining your own custom shorthand resource methods that wrap the `resource` method for more concise code.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/faster-development.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/shared-resources.md %}">Next Step</a>
