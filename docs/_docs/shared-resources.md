@@ -39,7 +39,7 @@ end
 
 Note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb).
 
-**Important:** You must use singularize names for your shared resource classes. So use `shared/resource.rb` instead of `shared/resources.rb`. Jets relies on this naming convention to handle autoloading shared resources.
+**Important:** You must use singularize names for your shared resource classes. So use `shared/resource.rb` instead of `shared/resources.rb`. Jets relies on this naming convention to handle autoloading shared resources. You can override this behavior by customizing inflections though with the [Application Configuration](http://rubyonjets.com/docs/app-config/).
 
 ## General Resource Form
 

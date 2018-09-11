@@ -7,7 +7,7 @@ module Jets
             inflect.irregular k,v
           end
           # Users can add custom inflections
-          Jets.application.config.inflections.irregular.each do |k,v|
+          Jets.config.inflections.irregular.each do |k,v|
             inflect.irregular k,v
           end
         end
