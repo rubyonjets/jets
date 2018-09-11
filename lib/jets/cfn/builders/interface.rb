@@ -8,7 +8,7 @@ class Jets::Cfn::Builders
 
     def build
       # Do not bother building or writing the template unless there are functions defined
-      return if @app_klass && !@app_klass.build?
+      return if @app_class && !@app_class.build?
 
       compose # must be implemented by subclass
       write
@@ -73,7 +73,7 @@ class Jets::Cfn::Builders
     end
 
     def add_resources
-      @app_klass.tasks.each do |task|
+      @app_class.tasks.each do |task|
         task.associated_resources.each do |definition|
           resource = Jets::Resource.new(definition, task.replacements)
           add_resource(resource)

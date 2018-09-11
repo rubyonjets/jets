@@ -2,16 +2,16 @@ class Jets::Cfn::Builders
   class BaseChildBuilder
     include Interface
 
-    # The app_klass is can be a controller, job or anonymous function class.
+    # The app_class is can be a controller, job or anonymous function class.
     # IE: PostsController, HardJob
-    def initialize(app_klass)
-      @app_klass = app_klass
+    def initialize(app_class)
+      @app_class = app_class
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
     # template_path is an interface method for Interface module
     def template_path
-      Jets::Naming.template_path(@app_klass)
+      Jets::Naming.template_path(@app_class)
     end
 
     def add_common_parameters
@@ -21,7 +21,7 @@ class Jets::Cfn::Builders
 
     def add_functions
       add_class_iam_policy
-      @app_klass.tasks.each do |task|
+      @app_class.tasks.each do |task|
         add_function(task)
         add_function_iam_policy(task)
       end
@@ -33,9 +33,9 @@ class Jets::Cfn::Builders
     end
 
     def add_class_iam_policy
-      return unless @app_klass.build_class_iam?
+      return unless @app_class.build_class_iam?
 
-      resource = Jets::Resource::Iam::ClassRole.new(@app_klass)
+      resource = Jets::Resource::Iam::ClassRole.new(@app_class)
       add_resource(resource)
     end
 
