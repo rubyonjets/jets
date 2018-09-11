@@ -23,6 +23,27 @@ module Jets
       def resources
         @@resources
       end
+
+      def resources?
+        # need to eager load the app/shared resources in order to check if shared resources have been registered
+        eager_load_shared_resources!
+        !resources.empty?
+      end
+
+      def eager_load_shared_resources!
+        ActiveSupport::Dependencies.autoload_paths += ["#{Jets.root}app/shared"]
+        Dir.glob("#{Jets.root}app/shared/*.rb").select do |path|
+          next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
+
+          class_name = path
+                        .sub(/\.rb$/,'') # remove .rb
+                        .sub(/^\.\//,'') # remove ./
+                        .sub(/app\/shared\//,'') # remove app/shared
+                        .classify
+          class_name.constantize # use constantize instead of require so dont have to worry about order.
+        end
+      end
+
     end
   end
 end

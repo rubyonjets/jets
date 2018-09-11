@@ -91,12 +91,26 @@ class Jets::Application
 
     # Must set default iam_policy here instead of `def config` because we need access to
     # the project_namespace and if we call it from `def config` we get an infinit loop
-    config.iam_policy ||= [{
-      sid: "Statement1",
+    config.iam_policy ||= default_iam_policy(project_namespace)
+  end
+
+  def default_iam_policy(project_namespace)
+    logs = {
       action: ["logs:*"],
       effect: "Allow",
       resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
-    }]
+    }
+    policies = [logs]
+
+    if Jets::SharedResource.resources?
+      cloudformation = {
+        action: ["cloudformation:DescribeStacks"],
+        effect: "Allow",
+        resource: "arn:aws:cloudformation:#{Jets.aws.region}:#{Jets.aws.account}:stack/#{project_namespace}*",
+      }
+      policies << cloudformation
+    end
+    policies
   end
 
   # It is pretty easy to attempt to set environment variables without
