@@ -1,3 +1,10 @@
+# Implements:
+#
+#   * template_path
+#
+# FYI
+#
+#   * compose implemented by the classes that include this
 class Jets::Cfn::Builders
   class BaseChildBuilder
     include Interface

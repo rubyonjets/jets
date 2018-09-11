@@ -10,6 +10,25 @@ module Jets
       def sns
         Sns.new(self)
       end
+
+      @@resources = []
+      def register_resource(resource)
+        @@resources << resource
+      end
+
+      def resources
+        @@resources
+      end
+
+      # @@resources = {}
+      # def register_resource(shared_class, definition)
+      #   @@resources[shared_class.to_s] ||= []
+      #   @@resources[shared_class.to_s] << definition
+      # end
+
+      # def resources
+      #   @@resources
+      # end
     end
   end
 end

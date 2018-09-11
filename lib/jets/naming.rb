@@ -9,6 +9,11 @@ class Jets::Naming
       "#{template_path_prefix}-#{underscored}.yml"
     end
 
+    def shared_template_path(shared_class)
+      underscored = shared_class.to_s.underscore.gsub('/','-')
+      "#{template_path_prefix}-shared-#{underscored}.yml"
+    end
+
     def template_path_prefix
       "#{Jets.build_root}/templates/#{Jets.config.project_namespace}"
     end

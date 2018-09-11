@@ -7,7 +7,9 @@ class Jets::SharedResource
     def topic(*args)
       definition = standardize_definition(*args)
 
-      Jets::Resource::Sns::Topic.new(@shared_class, definition)
+      resource = Jets::Resource::Sns::Topic.new(@shared_class, definition)
+      Jets::SharedResource.register_resource(resource)
+      resource
     end
 
     def standardize_definition(*args)
