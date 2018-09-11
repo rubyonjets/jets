@@ -3,8 +3,8 @@ module Jets
     autoload :Sns, 'jets/shared_resource/sns'
 
     class << self
-      def exists?
-        true # TODO: remove this hardcode
+      def build?
+        true # always true, checked by cfn/builders/interface.rb
       end
 
       def sns

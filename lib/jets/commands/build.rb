@@ -86,16 +86,19 @@ module Jets::Commands
       #   Jets::Cfn::Builders::RuleBuilder.new(CheckRule)
       #   Jets::Cfn::Builders::FunctionBuilder.new(Hello)
       #   Jets::Cfn::Builders::FunctionBuilder.new(HelloFunction)
-      app_klass = Jets::Klass.from_path(path)
-      builder = builder_class.new(app_klass)
+      app_class = Jets::Klass.from_path(path)
+      builder = builder_class.new(app_class)
       builder.build
     end
 
     # path: app/shared/resources.rb
     # path: app/shared/sns.rb
     def build_shared_template(path)
-      app_klass = Jets::Klass.from_path(path)
-      builder = Jets::Cfn::Builders::SharedBuilder.new(app_klass)
+      # path => app_class
+      # Example: app/shared/resource.rb => Resource
+      app_class = path.sub(%r{.*app/shared/},'').sub(/\.rb/,'').classify
+      app_class = app_class.constantize # ActiveSupport autoload
+      builder = Jets::Cfn::Builders::SharedBuilder.new(app_class)
       builder.build
     end
 
@@ -159,8 +162,8 @@ module Jets::Commands
         app_file = path.sub(%r{app/\w+/},'').sub(/\.rb$/,'')
         # Internal jets controllers like Welcome and Public need a different regexp
         app_file = app_file.sub(%r{.*lib/jets/internal/},'')
-        app_klass = app_file.classify.constantize # IE: PostsController, Jets::PublicController
-        langs = app_klass.tasks.map(&:lang)
+        app_class = app_file.classify.constantize # IE: PostsController, Jets::PublicController
+        langs = app_class.tasks.map(&:lang)
         langs.include?(:ruby)
       end
       !has_ruby
