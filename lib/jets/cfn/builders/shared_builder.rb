@@ -13,9 +13,7 @@ class Jets::Cfn::Builders
 
     # template_path is an interface method for Interface module
     def template_path
-      x = Jets::Naming.shared_template_path(@app_class)
-      puts "template_path #{x}"
-      x
+      Jets::Naming.shared_template_path(@app_class)
     end
   end
 end

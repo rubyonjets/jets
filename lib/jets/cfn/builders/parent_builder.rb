@@ -45,8 +45,6 @@ class Jets::Cfn::Builders
         next if api_gateway_paths.include?(path) # treated specially
         next if shared_resource?(path) # treated specially
 
-        puts "build_child_resources path: #{path}"
-
         add_app_class_stack(path)
       end
 

@@ -44,7 +44,6 @@ module Jets::Resource::ChildStack
     end
 
     def template_filename
-      puts "current_app_class #{current_app_class.inspect}"
       "#{Jets.config.project_namespace}-shared-#{current_app_class.underscore}.yml"
     end
   end
