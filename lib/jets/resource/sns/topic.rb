@@ -1,6 +1,8 @@
 module Jets::Resource::Sns
   class Topic < Jets::Resource::Base
     @@counter = 0
+
+    attr_reader :shared_class # required for Jets::SharedResource.resources?
     def initialize(shared_class, definition)
       @shared_class = shared_class.to_s
       @definition = definition # always full definition

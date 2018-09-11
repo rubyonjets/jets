@@ -44,6 +44,7 @@ module Jets
   autoload :SharedResource, "jets/shared_resource"
   autoload :Timing, "jets/timing"
   autoload :Util, "jets/util"
+  autoload :Inflections, "jets/inflections"
 
   extend Core # root, logger, etc
 end

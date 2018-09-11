@@ -13,7 +13,12 @@ class Jets::Application
   def setup!
     load_configs # load config object so following methods can use it
     setup_auto_load_paths
+    load_inflections
     load_routes
+  end
+
+  def load_inflections
+    Jets::Inflections.load!
   end
 
   def config
@@ -29,6 +34,9 @@ class Jets::Application
     config.lambdagems.sources = [
       'https://gems.lambdagems.com'
     ]
+
+    config.inflections = ActiveSupport::OrderedOptions.new
+    config.inflections.irregular = {}
 
     config
   end

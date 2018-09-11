@@ -24,10 +24,18 @@ module Jets
         @@resources
       end
 
-      def resources?
+      # Usage:
+      #
+      #   Jets::SharedResource.resources? # any
+      #   Jets::SharedResource.resources?("Resource") # do not include Shared
+      def resources?(shared_class=:any)
         # need to eager load the app/shared resources in order to check if shared resources have been registered
         eager_load_shared_resources!
-        !resources.empty?
+        if shared_class == :any
+          !resources.empty?
+        else
+          !!resources.detect { |r| r.shared_class.to_s == shared_class.to_s }
+        end
       end
 
       def eager_load_shared_resources!

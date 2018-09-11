@@ -30,12 +30,21 @@ module Jets::Resource::ChildStack
       shared_name.underscore.camelize
     end
 
+    # IE: app/resource.rb => Resource
+    # Returns "Resource" in the example
     def current_app_class
       templates_prefix = "#{Jets::Naming.template_path_prefix}-shared-"
       @path.sub(templates_prefix, '')
         .sub(/\.yml$/,'')
         .gsub('-','/')
         .classify
+    end
+
+    # Tells us if there are any resources defined in the shared class.
+    #
+    # Returns: Boolean
+    def resources?
+      Jets::SharedResource.resources?(current_app_class)
     end
 
     def template_filename

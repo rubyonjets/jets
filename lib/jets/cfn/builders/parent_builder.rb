@@ -69,7 +69,7 @@ class Jets::Cfn::Builders
 
     def add_shared_resources(path)
       resource = Jets::Resource::ChildStack::Shared.new(@options[:s3_bucket], path: path)
-      add_child_resources(resource)
+      add_child_resources(resource) if resource.resources?
     end
 
     def add_api_gateway
