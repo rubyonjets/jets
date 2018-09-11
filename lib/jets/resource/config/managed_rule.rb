@@ -9,7 +9,7 @@ module Jets::Resource::Config
           owner: "AWS",
           source_identifier: @meth.upcase,
         },
-      }.merge(@props)
+      }.deep_merge(@props)
     end
   end
 end

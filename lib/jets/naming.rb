@@ -27,6 +27,10 @@ class Jets::Naming
       "#{template_path_prefix}-api-deployment.yml"
     end
 
+    def shared_resources_template_path
+      "#{template_path_prefix}-shared-resources.yml"
+    end
+
     def parent_stack_name
       File.basename(parent_template_path, ".yml")
     end

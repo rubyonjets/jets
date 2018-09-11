@@ -21,7 +21,7 @@ module Jets::Resource::Events
           arn: "!GetAtt {namespace}LambdaFunction.Arn",
           id: "{namespace}RuleTarget"
         }]
-      }.merge(@props)
+      }.deep_merge(@props)
     end
 
     def rule_logical_id

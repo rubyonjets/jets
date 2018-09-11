@@ -1,16 +1,17 @@
 class Jets::Resource
   extend Memoist
 
-  autoload :Base, 'jets/resource/base'
-  autoload :Replacer, 'jets/resource/replacer'
-  autoload :Permission, 'jets/resource/permission'
   autoload :ApiGateway, 'jets/resource/api_gateway'
+  autoload :Base, 'jets/resource/base'
   autoload :ChildStack, 'jets/resource/child_stack'
-  autoload :Function, 'jets/resource/function'
-  autoload :Iam, 'jets/resource/iam'
-  autoload :S3, 'jets/resource/s3'
   autoload :Config, 'jets/resource/config'
   autoload :Events, 'jets/resource/events'
+  autoload :Function, 'jets/resource/function'
+  autoload :Iam, 'jets/resource/iam'
+  autoload :Permission, 'jets/resource/permission'
+  autoload :Replacer, 'jets/resource/replacer'
+  autoload :S3, 'jets/resource/s3'
+  autoload :Sns, 'jets/resource/sns'
 
   attr_reader :definition, :replacements
   def initialize(definition, replacements={})

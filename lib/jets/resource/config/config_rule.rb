@@ -33,7 +33,7 @@ module Jets::Resource::Config
             }
           ]
         },
-      }.merge(@props)
+      }.deep_merge(@props)
     end
 
     def config_rule_logical_id

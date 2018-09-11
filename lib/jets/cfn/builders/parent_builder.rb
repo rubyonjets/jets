@@ -77,6 +77,7 @@ class Jets::Cfn::Builders
       files = %w[
         api-deployment.yml
         api-gateway.yml
+        shared-resources.yml
       ]
       files.map do |name|
         "#{Jets::Naming.template_path_prefix}-#{name}"
