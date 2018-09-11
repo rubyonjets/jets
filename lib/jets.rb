@@ -37,12 +37,12 @@ module Jets
   autoload :Processors, 'jets/processors'
   autoload :Rdoc, "jets/rdoc"
   autoload :Resource, "jets/resource"
-  autoload :Resources, "jets/resources"
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
   autoload :RubyServer, "jets/ruby_server"
   autoload :Rule, 'jets/rule'
   autoload :Server, "jets/server"
+  autoload :SharedResource, "jets/shared_resource"
   autoload :Timing, "jets/timing"
   autoload :Util, "jets/util"
 

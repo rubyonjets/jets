@@ -1,31 +1,12 @@
 class Jets::Cfn::Builders
-  class SharedBuilder
-    include Interface
-    include Jets::AwsServices
-
-    def initialize(options={})
-      @options = options
-      @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
-    end
-
-    # compose is an interface method
+  class SharedBuilder < BaseChildBuilder
     def compose
-      return if @options[:stack_type] == :minimal
-
-      # deployment = Jets::Resource::ApiGateway::Deployment.new
-      # add_resource(deployment)
-      # add_parameters(deployment.parameters)
-      # add_outputs(deployment.outputs)
+      add_shared_resources
     end
 
-    # template_path is an interface method
-    def template_path
-      Jets::Naming.shared_resources_template_path
-    end
-
-    # do not bother writing a template there are no shared resources
-    def write
-      super unless Jets::Resources.exist?
+    def add_shared_resources
+      puts "add_shared_resources".colorize(:cyan)
+      puts "@app_klass: #{@app_klass.inspect}"
     end
   end
 end

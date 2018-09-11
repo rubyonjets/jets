@@ -1,8 +1,13 @@
+# Implements:
+#
+#   definition
+#   template_filename
+#
 module Jets::Resource::ChildStack
-  class AppClass < Jets::Resource::Base
-    def initialize(path, s3_bucket)
-      @path = path
-      @s3_bucket = s3_bucket
+  class AppClass < Base
+    def initialize(s3_bucket, options={})
+      super
+      @path = options[:path]
     end
 
     def definition
@@ -58,13 +63,6 @@ module Jets::Resource::ChildStack
         .classify
     end
 
-    def outputs
-      {
-        logical_id => "!Ref #{logical_id}",
-      }
-    end
-
-    # Dont name logical id because that is in Jets::Resource
     # map the path to a camelized logical_id. Example:
     #   /tmp/jets/demo/templates/demo-dev-2-posts_controller.yml to
     #   PostsController
@@ -74,8 +72,8 @@ module Jets::Resource::ChildStack
       controller_name.underscore.camelize
     end
 
-    def template_url
-      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{File.basename(@path)}"
+    def template_filename
+      @path
     end
   end
 end

@@ -1,9 +1,10 @@
+# Implements:
+#
+#   definition
+#   template_filename
+#
 module Jets::Resource::ChildStack
-  class ApiDeployment < Jets::Resource::Base
-    def initialize(s3_bucket)
-      @s3_bucket = s3_bucket
-    end
-
+  class ApiDeployment < Base
     def definition
       {
         deployment_id => {
@@ -40,19 +41,12 @@ module Jets::Resource::ChildStack
       controller_logical_ids
     end
 
-    def outputs
-      {
-        logical_id => "!Ref #{logical_id}",
-      }
-    end
-
     def deployment_id
       Jets::Resource::ApiGateway::Deployment.logical_id
     end
 
-    def template_url
-      path = File.basename("#{Jets.config.project_namespace}-api-deployment.yml")
-      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{path}"
+    def template_filename
+      "#{Jets.config.project_namespace}-api-deployment.yml"
     end
   end
 end

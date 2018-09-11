@@ -45,8 +45,10 @@ module Jets::Commands
       # 1. Shared templates - child templates needs them
       build_api_gateway_templates
       # 2. Child templates - parent template needs them
-      build_child_templates
-      # 3. Finally parent template
+      build_app_child_templates
+      # 2. Child templates - parent template needs them
+      build_shared_resources_templates
+      # 4. Finally parent template
       build_parent_template # must be called at the end
     end
 
@@ -59,19 +61,21 @@ module Jets::Commands
       Jets::Cfn::Builders::ApiDeploymentBuilder.new(@options).build
     end
 
-    def build_child_templates
+    def build_app_child_templates
       app_files.each do |path|
         build_child_template(path)
+      end
+    end
+
+    def build_shared_resources_templates
+      shared_files.each do |path|
+        build_shared_template(path)
       end
     end
 
     # path: app/controllers/comments_controller.rb
     # path: app/jobs/easy_job.rb
     def build_child_template(path)
-      class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
-      class_name = class_path.classify
-      class_name.constantize # load app/**/* class definition
-
       md = path.match(%r{app/(.*?)/}) # extract: controller, job or function
       process_class = md[1].classify
       builder_class = "Jets::Cfn::Builders::#{process_class}Builder".constantize
@@ -84,6 +88,14 @@ module Jets::Commands
       #   Jets::Cfn::Builders::FunctionBuilder.new(HelloFunction)
       app_klass = Jets::Klass.from_path(path)
       builder = builder_class.new(app_klass)
+      builder.build
+    end
+
+    # path: app/shared/resources.rb
+    # path: app/shared/sns.rb
+    def build_shared_template(path)
+      app_klass = Jets::Klass.from_path(path)
+      builder = Jets::Cfn::Builders::SharedBuilder.new(app_klass)
       builder.build
     end
 
@@ -116,6 +128,24 @@ module Jets::Commands
         paths << relative_path
       end
       paths += internal_app_files
+      paths
+    end
+
+    def shared_files
+      self.class.shared_files
+    end
+
+    def self.shared_files
+      paths = []
+      expression = "#{Jets.root}app/**/**/*.rb"
+      Dir.glob(expression).each do |path|
+        return false unless File.file?(path)
+        next unless path.include?("app/shared")
+
+        relative_path = path.sub(Jets.root.to_s, '')
+        # Rids of the Jets.root at beginning
+        paths << relative_path
+      end
       paths
     end
 

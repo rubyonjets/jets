@@ -41,20 +41,36 @@ class Jets::Cfn::Builders
       expression = "#{Jets::Naming.template_path_prefix}-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
+        puts "path #{path}".colorize(:cyan)
         next unless File.file?(path)
-        next if api_gateway_paths.include?(path) # specially treated
+        next if api_gateway_paths.include?(path) # treated specially
+        next if shared_resource?(path) # treated specially
 
         add_app_class_stack(path)
       end
 
-      if @options[:stack_type] == :full and !Jets::Router.routes.empty?
+      expression = "#{Jets::Naming.template_path_prefix}-shared_*"
+      # IE: path: #{Jets.build_root}/templates/demo-dev-2-shared_resources.yml
+      Dir.glob(expression).each do |path|
+        next unless File.file?(path)
+
+        add_shared_resources(path)
+      end
+
+      unless Jets::Router.routes.empty?
         add_api_gateway
         add_api_deployment
       end
     end
 
     def add_app_class_stack(path)
-      resource = Jets::Resource::ChildStack::AppClass.new(path, @options[:s3_bucket])
+      resource = Jets::Resource::ChildStack::AppClass.new(@options[:s3_bucket], path: path)
+      add_child_resources(resource)
+    end
+
+    def add_shared_resources(path)
+      puts "add_shared_resources #{path}"
+      resource = Jets::Resource::ChildStack::Shared.new(@options[:s3_bucket], path: path)
       add_child_resources(resource)
     end
 
@@ -77,11 +93,14 @@ class Jets::Cfn::Builders
       files = %w[
         api-deployment.yml
         api-gateway.yml
-        shared-resources.yml
       ]
       files.map do |name|
         "#{Jets::Naming.template_path_prefix}-#{name}"
       end
+    end
+
+    def shared_resource?(path)
+      path =~ /-shared_/
     end
   end
 end

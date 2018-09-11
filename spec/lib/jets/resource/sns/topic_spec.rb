@@ -1,13 +1,14 @@
 describe Jets::Resource::Sns::Topic do
   let(:resource) { Jets::Resource::Sns::Topic.new(definition) }
-  let(:definition) do
-    {
-      display_name: "hi there",
-      topic_name: "hello world",
-    }
-  end
 
-  context "resource" do
+  context "properties only" do
+    let(:definition) do
+      {
+        display_name: "hi there",
+        topic_name: "hello world",
+      }
+    end
+
     it "definition" do
       # pp resource.logical_id # uncomment to debug
       expect(resource.logical_id).to eq "SharedSnsTopic"
@@ -23,6 +24,32 @@ describe Jets::Resource::Sns::Topic do
       resource.counter # second time
       expect(resource.counter).to eq(2)
       expect(resource.logical_id).to eq "SharedSnsTopic2"
+    end
+
+    it "full_definition?" do
+      expect(resource.full_definition?).to be false
+    end
+  end
+
+  context "full definition" do
+    let(:definition) do
+      {
+        my_sns_topic: {
+          type: "AWS::Sns::Topic",
+          properties: {
+            display_name: "cool topic"
+          }
+        }
+      }
+    end
+
+    it "template" do
+      puts "resource.logical_id #{resource.logical_id}"
+      expect(resource.logical_id).to eq("SharedResourceMySnsTopic")
+    end
+
+    it "full_definition?" do
+      expect(resource.full_definition?).to be true
     end
   end
 end
