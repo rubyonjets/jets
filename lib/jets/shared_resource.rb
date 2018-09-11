@@ -2,14 +2,17 @@ module Jets
   class SharedResource
     autoload :Base, 'jets/shared_resource/base'
     autoload :Sns, 'jets/shared_resource/sns'
+    autoload :Arn, 'jets/shared_resource/arn'
 
     class << self
+      include Arn
+
       def build?
         true # always true, checked by cfn/builders/interface.rb
       end
 
       def sns
-        Sns.new(self)
+        Sns.new(self) # self is the custom resource class. IE: Resource < Jets::Resource
       end
 
       @@resources = []
@@ -20,16 +23,6 @@ module Jets
       def resources
         @@resources
       end
-
-      # @@resources = {}
-      # def register_resource(shared_class, definition)
-      #   @@resources[shared_class.to_s] ||= []
-      #   @@resources[shared_class.to_s] << definition
-      # end
-
-      # def resources
-      #   @@resources
-      # end
     end
   end
 end
