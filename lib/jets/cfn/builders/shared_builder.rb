@@ -7,7 +7,7 @@ class Jets::Cfn::Builders
     def add_shared_resources
       Jets::SharedResource.resources.each do |resource|
         add_resource(resource)
-        # add_outputs(resource.outputs)
+        add_outputs(resource.outputs)
       end
     end
 

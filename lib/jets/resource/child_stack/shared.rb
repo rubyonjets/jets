@@ -21,11 +21,6 @@ module Jets::Resource::ChildStack
       }
     end
 
-    # TODO: add shared outputs
-    def outputs
-      {}
-    end
-
     # map the path to a camelized logical_id. Example:
     #   /tmp/jets/demo/templates/demo-dev-2-shared-resources.yml to
     #   PostsController

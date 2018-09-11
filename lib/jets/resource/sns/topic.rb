@@ -23,7 +23,7 @@ module Jets::Resource::Sns
 
     def outputs
       {
-        topic_logical_id => "!GetAtt #{topic_logical_id}.Arn",
+        logical_id => "!Ref #{logical_id}",
       }
     end
 
