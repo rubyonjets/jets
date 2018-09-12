@@ -44,7 +44,7 @@ class ExampleStack < Jets::Stack
   )
 end
 
-describe "Stack" do
+describe "Stack definitions" do
   let(:stack) { ExampleStack.new }
   it "parameters" do
     expect(stack.parameters).to eq(
@@ -73,4 +73,19 @@ describe "Stack" do
        [:sns_topic, "AWS::SNS::Topic", {:display_name=>"my name"}]]
     )
   end
+end
+
+describe "Stack building" do
+  let(:stack) { ExampleStack.new }
+
+  it "build parameters" do
+    definition = stack.parameters.first
+    parameter = Jets::Stack::Parameter.new
+    out = parameter.standarize(definition)
+    pp out
+  end
+
+  # it "parameters" do
+  #   stack.build
+  # end
 end
