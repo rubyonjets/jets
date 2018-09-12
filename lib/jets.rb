@@ -42,6 +42,7 @@ module Jets
   autoload :Rule, 'jets/rule'
   autoload :Server, "jets/server"
   autoload :SharedResource, "jets/shared_resource"
+  autoload :Stack, "jets/stack"
   autoload :Timing, "jets/timing"
   autoload :Util, "jets/util"
   autoload :Inflections, "jets/inflections"
