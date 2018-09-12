@@ -3,7 +3,7 @@ class Jets::Stack
     extend ActiveSupport::Concern
 
     def initialize(*definition)
-      @definition = definition
+      @definition = definition.flatten
     end
 
     def register

@@ -74,18 +74,3 @@ describe "Stack definitions" do
     )
   end
 end
-
-describe "Stack building" do
-  let(:stack) { ExampleStack.new }
-
-  it "build parameters" do
-    definition = stack.parameters.first
-    parameter = Jets::Stack::Parameter.new
-    out = parameter.standarize(definition)
-    pp out
-  end
-
-  # it "parameters" do
-  #   stack.build
-  # end
-end
