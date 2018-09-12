@@ -126,13 +126,13 @@ describe Jets::Controller::Base do
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/stores/index.json") }
 
     it "headers" do
-      controller.set_header("Set-Cookie", "foo=bar")
-      pp controller.response.headers
+      controller.set_header("Custom", "MyHeader")
+      expect(controller.response.headers).to eq("Custom" => "MyHeader")
     end
 
     it "process headers" do
       resp = StoresController.process(event, {}, :index)
-      pp resp
+      expect(resp["headers"]["Set-Cookie"]).to eq "foo=bar"
     end
   end
 end
