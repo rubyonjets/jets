@@ -11,14 +11,12 @@ class Jets::Stack
     def standarize(definition)
       first, second, _ = definition
       if definition.size == 1 && first.is_a?(Hash) # long form
-        # puts "long form detected"
         first # pass through
       elsif definition.size == 2 && second.is_a?(Hash) # medium form
-        # puts "medium form detected"
         logical_id, properties = first, second
         { logical_id => properties }
-      elsif definition.size == 2 && (second.is_a?(String) || second.is_a?(NilClass)) # short form
-        # puts "short form detected"
+      elsif (definition.size == 2 && second.is_a?(String)) || # short form
+            (definition.size == 1) && second.is_a?(NilClass)
         logical_id = first
         properties = second.is_a?(String) ? { default: second } : {}
         { logical_id => properties }
@@ -30,7 +28,7 @@ class Jets::Stack
     def add_required(attributes)
       properties = attributes.values.first
       properties[:type] ||= 'String'
-      properties
+      attributes
     end
   end
 end
