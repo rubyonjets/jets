@@ -4,7 +4,7 @@ class Jets::Stack
     include Base
 
     def template
-      Jets::Camelizer.transform(standarize(@definition))
+      camelize(standarize(@definition))
     end
 
     # Value is the only required property: https://amzn.to/2xbhmk3

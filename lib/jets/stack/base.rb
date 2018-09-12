@@ -10,6 +10,10 @@ class Jets::Stack
       self.class.register(*@definition)
     end
 
+    def camelize(attributes)
+      Jets::Camelizer.transform(attributes)
+    end
+
     included do
       class << self
         def register(*definition)
