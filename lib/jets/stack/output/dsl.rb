@@ -1,17 +1,17 @@
 class Jets::Stack
   class Output
     module Dsl
+      extend ActiveSupport::Concern
+
       def outputs
         Output.definitions
       end
 
-      def self.included(base)
-        base.extend DslMethods
-      end
-
-      module DslMethods
-        def output(*definition)
-          Output.new(*definition).register
+      included do
+        class << self
+          def output(*definition)
+            Output.new(*definition).register
+          end
         end
       end
     end

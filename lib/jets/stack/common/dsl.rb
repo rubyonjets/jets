@@ -1,13 +1,13 @@
 class Jets::Stack
   class Common
     module Dsl
-      def self.included(base)
-        base.extend DslMethods
-      end
+      extend ActiveSupport::Concern
 
-      module DslMethods
-        def ref(value)
-          "!Ref #{value}"
+      included do
+        class << self
+          def ref(value)
+            "!Ref #{value}"
+          end
         end
       end
     end

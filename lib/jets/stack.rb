@@ -1,3 +1,5 @@
+require 'active_support/concern'
+
 module Jets
   class Stack
     autoload :Base, 'jets/stack/base' # Registration and definitions
