@@ -4,37 +4,48 @@ describe "Stack output" do
   context "long form" do
     let(:definition) do
       {
-        instance_type: {
-          default: "t2.micro" ,
-          description: "instance type" ,
+        vpc_id: {
+          description: "vpc id",
+          value: "!Ref VpcId",
         }
       }
     end
     it "template" do
-      expect(parameter.template).to eq(
-        {"Default"=>"t2.micro", "Description"=>"instance type", "Type"=>"String"}
+      expect(output.template).to eq(
+        {"VpcId"=>{"Description"=>"vpc id", "Value"=>"!Ref VpcId"}}
       )
     end
   end
 
   context "medium form" do
     let(:definition) do
-      [:company, default: "boltops"]
+      [:stack_name, value: "!Ref AWS::StackName"]
     end
     it "template" do
-      expect(parameter.template).to eq(
-        {"Default"=>"boltops", "Type"=>"String"}
+      expect(output.template).to eq(
+        {"StackName"=>{"Value"=>"!Ref AWS::StackName"}}
       )
     end
   end
 
-  context "short form" do
+  context "short form with value" do
     let(:definition) do
-      [:ami_id, "ami-123"]
+      [:elb, "!Ref Elb"]
     end
     it "template" do
-      expect(parameter.template).to eq(
-        {"Default"=>"ami-123", "Type"=>"String"}
+      expect(output.template).to eq(
+        {"Elb"=>{"Value"=>"!Ref Elb"}}
+      )
+    end
+  end
+
+  context "short form without value" do
+    let(:definition) do
+      [:elb]
+    end
+    it "template" do
+      expect(output.template).to eq(
+        {"Elb"=>{"Value"=>"!Ref Elb"}}
       )
     end
   end

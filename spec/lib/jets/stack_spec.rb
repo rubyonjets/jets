@@ -14,12 +14,12 @@ class ExampleStack < Jets::Stack
   # long form
   output(vpc_id: {
     description: "vpc id",
-    value: ref("vpc"),
+    value: ref("vpc_id"),
   })
   # medium form
   output :stack_name, value: "!Ref AWS::StackName"
   # short form
-  output :elb, value: "!Ref Elb"
+  output :elb, "!Ref Elb"
   output :elb # short form
 
   ### Resources

@@ -16,7 +16,7 @@ class Jets::Stack
         logical_id, properties = first, second
         { logical_id => properties }
       elsif (definition.size == 2 && second.is_a?(String)) || # short form
-            (definition.size == 1) && second.is_a?(NilClass)
+            definition.size == 1
         logical_id = first
         properties = second.is_a?(String) ? { default: second } : {}
         { logical_id => properties }
