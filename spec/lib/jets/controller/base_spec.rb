@@ -120,4 +120,19 @@ describe Jets::Controller::Base do
       })
     end
   end
+
+  context "stores" do
+    let(:meth) { "index" }
+    let(:event) { json_file("spec/fixtures/dumps/api_gateway/stores/index.json") }
+
+    it "headers" do
+      controller.set_header("Set-Cookie", "foo=bar")
+      pp controller.response.headers
+    end
+
+    it "process headers" do
+      resp = StoresController.process(event, {}, :index)
+      pp resp
+    end
+  end
 end
