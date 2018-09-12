@@ -27,7 +27,7 @@ class HardJob < ApplicationJob
     "{namespace}EventsRule": {
       type: "AWS::Events::Rule",
       properties: {
-        schedule_expression: "rate(10 hours)"
+        schedule_expression: "rate(10 hours)",
         state: "ENABLED",
         targets: [{
           arn: "!GetAtt {namespace}LambdaFunction.Arn",
@@ -56,7 +56,7 @@ class HardJob < ApplicationJob
     "HardJobDigEventsRule": {
       type: "AWS::Events::Rule",
       properties: {
-        schedule_expression: "rate(10 hours)"
+        schedule_expression: "rate(10 hours)",
         state: "ENABLED",
         targets: [{
           arn: "!GetAtt HardJobDigLambdaFunction.Arn",

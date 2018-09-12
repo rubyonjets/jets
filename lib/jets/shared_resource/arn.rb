@@ -3,7 +3,6 @@ class Jets::SharedResource
     include Jets::AwsServices
 
     def arn(logical_id)
-      # TODO: THINK THIS WILL ERROR IF THE STACK DOES NOT EXIST HANDLE IT
       resp = cfn.describe_stacks(stack_name: shared_stack_arn)
       child = resp.stacks.first
       return unless child
