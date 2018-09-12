@@ -2,7 +2,7 @@
 title: FAQ
 ---
 
-**Q: How do I set cookies from jets?**
+**Q: How do I set cookies from Jets?**
 
 You can set cookies with the `set_header` method in the controller.  Here is an example
 
