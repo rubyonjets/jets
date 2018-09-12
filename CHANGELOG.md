@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.14]
+- Add faq docs
+- add setting response headers support for cookies: pull request #31
+- Replace `Timing` header with `X-Runtime`: pull request #30 from y8/patch-1
+
 ## [0.8.13]
 - even simpler iam policy expansions: pull request #27 from tongueroo/iam
 - specify rdoc options: pull request #28 from tongueroo/rdoc

@@ -32,10 +32,12 @@ class Jets::Controller
     end
 
     delegate :headers, to: :request
-    attr_reader :request
+    delegate :set_header, to: :response
+    attr_reader :request, :response
     def initialize(event, context={}, meth)
       super
       @request = Request.new(event)
+      @response = Response.new(event)
     end
 
     class_attribute :internal_controller
