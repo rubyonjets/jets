@@ -10,7 +10,6 @@ class Jets::Stack
 
     # TODO: use ActiveSuport concerns instead
     def self.included(base)
-      puts "included base #{base}"
       base.extend ClassMethods
     end
 
