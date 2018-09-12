@@ -23,7 +23,25 @@ class ExampleStack < Jets::Stack
   output :elb # short form
 
   ### Resources
-  # ...
+  # long form
+  resource(sns_topic: {
+    type: "AWS::SNS::Topic",
+    properties: {
+      description: "my desc",
+      display_name: "my name",
+    }
+  })
+  # medium form
+  resource(:sns_topic,
+    type: "AWS::SNS::Topic",
+    properties: {
+      display_name: "my name",
+    }
+  )
+  # short form
+  resource(:sns_topic, "AWS::SNS::Topic",
+    display_name: "my name",
+  )
 end
 
 describe "Stack" do
@@ -37,12 +55,22 @@ describe "Stack" do
   end
 
   it "outputs" do
-    # pp stack.outputs
     expect(stack.outputs).to eq(
       [[{:vpc_id=>{:description=>"vpc id", :value=>"!Ref vpc"}}],
        [:stack_name, {:value=>"!Ref AWS::StackName"}],
        [:elb, {:value=>"!Ref Elb"}],
        [:elb]]
+    )
+  end
+
+  it "resources" do
+    expect(stack.resources).to eq(
+      [[{:sns_topic=>
+          {:type=>"AWS::SNS::Topic",
+           :properties=>{:description=>"my desc", :display_name=>"my name"}}}],
+       [:sns_topic,
+        {:type=>"AWS::SNS::Topic", :properties=>{:display_name=>"my name"}}],
+       [:sns_topic, "AWS::SNS::Topic", {:display_name=>"my name"}]]
     )
   end
 end
