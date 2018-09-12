@@ -4,9 +4,10 @@ class Jets::Stack
     include Base
 
     def template
-      standarize(@definition)
+      Jets::Camelizer.transform(add_required(standarize(@definition)))
     end
 
+    # Type is the only required property: https://amzn.to/2x8W5aD
     def standarize(definition)
       first, second, _ = definition
       if definition.size == 1 && first.is_a?(Hash) # long form
@@ -14,16 +15,22 @@ class Jets::Stack
         first # pass through
       elsif definition.size == 2 && second.is_a?(Hash) # medium form
         # puts "medium form detected"
-        logical_id, attributes = first, second
-        { logical_id => attributes }
+        logical_id, properties = first, second
+        { logical_id => properties }
       elsif definition.size == 2 && (second.is_a?(String) || second.is_a?(NilClass)) # short form
         # puts "short form detected"
         logical_id = first
-        attributes = second.is_a?(String) ? { default: second } : {}
-        { logical_id => attributes }
+        properties = second.is_a?(String) ? { default: second } : {}
+        { logical_id => properties }
       else # I dont know what form
         raise "Invalid form provided. definition #{definition.inspect}"
       end
+    end
+
+    def add_required(attributes)
+      properties = attributes.values.first
+      properties[:type] ||= 'String'
+      properties
     end
   end
 end

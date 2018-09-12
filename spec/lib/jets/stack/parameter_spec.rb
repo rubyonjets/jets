@@ -11,10 +11,9 @@ describe "Stack parameter" do
       }
     end
     it "template" do
-      pp parameter.template
-      # expect(parameter.template).to eq(
-      #   ...
-      # )
+      expect(parameter.template).to eq(
+        {"Default"=>"t2.micro", "Description"=>"instance type", "Type"=>"String"}
+      )
     end
   end
 
@@ -23,10 +22,9 @@ describe "Stack parameter" do
       [:company, default: "boltops"]
     end
     it "template" do
-      pp parameter.template
-      # expect(parameter.template).to eq(
-      #   ...
-      # )
+      expect(parameter.template).to eq(
+        {"Default"=>"boltops", "Type"=>"String"}
+      )
     end
   end
 
@@ -35,10 +33,9 @@ describe "Stack parameter" do
       [:ami_id, "ami-123"]
     end
     it "template" do
-      pp parameter.template
-      # expect(parameter.template).to eq(
-      #   ...
-      # )
+      expect(parameter.template).to eq(
+        {"Default"=>"ami-123", "Type"=>"String"}
+      )
     end
   end
 end
