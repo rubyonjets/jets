@@ -12,15 +12,15 @@ class ExampleStack < Jets::Stack
 
   ### Outputs
   # long form
-  output(vpc_id: {
-    description: "vpc id",
-    value: ref("vpc"),
-  })
-  # medium form
-  output :stack_name, value: "!Ref AWS::StackName"
-  # short form
-  output :elb, value: "!Ref Elb"
-  output :elb # short form
+  # output(vpc_id: {
+  #   description: "vpc id",
+  #   value: ref("vpc"),
+  # })
+  # # medium form
+  # output :stack_name, value: "!Ref AWS::StackName"
+  # # short form
+  # output :elb, value: "!Ref Elb"
+  # output :elb # short form
 
   ### Resources
   # ...
@@ -36,8 +36,8 @@ describe "Stack" do
     )
   end
 
-  it "outputs" do
-    pp stack.outputs
-    # expect(stack.outputs).to ...
-  end
+  # it "outputs" do
+  #   pp stack.outputs
+  #   # expect(stack.outputs).to ...
+  # end
 end

@@ -5,11 +5,12 @@ class Jets::Stack
         Parameter.definitions
       end
 
+      # TODO: use ActiveSuport concerns instead
       def self.included(base)
-        base.extend ClassMethods
+        base.extend DslMethods
       end
 
-      module ClassMethods
+      module DslMethods
         def parameter(*definition)
           Parameter.new(*definition).register
         end
