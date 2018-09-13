@@ -1,3 +1,7 @@
+# Class that inherits Base should implement:
+#
+#   template - method should use @definition to build a CloudFormation template section
+#
 class Jets::Stack
   module Base
     extend ActiveSupport::Concern
@@ -18,7 +22,11 @@ class Jets::Stack
       class << self
         def register(*definition)
           @definitions ||= []
-          @definitions << definition
+          # Create instance of the CloudFormation section class and register it.  Examples:
+          #   Stack::Parameter.new(definition)
+          #   Stack::Resource.new(definition)
+          #   Stack::Output.new(definition)
+          @definitions << new(definition)
         end
 
         def definitions

@@ -7,6 +7,7 @@ module Jets
     autoload :Parameter, 'jets/stack/parameter'
     autoload :Output, 'jets/stack/output'
     autoload :Resource, 'jets/stack/resource'
+    autoload :Builder, 'jets/stack/builder'
 
     include Common::Dsl
     include Parameter::Dsl

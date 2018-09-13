@@ -1,3 +1,7 @@
+# Implements:
+#
+#   template - uses @definition to build a CloudFormation template section
+#
 class Jets::Stack
   class Resource
     autoload :Dsl, "jets/stack/resource/dsl"
