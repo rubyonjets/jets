@@ -1,5 +1,6 @@
 module Jets::Commands
   class New < Sequence
+    VALID_MODES = %w[html api job]
     argument :project_name
 
     # Ugly, but when the class_option is only defined in the Thor::Group class
@@ -9,7 +10,7 @@ module Jets::Commands
       [
         [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:api, type: :boolean, default: false, desc: "API mode."],
+        [:mode, default: 'html', desc: "mode: #{VALID_MODES.join(',')}"],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
@@ -17,18 +18,22 @@ module Jets::Commands
     end
 
     cli_options.each do |args|
-      class_option *args
+      class_option(*args)
     end
 
     def set_api_mode
       # options is a frozen hash by Thor so cannot modify it.
       # Also had trouble unfreezing it with .dup. So using instance variables instead
-      if options[:api]
+      case options[:mode]
+      when 'html'
+        @webpacker = options[:webpacker]
+        @bootstrap = options[:bootstrap]
+      when 'api', 'job'
         @webpacker = false
         @bootstrap = false
       else
-        @webpacker = options[:webpacker]
-        @bootstrap = options[:bootstrap]
+        puts "Invalid mode provided: #{@options[:mode].colorize(:red)}. Please pass in an valid mode: #{VALID_MODES.join(',').colorize(:green)}."
+        exit 1
       end
     end
 
@@ -89,22 +94,30 @@ JS
     end
 
     def user_message
-      puts <<-EOL
-#{"="*64}
-Congrats 🎉 You have successfully created a Jets project.
+      more_info = if options[:mode] == 'job'
+        "Learn more about jobs here: http://rubyonjets.com/docs/jobs/"
+      else
+        <<~EOL
+          To start a server and test locally:
+            jets server # localhost:8888 should have the Jets welcome page
 
-Cd into the project directory:
-  cd #{project_name}
+          Scaffold example:
+            jets generate scaffold Post title:string body:text published:boolean
+        EOL
+      end
 
-To start a server and test locally:
-  jets server # localhost:8888 should have the Jets welcome page
+      puts <<~EOL
+        #{"="*64}
+        Congrats 🎉 You have successfully created a Jets project.
 
-Scaffold example:
-  jets generate scaffold Post title:string body:text published:boolean
+        Cd into the project directory:
+          cd #{project_name}
 
-To deploy to AWS Lambda:
-  jets deploy
-EOL
+        #{more_info}
+
+        To deploy to AWS Lambda:
+          jets deploy
+      EOL
     end
   end
 end

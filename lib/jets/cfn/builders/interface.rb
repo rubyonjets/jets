@@ -75,7 +75,7 @@ class Jets::Cfn::Builders
 
     def add_resources
       @app_klass.tasks.each do |task|
-        task.resources.each do |definition|
+        task.associated_resources.each do |definition|
           resource = Jets::Resource.new(definition, task.replacements)
           add_resource(resource)
           add_resource(resource.permission)
