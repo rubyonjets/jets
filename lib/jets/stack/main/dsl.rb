@@ -3,11 +3,9 @@ class Jets::Stack
     module Dsl
       extend ActiveSupport::Concern
 
-      included do
-        class << self
-          def ref(value)
-            "!Ref #{value}"
-          end
+      class_methods do
+        def ref(value)
+          "!Ref #{value}"
         end
       end
     end

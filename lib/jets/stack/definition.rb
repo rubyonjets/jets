@@ -24,26 +24,24 @@ class Jets::Stack
       Jets::Camelizer.transform(attributes)
     end
 
-    included do
-      class << self
-        def register(subclass, *definition)
-          @definitions ||= {}
-          @definitions[subclass.to_s] ||= []
-          # Create instance of the CloudFormation section class and register it.  Examples:
-          #   Stack::Parameter.new(definition)
-          #   Stack::Resource.new(definition)
-          #   Stack::Output.new(definition)
-          @definitions[subclass.to_s] << new(subclass, definition)
-        end
+    class_methods do
+      def register(subclass, *definition)
+        @definitions ||= {}
+        @definitions[subclass.to_s] ||= []
+        # Create instance of the CloudFormation section class and register it.  Examples:
+        #   Stack::Parameter.new(definition)
+        #   Stack::Resource.new(definition)
+        #   Stack::Output.new(definition)
+        @definitions[subclass.to_s] << new(subclass, definition)
+      end
 
-        def definitions(subclass)
-          @definitions ||= {}
-          @definitions[subclass.to_s]
-        end
+      def definitions(subclass)
+        @definitions ||= {}
+        @definitions[subclass.to_s]
+      end
 
-        def all_definitions
-          @definitions
-        end
+      def all_definitions
+        @definitions
       end
     end
   end
