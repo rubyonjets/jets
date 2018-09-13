@@ -1,9 +1,9 @@
-# Class that inherits Base should implement:
+# Class that include Definition should implement:
 #
 #   template - method should use @definition to build a CloudFormation template section
 #
 class Jets::Stack
-  module Base
+  module Definition
     extend ActiveSupport::Concern
 
     # Example of usage that leads here:

@@ -2,7 +2,7 @@ require 'active_support/concern'
 
 module Jets
   class Stack
-    autoload :Base, 'jets/stack/base' # Registration and definitions
+    autoload :Definition, 'jets/stack/definition' # Registration and definitions
     autoload :Main, 'jets/stack/main'
     autoload :Parameter, 'jets/stack/parameter'
     autoload :Output, 'jets/stack/output'

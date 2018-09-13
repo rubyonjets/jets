@@ -14,14 +14,14 @@ class Jets::Stack
     end
 
     def build(section)
-      # s is Section object.  Examples:
+      # s is a "section part".  Examples:
       #
       #   Jets::Stack::Parameter
       #   Jets::Stack::Resource
       #   Jets::Stack::Output
       #
-      @stack.send(section).inject({}) do |section_template, s|
-        section_template.merge(s.template)
+      @stack.send(section).inject({}) do |template_section, s|
+        template_section.merge(s.template)
       end
     end
   end

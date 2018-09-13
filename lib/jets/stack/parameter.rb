@@ -5,7 +5,7 @@
 class Jets::Stack
   class Parameter
     autoload :Dsl, "jets/stack/parameter/dsl"
-    include Base
+    include Definition
 
     def template
       camelize(add_required(standarize(@definition)))
