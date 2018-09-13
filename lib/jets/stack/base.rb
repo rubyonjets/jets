@@ -6,6 +6,11 @@ class Jets::Stack
   module Base
     extend ActiveSupport::Concern
 
+    # Example of usage that leads here:
+    #
+    #   Parameter.new(self, *definition).register
+    #
+    # Which  is defined in parameter/dsl.rb
     def initialize(subclass, *definition)
       @subclass = subclass.to_s # important to use to_s, dont want the object as keys in @definitions
       @definition = definition.flatten
