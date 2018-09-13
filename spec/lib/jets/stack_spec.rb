@@ -44,7 +44,7 @@ class ExampleStack2 < Jets::Stack
   )
 end
 
-describe "Stack definitions" do
+describe "Stack templates" do
   let(:stack) { ExampleStack2.new }
   it "parameters" do
     templates = stack.parameters.map(&:template)
