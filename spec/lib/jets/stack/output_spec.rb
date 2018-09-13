@@ -1,5 +1,5 @@
 describe "Stack output" do
-  let(:output) { Jets::Stack::Output.new(definition) }
+  let(:output) { Jets::Stack::Output.new("ExampleStack", definition) }
 
   context "long form" do
     let(:definition) do

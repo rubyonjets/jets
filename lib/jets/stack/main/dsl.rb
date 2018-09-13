@@ -1,5 +1,5 @@
 class Jets::Stack
-  class Common
+  class Main
     module Dsl
       extend ActiveSupport::Concern
 

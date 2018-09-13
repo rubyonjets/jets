@@ -1,5 +1,5 @@
 describe "Stack resource" do
-  let(:resource) { Jets::Stack::Resource.new(definition) }
+  let(:resource) { Jets::Stack::Resource.new("ExampleStack", definition) }
 
   context "long form" do
     let(:definition) do

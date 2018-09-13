@@ -1,5 +1,5 @@
 describe "Stack parameter" do
-  let(:parameter) { Jets::Stack::Parameter.new(definition) }
+  let(:parameter) { Jets::Stack::Parameter.new("ExampleStack", definition) }
 
   context "long form" do
     let(:definition) do

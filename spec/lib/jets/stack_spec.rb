@@ -1,4 +1,4 @@
-class ExampleStack < Jets::Stack
+class ExampleStack2 < Jets::Stack
   ### Parameters
   # long form
   parameter(instance_type: {
@@ -20,7 +20,7 @@ class ExampleStack < Jets::Stack
   output :stack_name, value: "!Ref AWS::StackName"
   # short form
   output :elb, "!Ref Elb"
-  output :elb # short form
+  output :elb2 # short form
 
   ### Resources
   # long form
@@ -32,45 +32,50 @@ class ExampleStack < Jets::Stack
     }
   })
   # medium form
-  resource(:sns_topic,
+  resource(:sns_topic2,
     type: "AWS::SNS::Topic",
     properties: {
-      display_name: "my name",
+      display_name: "my name 2",
     }
   )
   # short form
-  resource(:sns_topic, "AWS::SNS::Topic",
-    display_name: "my name",
+  resource(:sns_topic3, "AWS::SNS::Topic",
+    display_name: "my name 3",
   )
 end
 
 describe "Stack definitions" do
-  let(:stack) { ExampleStack.new }
+  let(:stack) { ExampleStack2.new }
   it "parameters" do
-    expect(stack.parameters).to eq(
-      [[{:instance_type=>{:default=>"t2.micro", :description=>"instance type"}}],
-       [:company, {:default=>"boltops"}],
-       [:ami_id, "ami-123"]]
+    templates = stack.parameters.map(&:template)
+    expect(templates).to eq(
+      [{"InstanceType"=>
+         {"Default"=>"t2.micro", "Description"=>"instance type", "Type"=>"String"}},
+       {"Company"=>{"Default"=>"boltops", "Type"=>"String"}},
+       {"AmiId"=>{"Default"=>"ami-123", "Type"=>"String"}}]
     )
   end
 
   it "outputs" do
-    expect(stack.outputs).to eq(
-      [[{:vpc_id=>{:description=>"vpc id", :value=>"!Ref vpc"}}],
-       [:stack_name, {:value=>"!Ref AWS::StackName"}],
-       [:elb, {:value=>"!Ref Elb"}],
-       [:elb]]
+    templates = stack.outputs.map(&:template)
+    expect(templates).to eq(
+      [{"VpcId"=>{"Description"=>"vpc id", "Value"=>"!Ref vpc_id"}},
+      {"StackName"=>{"Value"=>"!Ref AWS::StackName"}},
+      {"Elb"=>{"Value"=>"!Ref Elb"}},
+      {"Elb2"=>{"Value"=>"!Ref Elb2"}}]
     )
   end
 
   it "resources" do
-    expect(stack.resources).to eq(
-      [[{:sns_topic=>
-          {:type=>"AWS::SNS::Topic",
-           :properties=>{:description=>"my desc", :display_name=>"my name"}}}],
-       [:sns_topic,
-        {:type=>"AWS::SNS::Topic", :properties=>{:display_name=>"my name"}}],
-       [:sns_topic, "AWS::SNS::Topic", {:display_name=>"my name"}]]
+    templates = stack.resources.map(&:template)
+    expect(templates).to eq(
+      [{"SnsTopic"=>
+        {"Type"=>"AWS::SNS::Topic",
+          "Properties"=>{"Description"=>"my desc", "DisplayName"=>"my name"}}},
+      {"SnsTopic2"=>
+        {"Type"=>"AWS::SNS::Topic", "Properties"=>{"DisplayName"=>"my name 2"}}},
+      {"SnsTopic3"=>
+        {"Type"=>"AWS::SNS::Topic", "Properties"=>{"DisplayName"=>"my name 3"}}}]
     )
   end
 end

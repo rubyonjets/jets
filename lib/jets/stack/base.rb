@@ -6,12 +6,13 @@ class Jets::Stack
   module Base
     extend ActiveSupport::Concern
 
-    def initialize(*definition)
+    def initialize(subclass, *definition)
+      @subclass = subclass.to_s # important to use to_s, dont want the object as keys in @definitions
       @definition = definition.flatten
     end
 
     def register
-      self.class.register(*@definition)
+      self.class.register(@subclass, *@definition)
     end
 
     def camelize(attributes)
@@ -20,16 +21,22 @@ class Jets::Stack
 
     included do
       class << self
-        def register(*definition)
-          @definitions ||= []
+        def register(subclass, *definition)
+          @definitions ||= {}
+          @definitions[subclass.to_s] ||= []
           # Create instance of the CloudFormation section class and register it.  Examples:
           #   Stack::Parameter.new(definition)
           #   Stack::Resource.new(definition)
           #   Stack::Output.new(definition)
-          @definitions << new(definition)
+          @definitions[subclass.to_s] << new(subclass, definition)
         end
 
-        def definitions
+        def definitions(subclass)
+          @definitions ||= {}
+          @definitions[subclass.to_s]
+        end
+
+        def all_definitions
           @definitions
         end
       end

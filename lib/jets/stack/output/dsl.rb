@@ -4,13 +4,15 @@ class Jets::Stack
       extend ActiveSupport::Concern
 
       def outputs
-        Output.definitions
+        Output.definitions(self.class)
       end
 
       included do
         class << self
           def output(*definition)
-            Output.new(*definition).register
+            # self is subclass is the stack that inherits from Jets::Stack
+            # IE: ExampleStack < Jets::Stack
+            Output.new(self, *definition).register
           end
         end
       end
