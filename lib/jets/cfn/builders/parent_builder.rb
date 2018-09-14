@@ -50,7 +50,6 @@ class Jets::Cfn::Builders
 
       expression = "#{Jets::Naming.template_path_prefix}-shared-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-shared-resources.yml
-      puts "expression #{expression}"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
@@ -69,9 +68,7 @@ class Jets::Cfn::Builders
     end
 
     def add_shared_resources(path)
-      puts "add_shared_resources path #{path}"
       resource = Jets::Resource::ChildStack::Shared.new(@options[:s3_bucket], path: path)
-      puts "resource.resources? #{resource.resources?}"
       add_child_resources(resource) if resource.resources?
     end
 
