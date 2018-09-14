@@ -11,21 +11,38 @@ module Jets::Resource::ChildStack
     end
 
     def definition
-      {
-        shared_logical_id => {
+      logical_id = shared_logical_id
+      definition = {
+        logical_id => {
           type: "AWS::CloudFormation::Stack",
-          properties: {
-            template_url: template_url,
-          }
+          properties: properties
         }
       }
+      definition[logical_id][:depends_on] = depends_on if depends_on
+      definition
+    end
+
+    def properties
+      props = {
+        template_url: template_url,
+      }
+      depends_on.each do |dependency|
+        props[:parameters] ||= {}
+        props[:parameters][dependency] = "!Ref #{dependency}"
+      end if depends_on
+      props
+    end
+
+    def depends_on
+      return unless current_shared_class.depends_on
+      current_shared_class.depends_on.map { |x| x.to_s.singularize.camelize }
     end
 
     # map the path to a camelized logical_id. Example:
     #   /tmp/jets/demo/templates/demo-dev-2-shared-resources.yml to
     #   PostsController
     def shared_logical_id
-      regexp = Regexp.new(".*#{Jets.config.project_namespace}-") # keep the shared
+      regexp = Regexp.new(".*#{Jets.config.project_namespace}-shared-") # remove the shared
       shared_name = @path.sub(regexp, '').sub('.yml', '')
       shared_name.underscore.camelize
     end

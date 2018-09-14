@@ -51,6 +51,29 @@ end
 class Alert < Jets::Stack
 end
 
+# SecurityJob:
+#   Type: AWS::CloudFormation::Stack
+#   Properties:
+#     TemplateURL: https://s3.amazonaws.com//jets/cfn-templates/config-dev-security_job.yml
+#     Parameters:
+#       IamRole: !GetAtt IamRole.Arn
+#       S3Bucket: !Ref S3Bucket
+
+# # Belongs in parent_builder_spec.rb
+# Alarm:
+#   Type: AWS::CloudFormation::Stack
+#   Properties:
+#     TemplateURL: https://s3.amazonaws.com//jets/cfn-templates/config-dev-shared-custom.yml
+#     Parameters:
+#       Alert: !Ref Alert
+#   DependsOn:
+#   - Alert
+# Alert:
+#   Type: AWS::CloudFormation::Stack
+#   Properties:
+#     TemplateURL: https://s3.amazonaws.com//jets/cfn-templates/config-dev-shared-custom.yml
+#   Epen
+
 describe "Stack templates" do
   let(:stack) { ExampleStack2.new }
   it "parameters" do
@@ -93,3 +116,4 @@ describe "Stack templates" do
     end
   end
 end
+

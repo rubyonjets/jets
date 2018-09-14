@@ -44,11 +44,19 @@ class ExampleStack < Jets::Stack
   )
 end
 
+class Alarm < Jets::Stack
+  depends_on :alert
+end
+
+class Alert < Jets::Stack
+end
+
 describe "Stack builder" do
   let(:builder) { Jets::Stack::Builder.new(stack) }
-  let(:stack) { ExampleStack.new }
 
   context "full template" do
+    let(:stack) { ExampleStack.new }
+
     it "template" do
       template = builder.template
       # puts YAML.dump(template) # uncomment to see and debug
@@ -60,6 +68,16 @@ describe "Stack builder" do
       expect(template['Resources']['SnsTopic2']['Type']).to eq 'AWS::SNS::Topic'
       expect(template['Outputs']['VpcId']['Description']).to eq 'vpc id'
       expect(template['Outputs']['StackName']['Value']).to eq '!Ref AWS::StackName'
+    end
+  end
+
+  context "two stacks with depends_on" do
+    let(:stack) { Alarm.new }
+
+    it "adds parameters" do
+      template = builder.template
+      # puts YAML.dump(template) # uncomment to see and debug
+      expect(template['Parameters']['Alert']['Type']).to eq 'String'
     end
   end
 end
