@@ -31,10 +31,10 @@ module Jets::Commands
     time :build_code
 
     def build_templates
-      if @options[:stack_type] == :minimal
-        build_minimal_template
-      else
+      if @options[:force_full] || @options[:stack_type] == :full
         build_all_templates
+      else
+        build_minimal_template
       end
     end
     time :build_templates
@@ -96,10 +96,10 @@ module Jets::Commands
     def build_shared_template(path)
       # path => app_class
       # Example: app/shared/resource.rb => Resource
-      app_class = path.sub(%r{.*app/shared/},'').sub(/\.rb/,'').classify
+      app_class = path.sub(%r{.*app/shared/resources/},'').sub(/\.rb/,'').classify
       app_class = app_class.constantize # ActiveSupport autoload
       builder = Jets::Cfn::Builders::SharedBuilder.new(app_class)
-      builder.build
+      # builder.build
     end
 
     def build_parent_template
@@ -143,7 +143,7 @@ module Jets::Commands
       expression = "#{Jets.root}app/**/**/*.rb"
       Dir.glob(expression).each do |path|
         return false unless File.file?(path)
-        next unless path.include?("app/shared")
+        next unless path.include?("app/shared/resources")
 
         relative_path = path.sub(Jets.root.to_s, '')
         # Rids of the Jets.root at beginning

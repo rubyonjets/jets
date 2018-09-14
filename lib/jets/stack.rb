@@ -13,5 +13,17 @@ module Jets
     include Parameter::Dsl
     include Output::Dsl
     include Resource::Dsl
+
+    class << self
+      # Track all command subclasses.
+      def subclasses
+        @subclasses ||= []
+      end
+
+      def inherited(base)
+        super
+        self.subclasses << base if base.name
+      end
+    end
   end
 end

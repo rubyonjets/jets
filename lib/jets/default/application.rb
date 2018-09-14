@@ -8,8 +8,9 @@ Jets.application.configure do
                             app/models
                             app/jobs
                             app/rules
-                            app/shared
                             app/helpers
+                            app/shared/resources
+                            app/shared/extensions
                           ]
   config.extra_autoload_paths = []
 

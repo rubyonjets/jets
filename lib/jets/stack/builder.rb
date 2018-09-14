@@ -5,22 +5,29 @@ class Jets::Stack
     end
 
     def template
-      template = {
-        parameters: build(:parameters),
-        resources: build(:resources),
-        outputs: build(:outputs),
-      }
+      template = {}
+      build_section(template, :parameters)
+      build_section(template, :resources)
+      build_section(template, :outputs)
       Jets::Camelizer.transform(template)
     end
 
-    def build(section)
-      # s is a "section part".  Examples:
+    def build_section(template, section)
+      elements = build_elements(section)
+      template[section] = elements if elements
+    end
+
+    def build_elements(section)
+      # s is a "section element".  Examples:
       #
       #   Jets::Stack::Parameter
       #   Jets::Stack::Resource
       #   Jets::Stack::Output
       #
-      @stack.send(section).inject({}) do |template_section, s|
+      section_elements = @stack.send(section)
+      return unless section_elements
+
+      section_elements.inject({}) do |template_section, s|
         template_section.merge(s.template)
       end
     end

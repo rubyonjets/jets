@@ -12,7 +12,7 @@ class Jets::Cfn::Builders
     end
 
     def scoped_resoures
-      Jets::SharedResource.resources.select { |resource| resource.shared_class.to_s == @app_class.to_s }
+      # Jets::SharedResource.resources.select { |resource| resource.shared_class.to_s == @app_class.to_s }
     end
 
     # template_path is an interface method for Interface module
