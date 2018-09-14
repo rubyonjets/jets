@@ -27,10 +27,24 @@ module Jets::Resource::ChildStack
         template_url: template_url,
       }
       depends_on.each do |dependency|
-        props[:parameters] ||= {}
-        props[:parameters][dependency] = "!Ref #{dependency}"
+        parameter_outputs.each do |output|
+          props[:parameters] ||= {}
+          dependency_class = dependency.to_s.classify
+          props[:parameters][output] = "!GetAtt #{dependency_class}.Outputs.#{output}"
+        end
       end if depends_on
       props
+    end
+
+    # >> Custom.new.outputs
+    # => [#<Jets::Stack::Output:0x0000564048f68928 @subclass="Custom", @definition=[:billing_alarm]>, #<Jets::Stack::Output:0x0000564048f63f90 @subclass="Custom", @definition=[:billing_notification]>]
+    # >> Custom.new.outputs.map(&:template)
+    # => [{"BillingAlarm"=>{"Value"=>"!Ref BillingAlarm"}}, {"BillingNotification"=>{"Value"=>"!Ref BillingNotification"}}]
+    # >> Custom.new.outputs.map(&:template).map {|o| o.keys.first}
+    # => ["BillingAlarm", "BillingNotification"]
+    # >>
+    def parameter_outputs
+      current_shared_class.new.outputs.map(&:template).map {|o| o.keys.first}
     end
 
     def depends_on
