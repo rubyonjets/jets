@@ -26,7 +26,7 @@ module Jets::Resource::ChildStack
     end
 
     def depends_on
-      return unless Jets::SharedResource.resources?
+      return unless Jets::Stack.has_resources?
 
       expression = "#{Jets::Naming.template_path_prefix}-shared-*"
       shared_logical_ids = []

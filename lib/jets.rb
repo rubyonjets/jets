@@ -41,7 +41,6 @@ module Jets
   autoload :RubyServer, "jets/ruby_server"
   autoload :Rule, 'jets/rule'
   autoload :Server, "jets/server"
-  autoload :SharedResource, "jets/shared_resource"
   autoload :Stack, "jets/stack"
   autoload :Timing, "jets/timing"
   autoload :Util, "jets/util"

@@ -9,9 +9,9 @@ Shared resources are how you you create **standalone** custom AWS resources with
 Let's create an SNS Topic as a shared resource. The SNS topic can be used throughout the application whenever we want to publish a message.
 
 
-Shared resources are defined in the `app/shared` folder.  You can created the sns topic like so:
+Shared resources are defined in the `app/shared/resources` folder.  You can created the sns topic like so:
 
-app/shared/resource.rb:
+app/shared/resources/alert.rb:
 
 ```ruby
 class Alert < Jets::Stack

@@ -110,7 +110,7 @@ class Jets::Application
     }
     policies = [logs]
 
-    if Jets::SharedResource.resources?
+    if Jets::Stack.has_resources?
       cloudformation = {
         action: ["cloudformation:DescribeStacks"],
         effect: "Allow",
