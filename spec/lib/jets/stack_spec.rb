@@ -44,6 +44,13 @@ class ExampleStack2 < Jets::Stack
   )
 end
 
+class Alarm < Jets::Stack
+  depends_on :alert
+end
+
+class Alert < Jets::Stack
+end
+
 describe "Stack templates" do
   let(:stack) { ExampleStack2.new }
   it "parameters" do
@@ -77,5 +84,12 @@ describe "Stack templates" do
       {"SnsTopic3"=>
         {"Type"=>"AWS::SNS::Topic", "Properties"=>{"DisplayName"=>"my name 3"}}}]
     )
+  end
+
+  context "depends_on" do
+    it "works" do
+      expect(Alarm.depends_on).to eq [:alert]
+      expect(Alert.depends_on).to be nil
+    end
   end
 end
