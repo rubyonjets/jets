@@ -24,6 +24,7 @@ If the application has no ruby code and only uses polymorphic functions, then ge
 
 ```
 [--templates-only], [--no-templates-only]  # provide a way to skip building the code and only build the CloudFormation templates
+[--force-full], [--no-force-full]          # For a fake full build even if the stack does not exist
 [--noop], [--no-noop]                      
 ```
 
