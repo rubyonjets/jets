@@ -44,7 +44,7 @@ module Jets::Resource::ChildStack
     #
     # Returns: Boolean
     def resources?
-      Jets::SharedResource.resources?(current_app_class)
+      # Jets::SharedResource.resources?(current_app_class)
     end
 
     def template_filename
