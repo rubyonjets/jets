@@ -27,8 +27,7 @@ class Jets::Stack
       # => ["BillingAlarm", "BillingNotification"]
       # >>
       def dependency_outputs(dependency)
-        dependency_class = dependency.to_s.classify.constantize
-        dependency_class.new.outputs.map(&:template).map {|o| o.keys.first}
+        dependency.to_s.classify.constantize.output_keys
       end
 
       class_methods do

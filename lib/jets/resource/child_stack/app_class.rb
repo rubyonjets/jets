@@ -26,22 +26,23 @@ module Jets::Resource::ChildStack
     end
 
     def depends_on
-      return unless Jets::Stack.has_resources?
+      return nil
+      # return unless Jets::Stack.has_resources?
 
-      expression = "#{Jets::Naming.template_path_prefix}-shared-*"
-      shared_logical_ids = []
-      Dir.glob(expression).each do |path|
-        next unless File.file?(path)
+      # expression = "#{Jets::Naming.template_path_prefix}-shared-*"
+      # shared_logical_ids = []
+      # Dir.glob(expression).each do |path|
+      #   next unless File.file?(path)
 
-        # map the path to a camelized logical_id. Example:
-        #   /tmp/jets/demo/templates/demo-dev-2-shared-resource.yml to
-        #   SharedResource
-        regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
-        shared_name = path.sub(regexp, '').sub('.yml', '')
-        shared_logical_id = shared_name.underscore.camelize
-        shared_logical_ids << shared_logical_id
-      end
-      shared_logical_ids
+      #   # map the path to a camelized logical_id. Example:
+      #   #   /tmp/jets/demo/templates/demo-dev-2-shared-resource.yml to
+      #   #   SharedResource
+      #   regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
+      #   shared_name = path.sub(regexp, '').sub('.yml', '')
+      #   shared_logical_id = shared_name.underscore.camelize
+      #   shared_logical_ids << shared_logical_id
+      # end
+      # shared_logical_ids
     end
 
     def parameters

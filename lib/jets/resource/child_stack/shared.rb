@@ -27,7 +27,7 @@ module Jets::Resource::ChildStack
         template_url: template_url,
       }
       depends_on.each do |dependency|
-        parameter_outputs.each do |output|
+        dependency_outputs(dependency).each do |output|
           props[:parameters] ||= {}
           dependency_class = dependency.to_s.classify
           props[:parameters][output] = "!GetAtt #{dependency_class}.Outputs.#{output}"
@@ -43,8 +43,8 @@ module Jets::Resource::ChildStack
     # >> Custom.new.outputs.map(&:template).map {|o| o.keys.first}
     # => ["BillingAlarm", "BillingNotification"]
     # >>
-    def parameter_outputs
-      current_shared_class.new.outputs.map(&:template).map {|o| o.keys.first}
+    def dependency_outputs(dependency)
+      dependency.to_s.classify.constantize.output_keys
     end
 
     def depends_on

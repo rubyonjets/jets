@@ -71,6 +71,10 @@ module Jets
         Jets::Stack::Output::Lookup.new
       end
       memoize :looker
+
+      def output_keys
+        new.outputs.map(&:template).map {|o| o.keys.first}
+      end
     end
   end
 end
