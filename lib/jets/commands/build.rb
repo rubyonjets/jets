@@ -68,6 +68,7 @@ module Jets::Commands
     end
 
     def build_shared_resources_templates
+      puts "build_shared_resources_templates".colorize(:cyan)
       Jets::Stack.subclasses.each do |subclass|
         Jets::Cfn::Builders::SharedBuilder.new(subclass).build
       end

@@ -45,7 +45,6 @@ module Jets::Resource::ChildStack
     #
     # Returns: Boolean
     def resources?
-      puts "current_shared_class.build? #{current_shared_class.build?}"
       current_shared_class.build?
     end
 
