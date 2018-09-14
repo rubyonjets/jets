@@ -10,7 +10,7 @@ class Jets::Stack
         include Cloudwatch
 
         def ref(value)
-          "!Ref #{value}"
+          "!Ref #{value.to_s.camelize}"
         end
 
         def logical_id(value)
