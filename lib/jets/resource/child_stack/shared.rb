@@ -31,24 +31,26 @@ module Jets::Resource::ChildStack
     end
 
     # IE: app/resource.rb => Resource
-    # Returns "Resource" in the example
-    def current_app_class
+    # Returns Resource class object in the example
+    def current_shared_class
       templates_prefix = "#{Jets::Naming.template_path_prefix}-shared-"
       @path.sub(templates_prefix, '')
         .sub(/\.yml$/,'')
         .gsub('-','/')
         .classify
+        .constantize # returns actual class
     end
 
     # Tells us if there are any resources defined in the shared class.
     #
     # Returns: Boolean
     def resources?
-      Jets::SharedResource.resources?(current_app_class)
+      puts "current_shared_class.build? #{current_shared_class.build?}"
+      current_shared_class.build?
     end
 
     def template_filename
-      "#{Jets.config.project_namespace}-shared-#{current_app_class.underscore}.yml"
+      "#{Jets.config.project_namespace}-shared-#{current_shared_class.to_s.underscore}.yml"
     end
   end
 end
