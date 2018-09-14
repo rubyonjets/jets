@@ -2,12 +2,14 @@ class Jets::Stack
   class Main
     module Dsl
       extend ActiveSupport::Concern
-      autoload :Sns, 'jets/stack/main/extensions/sns'
       autoload :Cloudwatch, 'jets/stack/main/extensions/cloudwatch'
+      autoload :Sns, 'jets/stack/main/extensions/sns'
+      autoload :Sqs, 'jets/stack/main/extensions/sqs'
 
       class_methods do
-        include Sns
         include Cloudwatch
+        include Sns
+        include Sqs
 
         def ref(value)
           "!Ref #{value.to_s.camelize}"

@@ -2,7 +2,7 @@
 title: Shared Resources
 ---
 
-Shared resources are how you you create **standalone** custom AWS resources with Jets.  With the [Core Resource Model](http://rubyonjets.com/docs/core-resource/), you can customize and add any AWS resource and correspond them to Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with a Lambda function. Instead they are custom standalone resources. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
+Shared resources are how you you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/associated-resources.md %}), you can customize and add any AWS resource and correspond them to Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with a Lambda function. Instead they are standalone resources. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
 
 ## SNS Topic Example
 
@@ -19,7 +19,7 @@ class Alert < Jets::Stack
 end
 ```
 
-This results in an SNS Topic resource being created before Lambda functions from application classes like controllers or jobs are created.  You can then reference the SNS Topic with the `Alert.output` method:
+This results in an SNS Topic resource being created.  You can then reference the SNS Topic with the `Alert.lookup` method throughout your code. For example, here's a [Job]({% link _docs/jobs.md %}) that looks up the arn of the `delivery_completed` SNS topic and then publishes to it.
 
 
 ```ruby
@@ -37,9 +37,9 @@ class PostmanJob < ApplicationJob
 end
 ```
 
-Note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb).
+Note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb).  Also the lookup method relies on a [CloudFormation Output](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) that is created as part of the `sns_topic` convenience method.  The General Resource Form next reveals that `sns_topic` creates an CloudFormation output.
 
-**Important:** You must use singularize names for your shared resource classes. So use `shared/resource.rb` instead of `shared/resources.rb`. Jets relies on this naming convention to handle autoloading shared resources. You can override this behavior by customizing inflections though with the [Application Configuration](http://rubyonjets.com/docs/app-config/).
+**Important:** You must use singularize names for your shared resource classes. So use `shared/resources/alert.rb` instead of `shared/resources/alerts.rb`. Jets relies on this naming convention to handle autoloading shared resources. You can override this behavior by customizing inflections though with the [Application Configuration](http://rubyonjets.com/docs/app-config/).
 
 ## General Resource Form
 
@@ -55,16 +55,18 @@ class Resource < Jets::Stack
       }
     }
   )
-  output("DeliveryCompleted")
+  output("DeliveryCompleted") # creates CloudFormation output
 end
 ```
 
-Understanding the general `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanation above helps.
+The `resource` method similiar to the `resource` method that's a part of [Custom Associated Resources]({% link _docs/associated-resources.md %}). It follows a similar expansion pattern though.  With it, you can create any AWS resource in your Jets application. You can also create your own convenience wrapper methods and call `resource` and `output` as required: [Shared Resource Extensions]()
 
 ## IAM Permission
 
-The shared `Alert.output` lookup method requires read permission to the CloudFormation stack. This is automatically added to your application default IAM permissions when you are using Shared Resources and not have overriden the application wide IAM policy.
+The shared `Alert.lookup` lookup method requires read permission to the CloudFormation stack. This is automatically added to your application default IAM permissions when you are using Shared Resources and not have overriden the application wide IAM policy.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/core-resource.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
+Understanding the general shared `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanations above help.
+
+<a id="prev" class="btn btn-basic" href="{% link _docs/associated-resources.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/shared-resource-extensions.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
