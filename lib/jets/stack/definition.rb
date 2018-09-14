@@ -11,6 +11,8 @@ class Jets::Stack
     #   Parameter.new(self, *definition).register
     #
     # Which  is defined in parameter/dsl.rb
+    #
+    # Example subclass: ExampleStack < Jets::Stack
     def initialize(subclass, *definition)
       @subclass = subclass.to_s # important to use to_s, dont want the object as keys in @definitions
       @definition = definition.flatten

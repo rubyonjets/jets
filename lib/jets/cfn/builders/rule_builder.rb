@@ -1,3 +1,8 @@
+# Implements:
+#
+#   compose
+#   template_path
+#
 class Jets::Cfn::Builders
   class RuleBuilder < BaseChildBuilder
     def compose

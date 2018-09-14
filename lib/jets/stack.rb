@@ -24,6 +24,13 @@ module Jets
         super
         self.subclasses << base if base.name
       end
+
+      def build?
+        # Build it to figure out if we need to build the stack for the
+        # SharedBuilder. Pretty funny looking.
+        builder = Jets::Stack::Builder.new(new)
+        !builder.template.empty?
+      end
     end
   end
 end

@@ -1,5 +1,7 @@
 class Jets::Stack
   class Builder
+    extend Memoist
+
     def initialize(stack)
       @stack = stack
     end
@@ -11,6 +13,7 @@ class Jets::Stack
       build_section(template, :outputs)
       Jets::Camelizer.transform(template)
     end
+    memoize :template
 
     def build_section(template, section)
       elements = build_elements(section)

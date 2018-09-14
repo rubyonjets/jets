@@ -68,8 +68,8 @@ module Jets::Commands
     end
 
     def build_shared_resources_templates
-      shared_files.each do |path|
-        build_shared_template(path)
+      Jets::Stack.subclasses.each do |subclass|
+        Jets::Cfn::Builders::SharedBuilder.new(subclass).build
       end
     end
 
@@ -89,17 +89,6 @@ module Jets::Commands
       app_class = Jets::Klass.from_path(path)
       builder = builder_class.new(app_class)
       builder.build
-    end
-
-    # path: app/shared/resources.rb
-    # path: app/shared/sns.rb
-    def build_shared_template(path)
-      # path => app_class
-      # Example: app/shared/resource.rb => Resource
-      app_class = path.sub(%r{.*app/shared/resources/},'').sub(/\.rb/,'').classify
-      app_class = app_class.constantize # ActiveSupport autoload
-      builder = Jets::Cfn::Builders::SharedBuilder.new(app_class)
-      # builder.build
     end
 
     def build_parent_template

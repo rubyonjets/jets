@@ -1,18 +1,9 @@
 class Jets::Cfn::Builders
   class SharedBuilder < BaseChildBuilder
     def compose
-      add_shared_resources
-    end
-
-    def add_shared_resources
-      scoped_resoures.each do |resource|
-        add_resource(resource)
-        add_outputs(resource.outputs)
-      end
-    end
-
-    def scoped_resoures
-      # Jets::SharedResource.resources.select { |resource| resource.shared_class.to_s == @app_class.to_s }
+      stack = @app_class.new # @app_class is subclass
+      builder = Jets::Stack::Builder.new(stack)
+      @template = builder.template # overwrite entire @template
     end
 
     # template_path is an interface method for Interface module
