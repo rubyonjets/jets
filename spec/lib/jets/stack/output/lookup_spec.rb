@@ -2,13 +2,14 @@ require 'recursive-open-struct'
 
 class Alert < Jets::Stack
   # the definition doesnt matters because it's no used in the spec but added for clarity
-  sns.topic(:my_sns_topic, display_name: "cool topic")
+  sns_topic(:my_sns_topic, display_name: "cool topic")
 end
 
 describe "shared resource" do
-  let(:shared_resource_class) do
-    allow(Alert).to receive(:cfn).and_return(cfn)
-    Alert
+  let(:lookup) do
+    lookup = Jets::Stack::Output::Lookup.new
+    allow(lookup).to receive(:cfn).and_return(cfn)
+    lookup
   end
   let(:cfn) do
     cfn = double(:cfn)
@@ -23,7 +24,7 @@ describe "shared resource" do
           output_key: "S3Bucket",
           output_value: "demo-test-s3bucket-1evq5kzp1an0m",
         },{
-          output_key: "Alert",
+          output_key: "MySnsTopic",
           output_value: shared_stack_arn,
         }]
       ]
@@ -48,12 +49,25 @@ describe "shared resource" do
   end
 
   it "output" do
-    arn = shared_resource_class.arn("my_sns_topic")
+    arn = lookup.output(:my_sns_topic)
     expect(arn).to eq sns_child_arn
   end
 
   it "shared_stack_arn" do
-    arn = shared_resource_class.shared_stack_arn
+    arn = lookup.shared_stack_arn("MySnsTopic")
     expect(arn).to eq shared_stack_arn
   end
+
+  # Test Stack subclass using the lookup in here because the fixtures are already here
+  let(:shared_resource_class) do
+    allow(Alert).to receive(:cfn).and_return(cfn)
+    Alert
+  end
+
+  it "Alert.lookup" do
+    allow(Alert).to receive(:looker).and_return(lookup)
+    arn = Alert.lookup(:my_sns_topic)
+    expect(arn).to eq sns_child_arn
+  end
+
 end

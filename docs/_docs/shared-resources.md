@@ -27,7 +27,7 @@ class PostmanJob < ApplicationJob
   include Jets::AwsServices
 
   def deliver
-    topic_arn = Alert.output(:delivery_completed) # output from the cfn stack
+    topic_arn = Alert.lookup(:delivery_completed) # looks up output from the Alert cfn stack
     sns.publish(
       topic_arn: topic_arn,
       subject: "my subject",

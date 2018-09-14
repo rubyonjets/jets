@@ -3,19 +3,22 @@ class Jets::Stack::Output
     include Jets::AwsServices
 
     def output(logical_id)
-      resp = cfn.describe_stacks(stack_name: shared_stack_arn)
+      logical_id = logical_id.to_s.camelize
+
+      stack_arn = shared_stack_arn(logical_id)
+      resp = cfn.describe_stacks(stack_name: stack_arn)
       child = resp.stacks.first
       return unless child
 
-      logical_id = logical_id.to_s.camelize
       output_value(child, logical_id)
     end
 
     # Shared child stack arn
-    def shared_stack_arn
-      resp = cfn.describe_stacks(stack_name: stack_name)
+    def shared_stack_arn(logical_id)
+      parent_stack = Jets.config.project_namespace
+      resp = cfn.describe_stacks(stack_name: parent_stack)
       parent = resp.stacks.first
-      output_value(parent, shared_logical_id_base)
+      output_value(parent, logical_id)
     end
 
     def output_value(stack, key)
@@ -23,10 +26,6 @@ class Jets::Stack::Output
         o.output_key == key
       end
       output&.output_value
-    end
-
-    def stack_name
-      Jets.config.project_namespace
     end
   end
 end

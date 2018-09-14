@@ -15,6 +15,8 @@ module Jets
     include Resource::Dsl
 
     class << self
+      extend Memoist
+
       # Track all command subclasses.
       def subclasses
         @subclasses ||= []
@@ -60,6 +62,15 @@ module Jets
           class_name.constantize # use constantize instead of require so dont have to worry about order.
         end
       end
+
+      def lookup(logical_id)
+        looker.output(logical_id)
+      end
+
+      def looker
+        Jets::Stack::Output::Lookup.new
+      end
+      memoize :looker
     end
   end
 end
