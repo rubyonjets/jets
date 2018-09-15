@@ -8,12 +8,13 @@ module Jets::Commands
     # If anyone knows how to fix this let me know.
     def self.cli_options
       [
-        [:repo, desc: "GitHub repo to use. Format: user/repo"],
-        [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
-        [:mode, default: 'html', desc: "mode: #{VALID_MODES.join(',')}"],
-        [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
+        [:database, type: :boolean, default: true, desc: "Adds database"],
+        [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
+        [:mode, default: 'html', desc: "mode: #{VALID_MODES.join(',')}"],
+        [:repo, desc: "GitHub repo to use. Format: user/repo"],
+        [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
       ]
     end
 

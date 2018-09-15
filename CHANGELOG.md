@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.8.15]
+- fix route resources macro for api mode pull request #35
+- remove pg dependency from jets and add as part of project Gemfile pull request #36
+
 ## [0.8.14]
 - Add faq docs
 - add setting response headers support for cookies: pull request #31
