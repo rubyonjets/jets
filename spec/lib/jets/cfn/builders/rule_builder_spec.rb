@@ -13,7 +13,7 @@ describe Jets::Cfn::Builders::RuleBuilder do
       expect(resources).to include("GameRuleProtectPermission")
       expect(resources).to include("GameRuleProtectConfigRule")
 
-      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-game_rule.yml"
+      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-game_rule.yml"
     end
   end
 end

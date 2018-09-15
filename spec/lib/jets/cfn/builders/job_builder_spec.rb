@@ -13,7 +13,7 @@ describe Jets::Cfn::Builders::JobBuilder do
       expect(resources).to include("HardJobDigPermission")
       expect(resources).to include("HardJobLiftEventsRule")
 
-      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-hard_job.yml"
+      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-hard_job.yml"
     end
   end
 end

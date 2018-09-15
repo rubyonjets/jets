@@ -16,7 +16,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
         expect(resource_types).to include("AWS::ApiGateway::Method")
         expect(resource_types).to include("AWS::Lambda::Permission")
 
-        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-posts_controller.yml"
+        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-posts_controller.yml"
       end
     end
   end
