@@ -18,7 +18,7 @@ class Jets::Cfn::Builders
 
     # template_path is an interface method for Interface module
     def template_path
-      Jets::Naming.template_path(@app_class)
+      Jets::Naming.app_template_path(@app_class)
     end
 
     def add_common_parameters

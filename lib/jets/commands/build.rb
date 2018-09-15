@@ -31,7 +31,7 @@ module Jets::Commands
     time :build_code
 
     def build_templates
-      if @options[:force_full] || @options[:stack_type] == :full
+      if @options[:full] || @options[:stack_type] == :full
         build_all_templates
       else
         build_minimal_template

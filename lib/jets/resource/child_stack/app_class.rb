@@ -89,7 +89,7 @@ module Jets::Resource::ChildStack
     #   /tmp/jets/demo/templates/demo-dev-2-posts_controller.yml to
     #   PostsController
     def app_logical_id
-      regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
+      regexp = Regexp.new(".*#{Jets.config.project_namespace}-app-")
       controller_name = @path.sub(regexp, '').sub('.yml', '')
       controller_name.underscore.camelize
     end

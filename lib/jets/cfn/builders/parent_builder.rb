@@ -15,7 +15,7 @@ class Jets::Cfn::Builders
       puts "Building parent CloudFormation template."
 
       build_minimal_resources
-      build_child_resources if @options[:force_full] || @options[:stack_type] == :full
+      build_child_resources if @options[:full] || @options[:stack_type] == :full
     end
 
     # template_path is an interface method
@@ -38,13 +38,10 @@ class Jets::Cfn::Builders
     def build_child_resources
       puts "Building child CloudFormation templates."
 
-      expression = "#{Jets::Naming.template_path_prefix}-*"
+      expression = "#{Jets::Naming.template_path_prefix}-app-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
-        next if api_gateway_paths.include?(path) # treated specially
-        next if shared_resource?(path) # treated specially
-
         add_app_class_stack(path)
       end
 
@@ -56,7 +53,7 @@ class Jets::Cfn::Builders
         add_shared_resources(path)
       end
 
-      if (@options[:force_full] || @options[:stack_type] == :full) and !Jets::Router.routes.empty?
+      if (@options[:full] || @options[:stack_type] == :full) and !Jets::Router.routes.empty?
         add_api_gateway
         add_api_deployment
       end
@@ -85,20 +82,6 @@ class Jets::Cfn::Builders
     def add_child_resources(resource)
       add_resource(resource)
       add_outputs(resource.outputs)
-    end
-
-    def api_gateway_paths
-      files = %w[
-        api-deployment.yml
-        api-gateway.yml
-      ]
-      files.map do |name|
-        "#{Jets::Naming.template_path_prefix}-#{name}"
-      end
-    end
-
-    def shared_resource?(path)
-      path =~ /-shared-/
     end
   end
 end

@@ -4,9 +4,9 @@
 class Jets::Naming
   # Mainly used by build.rb
   class << self
-    def template_path(app_class)
+    def app_template_path(app_class)
       underscored = app_class.to_s.underscore.gsub('/','-')
-      "#{template_path_prefix}-#{underscored}.yml"
+      "#{template_path_prefix}-app-#{underscored}.yml"
     end
 
     def shared_template_path(shared_class)

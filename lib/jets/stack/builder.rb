@@ -4,20 +4,20 @@ class Jets::Stack
 
     def initialize(stack)
       @stack = stack
+      @template = {} # will build this structure up
     end
 
     def template
-      template = {}
-      build_section(template, :parameters)
-      build_section(template, :resources)
-      build_section(template, :outputs)
-      Jets::Camelizer.transform(template)
+      build_section(:parameters)
+      build_section(:resources)
+      build_section(:outputs)
+      Jets::Camelizer.transform(@template)
     end
     memoize :template
 
-    def build_section(template, section)
+    def build_section(section)
       elements = build_elements(section)
-      template[section] = elements if elements
+      @template[section] = elements if elements
     end
 
     def build_elements(section)
