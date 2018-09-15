@@ -44,14 +44,15 @@ Use the `--repo` flag to clone an example project from GitHub instead.  With thi
 ## Options
 
 ```
-[--api], [--no-api]              # API mode.
-[--database], [--no-database]    # Adds database
-                                 # Default: true
 [--bootstrap], [--no-bootstrap]  # Install bootstrap css
+                                 # Default: true
+[--database], [--no-database]    # Adds database
                                  # Default: true
 [--force]                        # Bypass overwrite are you sure prompt for existing files.
 [--git], [--no-git]              # Git initialize the project
                                  # Default: true
+[--mode=MODE]                    # mode: html,api,job
+                                 # Default: html
 [--repo=REPO]                    # GitHub repo to use. Format: user/repo
 [--webpacker], [--no-webpacker]  # Install webpacker
                                  # Default: true
