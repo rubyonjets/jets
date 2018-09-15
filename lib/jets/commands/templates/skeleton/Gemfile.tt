@@ -6,8 +6,10 @@ gem "jets"
 # Include webpacker if you are you are building html pages
 gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
 <% end -%>
-# Include pg gem if you are using ActiveRecord
+<% if @options[:database] %>
+# Include pg gem if you are using ActiveRecord, remove if you are not
 gem "pg", "~> 0.21"
+<% end %>
 gem "mimemagic"
 
 group :development, :test do

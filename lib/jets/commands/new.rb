@@ -7,12 +7,13 @@ module Jets::Commands
     # If anyone knows how to fix this let me know.
     def self.cli_options
       [
-        [:repo, desc: "GitHub repo to use. Format: user/repo"],
-        [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:api, type: :boolean, default: false, desc: "API mode."],
-        [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
+        [:database, type: :boolean, default: true, desc: "Adds database"],
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
+        [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
+        [:repo, desc: "GitHub repo to use. Format: user/repo"],
+        [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
       ]
     end
 

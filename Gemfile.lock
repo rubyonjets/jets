@@ -29,7 +29,6 @@ PATH
       kramdown
       memoist
       mimemagic
-      pg (= 0.21)
       rack
       railties (>= 5.2.1)
       recursive-open-struct
@@ -164,6 +163,7 @@ DEPENDENCIES
   bundler
   byebug
   jets!
+  pg (= 0.21)
   rake
   rspec
   rspec_junit_formatter
