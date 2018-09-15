@@ -15,25 +15,35 @@ module Jets::Resource::ChildStack
       definition = {
         logical_id => {
           type: "AWS::CloudFormation::Stack",
-          properties: properties
+          properties: child_properties
         }
       }
       definition[logical_id][:depends_on] = depends_on if depends_on
       definition
     end
 
-    def properties
+    def child_properties
       props = {
         template_url: template_url,
       }
+
+      props[:parameters] = common_parameters # common child parameters
+      # add depends on parameters
       depends_on.each do |dependency|
         dependency_outputs(dependency).each do |output|
-          props[:parameters] ||= {}
           dependency_class = dependency.to_s.classify
           props[:parameters][output] = "!GetAtt #{dependency_class}.Outputs.#{output}"
         end
       end if depends_on
+
       props
+    end
+
+    def common_parameters
+      {
+        IamRole: "!GetAtt IamRole.Arn",
+        S3Bucket: "!Ref S3Bucket",
+      }
     end
 
     # >> Custom.new.outputs

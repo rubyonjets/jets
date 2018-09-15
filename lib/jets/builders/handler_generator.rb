@@ -16,6 +16,15 @@ class Jets::Builders
     def generate
       poly_shims
       ruby_node_shim
+      shared_shims
+    end
+
+    def shared_shims
+      Dir.glob("#{Jets.root}/app/shared/functions/**/*").each do |path|
+        next unless File.file?(path)
+
+        puts "path #{path.inspect}"
+      end
     end
 
     def poly_shims

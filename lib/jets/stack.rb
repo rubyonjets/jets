@@ -31,7 +31,9 @@ module Jets
         # Build it to figure out if we need to build the stack for the
         # SharedBuilder. Pretty funny looking.
         builder = Jets::Stack::Builder.new(new)
-        !builder.template.empty?
+        # !builder.template.empty?
+        empty = builder.template == {"Parameters"=>{"IamRole"=>{"Type"=>"String"}, "S3Bucket"=>{"Type"=>"String"}}}
+        !empty
       end
 
       def has_resources?

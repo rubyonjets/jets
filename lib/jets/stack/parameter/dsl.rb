@@ -5,8 +5,14 @@ class Jets::Stack
       extend Memoist
 
       def parameters
+        add_common_parameters
         add_depends_on_parameters
         Parameter.definitions(self.class)
+      end
+
+      def add_common_parameters
+        self.class.parameter(:iam_role)
+        self.class.parameter(:s3_bucket)
       end
 
       def add_depends_on_parameters

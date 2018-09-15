@@ -2,7 +2,7 @@
 title: Core Resource Model
 ---
 
-First, at the core of Jets is the resource model. Understanding the core `resource` model and method will allow you to create any resource via CloudFormation with Jets.
+At the core of Jets is the resource model. Understanding the core `resource` model and method will allow you to create any resource via CloudFormation with Jets.
 
 ## All Paths Lead to resource
 
@@ -49,5 +49,5 @@ With this design, Jets allows you to create any resource associated with your La
 Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you would start defining your own custom shorthand resource methods that wrap the `resource` method for more concise code.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/custom-resources.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/shared-resources.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/associated-resources.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

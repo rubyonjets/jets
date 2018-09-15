@@ -19,13 +19,10 @@ class Jets::Stack
         ActiveSupport::Dependencies.autoload_paths += [base_path]
 
         Dir.glob("#{base_path}/**/*.rb").each do |path|
-          puts "path #{path}"
           next unless File.file?(path)
 
           class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').classify
-          puts "class_name #{class_name}"
           klass = class_name.constantize # autoload
-
           base.extend(klass)
         end
       end
