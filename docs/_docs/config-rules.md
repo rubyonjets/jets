@@ -113,6 +113,6 @@ end
 
 * [AWS::Config::ConfigRule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-config-configrule.html) CloudFormation reference
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/shared-resource-functions.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/shared-resources-functions.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/cors-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
