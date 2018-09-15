@@ -4,10 +4,10 @@ title: Shared Resources Extensions
 
 To create your own Shared Resource Extensions, you define a module with the methods in the `app/shared/extensions` folder.  Here's a simple example:
 
-app/shared/extensions/sqs.rb:
+app/shared/extensions/sqs_extension.rb:
 
 ```ruby
-module Sqs
+module SqsExtension
   def sqs_queue(logical_id, props={})
     resource(logical_id, "AWS::SQS::Queue",
       props

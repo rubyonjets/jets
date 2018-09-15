@@ -10,7 +10,6 @@ Jets.application.configure do
                             app/rules
                             app/helpers
                             app/shared/resources
-                            app/shared/extensions
                           ]
   config.extra_autoload_paths = []
 
