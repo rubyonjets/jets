@@ -51,4 +51,15 @@ describe Jets::Processors::MainProcessor do
       expect(data).to eq 'hello world: "value1"'
     end
   end
+
+  context "shared function" do
+    let(:handler) { 'handlers/shared/functions/whatever.handle' }
+    let(:event) { {"key1" => "value1"} }
+    it "returns result" do
+      result = main.run
+      data = JSON.load(result)
+      # pp data
+      expect(data).to eq 'hello world: "value1"'
+    end
+  end
 end

@@ -23,6 +23,18 @@ describe "Deducer" do
     end
   end
 
+  context "function with _function" do
+    let(:deducer) do
+      Jets::Processors::Deducer.new("handlers/functions/hello_function.world")
+    end
+
+    it "deduces info to run the ruby code" do
+      expect(deducer.process_type).to include("function")
+      expect(deducer.path).to include("app/functions/hello_function.rb")
+      expect(deducer.code).to eq %Q|HelloFunction.process(event, context, "world")|
+    end
+  end
+
   context "function without _function" do
     let(:deducer) do
       Jets::Processors::Deducer.new("handlers/functions/hello.world")
@@ -35,15 +47,15 @@ describe "Deducer" do
     end
   end
 
-  context "function with _function" do
+  context "shared function" do
     let(:deducer) do
-      Jets::Processors::Deducer.new("handlers/functions/hello_function.world")
+      Jets::Processors::Deducer.new("handlers/shared/functions/whatever.handle")
     end
 
     it "deduces info to run the ruby code" do
       expect(deducer.process_type).to include("function")
-      expect(deducer.path).to include("app/functions/hello_function.rb")
-      expect(deducer.code).to eq %Q|HelloFunction.process(event, context, "world")|
+      expect(deducer.path).to include("app/shared/functions/whatever.rb")
+      expect(deducer.code).to eq %Q|Whatever.process(event, context, "handle")|
     end
   end
 end
