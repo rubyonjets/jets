@@ -21,8 +21,6 @@ class Jets::Builders
 
     def shared_shims
       Jets::Stack.subclasses.each do |subclass|
-        pp subclass
-        pp subclass.functions.size
         subclass.functions.each do |fun|
           if fun.lang.to_s == "ruby"
             shared_ruby_shim(fun)
@@ -36,6 +34,13 @@ class Jets::Builders
     # app/shared/functions/kevin.py => /tmp/jets/demo/app_root/handlers/shared/functions/kevin.py
     def copy_source_as_handler(fun)
       source_path = fun.source_file
+      unless source_path
+        attributes = fun.template.values.first
+        function_name = attributes['Properties']['FunctionName']
+        puts "WARN: missing source file for: '#{function_name}' function".colorize(:yellow)
+        return
+      end
+
       dest_path = "#{tmp_app_root}/#{fun.handler_dest}"
       FileUtils.mkdir_p(File.dirname(dest_path))
       FileUtils.cp(source_path, dest_path)
@@ -79,7 +84,6 @@ class Jets::Builders
     end
 
     def shared_ruby_shim(fun)
-      puts "shared_ruby_shim #{fun}"
       deducer = Jets::Builders::SharedDeducer.new(fun)
       generate_shim(deducer)
     end

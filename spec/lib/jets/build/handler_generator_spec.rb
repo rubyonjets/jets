@@ -1,16 +1,3 @@
-# handler("bob.handle")
-# Runtime: "node8.10"
-# app/shared/functions/bob.rb
-
-# handler("kevin.lambda_handler")
-# Runtime: "python3.6"
-# app/shared/functions/kevin.py
-
-# handler("stuart.handler")
-# Runtime: "node8.10"
-# app/shared/functions/stuart.js
-
-
 describe "HandlerGenerator" do
   context "controller" do
     let(:generator) do

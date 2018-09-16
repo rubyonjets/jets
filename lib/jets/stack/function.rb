@@ -46,6 +46,8 @@ class Jets::Stack
     # Relative path
     # app/shared/functions/kevin.py => handlers/shared/functions/kevin.py
     def handler_dest
+      return unless source_file
+
       dest = source_file.sub(%r{.*/app/}, "handlers/")
       if lang == :ruby
         filename = dest.split('.').first
