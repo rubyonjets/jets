@@ -37,12 +37,12 @@ module Jets
       def functions
         stack = new
         # All the & because resources might be nil
-        function_templates = stack.resources&.map(&:template)&.select do |t|
+        templates = stack.resources&.map(&:template)&.select do |t|
           attributes = t.values.first
           attributes['Type'] == 'AWS::Lambda::Function'
         end
-        function_templates ||= []
-        function_templates.map { Function.new(template) }
+        templates ||= []
+        templates.map { |t| Function.new(t) }
       end
 
       def template

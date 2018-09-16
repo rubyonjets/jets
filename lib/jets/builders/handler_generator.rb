@@ -21,26 +21,30 @@ class Jets::Builders
 
     def shared_shims
       Jets::Stack.subclasses.each do |subclass|
+        pp subclass
+        pp subclass.functions.size
         subclass.functions.each do |fun|
-          # if fun.lang == :ruby
-          #   generate_shim("...")
-          # else
-          #   copy_source
-          # end
+          if fun.lang.to_s == "ruby"
+            generate_shared_shim(fun)
+          else
+            copy_source_as_handler(fun)
+          end
         end
       end
     end
 
-    # def generate_shim(...)
-    #   handlers/shared/hello.js
+    def generate_shared_shim(fun)
+      puts "generate_shared_shim #{fun}"
+      # handlers/shared/hello.js
+    end
 
-    # def shared_shims
-    #   Dir.glob("#{Jets.root}/app/shared/functions/**/*").each do |path|
-    #     next unless File.file?(path)
-
-    #     puts "path #{path.inspect}"
-    #   end
-    # end
+    # app/shared/functions/kevin.py => /tmp/jets/demo/app_root/handlers/shared/functions/kevin.py
+    def copy_source_as_handler(fun)
+      source_path = fun.source_file
+      dest_path = "#{tmp_app_root}/#{fun.handler_dest}"
+      FileUtils.mkdir_p(File.dirname(dest_path))
+      FileUtils.cp(source_path, dest_path)
+    end
 
     def poly_shims
       missing = []

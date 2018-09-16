@@ -35,7 +35,7 @@ module Jets::Stack::Main::Dsl
     #   timeout: 20,
     # )
     def handler(name)
-      "handlers/shared/#{name}" # generated handler
+      "handlers/shared/functions/#{name}" # generated handler
     end
   end
 end

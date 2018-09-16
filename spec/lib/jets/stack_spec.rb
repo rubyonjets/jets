@@ -140,7 +140,7 @@ describe "Stack templates" do
       expect(ExampleCustom.functions.size).to eq 1
       expect(ExampleAlarm.functions.size).to eq 0
       expect(ExampleAlert.functions.size).to eq 0
-      expect(Custom.functions.size).to eq 4
+      expect(Custom.functions.size).to eq 5
     end
   end
 end
