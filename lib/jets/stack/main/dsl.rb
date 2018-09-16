@@ -4,14 +4,14 @@ class Jets::Stack
       extend ActiveSupport::Concern
       autoload :Base, 'jets/stack/main/extensions/base'
       autoload :Cloudwatch, 'jets/stack/main/extensions/cloudwatch'
-      autoload :Function, 'jets/stack/main/extensions/function'
+      autoload :Lambda, 'jets/stack/main/extensions/lambda'
       autoload :Sns, 'jets/stack/main/extensions/sns'
       autoload :Sqs, 'jets/stack/main/extensions/sqs'
 
       class_methods do
         include Base
         include Cloudwatch
-        include Function
+        include Lambda
         include Sns
         include Sqs
       end

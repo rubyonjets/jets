@@ -1,5 +1,5 @@
 module Jets::Stack::Main::Dsl
-  module Function
+  module Lambda
     # Example:
     #
     #   function(:hello,
@@ -54,5 +54,15 @@ module Jets::Stack::Main::Dsl
       props[:runtime] = "node8.10"
       function(id, props)
     end
+
+    # Usage:
+    #
+    #   permission(:my_permission, principal: "events.amazonaws.com")
+    #
+    def permission(id, props={})
+      defaults = { action: "lambda:InvokeFunction" }
+      props = defaults.merge(props)
+      resource(id, "AWS::Lambda::Permission", props)
+   end
   end
 end
