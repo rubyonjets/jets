@@ -32,7 +32,7 @@ module Jets::Stack::Main::Dsl
         runtime: :ruby,
       }
       props = defaults.merge(props)
-      props[:runtime] = "node8.10" if props[:runtime].to_s == "ruby"
+      props[:runtime] = "nodejs8.10" if props[:runtime].to_s == "ruby"
       props[:handler] = handler(props[:handler])
 
       resource(id, "AWS::Lambda::Function", props)

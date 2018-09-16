@@ -19,7 +19,8 @@ module Jets::Stack::Main::Dsl
 
     # Due to `if Jets::Stack.has_resources?` check early on in the bootstraping process
     # The code has not been built at that point. So we use a placeholder and will replace
-    # the placeholder as part of the cfn template build process.
+    # the placeholder as part of the cfn template build process after the code has been built
+    # and the code_s3_key with md5 is available.
     def code_s3_key
       "code_s3_key_placeholder"
     end
