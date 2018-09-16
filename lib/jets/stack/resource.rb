@@ -8,7 +8,9 @@ class Jets::Stack
     include Definition
 
     def template
-      camelize(standarize(@definition))
+      template = camelize(standarize(@definition))
+      template = replace_placeholers(template)
+      template
     end
 
     # CloudFormation Resources reference: https://amzn.to/2NKg6ip
@@ -36,6 +38,15 @@ class Jets::Stack
       else # I dont know what form
         raise "Invalid form provided. definition #{definition.inspect}"
       end
+    end
+
+    def replace_placeholers(template)
+      attributes = template.values.first
+      s3_key = attributes.dig('Properties','Code','S3Key')
+      if s3_key == "code_s3_key_placeholder"
+        attributes['Properties']['Code']['S3Key'] = Jets::Naming.code_s3_key
+      end
+      template
     end
   end
 end

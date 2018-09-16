@@ -4,6 +4,8 @@
 class Jets::Naming
   # Mainly used by build.rb
   class << self
+    extend Memoist
+
     def app_template_path(app_class)
       underscored = app_class.to_s.underscore.gsub('/','-')
       "#{template_path_prefix}-app-#{underscored}.yml"
