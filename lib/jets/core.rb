@@ -114,7 +114,8 @@ module Jets::Core
     path =~ %r{/internal/app} ||
     path =~ %r{/webpacker} ||
     path =~ %r{/cli} ||
-    path =~ %r{/core_ext}
+    path =~ %r{/core_ext} ||
+    path =~ %r{/jets/stack}
   end
 
   def class_mappings(class_name)
@@ -128,13 +129,15 @@ module Jets::Core
   def eager_load_app
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
+      next if path.include?('app/shared/functions')
 
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
-                    .sub(/^\.\//,'') # remove ./
-                    .sub(/app\/\w+\//,'') # remove app/controllers or app/jobs etc
-                    .classify
-      # puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
+                    .sub(%{^\./},'') # remove ./
+                    .sub(Jets.root.to_s,'')
+                    .sub(%r{app/shared/resources/},'') # remove app/shared/resources
+                    .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
+      class_name = class_name.classify
       class_name.constantize # use constantize instead of require so dont have to worry about order.
     end
   end
