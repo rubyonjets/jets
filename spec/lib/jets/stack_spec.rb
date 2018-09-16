@@ -44,11 +44,30 @@ class ExampleStack2 < Jets::Stack
   )
 end
 
-class Alarm < Jets::Stack
-  depends_on :alert
+class ExampleAlarm < Jets::Stack
+  depends_on :example_alert
 end
 
-class Alert < Jets::Stack
+class ExampleAlert < Jets::Stack
+end
+
+class ExampleCustom < Jets::Stack
+  resource(:hello,
+    type: "AWS::Lambda::Function",
+    properties: {
+      function_name: "hello",
+      code: {
+        s3_bucket: "!Ref S3Bucket",
+        s3_key: code_s3_key
+      },
+      description: "Hello world",
+      handler: handler("hello.lambda_handler"),
+      memory_size: 128,
+      role: "!Ref IamRole",
+      runtime: "python3.6",
+      timeout: 20,
+    }
+  )
 end
 
 # SecurityJob:
@@ -111,9 +130,17 @@ describe "Stack templates" do
 
   context "depends_on" do
     it "works" do
-      expect(Alarm.depends_on).to eq [:alert]
-      expect(Alert.depends_on).to be nil
+      expect(ExampleAlarm.depends_on).to eq [:alert]
+      expect(ExampleAlert.depends_on).to be nil
+    end
+  end
+
+  context "functions" do
+    it "selects function resources only" do
+      expect(ExampleCustom.functions.size).to eq 1
+      expect(ExampleAlarm.functions.size).to eq 0
+      expect(ExampleAlert.functions.size).to eq 0
+      expect(Custom.functions.size).to eq 4
     end
   end
 end
-

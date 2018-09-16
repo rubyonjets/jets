@@ -1,3 +1,16 @@
+# handler("bob.handle")
+# Runtime: "node8.10"
+# app/shared/functions/bob.rb
+
+# handler("kevin.lambda_handler")
+# Runtime: "python3.6"
+# app/shared/functions/kevin.py
+
+# handler("stuart.handler")
+# Runtime: "node8.10"
+# app/shared/functions/stuart.js
+
+
 describe "HandlerGenerator" do
   context "controller" do
     let(:generator) do
@@ -24,6 +37,16 @@ describe "HandlerGenerator" do
       content = IO.read("#{Jets::Commands::Build.tmp_app_root("full")}/handlers/jobs/hard_job.js")
       expect(content).to include("handlers/jobs/hard_job.dig") # handler
       expect(content).to include("exports.dig")
+    end
+  end
+
+  context "shared" do
+    let(:generator) do
+      Jets::Builders::HandlerGenerator.new("path-doesnt-matter-for-shared-resources")
+    end
+
+    it "generates the poly native functions" do
+      generator.shared_shims
     end
   end
 end

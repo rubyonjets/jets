@@ -44,11 +44,11 @@ class ExampleStack < Jets::Stack
   )
 end
 
-class Alarm < Jets::Stack
-  depends_on :alert
+class ExampleAlarm < Jets::Stack
+  depends_on :example_alert
 end
 
-class Alert < Jets::Stack
+class ExampleAlert < Jets::Stack
 end
 
 describe "Stack builder" do
@@ -72,12 +72,12 @@ describe "Stack builder" do
   end
 
   context "two stacks with depends_on" do
-    let(:stack) { Alarm.new }
+    let(:stack) { ExampleAlarm.new }
 
     it "adds parameters" do
       template = builder.template
       # puts YAML.dump(template) # uncomment to see and debug
-      expect(template['Parameters']['Alert']['Type']).to eq 'String'
+      expect(template['Parameters']['ExampleAlert']['Type']).to eq 'String'
     end
   end
 end

@@ -8,6 +8,7 @@ module Jets
     autoload :Output, 'jets/stack/output'
     autoload :Resource, 'jets/stack/resource'
     autoload :Builder, 'jets/stack/builder'
+    autoload :Function, 'jets/stack/function'
 
     include Main::Dsl
     include Parameter::Dsl
@@ -27,14 +28,34 @@ module Jets
         self.subclasses << base if base.name
       end
 
+      # Build it to figure out if we need to build the stack for the SharedBuilder
       def build?
-        # Build it to figure out if we need to build the stack for the
-        # SharedBuilder. Pretty funny looking.
-        builder = Jets::Stack::Builder.new(new)
-        # !builder.template.empty?
-        empty = builder.template == {"Parameters"=>{"IamRole"=>{"Type"=>"String"}, "S3Bucket"=>{"Type"=>"String"}}}
+        empty = template == {"Parameters"=>{"IamRole"=>{"Type"=>"String"}, "S3Bucket"=>{"Type"=>"String"}}}
         !empty
       end
+
+      def functions
+        stack = new
+        # All the & because resources might be nil
+        function_templates = stack.resources&.map(&:template)&.select do |t|
+          attributes = t.values.first
+          attributes['Type'] == 'AWS::Lambda::Function'
+        end
+        function_templates ||= []
+        function_templates.map { Function.new(template) }
+      end
+
+      def template
+        # Pretty funny looking, creating an instance of stack to be passed to the Builder.
+        # Another way of looking at it:
+        #
+        #   stack = new # MyStack.new
+        #   builder = Jets::Stack::Builder.new(stack)
+        #
+        builder = Jets::Stack::Builder.new(new)
+        builder.template
+      end
+      memoize :template
 
       def has_resources?
         !subclasses.empty?
@@ -56,9 +77,10 @@ module Jets
         ActiveSupport::Dependencies.autoload_paths += ["#{Jets.root}app/shared/resources"]
         Dir.glob("#{Jets.root}app/shared/resources/*.rb").select do |path|
           next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
-           class_name = path
+
+          class_name = path
                         .sub(/\.rb$/,'') # remove .rb
-                        .sub(/^\.\//,'') # remove ./
+                        .sub(Jets.root.to_s,'') # remove ./
                         .sub(%r{app/shared/resources/},'') # remove app/shared/resources/
                         .classify
           class_name.constantize # use constantize instead of require so dont have to worry about order.

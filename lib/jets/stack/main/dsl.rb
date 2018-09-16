@@ -2,16 +2,18 @@ class Jets::Stack
   class Main
     module Dsl
       extend ActiveSupport::Concern
+      autoload :Base, 'jets/stack/main/extensions/base'
       autoload :Cloudwatch, 'jets/stack/main/extensions/cloudwatch'
+      autoload :Function, 'jets/stack/main/extensions/function'
       autoload :Sns, 'jets/stack/main/extensions/sns'
       autoload :Sqs, 'jets/stack/main/extensions/sqs'
-      autoload :Base, 'jets/stack/main/extensions/base'
 
       class_methods do
+        include Base
         include Cloudwatch
+        include Function
         include Sns
         include Sqs
-        include Base
       end
 
       def self.included(base)

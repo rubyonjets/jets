@@ -34,8 +34,8 @@ module Jets::Stack::Main::Dsl
     #   runtime: "python3.6",
     #   timeout: 20,
     # )
-    def handler_function(name)
-      "shared/#{name}" # generated handler
+    def handler(name)
+      "handlers/shared/#{name}" # generated handler
     end
   end
 end
