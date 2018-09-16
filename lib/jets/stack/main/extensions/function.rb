@@ -7,11 +7,11 @@ module Jets::Stack::Main::Dsl
     #     runtime: "python3.6"
     #   )
     #
-    # Defaults to ruby:
+    # Defaults to ruby. So:
     #
     #   function(:hello)
     #
-    # is the same as
+    # is the same as:
     #
     #   function(:hello,
     #     handler: handler("hello.hande"),

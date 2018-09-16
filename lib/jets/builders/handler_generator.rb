@@ -15,7 +15,7 @@ class Jets::Builders
 
     def generate
       poly_shims
-      ruby_node_shim
+      app_ruby_shim
       shared_shims
     end
 
@@ -25,17 +25,12 @@ class Jets::Builders
         pp subclass.functions.size
         subclass.functions.each do |fun|
           if fun.lang.to_s == "ruby"
-            generate_shared_shim(fun)
+            shared_ruby_shim(fun)
           else
             copy_source_as_handler(fun)
           end
         end
       end
-    end
-
-    def generate_shared_shim(fun)
-      puts "generate_shared_shim #{fun}"
-      # handlers/shared/hello.js
     end
 
     # app/shared/functions/kevin.py => /tmp/jets/demo/app_root/handlers/shared/functions/kevin.py
@@ -83,10 +78,19 @@ class Jets::Builders
       FileUtils.cp(source_path, dest_path)
     end
 
-    # Generates one big node shim for a entire controller.
-    def ruby_node_shim
-      deducer = Jets::Builders::Deducer.new(@path)
+    def shared_ruby_shim(fun)
+      puts "shared_ruby_shim #{fun}"
+      deducer = Jets::Builders::SharedDeducer.new(fun)
+      generate_shim(deducer)
+    end
 
+    # Generates one big node shim for a entire controller.
+    def app_ruby_shim
+      deducer = Jets::Builders::Deducer.new(@path)
+      generate_shim(deducer)
+    end
+
+    def generate_shim(deducer)
       js_path = "#{tmp_app_root}/#{deducer.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
 

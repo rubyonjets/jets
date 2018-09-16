@@ -11,6 +11,10 @@ describe "Stack builder" do
     it "lang is ruby" do
       expect(function.lang).to eq :ruby
     end
+
+    it "meth" do
+      expect(function.meth).to eq "handle"
+    end
   end
 
   context "python function" do
