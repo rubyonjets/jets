@@ -2,7 +2,7 @@
 title: Shared Resources DSL
 ---
 
-As mentioned in [Shared Resources]({% link _docs/shared-resources.md %}), the `sns_topic` is simply a convenience method that calls the `resources` and `output` methods that add sections to the CloudFormation template. Shared Resources inherit from the `Jets::Stack` class.  By inheriting from the `Jets::Stack` class, Shared Resources are provided a general CloudFormation template DSL.  Here are the main methods of that DSL:
+As mentioned in [Shared Resources]({% link _docs/shared-resources.md %}), the `sns_topic` is simply a convenience method that calls the `resources` and `output` methods that add sections to the CloudFormation template. Shared Resources inherit from the `Jets::Stack` class.  By inheriting from the `Jets::Stack` class, Shared Resources are provided access to a general CloudFormation template DSL.  Here are the main methods of that DSL:
 
 DSL Method | Description
 --- | ---
@@ -12,7 +12,7 @@ output | Adds a output to the template.
 
 The main methods correspond to sections of the [CloudFormation anatomy sections](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html).
 
-Each method has long, medium and short forms.  Here are some contrived examples that show the different forms with the different methods:
+Each method has long, medium and short forms.  Here are some contrived examples that show their different forms:
 
 ## Parameters
 
@@ -24,13 +24,15 @@ class ParametersExample < Jets::Stack
     description: "instance type" ,
   })
   # medium form
-  parameter :company, default: "boltops"
+  parameter :company, default: "boltops", description: "instance type"
   # short form
-  parameter :ami_id, "ami-123"
+  parameter :ami_id, "ami-123" # default is ami-123
 end
 ```
+
 ## Resources
 
+```ruby
 class ResourcesExample < Jets::Stack
   # long form
   resource(sns_topic: {
@@ -66,8 +68,11 @@ class OutputsExample < Jets::Stack
   # medium form
   output :stack_name, value: "!Ref AWS::StackName"
   # short form
-  output :elb, "!Ref Elb"
-  output :elb2 # short form
+  output :elb, "!Ref Elb" # same as
+               # output :elb, value: "!Ref Elb"
+  output :elb2 # short form, same as:
+               # output :elb2, "!Ref Elb2"
+
 end
 ```
 

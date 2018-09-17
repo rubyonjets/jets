@@ -2,7 +2,7 @@
 title: Shared Resources Depends On
 ---
 
-CloudFormation has a concept of the [DependsOn Attribute](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html). Normally, you do not have to use it as CloudFormation is smart enough to figure out how to sequence creation of the dependent resources most of the time. For example, if you are creating a Route53 Record that's connecting it to an ELB, CloudFormation knows to create the ELB before proceeding to create the Route53 record. There are times though when you need to specify the DependsOn attribute to control the creation order explicitly.
+CloudFormation has a concept of the [DependsOn Attribute](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html). Normally, you do not have to use it as CloudFormation is smart enough to figure out how to sequence the creation of the dependent resources most of the time. For example, if you are creating a Route53 Record that's connects to ELB, CloudFormation knows to create the ELB before proceeding to create the Route53 record. There are times though when you need to specify the DependsOn attribute to control the creation order explicitly.
 
 Jets creates most of the resources for you via [Nested CloudFormation stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html).  Shared Resources themselves are nested stacks. Sometimes you want to create resources in different nested stacks and one of them dependent on the other. In this case, the DependsOn attribute is required.
 

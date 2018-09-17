@@ -24,11 +24,13 @@ def handle(event, context)
 end
 ```
 
-By default, the `function` method creates Ruby lambda functions.  The default Ruby handler is `bob.handle`.  There is also an `ruby_function` alias to the `function` method. They do the same thing.
+By default, the `function` method creates Ruby lambda functions.  The default Ruby handler is `handle`.
+
+There is also an `ruby_function` alias to the `function` method. They do the same thing.
 
 ## Python Example
 
-For Shared Resource Functions, you use Python just as easily.  Here's an example:
+For Shared Resource Functions, you can use Python just as easily.  Here's an example:
 
 app/shared/resources/custom.rb:
 
@@ -48,7 +50,7 @@ def lambda_handler(event, context):
 
 ## Node Example
 
-Here's a node example:
+Here's also a node example:
 
 app/shared/resources/custom.rb:
 
@@ -67,7 +69,7 @@ exports.handler = function(event, context, callback) {
 
 ## General function Form
 
-The methods `ruby_function`, `python_function`, and `node_function` both delegate to the `function` method.  Here's what the general `function` method looks like:
+The methods `ruby_function`, `python_function`, and `node_function` all delegate to the `function` method.  Here's what the general `function` method looks like:
 
 ```ruby
 class Custom
@@ -90,6 +92,7 @@ class Custom
     handler: "kevin.lambda_handler",
     runtime: "python3.6"
   )
+end
 ```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/shared-resources-depends-on.md %}">Back</a>
