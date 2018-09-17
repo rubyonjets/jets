@@ -50,7 +50,6 @@ class Jets::Cfn
 
     def create_stack
       # parent stack template is on filesystem and child stacks templates is on s3
-      IO.read(@template_path) # template_body
       cfn.create_stack(stack_options)
     end
     time :create_stack
@@ -60,7 +59,7 @@ class Jets::Cfn
         cfn.update_stack(stack_options)
       rescue Aws::CloudFormation::Errors::ValidationError => e
         puts "ERROR: #{e.message}".red
-        true # error = true
+        true # error
       end
     end
     time :update_stack
@@ -125,7 +124,7 @@ class Jets::Cfn
       puts "  #{command_with_iam(capabilities)}"
 
       puts "Please confirm (y/n)"
-      confirm = $stdin.gets
+      $stdin.gets # confirm
     end
 
     def command_with_iam(capabilities)

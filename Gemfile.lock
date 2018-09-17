@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (0.8.15)
+    jets (0.8.16)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -118,7 +118,7 @@ GEM
       mini_portile2 (~> 2.3.0)
     pg (0.21.0)
     rack (2.0.5)
-    rack-proxy (0.6.4)
+    rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)

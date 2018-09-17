@@ -1,5 +1,6 @@
 module Jets::Commands
   class Deploy
+    extend Memoist
     include StackInfo
     include Jets::Timing
 
@@ -16,7 +17,15 @@ module Jets::Commands
       build_code
       validate_routes!
 
-      # first time will deploy minimal stack
+      # Delete existing rollback stack from previous bad minimal deploy
+      if minimal_rollback_complete?
+        puts "Existing stack is in ROLLBACK_COMPLETE state from a previous failed minimal deploy. Deleting stack and continuing."
+        cfn.delete_stack(stack_name: stack_name)
+        status.wait
+        status.reset
+      end
+
+      # Stack could be in a weird rollback state or in progress state
       exit_unless_updateable!
 
       ship(stack_type: :minimal) if first_run?
@@ -56,6 +65,44 @@ module Jets::Commands
     end
     time :ship
 
+    def status
+      Jets::Cfn::Status.new(stack_name)
+    end
+    memoize :status
+
+    def stack_name
+      Jets::Naming.parent_stack_name
+    end
+
+    # Checks for a few things before deciding to delete the parent stack
+    #
+    #   * Parent stack status status is ROLLBACK_COMPLETE
+    #   * Parent resources are in the DELETE_COMPLETE state
+    #
+    def minimal_rollback_complete?
+      stack = find_stack(stack_name)
+      return false unless stack
+
+      return false unless stack.stack_status == 'ROLLBACK_COMPLETE'
+
+      # Finally check if all the minimal resources in the parent template have been deleted
+      resp = cfn.describe_stack_resources(stack_name: stack_name)
+      resource_statuses = resp.stack_resources.map(&:resource_status).uniq
+      resource_statuses == ['DELETE_COMPLETE']
+    end
+
+    def find_stack(stack_name)
+      resp = cfn.describe_stacks(stack_name: stack_name)
+      resp.stacks.first
+    rescue Aws::CloudFormation::Errors::ValidationError => e
+      # example: Stack with id demo-dev does not exist
+      if e.message =~ /Stack with/ && e.message =~ /does not exist/
+        nil
+      else
+        raise
+      end
+    end
+
     # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
     def exit_unless_updateable!
       stack_name = Jets::Naming.parent_stack_name
@@ -66,9 +113,12 @@ module Jets::Commands
       status = stack["stack_status"]
       if status =~ /^ROLLBACK_/ ||
          status =~ /_IN_PROGRESS$/
-        puts "Parent stack associate with this '#{Jets.config.project_name}' project not in a updateable state.".colorize(:red)
-        puts "Stack name #{stack_name} status #{stack["stack_status"]}"
-        exit
+        region = `aws configure get region`.strip rescue "us-east-1"
+        url = "https://console.aws.amazon.com/cloudformation/home?region=#{region}#/stacks"
+        puts "The parent stack of the #{Jets.config.project_name.colorize(:green)} project is not in an updateable state."
+        puts "Stack name #{stack_name.colorize(:yellow)} status #{stack["stack_status"].colorize(:yellow)}"
+        puts "Here's the CloudFormation url to check for more details #{url}"
+        exit 1
       end
     end
   end
