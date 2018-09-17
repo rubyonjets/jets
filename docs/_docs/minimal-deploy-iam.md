@@ -2,7 +2,7 @@
 title: Minimal Deploy IAM Policy
 ---
 
-The IAM user you are using to run the `jets deploy` command needs a minimal set of IAM policies in order to deploy a Jets application. Here is a table of the services needed and a description each:
+The IAM user you are using to run the `jets deploy` command needs a minimal set of IAM policies in order to deploy a Jets application. Here is a table of the baseline services needed and a description each:
 
 Service | Description
 --- | ---
@@ -20,7 +20,7 @@ It is recommended that you create an IAM group and associate it with the IAM use
 
 ### Commands Summary
 
-Here's a summary of the commands altogether:
+Here's a summary of the commands:
 
     aws iam create-group --group-name Jets
     cat << 'EOF' > /tmp/jets-iam-policy.json
@@ -46,9 +46,19 @@ Here's a summary of the commands altogether:
     }
     EOF
     aws iam put-group-policy --group-name Jets --policy-name JetsPolicy --policy-document file:///tmp/jets-iam-policy.json
-    # create user and add to group
+
+Then create a user and add the user to IAM group. Here's an example:
+
     aws iam create-user --user-name tung
     aws iam add-user-to-group --user-name tung --group-name Jets
+
+## Additional IAM Permissions
+
+The baseline IAM policy above might not include all the permissions required depending on what your Jets application does. For example, if you are using [AWS Config Rules]({% link _docs/config-rules.md %}) or [Custom Resources]({% link _docs/custom-resources.md %}), then you would need to add permissions specific to those resources. This is why an IAM group is recommended.  You simply have to update the group policies.
+
+Here's how you add a managed IAM policy that provides the AWS Config Rule permissions:
+
+    aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AWSConfigRole --group-name Jets
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/action-filters.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-support.md %}">Next Step</a>
