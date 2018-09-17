@@ -90,8 +90,8 @@ class Jets::Lambda::Task
 
   def baseline_replacements
     {
-      namespace: "#{@class_name.gsub('::','')}#{@meth.to_s.camelize}", # camelized because used in not just keys but also values
+      # camelized because used in not just keys but common used in values
+      namespace: @meth.to_s.camelize,
     }
   end
 end
-
