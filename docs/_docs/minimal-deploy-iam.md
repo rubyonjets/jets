@@ -60,6 +60,10 @@ Here's how you add a managed IAM policy that provides the AWS Config Rule permis
 
     aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/service-role/AWSConfigRole --group-name Jets
 
+The IAM Policies for the group looks something like this:
+
+![](/img/docs/minimal-iam-policy.png)
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/action-filters.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
