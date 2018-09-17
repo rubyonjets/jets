@@ -38,25 +38,25 @@ class HardJob < ApplicationJob
 end
 ```
 
-Jets then replaces the `{namespace}` with an identifier a value that has the class and method that represents the Lambda function. For example:
+Jets then replaces the `{namespace}` with an identifier a value that has method name that represents the Lambda function. For example:
 
 Before | After
 --- | ---
-{namespace} | HardJobDig
+{namespace} | Dig
 
 The final code looks something like this:
 
 ```ruby
 class HardJob < ApplicationJob
   resource(
-    "HardJobDigEventsRule": {
+    "DigEventsRule": {
       type: "AWS::Events::Rule",
       properties: {
         schedule_expression: "rate(10 hours)",
         state: "ENABLED",
         targets: [{
-          arn: "!GetAtt HardJobDigLambdaFunction.Arn",
-          id: "HardJobDigRuleTarget"
+          arn: "!GetAtt DigLambdaFunction.Arn",
+          id: "DigRuleTarget"
         }]
       }
     }
