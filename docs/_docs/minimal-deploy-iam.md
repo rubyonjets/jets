@@ -8,6 +8,7 @@ Service | Description
 --- | ---
 APIGateway | To create the API Gateway resources.
 CloudFormation | To create the CloudFormation stacks that then creates the most of the AWS resources that Jets creates.
+Events | To create the CloudWatch Event Rules for jobs.
 IAM | To create IAM roles to be associated with the Lambda functions.
 Lambda | To prewarm the application upon deployment completion.
 S3 | To upload code to s3.
@@ -30,6 +31,7 @@ Here's a summary of the commands altogether:
                 "Action": [
                     "apigateway:*",
                     "cloudformation:*",
+                    "events:*",
                     "iam:*",
                     "lambda:*",
                     "s3:*"
