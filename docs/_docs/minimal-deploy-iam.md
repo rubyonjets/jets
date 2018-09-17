@@ -58,7 +58,7 @@ The baseline IAM policy above might not include all the permissions required dep
 
 Here's how you add a managed IAM policy that provides the AWS Config Rule permissions:
 
-    aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/AWSConfigRole --group-name Jets
+    aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/service-role/AWSConfigRole --group-name Jets
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/action-filters.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-support.md %}">Next Step</a>
