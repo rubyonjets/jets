@@ -65,7 +65,7 @@ class SecurityJob < ApplicationJob
     }
   )
   event_pattern(
-    detail_type: ["AWS API Call via CloudTrail"]
+    detail_type: ["AWS API Call via CloudTrail"],
     detail: {
       userIdentity: {
         type: ["Root"]
