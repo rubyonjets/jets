@@ -11,6 +11,7 @@ CloudFormation | To create the CloudFormation stacks that then creates the most 
 Events | To create the CloudWatch Event Rules for jobs.
 IAM | To create IAM roles to be associated with the Lambda functions.
 Lambda | To prewarm the application upon deployment completion.
+Logs | To clean up CloudWatch logs when deleting the application.
 S3 | To upload code to s3.
 
 ## Instructions
@@ -34,6 +35,7 @@ Here's a summary of the commands altogether:
                     "events:*",
                     "iam:*",
                     "lambda:*",
+                    "logs:*",
                     "s3:*"
                  ],
                 "Resource": [
