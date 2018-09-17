@@ -20,7 +20,7 @@ It is recommended that you create an IAM group and associate it with the IAM use
 
 ### Commands Summary
 
-Here's a summary of the commands altogether:
+Here's a summary of the commands:
 
     aws iam create-group --group-name Jets
     cat << 'EOF' > /tmp/jets-iam-policy.json
@@ -46,13 +46,15 @@ Here's a summary of the commands altogether:
     }
     EOF
     aws iam put-group-policy --group-name Jets --policy-name JetsPolicy --policy-document file:///tmp/jets-iam-policy.json
-    # create user and add to group
+
+Then create a user and add the user to IAM group. Here's an example:
+
     aws iam create-user --user-name tung
     aws iam add-user-to-group --user-name tung --group-name Jets
 
-## Additional Services
+## Additional IAM Permissions
 
-The baseline IAM policy above might does not include all the permissions required depending on what's in your Jets application. For example, if you are using [AWS Config Rules]({% link _docs/config-rules.md %}) or [Custom Resources]({% link _docs/custom-resources.md %}), then you would need to add permissions specific to those resources. This is why an IAM group is recommended.  You simply have to update the group policies.
+The baseline IAM policy above might not include all the permissions required depending on what your Jets application does. For example, if you are using [AWS Config Rules]({% link _docs/config-rules.md %}) or [Custom Resources]({% link _docs/custom-resources.md %}), then you would need to add permissions specific to those resources. This is why an IAM group is recommended.  You simply have to update the group policies.
 
 Here's how you add a managed IAM policy that provides the AWS Config Rule permissions:
 
