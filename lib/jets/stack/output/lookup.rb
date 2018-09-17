@@ -6,6 +6,7 @@ class Jets::Stack::Output
       logical_id = logical_id.to_s.camelize
 
       stack_arn = shared_stack_arn(logical_id)
+      puts "stack_arn #{stack_arn.inspect}"
       resp = cfn.describe_stacks(stack_name: stack_arn)
       child = resp.stacks.first
       return unless child
