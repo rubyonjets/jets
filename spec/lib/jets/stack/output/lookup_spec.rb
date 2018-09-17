@@ -7,7 +7,7 @@ end
 
 describe "shared resource" do
   let(:lookup) do
-    lookup = Jets::Stack::Output::Lookup.new
+    lookup = Jets::Stack::Output::Lookup.new(Alert)
     allow(lookup).to receive(:cfn).and_return(cfn)
     lookup
   end
@@ -24,7 +24,7 @@ describe "shared resource" do
           output_key: "S3Bucket",
           output_value: "demo-test-s3bucket-1evq5kzp1an0m",
         },{
-          output_key: "MySnsTopic",
+          output_key: "Alert",
           output_value: shared_stack_arn,
         }]
       ]
@@ -54,7 +54,7 @@ describe "shared resource" do
   end
 
   it "shared_stack_arn" do
-    arn = lookup.shared_stack_arn("MySnsTopic")
+    arn = lookup.shared_stack_arn("Alert")
     expect(arn).to eq shared_stack_arn
   end
 

@@ -2,11 +2,14 @@ class Jets::Stack::Output
   class Lookup
     include Jets::AwsServices
 
-    def output(logical_id)
-      logical_id = logical_id.to_s.camelize
+    def initialize(stack_subclass)
+      @stack_subclass = stack_subclass
+    end
 
-      stack_arn = shared_stack_arn(logical_id)
-      puts "stack_arn #{stack_arn.inspect}"
+    def output(logical_id)
+      child_stack_id = @stack_subclass.to_s.classify
+
+      stack_arn = shared_stack_arn(child_stack_id)
       resp = cfn.describe_stacks(stack_name: stack_arn)
       child = resp.stacks.first
       return unless child
@@ -23,6 +26,7 @@ class Jets::Stack::Output
     end
 
     def output_value(stack, key)
+      key = key.to_s.camelize
       output = stack.outputs.find do |o|
         o.output_key == key
       end

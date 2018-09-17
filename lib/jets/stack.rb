@@ -92,7 +92,7 @@ module Jets
       end
 
       def looker
-        Jets::Stack::Output::Lookup.new
+        Jets::Stack::Output::Lookup.new(self)
       end
       memoize :looker
 
