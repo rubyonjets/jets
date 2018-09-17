@@ -160,6 +160,10 @@ The expanded IAM Policy documents gets included into the CloudFormation template
 * [AWS IAM Policies and Permissions docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#access_policies-json)
 * [CloudFormation IAM Policy reference docs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-policy.html)
 
+## Lambda Function IAM Policy vs IAM User Deploy Policy
+
+The IAM Policies docs on this page refer to the IAM policy associated with your Lambda Execution Role. These permissions control what your AWS resources your Lambda functions have access to.  This is different from the IAM role you use to deploy a Jets application, which is typically your IAM User permissions. If you are looking for the minimal IAM Policy to deploy a Jets application for your IAM user, check out [Minimal Deploy IAM Policy]({% link _docs/minimal-deploy-iam.md %}).
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/function-properties.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/managed-iam-policies.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
