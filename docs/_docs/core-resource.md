@@ -46,7 +46,7 @@ The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.co
 
 With this design, Jets allows you to create any resource associated with your Lambda functions. Once you see how the `resource` method works, you can define any resource that you required. Methods like `rate`, `cron`, `event_rule`, `event_pattern` simply run some setup logic and call the `resource` method.
 
-Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you would start defining your own custom shorthand resource methods that wrap the `resource` method for more concise code.
+Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you could start defining your own custom convenience resource methods that wrap the `resource` method for more concise code.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/custom-resources.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/associated-resources.md %}">Next Step</a>

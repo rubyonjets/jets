@@ -2,9 +2,9 @@
 title: Associated Resources
 ---
 
-As explained in the [Core Resource Modeling](http://rubyonjets.com/docs/core-resource/) docs, methods like `rate` and `cron` simply perform some wrapper logic and then utlimately call the `resource` method. We'll cover that wrapper logic and expansion process in more details here.
+As explained in the [Core Resource Model](http://rubyonjets.com/docs/core-resource/) docs, methods like `rate` and `cron` simply perform some wrapper logic and then ultimately call the `resource` method. We'll cover that wrapper logic and expansion process in more details here.
 
-The `rate` method ultimately creates a CloudWatch Event Rule resource. This Event Rule resource is associated with the `dig` Lambda function. Here's the example again:
+The `rate` method creates a CloudWatch Event Rule resource. This Event Rule resource is associated with the `dig` Lambda function. Here's the example again:
 
 ```ruby
 class HardJob < ApplicationJob
@@ -15,7 +15,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-What's happens is that Jets takes the `rate` method, performs some wrapper logic, and calls the core `resource` method in the first pass.  The code looks something like this:
+What's happens is that Jets takes the `rate` method, performs some wrapper logic, and calls the core `resource` method in the first pass.  The code looks something like this after the first pass:
 
 ```ruby
 class HardJob < ApplicationJob

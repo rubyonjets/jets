@@ -2,14 +2,13 @@
 title: Shared Resources
 ---
 
-Shared resources are how you you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/associated-resources.md %}), you can customize and add any AWS resource and correspond them to Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with a Lambda function. Instead they are standalone resources. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
+Shared resources are how you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/associated-resources.md %}), you can add custom AWS resources which are associated with Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as meant to be associated with a Lambda function per se. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
 
 ## SNS Topic Example
 
-Let's create an SNS Topic as a shared resource. The SNS topic can be used throughout the application whenever we want to publish a message.
+Let's create an SNS Topic as a shared resource. The SNS topic will be used throughout the application to publish messages.
 
-
-Shared resources are defined in the `app/shared/resources` folder.  You can created the sns topic like so:
+Shared resources are defined in the `app/shared/resources` folder.  You can create the SNS topic like so:
 
 app/shared/resources/alert.rb:
 
@@ -19,8 +18,7 @@ class Alert < Jets::Stack
 end
 ```
 
-This results in an SNS Topic resource being created.  You can then reference the SNS Topic with the `Alert.lookup` method throughout your code. For example, here's a [Job]({% link _docs/jobs.md %}) that looks up the arn of the `delivery_completed` SNS topic and then publishes to it.
-
+This creates an SNS Topic resource.  You can then reference the SNS Topic with the `Alert.lookup` method in your code. For example, here's a [Job]({% link _docs/jobs.md %}) that looks up the ARN of the `delivery_completed` SNS topic and then publishes to it.
 
 ```ruby
 class PostmanJob < ApplicationJob
@@ -37,13 +35,13 @@ class PostmanJob < ApplicationJob
 end
 ```
 
-Note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb).  Also the lookup method relies on a [CloudFormation Output](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) that is created as part of the `sns_topic` convenience method.  The General Resource Form next reveals that `sns_topic` creates an CloudFormation output.
+The `lookup` method is available to the `Alert` class as a part of inheriting from the `Jets::Stack` class. Also note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb).  Also, the lookup method uses a [CloudFormation Output](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) that is created as part of the `sns_topic` convenience method.
 
-**Important:** You must use singularize names for your shared resource classes. So use `shared/resources/alert.rb` instead of `shared/resources/alerts.rb`. Jets relies on this naming convention to handle autoloading shared resources. You can override this behavior by customizing inflections though with the [Application Configuration](http://rubyonjets.com/docs/app-config/).
+**Important:** You must use singularize names for your shared resource classes. So use `shared/resources/alert.rb` instead of `shared/resources/alerts.rb`. Jets relies on this naming convention to handle autoloading of shared resources. You can override this behavior by customizing inflections though with the [Application Configuration](http://rubyonjets.com/docs/app-config/).
 
 ## General Resource Form
 
-In the SNS Topic example above we use the `sns_topic` convenience method to create the resource. Under the hood, the `sns_topic` method simply performs some wrapper logic and then calls the generalized `resource` and `output` method.  The code above could had been written like so:
+In the SNS Topic example above we use the `sns_topic` convenience method to create the resource. Under the hood, the `sns_topic` method simply performs some wrapper logic and then calls the generalized `resource` and `output` method.  The code above could have been written like so:
 
 ```ruby
 class Resource < Jets::Stack
@@ -59,11 +57,11 @@ class Resource < Jets::Stack
 end
 ```
 
-The `resource` method similiar to the `resource` method that's a part of [Custom Associated Resources]({% link _docs/associated-resources.md %}). It follows a similar expansion pattern though.  With it, you can create any AWS resource in your Jets application. You can also create your own convenience wrapper methods and call `resource` and `output` as required: [Shared Resource Extensions]()
+The Jets::Stack `resource` method is similar to [Custom Associated Resources's]({% link _docs/associated-resources.md %}) `resource` method. It follows a similar expansion pattern.  With it, you can create any AWS resource in your Jets application. You can also create your own convenience wrapper methods and call `resource` and `output` as required: [Shared Resource Extensions]({% link _docs/shared-resources-extensions.md %}).
 
 ## IAM Permission
 
-The shared `Alert.lookup` lookup method requires read permission to the CloudFormation stack. This is automatically added to your application default IAM permissions when you are using Shared Resources and not have overriden the application wide IAM policy.
+The  Jets::Stack `lookup` method requires read permission to the CloudFormation stack. This is automatically added to your application default IAM permissions when you are using Shared Resources and have not have overridden the [application-wide IAM policy]({% link _docs/iam-policies.md %}).
 
 Understanding the general shared `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanations above help.
 

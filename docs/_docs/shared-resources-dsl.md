@@ -2,19 +2,22 @@
 title: Shared Resources DSL
 ---
 
-As mentioned in [Shared Resources]({% link _docs/shared-resources.md %}), the `sns_topic` is simply a convenience method that calls `resources` and `output`. Shared Resources inherit from the `Jets::Stack` class.  The `Jets::Stack` class provides a DSL that generally can be used to be a CloudFormation template.  Here are the methods that cover the the [CloudFormation anatomy sections](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html) that are useful for Jets.
+As mentioned in [Shared Resources]({% link _docs/shared-resources.md %}), the `sns_topic` is simply a convenience method that calls the `resources` and `output` methods that add sections to the CloudFormation template. Shared Resources inherit from the `Jets::Stack` class.  By inheriting from the `Jets::Stack` class, Shared Resources are provided a general CloudFormation template DSL.  Here are the main methods of that DSL:
 
 DSL Method | Description
 --- | ---
 parameter | Adds a parameter to the template.
-resource |Adds a resource to the template.
-output |Adds a output to the template.
+resource | Adds a resource to the template.
+output | Adds a output to the template.
 
-Each method has long, medium and short forms.  Here's an contrived example that shows the different forms with the different methods:
+The main methods correspond to sections of the [CloudFormation anatomy sections](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html).
+
+Each method has long, medium and short forms.  Here are some contrived examples that show the different forms with the different methods:
+
+## Parameters
 
 ```ruby
-class ContrivedExample < Jets::Stack
-  ### Parameters
+class ParametersExample < Jets::Stack
   # long form
   parameter(instance_type: {
     default: "t2.micro" ,
@@ -24,20 +27,11 @@ class ContrivedExample < Jets::Stack
   parameter :company, default: "boltops"
   # short form
   parameter :ami_id, "ami-123"
+end
+```
+## Resources
 
-  ### Outputs
-  # long form
-  output(vpc_id: {
-    description: "vpc id",
-    value: ref("vpc_id"),
-  })
-  # medium form
-  output :stack_name, value: "!Ref AWS::StackName"
-  # short form
-  output :elb, "!Ref Elb"
-  output :elb2 # short form
-
-  ### Resources
+class ResourcesExample < Jets::Stack
   # long form
   resource(sns_topic: {
     type: "AWS::SNS::Topic",
@@ -60,7 +54,24 @@ class ContrivedExample < Jets::Stack
 end
 ```
 
-The DSL provides plentiful access to creating custom CloudFormation stacks and AWS resources.  It is also easy extend the DSL with your own [Shared Resource Extensions]({% link _docs/shared-resources-extensions.md %}). This helps you remove duplication and keep your code concise.
+## Outputs
+
+```ruby
+class OutputsExample < Jets::Stack
+  # long form
+  output(vpc_id: {
+    description: "vpc id",
+    value: ref("vpc_id"),
+  })
+  # medium form
+  output :stack_name, value: "!Ref AWS::StackName"
+  # short form
+  output :elb, "!Ref Elb"
+  output :elb2 # short form
+end
+```
+
+The DSL provides full access to creating custom CloudFormation stacks and AWS resources.  It is also easy extend the DSL with your own [Shared Resource Extensions]({% link _docs/shared-resources-extensions.md %}). This helps you remove duplication and keep your code concise.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/shared-resources.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/shared-resources-extensions.md %}">Next Step</a>
