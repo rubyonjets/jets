@@ -77,7 +77,7 @@ module Jets::Commands
     # Checks for a few things before deciding to delete the parent stack
     #
     #   * Parent stack status status is ROLLBACK_COMPLETE
-    #   * Parent resources are in the ROLLBACK_COMPLETE state
+    #   * Parent resources are in the DELETE_COMPLETE state
     #
     def minimal_rollback_complete?
       stack = find_stack(stack_name)
