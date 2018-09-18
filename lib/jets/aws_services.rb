@@ -3,6 +3,8 @@ require "aws-sdk-cloudwatchlogs"
 require "aws-sdk-lambda"
 require "aws-sdk-s3"
 require "aws-sdk-sts"
+# Not used in Jets internally but convenient for shared resources
+require "aws-sdk-sns"
 
 module Jets::AwsServices
   autoload :StackStatus, 'jets/aws_services/stack_status'
@@ -38,4 +40,9 @@ module Jets::AwsServices
     Aws::STS::Client.new
   end
   memoize :sts
+
+  def sns
+    Aws::SNS::Client.new
+  end
+  memoize :sns
 end
