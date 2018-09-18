@@ -24,14 +24,14 @@ What's happens is that Jets takes the `rate` method, performs some wrapper logic
 ```ruby
 class HardJob < ApplicationJob
   resource(
-    "HardJobDigEventsRule": {
+    "DigEventsRule": {
       type: "AWS::Events::Rule",
       properties: {
         schedule_expression: "rate(10 hours)",
         state: "ENABLED",
         targets: [{
-          arn: "!GetAtt HardJobDigLambdaFunction.Arn",
-          id: "HardJobDigRuleTarget"
+          arn: "!GetAtt DigLambdaFunction.Arn",
+          id: "DigRuleTarget"
         }]
       }
     }
