@@ -47,6 +47,7 @@ module Jets
   autoload :Logger, "jets/logger"
 
   autoload :Resource, "jets/resource"
+  autoload :Rdoc, "jets/rdoc"
 end
 
 require "jets/core_ext/kernel"
