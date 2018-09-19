@@ -9,9 +9,9 @@ describe Jets::Cfn::Builders::RuleBuilder do
       # puts builder.text # uncomment to see template text
 
       resources = builder.template["Resources"]
-      expect(resources).to include("GameRuleProtectLambdaFunction")
-      expect(resources).to include("GameRuleProtectPermission")
-      expect(resources).to include("GameRuleProtectConfigRule")
+      expect(resources).to include("ProtectLambdaFunction")
+      expect(resources).to include("ProtectPermission")
+      expect(resources).to include("ProtectConfigRule")
 
       expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-game_rule.yml"
     end

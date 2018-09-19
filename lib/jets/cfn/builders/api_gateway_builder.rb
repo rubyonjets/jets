@@ -10,7 +10,7 @@ class Jets::Cfn::Builders
 
     # compose is an interface method
     def compose
-      return unless @options[:full] || @options[:stack_type] == :full
+      return unless @options[:full] || @options[:stack_type] != :minimal
 
       add_gateway_rest_api
       add_gateway_routes

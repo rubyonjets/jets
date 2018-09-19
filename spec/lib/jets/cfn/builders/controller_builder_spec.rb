@@ -28,7 +28,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
         builder.compose
         # puts builder.text # uncomment to see template text
         resources = builder.template["Resources"]
-        properties = resources["StoresControllerShowLambdaFunction"]["Properties"]
+        properties = resources["ShowLambdaFunction"]["Properties"]
 
         expect(properties["MemorySize"]).to eq 1024
         # should not transform the keys under Variables section
@@ -47,7 +47,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
         builder.compose
         # puts builder.text # uncomment to see template text
         resources = builder.template["Resources"]
-        properties = resources["StoresControllerIndexLambdaFunction"]["Properties"]
+        properties = resources["IndexLambdaFunction"]["Properties"]
 
         expect(properties["MemorySize"]).to eq 1000
         expect(properties["Timeout"]).to eq 20
@@ -59,7 +59,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
         builder.compose
         # puts builder.text # uncomment to see template text
         resources = builder.template["Resources"]
-        properties = resources["StoresControllerNewLambdaFunction"]["Properties"]
+        properties = resources["NewLambdaFunction"]["Properties"]
 
         expect(properties["MemorySize"]).to eq 768
       end
