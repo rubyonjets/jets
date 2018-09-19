@@ -78,7 +78,7 @@ module Jets::Resource::ChildStack
     end
 
     def current_app_class
-      templates_prefix = "#{Jets::Naming.template_path_prefix}-"
+      templates_prefix = "#{Jets::Naming.template_path_prefix}-app-"
       @path.sub(templates_prefix, '')
         .sub(/\.yml$/,'')
         .gsub('-','/')

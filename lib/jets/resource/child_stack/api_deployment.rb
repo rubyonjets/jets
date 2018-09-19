@@ -33,7 +33,7 @@ module Jets::Resource::ChildStack
         # map the path to a camelized logical_id. Example:
         #   /tmp/jets/demo/templates/demo-dev-2-posts_controller.yml to
         #   PostsController
-        regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
+        regexp = Regexp.new(".*#{Jets.config.project_namespace}-app-")
         controller_name = path.sub(regexp, '').sub('.yml', '')
         controller_logical_id = controller_name.underscore.camelize
         controller_logical_ids << controller_logical_id
