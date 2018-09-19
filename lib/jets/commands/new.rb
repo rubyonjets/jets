@@ -96,7 +96,12 @@ JS
 
     def user_message
       more_info = if options[:mode] == 'job'
-        "Learn more about jobs here: http://rubyonjets.com/docs/jobs/"
+        <<~EOL
+          Learn more about jobs here: http://rubyonjets.com/docs/jobs/
+
+          To deploy to AWS Lambda:
+            jets deploy
+        EOL
       else
         <<~EOL
           To start a server and test locally:
@@ -104,9 +109,14 @@ JS
 
           Scaffold example:
             jets generate scaffold Post title:string body:text published:boolean
+
+          To deploy to AWS Lambda, edit your .env.development.remote and add a DATABASE_URL endpoint.
+          Then run:
+        
+            jets deploy
         EOL
       end
-
+      
       puts <<~EOL
         #{"="*64}
         Congrats 🎉 You have successfully created a Jets project.
@@ -115,9 +125,6 @@ JS
           cd #{project_name}
 
         #{more_info}
-
-        To deploy to AWS Lambda:
-          jets deploy
       EOL
     end
   end
