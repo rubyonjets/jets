@@ -30,10 +30,13 @@ module Jets
     end
 
     def api_mode?
-      # if Jets.config.api_generator
-      #   puts <<~EOL"DEPRECATED: please update your config/application.rb to use:"
-
-      # end
+      if Jets.config.api_generator
+        puts <<~EOL.colorize(:yellow)
+          DEPRECATED: Jets.config.api_generator
+          Instead, please update your config/application.rb to use:
+            Jets.config.api_mode
+        EOL
+      end
       api_mode = Jets.config.api_mode || Jets.config.api_generator
       api_mode
     end
