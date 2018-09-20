@@ -85,7 +85,7 @@ GEM
     aws-sdk-lambda (1.10.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.19.0)
+    aws-sdk-s3 (1.20.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
