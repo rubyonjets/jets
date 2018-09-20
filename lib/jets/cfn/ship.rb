@@ -143,8 +143,13 @@ class Jets::Cfn
     def upload_to_s3
       raise "Did not specify @options[:s3_bucket] #{@options[:s3_bucket].inspect}" unless @options[:s3_bucket]
 
-      bucket_name = @options[:s3_bucket]
+      upload_cfn_templates
+      upload_code
+      upload_public_assets
+    end
+    time :upload_to_s3
 
+    def upload_cfn_templates
       puts "Uploading child CloudFormation templates to S3"
       expression = "#{Jets::Naming.template_path_prefix}-*"
       Dir.glob(expression).each do |path|
@@ -154,7 +159,9 @@ class Jets::Cfn
         obj = s3_resource.bucket(bucket_name).object(key)
         obj.upload_file(path)
       end
+    end
 
+    def upload_code
       md5_code_zipfile = Jets::Naming.md5_code_zipfile
       file_size = number_to_human_size(File.size(md5_code_zipfile))
 
@@ -165,7 +172,22 @@ class Jets::Cfn
       obj.upload_file(md5_code_zipfile)
       puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
-    time :upload_to_s3
+
+    def upload_public_assets
+      expression = "#{Jets.root}public/assets/**/*"
+      Dir.glob(expression).each do |path|
+        next unless File.file?(path)
+
+        relative_path = path.sub(%r{.*/assets/},'')
+        key = "jets/assets/#{relative_path}"
+        obj = s3_resource.bucket(bucket_name).object(key)
+        obj.upload_file(path, acl: "public-read") # TODO: CHECK IF THIS IS RIGHT WAY TO SET public-read acl
+      end
+    end
+
+    def s3_bucket
+      @options[:s3_bucket]
+    end
 
     # http://stackoverflow.com/questions/4175733/convert-duration-to-hoursminutesseconds-or-similar-in-rails-3-or-ruby
     def pretty_time(total_seconds)

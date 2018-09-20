@@ -10,6 +10,8 @@ Jets.application.configure do
   # config.env_extra = 2 # can also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
 
+  # config.asset_base_url = 'https://cloudfront.domain.com/assets' # example
+
   config.cors = true # for '*''
   # config.cors = '*.mydomain.com' # for specific domain
 
