@@ -126,7 +126,6 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Database Support](http://rubyonjets.com/docs/database-support/)
 * [Polymorphic Support](http://rubyonjets.com/docs/polymorphic-support/)
 * [Tutorials](http://rubyonjets.com/docs/tutorials/)
-* [How Jets Works](http://rubyonjets.com/docs/how-jets-works/)
 * [Prewarming](http://rubyonjets.com/docs/prewarming/)
 * [Installation](http://rubyonjets.com/docs/install/)
 * [CLI Reference](http://rubyonjets.com/reference/)
