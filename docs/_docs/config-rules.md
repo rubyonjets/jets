@@ -78,7 +78,7 @@ Jets will create Python lambda functions using the files in the `app/rules/prote
 
 ## Managed Config Rules
 
-[AWS Config Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html) are rules pre-built rules created by AWS.  For example, there's a [iam-password-policy](https://docs.aws.amazon.com/config/latest/developerguide/iam-password-policy.html) rule that you can set up to prove that your AWS account follows a strong password policy. AWS support a ton of [Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html).  You use AWS managed rules and custom lambda based rules similarly:
+[AWS Config Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html) are pre-built rules created by AWS.  For example, there's a [iam-password-policy](https://docs.aws.amazon.com/config/latest/developerguide/iam-password-policy.html) rule that you can set up to show that your AWS account follows a strong password policy. AWS supports a ton of [Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html).  You use AWS managed rules and custom Lambda based rules similarly:
 
 ```ruby
 class CheckRule < ApplicationRule
