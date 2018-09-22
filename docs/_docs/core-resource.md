@@ -42,11 +42,9 @@ class HardJob < ApplicationJob
 end
 ```
 
-The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource. The keys of the Hash structure use the underscore format following Ruby naming convention. As part of CloudFormation template processing, the underscored keys are camelized before deploying to CloudFormation.
+The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource.
 
 With this design, you can create any resource with Jets and associate them with your Lambda functions. Once you understand how the `resource` method works, you can define any resource that you required. Methods like `rate`, `cron`, `event_rule`, `event_pattern` simply run some setup logic and call the `resource` method.
-
-Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you could start defining your own custom convenience resource methods that wrap the `resource` method for more concise code.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/custom-resources.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/associated-resources.md %}">Next Step</a>

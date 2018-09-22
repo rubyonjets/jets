@@ -69,6 +69,8 @@ end
 
 The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource. The keys of the Hash structure use the underscore format following Ruby naming convention. As part of CloudFormation template processing, the underscored keys are camelized before deploying to CloudFormation.
 
+Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you could start defining your own custom convenience resource methods that wrap the `resource` method for more concise code as [Associated Resources Extensions]({% link _docs/associated-resources-extensions.md %}).
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/core-resource.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/shared-resources.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/associated-resources-extensions.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

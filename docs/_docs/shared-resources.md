@@ -65,6 +65,6 @@ The Jets::Stack `lookup` method uses a [CloudFormation Output](https://docs.aws.
 
 Understanding the general shared `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanations above help.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/associated-resources.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/associated-resources-extensions.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/shared-resources-dsl.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
