@@ -21,7 +21,7 @@ module IotExtension
         lambda: { function_arn: "!Ref {namespace}LambdaFunction" }
       ]
     }
-    props = defaults.merge(props)
+    props = defaults.deep_merge(props)
     resource(logical_id, "AWS::Iot::TopicRule", props)
   end
 end

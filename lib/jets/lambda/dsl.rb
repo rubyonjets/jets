@@ -289,6 +289,23 @@ module Jets::Lambda::Dsl
       def node(meth)
         defpoly(:node, meth)
       end
-    end
+
+      def add_custom_resource_extensions(base)
+        base_path = "#{Jets.root}/app/extensions"
+        ActiveSupport::Dependencies.autoload_paths += [base_path]
+
+        Dir.glob("#{base_path}/**/*.rb").each do |path|
+          next unless File.file?(path)
+
+          class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').classify
+          klass = class_name.constantize # autoload
+          base.extend(klass)
+        end
+      end
+    end # end of class << self
+  end # end of included
+
+  def self.included(base)
+    add_custom_resource_extensions(base)
   end
 end
