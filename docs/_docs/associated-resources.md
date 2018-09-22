@@ -38,7 +38,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-Jets then replaces the `{namespace}` with an identifier a value that has method name that represents the Lambda function. For example:
+In the second pass, Jets replaces the `{namespace}` with an identifier a value that has method name that represents the Lambda function. For example:
 
 Before | After
 --- | ---
@@ -67,7 +67,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource. The keys of the Hash structure use the underscore format following Ruby naming convention. As part of CloudFormation template processing, the underscored keys are camelized before deploying to CloudFormation.
+The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource. The keys of the Hash structure use the underscore format following Ruby naming convention. As part of CloudFormation template processing, the underscored keys are camelized.
 
 Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you could start defining your own custom convenience resource methods that wrap the `resource` method for more concise code as [Associated Resources Extensions]({% link _docs/associated-resources-extensions.md %}).
 

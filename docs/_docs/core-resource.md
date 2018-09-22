@@ -2,7 +2,7 @@
 title: Core Resource Model
 ---
 
-At the core of Jets is the resource model. Understanding the core `resource` model and method will allow you to create any resource via CloudFormation with Jets.
+At the core of Jets is the resource model. Understanding the core `resource` model and method will allow you to create any resource supported by CloudFormation with Jets.
 
 ## All Paths Lead to resource
 

@@ -4,9 +4,13 @@ title: Shared Resources Depends On
 
 CloudFormation has a concept of the [DependsOn Attribute](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html). Normally, you do not have to use it as CloudFormation is smart enough to figure out how to sequence the creation of the dependent resources most of the time. For example, if you are creating a Route53 Record that's connects to ELB, CloudFormation knows to create the ELB before proceeding to create the Route53 record. There are times though when you need to specify the DependsOn attribute to control the creation order explicitly.
 
-Jets creates most of the resources for you via [Nested CloudFormation stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html).  Shared Resources themselves are nested stacks. Sometimes you want to create resources in different nested stacks and one of them dependent on the other. In this case, the DependsOn attribute is required.
+Jets creates most of the resources for you via [Nested CloudFormation stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html).  Shared Resources themselves are nested stacks. Sometimes you want to create resources in different nested stacks and one of them dependent on the other. This is a case where the DependsOn attribute is required.
 
-The `Jets::Stack` DSL makes this simple with the `depends_on` declaration. In addition to setting up the DependsOn attribute between the nested stacks appropriately, Jets also passes the [Outputs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) of the independent stack to the dependent stack so that it has access to the resources.  An example helps explain this:
+The `Jets::Stack` DSL makes managing dependencies between nested stacks simple with the `depends_on` declaration. In addition to setting up the DependsOn attribute between the nested stacks appropriately, Jets also passes the [Outputs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) of the independent stack to the dependent stack so that it has access to the resources.  An example helps explain this.
+
+## DependsOn Example
+
+Let's say we wanted to create an CloudWatch Alarm and an SNS Alert and organized them in different classes. The CloudWatch Alarm depends on the SNS Alert. So the SNS Alert needs to be created before the Alarm.  Here's how we achieve this with the `depends_on` declaration.
 
 app/shared/resources/alert.rb:
 
