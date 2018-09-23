@@ -22,7 +22,12 @@ module IotExtension
       ]
     }
     props = defaults.deep_merge(props)
-    resource(logical_id, "AWS::Iot::TopicRule", props)
+    resource(
+      logical_id => {
+        type: "AWS::Iot::TopicRule",
+        properites: props
+      }
+    )
   end
 end
 ```
