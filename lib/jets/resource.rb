@@ -22,7 +22,6 @@ class Jets::Resource
   end
 
   def template
-    # puts "Jets::Resource#template definition #{definition.inspect}"
     standarize(definition)
   end
   memoize :template
