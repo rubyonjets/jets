@@ -142,7 +142,7 @@ module Jets::Lambda::Dsl
           @associated_resources || []
         else
           @associated_resources ||= []
-          @associated_resources << Jets::Resource::Definition.new(definitions)
+          @associated_resources << Jets::Resource::Associated.new(definitions)
           @associated_resources.flatten!
         end
       end
@@ -178,7 +178,8 @@ module Jets::Lambda::Dsl
         numbered_resources = []
         n = 1
         pp @associated_resources
-        @associated_resources.map do |definition|
+        @associated_resources.map do |associated|
+          definition = associated.definition
           logical_id = definition.keys.first
           logical_id = logical_id.sub(/\d+$/,'')
           numbered_resources << { "#{logical_id}#{n}" => definition.values.first }

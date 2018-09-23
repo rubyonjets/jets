@@ -2,10 +2,10 @@ class Jets::Resource
   extend Memoist
 
   autoload :ApiGateway, 'jets/resource/api_gateway'
+  autoload :Associated, 'jets/resource/associated'
   autoload :Base, 'jets/resource/base'
   autoload :ChildStack, 'jets/resource/child_stack'
   autoload :Config, 'jets/resource/config'
-  autoload :Definition, 'jets/resource/definition'
   autoload :Events, 'jets/resource/events'
   autoload :Function, 'jets/resource/function'
   autoload :Iam, 'jets/resource/iam'
