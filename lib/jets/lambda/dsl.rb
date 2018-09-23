@@ -137,11 +137,12 @@ module Jets::Lambda::Dsl
       # Main method that registers resources associated with the Lambda function.
       # All resources methods lead here.
       def associated_resources(*definitions)
+        puts "associated_resources definitions #{definitions.inspect}".colorize(:yellow)
         if definitions == [nil] # when associated_resources called with no arguments
           @associated_resources || []
         else
           @associated_resources ||= []
-          @associated_resources += definitions
+          @associated_resources << Jets::Resource::Definition.new(definitions)
           @associated_resources.flatten!
         end
       end
@@ -176,6 +177,7 @@ module Jets::Lambda::Dsl
       def add_logical_id_counter
         numbered_resources = []
         n = 1
+        pp @associated_resources
         @associated_resources.map do |definition|
           logical_id = definition.keys.first
           logical_id = logical_id.sub(/\d+$/,'')

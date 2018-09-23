@@ -75,7 +75,9 @@ class Jets::Cfn::Builders
     def add_resources
       @app_class.tasks.each do |task|
         task.associated_resources.each do |definition|
-          resource = Jets::Resource.new(definition, task.replacements)
+          puts "definition #{definition.inspect}".colorize(:cyan)
+          # puts "definition.raw #{definition.raw.inspect}".colorize(:cyan)
+          resource = Jets::Resource.new(definition.raw, task.replacements)
           add_resource(resource)
           add_resource(resource.permission)
         end

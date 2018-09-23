@@ -5,6 +5,7 @@ class Jets::Resource
   autoload :Base, 'jets/resource/base'
   autoload :ChildStack, 'jets/resource/child_stack'
   autoload :Config, 'jets/resource/config'
+  autoload :Definition, 'jets/resource/definition'
   autoload :Events, 'jets/resource/events'
   autoload :Function, 'jets/resource/function'
   autoload :Iam, 'jets/resource/iam'
@@ -14,12 +15,17 @@ class Jets::Resource
   autoload :Sns, 'jets/resource/sns'
   autoload :Standardizer, 'jets/resource/standardizer'
 
-  attr_reader :definition, :template, :replacements
+  attr_reader :definition, :replacements
   def initialize(definition, replacements={})
     @definition = definition
-    @template = standarize(definition)
     @replacements = replacements
   end
+
+  def template
+    # puts "Jets::Resource#template definition #{definition.inspect}"
+    standarize(definition)
+  end
+  memoize :template
 
   # CloudFormation Resources reference: https://amzn.to/2NKg6ip
   def standarize(*definition)
