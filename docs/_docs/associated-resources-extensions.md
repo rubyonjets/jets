@@ -2,7 +2,7 @@
 title: Associated Resources Extensions
 ---
 
-You can define your own custom associated resoures methods. This helps makes for shorter and cleaner code. Remember that methods like `cron` and `rate` are just convenience methods that ultimately call the `resource` method. You can extend Jets with your own custom convenience methods.
+You can define your own custom associated resource methods. This helps for shorter and cleaner code. Remember that methods like `cron` and `rate` are just convenience methods that ultimately call the `resource` method. You can extend Jets with custom convenience methods.
 
 ## Example Extension
 
@@ -22,17 +22,12 @@ module IotExtension
       ]
     }
     props = defaults.deep_merge(props)
-    resource(
-      logical_id => {
-        type: "AWS::Iot::TopicRule",
-        properites: props
-      }
-    )
+    resource(logical_id, "AWS::Iot::TopicRule", props)
   end
 end
 ```
 
-After the module is defined, you can use the newly created convienence method like so:
+After the module is defined, you can use the newly created convenience method like so:
 
 ```ruby
 class TemperatureJob < ApplicationJob
@@ -43,7 +38,50 @@ class TemperatureJob < ApplicationJob
 end
 ```
 
-The code above creates an `AWS::Iot::TopicRule` and runs the `record` Lambda function for incoming IoT thermostat data.  You can add your own custom business logic to handle the data accordingly.
+The code above creates an `AWS::Iot::TopicRule` and runs the `record` Lambda function for incoming IoT thermostat data.  You can add your own custom business logic to handle the received data accordingly.
+
+## Three Resource Forms
+
+You might have noticed that the `thermostat_rule extension` used a different form of the `resource` method. There are 3 different forms of the `resource` method. Here are examples of each:
+
+### Resource Long Form
+
+```ruby
+def thermostat_rule(logical_id, props={})
+  # ...
+  resource(
+    logical_id : {
+      type: "AWS::Iot::TopicRule",
+      properties: props
+    }
+  )
+end
+```
+
+### Resource Medium Form
+
+```ruby
+def thermostat_rule(logical_id, props={})
+  # ...
+  resource(logical_id,
+    type: "AWS::Iot::TopicRule",
+    properties: props
+  )
+end
+```
+
+### Resource Short Form
+
+```ruby
+def thermostat_rule(logical_id, props={})
+  # ...
+  resource(logical_id, "AWS::Iot::TopicRule", props)
+end
+```
+
+### Which one to use?
+
+You can use any of the resource forms depending on how much customization and control is needed.  It is probably best to try the simplest form first and then go up your way to the long form when needed.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/associated-resources.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/shared-resources.md %}">Next Step</a>
