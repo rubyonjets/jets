@@ -63,7 +63,7 @@ class OutputsExample < Jets::Stack
   # long form
   output(vpc_id: {
     description: "vpc id",
-    value: ref("vpc_id"),
+    value: ref("vpc_id"), # same as: value: "!Ref VpcId"
   })
   # medium form
   output :stack_name, value: "!Ref AWS::StackName"
