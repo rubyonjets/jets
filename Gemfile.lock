@@ -72,7 +72,7 @@ GEM
     aws-sdk-cloudwatchlogs (1.8.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.27.0)
+    aws-sdk-core (3.27.1)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
@@ -174,4 +174,4 @@ DEPENDENCIES
   webpacker!
 
 BUNDLED WITH
-   1.16.4
+   1.16.3
