@@ -60,19 +60,6 @@ describe "Stack resource" do
     end
   end
 
-  context "medium form with empty properties" do
-    let(:definition) do
-      [:sns_topic,
-        type: "AWS::SNS::Topic",
-        properties: {}]
-    end
-    it "template" do
-      expect(resource.template).to eq(
-        {"SnsTopic"=>{"Type"=>"AWS::SNS::Topic"}}
-      )
-    end
-  end
-
   context "short form with properties" do
     let(:definition) do
       [:sns_topic, "AWS::SNS::Topic",
