@@ -40,7 +40,7 @@ class Jets::Cfn::Builders
 
       expression = "#{Jets::Naming.template_path_prefix}-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
-      Jets::Dir.glob(expression).each do |path|
+      Dir.glob(expression).each do |path|
         next unless File.file?(path)
         next if api_gateway_paths.include?(path) # specially treated
 

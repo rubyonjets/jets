@@ -147,7 +147,7 @@ class Jets::Builders
     # debugging. So we have to clean out the files. But we only want to clean out
     # some of the files.
     def clean_start
-      Jets::Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
+      Dir.glob("#{Jets.build_root}/code/code-*.zip").each { |f| FileUtils.rm_f(f) }
       FileUtils.mkdir_p(Jets.build_root) # /tmp/jets/demo
     end
 
@@ -363,7 +363,7 @@ EOL
       end
 
       # IE: /tmp/jets/demo/cache/bundled/gems/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
-      Jets::Dir.glob("#{cache_area}/bundled/gems/ruby/2.5.0/bundler/gems/*").each do |path|
+      Dir.glob("#{cache_area}/bundled/gems/ruby/2.5.0/bundler/gems/*").each do |path|
         sha = path.split('-').last[0..6] # only first 7 chars of the git sha
         unless git_shas.include?(sha)
           puts "Removing old submoduled gem: #{path}"

@@ -92,7 +92,7 @@ EOL
     end
 
     def tidy_gems(gems_path)
-      Jets::Dir.glob(gems_path).each do |gem_path|
+      Dir.glob(gems_path).each do |gem_path|
         tidy_gem(gem_path)
       end
     end
@@ -103,7 +103,7 @@ EOL
     #  191M test3
     def tidy_gem(path)
       # remove top level tests and cache folders
-      Jets::Dir.glob("#{path}/*").each do |path|
+      Dir.glob("#{path}/*").each do |path|
         next unless File.directory?(path)
         folder = File.basename(path)
         if %w[test tests spec features benchmark cache doc].include?(folder)
@@ -111,7 +111,7 @@ EOL
         end
       end
 
-      Jets::Dir.glob("#{path}/**/*").each do |path|
+      Dir.glob("#{path}/**/*").each do |path|
         next unless File.file?(path)
         ext = File.extname(path)
         if %w[.rdoc .md .markdown].include?(ext) or
@@ -142,7 +142,7 @@ EOL
     # Circleci Ubuntu based Linux:
     #   bundled/gems/ruby/2.5.0/extensions/x86_64-linux/2.5.0/pg-0.21.0
     def compiled_gem_paths
-      Jets::Dir.glob("#{Jets.build_root}/cache/bundled/gems/ruby/*/extensions/**/**/*.{so,bundle}")
+      Dir.glob("#{Jets.build_root}/cache/bundled/gems/ruby/*/extensions/**/**/*.{so,bundle}")
     end
 
     # Input: bundled/gems/ruby/2.5.0/extensions/x86_64-darwin-16/2.5.0-static/byebug-9.1.0

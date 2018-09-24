@@ -89,7 +89,7 @@ module Jets::Core
   # Eager load jet's lib and classes
   def eager_load_jets
     lib_jets = File.expand_path(".", File.dirname(__FILE__))
-    Jets::Dir.glob("#{lib_jets}/**/*.rb").select do |path|
+    Dir.glob("#{lib_jets}/**/*.rb").select do |path|
       # puts "path #{path}"
       next if !File.file?(path)
       next if skip_eager_load_paths?(path)
@@ -127,7 +127,7 @@ module Jets::Core
 
   # Eager load user's application
   def eager_load_app
-    Jets::Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
+    Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
 
       class_name = path

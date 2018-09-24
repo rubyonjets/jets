@@ -104,9 +104,9 @@ class Jets::CLI
     args = @given_args.reject {|o| o =~ /^-/ } - help_flags
     command = args[0] # first argument should always be the command
     command = ALIASES[command] || command
-    puts "full_command1 #{Time.now}"
-#    Jets::Commands::Base.autocomplete(command)
-    puts "full_command2 #{Time.now}"
+    # puts "full_command1 #{Time.now}"
+    # command = Jets::Commands::Base.autocomplete(command)
+    # puts "full_command2 #{Time.now}"
     command
   end
 

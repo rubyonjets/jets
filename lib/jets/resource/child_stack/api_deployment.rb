@@ -26,7 +26,7 @@ module Jets::Resource::ChildStack
     def depends_on
       expression = "#{Jets::Naming.template_path_prefix}-*_controller*"
       controller_logical_ids = []
-      Jets::Dir.glob(expression).each do |path|
+      Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
         # map the path to a camelized logical_id. Example:

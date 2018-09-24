@@ -30,7 +30,7 @@ module Jets::Resource::ApiGateway
     def depends_on
       expression = "#{Jets::Naming.template_path_prefix}-*_controller*"
       controller_logical_ids = []
-      Jets::Dir.glob(expression).each do |path|
+      Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
         regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
