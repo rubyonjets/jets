@@ -15,16 +15,10 @@ class Jets::CLI
   end
 
   def start
-    puts "start1 #{Time.now}"
     command_class = lookup(full_command)
-    puts "start2 #{Time.now}"
     if command_class
-      puts "start3 #{Time.now}"
       boot_jets
-      puts "start4 #{Time.now}"
-      x = command_class.perform(full_command, thor_args)
-      puts "start5 #{Time.now}"
-      x
+      command_class.perform(full_command, thor_args)
     elsif version_requested?
       puts Jets.version
     else
@@ -104,21 +98,15 @@ class Jets::CLI
     args = @given_args.reject {|o| o =~ /^-/ } - help_flags
     command = args[0] # first argument should always be the command
     command = ALIASES[command] || command
-    # puts "full_command1 #{Time.now}"
-    # command = Jets::Commands::Base.autocomplete(command)
-    # puts "full_command2 #{Time.now}"
-    command
+    Jets::Commands::Base.autocomplete(command)
   end
 
   # 1. look up Thor tasks
   # 2. look up Rake tasks
   # 3. help menu with all commands when both Thor and Rake tasks are not found
   def lookup(full_command)
-    puts "lookup1 #{Time.now}"
     thor_task_found = Jets::Commands::Base.namespaced_commands.include?(full_command)
-    puts "lookup2 #{Time.now}"
     if thor_task_found
-      puts "lookup3 #{Time.now}"
       return Jets::Commands::Base.klass_from_namespace(namespace)
     end
 

@@ -55,10 +55,8 @@ class Jets::Commands::Base < Thor
     # Using constantize instead of require so we dont care about
     # order. The eager load actually uses autoloading.
     def eager_load!
-      path = File.expand_path("../../", __FILE__)
-      expression = "#{path}/commands/**/*.rb"
-      puts "expression #{expression}"
-      Dir.glob(expression).select do |path|
+      base_path = File.expand_path("../../", __FILE__)
+      Dir.glob("#{base_path}/commands/**/*.rb").select do |path|
         next if !File.file?(path) or path =~ /templates/ or path =~ %r{/markdown/}
 
         class_name = path
