@@ -47,7 +47,7 @@ class Jets::Controller
     end
 
     def default_layout
-      application_layout_exist = !Dir.glob("#{Jets.root}app/views/layouts/application*").empty?
+      application_layout_exist = !Jets::Dir.glob("#{Jets.root}app/views/layouts/application*").empty?
       "application" if application_layout_exist
     end
 

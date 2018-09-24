@@ -48,6 +48,7 @@ module Jets
 
   autoload :Resource, "jets/resource"
   autoload :Rdoc, "jets/rdoc"
+  autoload :Dir, "jets/dir"
 end
 
 require "jets/core_ext/kernel"

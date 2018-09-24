@@ -15,6 +15,8 @@ end
 
 class Jets::Commands::Base < Thor
   class << self
+    extend Memoist
+
     # thor_args is an array of commands. Examples:
     #   ["help"]
     #   ["dynamodb:migrate"]
@@ -54,7 +56,7 @@ class Jets::Commands::Base < Thor
     # order. The eager load actually uses autoloading.
     def eager_load!
       path = File.expand_path("../../", __FILE__)
-      Dir.glob("#{path}/commands/**/*.rb").select do |path|
+      Jets::Dir.glob("#{path}/commands/**/*.rb").select do |path|
         next if !File.file?(path) or path =~ /templates/ or path =~ %r{/markdown/}
 
         class_name = path
@@ -68,6 +70,7 @@ class Jets::Commands::Base < Thor
         class_name.constantize # dont have to worry about order.
       end
     end
+    memoize :eager_load!
 
     # Fully qualifed task names. Examples:
     #   build

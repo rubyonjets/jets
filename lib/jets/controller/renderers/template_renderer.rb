@@ -95,7 +95,7 @@ module Jets::Controller::Renderers
       def find_app_helper_classes
         klasses = []
         expression = "#{Jets.root}app/helpers/**/*"
-        Dir.glob(expression).each do |path|
+        Jets::Dir.glob(expression).each do |path|
           next unless File.file?(path)
           class_name = path.sub("#{Jets.root}app/helpers/","").sub(/\.rb/,'')
           unless class_name == "application_helper"
