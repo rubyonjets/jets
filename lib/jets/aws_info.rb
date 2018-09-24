@@ -7,6 +7,9 @@ module Jets
     def region
       return 'us-east-1' if test?
 
+      return ENV['JETS_AWS_REGION'] if ENV['JETS_AWS_REGION'] # highest precedence
+      return ENV['AWS_REGION'] if ENV['AWS_REGION']
+
       region = nil
 
       # First try to get it from the ~/.aws/config
@@ -16,13 +19,14 @@ module Jets
       # Second try the metadata endpoint, should be available on AWS Lambda environment
       # https://stackoverflow.com/questions/4249488/find-region-from-within-an-ec2-instance
       begin
-        az = `curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone`
+        az = `curl -s --max-time 5 --connect-timeout 5 http://169.254.169.254/latest/meta-data/placement/availability-zone`
         region = az.strip.chop # remove last char
+        region = nil if region == ''
       rescue
       end
       return region if region
 
-      ENV['JETS_AWS_REGION'] || 'us-east-1' # default if all else fails
+      'us-east-1' # default if all else fails
     end
     memoize :region
 
