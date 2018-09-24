@@ -1,5 +1,7 @@
 module Jets::Resource::Iam
   module BaseRoleDefinition
+    attr_reader :policy_definitions, :managed_policy_definitions
+
     def definition
       logical_id = role_logical_id
 

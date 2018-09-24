@@ -22,5 +22,14 @@ module Jets::Resource::Iam
         namespace: @app_class.gsub('::','').camelize, # camelized because can be used as value
       }
     end
+
+    def policy_document
+      unless @policy_definitions.empty?
+        application_role = Jets::Resource::Iam::ApplicationRole.new
+        @policy_definitions += application_role.policy_definitions
+        pp @policy_definitions
+      end
+      super
+    end
   end
 end
