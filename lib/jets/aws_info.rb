@@ -21,7 +21,7 @@ module Jets
       begin
         az = `curl -s --max-time 5 --connect-timeout 5 http://169.254.169.254/latest/meta-data/placement/availability-zone`
         region = az.strip.chop # remove last char
-      	region = nil if region == ''
+        region = nil if region == ''
       rescue
       end
       return region if region
