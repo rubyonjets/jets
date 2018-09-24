@@ -44,6 +44,46 @@ Jets.application.configure do |config|
 end
 ```
 
+## IAM Policies Inheritance
+
+IAM policies defined at lower levels of precedence inherit and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add a simple additional permission. For example, the default application-wide IAM policy looks something like this:
+
+```ruby
+[{
+  action: ["logs:*"],
+  effect: "Allow",
+  resource: "arn:aws:logs:REGION:123456789:log-group:/aws/lambda/demo-dev-*",
+}]
+```
+
+When you add a function specific IAM policy to a method:
+
+```ruby
+class PostsController < ApplicationController
+  # ...
+  iam_policy("s3")
+  def show
+    render json: {action: "show", id: params[:id]}
+  end
+end
+```
+
+The resulting policy for the method will look something like this:
+
+```ruby
+[{
+  action: ["logs:*"],
+  effect: "Allow",
+  resource: "arn:aws:logs:REGION:123456789:log-group:/aws/lambda/demo-dev-*",
+},{
+  action: ["s3:*"],
+  effect: "Allow",
+  resource: "*",
+}]
+```
+
+So the IAM policies are additive.
+
 ## IAM Policy Definition Styles
 
 You might have noticed that the above `iam_policy` examples take a variety of different parameter styles. Jets allows for different IAM Policy Definition styles for your convenience. The `iam_policy` takes a single parameter or list of parameters.  Jets expands each parameter in the list to Policy Statements in an IAM Policy Document.
