@@ -24,12 +24,31 @@ module Jets::Resource::Iam
     end
 
     def policy_document
+      # Handles inheritance from the ApplicationRole to the ClassRole
       unless @policy_definitions.empty?
         application_role = Jets::Resource::Iam::ApplicationRole.new
         @policy_definitions += application_role.policy_definitions
-        pp @policy_definitions
       end
       super
     end
+
+    def policy_document
+      @policy_definitions += application_role.policy_definitions if inherit?
+      super
+    end
+
+    def managed_policy_arns
+      @managed_policy_definitions += application_role.managed_policy_definitions if inherit?
+      super
+    end
+
+    def inherit?
+      !@policy_definitions.empty? || !@managed_policy_definitions.empty?
+    end
+
+    def application_role
+      Jets::Resource::Iam::ApplicationRole.new
+    end
+    memoize :application_role
   end
 end

@@ -4,10 +4,10 @@ module Jets::Resource::Iam
 
     def initialize
       @policy_definitions = Jets.config.iam_policy # config.iam_policy contains definitions
-      @policy_definitions = [@policy_definitions].flatten if @policy_definitions
+      @policy_definitions = @policy_definitions ? [@policy_definitions].flatten : []
 
       @managed_policy_definitions = Jets.config.managed_iam_policy # config.managed_iam_policy contains definitions
-      @managed_policy_definitions = [@managed_policy_definitions].flatten if @managed_policy_definitions
+      @managed_policy_definitions = @managed_policy_definitions ? [@managed_policy_definitions].flatten : []
     end
 
     def role_logical_id
