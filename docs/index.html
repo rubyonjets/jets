@@ -164,12 +164,9 @@ $
 {% highlight sh %}
 $ jets deploy
 Deploying to Lambda demo-dev environment...
-=> Compling assets in current project directory
 => Copying current project directory to temporary build area: /tmp/jets/demo/app_root
 => Setting up a vendored copy of ruby.
 => Replacing compiled gems with AWS Lambda Linux compiled versions.
-Creating zip file.
-=> cd /tmp/jets/demo/app_root && zip --symlinks -rq /tmp/jets/demo/code/code-temp.zip .
 Deploying CloudFormation stack with jets app!
 Uploading /tmp/jets/demo/code/code-7169d0ac.zip (88.8 MB) to S3
 Time to upload code to s3: 1s
