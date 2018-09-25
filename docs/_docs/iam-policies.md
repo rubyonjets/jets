@@ -13,7 +13,7 @@ Jets provides several ways to finely control the IAM policies associated with yo
 ```ruby
 class PostsController < ApplicationController
   # ...
-  iam_policy("s3", "logs")
+  iam_policy("s3", "sns")
   def show
     render json: {action: "show", id: params[:id]}
   end
@@ -27,7 +27,7 @@ class PostsController < ApplicationController
   class_iam_policy(
     "dynamodb",
     {
-      action: ["logs:*"],
+      action: ["kinesis:*"],
       effect: "Allow",
       resource: "*",
     }
@@ -98,7 +98,7 @@ It is suggested that you start off with the simplest `iam_policy` definition sty
 ### IAM Policy Simple Statement
 
 ```ruby
-iam_policy("s3", "logs")
+iam_policy("s3", "sns")
 ```
 
 Expands to:
@@ -111,12 +111,12 @@ Statement:
   Effect: Allow
   Resource: "*"
 - Action:
-  - logs:*
+  - sns:*
   Effect: Allow
   Resource: "*"
 ```
 
-The notation with `:*` also works: `iam_policy("s3:*", "logs:*")`.
+The notation with `:*` also works: `iam_policy("s3:*", "sns:*")`.
 
 ### IAM Policy Statement Hash
 
@@ -124,9 +124,9 @@ The notation with `:*` also works: `iam_policy("s3:*", "logs:*")`.
 class_iam_policy(
   "dynamodb"
   {
-    action: ["logs"],
+    action: ["kinesis"],
     effect: "Allow",
-    resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{Jets.config.project_namespace}-*",
+    resource: "arn:aws:kinesis:#{Jets.aws.region}:#{Jets.aws.account}:stream/name*",
   }
 )
 ```
@@ -141,9 +141,9 @@ Statement:
   Effect: Allow
   Resource: "*"
 - Action:
-  - logs:*
+  - kinesis:*
   Effect: Allow
-  Resource: "arn:aws:logs:us-west-2:1234567890:log-group:demo-dev-*"
+  Resource: "arn:aws:kinesis:us-west-2:1234567890:log-group:demo-dev-*"
 ```
 
 Note, the resource values are examples.
