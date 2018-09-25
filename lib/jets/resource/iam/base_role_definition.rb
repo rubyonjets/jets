@@ -36,11 +36,11 @@ module Jets::Resource::Iam
     end
 
     def policy_document
-      PolicyDocument.new(@policy_definitions.uniq).policy_document
+      PolicyDocument.new(@policy_definitions.flatten.uniq).policy_document
     end
 
     def managed_policy_arns
-      ManagedPolicy.new(@managed_policy_definitions.uniq).arns
+      ManagedPolicy.new(@managed_policy_definitions.flatten.uniq).arns
     end
   end
 end
