@@ -13,8 +13,9 @@ fi
 # Assume demo project has been created
 cd demo
 # Create a data record that the postman tests assumes to exist.  The postman collection deletes this record.
+jets runner 'Post.create(id: 1) unless Post.find_by(id: 1)'
 jets runner 'Post.create(id: 2) unless Post.find_by(id: 2)'
 
 # Integration postman script lives in jets
 cd jets
-newman run spec/fixtures/postman/collection.json -e spec/fixtures/postman/environment.json
+newman run spec/integration/fixtures/postman/collection.json -e spec/integration/fixtures/postman/environment.json
