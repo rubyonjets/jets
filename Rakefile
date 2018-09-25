@@ -5,13 +5,6 @@ task :default => :spec
 
 RSpec::Core::RakeTask.new
 
-namespace :spec do
-  desc "Run integration test"
-  task :integration do
-    system("spec/bin/integration.sh")
-  end
-end
-
 require_relative "lib/jets"
 desc "Generates cli reference docs as markdown"
 task :docs do
