@@ -144,6 +144,7 @@ module Jets::Lambda::Dsl
           @associated_resources << Jets::Resource::Associated.new(definitions)
           @associated_resources.flatten!
         end
+        puts "right after being added #{@associated_resources.inspect}"
       end
       # User-friendly short resource method. Users will use this.
       alias_method :resource, :associated_resources
@@ -176,11 +177,19 @@ module Jets::Lambda::Dsl
       def add_logical_id_counter
         numbered_resources = []
         n = 1
+        puts "add_logical_id_counter @associated_resources #{@associated_resources.inspect}".colorize(:cyan)
         @associated_resources.map do |associated|
-          definition = associated.definition
-          logical_id = definition.keys.first
+          # puts "associated #{associated.inspect}"
+          # definition = associated.definition
+          # puts "definition #{definition.inspect}"
+          # logical_id = definition.keys.first
+
+          logical_id = associated.logical_id
+          attributes = associated.attributes
+
           logical_id = logical_id.sub(/\d+$/,'')
-          numbered_resources << { "#{logical_id}#{n}" => definition.values.first }
+          new_definition = { "#{logical_id}#{n}" => attributes }
+          numbered_resources << Jets::Resource::Associated.new(new_definition)
           n += 1
         end
         @associated_resources = numbered_resources
@@ -201,7 +210,7 @@ module Jets::Lambda::Dsl
 
         # At this point we can use the current associated_properties and defined the
         # associated resource with the Lambda function.
-        if !associated_properties.empty?
+        unless associated_properties.empty?
           associated_resources(default_associated_resource_definition(meth))
         end
 

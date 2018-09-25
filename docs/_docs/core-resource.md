@@ -44,7 +44,7 @@ end
 
 The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource.
 
-With this design, you can create any resource with Jets and associate them with your Lambda functions. Once you understand how the `resource` method works, you can define any resource that you required. Methods like `rate`, `cron`, `event_rule`, `event_pattern` simply run some setup logic and call the `resource` method.
+With this design, you can create any resource with Jets and associate them with your Lambda functions. Once you understand how the `resource` method works, you can define any resource that you required. Methods like `rate`, `cron`, `events_rule`, `event_pattern` simply run some setup logic and call the `resource` method.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/custom-resources.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/associated-resources.md %}">Next Step</a>
