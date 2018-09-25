@@ -17,18 +17,12 @@ describe Jets::Resource::Associated do
   end
 
   context "long form" do
-    it "cloudformation format" do
+    it "standardized format" do
+      expect(associated.logical_id).to eq :"{namespace}EventsRule1"
+      attributes = associated.attributes
       # pp associated  # uncomment to see and debug
-      # pp associated.logical_id # uncomment to see and debug
-      # pp associated.attributes # uncomment to see and debug
-      # pp associated.properties # uncomment to see and debug
-
-      # expect(permission.logical_id).to eq "HardJobDigPermission1"
-      # properties = permission.properties
-      # # pp properties # uncomment to debug
-      # expect(properties["Principal"]).to eq "events.amazonaws.com"
-      # expect(properties["SourceArn"]).to eq "!GetAtt HardJobDigEventsRule1.Arn"
+      # pp attributes # uncomment to see and debug
+      expect(attributes[:type]).to eq "AWS::Events::Rule"
     end
   end
 end
-
