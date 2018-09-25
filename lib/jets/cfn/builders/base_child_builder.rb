@@ -24,6 +24,29 @@ class Jets::Cfn::Builders
     def add_common_parameters
       add_parameter("IamRole", Description: "Iam Role that Lambda function uses.")
       add_parameter("S3Bucket", Description: "S3 Bucket for source code.")
+      depends_on_params.each do |logical_id, desc|
+        add_parameter(logical_id, Description: desc)
+      end
+    end
+
+    def depends_on_params
+      return {} unless @app_class.depends_on
+
+      params = {}
+      @app_class.depends_on.each do |shared_stack|
+        dependency = shared_stack.to_s.camelize # logical_id
+        dependency_outputs(dependency).each do |output|
+          dependency_class = dependency.to_s.classify
+          desc = "From #{dependency_class}.Outputs.#{output}"
+          # key: logical_id , value: description
+          params[output] = desc
+        end
+      end
+      params
+    end
+
+    def dependency_outputs(dependency)
+      dependency.to_s.classify.constantize.output_keys
     end
 
     def add_functions

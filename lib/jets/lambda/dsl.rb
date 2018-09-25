@@ -188,6 +188,15 @@ module Jets::Lambda::Dsl
         @associated_resources = numbered_resources
       end
 
+      def depends_on(*stacks)
+        if stacks == []
+          @depends_on
+        else
+          @depends_on ||= []
+          @depends_on += stacks
+        end
+      end
+
       # meth is a Symbol
       def method_added(meth)
         return if %w[initialize method_missing].include?(meth.to_s)

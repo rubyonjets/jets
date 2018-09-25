@@ -26,23 +26,27 @@ module Jets::Resource::ChildStack
     end
 
     def depends_on
-      return nil
-      # return unless Jets::Stack.has_resources?
+      klass = current_app_class.constantize
+      return unless klass.depends_on
 
-      # expression = "#{Jets::Naming.template_path_prefix}-shared-*"
-      # shared_logical_ids = []
-      # Dir.glob(expression).each do |path|
-      #   next unless File.file?(path)
+      klass.depends_on.map do |shared_stack|
+        shared_stack.to_s.camelize # logical_id
+      end
+    end
 
-      #   # map the path to a camelized logical_id. Example:
-      #   #   /tmp/jets/demo/templates/demo-dev-2-shared-resource.yml to
-      #   #   SharedResource
-      #   regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
-      #   shared_name = path.sub(regexp, '').sub('.yml', '')
-      #   shared_logical_id = shared_name.underscore.camelize
-      #   shared_logical_ids << shared_logical_id
-      # end
-      # shared_logical_ids
+    def depends_on_params
+      params = {}
+      depends_on.each do |dependency|
+        dependency_outputs(dependency).each do |output|
+          dependency_class = dependency.to_s.classify
+          params[output] = "!GetAtt #{dependency_class}.Outputs.#{output}"
+        end
+      end
+      params
+    end
+
+    def dependency_outputs(dependency)
+      dependency.to_s.classify.constantize.output_keys
     end
 
     def parameters
@@ -51,6 +55,7 @@ module Jets::Resource::ChildStack
         S3Bucket: "!Ref S3Bucket",
       }
       common.merge!(controller_params) if controller?
+      common.merge!(depends_on_params) if depends_on
       common
     end
 
