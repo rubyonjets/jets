@@ -97,7 +97,8 @@ module Jets
       memoize :looker
 
       def output_keys
-        new.outputs.map(&:template).map {|o| o.keys.first}
+        outputs = new.outputs || []
+        outputs.map(&:template).map {|o| o.keys.first}
       end
     end
   end

@@ -5,6 +5,7 @@ describe Jets::Commands::Build do
     end
 
     it "builds templates" do
+      build.run
       file_exist = File.exist?("/tmp/jets/demo/templates/demo-test-app-posts_controller.yml")
       expect(file_exist).to be true
     end
