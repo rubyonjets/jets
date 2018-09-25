@@ -15,7 +15,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-What's happens is that Jets takes the `rate` method, performs some wrapper logic, and calls the core `resource` method in the first pass.  The code looks something like this after the first pass:
+What happens is that Jets takes the `rate` method, performs some wrapper logic, and calls the core `resource` method in the first pass.  The code looks something like this after the first pass:
 
 ```ruby
 class HardJob < ApplicationJob
