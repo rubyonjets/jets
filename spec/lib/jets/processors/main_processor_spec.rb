@@ -1,9 +1,26 @@
 describe Jets::Processors::MainProcessor do
-  let(:main) { Jets::Processors::MainProcessor.new(event, context, handler) }
-  let(:event) { '{"event":"test"}' }
-  let(:context) { '{}' }
+  let(:main) do
+    Jets::Processors::MainProcessor.new(
+      JSON.dump(event),
+      JSON.dump(context),
+      handler
+    )
+  end
+  let(:event) { {} }
+  let(:context) { {} }
 
-  context "controller" do
+  context "controller create" do
+    let(:handler) { 'handlers/controllers/posts_controller.create' }
+    it "returns result" do
+      result = main.run
+      data = JSON.load(result)
+      # pp data
+      expect(data["statusCode"]).to eq "200"
+      expect(data["body"]).to be_a(String)
+    end
+  end
+
+  context "controller new" do
     let(:handler) { 'handlers/controllers/posts_controller.new' }
     it "process:controller event context handler" do
       out = main.run
@@ -16,21 +33,32 @@ describe Jets::Processors::MainProcessor do
 
   context "job" do
     let(:handler) { 'handlers/jobs/hard_job.dig' }
-    it "process:job event context handler" do
-      out = main.run
-      # pp out # uncomment to debug
-      data = JSON.parse(out)
-      expect(data).to eq("done"=>"digging") # data returned is Hash
+    it "returns result" do
+      result = main.run
+      data = JSON.load(result)
+      # pp data
+      expect(data["done"]).to eq "digging"
     end
   end
 
   context "function" do
     let(:handler) { 'handlers/functions/hello.world' }
-    let(:event) { '{"key1":"value1"}' }
-    it "process:function event context handler" do
-      out = main.run
-      # pp out # uncomment to debug
-      data = JSON.parse(out)
+    let(:event) { {"key1" => "value1"} }
+    it "returns result" do
+      result = main.run
+      data = JSON.load(result)
+      # pp data
+      expect(data).to eq 'hello world: "value1"'
+    end
+  end
+
+  context "shared function" do
+    let(:handler) { 'handlers/shared/functions/whatever.handle' }
+    let(:event) { {"key1" => "value1"} }
+    it "returns result" do
+      result = main.run
+      data = JSON.load(result)
+      # pp data
       expect(data).to eq 'hello world: "value1"'
     end
   end

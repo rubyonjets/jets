@@ -10,8 +10,6 @@ module Jets::Resource::Iam
         version: "2012-10-17",
         statement: []
       }
-      # https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_sid.html
-      @sid = 0 # counter
     end
 
     def policy_document
@@ -21,13 +19,11 @@ module Jets::Resource::Iam
     memoize :policy_document # only process policy_document once
 
     def standardize(definition)
-      @sid += 1
       case definition
       when String
         # Expands simple string from: logs => logs:*
         definition = "#{definition}:*" unless definition.include?(':')
         @policy[:statement] << {
-          sid: "Stmt#{@sid}",
           action: [definition],
           effect: "Allow",
           resource: "*",

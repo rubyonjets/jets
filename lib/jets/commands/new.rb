@@ -1,5 +1,6 @@
 module Jets::Commands
   class New < Sequence
+    VALID_MODES = %w[html api job]
     argument :project_name
 
     # Ugly, but when the class_option is only defined in the Thor::Group class
@@ -7,29 +8,33 @@ module Jets::Commands
     # If anyone knows how to fix this let me know.
     def self.cli_options
       [
-        [:api, type: :boolean, default: false, desc: "API mode."],
-        [:database, type: :boolean, default: true, desc: "Adds database"],
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
+        [:database, type: :boolean, default: true, desc: "Adds database"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
+        [:mode, default: 'html', desc: "mode: #{VALID_MODES.join(',')}"],
         [:repo, desc: "GitHub repo to use. Format: user/repo"],
         [:webpacker, type: :boolean, default: true, desc: "Install webpacker"],
       ]
     end
 
     cli_options.each do |args|
-      class_option *args
+      class_option(*args)
     end
 
     def set_api_mode
       # options is a frozen hash by Thor so cannot modify it.
       # Also had trouble unfreezing it with .dup. So using instance variables instead
-      if options[:api]
+      case options[:mode]
+      when 'html'
+        @webpacker = options[:webpacker]
+        @bootstrap = options[:bootstrap]
+      when 'api', 'job'
         @webpacker = false
         @bootstrap = false
       else
-        @webpacker = options[:webpacker]
-        @bootstrap = options[:bootstrap]
+        puts "Invalid mode provided: #{@options[:mode].colorize(:red)}. Please pass in an valid mode: #{VALID_MODES.join(',').colorize(:green)}."
+        exit 1
       end
     end
 
@@ -90,22 +95,37 @@ JS
     end
 
     def user_message
-      puts <<-EOL
-#{"="*64}
-Congrats 🎉 You have successfully created a Jets project.
+      more_info = if options[:mode] == 'job'
+        <<~EOL
+          Learn more about jobs here: http://rubyonjets.com/docs/jobs/
 
-Cd into the project directory:
-  cd #{project_name}
+          To deploy to AWS Lambda:
+            jets deploy
+        EOL
+      else
+        <<~EOL
+          To start a server and test locally:
+            jets server # localhost:8888 should have the Jets welcome page
 
-To start a server and test locally:
-  jets server # localhost:8888 should have the Jets welcome page
+          Scaffold example:
+            jets generate scaffold Post title:string body:text published:boolean
 
-Scaffold example:
-  jets generate scaffold Post title:string body:text published:boolean
+          To deploy to AWS Lambda, edit your .env.development.remote and add a DATABASE_URL endpoint.
+          Then run:
+        
+            jets deploy
+        EOL
+      end
+      
+      puts <<~EOL
+        #{"="*64}
+        Congrats 🎉 You have successfully created a Jets project.
 
-To deploy to AWS Lambda:
-  jets deploy
-EOL
+        Cd into the project directory:
+          cd #{project_name}
+
+        #{more_info}
+      EOL
     end
   end
 end

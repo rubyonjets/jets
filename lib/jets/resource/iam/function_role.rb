@@ -22,5 +22,33 @@ module Jets::Resource::Iam
         namespace: "#{@task.class_name.gsub('::','')}#{@task.meth.to_s.camelize}", # camelized because can be used as value
       }
     end
+
+    def policy_document
+      if inherit?
+        @policy_definitions += class_role.policy_definitions + application_role.policy_definitions
+      end
+      super
+    end
+
+    def managed_policy_arns
+      if inherit?
+        @managed_policy_definitions += class_role.managed_policy_definitions + application_role.managed_policy_definitions
+      end
+      super
+    end
+
+    def inherit?
+      !@policy_definitions.empty? || !@managed_policy_definitions.empty?
+    end
+
+    def class_role
+      Jets::Resource::Iam::ClassRole.new(@task.class_name.constantize)
+    end
+    memoize :class_role
+
+    def application_role
+      Jets::Resource::Iam::ApplicationRole.new
+    end
+    memoize :application_role
   end
 end

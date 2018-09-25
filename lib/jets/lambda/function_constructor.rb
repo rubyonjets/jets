@@ -45,10 +45,10 @@ module Jets::Lambda
       function_klass # assign this to a Constant for a pretty class name
     end
 
-    # For anonymous classes method_added during task registeration contains ""
+    # For anonymous classes method_added during task registration contains ""
     # for the class name.  We adjust it here.
     def adjust_tasks(klass)
-      class_name = @code_path.sub(/.*app\/functions\//,'').sub(/\.rb$/, '')
+      class_name = @code_path.sub(/.*\/functions\//,'').sub(/\.rb$/, '')
       class_name = class_name.classify
       klass.tasks.each do |task|
         task.class_name = class_name

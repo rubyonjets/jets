@@ -1,0 +1,2 @@
+module ToysHelper
+end

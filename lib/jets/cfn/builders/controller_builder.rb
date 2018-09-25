@@ -1,3 +1,8 @@
+# Implements:
+#
+#   compose
+#   template_path
+#
 class Jets::Cfn::Builders
   class ControllerBuilder < BaseChildBuilder
     # compose is an interface method for Interface module
@@ -30,7 +35,7 @@ class Jets::Cfn::Builders
     # routes scoped to this controller template.
     def scoped_routes
       @routes ||= Jets::Router.routes.select do |route|
-        route.controller_name == @app_klass.to_s
+        route.controller_name == @app_class.to_s
       end
     end
   end

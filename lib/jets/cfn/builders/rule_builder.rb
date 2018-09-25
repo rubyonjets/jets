@@ -1,3 +1,8 @@
+# Implements:
+#
+#   compose
+#   template_path
+#
 class Jets::Cfn::Builders
   class RuleBuilder < BaseChildBuilder
     def compose
@@ -10,7 +15,7 @@ class Jets::Cfn::Builders
     # Handle config_rules associated with aws managed rules.
     # List of AWS Config Managed Rules: https://amzn.to/2BOt9KN
     def add_managed_rules
-      @app_klass.managed_rules.each do |rule|
+      @app_class.managed_rules.each do |rule|
         resource = Jets::Resource.new(rule[:definition], rule[:replacements])
         add_resource(resource)
       end

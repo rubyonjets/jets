@@ -15,6 +15,7 @@
 #   Jets::Klass.from_path("app/jobs/hard_job.rb")
 #   Jets::Klass.from_path("app/functions/hello.rb")
 #   Jets::Klass.from_path("app/functions/hello_function.rb")
+#   Jets::Klass.from_path("app/shared/functions/whatever.rb")
 #
 #   Jets::Klass.from_task(task)
 #
@@ -37,7 +38,11 @@ class Jets::Klass
 
     # app/controllers/posts_controller.rb => PostsController
     def class_name(path)
-      path.sub(%r{.*app\/(.*?)/},'').sub(/\.rb$/,'').classify
+      if path.include?("/shared/")
+        path.sub(%r{.*app/shared/(.*?)/},'').sub(/\.rb$/,'').classify
+      else
+        path.sub(%r{.*app/(.*?)/},'').sub(/\.rb$/,'').classify
+      end
     end
 
     def from_task(task)

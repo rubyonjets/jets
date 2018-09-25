@@ -1,5 +1,9 @@
 Jets.application.routes.draw do
-  # Default homepage. This should be replaced.
+  # Default homepage. This should be replaced. Replacing requires using JETS_ENV_EXTRA
+  # or deleting and deploying twice.
+  # More info:
+  #   http://rubyonjets.com/docs/routes-workaround/
+  #   http://rubyonjets.com/docs/env-extra/
   root "jets/welcome#index"
 
   # Required for API Gateway to serve static utf8 content out of public folder.

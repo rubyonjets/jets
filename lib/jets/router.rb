@@ -30,7 +30,15 @@ module Jets
     end
 
     def api_mode?
-      Jets.config.api_generator
+      if Jets.config.api_generator
+        puts <<~EOL.colorize(:yellow)
+          DEPRECATED: Jets.config.api_generator
+          Instead, please update your config/application.rb to use:
+            Jets.config.api_mode
+        EOL
+      end
+      api_mode = Jets.config.api_mode || Jets.config.api_generator
+      api_mode
     end
 
     def create_route(options)

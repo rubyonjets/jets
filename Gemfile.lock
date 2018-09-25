@@ -21,6 +21,7 @@ PATH
       aws-sdk-dynamodb
       aws-sdk-lambda
       aws-sdk-s3
+      aws-sdk-sns
       colorize
       dotenv
       gems
@@ -88,6 +89,9 @@ GEM
     aws-sdk-s3 (1.20.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.0)
+    aws-sdk-sns (1.5.0)
+      aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
     builder (3.2.3)
@@ -170,4 +174,4 @@ DEPENDENCIES
   webpacker!
 
 BUNDLED WITH
-   1.16.4
+   1.16.3

@@ -1,0 +1,6 @@
+<h1>Editing Article</h1>
+
+<%= render 'form', article: @article %>
+
+<%= link_to 'Show', "/articles/#{@article.id}/edit" %> |
+<%= link_to 'Back', "/articles" %>

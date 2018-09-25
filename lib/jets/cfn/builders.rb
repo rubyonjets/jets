@@ -9,11 +9,13 @@ class Jets::Cfn
     # These build the app/controllers, app/jobs, and app/functions
     autoload :BaseChildBuilder, "jets/cfn/builders/base_child_builder"
     autoload :ControllerBuilder, "jets/cfn/builders/controller_builder"
-    autoload :JobBuilder, "jets/cfn/builders/job_builder"
     autoload :FunctionBuilder, "jets/cfn/builders/function_builder"
+    autoload :JobBuilder, "jets/cfn/builders/job_builder"
     autoload :RuleBuilder, "jets/cfn/builders/rule_builder"
 
     autoload :ApiGatewayBuilder, "jets/cfn/builders/api_gateway_builder"
     autoload :ApiDeploymentBuilder, "jets/cfn/builders/api_deployment_builder"
+
+    autoload :SharedBuilder, "jets/cfn/builders/shared_builder"
   end
 end

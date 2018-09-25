@@ -35,7 +35,33 @@ private
 
   def copy_project
     puts "Creating new project called #{project_name}."
-    directory ".", project_name
+    directory ".", project_name, copy_options
+  end
+
+  def copy_options
+    # list of words to include in the exclude pattern and will not be generated
+    words = %w[
+      Procfile
+      controllers
+      helpers
+      javascript
+      models/application_
+      views
+      config.ru
+      database.yml
+      dynamodb.yml
+      routes
+      db/
+      spec
+      yarn
+      public
+    ]
+
+    if @options[:mode] == 'job'
+      { exclude_pattern: Regexp.new(words.join('|')) }
+    else
+      {}
+    end
   end
 
   def git_installed?

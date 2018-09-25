@@ -27,14 +27,25 @@ class Jets::Processors::Deducer
   # process_type is key. It can be either "controller" or "job". It is used to
   # deduce the rest of the methods: code, path.
   def process_type
-    @handler.split('/')[1].singularize # controller or job
+    if shared?
+      "function" # all app/shared/functions are always function process_type
+    else
+      @handler.split('/')[1].singularize # controller, job, rule, etc
+    end
+  end
+
+  def shared?
+    @handler.include?("/shared/functions")
   end
 
   # Example underscored_class_name:
   #   class_name = underscored_class_name
   #   class_name = class_name # PostsController
   def class_name
-    regexp = Regexp.new(".*handlers/#{process_type.pluralize}/")
+    regexp = shared? ?
+      Regexp.new(".*handlers/shared/functions/") :
+      Regexp.new(".*handlers/#{process_type.pluralize}/")
+
     # Example regexp:
     #   /.*handlers\/controllers\//
     #   /.*handlers\/jobs\//

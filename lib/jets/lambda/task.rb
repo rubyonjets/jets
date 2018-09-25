@@ -1,16 +1,17 @@
 class Jets::Lambda::Task
   attr_accessor :class_name, :type
-  attr_reader :meth, :resources, :properties, :iam_policy, :managed_iam_policy, :lang
+  attr_reader :meth, :properties, :iam_policy, :managed_iam_policy, :lang, :associated_resources
   def initialize(class_name, meth, options={})
     @class_name = class_name.to_s
     @meth = meth
     @options = options
     @type = options[:type] || get_type  # controller, job, or function
-    @resources = options[:resources] || {}
     @properties = options[:properties] || {}
     @iam_policy = options[:iam_policy]
     @managed_iam_policy = options[:managed_iam_policy]
     @lang = options[:lang] || :ruby
+    @associated_resources = options[:associated_resources] || {}
+    @replacements = options[:replacements] || {} # added to baseline replacements
   end
 
   def build_function_iam?
@@ -82,11 +83,15 @@ class Jets::Lambda::Task
     handler_path.sub("handlers/", "app/")
   end
 
-  ###
-  # Useful for Jets::Resource late building.
   def replacements
+    # Merge in the custom replacements specific to each app class: ConfigRule, Job, etc.
+    baseline_replacements.merge(@replacements)
+  end
+
+  def baseline_replacements
     {
-      namespace: "#{@class_name.gsub('::','')}#{@meth.to_s.camelize}", # camelized because used in not just keys but also values
+      # camelized because used in not just keys but common used in values
+      namespace: @meth.to_s.camelize,
     }
   end
 end

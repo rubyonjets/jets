@@ -54,11 +54,22 @@ Then create a user and add the user to IAM group. Here's an example:
 
 ## Additional IAM Permissions
 
-The baseline IAM policy above might not include all the permissions required depending on what your Jets application does. For example, if you are using [AWS Config Rules]({% link _docs/config-rules.md %}) or Custom Resources, then you would need to add permissions specific to those resources. This is why an IAM group is recommended.  You simply have to update the group policies.
+The baseline IAM policy above might not include all the permissions required depending on what your Jets application does. For example, if you are using [AWS Config Rules]({% link _docs/config-rules.md %}) or [Custom Resources]({% link _docs/custom-resources.md %}), then you would need to add permissions specific to those resources. This is why an IAM group is recommended.  You simply have to update the group policies.
 
 Here's how you add a managed IAM policy that provides the AWS Config Rule permissions:
 
     aws iam attach-group-policy --policy-arn arn:aws:iam::aws:policy/service-role/AWSConfigRole --group-name Jets
+
+The IAM Policies for the group looks something like this:
+
+![](/img/docs/minimal-iam-policy.png)
+
+## Lambda Function vs User Deploy IAM Policies
+
+This page refers to your **user** IAM policy used when running `jets deploy`. These are different from the IAM Policies associated with created Lambda functions.  For those iam policies refer to:
+
+* [IAM Policies]({% link _docs/iam-policies.md %})
+* [Managed IAM Policies]({% link _docs/managed-iam-policies.md %})
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/action-filters.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-support.md %}">Next Step</a>

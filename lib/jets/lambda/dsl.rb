@@ -1,5 +1,9 @@
+require 'active_support/concern'
+
 # Other dsl that rely on this must implement
-#   default_associated_resource: must return @resources
+#
+#   default_associated_resource_definition
+#
 module Jets::Lambda::Dsl
   extend ActiveSupport::Concern
 
@@ -130,41 +134,67 @@ module Jets::Lambda::Dsl
       end
 
       #############################
-      # Main methood that registers resources associated with the Lambda function.
+      # Main method that registers resources associated with the Lambda function.
       # All resources methods lead here.
-      def resources(*definitions)
-        if definitions == [nil] # when resources called with no arguments
-          @resources || []
+      def associated_resources(*definitions)
+        if definitions == [nil] # when associated_resources called with no arguments
+          @associated_resources || []
         else
-          @resources ||= []
-          @resources += definitions
-          @resources.flatten!
+          @associated_resources ||= []
+          @associated_resources << Jets::Resource::Associated.new(definitions)
+          @associated_resources.flatten!
         end
       end
-      alias_method :resource, :resources
+      # User-friendly short resource method. Users will use this.
+      alias_method :resource, :associated_resources
 
-      # Main method that the convenience methods call for to create resources associated
-      # with the Lambda function. References the first resource and updates it inplace.
-      # Useful for associated resources that are meant to be declare and associated
-      # with only one Lambda function. Example:
-      #
-      #   Config Rule <=> Lambda function is 1-to-1
-      #
-      # Note: This methods calls default_associated_resource. The inheriting DSL class
-      # must implement default_associated_resource. The default_associated_resource should
-      # wrap another method that is nicely name so that the nicely name method is
-      # available in the DSL. Example:
-      #
-      #   def default_associated_resource
-      #     config_rule
-      #   end
-      #
-      def update_properties(values={})
-        @resources ||= default_associated_resource
-        definition = @resources.first # singleton
-        attributes = definition.values.first
-        attributes[:properties].merge!(values)
-        @resources
+      # Properties belonging to the associated resource
+      def associated_properties(options={})
+        @associated_properties ||= {}
+        @associated_properties.deep_merge!(options)
+      end
+      alias_method :associated_props, :associated_properties
+
+      # meta definition
+      def self.define_associated_properties(associated_properties)
+        associated_properties.each do |property|
+          # Example:
+          #   def config_rule_name(value)
+          #     associated_properties(config_rule_name: value)
+          #   end
+          class_eval <<~CODE
+            def #{property}(value)
+              associated_properties(#{property}: value)
+            end
+          CODE
+        end
+      end
+
+      # Loop back through the resources and add a counter to the end of the id
+      # to handle multiple events.
+      # Then replace @associated_resources entirely
+      def add_logical_id_counter
+        numbered_resources = []
+        n = 1
+        @associated_resources.map do |associated|
+          logical_id = associated.logical_id
+          attributes = associated.attributes
+
+          logical_id = logical_id.sub(/\d+$/,'')
+          new_definition = { "#{logical_id}#{n}" => attributes }
+          numbered_resources << Jets::Resource::Associated.new(new_definition)
+          n += 1
+        end
+        @associated_resources = numbered_resources
+      end
+
+      def depends_on(*stacks)
+        if stacks == []
+          @depends_on
+        else
+          @depends_on ||= []
+          @depends_on += stacks
+        end
       end
 
       # meth is a Symbol
@@ -179,12 +209,26 @@ module Jets::Lambda::Dsl
         # Note: for anonymous classes like for app/functions self.name is ""
         # We adjust the class name when we build the functions later in
         # FunctionContstructor#adjust_tasks.
+
+        # At this point we can use the current associated_properties and defined the
+        # associated resource with the Lambda function.
+        unless associated_properties.empty?
+          associated_resources(default_associated_resource_definition(meth))
+        end
+
+        # Unsure why but we have to use @associated_resources vs associated_resources
+        # associated_resources is always nil
+        if @associated_resources && @associated_resources.size > 1
+          add_logical_id_counter
+        end
+
         all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
-          resources: @resources, # associated resources
           properties: @properties, # lambda function properties
           iam_policy: @iam_policy,
           managed_iam_policy: @managed_iam_policy,
-          lang: lang)
+          associated_resources: @associated_resources,
+          lang: lang,
+          replacements: replacements(meth))
 
         # Done storing options, clear out for the next added method.
         clear_properties
@@ -199,11 +243,16 @@ module Jets::Lambda::Dsl
         true
       end
 
+      # Meant to be overridden to add more custom replacements based on the app class type
+      def replacements(meth)
+        {}
+      end
+
       def clear_properties
-        @resources = nil
         @properties = nil
         @iam_policy = nil
         @managed_iam_policy = nil
+        @associated_resources = nil
       end
 
       # Returns the all tasks for this class with their method names as keys.
@@ -252,6 +301,25 @@ module Jets::Lambda::Dsl
       def node(meth)
         defpoly(:node, meth)
       end
+    end # end of class << self
+  end # end of included
+
+  def self.add_custom_resource_extensions(base)
+    base_path = "#{Jets.root}/app/extensions"
+    unless ActiveSupport::Dependencies.autoload_paths.include?(base_path)
+      ActiveSupport::Dependencies.autoload_paths += [base_path]
     end
+
+    Dir.glob("#{base_path}/**/*.rb").each do |path|
+      next unless File.file?(path)
+
+      class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').classify
+      klass = class_name.constantize # autoload
+      base.extend(klass)
+    end
+  end
+
+  def self.included(base)
+    add_custom_resource_extensions(base)
   end
 end

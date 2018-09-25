@@ -15,7 +15,35 @@ class Jets::Builders
 
     def generate
       poly_shims
-      ruby_node_shim
+      app_ruby_shim
+      shared_shims
+    end
+
+    def shared_shims
+      Jets::Stack.subclasses.each do |subclass|
+        subclass.functions.each do |fun|
+          if fun.lang.to_s == "ruby"
+            shared_ruby_shim(fun)
+          else
+            copy_source_as_handler(fun)
+          end
+        end
+      end
+    end
+
+    # app/shared/functions/kevin.py => /tmp/jets/demo/app_root/handlers/shared/functions/kevin.py
+    def copy_source_as_handler(fun)
+      source_path = fun.source_file
+      unless source_path
+        attributes = fun.template.values.first
+        function_name = attributes['Properties']['FunctionName']
+        puts "WARN: missing source file for: '#{function_name}' function".colorize(:yellow)
+        return
+      end
+
+      dest_path = "#{tmp_app_root}/#{fun.handler_dest}"
+      FileUtils.mkdir_p(File.dirname(dest_path))
+      FileUtils.cp(source_path, dest_path)
     end
 
     def poly_shims
@@ -55,10 +83,18 @@ class Jets::Builders
       FileUtils.cp(source_path, dest_path)
     end
 
-    # Generates one big node shim for a entire controller.
-    def ruby_node_shim
-      deducer = Jets::Builders::Deducer.new(@path)
+    def shared_ruby_shim(fun)
+      deducer = Jets::Builders::SharedDeducer.new(fun)
+      generate_shim(deducer)
+    end
 
+    # Generates one big node shim for a entire controller.
+    def app_ruby_shim
+      deducer = Jets::Builders::Deducer.new(@path)
+      generate_shim(deducer)
+    end
+
+    def generate_shim(deducer)
       js_path = "#{tmp_app_root}/#{deducer.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
 

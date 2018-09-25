@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "c8ca4bd7-c5f4-4e75-95a3-e50290a06661",
+		"name": "Jets Integration Tests",
+		"description": "Tests basic CRUD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "154ebb9d-4235-4d4b-9984-d5e3ab3c20d5",
+			"name": "PostsController#index",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f91acb11-eee6-4c83-956e-ef21f4adf246",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{BASE_URL}}posts",
+					"host": [
+						"{{BASE_URL}}posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "7c6d9207-3303-4d9c-8628-3ec9fdbdd56f",
+			"name": "PostsController#create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4f349f21-09e6-436d-bd70-89324ad334e8",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"test1\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "utf8=%E2%9C%93&post%5Btitle%5D=test1&post%5Bbody%5D=test1&commit=Submit"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}posts",
+					"host": [
+						"{{BASE_URL}}posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "4be8797b-1da7-4386-96b9-f2a2d3bfff16",
+			"name": "PostsController#new",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7ece5182-aacd-45b9-ba1e-52552f5843cb",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{BASE_URL}}posts/new",
+					"host": [
+						"{{BASE_URL}}posts"
+					],
+					"path": [
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "8389acfe-5b9a-489e-b9ff-97cc32e9a899",
+			"name": "PostsController#edit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f3ac4857-58f8-40b0-8161-d2e2d6d921f3",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{BASE_URL}}posts/1/edit",
+					"host": [
+						"{{BASE_URL}}posts"
+					],
+					"path": [
+						"1",
+						"edit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "22161f8e-1387-44b0-a890-edda95e8ebaf",
+			"name": "PostsController#update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f597eb8f-34ea-461b-8793-3c257480f315",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Success json response\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.success).to.eql(true);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "utf8=%E2%9C%93&_method=put&post%5Btitle%5D=test1edit&post%5Bbody%5D=test1"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}posts/1",
+					"host": [
+						"{{BASE_URL}}posts"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "17a8cbb5-ead2-4949-9103-4dba5fb65309",
+			"name": "PostsController#create2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "100b5476-2194-4d25-8170-3b3416b2c9e2",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"test2\");",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "utf8=%E2%9C%93&post%5Btitle%5D=test2&post%5Bbody%5D=test2&commit=Submit"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}posts",
+					"host": [
+						"{{BASE_URL}}posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "c18f1c89-b15d-429a-bc1f-e58630802cba",
+			"name": "PostsController#delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "530e0c60-e3c3-4812-82d9-f3072ddb3995",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{BASE_URL}}posts/2",
+					"host": [
+						"{{BASE_URL}}posts"
+					],
+					"path": [
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a85e6949-f311-4c79-923c-46b55b7fb3e6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7b5709b5-7a77-43b6-acfb-abee4a9362ff",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -18,6 +18,7 @@ title: CLI Reference
 * [jets generate]({% link _reference/jets-generate.md %})
 * [jets new]({% link _reference/jets-new.md %})
 * [jets routes]({% link _reference/jets-routes.md %})
+* [jets runner]({% link _reference/jets-runner.md %})
 * [jets server]({% link _reference/jets-server.md %})
 * [jets status]({% link _reference/jets-status.md %})
 * [jets url]({% link _reference/jets-url.md %})

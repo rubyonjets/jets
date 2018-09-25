@@ -10,7 +10,6 @@ gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jet
 # Include pg gem if you are using ActiveRecord, remove if you are not
 gem "pg", "~> 0.21"
 <% end %>
-gem "mimemagic"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
