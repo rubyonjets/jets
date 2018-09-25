@@ -61,7 +61,7 @@ The Jets::Stack `resource` method is similar to [Custom Associated Resources's](
 
 ## IAM Permission
 
-The Jets::Stack `lookup` method uses a [CloudFormation Output](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) that is created as part of the most convenience methods.  The `lookup` method requires read permission to the CloudFormation stack. This permission is automatically added to your application default IAM permissions when you are using Shared Resources, given you have not have overridden the [application-wide IAM policy]({% link _docs/iam-policies.md %}).
+The Jets::Stack `lookup` method uses a [CloudFormation Output](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) that is created as part of the convenience methods.  The `lookup` method requires read permission to the CloudFormation stack. This permission is automatically added to your application default IAM permissions when you are using Shared Resources, given you have not have overridden the [application-wide IAM policy]({% link _docs/iam-policies.md %}).
 
 Understanding the general shared `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanations above help.
 
