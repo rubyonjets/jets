@@ -144,7 +144,6 @@ module Jets::Lambda::Dsl
           @associated_resources << Jets::Resource::Associated.new(definitions)
           @associated_resources.flatten!
         end
-        puts "right after being added #{@associated_resources.inspect}"
       end
       # User-friendly short resource method. Users will use this.
       alias_method :resource, :associated_resources
@@ -177,13 +176,7 @@ module Jets::Lambda::Dsl
       def add_logical_id_counter
         numbered_resources = []
         n = 1
-        puts "add_logical_id_counter @associated_resources #{@associated_resources.inspect}".colorize(:cyan)
         @associated_resources.map do |associated|
-          # puts "associated #{associated.inspect}"
-          # definition = associated.definition
-          # puts "definition #{definition.inspect}"
-          # logical_id = definition.keys.first
-
           logical_id = associated.logical_id
           attributes = associated.attributes
 
