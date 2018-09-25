@@ -122,7 +122,7 @@ The notation with `:*` also works: `iam_policy("s3:*", "sns:*")`.
 
 ```ruby
 class_iam_policy(
-  "dynamodb"
+  "dynamodb",
   {
     action: ["kinesis"],
     effect: "Allow",
