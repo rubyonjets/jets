@@ -1,0 +1,32 @@
+<%= form_tag("/articles") do %>
+  <% if article.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+      <ul>
+      <% article.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= label_tag :title %>
+    <%= text_field_tag "article[title]", article.title, id: :article_title %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :body %>
+    <%= text_area_tag "article[body]", article.body, id: :article_body %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :published %>
+    <%= check_box_tag "article[published]", 'yes', article.published, id: :article_published %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag("Submit") %>
+  </div>
+<% end %>

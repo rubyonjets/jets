@@ -1,0 +1,32 @@
+<%= form_tag("/toys") do %>
+  <% if toy.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(toy.errors.count, "error") %> prohibited this toy from being saved:</h2>
+
+      <ul>
+      <% toy.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= label_tag :title %>
+    <%= text_field_tag "toy[title]", toy.title, id: :toy_title %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :body %>
+    <%= text_area_tag "toy[body]", toy.body, id: :toy_body %>
+  </div>
+
+  <div class="field">
+    <%= label_tag :published %>
+    <%= check_box_tag "toy[published]", 'yes', toy.published, id: :toy_published %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag("Submit") %>
+  </div>
+<% end %>

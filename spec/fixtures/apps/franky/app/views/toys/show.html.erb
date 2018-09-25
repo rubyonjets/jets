@@ -1,0 +1,17 @@
+<p>
+  <strong>Title:</strong>
+  <%= @toy.title %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @toy.body %>
+</p>
+
+<p>
+  <strong>Published:</strong>
+  <%= @toy.published %>
+</p>
+
+<%= link_to 'Edit', "/toys/#{@toy.id}/edit" %> |
+<%= link_to 'Back', "/toys" %>
