@@ -131,6 +131,62 @@ end
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Scaffold</h3>
+                                <div class="commands">
+
+{% highlight sh %}
+$ jets generate scaffold Post title:string
+      invoke  active_record
+      create    db/migrate/20180925233914_create_posts.rb
+      create    app/models/post.rb
+      invoke  resource_route
+       route    resources :posts
+      invoke  scaffold_controller
+      create    app/controllers/posts_controller.rb
+      invoke    erb
+      create      app/views/posts
+      create      app/views/posts/index.html.erb
+      create      app/views/posts/edit.html.erb
+      create      app/views/posts/show.html.erb
+      create      app/views/posts/new.html.erb
+      create      app/views/posts/_form.html.erb
+      invoke    helper
+      create      app/helpers/posts_helper.rb
+$
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>Deploy</h3>
+                                <div class="commands">
+{% highlight sh %}
+$ jets deploy
+Deploying to Lambda demo-dev environment...
+=> Compling assets in current project directory
+=> Copying current project directory to temporary build area: /tmp/jets/demo/app_root
+=> Setting up a vendored copy of ruby.
+=> Replacing compiled gems with AWS Lambda Linux compiled versions.
+Creating zip file.
+=> cd /tmp/jets/demo/app_root && zip --symlinks -rq /tmp/jets/demo/code/code-temp.zip .
+Deploying CloudFormation stack with jets app!
+Uploading /tmp/jets/demo/code/code-7169d0ac.zip (88.8 MB) to S3
+Time to upload code to s3: 1s
+Deploying CloudFormation stack with jets app!
+02:08:20AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack demo-dev User Initiated
+...
+02:08:48AM CREATE_IN_PROGRESS AWS::CloudFormation::Stack PostsController
+02:10:03AM UPDATE_COMPLETE AWS::CloudFormation::Stack demo-dev
+Stack success status: UPDATE_COMPLETE
+Time took for stack deployment: 1m 46s.
+Prewarming application...
+API Gateway Endpoint: https://ewwnealfk0.execute-api.us-west-2.amazonaws.com/dev/
+$
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
