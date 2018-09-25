@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.9.1]
+- add upgrading notes
+- fix iam policies: flatten
+
 ## [0.9.0]
 - Remove class name from the namespace. So namespace only has method name now. NOTE: This means upgrading from 0.8.x to 0.9.x requires a blue-green update.
 - Add upgrading docs.

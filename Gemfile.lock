@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (0.9.0)
+    jets (0.9.1)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -72,7 +72,7 @@ GEM
     aws-sdk-cloudwatchlogs (1.8.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.27.1)
+    aws-sdk-core (3.28.0)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
