@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.9.0]
+- Remove class name from the namespace. So namespace only has method name now. NOTE: This means upgrading from 0.8.x to 0.9.x requires a blue-green update.
+- Add upgrading docs.
+- Stack DSL: To support the concept of Custom Shared Resources. Supports extensions and simple functions also.
+- Stack DSL: Allow for control of DependsOn attribute.
+- Stack DSL: `MyStack.lookup` method
+- Associated resource extensions support
+- Associated resources multiple form support: long, medium, short
+- Add `jets new --mode`: 3 modes: html, api, job. Remove the `--api`
+- IAM policies inherit from higher precedence and superclasses.
+- Add `jets runner` command
+- Fix AWS Config Rules support
+- Rename event_rule to events_rule
+- Remove submodule project demo fixture in favor of spec/fixtures/apps/franky
+- Add spec/bin/integration.sh - Simpler than the CI one and more immediately useful
+- Improve AWS Config Rules docs
+- Add config rules namespace setting
+- Custom inflections support
+
 ## [0.8.18]
 - improve performance of Jets.aws.region, pull request #40 from tongueroo/dir-glob
 
