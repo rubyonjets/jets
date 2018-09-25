@@ -1,17 +1,15 @@
 describe Jets::Commands::Build do
-  before(:each) do
-    FileUtils.rm_f("spec/fixtures/project/handlers/controllers/posts.js")
-  end
-  let(:build) do
-    Jets::Commands::Build.new(noop: true)
-  end
+  context "templates only and fake full" do
+    let(:build) do
+      Jets::Commands::Build.new(templates_only: true, full: true)
+    end
 
-  context "running build process" do
-    # TODO: figure out way to test build.rb fast
+    it "builds templates" do
+      file_exist = File.exist?("/tmp/jets/demo/templates/demo-test-app-posts_controller.yml")
+      expect(file_exist).to be true
+    end
+
     # it "builds handlers javascript files" do
-    #   build.build
-    #   file_exist = File.exist?("#{Jets.root}handlers/controllers/posts.js")
-    #   expect(file_exist).to be true
     # end
 
     # Would be nice to be able to automate testing the shim
@@ -27,6 +25,10 @@ describe Jets::Commands::Build do
   end
 
   context "methods" do
+    let(:build) do
+      Jets::Commands::Build.new(noop: true)
+    end
+
     it "app_file?" do
       yes = Jets::Commands::Build.app_file?("app/controllers/posts_controller.rb")
       expect(yes).to be true
