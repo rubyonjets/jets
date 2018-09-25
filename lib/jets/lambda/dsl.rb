@@ -295,7 +295,9 @@ module Jets::Lambda::Dsl
 
   def self.add_custom_resource_extensions(base)
     base_path = "#{Jets.root}/app/extensions"
-    ActiveSupport::Dependencies.autoload_paths += [base_path]
+    unless ActiveSupport::Dependencies.autoload_paths.include?(base_path)
+      ActiveSupport::Dependencies.autoload_paths += [base_path]
+    end
 
     Dir.glob("#{base_path}/**/*.rb").each do |path|
       next unless File.file?(path)

@@ -40,6 +40,7 @@ module Jets::Stack::Main::Dsl
       resource(id, "AWS::Lambda::Function", props)
     end
     alias_method :ruby_function, :function
+    alias_method :lambda_function, :function
 
     def python_function(id, props={})
       meth = id.to_s.underscore
@@ -63,6 +64,6 @@ module Jets::Stack::Main::Dsl
       defaults = { action: "lambda:InvokeFunction" }
       props = defaults.merge(props)
       resource(id, "AWS::Lambda::Permission", props)
-   end
+    end
   end
 end
