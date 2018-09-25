@@ -19,6 +19,8 @@ It is key to understand AWS Lambda and API Gateway to understand Jets conceptual
 
 The official documentation is at: [Ruby on Jets](http://rubyonjets.com).
 
+**Upgrading Note**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/upgrading/).
+
 Refer to the official docs for more info, but here's a quick intro.
 
 ### Jets Controllers
