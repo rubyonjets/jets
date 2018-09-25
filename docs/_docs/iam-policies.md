@@ -27,7 +27,6 @@ class PostsController < ApplicationController
   class_iam_policy(
     "dynamodb",
     {
-      sid: "MyStmt1",
       action: ["logs:*"],
       effect: "Allow",
       resource: "*",
@@ -107,13 +106,11 @@ Expands to:
 ```yaml
 Version: '2012-10-17'
 Statement:
-- Sid: Stmt1
-  Action:
+- Action:
   - s3:*
   Effect: Allow
   Resource: "*"
-- Sid: Stmt2
-  Action:
+- Action:
   - logs:*
   Effect: Allow
   Resource: "*"
@@ -127,7 +124,6 @@ The notation with `:*` also works: `iam_policy("s3:*", "logs:*")`.
 class_iam_policy(
   "dynamodb"
   {
-    sid: "MyStmt1",
     action: ["logs"],
     effect: "Allow",
     resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{Jets.config.project_namespace}-*",
@@ -140,13 +136,11 @@ Expands to:
 ```yaml
 Version: '2012-10-17'
 Statement:
-- Sid: Stmt1
-  Action:
+- Action:
   - dynamodb:*
   Effect: Allow
   Resource: "*"
-- Sid: Stmt2
-  Action:
+- Action:
   - logs:*
   Effect: Allow
   Resource: "arn:aws:logs:us-west-2:1234567890:log-group:demo-dev-*"
@@ -160,7 +154,6 @@ Note, the resource values are examples.
 iam_policy(
   version: "2012-10-17",
   statement: [{
-    sid: "MyStmt1",
     action: ["lambda:*"],
     effect: "Allow",
     resource: "*"
@@ -173,8 +166,7 @@ Expands to:
 ```yaml
 Version: '2012-10-17'
 Statement:
-- Sid: MyStmt1
-  Action:
+- Action:
   - lambda:*
   Effect: Allow
   Resource: "*"
@@ -188,8 +180,7 @@ What's important to understand is that ultimately, the `iam_policy` definition e
 PolicyDocument:
   Version: '2012-10-17'
   Statement:
-  - Sid: Stmt1
-    Action:
+  - Action:
     - s3:*
     Effect: Allow
     Resource: "*"
