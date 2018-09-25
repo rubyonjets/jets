@@ -14,3 +14,4 @@ puts "hello world: #{Jets.env}"
 ```
 
     $ jets runner file://script.rb
+    hello world: development
