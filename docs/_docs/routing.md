@@ -49,7 +49,6 @@ You can also check the routes with the `jets routes` cli command. Here's an exam
     | GET    | posts/:id/edit | posts#edit         |
     | PUT    | posts/:id      | posts#update       |
     | DELETE | posts/:id      | posts#delete       |
-    | GET    |                | jets/welcome#index |
     | ANY    | *catchall      | jets/public#show   |
     +--------+----------------+--------------------+
     $

@@ -149,6 +149,7 @@ module Jets::Commands
         # 1. remove app/controllers or app/jobs, etc
         # 2. remove .rb extension
         app_file = path.sub(%r{app/\w+/},'').sub(/\.rb$/,'')
+
         # Internal jets controllers like Welcome and Public need a different regexp
         app_file = app_file.sub(%r{.*lib/jets/internal/},'')
         app_class = app_file.classify.constantize # IE: PostsController, Jets::PublicController
@@ -162,9 +163,6 @@ module Jets::Commands
     def self.internal_app_files
       paths = []
       controllers = File.expand_path("../../internal/app/controllers/jets", __FILE__)
-
-      welcome = Jets::Router.has_controller?("Jets::WelcomeController")
-      paths << "#{controllers}/welcome_controller.rb" if welcome
 
       public_catchall = Jets::Router.has_controller?("Jets::PublicController")
       paths << "#{controllers}/public_controller.rb" if public_catchall

@@ -24,7 +24,6 @@ Print out your application routes.
     | GET    | posts/:id/edit | posts#edit         |
     | PUT    | posts/:id      | posts#update       |
     | DELETE | posts/:id      | posts#delete       |
-    | GET    |                | jets/welcome#index |
     | ANY    | *catchall      | jets/public#show   |
     +--------+----------------+--------------------+
     $

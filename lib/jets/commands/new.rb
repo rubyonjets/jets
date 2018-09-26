@@ -112,11 +112,11 @@ JS
 
           To deploy to AWS Lambda, edit your .env.development.remote and add a DATABASE_URL endpoint.
           Then run:
-        
+
             jets deploy
         EOL
       end
-      
+
       puts <<~EOL
         #{"="*64}
         Congrats 🎉 You have successfully created a Jets project.
