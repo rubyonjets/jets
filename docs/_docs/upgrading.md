@@ -9,11 +9,11 @@ Upgrading Jets to some releases require blue-green deployments.  Here's a list o
 * 0.10.0: Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action.
 * 0.9.0: CloudFormation Logical ids changed to be more concise
 
-The reason a blue-green deployment required is because sometimes enough of Jets has changed where a normal CloudFormation stack update rolls back.  An example is in `v0.9.0`, Jets changes a few of the CloudFormation logical ids. In this case, CloudFormation fails to create Lambda functions with the same name and switch over to them because the Lambda functions already exists with their old logical ids. If you're seeing the CloudFormation stack rollback after upgrading, you might want to try a blue-green deployment.
+The reason a blue-green deployment required is that sometimes enough of Jets has changed where a regular CloudFormation stack update rolls back.  An example is in `v0.9.0`, Jets changes a few of the CloudFormation logical ids. In this case, CloudFormation fails to create Lambda functions with the same name and switch over to them because the Lambda functions already exist with their old logical ids. If you're seeing the CloudFormation stack rollback after upgrading, you might want to try a blue-green deployment.
 
-It is easy to do a blue-green deployment with Jets and you will only need to do a blue-green deployment once after upgrading Jets for that version. Once done, you can deploy normally again.
+It is easy to do a blue-green deployment with Jets, and you will only need to do a blue-green deployment once after upgrading Jets for that version. Once done, you can normally deploy again.
 
-**Important**: With blue-green deployments, the API Gateawy endpoint will **change**. Any applications referencing the endpoint will need to be updated.  For this reason, it is recommended to use an API Gateway Custom Domain so you do not have to update the endpoint in the future.
+**Important**: With blue-green deployments, the API Gateway endpoint will **change**. Any applications referencing the endpoint will need to be updated.  For this reason, it is recommended to use an API Gateway Custom Domain, so you do not have to update the endpoint in the future.
 
 ## In-Place Deploy
 
@@ -25,7 +25,7 @@ Here's a typical in-place deploy:
 
 ## Blue-Green Deployment
 
-For a blue-green deployment, you use `JETS_ENV_EXTRA` to create a brand new Jets environment. You then switch to it and destroy the old environment. First create the new environment:
+For a blue-green deployment, you use `JETS_ENV_EXTRA` to create a brand new Jets environment. You then switch to it and destroy the old environment. First, create the new environment:
 
     cd demo # your project
     bundle update
