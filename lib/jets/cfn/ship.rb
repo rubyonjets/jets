@@ -186,7 +186,7 @@ class Jets::Cfn
         relative_path = path.sub(%r{.*/packs/},'')
         key = "jets/public/packs/#{relative_path}"
         obj = s3_resource.bucket(bucket_name).object(key)
-        obj.upload_file(path, acl: "public-read")
+        obj.upload_file(path, acl: "public-read", cache_control: 'public, max-age=3600')
       end
     end
 
