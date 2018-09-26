@@ -54,8 +54,8 @@ module Jets::AssetTagHelper
       !url.starts_with?('http')
   end
 
-  # TODO: figure out how to improve performance.
   def s3_base_url
+    # s3_base_url.txt is created as part of the build process
     IO.read("#{Jets.root}/config/s3_base_url.txt").strip
   end
   memoize :s3_base_url

@@ -117,7 +117,7 @@ class Jets::Builders
       region = Jets.aws.region
       asset_base_url = Jets.config.asset_base_url || "https://s3-#{region}.amazonaws.com"
       s3_base_url = "#{asset_base_url}/#{bucket_name}/jets/public"
-      IO.write("#{tmp_app_root}/config/s3_base_url.txt", s3_base_url)
+      IO.write("#{full(tmp_app_root)}/config/s3_base_url.txt", s3_base_url)
     end
 
     def lambdagem_options
