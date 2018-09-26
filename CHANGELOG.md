@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.9.2]
+- s3 assets support: Merge pull request #44 from tongueroo/s3-assets
+
 ## [0.9.1]
 - add upgrading notes
 - fix iam policies: flatten
