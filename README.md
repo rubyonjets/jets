@@ -8,6 +8,8 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 [![CircleCI](https://circleci.com/gh/tongueroo/jets.svg?style=svg)](https://circleci.com/gh/tongueroo/jets)
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
 
+**Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/upgrading/).
+
 ## What is Jets?
 
 Jets is a Ruby Serverless Framework.  Jets allows you to create serverless applications with a beautiful language: Ruby.  It includes everything required to build an application and deploy it to AWS Lambda.
@@ -18,8 +20,6 @@ It is key to understand AWS Lambda and API Gateway to understand Jets conceptual
 * **API Gateway** is the routing layer for Lambda. It is used to route REST URL endpoints to Lambda functions.
 
 The official documentation is at: [Ruby on Jets](http://rubyonjets.com).
-
-**Upgrading Note**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/upgrading/).
 
 Refer to the official docs for more info, but here's a quick intro.
 
