@@ -35,8 +35,19 @@ module Jets::Resource::ApiGateway
 
     def method_logical_id
       # https://stackoverflow.com/questions/6104240/how-do-i-strip-non-alphanumeric-characters-from-a-string-and-keep-spaces
-      path = @route.path.gsub(/[^0-9a-z ]/i, '_')
-      "#{path}_{namespace}_api_method"
+      # Add path to the logical id to allow 2 different paths to be connected to the same controller action.
+      # Example:
+      #
+      #   root "jets/public#show"
+      #   any "*catchall", to: "jets/public#show"
+      #
+      # Without the path in the logical id, the logical id would be ShowApiMethod for both routes and only the
+      # last one would be created in the CloudFormation template.
+      path = @route.path.gsub('*','')
+              .gsub(/[^0-9a-z]/i, ' ')
+              .gsub(/\s+/, '_')
+      path = nil if path == ''
+      [path, "{namespace}_api_method"].compact.join('_')
     end
 
     def replacements
