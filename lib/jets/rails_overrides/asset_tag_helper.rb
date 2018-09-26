@@ -32,7 +32,25 @@ module Jets::AssetTagHelper
     super
   end
 
+  def asset_path(source, options = {})
+    if on_aws?(source) && asset_folder?(source)
+      # mimic original behavior to get /images in source
+      source = "/images/#{source}" unless source.starts_with?('/')
+      source = "#{s3_base_url}#{source}"
+    end
+
+    super
+  end
+
 private
+  # Whatever is configured in Jets.config.assets.folders
+  # Example: packs, images, assets
+  def asset_folder?(url)
+    Jets.config.assets.folders.detect do |folder|
+      url.include?(folder)
+    end
+  end
+
   # User can use:
   #  javascript_include_tag "assets/test"
   #
