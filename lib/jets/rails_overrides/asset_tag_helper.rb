@@ -36,8 +36,7 @@ module Jets::AssetTagHelper
     unless url.starts_with?('/') or url.starts_with?('http')
       url = "/#{asset_type}/#{url}" # /javascript/asset/test
     end
-    url = add_s3_base_url(url)
-    url
+    add_s3_base_url(url)
   end
 
   # Example:
@@ -48,42 +47,10 @@ module Jets::AssetTagHelper
     "#{s3_base_url}#{url}"
   end
 
-  def on_aws?(url)
-    request.host.include?("amazonaws.com") &&
-      url.starts_with?('/') &&
-      !url.starts_with?('http')
-  end
-
   def s3_base_url
     # s3_base_url.txt is created as part of the build process
-    IO.read("#{Jets.root}/config/s3_base_url.txt").strip
+    IO.read("#{Jets.root}config/s3_base_url.txt").strip
   end
   memoize :s3_base_url
-
-  # # User can use:
-  # #  javascript_include_tag "assets/test"
-  # #
-  # # Rails automatically adds "javscript" in front, to become:
-  # #
-  # #   /javascripts/assets/test
-  # #
-  # # We want to add the API Gateway stage name in front for this:
-  # #
-  # #   /stag/javascript/asset/test
-  # #
-  # # But adding it in front results in this:
-  # #
-  # #   /javascript/stag/asset/test
-  # #
-  # # If there's a / in front then rails will not add the "javascript":
-  # # So we can add the javascript ourselves and then add the stag with a
-  # # / in front.
-  # def stage_name_asset_url(url, asset_type)
-  #   unless url.starts_with?('/') or url.starts_with?('http')
-  #     url = "/#{asset_type}/#{url}" # /javascript/asset/test
-  #   end
-  #   url = add_stage_name(url)
-  #   url
-  # end
 end
 ActionView::Helpers.send(:include, Jets::AssetTagHelper)
