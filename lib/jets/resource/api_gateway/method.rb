@@ -34,7 +34,9 @@ module Jets::Resource::ApiGateway
     end
 
     def method_logical_id
-      "{namespace}_api_method"
+      # https://stackoverflow.com/questions/6104240/how-do-i-strip-non-alphanumeric-characters-from-a-string-and-keep-spaces
+      path = @route.path.gsub(/[^0-9a-z ]/i, '_')
+      "#{path}_{namespace}_api_method"
     end
 
     def replacements
