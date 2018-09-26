@@ -114,7 +114,7 @@ class Jets::Builders
     end
 
     def s3_base_url
-      # Allow use to set assets.base_url
+      # Allow user to set assets.base_url
       #
       #   Jets.application.configure do
       #     config.assets.base_url = "https://cloudfront.com/my/base/path"

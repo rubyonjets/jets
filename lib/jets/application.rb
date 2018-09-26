@@ -42,6 +42,7 @@ class Jets::Application
     config.assets = ActiveSupport::OrderedOptions.new
     config.assets.folders = %w[packs images assets]
     config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
+    config.assets.max_age = 3600
 
     config
   end
