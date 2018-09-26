@@ -194,11 +194,17 @@ class Jets::Cfn
 
         regexp = Regexp.new(".*/#{folder}/")
         relative_path = path.sub(regexp,'')
-        key = "jets/public/#{folder}/#{relative_path}"
-        obj = s3_resource.bucket(bucket_name).object(key)
-        puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
-        obj.upload_file(path, acl: "public-read", cache_control: 'public, max-age=3600')
+        file = "#{folder}/#{relative_path}"
+        upload_public_asset_file(file)
       end
+    end
+
+    def upload_public_asset_file(file)
+      path = "#{Jets.root}public/#{file}"
+      key = "jets/public/#{file}"
+      puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
+      obj = s3_resource.bucket(bucket_name).object(key)
+      obj.upload_file(path, acl: "public-read", cache_control: 'public, max-age=3600')
     end
 
     def s3_bucket
