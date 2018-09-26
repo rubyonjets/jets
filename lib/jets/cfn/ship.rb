@@ -145,7 +145,7 @@ class Jets::Cfn
 
       upload_cfn_templates
       upload_code
-      upload_public_assets
+      upload_assets
     end
     time :upload_to_s3
 
@@ -177,17 +177,17 @@ class Jets::Cfn
       puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
 
-    def upload_public_assets
+    def upload_assets
       puts "Uploading public assets"
       start_time = Time.now
       asset_folders = Jets.config.assets.folders
       asset_folders.each do |folder|
-        upload_public_asset_folder(folder)
+        upload_asset_folder(folder)
       end
       puts "Time to upload public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
 
-    def upload_public_asset_folder(folder)
+    def upload_asset_folder(folder)
       expression = "#{Jets.root}public/#{folder}/**/*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
@@ -195,11 +195,11 @@ class Jets::Cfn
         regexp = Regexp.new(".*/#{folder}/")
         relative_path = path.sub(regexp,'')
         file = "#{folder}/#{relative_path}"
-        upload_public_asset_file(file)
+        upload_asset_file(file)
       end
     end
 
-    def upload_public_asset_file(file)
+    def upload_asset_file(file)
       path = "#{Jets.root}public/#{file}"
       key = "jets/public/#{file}"
       puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
