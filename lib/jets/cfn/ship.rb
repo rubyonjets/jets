@@ -179,13 +179,22 @@ class Jets::Cfn
 
     def upload_public_assets
       puts "Uploading public assets"
-      expression = "#{Jets.root}public/packs/**/*"
+      asset_folders = %w[packs images]
+      asset_folders.each do |folder|
+        upload_public_asset_folder(folder)
+      end
+    end
+
+    def upload_public_asset_folder(folder)
+      expression = "#{Jets.root}public/#{folder}/**/*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
-        relative_path = path.sub(%r{.*/packs/},'')
-        key = "jets/public/packs/#{relative_path}"
+        regexp = Regexp.new(".*/#{folder}/")
+        relative_path = path.sub(regexp,'')
+        key = "jets/public/#{folder}/#{relative_path}"
         obj = s3_resource.bucket(bucket_name).object(key)
+        puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
         obj.upload_file(path, acl: "public-read", cache_control: 'public, max-age=3600')
       end
     end

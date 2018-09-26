@@ -14,6 +14,25 @@ module Jets::AssetTagHelper
     super
   end
 
+  # Locally:
+  #
+  #   image_tag("jets.png") => /images/jets.png
+  #   image_tag("/images/jets.png") => /images/jets.png
+  #
+  # Remotely:
+  #
+  #   image_tag("jets.png") => https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1kih4n2te0n66/jets/public/images/jets.png
+  def image_tag(source, options = {})
+    if on_aws?(source)
+      # mimic original behavior to get /images in source
+      source = "/images/#{source}" unless source.starts_with?('/')
+      source = "#{s3_base_url}#{source}"
+    end
+
+    super
+  end
+
+private
   # User can use:
   #  javascript_include_tag "assets/test"
   #

@@ -8,8 +8,6 @@ module Jets::CommonMethods
   end
 
   def on_aws?(url)
-    request.host.include?("amazonaws.com") &&
-      url.starts_with?('/') &&
-      !url.starts_with?('http')
+    request.host.include?("amazonaws.com") && url.starts_with?('/')
   end
 end
