@@ -27,7 +27,7 @@ Jets.application.configure do
   config.assets.folders = %w[packs images assets]
   config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
   config.assets.max_age = 3600
-  config.assets.cache_control = nil # max_age is a shorter way to set cache_control
+  config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
 end
 ```
 
