@@ -44,11 +44,11 @@ module Jets::AssetTagHelper
   # Url: /packs/application-e7654c50abd78161b641.js
   # Returns: https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1jg5o076egkk4/jets/public/packs/application-e7654c50abd78161b641.js
   def add_s3_base_url(url)
-    return url unless running_on_aws?
+    return url unless running_on_aws?(url)
     "#{s3_base_url}#{url}"
   end
 
-  def running_on_aws?
+  def running_on_aws?(url)
     request.host.include?("amazonaws.com") &&
       url.starts_with?('/') &&
       !url.starts_with?('http')
