@@ -212,8 +212,17 @@ class Jets::Cfn
       key = "jets/public/#{file}"
       puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
       obj = s3_resource.bucket(bucket_name).object(key)
+      obj.upload_file(path, acl: "public-read", cache_control: cache_control)
+    end
+
+    # If cache_control is provided, then it will set the entire cache-control header.
+    # If only max_age is provided, then we'll generate a cache_control header.
+    # Using max_age is the shorter and simply way of setting the cache_control header.
+    def cache_control
       max_age = Jets.config.assets.max_age # defaults to 3600 in jets/application.rb
-      obj.upload_file(path, acl: "public-read", cache_control: "public, max-age=#{max_age}")
+      cache_control = Jets.config.assets.cache_control
+      cache_control = "public, max-age=#{max_age}" unless cache_control
+      cache_control
     end
 
     def s3_bucket
