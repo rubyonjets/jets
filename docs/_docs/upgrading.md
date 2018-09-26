@@ -6,6 +6,7 @@ Upgrading Jets to some releases require blue-green deployments.  Here's a list o
 
 ## Blue-Green Releases
 
+* 0.10.0: Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action.
 * 0.9.0: CloudFormation Logical ids changed to be more concise
 
 The reason a blue-green deployment required is because sometimes enough of Jets has changed where a normal CloudFormation stack update rolls back.  An example is in `v0.9.0`, Jets changes a few of the CloudFormation logical ids. In this case, CloudFormation fails to create Lambda functions with the same name and switch over to them because the Lambda functions already exists with their old logical ids. If you're seeing the CloudFormation stack rollback after upgrading, you might want to try a blue-green deployment.
