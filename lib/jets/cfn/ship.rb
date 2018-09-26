@@ -189,13 +189,21 @@ class Jets::Cfn
 
     def upload_asset_folder(folder)
       expression = "#{Jets.root}public/#{folder}/**/*"
-      Dir.glob(expression).each do |path|
-        next unless File.file?(path)
+      group_size = 10
+      Dir.glob(expression).each_slice(group_size) do |paths|
+        threads = []
+        paths.each do |path|
+          next unless File.file?(path)
 
-        regexp = Regexp.new(".*/#{folder}/")
-        relative_path = path.sub(regexp,'')
-        file = "#{folder}/#{relative_path}"
-        upload_asset_file(file)
+          regexp = Regexp.new(".*/#{folder}/")
+          relative_path = path.sub(regexp,'')
+          file = "#{folder}/#{relative_path}"
+
+          threads << Thread.new do
+            upload_asset_file(file)
+          end
+        end
+        threads.each(&:join)
       end
     end
 
