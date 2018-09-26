@@ -90,7 +90,6 @@ module Jets::Core
   def eager_load_jets
     lib_jets = File.expand_path(".", File.dirname(__FILE__))
     Dir.glob("#{lib_jets}/**/*.rb").select do |path|
-      # puts "path #{path}"
       next if !File.file?(path)
       next if skip_eager_load_paths?(path)
 
@@ -115,7 +114,8 @@ module Jets::Core
     path =~ %r{/internal/app} ||
     path =~ %r{/webpacker} ||
     path =~ %r{/cli} ||
-    path =~ %r{/core_ext}
+    path =~ %r{/core_ext} ||
+    path =~ %r{/jets/stack}
   end
 
   def class_mappings(class_name)
@@ -129,13 +129,15 @@ module Jets::Core
   def eager_load_app
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
+      next if path.include?('app/shared/functions')
 
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
-                    .sub(/^\.\//,'') # remove ./
-                    .sub(/app\/\w+\//,'') # remove app/controllers or app/jobs etc
-                    .classify
-      # puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
+                    .sub(%{^\./},'') # remove ./
+                    .sub(Jets.root.to_s,'')
+                    .sub(%r{app/shared/\w+/},'') # remove shared/resources or shared/extensions
+                    .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
+      class_name = class_name.classify
       class_name.constantize # use constantize instead of require so dont have to worry about order.
     end
   end

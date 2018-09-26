@@ -13,7 +13,7 @@ Jets provides several ways to finely control the IAM policies associated with yo
 ```ruby
 class PostsController < ApplicationController
   # ...
-  iam_policy("s3:*", "logs:*")
+  iam_policy("s3", "sns")
   def show
     render json: {action: "show", id: params[:id]}
   end
@@ -25,10 +25,9 @@ end
 ```ruby
 class PostsController < ApplicationController
   class_iam_policy(
-    "dynamodb:*",
+    "dynamodb",
     {
-      sid: "MyStmt1",
-      action: ["logs:*"],
+      action: ["kinesis:*"],
       effect: "Allow",
       resource: "*",
     }
@@ -40,9 +39,49 @@ end
 
 ```ruby
 Jets.application.configure do |config|
-  config.iam_policy = ["logs:*"]
+  config.iam_policy = ["logs"]
 end
 ```
+
+## IAM Policies Inheritance
+
+IAM policies defined at lower levels of precedence inherit and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add a simple additional permission. For example, the default application-wide IAM policy looks something like this:
+
+```ruby
+[{
+  action: ["logs:*"],
+  effect: "Allow",
+  resource: "arn:aws:logs:REGION:123456789:log-group:/aws/lambda/demo-dev-*",
+}]
+```
+
+When you add a function specific IAM policy to a method:
+
+```ruby
+class PostsController < ApplicationController
+  # ...
+  iam_policy("s3")
+  def show
+    render json: {action: "show", id: params[:id]}
+  end
+end
+```
+
+The resulting policy for the method will look something like this:
+
+```ruby
+[{
+  action: ["logs:*"],
+  effect: "Allow",
+  resource: "arn:aws:logs:REGION:123456789:log-group:/aws/lambda/demo-dev-*",
+},{
+  action: ["s3:*"],
+  effect: "Allow",
+  resource: "*",
+}]
+```
+
+So the IAM policies are additive.
 
 ## IAM Policy Definition Styles
 
@@ -59,7 +98,7 @@ It is suggested that you start off with the simplest `iam_policy` definition sty
 ### IAM Policy Simple Statement
 
 ```ruby
-iam_policy("s3:*", "logs:*")
+iam_policy("s3", "sns")
 ```
 
 Expands to:
@@ -67,28 +106,27 @@ Expands to:
 ```yaml
 Version: '2012-10-17'
 Statement:
-- Sid: Stmt1
-  Action:
+- Action:
   - s3:*
   Effect: Allow
   Resource: "*"
-- Sid: Stmt2
-  Action:
-  - logs:*
+- Action:
+  - sns:*
   Effect: Allow
   Resource: "*"
 ```
+
+The notation with `:*` also works: `iam_policy("s3:*", "sns:*")`.
 
 ### IAM Policy Statement Hash
 
 ```ruby
 class_iam_policy(
-  "dynamodb:*"
+  "dynamodb",
   {
-    sid: "MyStmt1",
-    action: ["logs:*"],
+    action: ["kinesis"],
     effect: "Allow",
-    resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{Jets.config.project_namespace}-*",
+    resource: "arn:aws:kinesis:#{Jets.aws.region}:#{Jets.aws.account}:stream/name*",
   }
 )
 ```
@@ -98,16 +136,14 @@ Expands to:
 ```yaml
 Version: '2012-10-17'
 Statement:
-- Sid: Stmt1
-  Action:
+- Action:
   - dynamodb:*
   Effect: Allow
   Resource: "*"
-- Sid: Stmt2
-  Action:
-  - logs:*
+- Action:
+  - kinesis:*
   Effect: Allow
-  Resource: "arn:aws:logs:us-west-2:1234567890:log-group:demo-dev-*"
+  Resource: "arn:aws:kinesis:us-west-2:1234567890:log-group:demo-dev-*"
 ```
 
 Note, the resource values are examples.
@@ -118,7 +154,6 @@ Note, the resource values are examples.
 iam_policy(
   version: "2012-10-17",
   statement: [{
-    sid: "MyStmt1",
     action: ["lambda:*"],
     effect: "Allow",
     resource: "*"
@@ -131,8 +166,7 @@ Expands to:
 ```yaml
 Version: '2012-10-17'
 Statement:
-- Sid: MyStmt1
-  Action:
+- Action:
   - lambda:*
   Effect: Allow
   Resource: "*"
@@ -146,8 +180,7 @@ What's important to understand is that ultimately, the `iam_policy` definition e
 PolicyDocument:
   Version: '2012-10-17'
   Statement:
-  - Sid: Stmt1
-    Action:
+  - Action:
     - s3:*
     Effect: Allow
     Resource: "*"
@@ -157,6 +190,10 @@ The expanded IAM Policy documents gets included into the CloudFormation template
 
 * [AWS IAM Policies and Permissions docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#access_policies-json)
 * [CloudFormation IAM Policy reference docs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-policy.html)
+
+## Lambda Function vs User Deploy IAM Policies
+
+The IAM Policies docs on this page refer to the IAM policy associated with your **Lambda Execution Role**. These permissions control what your AWS resources your Lambda functions have access to.  This is different from the IAM role you use to deploy a Jets application, which is typically your IAM User permissions. If you are looking for the minimal IAM Policy to deploy a Jets application for your IAM user, check out [Minimal Deploy IAM Policy]({% link _docs/minimal-deploy-iam.md %}).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/function-properties.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/managed-iam-policies.md %}">Next Step</a>

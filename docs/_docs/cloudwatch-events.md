@@ -8,7 +8,7 @@ An example might be getting notified when an unwanted security group port gets o
 
 ```ruby
 class SecurityJob < ApplicationJob
-  event_rule(
+  events_rule(
     description: "Detects security group changes",
     event_pattern: {
       detail_type: ["AWS API Call via CloudTrail"],
@@ -65,7 +65,7 @@ class SecurityJob < ApplicationJob
     }
   )
   event_pattern(
-    detail_type: ["AWS API Call via CloudTrail"]
+    detail_type: ["AWS API Call via CloudTrail"],
     detail: {
       userIdentity: {
         type: ["Root"]
@@ -79,7 +79,7 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.  Underneath the hood `rate` delegates to the `event_rule` method.
+Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.  Underneath the hood `rate` delegates to the `events_rule` method.
 
 ## Related links
 

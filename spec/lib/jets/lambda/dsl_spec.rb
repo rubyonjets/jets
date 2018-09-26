@@ -59,4 +59,13 @@ describe Jets::Lambda::Dsl do
       expect(tasks).to eq []
     end
   end
+
+  context "App extension iot" do
+    it "creates custom resource" do
+      task = TemperatureJob.tasks.first
+      # pp task # uncomment to see and debug
+      has_resource = task.associated_resources.first.key?("room_topic_rule")
+      expect(has_resource).to be true
+    end
+  end
 end

@@ -11,11 +11,17 @@ class Jets::Application
   end
 
   def setup!
+    load_inflections
     load_configs # load config object so following methods can use it
     setup_auto_load_paths
     load_routes
   end
 
+  def load_inflections
+    Jets::Inflections.load!
+  end
+
+  # Default config
   def config
     config = ActiveSupport::OrderedOptions.new
 
@@ -23,12 +29,21 @@ class Jets::Application
     config.prewarm.enable = true
     config.prewarm.rate = '30 minutes'
     config.prewarm.concurrency = 2
-    config.prewarm.public_ratio = 10
+    config.prewarm.public_ratio = 3
 
     config.lambdagems = ActiveSupport::OrderedOptions.new
     config.lambdagems.sources = [
       'https://gems.lambdagems.com'
     ]
+
+    config.inflections = ActiveSupport::OrderedOptions.new
+    config.inflections.irregular = {}
+
+    config.assets = ActiveSupport::OrderedOptions.new
+    config.assets.folders = %w[packs images assets]
+    config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
+    config.assets.max_age = 3600
+    config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
 
     config
   end
@@ -91,12 +106,27 @@ class Jets::Application
 
     # Must set default iam_policy here instead of `def config` because we need access to
     # the project_namespace and if we call it from `def config` we get an infinit loop
-    config.iam_policy ||= [{
-      sid: "Statement1",
+    config.iam_policy ||= default_iam_policy(project_namespace)
+    config.managed_policy_definitions ||= [] # default empty
+  end
+
+  def default_iam_policy(project_namespace)
+    logs = {
       action: ["logs:*"],
       effect: "Allow",
       resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
-    }]
+    }
+    policies = [logs]
+
+    if Jets::Stack.has_resources?
+      cloudformation = {
+        action: ["cloudformation:DescribeStacks"],
+        effect: "Allow",
+        resource: "arn:aws:cloudformation:#{Jets.aws.region}:#{Jets.aws.account}:stack/#{project_namespace}*",
+      }
+      policies << cloudformation
+    end
+    policies
   end
 
   # It is pretty easy to attempt to set environment variables without

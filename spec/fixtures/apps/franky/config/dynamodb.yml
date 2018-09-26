@@ -1,0 +1,30 @@
+# Jets::Config.project_namespace is special value results in using the project namespace. Example :
+# table_namespace: <%= Jets.config.project_namespace %>
+# This is the default value.
+
+development:
+  # endpoint: http://localhost:8000
+  table_namespace: <%= Jets.config.table_namespace %>
+  # More examples:
+  # table_namespace: dev
+  # table_namespace: stag
+  # table_namespace: prod
+  # table_namespace: dev-1
+  # table_namespace: demo-dev-1
+
+  # endpoint: http://localhost:8000 # uncomment if deploying to production and test
+  # you can also use DYNAMODB_ENDPOINT environemnt variable to set this
+  # One way to do this if you are actually deploying a development environment is to
+  # change bin/server and export DYNAMODB_ENDPOINT=http://localhost:8000 at the top
+  # there.
+
+test:
+  # table_namespace: proj # do not include the env
+  endpoint: http://localhost:8000
+  table_namespace: <%= Jets.config.table_namespace %>
+
+staging:
+  table_namespace: <%= Jets.config.table_namespace %>
+
+production:
+  table_namespace: <%= Jets.config.table_namespace %>

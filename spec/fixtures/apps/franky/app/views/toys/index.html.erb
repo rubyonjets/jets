@@ -1,0 +1,29 @@
+<h1>Toys</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th>Published</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @toys.each do |toy| %>
+      <tr class="jets-element-to-delete">
+        <td><%= toy.title %></td>
+        <td><%= toy.body %></td>
+        <td><%= toy.published %></td>
+        <td><%= link_to 'Show', "/toys/#{toy.id}" %></td>
+        <td><%= link_to 'Edit', "/toys/#{toy.id}/edit" %></td>
+        <td><%= link_to 'Destroy', "/toys/#{toy.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Toy', "/toys/new" %>

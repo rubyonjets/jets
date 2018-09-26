@@ -1,5 +1,5 @@
 ---
-title: App Configuration
+title: Application Configuration
 ---
 
 You can set application-wide configurations in the `config/application.rb` file. You can configure global things like project_name, extra_autoload_paths, function timeout, memory size, etc. Example:
@@ -32,6 +32,12 @@ Jets.application.configure do
   # The config.function settings to the CloudFormation Lambda Function properties.
   # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
   # Underscored format can be used for keys to make it look more ruby-ish.
+
+  # Add irregular inflections example:
+  # config.inflections.irregular = {
+  #   octopus: 'octopi',
+  #   person: 'people',
+  # }
 end
 ```
 

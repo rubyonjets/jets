@@ -1,5 +1,7 @@
 module Jets::Resource::Iam
   module BaseRoleDefinition
+    attr_reader :policy_definitions, :managed_policy_definitions
+
     def definition
       logical_id = role_logical_id
 
@@ -34,11 +36,11 @@ module Jets::Resource::Iam
     end
 
     def policy_document
-      PolicyDocument.new(@policy_definitions).policy_document
+      PolicyDocument.new(@policy_definitions.flatten.uniq).policy_document
     end
 
     def managed_policy_arns
-      ManagedPolicy.new(@managed_policy_definitions).arns
+      ManagedPolicy.new(@managed_policy_definitions.flatten.uniq).arns
     end
   end
 end

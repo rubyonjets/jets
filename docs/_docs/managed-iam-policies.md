@@ -43,6 +43,38 @@ Jets.application.configure do |config|
 end
 ```
 
+## Managed IAM Policies Inheritance
+
+Managed IAM policies defined at lower levels of precedence inherit and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add a simple additional permission. For example, if you've configured the application-wide Managed IAM policy to look something like this:
+
+```ruby
+Jets.application.configure do |config|
+  config.managed_iam_policy = %w[IAMReadOnlyAccess]
+end
+```
+
+When you add a function specific IAM policy to a method:
+
+```ruby
+class PostsController < ApplicationController
+  # ...
+  managed_iam_policy "AmazonEC2ReadOnlyAccess"
+  def show
+    render json: {action: "show", id: params[:id]}
+  end
+end
+```
+
+The resulting policy for the method will look something like this:
+
+```yaml
+ManagedPolicyArns:
+- arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+- arn:aws:iam::aws:policy/IAMReadOnlyAccess
+```
+
+So the Managed IAM policies are additive.
+
 ## Managed IAM Policies Expansion
 
 The Managed IAM Policies shorthand above ultimately get expanded and included into the CloudFormation templates and get associated with the appropriate Lambda functions.  It ulimately, looks something like this:

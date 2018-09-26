@@ -62,6 +62,10 @@ class Jets::Resource
         "#{service}.amazonaws.com"
       end
 
+      # From AWS docs: https://amzn.to/2N0QXQL
+      # source_arn is "not supported by all event sources"
+      #
+      # When it is not available the resource definition should add it.
       def source_arn_map(type)
         map = {
           "AWS::ApiGateway::Method" => "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*",

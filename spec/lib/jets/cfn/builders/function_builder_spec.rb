@@ -13,9 +13,9 @@ describe Jets::Cfn::Builders::FunctionBuilder do
         # puts builder.text # uncomment to see template text
 
         resources = builder.template["Resources"]
-        expect(resources).to include("HelloWorldLambdaFunction")
+        expect(resources).to include("WorldLambdaFunction")
 
-        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-hello_function.yml"
+        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-hello_function.yml"
       end
     end
 
@@ -28,9 +28,9 @@ describe Jets::Cfn::Builders::FunctionBuilder do
         # puts builder.text # uncomment to see template text
 
         resources = builder.template["Resources"]
-        expect(resources).to include("SimpleFunctionHandlerLambdaFunction")
+        expect(resources).to include("HandlerLambdaFunction")
 
-        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-simple_function.yml"
+        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-simple_function.yml"
       end
     end
   end

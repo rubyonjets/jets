@@ -1,0 +1,53 @@
+{
+  "resource": "/posts/{id}",
+  "path": "/posts/tung",
+  "httpMethod": "GET",
+  "headers": {
+    "Accept": "*/*",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Host": "qg45s7uvg2.execute-api.us-east-1.amazonaws.com",
+    "User-Agent": "curl/7.54.0",
+    "Via": "1.1 dc553909528b8b63475c922dc07d8ba6.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "s9NB2f_Z1scd6ksA4fcXA2r4QhpSKQ6QcTLQHGfxDPfI-X7sXM3YLg==",
+    "X-Amzn-Trace-Id": "Root=1-59fb8ecb-586ab81d73e36910793d767c",
+    "X-Forwarded-For": "69.42.1.180, 54.239.203.97",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "queryStringParameters": null,
+  "pathParameters": {
+    "id": "tung"
+  },
+  "stageVariables": null,
+  "requestContext": {
+    "path": "/prod/posts/tung",
+    "accountId": "123456789012",
+    "resourceId": "wf2gvu",
+    "stage": "prod",
+    "requestId": "3feafb4e-c015-11e7-85c9-194f38f4c414",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": "",
+      "sourceIp": "69.42.1.180",
+      "accessKey": null,
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "curl/7.54.0",
+      "user": null
+    },
+    "resourcePath": "/posts/{id}",
+    "httpMethod": "GET",
+    "apiId": "qg45s7uvg2"
+  },
+  "body": null,
+  "isBase64Encoded": false
+}

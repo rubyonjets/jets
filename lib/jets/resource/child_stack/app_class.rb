@@ -1,13 +1,18 @@
+# Implements:
+#
+#   definition
+#   template_filename
+#
 module Jets::Resource::ChildStack
-  class AppClass < Jets::Resource::Base
-    def initialize(path, s3_bucket)
-      @path = path
-      @s3_bucket = s3_bucket
+  class AppClass < Base
+    def initialize(s3_bucket, options={})
+      super
+      @path = options[:path]
     end
 
     def definition
       logical_id = app_logical_id
-      {
+      defintion = {
         logical_id => {
           type: "AWS::CloudFormation::Stack",
           properties: {
@@ -16,6 +21,32 @@ module Jets::Resource::ChildStack
           }
         }
       }
+      defintion[logical_id][:depends_on] = depends_on if depends_on
+      defintion
+    end
+
+    def depends_on
+      klass = current_app_class.constantize
+      return unless klass.depends_on
+
+      klass.depends_on.map do |shared_stack|
+        shared_stack.to_s.camelize # logical_id
+      end
+    end
+
+    def depends_on_params
+      params = {}
+      depends_on.each do |dependency|
+        dependency_outputs(dependency).each do |output|
+          dependency_class = dependency.to_s.classify
+          params[output] = "!GetAtt #{dependency_class}.Outputs.#{output}"
+        end
+      end
+      params
+    end
+
+    def dependency_outputs(dependency)
+      dependency.to_s.classify.constantize.output_keys
     end
 
     def parameters
@@ -24,6 +55,7 @@ module Jets::Resource::ChildStack
         S3Bucket: "!Ref S3Bucket",
       }
       common.merge!(controller_params) if controller?
+      common.merge!(depends_on_params) if depends_on
       common
     end
 
@@ -51,31 +83,24 @@ module Jets::Resource::ChildStack
     end
 
     def current_app_class
-      templates_prefix = "#{Jets::Naming.template_path_prefix}-"
+      templates_prefix = "#{Jets::Naming.template_path_prefix}-app-"
       @path.sub(templates_prefix, '')
         .sub(/\.yml$/,'')
         .gsub('-','/')
         .classify
     end
 
-    def outputs
-      {
-        logical_id => "!Ref #{logical_id}",
-      }
-    end
-
-    # Dont name logical id because that is in Jets::Resource
     # map the path to a camelized logical_id. Example:
     #   /tmp/jets/demo/templates/demo-dev-2-posts_controller.yml to
     #   PostsController
     def app_logical_id
-      regexp = Regexp.new(".*#{Jets.config.project_namespace}-")
+      regexp = Regexp.new(".*#{Jets.config.project_namespace}-app-")
       controller_name = @path.sub(regexp, '').sub('.yml', '')
       controller_name.underscore.camelize
     end
 
-    def template_url
-      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{File.basename(@path)}"
+    def template_filename
+      @path
     end
   end
 end

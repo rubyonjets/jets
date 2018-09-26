@@ -21,12 +21,24 @@ module Jets
     # resources macro expands to all the routes
     def resources(name)
       get "#{name}", to: "#{name}#index"
-      get "#{name}/new", to: "#{name}#new"
+      get "#{name}/new", to: "#{name}#new" unless api_mode?
       get "#{name}/:id", to: "#{name}#show"
       post "#{name}", to: "#{name}#create"
-      get "#{name}/:id/edit", to: "#{name}#edit"
+      get "#{name}/:id/edit", to: "#{name}#edit" unless api_mode?
       put "#{name}/:id", to: "#{name}#update"
       delete "#{name}/:id", to: "#{name}#delete"
+    end
+
+    def api_mode?
+      if Jets.config.api_generator
+        puts <<~EOL.colorize(:yellow)
+          DEPRECATED: Jets.config.api_generator
+          Instead, please update your config/application.rb to use:
+            Jets.config.api_mode
+        EOL
+      end
+      api_mode = Jets.config.api_mode || Jets.config.api_generator
+      api_mode
     end
 
     def create_route(options)

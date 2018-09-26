@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Hacky wrapper script so I do not forget to update the jets remote gem
+set -eux
+
+rm -f "dev.mode"
+bundle update
+
+export JETS_ENV=staging
+
+yarn install
+bin/webpack
+
+os=`uname`
+if [[ "$os" == 'Darwin' ]]; then
+  time jets deploy # possibly using hacked local version of jets
+else
+  time bundle exec jets deploy # required to use bundle exec on the server
+fi

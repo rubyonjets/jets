@@ -44,7 +44,7 @@ class Jets::Processors::MainProcessor
       #
       # JSON.dump is pretty robust.  If it cannot dump the structure into a
       # json string, it just dumps it to a plain text string.
-      resp = Jets::Util.normalize_result(result) # String
+      Jets::Util.normalize_result(result) # resp is a String
     rescue Exception => e
       # Customize error message slightly so nodejs shim can process the
       # returned error message.

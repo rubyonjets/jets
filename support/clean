@@ -1,3 +1,0 @@
-#!/bin/bash
-
-rm -rf spec/fixtures/project/bundled

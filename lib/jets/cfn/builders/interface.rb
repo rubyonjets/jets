@@ -7,9 +7,8 @@ class Jets::Cfn::Builders
     extend Memoist
 
     def build
-      # Do not bother building
-      # or writing the template unless there are functions defined
-      return if @app_klass && !@app_klass.build?
+      # Do not bother building or writing the template unless there are functions defined
+      return if @app_class && !@app_class.build?
 
       compose # must be implemented by subclass
       write
@@ -74,9 +73,9 @@ class Jets::Cfn::Builders
     end
 
     def add_resources
-      @app_klass.tasks.each do |task|
-        task.resources.each do |definition|
-          resource = Jets::Resource.new(definition, task.replacements)
+      @app_class.tasks.each do |task|
+        task.associated_resources.each do |associated|
+          resource = Jets::Resource.new(associated.definition, task.replacements)
           add_resource(resource)
           add_resource(resource.permission)
         end

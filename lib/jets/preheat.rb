@@ -29,6 +29,7 @@ module Jets
     def warm_all
       threads = []
       all_functions.each do |function_name|
+        next if function_name.include?('jets-public_controller') # handled by warm_public_controller_more
         threads << Thread.new do
           warm(function_name)
         end

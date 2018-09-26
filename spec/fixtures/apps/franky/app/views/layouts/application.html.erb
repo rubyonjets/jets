@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Jets App</title>
+
+  <%= javascript_include_tag "https://code.jquery.com/jquery-3.2.1.min.js", integrity: "sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=",
+  crossorigin: "anonymous" %>
+
+  <%= javascript_pack_tag "framework" %>
+  <%= stylesheet_pack_tag "framework" %>
+  <%= javascript_pack_tag "application" %>
+
+  <%= javascript_include_tag "test" %>
+  <%= stylesheet_link_tag "test" %>
+</head>
+<body>
+
+<h1>Application layout</h1>
+
+<%= yield %>
+
+</body>
+</html>

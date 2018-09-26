@@ -19,8 +19,7 @@ module Jets::UrlHelper
             raise ArgumentError, "Please provided a String to link_to as the the second argument. The Jets link_to helper takes as the second argument."
           end
 
-    url = add_stage_name(url)
-    url
+    add_stage_name(url)
   end
 end # UrlHelper
 ActionView::Helpers.send(:include, Jets::UrlHelper)

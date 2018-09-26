@@ -1,9 +1,10 @@
+# Implements:
+#
+#   definition
+#   template_filename
+#
 module Jets::Resource::ChildStack
-  class ApiGateway < Jets::Resource::Base
-    def initialize(s3_bucket)
-      @s3_bucket = s3_bucket
-    end
-
+  class ApiGateway < Base
     def definition
       {
         api_gateway: {
@@ -21,9 +22,8 @@ module Jets::Resource::ChildStack
       }
     end
 
-    def template_url
-      path = File.basename("#{Jets.config.project_namespace}-api-gateway.yml")
-      "https://s3.amazonaws.com/#{@s3_bucket}/jets/cfn-templates/#{path}"
+    def template_filename
+      "#{Jets.config.project_namespace}-api-gateway.yml"
     end
   end
 end

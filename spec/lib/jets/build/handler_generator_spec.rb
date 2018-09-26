@@ -26,4 +26,14 @@ describe "HandlerGenerator" do
       expect(content).to include("exports.dig")
     end
   end
+
+  context "shared" do
+    let(:generator) do
+      Jets::Builders::HandlerGenerator.new("path-doesnt-matter-for-shared-resources")
+    end
+
+    it "generates the poly native functions" do
+      generator.shared_shims
+    end
+  end
 end

@@ -31,10 +31,10 @@ module Jets::Commands
     time :build_code
 
     def build_templates
-      if @options[:stack_type] == :minimal
-        build_minimal_template
-      else
+      if @options[:full] || @options[:stack_type] == :full
         build_all_templates
+      else
+        build_minimal_template
       end
     end
     time :build_templates
@@ -45,8 +45,10 @@ module Jets::Commands
       # 1. Shared templates - child templates needs them
       build_api_gateway_templates
       # 2. Child templates - parent template needs them
-      build_child_templates
-      # 3. Finally parent template
+      build_app_child_templates
+      # 2. Child templates - parent template needs them
+      build_shared_resources_templates
+      # 4. Finally parent template
       build_parent_template # must be called at the end
     end
 
@@ -59,19 +61,21 @@ module Jets::Commands
       Jets::Cfn::Builders::ApiDeploymentBuilder.new(@options).build
     end
 
-    def build_child_templates
+    def build_app_child_templates
       app_files.each do |path|
         build_child_template(path)
+      end
+    end
+
+    def build_shared_resources_templates
+      Jets::Stack.subclasses.each do |subclass|
+        Jets::Cfn::Builders::SharedBuilder.new(subclass).build
       end
     end
 
     # path: app/controllers/comments_controller.rb
     # path: app/jobs/easy_job.rb
     def build_child_template(path)
-      class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
-      class_name = class_path.classify
-      class_name.constantize # load app/**/* class definition
-
       md = path.match(%r{app/(.*?)/}) # extract: controller, job or function
       process_class = md[1].classify
       builder_class = "Jets::Cfn::Builders::#{process_class}Builder".constantize
@@ -82,8 +86,8 @@ module Jets::Commands
       #   Jets::Cfn::Builders::RuleBuilder.new(CheckRule)
       #   Jets::Cfn::Builders::FunctionBuilder.new(Hello)
       #   Jets::Cfn::Builders::FunctionBuilder.new(HelloFunction)
-      app_klass = Jets::Klass.from_path(path)
-      builder = builder_class.new(app_klass)
+      app_class = Jets::Klass.from_path(path)
+      builder = builder_class.new(app_class)
       builder.build
     end
 
@@ -119,6 +123,24 @@ module Jets::Commands
       paths
     end
 
+    def shared_files
+      self.class.shared_files
+    end
+
+    def self.shared_files
+      paths = []
+      expression = "#{Jets.root}app/**/**/*.rb"
+      Dir.glob(expression).each do |path|
+        return false unless File.file?(path)
+        next unless path.include?("app/shared/resources")
+
+        relative_path = path.sub(Jets.root.to_s, '')
+        # Rids of the Jets.root at beginning
+        paths << relative_path
+      end
+      paths
+    end
+
     def self.poly_only?
       # Scans all the app code and look for any methods that are ruby.
       # If any method is written in ruby then we know the app is not a
@@ -130,9 +152,8 @@ module Jets::Commands
 
         # Internal jets controllers like Welcome and Public need a different regexp
         app_file = app_file.sub(%r{.*lib/jets/internal/},'')
-
-        app_klass = app_file.classify.constantize # IE: PostsController, Jets::PublicController
-        langs = app_klass.tasks.map(&:lang)
+        app_class = app_file.classify.constantize # IE: PostsController, Jets::PublicController
+        langs = app_class.tasks.map(&:lang)
         langs.include?(:ruby)
       end
       !has_ruby

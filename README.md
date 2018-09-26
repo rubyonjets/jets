@@ -8,6 +8,8 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 [![CircleCI](https://circleci.com/gh/tongueroo/jets.svg?style=svg)](https://circleci.com/gh/tongueroo/jets)
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
 
+**Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/upgrading/).
+
 ## What is Jets?
 
 Jets is a Ruby Serverless Framework.  Jets allows you to create serverless applications with a beautiful language: Ruby.  It includes everything required to build an application and deploy it to AWS Lambda.
@@ -126,7 +128,6 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Database Support](http://rubyonjets.com/docs/database-support/)
 * [Polymorphic Support](http://rubyonjets.com/docs/polymorphic-support/)
 * [Tutorials](http://rubyonjets.com/docs/tutorials/)
-* [How Jets Works](http://rubyonjets.com/docs/how-jets-works/)
 * [Prewarming](http://rubyonjets.com/docs/prewarming/)
 * [Installation](http://rubyonjets.com/docs/install/)
 * [CLI Reference](http://rubyonjets.com/reference/)
@@ -139,3 +140,8 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [AWS Lambda Ruby Support at Native Speed with Jets](https://blog.boltops.com/2018/09/02/aws-lambda-ruby-support-at-native-speed-with-jets)
 * [Jets Tutorial An Introductory CRUD App Part 1](https://blog.boltops.com/2018/09/07/jets-tutorial-crud-app-introduction-part-1)
 * [Jets Tutorial Deploy to AWS Lambda Part 2](https://blog.boltops.com/2018/09/08/jets-tutorial-deploy-to-aws-lambda-part-2)
+* [Jets Tutorial Debugging Logs Part 3](https://blog.boltops.com/2018/09/09/jets-tutorial-debugging-logs-part-3)
+* [Jets Tutorial Background Jobs Part 4](https://blog.boltops.com/2018/09/10/jets-tutorial-background-jobs-part-4)
+* [Jets Tutorial IAM Policies Part 5](https://blog.boltops.com/2018/09/11/jets-tutorial-iam-policies-part-5)
+* [Jets Tutorial Function Properties Part 6](https://blog.boltops.com/2018/09/12/jets-tutorial-function-properties-part-6)
+* [Jets Tutorial Extra Environments Part 7](https://blog.boltops.com/2018/09/13/jets-tutorial-extra-environments-part-7)

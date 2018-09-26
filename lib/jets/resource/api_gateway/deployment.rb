@@ -20,7 +20,6 @@ module Jets::Resource::ApiGateway
       }
     end
 
-    # value is Value
     def outputs
       {
         "RestApiUrl" => "!Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/#{stage_name}/'",

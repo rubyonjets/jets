@@ -4,9 +4,16 @@
 class Jets::Naming
   # Mainly used by build.rb
   class << self
-    def template_path(app_class)
+    extend Memoist
+
+    def app_template_path(app_class)
       underscored = app_class.to_s.underscore.gsub('/','-')
-      "#{template_path_prefix}-#{underscored}.yml"
+      "#{template_path_prefix}-app-#{underscored}.yml"
+    end
+
+    def shared_template_path(shared_class)
+      underscored = shared_class.to_s.underscore.gsub('/','-')
+      "#{template_path_prefix}-shared-#{underscored}.yml"
     end
 
     def template_path_prefix
@@ -25,6 +32,10 @@ class Jets::Naming
 
     def api_deployment_template_path
       "#{template_path_prefix}-api-deployment.yml"
+    end
+
+    def shared_resources_template_path
+      "#{template_path_prefix}-shared-resources.yml"
     end
 
     def parent_stack_name

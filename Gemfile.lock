@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (0.8.12)
+    jets (0.9.2)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -21,6 +21,7 @@ PATH
       aws-sdk-dynamodb
       aws-sdk-lambda
       aws-sdk-s3
+      aws-sdk-sns
       colorize
       dotenv
       gems
@@ -29,7 +30,6 @@ PATH
       kramdown
       memoist
       mimemagic
-      pg (= 0.21)
       rack
       railties (>= 5.2.1)
       recursive-open-struct
@@ -65,14 +65,14 @@ GEM
       tzinfo (~> 1.1)
     arel (9.0.0)
     aws-eventstream (1.0.1)
-    aws-partitions (1.103.0)
+    aws-partitions (1.104.0)
     aws-sdk-cloudformation (1.8.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
     aws-sdk-cloudwatchlogs (1.8.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.27.0)
+    aws-sdk-core (3.28.0)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
@@ -86,9 +86,12 @@ GEM
     aws-sdk-lambda (1.10.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.19.0)
+    aws-sdk-s3 (1.20.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.0)
+    aws-sdk-sns (1.5.0)
+      aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
     builder (3.2.3)
@@ -119,7 +122,7 @@ GEM
       mini_portile2 (~> 2.3.0)
     pg (0.21.0)
     rack (2.0.5)
-    rack-proxy (0.6.4)
+    rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -164,6 +167,7 @@ DEPENDENCIES
   bundler
   byebug
   jets!
+  pg (= 0.21)
   rake
   rspec
   rspec_junit_formatter

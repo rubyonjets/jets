@@ -3,6 +3,57 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.9.2]
+- s3 assets support: Merge pull request #44 from tongueroo/s3-assets
+
+## [0.9.1]
+- add upgrading notes
+- fix iam policies: flatten
+
+## [0.9.0]
+- Remove class name from the namespace. So namespace only has method name now. NOTE: This means upgrading from 0.8.x to 0.9.x requires a blue-green update.
+- Add upgrading docs.
+- Stack DSL: To support the concept of Custom Shared Resources. Supports extensions and simple functions also.
+- Stack DSL: Allow for control of DependsOn attribute.
+- Stack DSL: `MyStack.lookup` method
+- Associated resource extensions support
+- Associated resources multiple form support: long, medium, short
+- Add `jets new --mode`: 3 modes: html, api, job. Remove the `--api`
+- IAM policies inherit from higher precedence and superclasses.
+- Add `jets runner` command
+- Fix AWS Config Rules support
+- Rename event_rule to events_rule
+- Remove submodule project demo fixture in favor of spec/fixtures/apps/franky
+- Add spec/bin/integration.sh - Simpler than the CI one and more immediately useful
+- Improve AWS Config Rules docs
+- Add config rules namespace setting
+- Custom inflections support
+
+## [0.8.18]
+- improve performance of Jets.aws.region, pull request #40 from tongueroo/dir-glob
+
+## [0.8.17]
+- fix Jets.eager_load
+
+## [0.8.16]
+- add minimal deploy iam policy docs
+- harden deploy, auto delete minimal stack in rollback_completed
+- Merge pull request #38 from tongueroo/harden-deploy-rollbacks
+
+## [0.8.15]
+- fix route resources macro for api mode pull request #35
+- remove pg dependency from jets and add as part of project Gemfile pull request #36
+
+## [0.8.14]
+- Add faq docs
+- add setting response headers support for cookies: pull request #31
+- Replace `Timing` header with `X-Runtime`: pull request #30 from y8/patch-1
+
+## [0.8.13]
+- even simpler iam policy expansions: pull request #27 from tongueroo/iam
+- specify rdoc options: pull request #28 from tongueroo/rdoc
+- add gem version badge and specify ruby 2.5.x requirement in gemspec
+
 ## [0.8.12]
 - fix jets gem summary and description
 

@@ -6,17 +6,24 @@ class Jets::Resource
     end
 
     def definition
-      {
-        permission_logical_id => {
+      logical_id = permission_logical_id
+
+      definition = {
+        logical_id => {
           type: "AWS::Lambda::Permission",
           properties: {
             function_name: "!GetAtt {namespace}LambdaFunction.Arn",
             action: "lambda:InvokeFunction",
-            principal: principal,
-            source_arn: source_arn,
+            principal: principal
           }
         }
       }
+
+      # From AWS docs: https://amzn.to/2N0QXQL
+      # source_arn is "not supported by all event sources"
+      definition[logical_id][:properties][:source_arn] = source_arn if source_arn
+
+      definition
     end
 
     def permission_logical_id
@@ -32,8 +39,7 @@ class Jets::Resource
     end
 
     def source_arn
-      default_arn = "!GetAtt #{@associated_resource.logical_id}.Arn"
-      Replacer.source_arn_map(@associated_resource.type) || default_arn
+      Replacer.source_arn_map(@associated_resource.type)
     end
   end
 end

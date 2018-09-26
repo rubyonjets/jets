@@ -8,7 +8,7 @@ class Jets::Controller
       return @rendered_data if @rendered
 
       # defaults to rendering templates
-      Renderers::TemplateRenderer.new(self, default_options).render
+      Renderers::TemplateRenderer.new(self, managed_options).render
     end
 
     # Many different ways to render:
@@ -25,7 +25,7 @@ class Jets::Controller
         options = normalize_options(options, rest)
       end
 
-      options.reverse_merge!(default_options)
+      options.reverse_merge!(managed_options)
       adjust_content_type!(options)
       @rendered_data = Renderers::TemplateRenderer.new(self, options).render
 
@@ -39,9 +39,11 @@ class Jets::Controller
       end
     end
 
-    def default_options
+    def managed_options
       layout = self.class.layout.nil? ? default_layout : self.class.layout
-      { layout: layout }
+      options = { layout: layout }
+      options[:headers] = response.headers unless response.headers.empty?
+      options
     end
 
     def default_layout

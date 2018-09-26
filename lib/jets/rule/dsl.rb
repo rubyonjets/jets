@@ -3,12 +3,22 @@
 # So the Jets::Rule::Dsl overrides some of the Jets::Lambda::Functions behavior.
 #
 # Implements:
-#   default_associated_resource: must return @resources
+#
+#   default_associated_resource_definition
+#
 module Jets::Rule::Dsl
   extend ActiveSupport::Concern
 
   included do
     class << self
+      def rule_namespace(value=nil)
+        if value.nil?
+          @rule_namespace # getter
+        else
+          @rule_namespace = value # # setter
+        end
+      end
+
       # Allows for different types of values. Examples:
       #
       # String: scope "AWS::EC2::SecurityGroup"
@@ -23,100 +33,63 @@ module Jets::Rule::Dsl
           else # default to hash
             value
           end
-        update_properties(scope: scope)
+        associated_properties(scope: scope)
       end
 
-      def config_rule_name(value)
-        update_properties(config_rule_name: value)
-      end
-
-      def description(value)
-        update_properties(description: value)
-      end
+      # Convenience method that set properties. List based on https://amzn.to/2oSph1P
+      # Not all properties are included because some properties are not meant to be set
+      # directly. For example, function_name is a calculated setting by Jets.
+      ASSOCIATED_PROPERTIES = %W[
+        config_rule_name
+        description
+        input_parameters
+        maximum_execution_frequency
+      ]
+      define_associated_properties(ASSOCIATED_PROPERTIES)
       alias_method :desc, :description
 
-      def input_parameters(value)
-        update_properties(input_parameters: value)
+      def default_associated_resource_definition(meth)
+        config_rule_definition(meth)
       end
 
-      def maximum_execution_frequency(value)
-        update_properties(maximum_execution_frequency: value)
+      def config_rule_definition(meth)
+        resource = Jets::Resource::Config::ConfigRule.new(self, meth, associated_properties)
+        resource.definition # returns a definition to be added by associated_resources
       end
 
-      def source(value)
-        update_properties(source: value)
-      end
-
-      def default_associated_resource
-        config_rule
-      end
-
-      def config_rule(props={})
-        default_props = {
-          config_rule_name: "{config_rule_name}",
-          source: {
-            owner: "CUSTOM_LAMBDA",
-            source_identifier: "{namespace}LambdaFunction.Arn",
-            source_details: [
-              {
-                event_source: "aws.config",
-                message_type: "ConfigurationItemChangeNotification"
-              },
-              {
-                event_source: "aws.config",
-                message_type: "OversizedConfigurationItemChangeNotification"
-              }
-            ]
-          }
-        }
-        properties = default_props.deep_merge(props)
-
-        resource("{namespace}ConfigRule" => {
-          type: "AWS::Config::ConfigRule",
-          properties: properties
-        })
-        @resources # must return @resoures for update_properties
-      end
-
-      def managed_rule(name, props={})
+      def managed_rule(name)
         name = name.to_s
+        managed_rule = Jets::Resource::Config::ManagedRule.new(self, name, associated_properties)
+        resource(managed_rule.definition) # Sets @associated_resources
 
-        # Similar logic in Replacer::ConfigRule#config_rule_name
-        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
-        config_rule_name = "#{name_without_rule}_#{name}".dasherize
-        source_identifier = name.upcase
-
-        default_props = {
-          config_rule_name: config_rule_name,
-          source: {
-            owner: "AWS",
-            source_identifier: source_identifier,
-          }
-        }
-        properties = default_props.deep_merge(props)
-        # The key is to use update_properties to update the current resource and maintain
-        # the added properties from the convenience methods like scope and description.
-        # At the same time, we do not register the task to all_tasks to avoid creating a Lambda function.
+        # The key to not register the task to all_tasks to avoid creating a Lambda function.
         # Instead we store it in all_managed_rules.
-        update_properties(properties)
-        definition = @resources.first
-
-        register_managed_rule(name, definition)
+        register_managed_rule(name, managed_rule.definition)
       end
 
       # Creates a task but registers it to all_managed_rules instead of all_tasks
       # because we do not want Lambda functions to be created.
       def register_managed_rule(name, definition)
-        # A task object is needed to build {namespace} for later replacing.
-        task = Jets::Lambda::Task.new(self.name, name, resources: @resources)
 
-        # TODO: figure out better way for specific replacements for different classes
-        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
-        config_rule_name = "#{name_without_rule}_#{name}".dasherize
-        replacements = task.replacements.merge(config_rule_name: config_rule_name)
-
-        all_managed_rules[name] = { definition: definition, replacements: replacements }
+        # Mimic task to grab base_replacements, namely namespace.
+        # Do not actually use the task to create a Lambda function for managed rules.
+        # Only using the task for base_replacements.
+        resources = [definition]
+        meth = name
+        task = Jets::Lambda::Task.new(self.name, meth,
+                 resources: resources,
+                 replacements: replacements(meth))
+        all_managed_rules[name] = { definition: definition, replacements: task.replacements }
         clear_properties
+      end
+
+      # Override lambda/dsl.rb to add config_rule_name also
+      def replacements(meth)
+        name_without_rule = self.name.underscore.gsub(/_rule$/,'')
+        config_rule_name = "#{name_without_rule}_#{meth}".dasherize
+        {
+          config_rule_name: config_rule_name
+        }
       end
 
       # AWS managed rules are not actual Lambda functions and require their own storage.
@@ -128,7 +101,7 @@ module Jets::Rule::Dsl
         all_managed_rules.values
       end
 
-      # Override Lambda::Dsl.build? to account of possible managed_rules
+      # Override Lambda::Dsl.build? to account for possible managed_rules
       def build?
         !tasks.empty? || !managed_rules.empty?
       end

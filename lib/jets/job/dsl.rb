@@ -3,74 +3,105 @@
 # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
 #
 # Implements:
-#   default_associated_resource: must return @resources
+#
+#   default_associated_resource_definition
+#
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
 
   included do
     class << self
-      def rate(expression)
-        update_properties(schedule_expression: "rate(#{expression})")
+      # Public: Creates CloudWatch Event Rule
+      #
+      # expression - The rate expression.
+      #
+      # Examples
+      #
+      #   rate("10 minutes")
+      #   rate("10 minutes", description: "Hard job")
+      #
+      def rate(expression, props={})
+        schedule_job("rate(#{expression})", props)
       end
 
-      def cron(expression)
-        update_properties(schedule_expression: "cron(#{expression})")
+      # Public: Creates CloudWatch Event Rule
+      #
+      # expression - The cron expression.
+      #
+      # Examples
+      #
+      #   cron("0 */12 * * ? *")
+      #   cron("0 */12 * * ? *", description: "Hard job")
+      #
+      def cron(expression, props={})
+        schedule_job("cron(#{expression})", props)
       end
 
-      def event_pattern(details={})
-        event_rule(event_pattern: details)
+      def schedule_job(expression, props={})
+        @associated_properties = nil # dont use any current associated_properties
+        props = props.merge(schedule_expression: expression)
+        associated_properties(props)
+        # Eager define resource
+        resource(events_rule_definition) # add associated resources immediately
+        @associated_properties = nil # reset for next definition, since we're defining eagerly
+      end
+
+      def event_pattern(details={}, props={})
+        @associated_properties = nil # dont use any current associated_properties
+        props = props.merge(event_pattern: details)
+        associated_properties(props)
+        # Eager define resource
+        resource(events_rule_definition) # add associated resources immediately
+        @associated_properties = nil # reset for next definition, since we're defining eagerly
         add_descriptions # useful: generic description in the Event Rule console
       end
 
+      def events_rule(props={})
+        @associated_properties = nil # dont use any current associated_properties
+        associated_properties(props)
+        # Eager define resource
+        resource(events_rule_definition) # add associated resources immediately
+        @associated_properties = nil # reset for next definition, since we're defining eagerly
+      end
+
+      # Works with eager definitions
       def add_descriptions
         numbered_resources = []
         n = 1
-        @resources.map do |definition|
-          logical_id = definition.keys.first
-          attributes = definition.values.first
-          attributes[:properties][:description] = "#{self.name} Event Rule #{n}"
-          numbered_resources << { "#{logical_id}" => attributes }
+        @associated_resources.map do |associated|
+          # definition = associated.definition
+          # puts "associated #{associated.inspect}"
+          # puts "definition #{definition.inspect}"
+
+          # logical_id = definition.keys.first
+          # attributes = definition.values.first
+
+          logical_id = associated.logical_id
+          attributes = associated.attributes
+
+          attributes[:properties][:description] ||= "#{self.name} Event Rule #{n}"
+          new_definition = { "#{logical_id}" => attributes }
+          numbered_resources << Jets::Resource::Associated.new(new_definition)
           n += 1
         end
-        @resources = numbered_resources
+        @associated_resources = numbered_resources
       end
 
-      def default_associated_resource
-        event_rule
-        @resources # must return @resoures for update_properties
+      ASSOCIATED_PROPERTIES = %W[
+        description
+        state
+        schedule_expression
+      ]
+      define_associated_properties(ASSOCIATED_PROPERTIES)
+      alias_method :desc, :description
+
+      def default_associated_resource_definition(meth)
+        events_rule_definition
       end
 
-      def event_rule(props={})
-        default_props = {
-          state: "ENABLED",
-          targets: [{
-            arn: "!GetAtt {namespace}LambdaFunction.Arn",
-            id: "{namespace}RuleTarget"
-          }]
-        }
-        properties = default_props.deep_merge(props)
-
-        resource("{namespace}EventsRule" => {
-          type: "AWS::Events::Rule",
-          properties: properties
-        })
-
-        add_logical_id_counter if @resources.size > 1
-      end
-
-      # Loop back through the resources and add a counter to the end of the id
-      # to handle multiple events.
-      # Then replace @resources entirely
-      def add_logical_id_counter
-        numbered_resources = []
-        n = 1
-        @resources.map do |definition|
-          logical_id = definition.keys.first
-          logical_id = logical_id.sub(/\d+$/,'')
-          numbered_resources << { "#{logical_id}#{n}" => definition.values.first }
-          n += 1
-        end
-        @resources = numbered_resources
+      def events_rule_definition
+        resource = Jets::Resource::Events::Rule.new(associated_properties)
+        resource.definition # returns a definition to be added by associated_resources
       end
     end
   end

@@ -2,10 +2,18 @@
 title: Config Rules
 ---
 
-Jets supports creating [AWS Config Rules](https://aws.amazon.com/config/) and associating them with lambda functions.  Example:
+Jets supports creating [AWS Config Rules](https://aws.amazon.com/config/) and associating them with lambda functions.  First, make sure you have a `app/rules/application_rule.rb`:
 
 ```ruby
-class SecurityGroupRule < Jets::Rule::Base
+class ApplicationRule < Jets::Rule::Base
+  rule_namespace false
+end
+```
+
+The config rule classes you create will look something like this:
+
+```ruby
+class SecurityGroupRule < ApplicationRule
   desc "ensures security groups are hardened"
   scope "AWS::EC2::SecurityGroup"
   def protect
@@ -54,10 +62,10 @@ app/rules/protect_rule/python/ec2_exposed_instance.py
 app/rules/protect_rule/python/iam_mfa.py
 ```
 
-Then in your Rule class, you would use Jet's polymorphic ability:
+Then in your Rule class, you would use [Jet's polymorphic ability](http://rubyonjets.com/docs/polymorphic-support/):
 
 ```ruby
-class ProtectRule < Jets::Rule::Base
+class ProtectRule < ApplicationRule
   scope "AWS::EC2::Instance"
   python :ec2_exposed_instance
 
@@ -70,20 +78,41 @@ Jets will create Python lambda functions using the files in the `app/rules/prote
 
 ## Managed Config Rules
 
-[AWS Config Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html) are rules pre-built rules created by AWS.  For example, there's a [iam-password-policy](https://docs.aws.amazon.com/config/latest/developerguide/iam-password-policy.html) rule that you can set up to prove that your AWS account follows a strong password policy. AWS support a ton of [Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html).  It is simple to use Config Managed Rules with Jets, here's an example:
+[AWS Config Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_use-managed-rules.html) are pre-built rules created by AWS.  For example, there's a [iam-password-policy](https://docs.aws.amazon.com/config/latest/developerguide/iam-password-policy.html) rule that you can set up to show that your AWS account follows a strong password policy. AWS supports a ton of [Managed Rules](https://docs.aws.amazon.com/config/latest/developerguide/managed-rules-by-aws-config.html).  You use AWS managed rules and custom Lambda based rules similarly:
 
 ```ruby
-class CheckRule < Jets::Rule::Base
+class CheckRule < ApplicationRule
   desc "CIS 4.1 - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22"
   scope "AWS::EC2::SecurityGroup"
   managed_rule :incoming_ssh_disabled
 end
 ```
 
-It is perfectly fine to use AWS managed rules and custom lambda based rules in the same Rule class.  Here's a screenshot example of the both types of rules mixed together:
+Here's a screenshot example of the both types of rules mixed together:
 
 ![](/img/docs/aws-config-rules.png)
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/database-activerecord.md %}">Back</a>
+## Rule Namespace
+
+The config rule classes above inherited from an `ApplicationRule` class that set the `rule_namespace` to `false`. This is because often times config rules apply to the entire AWS account removing the namespace helps to shorten the names of the provisioned config rules. If you would like to change this behavior you can remove the `rule_namespace` line.
+
+```ruby
+class CheckRule < ApplicationRule
+end
+```
+
+Or you can set your own namespace:
+
+```ruby
+class CheckRule < ApplicationRule
+  rule_namespace "cis"
+end
+```
+
+## Useful Resources
+
+* [AWS::Config::ConfigRule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-config-configrule.html) CloudFormation reference
+
+<a id="prev" class="btn btn-basic" href="{% link _docs/shared-resources-functions.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/cors-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

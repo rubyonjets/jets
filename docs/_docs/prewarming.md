@@ -10,7 +10,7 @@ Jets.application.configure do
   config.prewarm.enable = true # default: enabled
   config.prewarm.rate = "30 minutes" # default: 30 minutes
   config.prewarm.concurrency = 2 # default: 2
-  config.prewarm.public_ratio = 10 # default: 10
+  config.prewarm.public_ratio = 3 # default: 3
 end
 ```
 
