@@ -110,14 +110,26 @@ class Jets::Builders
 
     # At this point the minimal stack exists.
     def store_s3_base_url
+      IO.write("#{full(tmp_app_root)}/config/s3_base_url.txt", s3_base_url)
+    end
+
+    def s3_base_url
+      # Allow use to set assets.base_url
+      #
+      #   Jets.application.configure do
+      #     config.assets.base_url = "https://cloudfront.com/my/base/path"
+      #   end
+      #
+      return Jets.config.assets.base_url if Jets.config.assets.base_url
+
       resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
       stack = resp.stacks.first
       output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
       bucket_name = output["output_value"] # s3_bucket
       region = Jets.aws.region
-      asset_base_url = Jets.config.asset_base_url || "https://s3-#{region}.amazonaws.com"
-      s3_base_url = "#{asset_base_url}/#{bucket_name}/jets/public"
-      IO.write("#{full(tmp_app_root)}/config/s3_base_url.txt", s3_base_url)
+
+      asset_base_url = "https://s3-#{region}.amazonaws.com"
+      "#{asset_base_url}/#{bucket_name}/jets/public" # s3_base_url
     end
 
     def lambdagem_options

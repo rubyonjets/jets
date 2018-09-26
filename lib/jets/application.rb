@@ -21,6 +21,7 @@ class Jets::Application
     Jets::Inflections.load!
   end
 
+  # Default config
   def config
     config = ActiveSupport::OrderedOptions.new
 
@@ -28,7 +29,7 @@ class Jets::Application
     config.prewarm.enable = true
     config.prewarm.rate = '30 minutes'
     config.prewarm.concurrency = 2
-    config.prewarm.public_ratio = 10
+    config.prewarm.public_ratio = 3
 
     config.lambdagems = ActiveSupport::OrderedOptions.new
     config.lambdagems.sources = [
@@ -37,6 +38,10 @@ class Jets::Application
 
     config.inflections = ActiveSupport::OrderedOptions.new
     config.inflections.irregular = {}
+
+    config.assets = ActiveSupport::OrderedOptions.new
+    config.assets.folders = %w[packs images assets]
+    config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
 
     config
   end

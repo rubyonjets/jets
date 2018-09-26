@@ -179,7 +179,7 @@ class Jets::Cfn
 
     def upload_public_assets
       puts "Uploading public assets"
-      asset_folders = %w[packs images]
+      asset_folders = Jets.config.assets.folders
       asset_folders.each do |folder|
         upload_public_asset_folder(folder)
       end
