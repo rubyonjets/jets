@@ -2,7 +2,7 @@
 title: Assets Serving
 ---
 
-Jets handles asset serving by uploading asset files to s3 and serving them directly from s3. This is particularly beneficial for binary assets like images as they are s3 is better suited for serving them.
+Jets handles asset serving by uploading asset files to s3 and serving them directly from s3. This is particularly beneficial for binary assets like images as s3 is better suited for serving them.
 
 By default, these folders are automatically uploaded to s3 as part of the `jets deploy` command:
 
