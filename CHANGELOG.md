@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.10.0]
+- Merge pull request #45 from tongueroo/remove-internal-welcome
+- Fix routing: Allow multiple paths to point to same controller action
+- Refer to upgrading notes: http://rubyonjets.com/docs/upgrading/
+
 ## [0.9.2]
 - s3 assets support: Merge pull request #44 from tongueroo/s3-assets
 
