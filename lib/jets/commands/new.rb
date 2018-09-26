@@ -1,7 +1,7 @@
 module Jets::Commands
   class New < Sequence
     VALID_MODES = %w[html api job]
-    argument :project_name
+    argument :project_folder
 
     # Ugly, but when the class_option is only defined in the Thor::Group class
     # it doesnt show up with jets new help :(
@@ -22,7 +22,9 @@ module Jets::Commands
       class_option(*args)
     end
 
-    def set_api_mode
+    def set_initial_variables
+      @project_name = project_folder == '.' ? File.basename(Dir.pwd) : project_folder
+
       # options is a frozen hash by Thor so cannot modify it.
       # Also had trouble unfreezing it with .dup. So using instance variables instead
       case options[:mode]
@@ -41,9 +43,9 @@ module Jets::Commands
     def create_project
       options[:repo] ? clone_project : copy_project
 
-      destination_root = "#{Dir.pwd}/#{project_name}"
+      destination_root = "#{Dir.pwd}/#{project_folder}"
       self.destination_root = destination_root
-      FileUtils.cd("#{Dir.pwd}/#{project_name}")
+      FileUtils.cd("#{Dir.pwd}/#{project_folder}")
     end
 
     def make_bin_executable
@@ -122,7 +124,7 @@ JS
         Congrats 🎉 You have successfully created a Jets project.
 
         Cd into the project directory:
-          cd #{project_name}
+          cd #{project_folder}
 
         #{more_info}
       EOL

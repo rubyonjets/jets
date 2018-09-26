@@ -2,7 +2,7 @@ default: &default
   adapter: postgresql
   encoding: utf8
   pool: <%%= ENV["DB_POOL"] || 5  %>
-  database: <%%= ENV['DB_NAME'] || '<%= project_name %>_dev' %>
+  database: <%%= ENV['DB_NAME'] || '<%= @project_name %>_dev' %>
   username: <%%= ENV['DB_USER'] || ENV['USER'] %>
   password: <%%= ENV['DB_PASS'] %>
   host: <%%= ENV["DB_HOST"] %>
@@ -10,13 +10,13 @@ default: &default
 
 development:
   <<: *default
-  database: <%%= ENV['DB_NAME'] || '<%= project_name %>_dev' %>
+  database: <%%= ENV['DB_NAME'] || '<%= @project_name %>_dev' %>
 
 test:
   <<: *default
-  database: <%= project_name %>_test
+  database: <%= @project_name %>_test
 
 production:
   <<: *default
-  database: <%= project_name %>_prod
+  database: <%= @project_name %>_prod
   url: <%%= ENV['DATABASE_URL'] %>

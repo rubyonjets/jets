@@ -17,16 +17,16 @@ private
       abort "Unable to detect git installation on your system.  Git needs to be installed in order to use the --repo option."
     end
 
-    if File.exist?(project_name)
-      abort "The folder #{project_name} already exists."
+    if File.exist?(project_folder)
+      abort "The folder #{project_folder} already exists."
     else
-      run "git clone https://github.com/#{options[:repo]} #{project_name}"
+      run "git clone https://github.com/#{options[:repo]} #{project_folder}"
     end
     confirm_jets_project
   end
 
   def confirm_jets_project
-    jets_project = File.exist?("#{project_name}/config/application.rb")
+    jets_project = File.exist?("#{project_folder}/config/application.rb")
     unless jets_project
       puts "It does not look like the repo #{options[:repo]} is a jets project. Maybe double check that it is?  Exited.".colorize(:red)
       exit 1
@@ -34,8 +34,8 @@ private
   end
 
   def copy_project
-    puts "Creating new project called #{project_name}."
-    directory ".", project_name, copy_options
+    puts "Creating new project called #{@project_name}."
+    directory ".", project_folder, copy_options
   end
 
   def copy_options
