@@ -14,25 +14,28 @@ module Jets::Commands
       return if @options[:noop]
 
       check_dev_mode
-      build_code
       validate_routes!
 
       # Delete existing rollback stack from previous bad minimal deploy
-      if minimal_rollback_complete?
-        puts "Existing stack is in ROLLBACK_COMPLETE state from a previous failed minimal deploy. Deleting stack and continuing."
-        cfn.delete_stack(stack_name: stack_name)
-        status.wait
-        status.reset
-      end
-
-      # Stack could be in a weird rollback state or in progress state
-      exit_unless_updateable!
-
+      delete_minimal_stack if minimal_rollback_complete?
+      exit_unless_updateable! # Stack could be in a weird rollback state or in progress state
       ship(stack_type: :minimal) if first_run?
+
+      # Build code after the minimal stack because need s3 bucket for assets
+      # on_aws? and s3_base_url logic
+      build_code
+
       # deploy full nested stack when stack already exists
       ship(stack_type: :full, s3_bucket: s3_bucket)
     end
     time :run
+
+    def delete_minimal_stack
+      puts "Existing stack is in ROLLBACK_COMPLETE state from a previous failed minimal deploy. Deleting stack and continuing."
+      cfn.delete_stack(stack_name: stack_name)
+      status.wait
+      status.reset
+    end
 
     def check_dev_mode
       if File.exist?("#{Jets.root}dev.mode")

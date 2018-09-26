@@ -44,29 +44,21 @@ module Jets::AssetTagHelper
   # Url: /packs/application-e7654c50abd78161b641.js
   # Returns: https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1jg5o076egkk4/jets/public/packs/application-e7654c50abd78161b641.js
   def add_s3_base_url(url)
-    return url unless running_on_aws?(url)
+    return url unless on_aws?(url)
     "#{s3_base_url}#{url}"
   end
 
-  def running_on_aws?(url)
+  def on_aws?(url)
     request.host.include?("amazonaws.com") &&
       url.starts_with?('/') &&
       !url.starts_with?('http')
   end
 
   # TODO: figure out how to improve performance.
-  @@s3_base_url = nil
   def s3_base_url
-    return @@s3_base_url if @@s3_base_url
-
-    resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
-    stack = resp.stacks.first
-    output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
-    bucket_name = output["output_value"] # s3_bucket
-    region = Jets.aws.region
-    asset_base_url = Jets.config.asset_base_url || "https://s3-#{region}.amazonaws.com"
-    @@s3_base_url = "#{asset_base_url}/#{bucket_name}/jets/public"
+    IO.read("#{Jets.root}/config/s3_base_url.txt").strip
   end
+  memoize :s3_base_url
 
   # # User can use:
   # #  javascript_include_tag "assets/test"

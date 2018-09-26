@@ -53,6 +53,7 @@ class Jets::Builders
   class CodeBuilder
     include Jets::Timing
     include ActionView::Helpers::NumberHelper # number_to_human_size
+    include Jets::AwsServices
 
     attr_reader :full_project_path
     def initialize
@@ -103,8 +104,21 @@ class Jets::Builders
       setup_bundle_config
       extract_ruby
       extract_gems
+      store_s3_base_url
     end
     time :finish_app_root_setup
+
+    # At this point the minimal stack does exist.
+    def store_s3_base_url
+      resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
+      stack = resp.stacks.first
+      output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
+      bucket_name = output["output_value"] # s3_bucket
+      region = Jets.aws.region
+      asset_base_url = Jets.config.asset_base_url || "https://s3-#{region}.amazonaws.com"
+      s3_base_url = "#{asset_base_url}/#{bucket_name}/jets/public"
+      IO.write("#{tmp_app_root}/config/s3_base_url.txt", s3_base_url)
+    end
 
     def lambdagem_options
       {
