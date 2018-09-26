@@ -179,10 +179,12 @@ class Jets::Cfn
 
     def upload_public_assets
       puts "Uploading public assets"
+      start_time = Time.now
       asset_folders = Jets.config.assets.folders
       asset_folders.each do |folder|
         upload_public_asset_folder(folder)
       end
+      puts "Time to upload public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
 
     def upload_public_asset_folder(folder)
