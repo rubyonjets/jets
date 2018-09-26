@@ -174,14 +174,14 @@ class Jets::Cfn
     end
 
     def upload_public_assets
-      expression = "#{Jets.root}public/assets/**/*"
+      expression = "#{Jets.root}public/packs/**/*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
-        relative_path = path.sub(%r{.*/assets/},'')
-        key = "jets/assets/#{relative_path}"
+        relative_path = path.sub(%r{.*/packs/},'')
+        key = "jets/packs/#{relative_path}"
         obj = s3_resource.bucket(bucket_name).object(key)
-        obj.upload_file(path, acl: "public-read") # TODO: CHECK IF THIS IS RIGHT WAY TO SET public-read acl
+        obj.upload_file(path, acl: "public-read")
       end
     end
 
