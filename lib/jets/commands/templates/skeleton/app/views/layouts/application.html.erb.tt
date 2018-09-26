@@ -8,6 +8,7 @@
   <title>Jets App</title>
   <%%= javascript_pack_tag "application" %>
   <%%= stylesheet_pack_tag "theme" %>
+  <link rel="shortcut icon" href="<%%= asset_path("/images/favicon.ico") %>">
 </head>
 <body>
 <section class="starter">
