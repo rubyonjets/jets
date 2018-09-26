@@ -149,6 +149,10 @@ class Jets::Cfn
     end
     time :upload_to_s3
 
+    def bucket_name
+      @options[:s3_bucket]
+    end
+
     def upload_cfn_templates
       puts "Uploading child CloudFormation templates to S3"
       expression = "#{Jets::Naming.template_path_prefix}-*"
@@ -174,12 +178,13 @@ class Jets::Cfn
     end
 
     def upload_public_assets
+      puts "Uploading public assets"
       expression = "#{Jets.root}public/packs/**/*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 
         relative_path = path.sub(%r{.*/packs/},'')
-        key = "jets/packs/#{relative_path}"
+        key = "jets/public/packs/#{relative_path}"
         obj = s3_resource.bucket(bucket_name).object(key)
         obj.upload_file(path, acl: "public-read")
       end
