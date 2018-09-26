@@ -34,9 +34,7 @@ private
   end
 
   def copy_project
-
     puts "Creating new project called #{project_name}."
-
     directory ".", project_name, copy_options
   end
 
