@@ -111,14 +111,14 @@ class Jets::Application
     }
     policies = [logs]
 
-    # if Jets::Stack.has_resources?
+    if Jets::Stack.has_resources?
       cloudformation = {
         action: ["cloudformation:DescribeStacks"],
         effect: "Allow",
         resource: "arn:aws:cloudformation:#{Jets.aws.region}:#{Jets.aws.account}:stack/#{project_namespace}*",
       }
       policies << cloudformation
-    # end
+    end
     policies
   end
 

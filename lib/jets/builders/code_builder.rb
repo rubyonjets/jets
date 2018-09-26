@@ -108,7 +108,7 @@ class Jets::Builders
     end
     time :finish_app_root_setup
 
-    # At this point the minimal stack does exist.
+    # At this point the minimal stack exists.
     def store_s3_base_url
       resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
       stack = resp.stacks.first
