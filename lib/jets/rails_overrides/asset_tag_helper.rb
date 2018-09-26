@@ -23,9 +23,9 @@ module Jets::AssetTagHelper
   #
   #   image_tag("jets.png") => https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1kih4n2te0n66/jets/public/images/jets.png
   def image_tag(source, options = {})
+    # mimic original behavior to get /images in source
+    source = "/images/#{source}" unless source.starts_with?('/')
     if on_aws?(source)
-      # mimic original behavior to get /images in source
-      source = "/images/#{source}" unless source.starts_with?('/')
       source = "#{s3_base_url}#{source}"
     end
 
