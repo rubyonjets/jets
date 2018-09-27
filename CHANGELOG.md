@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.10.3]
+- expose Jets::Application.default_iam_policy so user can re-use
+
 ## [0.10.2]
 - fix cloudformation config rule permission race condition with depends on
 - simplify --templates only cli option
