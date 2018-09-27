@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.10.1]
+- clear @associated_properties bug
+- fix jets new . , Merge pull request #46 from tongueroo/jets-new-dot
+- update upgrade notes
+
 ## [0.10.0]
 - Merge pull request #45 from tongueroo/remove-internal-welcome
 - Fix routing: Allow multiple paths to point to same controller action
