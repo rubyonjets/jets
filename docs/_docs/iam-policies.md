@@ -143,7 +143,7 @@ Statement:
 - Action:
   - kinesis:*
   Effect: Allow
-  Resource: "arn:aws:kinesis:us-west-2:1234567890:log-group:demo-dev-*"
+  Resource: "arn:aws:kinesis:us-west-2:1234567890:stream/name*"
 ```
 
 Note, the resource values are examples.
