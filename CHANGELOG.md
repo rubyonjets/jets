@@ -17,9 +17,9 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - update upgrade notes
 
 ## [0.10.0]
+- Breaking: Changed logical ids. Refer to upgrading notes: http://rubyonjets.com/docs/upgrading/
 - Merge pull request #45 from tongueroo/remove-internal-welcome
 - Fix routing: Allow multiple paths to point to same controller action
-- Refer to upgrading notes: http://rubyonjets.com/docs/upgrading/
 
 ## [0.9.2]
 - s3 assets support: Merge pull request #44 from tongueroo/s3-assets
@@ -29,12 +29,12 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - fix iam policies: flatten
 
 ## [0.9.0]
+- Breaking: Changed logical ids. Refer to upgrading notes: http://rubyonjets.com/docs/upgrading/
 - Pretty big update: introduce concept of Shared Resources and Stack DSL
 - Stack DSL: To support the concept of Custom Shared Resources. Supports extensions and simple functions also.
 - Stack DSL: Allow for control of DependsOn attribute.
 - Stack DSL: `MyStack.lookup` method
 - Remove class name from the namespace. So namespace only has method name now. NOTE: This means upgrading from 0.8.x to 0.9.x requires a blue-green update.
-- Add upgrading docs.
 - Associated resource extensions support
 - Associated resources multiple form support: long, medium, short
 - Add `jets new --mode`: 3 modes: html, api, job. Remove the `--api`
