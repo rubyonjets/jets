@@ -7,12 +7,20 @@ module Jets::Resource::Config
     end
 
     def definition
-      {
+      base = {
         config_rule_logical_id => {
           type: "AWS::Config::ConfigRule",
-          properties: definition_properties,
+          properties: definition_properties
         }
       }
+
+      # Explicitly set depends_on to help with CloudFormation random race condition.
+      # Seems to be a new CloudFormation and AWS Config resource issue.
+      if definition_properties[:source][:owner] == 'CUSTOM_LAMBDA'
+        base[config_rule_logical_id][:depends_on] = "{namespace}Permission"
+      end
+
+      base
     end
 
     # Do not name this method properties, that is a computed method of `Jets::Resource::Base`
