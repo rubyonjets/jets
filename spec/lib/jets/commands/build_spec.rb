@@ -1,7 +1,7 @@
 describe Jets::Commands::Build do
   context "templates only and fake full" do
     let(:build) do
-      Jets::Commands::Build.new(templates_only: true, full: true)
+      Jets::Commands::Build.new(templates: true, full: true)
     end
 
     it "builds templates" do
