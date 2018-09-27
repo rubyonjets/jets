@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.10.2]
+- fix cloudformation config rule permission race condition with depends on
+- simplify --templates only cli option
+- update config rules docs
+
 ## [0.10.1]
 - clear @associated_properties bug
 - fix jets new . , Merge pull request #46 from tongueroo/jets-new-dot
@@ -21,11 +26,12 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - fix iam policies: flatten
 
 ## [0.9.0]
-- Remove class name from the namespace. So namespace only has method name now. NOTE: This means upgrading from 0.8.x to 0.9.x requires a blue-green update.
-- Add upgrading docs.
+- Pretty big update: introduce concept of Shared Resources and Stack DSL
 - Stack DSL: To support the concept of Custom Shared Resources. Supports extensions and simple functions also.
 - Stack DSL: Allow for control of DependsOn attribute.
 - Stack DSL: `MyStack.lookup` method
+- Remove class name from the namespace. So namespace only has method name now. NOTE: This means upgrading from 0.8.x to 0.9.x requires a blue-green update.
+- Add upgrading docs.
 - Associated resource extensions support
 - Associated resources multiple form support: long, medium, short
 - Add `jets new --mode`: 3 modes: html, api, job. Remove the `--api`
