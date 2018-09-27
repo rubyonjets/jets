@@ -2,7 +2,7 @@
 title: Shared Resources Depends On
 ---
 
-CloudFormation has a concept of the [DependsOn Attribute](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html). Normally, you do not have to use it as CloudFormation is smart enough to figure out how to sequence the creation of the dependent resources most of the time. For example, if you are creating a Route53 Record that's connects to ELB, CloudFormation knows to create the ELB before proceeding to create the Route53 record. There are times though when you need to specify the DependsOn attribute to control the creation order explicitly.
+CloudFormation has a concept of the [DependsOn Attribute](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html). Normally, you do not have to use it as CloudFormation is smart enough to figure out how to sequence the creation of the dependent resources most of the time. For example, if you are creating a Route53 Record that's connected to ELB, CloudFormation knows to create the ELB before proceeding to create the Route53 record. There are times though when you need to specify the DependsOn attribute to control the creation order explicitly.
 
 Jets creates most of the resources for you via [Nested CloudFormation stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html).  Shared Resources themselves are nested stacks. Sometimes you want to create resources in different nested stacks and one of them dependent on the other. This is a case where the DependsOn attribute is required.
 
@@ -10,7 +10,7 @@ The `Jets::Stack` DSL makes managing dependencies between nested stacks simple w
 
 ## DependsOn Example
 
-Let's say we wanted to create an CloudWatch Alarm and an SNS Alert and organized them in different classes. The CloudWatch Alarm depends on the SNS Alert. So the SNS Alert needs to be created before the Alarm.  Here's how we achieve this with the `depends_on` declaration.
+Let's say we wanted to create a CloudWatch Alarm and an SNS Alert and organized them in different classes. The CloudWatch Alarm depends on the SNS Alert. So the SNS Alert needs to be created before the Alarm.  Here's how we achieve this with the `depends_on` declaration.
 
 app/shared/resources/alert.rb:
 
@@ -43,6 +43,10 @@ end
 By declaring `depends_on :alert` in the `Alarm` class, Jets creates the `Alert` stack first and then creates the `Alarm` stack afterwards.  Jets also passes all the outputs from the `Alert` stack to the `Alarm` stack as [Parameters](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html). This allows the `Alarm` class to reference the BillingAlert SNS topic with `ref(:billing_alert)` even though it was created in another stack.
 
 With this design, Jets makes it is easy to create many nested stacks and use resources from each other.
+
+## App Classes: Controllers, Jobs, Etc
+
+The `depends_on` declaration also works in non-shared app classes.  When you add `depends_on` to an app class like a controller or a job, Jets will ensure that the resources are created in the dependent order and also pass the outputs of the independent stack to the dependent stack. This is useful in case you want to reference a resource from one stack to another.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/shared-resources-extensions.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/shared-resources-functions.md %}">Next Step</a>
