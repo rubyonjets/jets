@@ -7,8 +7,7 @@ module Jets::Commands
 
     desc "build", "Builds and packages project for AWS Lambda"
     long_desc Help.text(:build)
-    option :templates_only, type: :boolean, default: false, desc: "provide a way to skip building the code and only build the CloudFormation templates"
-    option :full, type: :boolean, default: false, desc: "For a fake full build even if the stack does not exist"
+    option :templates, type: :boolean, default: false, desc: "Only build the CloudFormation templates. Skip code building"
     def build
       Build.new(options).run
     end

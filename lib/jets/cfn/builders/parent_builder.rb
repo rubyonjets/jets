@@ -15,7 +15,7 @@ class Jets::Cfn::Builders
       puts "Building parent CloudFormation template."
 
       build_minimal_resources
-      build_child_resources if @options[:full] || @options[:stack_type] == :full
+      build_child_resources if @options[:templates] || @options[:stack_type] == :full
     end
 
     # template_path is an interface method
@@ -53,7 +53,7 @@ class Jets::Cfn::Builders
         add_shared_resources(path)
       end
 
-      if (@options[:full] || @options[:stack_type] == :full) and !Jets::Router.routes.empty?
+      if (@options[:templates] || @options[:stack_type] == :full) and !Jets::Router.routes.empty?
         add_api_gateway
         add_api_deployment
       end

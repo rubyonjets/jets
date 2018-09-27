@@ -20,7 +20,7 @@ module Jets::Commands
     time :run
 
     def build
-      build_code unless @options[:templates_only]
+      build_code unless @options[:templates]
       build_templates
     end
     time :build
@@ -31,7 +31,7 @@ module Jets::Commands
     time :build_code
 
     def build_templates
-      if @options[:full] || @options[:stack_type] == :full
+      if @options[:templates] || @options[:stack_type] == :full
         build_all_templates
       else
         build_minimal_template

@@ -10,7 +10,7 @@ class Jets::Cfn::Builders
 
     # compose is an interface method
     def compose
-      return unless @options[:full] || @options[:stack_type] != :minimal
+      return unless @options[:templates] || @options[:stack_type] != :minimal
 
       deployment = Jets::Resource::ApiGateway::Deployment.new
       add_resource(deployment)
