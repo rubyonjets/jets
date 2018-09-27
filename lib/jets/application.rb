@@ -101,16 +101,16 @@ class Jets::Application
     # table_namespace does not have the env_extra, more common case desired.
     config.table_namespace = [config.project_name, config.short_env].compact.join('-')
 
-    project_namespace = [config.project_name, config.short_env, config.env_extra].compact.join('-')
-    config.project_namespace = project_namespace
+    config.project_namespace = Jets.project_namespace
 
     # Must set default iam_policy here instead of `def config` because we need access to
     # the project_namespace and if we call it from `def config` we get an infinit loop
-    config.iam_policy ||= default_iam_policy(project_namespace)
+    config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
   end
 
-  def default_iam_policy(project_namespace)
+  def self.default_iam_policy
+    project_namespace = Jets.project_namespace
     logs = {
       action: ["logs:*"],
       effect: "Allow",
