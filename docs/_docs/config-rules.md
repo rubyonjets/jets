@@ -6,7 +6,6 @@ Jets supports creating [AWS Config Rules](https://aws.amazon.com/config/) and as
 
 ```ruby
 class ApplicationRule < Jets::Rule::Base
-  rule_namespace false
 end
 ```
 
@@ -94,12 +93,15 @@ Here's a screenshot example of the both types of rules mixed together:
 
 ## Rule Namespace
 
-The config rule classes above inherited from an `ApplicationRule` class that set the `rule_namespace` to `false`. This is because often times config rules apply to the entire AWS account removing the namespace helps to shorten the names of the provisioned config rules. If you would like to change this behavior you can remove the `rule_namespace` line.
+The config rule classes above inherited from an `ApplicationRule` class.  You can use the `rule_namespace` method to remove the namespace from the config rule names like so:
 
 ```ruby
 class CheckRule < ApplicationRule
+  rule_namespace false
 end
 ```
+
+So this results in the rules looking something like this `check-incoming-ssh-disabled` instead of `demo-dev-check-incoming-ssh-disabled`. The namespace is `demo-dev` in this case.  Note, this will result in you only being able to deploy one instance of the project per `JETS_ENV` since the rule names would collide.
 
 Or you can set your own namespace:
 
@@ -108,6 +110,8 @@ class CheckRule < ApplicationRule
   rule_namespace "cis"
 end
 ```
+
+This results in the rules looking something like this `cis-check-incoming-ssh-disabled`.
 
 ## Useful Resources
 
