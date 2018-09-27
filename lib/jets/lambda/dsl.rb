@@ -253,6 +253,7 @@ module Jets::Lambda::Dsl
         @iam_policy = nil
         @managed_iam_policy = nil
         @associated_resources = nil
+        @associated_properties = nil
       end
 
       # Returns the all tasks for this class with their method names as keys.
