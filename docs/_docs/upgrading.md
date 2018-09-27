@@ -1,13 +1,38 @@
 ---
-title: Upgrading with Blue-Green Deployment
+title: Upgrading Guide
 ---
 
 Upgrading Jets to some releases require blue-green deployments.  Here's a list of releases where it's required:
 
 ## Blue-Green Releases
 
-* 0.10.0: Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action.
-* 0.9.0: CloudFormation Logical ids changed to be more concise
+The following table summarizes the releases that require blue-green deployments.
+
+Version | Notes
+--- | ---
+0.10.0 | Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action. Also removed the managed `Jets::WelcomeController` and consolidated to the managed `Jets::PublicController`. Refer to Upgrade Details.
+0.9.0 | CloudFormation Logical ids changed to be more concise.
+
+## Upgrade Details
+
+The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
+
+### 0.10.0
+
+In this version, the managed `Jets::WelcomeController` was removed. This means you'll have to update your `config/routes.rb`.  Replace:
+
+```ruby
+root "jets/welcome#index"
+```
+
+With:
+
+```ruby
+root "jets/public#show"
+```
+
+
+## Reasons
 
 The reason a blue-green deployment required is that sometimes enough of Jets has changed where a regular CloudFormation stack update rolls back.  An example is in `v0.9.0`, Jets changes a few of the CloudFormation logical ids. In this case, CloudFormation fails to create Lambda functions with the same name and switch over to them because the Lambda functions already exist with their old logical ids. If you're seeing the CloudFormation stack rollback after upgrading, you might want to try a blue-green deployment.
 
