@@ -1,0 +1,35 @@
+- url: https://blog.boltops.com/2018/09/25/toronto-serverless-presentation-jets-framework-on-aws-lambda
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_657/https://blog.boltops.com/img/posts/2018/09/jets-toronto-serverless-meetup-v1.png
+  title: "Toronto Serverless Presentation: Jets Framework"
+
+- url: https://blog.boltops.com/2018/08/18/introducing-jets-a-ruby-serverless-framework
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_800/https://blog.boltops.com/img/posts/2018/08/introducing-jets-v5.png
+  title: "Introducing Jets: A Ruby Serverless Framework"
+
+- url: https://blog.boltops.com/2018/09/02/aws-lambda-ruby-support-at-native-speed-with-jets
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_708/https://blog.boltops.com/img/posts/2018/09/aws-lambda-ruby-support-native-speed-v1.png
+  title: "AWS Lambda Ruby Support at Native Speed with Jets"
+
+- url: https://blog.boltops.com/2018/09/07/jets-tutorial-crud-app-introduction-part-1
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_708/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-1-crud-v1.png
+  title: "An Introductory CRUD App Part 1"
+
+- url: https://blog.boltops.com/2018/09/08/jets-tutorial-deploy-to-aws-lambda-part-2
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_600/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-2-aws-lambda-deploy-v2.png
+  title: "Deploy to AWS Lambda Part 2"
+
+- url: https://blog.boltops.com/2018/09/09/jets-tutorial-debugging-logs-part-3
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_637/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-3-debugging-v3.png
+  title: "Debugging Logs Part 3"
+
+- url: https://blog.boltops.com/2018/09/10/jets-tutorial-background-jobs-part-4
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_531/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-4-jobs-v1.png
+  title: "Background Jobs Part 4"
+
+- url: https://blog.boltops.com/2018/09/11/jets-tutorial-iam-policies-part-5
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_655/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-5-iam-policies-v1.png
+  title: "IAM Policies Part 5"
+
+- url: https://blog.boltops.com/2018/09/12/jets-tutorial-function-properties-part-6
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_620/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-6-function-properties-v1.png
+  title: "Function Properties Part 6"

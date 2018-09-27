@@ -269,3 +269,91 @@ ul.tools li {
         object-fit: contain;
     }
 }
+
+.learning-content {
+    padding-top: 30px;
+}
+
+.article-box {
+    padding-top: 20px;
+}
+
+.related-body {
+  font-family: "Calibre", -apple-system, BlinkMacSystemFont, "Avenir Next", "Avenir", "Segoe UI", "Lucida Grande", "Helvetica Neue", "Helvetica", "Fira Sans", "Roboto", "Noto", "Droid Sans", "Cantarell", "Oxygen", "Ubuntu", "Franklin Gothic Medium", "Century Gothic", "Liberation Sans", sans-serif;
+  font-size: 1.15em;
+  padding-bottom: 10px;
+  position: relative;
+  // background-color: yellow;
+  // border: 1px solid red;
+  @media (min-width: 1000px) {
+    margin-top: 0;
+    padding-bottom: 30px;
+    height: 230px;
+  }
+
+  .related-thumbnail {
+    float: left;
+    width: 110px;
+    vertical-align: middle;
+    text-align: center;
+    display: table-cell;
+    height: 70px;
+    // background-color: green;
+    @media (min-width: 768px) {
+      width: 150px;
+      height: 120px;
+    }
+    @media (min-width: 1000px) {
+      width: inherit;
+      height: 160px;
+      text-align: center;
+      // background-color: orange;
+      display: block;
+      float: none;
+    }
+    img.center-crop {
+      object-fit: contain;
+      object-position: center; /* Center the image within the element */
+      height: 64px;
+      @media (min-width: 768px) {
+        height: 110px;
+      }
+      @media (min-width: 1000px) {
+        height: 160px;
+      }
+    }
+  }
+  .related-link {
+    // background-color: red;
+    vertical-align: top;
+    display: table-cell;
+    height: 70px;
+    padding-left: 15px;
+    @media (min-width: 1000px) {
+      height: 50px;
+      display: block;
+      clear: both;
+      padding-top: 10px;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+      a {
+      display: block;
+      vertical-align: middle;
+      line-height: normal;
+    }
+  }
+}
+
+.related-body:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.related-filler {
+  @media (min-width: 1000px) {
+    padding: 30px;
+  }
+}
+

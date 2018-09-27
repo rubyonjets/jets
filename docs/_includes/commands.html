@@ -1,0 +1,148 @@
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>The Code</h2>
+                <p class="text-muted">Easy to learn</p>
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Commands</h3>
+                                <div class="commands">
+{% highlight sh %}
+jets new
+jets generate scaffold
+jets db:migrate
+jets server
+jets console
+jets deploy
+jets routes
+jets call
+jets status
+jets url
+jets delete
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>Controllers</h3>
+                                <div class="commands">
+{% highlight ruby %}
+class PostsController < ApplicationController
+  def index
+    # renders Lambda Proxy structure compatiable with API Gateway
+    render json: {hello: "world", action: "index"}
+  end
+
+  def show
+    id = params[:id] # params available
+    # puts goes to the lambda logs
+    puts event # raw lambda event available
+    render json: {action: "show", id: id}
+  end
+end
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Jobs</h3>
+                                <div class="commands">
+{% highlight ruby %}
+class HardJob < ApplicationJob
+  rate "10 hours" # every 10 hours
+  def dig
+    {done: "digging"}
+  end
+
+  cron "0 */12 * * ? *" # every 12 hours
+  def lift
+    {done: "lifting"}
+  end
+end
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>Routes</h3>
+                                <div class="commands">
+{% highlight ruby %}
+Jets.application.routes.draw do
+  get  "posts", to: "posts#index"
+  get  "posts/new", to: "posts#new"
+  get  "posts/:id", to: "posts#show"
+  post "posts", to: "posts#create"
+  get  "posts/:id/edit", to: "posts#edit"
+  put  "posts", to: "posts#update"
+  delete  "posts", to: "posts#delete"
+
+  resources :comments # expands to the RESTful routes above
+
+  any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
+end
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h3>Scaffold</h3>
+                                <div class="commands">
+
+{% highlight sh %}
+$ jets generate scaffold Post title:string
+      invoke  active_record
+      create    db/migrate/20180925233914_create_posts.rb
+      create    app/models/post.rb
+      invoke  resource_route
+       route    resources :posts
+      invoke  scaffold_controller
+      create    app/controllers/posts_controller.rb
+      invoke    erb
+      create      app/views/posts
+      create      app/views/posts/index.html.erb
+      create      app/views/posts/edit.html.erb
+      create      app/views/posts/show.html.erb
+      create      app/views/posts/new.html.erb
+      create      app/views/posts/_form.html.erb
+      invoke    helper
+      create      app/helpers/posts_helper.rb
+$
+{% endhighlight %}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>Deploy</h3>
+                                <div class="commands">
+{% highlight sh %}
+$ jets deploy
+Deploying to Lambda demo-dev environment...
+=> Copying current project directory to temporary build area: /tmp/jets/demo/app_root
+=> Setting up a vendored copy of ruby.
+=> Replacing compiled gems with AWS Lambda Linux compiled versions.
+Deploying CloudFormation stack with jets app!
+Uploading /tmp/jets/demo/code/code-7169d0ac.zip (88.8 MB) to S3
+Time to upload code to s3: 1s
+Deploying CloudFormation stack with jets app!
+02:08:20AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack demo-dev User Initiated
+...
+02:08:48AM CREATE_IN_PROGRESS AWS::CloudFormation::Stack PostsController
+02:10:03AM UPDATE_COMPLETE AWS::CloudFormation::Stack demo-dev
+Stack success status: UPDATE_COMPLETE
+Time took for stack deployment: 1m 46s.
+Prewarming application...
+API Gateway Endpoint: https://ewwnealfk0.execute-api.us-west-2.amazonaws.com/dev/
+$
+{% endhighlight %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
