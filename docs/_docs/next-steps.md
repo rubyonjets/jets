@@ -6,7 +6,7 @@ Hopefully, you have a good feel for how Jets works now. From here, there are a f
 
 * Check out the [Jets](https://github.com/tongueroo/jets) repo on GitHub
 * ⭐️ the Jets project on GitHub
-* Write a blog post about a problem Jets has allowed you to solve
+* Write a blog post about Jets
 * Post on your favorite discussion describing how you are using Jets
 * Contribute a pull request
 
