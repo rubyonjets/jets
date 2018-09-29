@@ -34,6 +34,7 @@ module Jets
   autoload :PolyFun, 'jets/poly_fun'
   autoload :Preheat, "jets/preheat"
   autoload :Processors, 'jets/processors'
+  autoload :Rack, "jets/rack"
   autoload :Rdoc, "jets/rdoc"
   autoload :Resource, "jets/resource"
   autoload :Route, "jets/route"
