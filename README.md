@@ -133,6 +133,7 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [CLI Reference](http://rubyonjets.com/reference/)
 * [Contributing](http://rubyonjets.com/docs/contributing/)
 * [Support Jets](http://rubyonjets.com/support-jets/)
+* [Example Projects](https://github.com/tongueroo/jets-examples)
 
 ## Articles
 
