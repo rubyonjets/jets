@@ -5,6 +5,7 @@ module Jets::Rack
     end
 
     def build
+      # pp @event
       {
         REQUEST_METHOD: @event['httpMethod'],
         PATH_INFO: @event['path'],

@@ -5,8 +5,32 @@ module Jets::Rack
     extend Memoist
 
     def app
-      Proc.new { |env| ['200', {'Content-Type' => 'text/html'}, ['get rack\'d']] }
+      # Not thread-safe so will move to outside of the handler
+      Dir.chdir("#{Jets.root}rack") do
+        instance_eval(config_ru_code) # @rack_app will be available after this
+      end
+      # Proc.new { |env| ['200', {'Content-Type' => 'text/html'}, ['get rack\'d']] }
       # Rails.application
+    end
+
+    # Takes config.ru code and changes it so we can grab the rack app from it
+    # The rack_app is assigned as @rack_app.
+    def config_ru_code
+      rack_config = "config.ru" # using Dir.chdir to change directory
+      unless File.exist?(rack_config)
+        puts "ERROR: #{rack_config} does not exist.  In order to use Mega Mode there needs to be a rack/config.ru file.".colorize(:red)
+        exit 1
+      end
+      lines = IO.readlines(rack_config)
+      code = lines.map do |l|
+        if l =~ /^run /
+          l.sub(/^run /,'@rack_app = ')
+        else
+          l
+        end
+      end.join("\n") + "\n"
+      puts code
+      code
     end
 
     def rack_env
