@@ -1,5 +1,7 @@
 module Jets::Rack
   class AdapterController < Jets::Controller::Base
+    layout false
+    internal true
     extend Memoist
 
     def process
