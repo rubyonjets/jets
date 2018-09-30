@@ -12,8 +12,8 @@
     "CloudFront-Is-SmartTV-Viewer": "false",
     "CloudFront-Is-Tablet-Viewer": "false",
     "CloudFront-Viewer-Country": "US",
-    "Host": "demo.rubyonjets.com",
-    "Referer": "https://demo.rubyonjets.com/posts",
+    "Host": "demo.example.com",
+    "Referer": "https://demo.example.com/posts",
     "upgrade-insecure-requests": "1",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
     "Via": "2.0 e30ae5b3d9f6779a9b8bc992faad0b09.cloudfront.net (CloudFront)",
@@ -52,10 +52,10 @@
       "US"
     ],
     "Host": [
-      "demo.rubyonjets.com"
+      "demo.example.com"
     ],
     "Referer": [
-      "https://demo.rubyonjets.com/posts"
+      "https://demo.example.com/posts"
     ],
     "upgrade-insecure-requests": [
       "1"
@@ -95,7 +95,7 @@
     "extendedRequestId": "OAcVqHtmvHcFaeQ=",
     "requestTime": "29/Sep/2018:23:41:49 +0000",
     "path": "/posts/89",
-    "accountId": "160619113767",
+    "accountId": "123456789012",
     "protocol": "HTTP/1.1",
     "stage": "dev",
     "requestTimeEpoch": 1538264509847,
