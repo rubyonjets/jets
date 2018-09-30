@@ -4,11 +4,6 @@ module Jets::Rack
     internal true
     extend Memoist
 
-    def process
-      triplet = app.call(rack_env)
-      convert_to_api_gateway(triplet) # resp
-    end
-
     def app
       Proc.new { |env| ['200', {'Content-Type' => 'text/html'}, ['get rack\'d']] }
       # Rails.application
