@@ -1,11 +1,6 @@
 module Jets::Rack
-  class AdapterController
+  class AdapterController < Jets::Controller::Base
     extend Memoist
-
-    attr_reader :event
-    def initialize(event, context={})
-      @event = event
-    end
 
     def process
       triplet = app.call(rack_env)

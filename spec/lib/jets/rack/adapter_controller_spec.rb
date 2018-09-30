@@ -1,6 +1,6 @@
 describe Jets::Rack::AdapterController do
   let(:controller) do
-    controller = Jets::Rack::AdapterController.new(event)
+    controller = Jets::Rack::AdapterController.new(event, {})
     allow(controller).to receive(:app).and_return(rack_app)
     controller
   end
