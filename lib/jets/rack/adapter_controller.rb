@@ -9,8 +9,7 @@ module Jets::Rack
       Dir.chdir("#{Jets.root}rack") do
         instance_eval(config_ru_code) # @rack_app will be available after this
       end
-      # Proc.new { |env| ['200', {'Content-Type' => 'text/html'}, ['get rack\'d']] }
-      # Rails.application
+      @rack_app # The rack app
     end
 
     # Takes config.ru code and changes it so we can grab the rack app from it
