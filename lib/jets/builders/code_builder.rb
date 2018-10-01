@@ -125,8 +125,6 @@ class Jets::Builders
 
     # This happens in the current app directory not the tmp app_root for simplicity
     def compile_assets
-      puts "TEMPORARY TURN OFF COMPILE ASSETS"
-      return
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
       webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
