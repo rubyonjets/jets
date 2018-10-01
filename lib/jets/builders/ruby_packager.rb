@@ -172,7 +172,6 @@ EOL
       %w[rackup rackup.rb].each do |file|
         src = File.expand_path("./rackup_wrappers/#{file}", File.dirname(__FILE__))
         dest = "#{rack_bin}/#{file}"
-        puts "src #{src}"
         FileUtils.mkdir_p(rack_bin) unless File.exist?(rack_bin)
         FileUtils.cp(src, dest)
         FileUtils.chmod 0755, dest
