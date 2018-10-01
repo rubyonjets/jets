@@ -10,9 +10,12 @@ unset BUNDLE_IGNORE_CONFIG
 # When jets packages the app code it creates .bundle/config in the project root.
 # We want that to be used.
 
+# Drop a pidfile
+# echo $$ > /tmp/jets-rackup.pid
+
 # Run the actual app using the bundled Ruby interpreter, with Bundler activated.
 if [ -n "$C9_USER" ]; then
-  exec ruby -rbundler/setup bin/rackup.rb
+  exec ruby -rbundler/setup bin/rackup.rb "$@"
 else
-  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" -rbundler/setup "$PROJECTDIR/bin/rackup.rb"
+  exec "$PROJECTDIR/bundled/rbenv/shims/ruby" -rbundler/setup "$PROJECTDIR/bin/rackup.rb" "$@"
 fi

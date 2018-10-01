@@ -36,7 +36,6 @@ module Jets
   autoload :Preheat, "jets/preheat"
   autoload :Processors, 'jets/processors'
   autoload :Rack, "jets/rack"
-  autoload :RackServer, 'jets/rack_server'
   autoload :Rdoc, "jets/rdoc"
   autoload :Resource, "jets/resource"
   autoload :Route, "jets/route"

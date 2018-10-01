@@ -1,7 +1,7 @@
 require 'fileutils'
 
-module Jets
-  class RackServer
+module Jets::Rack
+  class Server
     def self.run
       new.run
     end
