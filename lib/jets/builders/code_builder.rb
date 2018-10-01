@@ -258,7 +258,7 @@ class Jets::Builders
     time :create_zip_file
 
     def package_ruby
-      packager = RubyPackager.new(tmp_app_root)
+      packager = RubyPackager.new(tmp_app_root, full_project_path)
       packager.reconfigure_ruby_version
       packager.clean_old_submodules
       packager.bundle_install

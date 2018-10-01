@@ -3,8 +3,9 @@ class Jets::Builders
     include Util
 
     attr_reader :tmp_app_root
-    def initialize(tmp_app_root)
+    def initialize(tmp_app_root, full_project_path)
       @tmp_app_root = tmp_app_root
+      @full_project_path = full_project_path
     end
 
     # This is in case the user has a 2.5.x variant.
