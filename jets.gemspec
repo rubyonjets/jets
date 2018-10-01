@@ -44,7 +44,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "kramdown"
   spec.add_dependency "memoist"
   spec.add_dependency "mimemagic"
-  spec.add_dependency "pidfile"
   spec.add_dependency "rack"
   spec.add_dependency "railties", ">= 5.2.1" # ActiveRecord database_tasks.rb require this
   spec.add_dependency "recursive-open-struct"
