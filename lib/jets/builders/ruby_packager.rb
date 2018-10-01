@@ -158,13 +158,13 @@ EOL
       rack_bundled = "#{full(tmp_app_root)}/rack/bundled"
       FileUtils.rm_f(rack_bundled) # looks like FileUtils.ln_sf doesnt remove existing symlinks
 
-      if ENV['C9_USER']
-        # for local testing
-        FileUtils.ln_sf(root_bundled, rack_bundled)
-      else
-        # AWS Lambda env
+      # if ENV['C9_USER']
+      #   # for local testing
+      #   FileUtils.ln_sf(root_bundled, rack_bundled)
+      # else
+      #   # AWS Lambda env
         FileUtils.ln_sf("/var/task/bundled", rack_bundled)
-      end
+      # end
     end
 
     def copy_rackup_wrappers
