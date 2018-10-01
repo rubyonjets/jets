@@ -7,6 +7,18 @@ class Jets::Builders
       @tmp_app_root = tmp_app_root
     end
 
+    def setup
+      reconfigure_ruby_version
+      clean_old_submodules
+    end
+
+    def finish
+      copy_bundled_cache
+      setup_bundle_config
+      extract_ruby
+      extract_gems
+    end
+
     # This is in case the user has a 2.5.x variant.
     # Force usage of ruby version that jets supports
     # The lambda server only has ruby 2.5.0 installed.
@@ -80,7 +92,6 @@ class Jets::Builders
     end
 
     def copy_gemfiles(full_project_path)
-      puts "full_project_path #{full_project_path}".colorize(:yellow)
       FileUtils.mkdir_p(cache_area)
       FileUtils.cp("#{full_project_path}Gemfile", "#{cache_area}/Gemfile")
       FileUtils.cp("#{full_project_path}Gemfile.lock", "#{cache_area}/Gemfile.lock")
