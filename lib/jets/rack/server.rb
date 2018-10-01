@@ -10,7 +10,7 @@ module Jets::Rack
       return unless File.exist?("#{rack_project}/config.ru")
       puts "Starting additional rack server for the project under the rack subfolder..."
 
-      if ENV['JETS_RACK_FOREGROUND']
+      if ENV['FOREGROUND']
         serve
         return
       end
@@ -33,7 +33,7 @@ module Jets::Rack
       # Note, looks like stopping jets server with Ctrl-C sends the TERM signal
       # down to the sub bin/rackup command cleans up the child process fine.
       Bundler.with_clean_env do
-        command = "cd #{rack_project} && bin/rackup"
+        command = "cd #{rack_project} && bin/rackup" # leads to the same wrapper rack scripts
         puts "=> #{command}".colorize(:green)
         system(command)
       end
