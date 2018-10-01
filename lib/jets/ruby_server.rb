@@ -51,6 +51,7 @@ module Jets
       if pid.nil?
         # we're in the child process
         Jets::Rack::Server.start
+        sleep 10
         # TODO: Block until server has been confirmed started successfully
         # ...
       else
