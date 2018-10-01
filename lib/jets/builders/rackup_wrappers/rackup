@@ -22,5 +22,7 @@ else
   pwd
   ls -lh $PROJECTDIR
 
+  ls /var/task/bundled
+
   exec "$PROJECTDIR/bundled/rbenv/shims/ruby" -rbundler/setup "$PROJECTDIR/bin/rackup.rb" "$@"
 fi
