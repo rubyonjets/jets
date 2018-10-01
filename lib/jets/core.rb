@@ -106,7 +106,8 @@ module Jets::Core
     path =~ %r{/webpacker} ||
     path =~ %r{/cli} ||
     path =~ %r{/core_ext} ||
-    path =~ %r{/jets/stack}
+    path =~ %r{/jets/stack} ||
+    path =~ %r{/rackup_wrappers}
   end
 
   def class_mappings(class_name)
