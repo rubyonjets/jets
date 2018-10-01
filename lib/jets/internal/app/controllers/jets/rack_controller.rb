@@ -10,8 +10,7 @@ class Jets::RackController < Jets::Rack::AdapterController
 private
 
   def rack_request
-    request = Jets::Rack::Request.new(event)
-    request
+    Jets::Rack::Request.new(event, request).send
   end
 
 end
