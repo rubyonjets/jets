@@ -41,7 +41,7 @@ module Jets::Commands
       command = "bundle exec shotgun --port #{o[:port]} --host #{o[:host]}"
       puts "=> #{command}".colorize(:green)
       puts Jets::Booter.message
-      Jets::Rack::Server.run
+      Jets::Rack::Server.start
       system(command)
     end
 

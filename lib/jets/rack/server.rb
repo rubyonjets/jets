@@ -2,11 +2,11 @@ require 'fileutils'
 
 module Jets::Rack
   class Server
-    def self.run
-      new.run
+    def self.start
+      new.start
     end
 
-    def run
+    def start
       return unless File.exist?("#{rack_project}/config.ru")
       puts "Starting additional rack server for the project under the rack subfolder..."
 
