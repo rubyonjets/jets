@@ -54,6 +54,7 @@ class Jets::Builders
     include Jets::Timing
     include ActionView::Helpers::NumberHelper # number_to_human_size
     include Jets::AwsServices
+    include Util
 
     attr_reader :full_project_path
     def initialize
@@ -74,20 +75,12 @@ class Jets::Builders
       Dir.chdir(full(tmp_app_root)) do
         # These commands run from project root
         start_app_root_setup
-        bundle
+        package_ruby
         finish_app_root_setup
         create_zip_file
       end
     end
     time :build
-
-    # Finds out of the app has polymorphic functions only and zero ruby functions.
-    # In this case, we can skip a lot of the ruby related building and speed up the
-    # deploy process.
-    def poly_only?
-      return true if ENV['POLY_ONLY'] # bypass to allow rapid development of handlers
-      Jets::Commands::Build.poly_only?
-    end
 
     def start_app_root_setup
       tidy_project
@@ -132,6 +125,8 @@ class Jets::Builders
 
     # This happens in the current app directory not the tmp app_root for simplicity
     def compile_assets
+      puts "TEMPORARY TURN OFF COMPILE ASSETS"
+      return
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
       webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
@@ -262,16 +257,17 @@ class Jets::Builders
     end
     time :create_zip_file
 
-    def bundle
-      # reconfigure_ruby_version
-      # clean_old_submodules
-      # bundle_install
-      # setup_bundle_config
-      # extract_ruby
-      # extract_gems
-      # copy_bundled_cache
+    def package_ruby
+      packager = RubyPackager.new(tmp_app_root)
+      packager.reconfigure_ruby_version
+      packager.clean_old_submodules
+      packager.bundle_install
+      packager.setup_bundle_config
+      packager.extract_ruby
+      packager.extract_gems
+      packager.copy_bundled_cache
     end
-    time :bundle
+    time :package_ruby
 
     def excludes
       excludes = %w[.git tmp log spec]
@@ -330,16 +326,6 @@ class Jets::Builders
       ruby[:major] == jets[:major] && ruby[:minor] == jets[:minor]
     end
 
-    def cache_area
-      "#{Jets.build_root}/cache" # cleaner to use full path for this setting
-    end
-
-    # Provide pretty clear way to desinate full path.
-    # full("bundled") => /tmp/jets/demo/bundled
-    def full(relative_path)
-      "#{Jets.build_root}/#{relative_path}"
-    end
-
     # Group all the path settings together here
     def self.tmp_app_root
       Jets::Commands::Build.tmp_app_root
@@ -347,17 +333,6 @@ class Jets::Builders
 
     def tmp_app_root
       self.class.tmp_app_root
-    end
-
-    def sh(command)
-      puts "=> #{command}".colorize(:green)
-      success = system(command)
-      abort("#{command} failed to run") unless success
-      success
-    end
-
-    def headline(message)
-      puts "=> #{message}".colorize(:cyan)
     end
   end
 end

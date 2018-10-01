@@ -5,4 +5,5 @@ class Jets::Builders
   autoload :HandlerGenerator, "jets/builders/handler_generator"
   autoload :RubyPackager, "jets/builders/ruby_packager"
   autoload :SharedDeducer, "jets/builders/shared_deducer"
+  autoload :Util, "jets/builders/util"
 end

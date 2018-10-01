@@ -1,7 +1,10 @@
 class Jets::Builders
   class RubyPackager
-    def initialize(xxx)
-      # ???
+    include Util
+
+    attr_reader :tmp_app_root
+    def initialize(tmp_app_root)
+      @tmp_app_root = tmp_app_root
     end
 
     # This is in case the user has a 2.5.x variant.
@@ -139,5 +142,9 @@ EOL
       FileUtils.cp_r("#{cache_area}/bundled", app_root_bundled)
     end
 
+  private
+    def cache_area
+      "#{Jets.build_root}/cache" # cleaner to use full path for this setting
+    end
   end
 end
