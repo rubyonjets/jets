@@ -24,7 +24,7 @@ module Jets::Rack
         serve
       else
         # we're in the parent process
-        Process.detach(pid)
+        Process.detach(pid) # dettached but still in the "foreground" since bin/rackup runs in the foreground
       end
     end
 

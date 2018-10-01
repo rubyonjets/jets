@@ -30,14 +30,32 @@ module Jets
         return
       end
 
-      # Reaching here means we'll run the server in the background
+      # Reaching here means we'll run the server in the "background"
       pid = Process.fork
       if pid.nil?
         # we're in the child process
         serve
       else
         # we're in the parent process
-        Process.detach(pid)
+        # Only start megamode rack server when in background mode, otherwise user is expected to start
+        # that server independently.
+        start_rack_server
+        # Detach main jets ruby server
+        Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
+      end
+    end
+
+    # Megamode support
+    def start_rack_server
+      pid = Process.fork
+      if pid.nil?
+        # we're in the child process
+        Jets::Rack::Server.start
+        # TODO: Block until server has been confirmed started successfully
+        # ...
+      else
+        # we're in the parent process
+        Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
       end
     end
 
