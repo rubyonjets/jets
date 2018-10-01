@@ -42,7 +42,7 @@ module Jets::Commands
       puts "=> #{command}".colorize(:green)
       puts Jets::Booter.message
       Jets::RackServer.run
-      # system(command)
+      system(command)
     end
 
     desc "routes", "Print out your application routes"
