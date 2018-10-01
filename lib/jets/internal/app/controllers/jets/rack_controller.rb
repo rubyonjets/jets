@@ -1,6 +1,7 @@
-require 'net/http'
+class Jets::RackController < Jets::Controller::Base
+  layout false
+  internal true
 
-class Jets::RackController < Jets::Rack::AdapterController
   # Megamode
   def process
     resp = rack_request
@@ -10,7 +11,7 @@ class Jets::RackController < Jets::Rack::AdapterController
 private
 
   def rack_request
-    Jets::Rack::Request.new(event, self).send
+    Jets::Rack::Request.new(event, self).process
   end
 
 end

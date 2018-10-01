@@ -10,7 +10,7 @@ describe Jets::Rack::Request do
   let(:controller) { PostsController.new(event, {}) }
 
   context "api gateway event" do
-    describe "send" do
+    describe "process" do
       it "sends request using net/http" do
         # Uncomment this stubbing to test live request
         # Will need a rack server up and running
@@ -26,7 +26,7 @@ describe Jets::Rack::Request do
           block.call(http)
         end
 
-        resp = request.send
+        resp = request.process
         # pp resp # uncomment to see and debug
 
         # http value because of stubbing

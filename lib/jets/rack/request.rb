@@ -1,3 +1,5 @@
+require 'net/http'
+
 module Jets::Rack
   class Request
     def initialize(event, controller)
@@ -8,7 +10,7 @@ module Jets::Rack
       @port = 9292
     end
 
-    def send
+    def process
       request = @controller.request
 
       uri = URI("http://#{@host}:#{@port}#{request.path}")
@@ -17,13 +19,14 @@ module Jets::Rack
 
       # Looks like get_response is smart enough to send POST request when needed.
       # Thanks: https://docs.ruby-lang.org/en/2.0.0/Net/HTTP.html
-      result = Net::HTTP.get_response(uri)
-      # puts result.body
+      resp = Net::HTTP.get_response(uri)
+      # puts resp.body
       {
-        status: result.code.to_i,
-        headers: result.each_header.to_h,
-        body: result.body,
+        status: resp.code.to_i,
+        headers: resp.each_header.to_h,
+        body: resp.body,
       }
+      # TODO: handle binary
     end
   end
 end
