@@ -261,9 +261,19 @@ class Jets::Builders
       packager = RubyPackager.new(tmp_app_root)
       packager.setup
       packager.bundle_install(full_project_path)
+
+      # rack specific
       rack_project = "#{full_project_path}rack/"
       packager.bundle_install(rack_project) if File.exist?(rack_project + "Gemfile")
+
       packager.finish
+
+      # rack specific
+      if File.exist?(rack_project + "Gemfile")
+        packager.setup_bundle_config(rack: true)
+        packager.symlink_rack_bundled
+        packager.copy_rackup_wrappers
+      end
     end
     time :package_ruby
 

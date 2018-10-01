@@ -60,7 +60,6 @@ class Jets::Builders
       end
     end
 
-
     # Installs gems on the current target system: both compiled and non-compiled.
     # If user is on a macosx machine, macosx gems will be installed.
     # If user is on a linux machine, linux gems will be installed.
@@ -97,7 +96,7 @@ class Jets::Builders
       FileUtils.cp("#{full_project_path}Gemfile.lock", "#{cache_area}/Gemfile.lock")
     end
 
-    def setup_bundle_config
+    def setup_bundle_config(rack: false)
       ensure_build_cache_bundle_config_exists!
 
       # Override project's .bundle/config and ensure that .bundle/config matches
@@ -105,7 +104,7 @@ class Jets::Builders
       #   app_root/.bundle/config
       #   bundled/gems/.bundle/config
       cache_bundle_config = "#{cache_area}/.bundle/config"
-      app_bundle_config = "#{full(tmp_app_root)}/.bundle/config"
+      app_bundle_config = "#{full(tmp_app_root)}/#{rack ? 'rack/' : ''}.bundle/config"
       FileUtils.mkdir_p(File.dirname(app_bundle_config))
       FileUtils.cp(cache_bundle_config, app_bundle_config)
     end
@@ -152,6 +151,32 @@ EOL
       end
       # Leave #{Jets.build_root}/bundled behind to act as cache
       FileUtils.cp_r("#{cache_area}/bundled", app_root_bundled)
+    end
+
+    def symlink_rack_bundled
+      root_bundled = "#{full(tmp_app_root)}/bundled"
+      rack_bundled = "#{full(tmp_app_root)}/rack/bundled"
+      FileUtils.rm_f(rack_bundled) # looks like FileUtils.ln_sf doesnt remove existing symlinks
+
+      if ENV['C9_USER']
+        # for local testing
+        FileUtils.ln_sf(root_bundled, rack_bundled)
+      else
+        # AWS Lambda env
+        FileUtils.ln_sf("/var/task/bundled", rack_bundled)
+      end
+    end
+
+    def copy_rackup_wrappers
+      rack_bin = "#{full(tmp_app_root)}/rack/bin"
+      %w[rackup rackup.rb].each do |file|
+        src = File.expand_path("./rackup_wrappers/#{file}", File.dirname(__FILE__))
+        dest = "#{rack_bin}/#{file}"
+        puts "src #{src}"
+        FileUtils.mkdir_p(rack_bin) unless File.exist?(rack_bin)
+        FileUtils.cp(src, dest)
+        FileUtils.chmod 0755, dest
+      end
     end
 
   private
