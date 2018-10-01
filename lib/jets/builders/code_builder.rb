@@ -100,7 +100,7 @@ class Jets::Builders
     def finish_app_root_setup
       return if poly_only?
 
-      copy_bundled_to_app_root
+      restore_bundled_cache
       setup_bundle_config
       extract_ruby
       extract_gems
@@ -108,7 +108,10 @@ class Jets::Builders
     end
     time :finish_app_root_setup
 
-    # At this point the minimal stack exists.
+    # Store s3 base url is needed for asset serving from s3 later. Need to package this
+    # as part of the code so we have a reference to it.
+    # At this point the minimal stack exists, so we can grab it with the AWS API.
+    # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
       IO.write("#{full(tmp_app_root)}/config/s3_base_url.txt", s3_base_url)
     end
@@ -250,7 +253,7 @@ class Jets::Builders
       IO.write(ruby_version, Jets::RUBY_VERSION)
     end
 
-    def copy_bundled_to_app_root
+    def restore_bundled_cache
       app_root_bundled = "#{full(tmp_app_root)}/bundled"
       if File.exist?(app_root_bundled)
         puts "Removing current bundled from project"
