@@ -40,6 +40,7 @@ module Jets
         # Only start megamode rack server when in background mode, otherwise user is expected to start
         # that server independently.
         start_rack_server
+        sleep 10
         # Detach main jets ruby server
         Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
       end
@@ -51,7 +52,6 @@ module Jets
       if pid.nil?
         # we're in the child process
         Jets::Rack::Server.start
-        sleep 10
         # TODO: Block until server has been confirmed started successfully
         # ...
       else
