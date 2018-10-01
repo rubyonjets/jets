@@ -262,10 +262,10 @@ class Jets::Builders
       packager.reconfigure_ruby_version
       packager.clean_old_submodules
       packager.bundle_install
+      packager.copy_bundled_cache
       packager.setup_bundle_config
       packager.extract_ruby
       packager.extract_gems
-      packager.copy_bundled_cache
     end
     time :package_ruby
 
