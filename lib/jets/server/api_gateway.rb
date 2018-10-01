@@ -1,8 +1,3 @@
-# REQUEST_METHOD: The HTTP verb of the request. This is required.
-# PATH_INFO: The request URL path, relative to the root of the application.
-# QUERY_STRING: Anything that followed ? in the request URL string.
-# SERVER_NAME and SERVER_PORT: The server’s address and port.
-
 require 'kramdown'
 
 class Jets::Server
