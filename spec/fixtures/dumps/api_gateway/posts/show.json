@@ -82,7 +82,7 @@
       "https"
     ]
   },
-  "queryStringParameters": null,
+  "queryStringParameters": {"foo": "bar", "hi": "there"},
   "multiValueQueryStringParameters": null,
   "pathParameters": {
     "id": "89"

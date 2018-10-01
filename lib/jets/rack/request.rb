@@ -1,39 +1,30 @@
 module Jets::Rack
   class Request
 
-    def initialize(event, request)
+    def initialize(event, controller)
       @event = event
-      @request = request # Jets::Controller#request
+      @controller = controller # Jets::Controller instance
       # local rack server settings
       @host = 'localhost'
       @port = 9292
     end
 
     def send
-      status, headers, body = nil, nil, nil
-      Net::HTTP.start(@host, @port) do |http|
-        user = @request.headers.delete('user')
-        passwd = @request.headers.delete('passwd')
+      request = @controller.request
 
-        get = Net::HTTP::Get.new(@request.path, @request.headers)
-        get.basic_auth user, passwd  if user && passwd
+      uri = URI("http://#{@host}:#{@port}#{request.path}")
+      params = @controller.params(raw: true, path_parameters: false)
+      uri.query = URI.encode_www_form(params)
 
-        http.request(get) do |response|
-          status = response.code.to_i
-          headers = normalize_header_keys(response.each_header.to_h)
-          begin
-            body = response.body
-          rescue TypeError, ArgumentError
-            body = nil
-          end
-        end
-      end
+      result = Net::HTTP.get_response(uri)
+      puts result.body
       {
-        status: status,
-        headers: headers,
-        body: body,
+        status: result.code.to_i,
+        headers: result.each_header.to_h,
+        body: result.body,
       }
     end
+
 
     ###############################
     # DUPLICATED FROM lambda_aws_proxy.rb refactor this
