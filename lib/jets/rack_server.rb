@@ -7,14 +7,17 @@ module Jets
     end
 
     def run
-      puts "Running RackServer..."
+      return unless File.exist?("#{rack_project}/config.ru")
+      puts "Starting additional rack server for the project under the rack subfolder..."
 
       if ENV['JETS_RACK_FOREGROUND']
         serve
         return
       end
 
-      # Reaching here means we'll run the server in the background
+      # Reaching here means we'll run the server in the background.
+      # Handle daemonzing ourselves because it keeps the stdout of the 2nd
+      # rack server. The rackup --daemonize option ends up hiding the output.
       pid = Process.fork
       if pid.nil?
         # we're in the child process
@@ -27,12 +30,17 @@ module Jets
 
     # Runs in the child process
     def serve
+      # Note, looks like stopping jets server with Ctrl-C sends the TERM signal
+      # down to the sub bin/rackup command cleans up the child process fine.
       Bundler.with_clean_env do
-        rack_project = "#{Jets.root}rack"
         command = "cd #{rack_project} && bin/rackup"
         puts "=> #{command}".colorize(:green)
         system(command)
       end
+    end
+
+    def rack_project
+      "#{Jets.root}rack"
     end
   end
 end
