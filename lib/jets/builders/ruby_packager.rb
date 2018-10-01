@@ -3,9 +3,8 @@ class Jets::Builders
     include Util
 
     attr_reader :tmp_app_root
-    def initialize(tmp_app_root, full_project_path)
+    def initialize(tmp_app_root)
       @tmp_app_root = tmp_app_root
-      @full_project_path = full_project_path
     end
 
     # This is in case the user has a 2.5.x variant.
@@ -61,12 +60,12 @@ class Jets::Builders
     # because it gets left around to act as a 'cache'.  So, when the builds the
     # project gets built again not all the gems from get installed from the
     # beginning.
-    def bundle_install
+    def bundle_install(full_project_path)
       return if poly_only?
 
       headline "Bundling: running bundle install in cache area: #{cache_area}."
 
-      copy_gemfiles
+      copy_gemfiles(full_project_path)
 
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_clean_env do
@@ -80,10 +79,11 @@ class Jets::Builders
       puts 'Bundle install success.'
     end
 
-    def copy_gemfiles
+    def copy_gemfiles(full_project_path)
+      puts "full_project_path #{full_project_path}".colorize(:yellow)
       FileUtils.mkdir_p(cache_area)
-      FileUtils.cp("#{@full_project_path}Gemfile", "#{cache_area}/Gemfile")
-      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{cache_area}/Gemfile.lock")
+      FileUtils.cp("#{full_project_path}Gemfile", "#{cache_area}/Gemfile")
+      FileUtils.cp("#{full_project_path}Gemfile.lock", "#{cache_area}/Gemfile.lock")
     end
 
     def setup_bundle_config

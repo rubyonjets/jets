@@ -258,10 +258,12 @@ class Jets::Builders
     time :create_zip_file
 
     def package_ruby
-      packager = RubyPackager.new(tmp_app_root, full_project_path)
+      packager = RubyPackager.new(tmp_app_root)
       packager.reconfigure_ruby_version
       packager.clean_old_submodules
-      packager.bundle_install
+      packager.bundle_install(full_project_path)
+      rack_project = "#{full_project_path}rack/"
+      packager.bundle_install(rack_project) if File.exist?(rack_project + "Gemfile")
       packager.copy_bundled_cache
       packager.setup_bundle_config
       packager.extract_ruby
