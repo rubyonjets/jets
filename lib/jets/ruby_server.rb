@@ -2,11 +2,6 @@ require 'socket'
 require 'json'
 require 'stringio'
 
-# Save copy of old stdout, since Jets.boot messes with it.
-# So we can use $normal_stdout.puts for debugging.
-$normal_stdout ||= $stdout
-$normal_stderr ||= $stderr
-
 # https://ruby-doc.org/stdlib-2.3.0/libdoc/socket/rdoc/TCPServer.html
 # https://stackoverflow.com/questions/806267/how-to-fire-and-forget-a-subprocess
 #
@@ -38,15 +33,16 @@ module Jets
       # Reaching here means we'll run the server in the background
       pid = Process.fork
       if pid.nil?
+        # we're in the child process
         serve
       else
-        # parent process
+        # we're in the parent process
         Process.detach(pid)
       end
     end
 
+    # runs in the child process
     def serve
-      # child process
       server = TCPServer.new(8080) # Server bind to port 8080
       puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG'] || ENV['C9_USER']
 

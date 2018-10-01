@@ -34,15 +34,6 @@ module Jets::Core
   # Ensures trailing slash
   # Useful for appending a './' in front of a path or leaving it alone.
   # Returns: '/path/with/trailing/slash/' or './'
-  # @@root = nil
-  # def root
-  #   return @@root if @@root
-  #   @@root = ENV['JETS_ROOT'].to_s
-  #   @@root = '.' if @@root == ''
-  #   @@root = "#{@@root}/" unless @@root.ends_with?('/')
-  #   @@root = Pathname.new(@@root)
-  # end
-
   def root
     root = ENV['JETS_ROOT'].to_s
     root = '.' if root == ''

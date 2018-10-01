@@ -41,7 +41,8 @@ module Jets::Commands
       command = "bundle exec shotgun --port #{o[:port]} --host #{o[:host]}"
       puts "=> #{command}".colorize(:green)
       puts Jets::Booter.message
-      system(command)
+      Jets::RackServer.run
+      # system(command)
     end
 
     desc "routes", "Print out your application routes"

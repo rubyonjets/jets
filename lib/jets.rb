@@ -25,6 +25,7 @@ module Jets
   autoload :Dotenv, 'jets/dotenv'
   autoload :Erb, "jets/erb"
   autoload :Generator, "jets/generator"
+  autoload :Inflections, "jets/inflections"
   autoload :IO, "jets/io"
   autoload :Job, 'jets/job'
   autoload :Klass, 'jets/klass'
@@ -35,6 +36,7 @@ module Jets
   autoload :Preheat, "jets/preheat"
   autoload :Processors, 'jets/processors'
   autoload :Rack, "jets/rack"
+  autoload :RackServer, 'jets/rack_server'
   autoload :Rdoc, "jets/rdoc"
   autoload :Resource, "jets/resource"
   autoload :Route, "jets/route"
@@ -45,7 +47,6 @@ module Jets
   autoload :Stack, "jets/stack"
   autoload :Timing, "jets/timing"
   autoload :Util, "jets/util"
-  autoload :Inflections, "jets/inflections"
 
   extend Core # root, logger, etc
 end
