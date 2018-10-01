@@ -7,9 +7,9 @@ class Jets::Server
     def initialize(route, env)
       @route = route
       @env = env
-      # @env.each do |k,v|
-      #   puts "#{k}: #{v}"
-      # end
+      @env.each do |k,v|
+        puts "#{k}: #{v}"
+      end
     end
 
     def response

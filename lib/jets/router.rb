@@ -30,7 +30,7 @@ module Jets
     end
 
     def api_mode?
-      unless Jets.config.key?(:mode)
+      if Jets.config.key?(:api_mode) || Jets.config.key?(:api_generator)
         puts <<~EOL.colorize(:yellow)
           DEPRECATED: Jets.config.api_generator
           Instead, please update your config/application.rb to use:

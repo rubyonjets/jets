@@ -167,6 +167,9 @@ module Jets::Commands
       public_catchall = Jets::Router.has_controller?("Jets::PublicController")
       paths << "#{controllers}/public_controller.rb" if public_catchall
 
+      rack_catchall = Jets::Router.has_controller?("Jets::RackController")
+      paths << "#{controllers}/rack_controller.rb" if rack_catchall
+
       jobs = File.expand_path("../../internal/app/jobs/jets", __FILE__)
       paths << "#{jobs}/preheat_job.rb"
 
