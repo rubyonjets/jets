@@ -59,12 +59,13 @@ module Jets
     def wait_for_socket
       retries = 0
       max_retries = 30 # 15 seconds at a delay of 0.5s
+      delay = 0.5
       begin
         server = TCPSocket.new('localhost', 9292)
         server.close
       rescue Errno::ECONNREFUSED => e
         puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."
-        sleep(0.5)
+        sleep(delay)
         retries += 1
         if retries < max_retries
           retry
