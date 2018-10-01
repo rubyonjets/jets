@@ -30,17 +30,19 @@ module Jets
         return
       end
 
+      # Only start megamode rack server when in background mode, otherwise user is expected to start
+      # that server independently.
+      start_rack_server
+      wait_for_socket
+
       # Reaching here means we'll run the server in the "background"
       pid = Process.fork
+
       if pid.nil?
         # we're in the child process
         serve
       else
         # we're in the parent process
-        # Only start megamode rack server when in background mode, otherwise user is expected to start
-        # that server independently.
-        start_rack_server
-        sleep 10
         # Detach main jets ruby server
         Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
       end
@@ -48,21 +50,38 @@ module Jets
 
     # Megamode support
     def start_rack_server
-      pid = Process.fork
-      if pid.nil?
-        # we're in the child process
+      t = Thread.new do
         Jets::Rack::Server.start
-        # TODO: Block until server has been confirmed started successfully
-        # ...
-      else
-        # we're in the parent process
-        Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
       end
+      t.join # Jets::Rack::Server.start already runs in a subprocess so it's fine to join this
+    end
+
+    def wait_for_socket
+      retries = 0
+      max_retries = 3 # 2**3 = 8s + 4s + 2s + 1 = 15s
+      delay_amount = 2
+      begin
+        server = TCPSocket.new('localhost', 9292)
+        server.close
+      rescue Errno::ECONNREFUSED => e
+        delay = delay_amount ** retries
+        puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."
+        sleep(delay)
+        retries += 1
+        if retries <= max_retries
+          retry
+        else
+          puts "Giving up on trying to connect to localhost:9292"
+          return false
+        end
+      end
+      puts "Connected to localhost:9292 successfully"
+      true
     end
 
     # runs in the child process
     def serve
-      server = TCPServer.new(8080) # Server bind to port 8080
+      server = TCPServer.new(PORT) # Server bind to port 8080
       puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG'] || ENV['C9_USER']
 
       loop do
