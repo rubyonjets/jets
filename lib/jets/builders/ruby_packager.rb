@@ -17,6 +17,23 @@ class Jets::Builders
       setup_bundle_config
       extract_ruby
       extract_gems
+      tidy
+    end
+
+    # Clean up extra unneeded files to reduce package size
+    def tidy
+      puts "check #{full(tmp_app_root)}/bundled/**/*"
+      Dir.glob("#{full(tmp_app_root)}/bundled/**/*").each do |path|
+        next unless File.directory?(path)
+        dir = File.basename(path)
+        next unless tidy_dirs.include?(dir)
+        # puts "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
+        FileUtils.rm_rf(path)
+      end
+    end
+
+    def tidy_dirs
+      %w[cache]
     end
 
     # This is in case the user has a 2.5.x variant.

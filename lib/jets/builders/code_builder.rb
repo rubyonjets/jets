@@ -183,8 +183,8 @@ class Jets::Builders
       excludes.each do |exclude|
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{full(tmp_app_root)}/#{exclude}"
+        # puts "  rm -rf #{remove_path}".colorize(:yellow) # uncomment to debug
         FileUtils.rm_rf(remove_path)
-        # puts "  rm -rf #{remove_path}" # uncomment to debug
       end
     end
 
