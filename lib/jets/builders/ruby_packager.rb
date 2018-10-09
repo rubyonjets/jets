@@ -33,21 +33,6 @@ class Jets::Builders
       Tidy.new(path).cleanup!
     end
 
-    # def tidy_bundled
-    #   puts "check #{full(tmp_app_root)}/bundled/**/*"
-    #   Dir.glob("#{full(tmp_app_root)}/bundled/**/*").each do |path|
-    #     next unless File.directory?(path)
-    #     dir = File.basename(path)
-    #     next unless tidy_bundled_dirs.include?(dir)
-    #     # puts "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
-    #     FileUtils.rm_rf(path)
-    #   end
-    # end
-
-    # def tidy_bundled_dirs
-    #   %w[.git tmp log spec]
-    # end
-
     # This is in case the user has a 2.5.x variant.
     # Force usage of ruby version that jets supports
     # The lambda server only has ruby 2.5.0 installed.

@@ -11,10 +11,12 @@ class Jets::Builders
         # puts "  rm -rf #{remove_path}".colorize(:yellow) # uncomment to debug
         FileUtils.rm_rf(remove_path)
       end
+
+      tidy_bundled
     end
 
     def excludes
-      excludes = %w[.git tmp log spec]
+      excludes = default_excludes
       excludes += get_excludes("#{@project_root}/.gitignore")
       excludes += get_excludes("#{@project_root}/.dockerignore")
       excludes = excludes.reject do |p|
@@ -37,13 +39,29 @@ class Jets::Builders
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned ou.
     def jetskeep
-      defaults = %w[pack handlers]
-      path = @project_root + ".jetskeep"
-      return defaults unless path.exist?
+      defaults = %w[bundled pack handlers]
+      path = "#{@project_root}/.jetskeep"
+      return defaults unless File.exist?(path)
 
-      keep = path.read.split("\n")
-      keep = keep.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
+      keep = IO.readlines(path)
+      keep = keep.map {|i| i.strip}.reject { |i| i =~ /^#/ || i.empty? }
       (defaults + keep).uniq
+    end
+
+    # folders to remove in the bundled folder regardless of the level of the folder
+    def tidy_bundled
+      puts "check #{@project_root}/bundled/**/*"
+      Dir.glob("#{@project_root}/bundled/**/*").each do |path|
+        next unless File.directory?(path)
+        dir = File.basename(path)
+        next unless default_excludes.include?(dir)
+        puts "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
+        FileUtils.rm_rf(path)
+      end
+    end
+
+    def default_excludes
+      %w[.git tmp log spec cache]
     end
   end
 end
