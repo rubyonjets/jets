@@ -21,20 +21,32 @@ class Jets::Builders
     end
 
     # Clean up extra unneeded files to reduce package size
+    # Because we're removing files (something dangerous) use full paths.
     def tidy
-      puts "check #{full(tmp_app_root)}/bundled/**/*"
-      Dir.glob("#{full(tmp_app_root)}/bundled/**/*").each do |path|
-        next unless File.directory?(path)
-        dir = File.basename(path)
-        next unless tidy_dirs.include?(dir)
-        # puts "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
-        FileUtils.rm_rf(path)
-      end
+      puts "Tidying project: removing ignored files to reduce package size."
+      tidy_project(full(tmp_app_root))
+      # The rack sub project has it's own gitignore.
+      tidy_project(full(tmp_app_root)+"/rack")
     end
 
-    def tidy_dirs
-      %w[cache]
+    def tidy_project(path)
+      Tidy.new(path).cleanup!
     end
+
+    # def tidy_bundled
+    #   puts "check #{full(tmp_app_root)}/bundled/**/*"
+    #   Dir.glob("#{full(tmp_app_root)}/bundled/**/*").each do |path|
+    #     next unless File.directory?(path)
+    #     dir = File.basename(path)
+    #     next unless tidy_bundled_dirs.include?(dir)
+    #     # puts "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
+    #     FileUtils.rm_rf(path)
+    #   end
+    # end
+
+    # def tidy_bundled_dirs
+    #   %w[.git tmp log spec]
+    # end
 
     # This is in case the user has a 2.5.x variant.
     # Force usage of ruby version that jets supports

@@ -83,7 +83,6 @@ class Jets::Builders
     time :build
 
     def start_app_root_setup
-      tidy_project
       reconfigure_development_webpacker
       generate_node_shims
     end
@@ -177,17 +176,6 @@ class Jets::Builders
       end
     end
 
-    # Because we're removing files (something dangerous) use full paths.
-    def tidy_project
-      headline "Tidying project: removing ignored files to reduce package size."
-      excludes.each do |exclude|
-        exclude = exclude.sub(%r{^/},'') # remove leading slash
-        remove_path = "#{full(tmp_app_root)}/#{exclude}"
-        # puts "  rm -rf #{remove_path}".colorize(:yellow) # uncomment to debug
-        FileUtils.rm_rf(remove_path)
-      end
-    end
-
     def generate_node_shims
       headline "Generating node shims in the handlers folder."
       # Crucial that the Dir.pwd is in the tmp_app_root because for
@@ -274,39 +262,6 @@ class Jets::Builders
       end
     end
     time :package_ruby
-
-    def excludes
-      excludes = %w[.git tmp log spec]
-      excludes += get_excludes("#{full(tmp_app_root)}/.gitignore")
-      excludes += get_excludes("#{full(tmp_app_root)}/.dockerignore")
-      excludes = excludes.reject do |p|
-        jetskeep.find do |keep|
-          p.include?(keep)
-        end
-      end
-      excludes
-    end
-
-    def get_excludes(file)
-      path = file
-      return [] unless File.exist?(path)
-
-      exclude = File.read(path).split("\n")
-      exclude.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
-      # IE: ["/handlers", "/bundled*", "/vendor/jets]
-    end
-
-    # We clean out ignored files pretty aggressively. So provide
-    # a way for users to keep files from being cleaned ou.
-    def jetskeep
-      defaults = %w[pack handlers]
-      path = Jets.root + ".jetskeep"
-      return defaults unless path.exist?
-
-      keep = path.read.split("\n")
-      keep = keep.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
-      (defaults + keep).uniq
-    end
 
     def cache_check_message
       if File.exist?("#{Jets.build_root}/cache")
