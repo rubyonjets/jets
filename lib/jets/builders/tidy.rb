@@ -8,7 +8,7 @@ class Jets::Builders
       excludes.each do |exclude|
         exclude = exclude.sub(%r{^/},'') # remove leading slash
         remove_path = "#{@project_root}/#{exclude}"
-        # puts "  rm -rf #{remove_path}".colorize(:yellow) # uncomment to debug
+        puts "  rm -rf #{remove_path}".colorize(:yellow) # uncomment to debug
         FileUtils.rm_rf(remove_path)
       end
 
@@ -39,7 +39,7 @@ class Jets::Builders
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned ou.
     def jetskeep
-      defaults = %w[bundled pack handlers]
+      defaults = %w[.bundle bundled pack handlers]
       path = "#{@project_root}/.jetskeep"
       return defaults unless File.exist?(path)
 
