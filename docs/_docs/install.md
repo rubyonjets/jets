@@ -14,6 +14,18 @@ Or you can add jets to your Gemfile in your project.
 gem "jets"
 ```
 
+## Prerequisites
+
+### AWS CLI
+
+You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) via pip.
+
+    pip install awscli --upgrade --user
+
+Then [configure it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
+
+    aws configure    
+
 ## Dependencies
 
 ### Ruby
