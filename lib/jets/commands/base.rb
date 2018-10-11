@@ -128,7 +128,7 @@ class Jets::Commands::Base < Thor
       end
     end
 
-    # If this fails to match then it'l just return the original full command
+    # If this fails to find a match then return the original full command
     def autocomplete(full_command)
       return nil if full_command.nil? # jets help
 

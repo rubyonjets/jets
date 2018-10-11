@@ -104,7 +104,7 @@ class Jets::Application
     config.project_namespace = Jets.project_namespace
 
     # Must set default iam_policy here instead of `def config` because we need access to
-    # the project_namespace and if we call it from `def config` we get an infinit loop
+    # the project_namespace and if we call it from `def config` we get an infinite loop
     config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
   end
