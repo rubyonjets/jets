@@ -33,7 +33,6 @@ module Jets
       # Only start megamode rack server when in background mode, otherwise user is expected to start
       # that server independently.
       start_rack_server
-      wait_for_socket
 
       # Reaching here means we'll run the server in the "background"
       pid = Process.fork
@@ -50,10 +49,14 @@ module Jets
 
     # Megamode support
     def start_rack_server
+      return unless File.exist?("#{Jets.root}rack")
+
       t = Thread.new do
         Jets::Rack::Server.start
       end
       t.join # Jets::Rack::Server.start already runs in a subprocess so it's fine to join this
+
+      wait_for_socket
     end
 
     def wait_for_socket
