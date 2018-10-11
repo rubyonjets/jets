@@ -5,34 +5,34 @@ class Jets::Builders
     end
 
     def cleanup!
-      excludes.each do |exclude|
-        exclude = exclude.sub(%r{^/},'') # remove leading slash
-        remove_path = "#{@project_root}/#{exclude}"
-        puts "  rm -rf #{remove_path}".colorize(:yellow) # uncomment to debug
-        FileUtils.rm_rf(remove_path)
+      removals.each do |removal|
+        removal = removal.sub(%r{^/},'') # remove leading slash
+        removal_path = "#{@project_root}/#{removal}"
+        puts "  rm -rf #{removal_path}".colorize(:yellow) # uncomment to debug
+        FileUtils.rm_rf(removal_path)
       end
 
       tidy_bundled
     end
 
-    def excludes
-      excludes = default_excludes
-      excludes += get_excludes("#{@project_root}/.gitignore")
-      excludes += get_excludes("#{@project_root}/.dockerignore")
-      excludes = excludes.reject do |p|
+    def removals
+      removals = default_removals
+      removals += get_removals("#{@project_root}/.gitignore")
+      removals += get_removals("#{@project_root}/.dockerignore")
+      removals = removals.reject do |p|
         jetskeep.find do |keep|
           p.include?(keep)
         end
       end
-      excludes
+      removals
     end
 
-    def get_excludes(file)
+    def get_removals(file)
       path = file
       return [] unless File.exist?(path)
 
-      exclude = File.read(path).split("\n")
-      exclude.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
+      removal = File.read(path).split("\n")
+      removal.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
       # IE: ["/handlers", "/bundled*", "/vendor/jets]
     end
 
@@ -54,14 +54,15 @@ class Jets::Builders
       Dir.glob("#{@project_root}/bundled/**/*").each do |path|
         next unless File.directory?(path)
         dir = File.basename(path)
-        next unless default_excludes.include?(dir)
+        next unless default_removals.include?(dir)
         puts "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
         FileUtils.rm_rf(path)
       end
     end
 
-    def default_excludes
-      %w[.git tmp log spec cache]
+    # These directories will be removed regardless of dir level
+    def default_removals
+      %w[.git tmp spec cache]
     end
   end
 end
