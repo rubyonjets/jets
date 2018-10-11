@@ -19,11 +19,11 @@ module Jets
         exception_message = region.split("\n").grep(/botocore\.exceptions/).first
         if exception_message
           puts "WARN: #{exception_message}".colorize(:yellow)
-          puts "You can also get rid of this message by setting AWS_REGION or configuring ~/.aws/config with the region"
         else
           # show full message as warning
           puts region.colorize(:yellow)
         end
+        puts "You can also get rid of this message by setting AWS_REGION or configuring ~/.aws/config with the region"
         region = nil
       end
       region = nil if region == ''
