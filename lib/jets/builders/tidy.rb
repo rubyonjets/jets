@@ -1,22 +1,22 @@
 class Jets::Builders
   class Tidy
-    def initialize(project_root)
+    def initialize(project_root, noop: false)
       @project_root = project_root
+      @noop = noop
     end
 
     def cleanup!
       removals.each do |removal|
         removal = removal.sub(%r{^/},'') # remove leading slash
-        removal_path = "#{@project_root}/#{removal}"
-        puts "  rm -rf #{removal_path}".colorize(:yellow) # uncomment to debug
-        FileUtils.rm_rf(removal_path)
+        path = "#{@project_root}/#{removal}"
+        rm_rf(path)
       end
 
       tidy_bundled
     end
 
     def removals
-      removals = default_removals
+      removals = always_removals
       removals += get_removals("#{@project_root}/.gitignore")
       removals += get_removals("#{@project_root}/.dockerignore")
       removals = removals.reject do |p|
@@ -24,7 +24,7 @@ class Jets::Builders
           p.include?(keep)
         end
       end
-      removals
+      removals.uniq
     end
 
     def get_removals(file)
@@ -54,15 +54,34 @@ class Jets::Builders
       Dir.glob("#{@project_root}/bundled/**/*").each do |path|
         next unless File.directory?(path)
         dir = File.basename(path)
-        next unless default_removals.include?(dir)
-        puts "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
-        FileUtils.rm_rf(path)
+        next unless always_removals.include?(dir)
+
+        rm_rf(path)
       end
     end
 
+    def rm_rf(path)
+      exists = File.exist?("#{path}/.gitkeep") || File.exist?("#{path}/.keep")
+      return if exists
+
+      say "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
+      # FileUtils.rm_rf(path) unless @noop
+      system("rm -rf #{path}") unless @noop
+    end
+
     # These directories will be removed regardless of dir level
-    def default_removals
+    def always_removals
       %w[.git tmp spec cache]
+    end
+
+    def top_level_removals
+      # some gems have a log folder and class
+      %w[log]
+    end
+
+    def say(message)
+      message = "NOOP #{message}" if @noop
+      puts message
     end
   end
 end
