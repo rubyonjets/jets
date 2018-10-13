@@ -77,7 +77,7 @@ class Jets::Builders
         start_app_root_setup
         package_ruby
         finish_app_root_setup
-        setup_tmp_downloads
+        setup_tmp
         create_zip_file
       end
     end
@@ -90,12 +90,13 @@ class Jets::Builders
     # AWS Lambda Limits: https://amzn.to/2A7y6v6
     #
     #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
-    def setup_tmp_downloads
-      move_to_staged_tmp("bundled")
-      move_to_staged_tmp("rack")
+    #
+    def setup_tmp
+      stage_tmp("bundled")
+      stage_tmp("rack")
     end
 
-    def move_to_staged_tmp(folder)
+    def stage_tmp(folder)
       src = "#{full(tmp_app_root)}/#{folder}"
       return unless File.exist?(src)
 
