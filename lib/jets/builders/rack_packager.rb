@@ -10,7 +10,6 @@ class Jets::Builders
     def symlink_rack_bundled
       rack_bundled = "#{@full_app_root}/bundled"
       FileUtils.rm_f(rack_bundled) # looks like FileUtils.ln_sf doesnt remove existing symlinks
-
       FileUtils.ln_sf("/var/task/bundled", rack_bundled)
     end
 

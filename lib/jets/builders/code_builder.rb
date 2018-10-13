@@ -257,14 +257,6 @@ class Jets::Builders
     end
     time :package_ruby
 
-    def
-
-    def rack_install
-    end
-
-    def rack_finish
-    end
-
     def cache_check_message
       if File.exist?("#{Jets.build_root}/cache")
         puts "The #{Jets.build_root}/cache folder exists. Incrementally re-building the jets using the cache.  To clear the cache: rm -rf #{Jets.build_root}/cache"

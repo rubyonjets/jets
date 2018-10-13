@@ -3,14 +3,8 @@ class Jets::Builders
     include Util
 
     attr_reader :full_app_root
-    def initialize(tmp_app_root)
-      @full_app_root = full(tmp_app_root)
-    end
-
-    def gemfile_exist?
-      gemfile_path = "#{@full_app_root}/Gemfile"
-      puts "gemfile_path #{gemfile_path}"
-      File.exist?(gemfile_path)
+    def initialize(relative_app_root)
+      @full_app_root = full(relative_app_root)
     end
 
     def install
@@ -20,6 +14,21 @@ class Jets::Builders
       clean_old_submodules
       bundle_install
       setup_bundle_config
+    end
+
+    def finish
+      return unless gemfile_exist?
+
+      copy_bundled_cache
+      extract_ruby
+      extract_gems
+      tidy
+    end
+
+    def gemfile_exist?
+      gemfile_path = "#{@full_app_root}/Gemfile"
+      puts "gemfile_path #{gemfile_path}"
+      File.exist?(gemfile_path)
     end
 
     # Installs gems on the current target system: both compiled and non-compiled.
@@ -51,13 +60,6 @@ class Jets::Builders
       end
 
       puts 'Bundle install success.'
-    end
-
-    def finish
-      copy_bundled_cache
-      extract_ruby
-      extract_gems
-      tidy
     end
 
     # Clean up extra unneeded files to reduce package size
