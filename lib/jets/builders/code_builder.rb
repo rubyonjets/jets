@@ -89,16 +89,15 @@ class Jets::Builders
     #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
     #
     def setup_tmp
-      FileUtils.rm_rf(staged_tmp) # clear out from previous build
       symlink_to_tmp("bundled")
       symlink_to_tmp("rack")
     end
 
-    def staged_tmp
-      "#{Jets.build_root}/staged_tmp"
+    def stage_area
+      "#{Jets.build_root}/stage"
     end
 
-    # Moves folder to a staged_tmp folder and create a symlink its place
+    # Moves folder to a stage folder and create a symlink its place
     # that links from /var/task to /tmp. Example:
     #
     #   /var/task/bundled => /tmp/bundled
@@ -107,7 +106,7 @@ class Jets::Builders
       src = "#{full(tmp_code)}/#{folder}"
       return unless File.exist?(src)
 
-      dest = "#{staged_tmp}/#{folder}"
+      dest = "#{stage_area}/#{folder}"
       dir = File.dirname(dest)
       FileUtils.mkdir_p(dir) unless File.exist?(dir)
       FileUtils.mv(src, dest)
@@ -118,9 +117,9 @@ class Jets::Builders
 
     def create_zip_files
       paths = %w[
-        code
-        staged_tmp/bundled
-        staged_tmp/rack
+        stage/code
+        stage/bundled
+        stage/rack
       ]
       paths.map! { |p| "#{Jets.build_root}/#{p}" }
       paths.each do |path|
@@ -204,6 +203,8 @@ class Jets::Builders
     # logs before zipping it up.
     def copy_project
       headline "Copying current project directory to temporary build area: #{full(tmp_code)}"
+      FileUtils.rm_rf(stage_area) # clear out from previous build
+      FileUtils.mkdir_p(stage_area)
       FileUtils.rm_rf(full(tmp_code)) # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin

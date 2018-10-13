@@ -198,7 +198,7 @@ module Jets::Commands
     end
 
     def self.tmp_code(full_build_path=false)
-      full_build_path ? "#{Jets.build_root}/code" : "code"
+      full_build_path ? "#{Jets.build_root}/stage/code" : "stage/code"
     end
 
   end
