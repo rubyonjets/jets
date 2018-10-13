@@ -48,7 +48,7 @@ require "bundler" # for clean_old_submodules only
 # * setup bundled config: app_root/.bundle/config
 #
 ### zip
-# * create zip file
+# * create zip fileC
 class Jets::Builders
   class CodeBuilder
     include Jets::Timing
@@ -77,10 +77,37 @@ class Jets::Builders
         start_app_root_setup
         package_ruby
         finish_app_root_setup
+        setup_tmp_downloads
         create_zip_file
       end
     end
     time :build
+
+    # Moves app_root/bundled and app_root/rack to build_root.
+    # These files will be packaged separated and lazy loaded as part of the
+    # node shim. This keeps the code zipfile smaller in size and helps
+    # with the 250MB extract limited. /tmp permits up to 512MB.
+    # AWS Lambda Limits: https://amzn.to/2A7y6v6
+    #
+    #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
+    def setup_tmp_downloads
+      move_to_staged_tmp("bundled")
+      move_to_staged_tmp("rack")
+    end
+
+    def move_to_staged_tmp(folder)
+      src = "#{full(tmp_app_root)}/#{folder}"
+      return unless File.exist?(src)
+
+      dest = "#{Jets.build_root}/staged_tmp/#{folder}"
+      dir = File.dirname(dest)
+      FileUtils.mkdir_p(dir) unless File.exist?(dir)
+      FileUtils.rm_rf(dest) # clear out from previous build
+      FileUtils.mv(src, dest)
+
+      # Create symlink
+      FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_app_root)}/#{folder}")
+    end
 
     def start_app_root_setup
       reconfigure_development_webpacker
