@@ -25,7 +25,7 @@ class Jets::Builders
         command = "zip --symlinks -rq #{temp_code_zipfile} #{hello_world}"
       else
         # https://serverfault.com/questions/265675/how-can-i-zip-compress-a-symlink
-        command = "cd #{full(tmp_app_root)} && zip --symlinks -rq #{temp_code_zipfile} ."
+        command = "cd #{full(tmp_code)} && zip --symlinks -rq #{temp_code_zipfile} ."
       end
 
       sh(command)

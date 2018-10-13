@@ -18,7 +18,7 @@ require "bundler" # for clean_old_submodules only
 #   Initially, macosx gems but then get replaced by linux gems where appropriate.
 # cache/downloads/rubies: ruby tarballs.
 # cache/downloads/gems: gem tarballs.
-# app_root: Where project gets copied into in order for us to configure it.
+# code: Where project gets copied into in order for us to configure it.
 # app_root/bundled/gems: Where vendored gems finally end up at.  The compiled
 #   gems at this point are only linux gems.
 # artifacts/code/code-md5sha.zip: code artifact that gets uploaded to lambda.
@@ -40,12 +40,12 @@ require "bundler" # for clean_old_submodules only
 # * bundle install: cache/bundled/gems
 #
 ### setup bundled on app root from cache
-# * copy bundled to app_root: app_root/bundled
+# * copy bundled to code: code/bundled
 # * extract linux ruby: cache/downloads/rubies:
 #                       cache/bundled/rbenv, cache/bundled/linuxbrew
 # * extract linux gems: cache/downloads/gems:
 #                       cache/bundled/gems, cache/bundled/linuxbrew
-# * setup bundled config: app_root/.bundle/config
+# * setup bundled config: code/.bundle/config
 #
 ### zip
 # * create zip fileC
@@ -69,18 +69,18 @@ class Jets::Builders
       clean_start
       compile_assets # easier to do before we copy the project
       copy_project
-      Dir.chdir(full(tmp_app_root)) do
+      Dir.chdir(full(tmp_code)) do
         # These commands run from project root
-        start_app_root_setup
+        start_code_setup
         package_ruby
-        finish_app_root_setup
+        finish_code_setup
         setup_tmp
         create_zip_files
       end
     end
     time :build
 
-    # Moves app_root/bundled and app_root/rack to build_root.
+    # Moves code/bundled and code/rack to build_root.
     # These files will be packaged separated and lazy loaded as part of the
     # node shim. This keeps the code zipfile smaller in size and helps
     # with the 250MB extract limited. /tmp permits up to 512MB.
@@ -104,7 +104,7 @@ class Jets::Builders
     #   /var/task/bundled => /tmp/bundled
     #
     def symlink_to_tmp(folder)
-      src = "#{full(tmp_app_root)}/#{folder}"
+      src = "#{full(tmp_code)}/#{folder}"
       return unless File.exist?(src)
 
       dest = "#{staged_tmp}/#{folder}"
@@ -113,12 +113,12 @@ class Jets::Builders
       FileUtils.mv(src, dest)
 
       # Create symlink
-      FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_app_root)}/#{folder}")
+      FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_code)}/#{folder}")
     end
 
     def create_zip_files
       paths = %w[
-        app_root
+        code
         staged_tmp/bundled
         staged_tmp/rack
       ]
@@ -130,25 +130,25 @@ class Jets::Builders
     end
     time :create_zip_files
 
-    def start_app_root_setup
+    def start_code_setup
       reconfigure_development_webpacker
       generate_node_shims
     end
-    time :start_app_root_setup
+    time :start_code_setup
 
-    def finish_app_root_setup
+    def finish_code_setup
       return if poly_only?
 
       store_s3_base_url
     end
-    time :finish_app_root_setup
+    time :finish_code_setup
 
     # Store s3 base url is needed for asset serving from s3 later. Need to package this
     # as part of the code so we have a reference to it.
     # At this point the minimal stack exists, so we can grab it with the AWS API.
     # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
-      IO.write("#{full(tmp_app_root)}/config/s3_base_url.txt", s3_base_url)
+      IO.write("#{full(tmp_code)}/config/s3_base_url.txt", s3_base_url)
     end
 
     def s3_base_url
@@ -170,7 +170,7 @@ class Jets::Builders
       "#{asset_base_url}/#{bucket_name}/jets/public" # s3_base_url
     end
 
-    # This happens in the current app directory not the tmp app_root for simplicity
+    # This happens in the current app directory not the tmp code for simplicity
     def compile_assets
       puts "COMPILE_ASSETS DISABLE TEMPROARILY".colorize(:yellow)
       return
@@ -203,11 +203,11 @@ class Jets::Builders
     # directory untouched and we can also remove a bunch of unnecessary files like
     # logs before zipping it up.
     def copy_project
-      headline "Copying current project directory to temporary build area: #{full(tmp_app_root)}"
-      FileUtils.rm_rf(full(tmp_app_root)) # remove current app_root folder
+      headline "Copying current project directory to temporary build area: #{full(tmp_code)}"
+      FileUtils.rm_rf(full(tmp_code)) # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
-        FileUtils.cp_r(@full_project_path, full(tmp_app_root))
+        FileUtils.cp_r(@full_project_path, full(tmp_code))
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
       end
@@ -229,7 +229,7 @@ class Jets::Builders
 
     def generate_node_shims
       headline "Generating node shims in the handlers folder."
-      # Crucial that the Dir.pwd is in the tmp_app_root because for
+      # Crucial that the Dir.pwd is in the tmp_code because for
       # Jets::Builders::app_files because Jets.boot set ups
       # autoload_paths and this is how project classes are loaded.
       Jets::Commands::Build.app_files.each do |path|
@@ -244,7 +244,7 @@ class Jets::Builders
       return unless Jets.env.development?
       headline "Reconfiguring webpacker development settings for AWS Lambda."
 
-      webpacker_yml = "#{full(tmp_app_root)}/config/webpacker.yml"
+      webpacker_yml = "#{full(tmp_code)}/config/webpacker.yml"
       return unless File.exist?(webpacker_yml)
 
       config = YAML.load_file(webpacker_yml)
@@ -254,8 +254,8 @@ class Jets::Builders
     end
 
     def package_ruby
-      ruby_packager = RubyPackager.new(tmp_app_root)
-      rack_packager = RackPackager.new("#{tmp_app_root}/rack")
+      ruby_packager = RubyPackager.new(tmp_code)
+      rack_packager = RackPackager.new("#{tmp_code}/rack")
 
       ruby_packager.install
       rack_packager.install
@@ -289,12 +289,12 @@ class Jets::Builders
     end
 
     # Group all the path settings together here
-    def self.tmp_app_root
-      Jets::Commands::Build.tmp_app_root
+    def self.tmp_code
+      Jets::Commands::Build.tmp_code
     end
 
-    def tmp_app_root
-      self.class.tmp_app_root
+    def tmp_code
+      self.class.tmp_code
     end
   end
 end

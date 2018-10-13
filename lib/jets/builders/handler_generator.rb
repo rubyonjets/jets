@@ -41,7 +41,7 @@ class Jets::Builders
         return
       end
 
-      dest_path = "#{tmp_app_root}/#{fun.handler_dest}"
+      dest_path = "#{tmp_code}/#{fun.handler_dest}"
       FileUtils.mkdir_p(File.dirname(dest_path))
       FileUtils.cp(source_path, dest_path)
     end
@@ -78,7 +78,7 @@ class Jets::Builders
     def native_function(original_path, task)
       source_path = get_source_path(original_path, task)
       # Handler: handlers/controllers/posts_controller.handle
-      dest_path = "#{tmp_app_root}/#{task.handler_path}"
+      dest_path = "#{tmp_code}/#{task.handler_path}"
       FileUtils.mkdir_p(File.dirname(dest_path))
       FileUtils.cp(source_path, dest_path)
     end
@@ -95,7 +95,7 @@ class Jets::Builders
     end
 
     def generate_shim(deducer)
-      js_path = "#{tmp_app_root}/#{deducer.js_path}"
+      js_path = "#{tmp_code}/#{deducer.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
 
       template_path = File.expand_path('../node-shim.js', __FILE__)
@@ -104,9 +104,9 @@ class Jets::Builders
       IO.write(js_path, result)
     end
 
-    # TODO: move CodeBuilder.tmp_app_root to a common level for HandlerGenerator and CodeBuilder
-    def tmp_app_root
-      "#{Jets.build_root}/#{CodeBuilder.tmp_app_root}"
+    # TODO: move CodeBuilder.tmp_code to a common level for HandlerGenerator and CodeBuilder
+    def tmp_code
+      "#{Jets.build_root}/#{CodeBuilder.tmp_code}"
     end
   end
 end

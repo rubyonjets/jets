@@ -103,10 +103,10 @@ module Jets::Commands
       self.class.app_files
     end
 
-    # Crucial that the Dir.pwd is in the tmp_app_root because for
+    # Crucial that the Dir.pwd is in the tmp_code because for
     # because Jets.boot set ups autoload_paths and this is how project
     # classes are loaded.
-    # TODO: rework code so that Dir.pwd does not have to be in tmp_app_root for build to work.
+    # TODO: rework code so that Dir.pwd does not have to be in tmp_code for build to work.
     def self.app_files
       paths = []
       expression = "#{Jets.root}app/**/**/*.rb"
@@ -197,8 +197,8 @@ module Jets::Commands
       false
     end
 
-    def self.tmp_app_root(full_build_path=false)
-      full_build_path ? "#{Jets.build_root}/app_root" : "app_root"
+    def self.tmp_code(full_build_path=false)
+      full_build_path ? "#{Jets.build_root}/code" : "code"
     end
 
   end
