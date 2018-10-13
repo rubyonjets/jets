@@ -52,7 +52,6 @@ require "bundler" # for clean_old_submodules only
 class Jets::Builders
   class CodeBuilder
     include Jets::Timing
-    include ActionView::Helpers::NumberHelper # number_to_human_size
     include Jets::AwsServices
     include Util
 
@@ -64,8 +63,6 @@ class Jets::Builders
     end
 
     def build
-      return create_zip_file(fake=true) if ENV['TEST_CODE'] # early return
-
       cache_check_message
       check_ruby_version
 
@@ -78,7 +75,7 @@ class Jets::Builders
         package_ruby
         finish_app_root_setup
         setup_tmp
-        create_zip_file
+        create_zip_files
       end
     end
     time :build
@@ -92,23 +89,46 @@ class Jets::Builders
     #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
     #
     def setup_tmp
-      stage_tmp("bundled")
-      stage_tmp("rack")
+      FileUtils.rm_rf(staged_tmp) # clear out from previous build
+      symlink_to_tmp("bundled")
+      symlink_to_tmp("rack")
     end
 
-    def stage_tmp(folder)
+    def staged_tmp
+      "#{Jets.build_root}/staged_tmp"
+    end
+
+    # Moves folder to a staged_tmp folder and create a symlink its place
+    # that links from /var/task to /tmp. Example:
+    #
+    #   /var/task/bundled => /tmp/bundled
+    #
+    def symlink_to_tmp(folder)
       src = "#{full(tmp_app_root)}/#{folder}"
       return unless File.exist?(src)
 
-      dest = "#{Jets.build_root}/staged_tmp/#{folder}"
+      dest = "#{staged_tmp}/#{folder}"
       dir = File.dirname(dest)
       FileUtils.mkdir_p(dir) unless File.exist?(dir)
-      FileUtils.rm_rf(dest) # clear out from previous build
       FileUtils.mv(src, dest)
 
       # Create symlink
       FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_app_root)}/#{folder}")
     end
+
+    def create_zip_files
+      paths = %w[
+        app_root
+        staged_tmp/bundled
+        staged_tmp/rack
+      ]
+      paths.map! { |p| "#{Jets.build_root}/#{p}" }
+      paths.each do |path|
+        zip = Md5Zip.new(path)
+        zip.create
+      end
+    end
+    time :create_zip_files
 
     def start_app_root_setup
       reconfigure_development_webpacker
@@ -232,47 +252,6 @@ class Jets::Builders
       new_yaml = YAML.dump(config)
       IO.write(webpacker_yml, new_yaml)
     end
-
-    def create_zip_file(fake=nil)
-      headline "Creating zip file."
-      temp_code_zipfile = "#{Jets.build_root}/code/code-temp.zip"
-      FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
-
-      # Use fake if testing CloudFormation only
-      if fake
-        hello_world = "/tmp/hello.js"
-        puts "Uploading tiny #{hello_world} file to S3 for quick testing.".colorize(:red)
-        code = IO.read(File.expand_path("../node-hello.js", __FILE__))
-        IO.write(hello_world, code)
-        command = "zip --symlinks -rq #{temp_code_zipfile} #{hello_world}"
-      else
-        # https://serverfault.com/questions/265675/how-can-i-zip-compress-a-symlink
-        command = "cd #{full(tmp_app_root)} && zip --symlinks -rq #{temp_code_zipfile} ."
-      end
-
-      sh(command)
-
-      # we can get the md5 only after the file has been created
-      md5 = Digest::MD5.file(temp_code_zipfile).to_s[0..7]
-      md5_zip_dest = "#{Jets.build_root}/code/code-#{md5}.zip"
-      FileUtils.mkdir_p(File.dirname(md5_zip_dest))
-      FileUtils.mv(temp_code_zipfile, md5_zip_dest)
-      # mv /tmp/jets/demo/code/code-temp.zip /tmp/jets/demo/code/code-a8a604aa.zip
-
-      file_size = number_to_human_size(File.size(md5_zip_dest))
-      puts "Zip file with code and bundled linux ruby created at: #{md5_zip_dest.colorize(:green)} (#{file_size})"
-
-      # Save state
-      IO.write("#{Jets.build_root}/code/current-md5-filename.txt", md5_zip_dest)
-      # Much later: ship, base_child_builder need set an s3_key which requires
-      # the md5_zip_dest.
-      # It is a pain to pass this all the way up from the
-      # CodeBuilder class.
-      # Let's store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
-      # file that can be read from any places where this is needed.
-      # Can also just generate a "fake file" for specs
-    end
-    time :create_zip_file
 
     def package_ruby
       ruby_packager = RubyPackager.new(tmp_app_root)
