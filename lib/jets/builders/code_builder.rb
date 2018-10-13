@@ -124,6 +124,9 @@ class Jets::Builders
 
     # This happens in the current app directory not the tmp app_root for simplicity
     def compile_assets
+      puts "COMPILE_ASSETS DISABLE TEMPROARILY".colorize(:yellow)
+      return
+
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
       webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
@@ -244,24 +247,23 @@ class Jets::Builders
     time :create_zip_file
 
     def package_ruby
-      packager = RubyPackager.new(tmp_app_root)
-      packager.setup
-      packager.bundle_install(full_project_path)
+      ruby_packager = RubyPackager.new(tmp_app_root)
+      rack_packager = RackPackager.new("#{tmp_app_root}/rack")
 
-      # rack specific
-      rack_project = "#{full_project_path}rack/"
-      packager.bundle_install(rack_project) if File.exist?(rack_project + "Gemfile")
-
-      packager.finish
-
-      # rack specific
-      if File.exist?(rack_project + "Gemfile")
-        packager.setup_bundle_config(rack: true)
-        packager.symlink_rack_bundled
-        packager.copy_rackup_wrappers
-      end
+      ruby_packager.install
+      rack_packager.install
+      ruby_packager.finish
+      rack_packager.finish
     end
     time :package_ruby
+
+    def
+
+    def rack_install
+    end
+
+    def rack_finish
+    end
 
     def cache_check_message
       if File.exist?("#{Jets.build_root}/cache")

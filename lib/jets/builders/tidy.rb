@@ -71,12 +71,13 @@ class Jets::Builders
 
     # These directories will be removed regardless of dir level
     def always_removals
-      %w[.git tmp spec cache]
+      # %w[.git spec tmp cache]
+      %w[.git spec]
     end
 
     def top_level_removals
       # some gems have a log folder and class
-      %w[log]
+      %w[]
     end
 
     def say(message)

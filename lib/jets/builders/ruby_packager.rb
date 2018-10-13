@@ -2,19 +2,59 @@ class Jets::Builders
   class RubyPackager
     include Util
 
-    attr_reader :tmp_app_root
+    attr_reader :full_app_root
     def initialize(tmp_app_root)
-      @tmp_app_root = tmp_app_root
+      @full_app_root = full(tmp_app_root)
     end
 
-    def setup
+    def gemfile_exist?
+      gemfile_path = "#{@full_app_root}/Gemfile"
+      puts "gemfile_path #{gemfile_path}"
+      File.exist?(gemfile_path)
+    end
+
+    def install
+      return unless gemfile_exist?
+
       reconfigure_ruby_version
       clean_old_submodules
+      bundle_install
+      setup_bundle_config
+    end
+
+    # Installs gems on the current target system: both compiled and non-compiled.
+    # If user is on a macosx machine, macosx gems will be installed.
+    # If user is on a linux machine, linux gems will be installed.
+    #
+    # Copies Gemfile* to /tmp/jetss/demo/bundled folder and installs
+    # gems with bundle install from there.
+    #
+    # We take the time to copy Gemfile and bundle into a separate directory
+    # because it gets left around to act as a 'cache'.  So, when the builds the
+    # project gets built again not all the gems from get installed from the
+    # beginning.
+    def bundle_install
+      return if poly_only?
+
+      full_project_path = @full_app_root
+      headline "Bundling: running bundle install in cache area: #{cache_area}."
+
+      copy_gemfiles(full_project_path)
+
+      require "bundler" # dynamically require bundler so user can use any bundler
+      Bundler.with_clean_env do
+        # cd /tmp/jets/demo
+        sh(
+          "cd #{cache_area} && " \
+          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
+        )
+      end
+
+      puts 'Bundle install success.'
     end
 
     def finish
       copy_bundled_cache
-      setup_bundle_config
       extract_ruby
       extract_gems
       tidy
@@ -24,9 +64,9 @@ class Jets::Builders
     # Because we're removing files (something dangerous) use full paths.
     def tidy
       puts "Tidying project: removing ignored files to reduce package size."
-      tidy_project(full(tmp_app_root))
+      tidy_project(@full_app_root)
       # The rack sub project has it's own gitignore.
-      tidy_project(full(tmp_app_root)+"/rack")
+      tidy_project(@full_app_root+"/rack")
     end
 
     def tidy_project(path)
@@ -37,7 +77,7 @@ class Jets::Builders
     # Force usage of ruby version that jets supports
     # The lambda server only has ruby 2.5.0 installed.
     def reconfigure_ruby_version
-      ruby_version = "#{full(tmp_app_root)}/.ruby-version"
+      ruby_version = "#{@full_app_root}/.ruby-version"
       IO.write(ruby_version, Jets::RUBY_VERSION)
     end
 
@@ -74,43 +114,16 @@ class Jets::Builders
       end
     end
 
-    # Installs gems on the current target system: both compiled and non-compiled.
-    # If user is on a macosx machine, macosx gems will be installed.
-    # If user is on a linux machine, linux gems will be installed.
-    #
-    # Copies Gemfile* to /tmp/jetss/demo/bundled folder and installs
-    # gems with bundle install from there.
-    #
-    # We take the time to copy Gemfile and bundle into a separate directory
-    # because it gets left around to act as a 'cache'.  So, when the builds the
-    # project gets built again not all the gems from get installed from the
-    # beginning.
-    def bundle_install(full_project_path)
-      return if poly_only?
-
-      headline "Bundling: running bundle install in cache area: #{cache_area}."
-
-      copy_gemfiles(full_project_path)
-
-      require "bundler" # dynamically require bundler so user can use any bundler
-      Bundler.with_clean_env do
-        # cd /tmp/jets/demo
-        sh(
-          "cd #{cache_area} && " \
-          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
-        )
-      end
-
-      puts 'Bundle install success.'
-    end
-
     def copy_gemfiles(full_project_path)
       FileUtils.mkdir_p(cache_area)
-      FileUtils.cp("#{full_project_path}Gemfile", "#{cache_area}/Gemfile")
-      FileUtils.cp("#{full_project_path}Gemfile.lock", "#{cache_area}/Gemfile.lock")
+      FileUtils.cp("#{full_project_path}/Gemfile", "#{cache_area}/Gemfile")
+      FileUtils.cp("#{full_project_path}/Gemfile.lock", "#{cache_area}/Gemfile.lock")
     end
 
-    def setup_bundle_config(rack: false)
+    def setup_bundle_config
+      puts "setup_bundle_config".colorize(:cyan)
+      puts "cache_area #{cache_area}".colorize(:cyan)
+      puts "@full_app_root #{@full_app_root}".colorize(:cyan)
       ensure_build_cache_bundle_config_exists!
 
       # Override project's .bundle/config and ensure that .bundle/config matches
@@ -118,7 +131,7 @@ class Jets::Builders
       #   app_root/.bundle/config
       #   bundled/gems/.bundle/config
       cache_bundle_config = "#{cache_area}/.bundle/config"
-      app_bundle_config = "#{full(tmp_app_root)}/#{rack ? 'rack/' : ''}.bundle/config"
+      app_bundle_config = "#{@full_app_root}/.bundle/config"
       FileUtils.mkdir_p(File.dirname(app_bundle_config))
       FileUtils.cp(cache_bundle_config, app_bundle_config)
     end
@@ -142,7 +155,7 @@ EOL
       {
         s3: "lambdagems",
         build_root: cache_area, # used in lambdagem
-        project_root: full(tmp_app_root), # used in gem_replacer and lambdagem
+        project_root: @full_app_root, # used in gem_replacer and lambdagem
       }
     end
 
@@ -158,38 +171,13 @@ EOL
     end
 
     def copy_bundled_cache
-      app_root_bundled = "#{full(tmp_app_root)}/bundled"
+      app_root_bundled = "#{@full_app_root}/bundled"
       if File.exist?(app_root_bundled)
         puts "Removing current bundled from project"
         FileUtils.rm_rf(app_root_bundled)
       end
       # Leave #{Jets.build_root}/bundled behind to act as cache
       FileUtils.cp_r("#{cache_area}/bundled", app_root_bundled)
-    end
-
-    def symlink_rack_bundled
-      root_bundled = "#{full(tmp_app_root)}/bundled"
-      rack_bundled = "#{full(tmp_app_root)}/rack/bundled"
-      FileUtils.rm_f(rack_bundled) # looks like FileUtils.ln_sf doesnt remove existing symlinks
-
-      # if ENV['C9_USER']
-      #   # for local testing
-      #   FileUtils.ln_sf(root_bundled, rack_bundled)
-      # else
-      #   # AWS Lambda env
-        FileUtils.ln_sf("/var/task/bundled", rack_bundled)
-      # end
-    end
-
-    def copy_rackup_wrappers
-      rack_bin = "#{full(tmp_app_root)}/rack/bin"
-      %w[rackup rackup.rb].each do |file|
-        src = File.expand_path("./rackup_wrappers/#{file}", File.dirname(__FILE__))
-        dest = "#{rack_bin}/#{file}"
-        FileUtils.mkdir_p(rack_bin) unless File.exist?(rack_bin)
-        FileUtils.cp(src, dest)
-        FileUtils.chmod 0755, dest
-      end
     end
 
   private
