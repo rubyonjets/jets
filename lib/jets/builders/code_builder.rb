@@ -171,7 +171,7 @@ class Jets::Builders
 
     # This happens in the current app directory not the tmp code for simplicity
     def compile_assets
-      puts "COMPILE_ASSETS DISABLE TEMPROARILY".colorize(:yellow)
+      puts "COMPILE_ASSETS TEMPROARILY DISABLED".colorize(:yellow)
       return
 
       headline "Compling assets in current project directory"
