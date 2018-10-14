@@ -1,3 +1,11 @@
+# Examples:
+#
+#   zip = Jets::Builders::Md5Zip.new("/tmp/jets/demo/stage/code")
+#   zip.create
+#
+#   zip = Jets::Builders::Md5Zip.new("/tmp/jets/demo/stage/bundled")
+#   zip.create
+#
 class Jets::Builders
   class Md5Zip
     include ActionView::Helpers::NumberHelper # number_to_human_size
@@ -11,30 +19,37 @@ class Jets::Builders
       headline "Creating zip file for #{@path}"
 
       # https://serverfault.com/questions/265675/how-can-i-zip-compress-a-symlink
-      zip_dest = @path + '.zip'
-      zip_file = File.basename(zip_dest)
+      stage_area, filename = File.dirname(@path), File.basename(@path)
+      zip_area = stage_area + '/zips' # /tmp/jets/demo/stage/zips
+      zip_file = filename + '.zip' # code.zip
+
       command = "cd #{@path} && zip --symlinks -rq #{zip_file} ."
       sh(command)
-      FileUtils.mv("#{@path}/#{zip_file}", zip_dest) # move out of the code folder to the stage folder
+      # move out of the lower folder to the stage folder
+      # mv /tmp/jets/demo/stage/code/code.zip /tmp/jets/demo/stage/code.zip
+      zip_dest = "#{zip_area}/#{zip_file}"
+      FileUtils.mkdir_p(File.dirname(zip_dest))
+      FileUtils.mv("#{@path}/#{zip_file}", zip_dest)
 
       # we can get the md5 only after the file has been created
       md5 = Digest::MD5.file(zip_dest).to_s[0..7]
       md5_dest = zip_dest.sub(".zip", "-#{md5}.zip")
+      # mv /tmp/jets/demo/stage/zips/code.zip /tmp/jets/demo/stage/zips/code-a8a604aa.zip
       FileUtils.mv(zip_dest, md5_dest)
-      # mv /tmp/jets/demo/stage/code.zip /tmp/jets/demo/stage/code-a8a604aa.zip
 
       file_size = number_to_human_size(File.size(md5_dest))
-      puts "Zip file with code and bundled linux ruby created at: #{md5_dest.colorize(:green)} (#{file_size})"
+      puts "Zip file created at: #{md5_dest.colorize(:green)} (#{file_size})"
 
-      # Save state
-      IO.write("#{Jets.build_root}/code/current-md5-filename.txt", md5_dest)
-      # Much later: ship, base_child_builder need set an s3_key which requires
-      # the md5_dest.
-      # It is a pain to pass this all the way up from the
-      # CodeBuilder class.
-      # Let's store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
-      # file that can be read from any places where this is needed.
-      # Can also just generate a "fake file" for specs
+      # Save references state
+      # Much later: ship, base_child_builder need set an s3_key which requires the md5_dest.
+      # It is a pain to pass this all the way up from the Md5Zip class.
+      # Store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a file that can be
+      # read from any places that's needed.
+      # For specs, can generate a "fake file".
+      ref = File.dirname(@path) + "/ref/" + File.basename(@path) + ".txt"
+      # The reference to the actual md5_dest
+      FileUtils.mkdir_p(File.dirname(ref))
+      IO.write(ref, md5_dest)
     end
   end
 end
