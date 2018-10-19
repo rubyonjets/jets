@@ -58,7 +58,7 @@ class Jets::Cfn
       s3_key = "jets/code/#{File.basename(path)}"
       obj = s3_resource.bucket(bucket_name).object(s3_key)
       obj.upload_file(path)
-      puts "Uploaded to s3://#{bucket_name}/#{s3_key}"
+      puts "Uploaded to s3://#{bucket_name}/#{s3_key}".colorize(:green)
       puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
 

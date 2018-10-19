@@ -71,8 +71,7 @@ class Jets::Builders
 
     # These directories will be removed regardless of dir level
     def always_removals
-      # %w[.git spec tmp cache]
-      %w[.git spec]
+      %w[.git spec tmp cache]
     end
 
     def top_level_removals

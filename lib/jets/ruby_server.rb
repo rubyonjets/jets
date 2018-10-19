@@ -25,48 +25,59 @@ module Jets
         sleep 0.1
         exit
       end
+
       if ENV['FOREGROUND'] # Usage above
         serve
         return
       end
 
-      # Only start megamode rack server when in background mode, otherwise user is expected to start
-      # that server independently.
-      start_rack_server
-
       # Reaching here means we'll run the server in the "background"
-      pid = Process.fork
+      pid1 = Process.fork
+      if pid1.nil? # we're in the child process
+        # Only start megamode rack server when in background mode, otherwise
+        # user is expected to start the rack server independently.
+        start_rack_server
+      end
 
-      if pid.nil?
-        # we're in the child process
-        serve
-      else
-        # we're in the parent process
+      unless pid1.nil? # we're in the parent process
+        pid2 = Process.fork # fork again in the parent process another child process
+        if pid2.nil? # we're in the child process
+          wait_for_rack_socket # blocks until rack server is up
+          serve # ruby_server
+        end
+      end
+
+      unless pid1.nil? && pid2.nil? # we're in the main parent process
         # Detach main jets ruby server
-        Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
+        Process.detach(pid1) # dettached but still in the "foreground" since server loop runs in the foreground
+        Process.detach(pid2) # dettached but still in the "foreground" since server loop runs in the foreground
       end
     end
 
     # Megamode support
     def start_rack_server
+      rack_exists = File.exist?("#{Jets.root}rack")
+      puts "rack_exists #{rack_exists}".colorize(:cyan)
+      puts "#{Jets.root}rack"
       return unless File.exist?("#{Jets.root}rack")
 
-      t = Thread.new do
+      # Fire and forget for concurrent, will wait with wait_for_rack_socket
+      # Thread.new do
         Jets::Rack::Server.start
-      end
-      t.join # Jets::Rack::Server.start already runs in a subprocess so it's fine to join this
+      # end
 
-      wait_for_socket
+      # wait_for_rack_socket # blocks until rack server is up
     end
 
-    def wait_for_socket
+    # blocks until rack server is up
+    def wait_for_rack_socket
       retries = 0
       max_retries = 30 # 15 seconds at a delay of 0.5s
       delay = 0.5
       begin
         server = TCPSocket.new('localhost', 9292)
         server.close
-      rescue Errno::ECONNREFUSED => e
+      rescue Errno::ECONNREFUSED
         puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."
         sleep(delay)
         retries += 1
@@ -91,10 +102,21 @@ module Jets
 
         input_completed, event, handler = nil, nil, nil
         unless input_completed
-          event = client.gets.strip # text
-          # puts event # uncomment for debugging, Jets has changed stdout to stderr
-          handler = client.gets.strip # text
-          # puts handler # uncomment for debugging, Jets has changed stdout to stderr
+          # event = client.gets.strip # text or nil
+          # handler = client.gets.strip # text or nil
+
+          event = client.gets&.strip # text or nil
+          handler = client.gets&.strip # text or nil
+          # The event is nil when a client connects and immediately disconnects without sending data
+          if event.nil?
+            # puts "event was nil" # uncomment to debug
+            next
+          end
+
+          # uncomment to debug
+          puts "event #{event.inspect}"
+          puts "handler #{handler.inspect}"
+
           input_completed = true
         end
 
