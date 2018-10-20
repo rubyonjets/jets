@@ -3,7 +3,7 @@
 # traps: INT - ^C
 ['INT', 'TERM', 'QUIT'].each do |signal|
   trap(signal) do
-    puts "Detected stop signal 1"
+    puts "Detected stop signal"
     sleep 0.2
     exit
   end

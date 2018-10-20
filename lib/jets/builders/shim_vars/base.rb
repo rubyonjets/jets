@@ -13,14 +13,12 @@ module Jets::Builders::ShimVars
 
     def rack_zip
       checksum = Jets::Builders::Md5.checksums["stage/rack"]
-      "jets/code/rack-#{checksum}.zip"
-      # File.basename(IO.read("#{stage_area}/ref/rack.txt")).strip
+      "rack-#{checksum}.zip"
     end
 
     def bundled_zip
       checksum = Jets::Builders::Md5.checksums["stage/bundled"]
-      "jets/code/bundled-#{checksum}.zip"
-      # File.basename(IO.read("#{stage_area}/ref/bundled.txt")).strip
+      "bundled-#{checksum}.zip"
     end
 
     def stage_area

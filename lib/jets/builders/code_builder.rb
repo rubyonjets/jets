@@ -72,13 +72,9 @@ class Jets::Builders
       copy_project
       Dir.chdir(full(tmp_code)) do
         # These commands run from project root
-        start_code_setup
+        code_setup
         package_ruby
-        finish_code_setup
-        setup_tmp
-        calculate_md5s # must be called before generate_node_shims and create_zip_files
-        generate_node_shims
-        create_zip_files
+        code_finish
       end
     end
     time :build
@@ -153,23 +149,26 @@ class Jets::Builders
       FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_code)}/#{folder}")
     end
 
-    def start_code_setup
+    def code_setup
       reconfigure_development_webpacker
     end
-    time :start_code_setup
+    time :code_setup
 
-    def finish_code_setup
-      return if poly_only?
-
+    def code_finish
       store_s3_base_url
+      setup_tmp
+      calculate_md5s # must be called before generate_node_shims and create_zip_files
+      generate_node_shims
+      create_zip_files
     end
-    time :finish_code_setup
+    time :code_finish
 
     # Store s3 base url is needed for asset serving from s3 later. Need to package this
     # as part of the code so we have a reference to it.
     # At this point the minimal stack exists, so we can grab it with the AWS API.
     # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
+      return if poly_only?
       IO.write("#{full(tmp_code)}/config/s3_base_url.txt", s3_base_url)
     end
 
