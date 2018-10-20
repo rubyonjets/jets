@@ -99,7 +99,6 @@ class Jets::Builders
       vars = Jets::Builders::ShimVars::Base.new
       result = evaluate_template("node-shim.js", vars)
       dest = "#{tmp_code}/handlers/shim.js"
-      puts "dest #{dest}"
       IO.write(dest, result)
     end
 
@@ -107,7 +106,6 @@ class Jets::Builders
       result = evaluate_template("node-handler.js", vars)
       dest = "#{tmp_code}/#{vars.js_path}"
       FileUtils.mkdir_p(File.dirname(dest))
-      puts "dest #{dest}"
       IO.write(dest, result)
     end
 
