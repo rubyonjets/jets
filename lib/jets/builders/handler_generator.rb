@@ -14,7 +14,7 @@ class Jets::Builders
     end
 
     def generate
-      shim_js
+      common_shim
       poly_shims
       app_ruby_shim
       shared_shims
@@ -95,7 +95,7 @@ class Jets::Builders
       generate_handler(vars)
     end
 
-    def shim_js
+    def common_shim
       vars = Jets::Builders::ShimVars::Base.new
       result = evaluate_template("node-shim.js", vars)
       dest = "#{tmp_code}/handlers/shim.js"
