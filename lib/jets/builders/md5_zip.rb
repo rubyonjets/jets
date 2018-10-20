@@ -1,3 +1,5 @@
+require 'action_view'
+
 # Examples:
 #
 #   zip = Jets::Builders::Md5Zip.new("/tmp/jets/demo/stage/code")
