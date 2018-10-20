@@ -14,6 +14,7 @@ class Jets::Builders
     end
 
     def generate
+      shim_js
       poly_shims
       app_ruby_shim
       shared_shims
@@ -85,23 +86,34 @@ class Jets::Builders
 
     def shared_ruby_shim(fun)
       vars = Jets::Builders::ShimVars::Shared.new(fun)
-      generate_shim(vars)
+      generate_handler(vars)
     end
 
     # Generates one big node shim for a entire controller.
     def app_ruby_shim
       vars = Jets::Builders::ShimVars::App.new(@path)
-      generate_shim(vars)
+      generate_handler(vars)
     end
 
-    def generate_shim(vars)
-      js_path = "#{tmp_code}/#{vars.js_path}"
-      FileUtils.mkdir_p(File.dirname(js_path))
+    def shim_js
+      vars = Jets::Builders::ShimVars::Base.new
+      result = evaluate_template("node-shim.js", vars)
+      dest = "#{tmp_code}/handlers/shim.js"
+      puts "dest #{dest}"
+      IO.write(dest, result)
+    end
 
-      template_path = File.expand_path('../node-shim.js', __FILE__)
-      result = Jets::Erb.result(template_path, vars: vars)
+    def generate_handler(vars)
+      result = evaluate_template("node-handler.js", vars)
+      dest = "#{tmp_code}/#{vars.js_path}"
+      FileUtils.mkdir_p(File.dirname(dest))
+      puts "dest #{dest}"
+      IO.write(dest, result)
+    end
 
-      IO.write(js_path, result)
+    def evaluate_template(template_file, vars)
+      template_path = File.expand_path("../#{template_file}", __FILE__)
+      Jets::Erb.result(template_path, vars: vars)
     end
 
     # TODO: move CodeBuilder.tmp_code to a common level for HandlerGenerator and CodeBuilder
