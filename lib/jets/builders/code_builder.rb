@@ -91,14 +91,11 @@ class Jets::Builders
     end
 
     def generate_node_shims
-      headline "Generating node shims in the handlers folder."
+      headline "Generating shims in the handlers folder."
       # Crucial that the Dir.pwd is in the tmp_code because for
       # Jets::Builders::app_files because Jets.boot set ups
       # autoload_paths and this is how project classes are loaded.
-      Jets::Commands::Build.app_files.each do |path|
-        handler = Jets::Builders::HandlerGenerator.new(path)
-        handler.generate
-      end
+      Jets::Builders::HandlerGenerator.build!
     end
 
     def create_zip_files
@@ -197,9 +194,8 @@ class Jets::Builders
 
     # This happens in the current app directory not the tmp code for simplicity
     def compile_assets
-      # puts "COMPILE_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
-      # return
-
+      puts "COMPILE_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
+      return
 
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project

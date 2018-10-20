@@ -9,15 +9,51 @@ require "erb"
 # )
 class Jets::Builders
   class HandlerGenerator
-    def initialize(path)
-      @path = path
+    def self.build!
+      new.build
     end
 
-    def generate
-      common_shim
+    def build
+      common_base_shim
+      app_ruby_shims
       poly_shims
-      app_ruby_shim
       shared_shims
+    end
+
+    def app_ruby_shims
+      app_files.each do |path|
+        puts "path #{path}".colorize(:red)
+        # Generates one big node shim for a entire controller.
+        vars = Jets::Builders::ShimVars::App.new(path)
+        generate_handler(vars)
+      end
+    end
+
+    def app_files
+      Jets::Commands::Build.app_files
+    end
+
+    def poly_shims
+      missing = []
+
+      app_files.each do |path|
+        vars = Jets::Builders::ShimVars::App.new(path)
+        poly_tasks = vars.klass.tasks.select { |t| t.lang != :ruby }
+        poly_tasks.each do |task|
+          source_path = get_source_path(path, task)
+          if File.exist?(source_path)
+            native_function(path, task)
+          else
+            missing << source_path
+          end
+        end
+
+        unless missing.empty?
+          puts "ERROR: Missing source files. Please make sure these source files exist or remove their declarations".colorize(:red)
+          puts missing
+          exit 1
+        end
+      end
     end
 
     def shared_shims
@@ -47,27 +83,6 @@ class Jets::Builders
       FileUtils.cp(source_path, dest_path)
     end
 
-    def poly_shims
-      missing = []
-
-      vars = Jets::Builders::ShimVars::App.new(@path)
-      poly_tasks = vars.klass.tasks.select { |t| t.lang != :ruby }
-      poly_tasks.each do |task|
-        source_path = get_source_path(@path, task)
-        if File.exist?(source_path)
-          native_function(@path, task)
-        else
-          missing << source_path
-        end
-      end
-
-      unless missing.empty?
-        puts "ERROR: Missing source files. Please make sure these source files exist or remove their declarations".colorize(:red)
-        puts missing
-        exit 1
-      end
-    end
-
     def get_source_path(original_path, task)
       folder = original_path.sub(/\.rb$/,'')
       lang_folder = "#{folder}/#{task.lang}"
@@ -89,13 +104,7 @@ class Jets::Builders
       generate_handler(vars)
     end
 
-    # Generates one big node shim for a entire controller.
-    def app_ruby_shim
-      vars = Jets::Builders::ShimVars::App.new(@path)
-      generate_handler(vars)
-    end
-
-    def common_shim
+    def common_base_shim
       vars = Jets::Builders::ShimVars::Base.new
       result = evaluate_template("node-shim.js", vars)
       dest = "#{tmp_code}/handlers/shim.js"
