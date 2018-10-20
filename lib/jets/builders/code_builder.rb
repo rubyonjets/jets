@@ -54,6 +54,7 @@ class Jets::Builders
     include Jets::Timing
     include Jets::AwsServices
     include Util
+    extend Memoist
 
     attr_reader :full_project_path
     def initialize
@@ -75,10 +76,47 @@ class Jets::Builders
         package_ruby
         finish_code_setup
         setup_tmp
+        calculate_md5s # must be called before generate_node_shims and create_zip_files
+        generate_node_shims
         create_zip_files
       end
     end
     time :build
+
+    # Resolves the chicken-and-egg problem with md5 checksums. The handlers need
+    # to reference files with the md5 checksum.  The files are the:
+    #
+    #   jets/code/rack-checksum.zip
+    #   jets/code/bundled-checksum.zip
+    #
+    # We compute the checksums before we generate the node shim handlers.
+    def calculate_md5s
+      Md5.compute! # populates Md5.checksums hash
+    end
+
+    def generate_node_shims
+      headline "Generating node shims in the handlers folder."
+      # Crucial that the Dir.pwd is in the tmp_code because for
+      # Jets::Builders::app_files because Jets.boot set ups
+      # autoload_paths and this is how project classes are loaded.
+      Jets::Commands::Build.app_files.each do |path|
+        handler = Jets::Builders::HandlerGenerator.new(path)
+        handler.generate
+      end
+    end
+
+    def create_zip_files
+      paths = %w[
+        stage/code
+        stage/bundled
+        stage/rack
+      ]
+      paths.each do |path|
+        zip = Md5Zip.new(path)
+        zip.create
+      end
+    end
+    time :create_zip_files
 
     # Moves code/bundled and code/rack to build_root.
     # These files will be packaged separated and lazy loaded as part of the
@@ -115,23 +153,8 @@ class Jets::Builders
       FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_code)}/#{folder}")
     end
 
-    def create_zip_files
-      paths = %w[
-        stage/code
-        stage/bundled
-        stage/rack
-      ]
-      paths.map! { |p| "#{Jets.build_root}/#{p}" }
-      paths.each do |path|
-        zip = Md5Zip.new(path)
-        zip.create
-      end
-    end
-    time :create_zip_files
-
     def start_code_setup
       reconfigure_development_webpacker
-      generate_node_shims
     end
     time :start_code_setup
 
@@ -159,15 +182,19 @@ class Jets::Builders
       #
       return Jets.config.assets.base_url if Jets.config.assets.base_url
 
-      resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
-      stack = resp.stacks.first
-      output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
-      bucket_name = output["output_value"] # s3_bucket
       region = Jets.aws.region
 
       asset_base_url = "https://s3-#{region}.amazonaws.com"
-      "#{asset_base_url}/#{bucket_name}/jets/public" # s3_base_url
+      "#{asset_base_url}/#{s3_bucket}/jets/public" # s3_base_url
     end
+
+    def s3_bucket
+      resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
+      stack = resp.stacks.first
+      output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
+      output["output_value"] # s3_bucket
+    end
+    memoize :s3_bucket
 
     # This happens in the current app directory not the tmp code for simplicity
     def compile_assets
@@ -226,17 +253,6 @@ class Jets::Builders
       dest = "#{dest_folder}/node_modules"
       if File.exist?(source)
         FileUtils.mv(source, dest)
-      end
-    end
-
-    def generate_node_shims
-      headline "Generating node shims in the handlers folder."
-      # Crucial that the Dir.pwd is in the tmp_code because for
-      # Jets::Builders::app_files because Jets.boot set ups
-      # autoload_paths and this is how project classes are loaded.
-      Jets::Commands::Build.app_files.each do |path|
-        handler = Jets::Builders::HandlerGenerator.new(path)
-        handler.generate
       end
     end
 

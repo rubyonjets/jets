@@ -11,8 +11,9 @@ class Jets::Builders
     include ActionView::Helpers::NumberHelper # number_to_human_size
     include Util
 
-    def initialize(path)
-      @path = path
+    def initialize(short_path)
+      @path = "#{Jets.build_root}/#{short_path}"
+      @checksum = Md5.checksums[short_path]
     end
 
     def create
@@ -32,9 +33,10 @@ class Jets::Builders
       FileUtils.mv("#{@path}/#{zip_file}", zip_dest)
 
       # we can get the md5 only after the file has been created
-      md5 = Digest::MD5.file(zip_dest).to_s[0..7]
-      md5_dest = zip_dest.sub(".zip", "-#{md5}.zip")
-      # mv /tmp/jets/demo/stage/zips/code.zip /tmp/jets/demo/stage/zips/code-a8a604aa.zip
+      # md5 = Digest::MD5.file(zip_dest).to_s[0..7]
+      # md5_dest = zip_dest.sub(".zip", "-#{md5}.zip")
+      md5_dest = zip_dest.sub(".zip", "-#{@checksum}.zip")
+      # # mv /tmp/jets/demo/stage/zips/code.zip /tmp/jets/demo/stage/zips/code-a8a604aa.zip
       FileUtils.mv(zip_dest, md5_dest)
 
       file_size = number_to_human_size(File.size(md5_dest))

@@ -1,6 +1,17 @@
-# Build::Deducers figure out required values to create the node shim
-class Jets::Builders
-  class Deducer
+# Jets::Builders::ShimVars::Shared.new(path)
+#
+#   @deducer.functions.each do |function_name|
+#     @deducer.handler_for(function_name)
+#   end
+#
+# Implements:
+#
+#   functions
+#   handler_for(function_name)
+#   js_path
+#
+module Jets::Builders::ShimVars
+  class App < Base
     # Allow user to specify relative or full path. The right path gets used
     # internally. Example paths:
     #   app/controllers/posts_controller.rb

@@ -49,8 +49,8 @@ class Jets::Builders
     def poly_shims
       missing = []
 
-      deducer = Jets::Builders::Deducer.new(@path)
-      poly_tasks = deducer.klass.tasks.select { |t| t.lang != :ruby }
+      vars = Jets::Builders::ShimVars::App.new(@path)
+      poly_tasks = vars.klass.tasks.select { |t| t.lang != :ruby }
       poly_tasks.each do |task|
         source_path = get_source_path(@path, task)
         if File.exist?(source_path)
@@ -84,22 +84,22 @@ class Jets::Builders
     end
 
     def shared_ruby_shim(fun)
-      deducer = Jets::Builders::SharedDeducer.new(fun)
-      generate_shim(deducer)
+      vars = Jets::Builders::ShimVars::Shared.new(fun)
+      generate_shim(vars)
     end
 
     # Generates one big node shim for a entire controller.
     def app_ruby_shim
-      deducer = Jets::Builders::Deducer.new(@path)
-      generate_shim(deducer)
+      vars = Jets::Builders::ShimVars::App.new(@path)
+      generate_shim(vars)
     end
 
-    def generate_shim(deducer)
-      js_path = "#{tmp_code}/#{deducer.js_path}"
+    def generate_shim(vars)
+      js_path = "#{tmp_code}/#{vars.js_path}"
       FileUtils.mkdir_p(File.dirname(js_path))
 
       template_path = File.expand_path('../node-shim.js', __FILE__)
-      result = Jets::Erb.result(template_path, deducer: deducer)
+      result = Jets::Erb.result(template_path, vars: vars)
 
       IO.write(js_path, result)
     end

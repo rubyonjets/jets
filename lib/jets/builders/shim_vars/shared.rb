@@ -1,4 +1,4 @@
-# Deducer.new(path)
+# Jets::Builders::ShimVars::Shared.new(fun)
 #
 #   @deducer.functions.each do |function_name|
 #     @deducer.handler_for(function_name)
@@ -10,8 +10,8 @@
 #   handler_for(function_name)
 #   js_path
 #
-class Jets::Builders
-  class SharedDeducer < Deducer
+module Jets::Builders::ShimVars
+  class Shared < Base
     def initialize(fun)
       @fun = fun
     end
