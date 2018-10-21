@@ -106,20 +106,20 @@ class Jets::Builders
 
     def common_base_shim
       vars = Jets::Builders::ShimVars::Base.new
-      result = evaluate_template("node-shim.js", vars)
+      result = evaluate_template("shim.js", vars)
       dest = "#{tmp_code}/handlers/shim.js"
       IO.write(dest, result)
     end
 
     def generate_handler(vars)
-      result = evaluate_template("node-handler.js", vars)
+      result = evaluate_template("handler.js", vars)
       dest = "#{tmp_code}/#{vars.js_path}"
       FileUtils.mkdir_p(File.dirname(dest))
       IO.write(dest, result)
     end
 
     def evaluate_template(template_file, vars)
-      template_path = File.expand_path("../#{template_file}", __FILE__)
+      template_path = File.expand_path("../templates/#{template_file}", __FILE__)
       Jets::Erb.result(template_path, vars: vars)
     end
 
