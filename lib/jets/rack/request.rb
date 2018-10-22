@@ -14,9 +14,9 @@ module Jets::Rack
       uri = URI("http://localhost:9292#{@controller.request.path}") # local rack server
       http = Net::HTTP.new(uri.host, uri.port)
 
-      http_class = http_method.capitalize!
       # Rails sets _method=patch or _method=put as workaround
-      http_class = params['_method'].capitalize if params['_method']
+      http_class = params['_method'] || http_method
+      http_class.capitalize!
 
       request_class = "Net::HTTP::#{http_class}".constantize # IE: Net::HTTP::Get
       request = request_class.new(@controller.request.path)
