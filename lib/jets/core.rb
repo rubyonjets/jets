@@ -158,4 +158,7 @@ module Jets::Core
     [config.project_name, config.short_env, config.env_extra].compact.join('-')
   end
 
+  def rack?
+    File.exist?("#{Jets.root}rack")
+  end
 end

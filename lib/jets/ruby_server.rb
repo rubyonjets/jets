@@ -56,10 +56,7 @@ module Jets
 
     # Megamode support
     def start_rack_server
-      rack_exists = File.exist?("#{Jets.root}rack")
-      puts "rack_exists #{rack_exists}".colorize(:cyan)
-      puts "#{Jets.root}rack"
-      return unless File.exist?("#{Jets.root}rack")
+      return if Jets.rack?
 
       # Fire and forget for concurrent, will wait with wait_for_rack_socket
       # Thread.new do
@@ -71,6 +68,8 @@ module Jets
 
     # blocks until rack server is up
     def wait_for_rack_socket
+      return unless Jets.rack?
+
       retries = 0
       max_retries = 30 # 15 seconds at a delay of 0.5s
       delay = 0.5

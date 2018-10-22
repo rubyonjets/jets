@@ -99,11 +99,7 @@ class Jets::Builders
     end
 
     def create_zip_files
-      paths = %w[
-        stage/code
-        stage/bundled
-        stage/rack
-      ]
+      paths = Md5.stage_paths
       paths.each do |path|
         zip = Md5Zip.new(path)
         zip.create
@@ -120,8 +116,8 @@ class Jets::Builders
     #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
     #
     def setup_tmp
-      symlink_to_tmp("bundled")
-      symlink_to_tmp("rack")
+      tmp_symlink("bundled")
+      tmp_symlink("rack")
     end
 
     def stage_area
@@ -133,7 +129,7 @@ class Jets::Builders
     #
     #   /var/task/bundled => /tmp/bundled
     #
-    def symlink_to_tmp(folder)
+    def tmp_symlink(folder)
       src = "#{full(tmp_code)}/#{folder}"
       return unless File.exist?(src)
 

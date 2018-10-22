@@ -15,15 +15,17 @@ class Jets::Builders
         @@checksums
       end
 
-      def compute!
+      def stage_paths
+        paths = %w[stage/bundled]
+        paths << "stage/rack" if File.exist?("#{Jets.root}rack")
         # Important to have stage/code at the end, since it will use the other
         # 'symlinked' folders to adjust the md5 hash.
-        paths = %w[
-          stage/bundled
-          stage/rack
-          stage/code
-        ]
-        paths.each do |path|
+        paths << "stage/code"
+        paths
+      end
+
+      def compute!
+        stage_paths.each do |path|
           @@checksums[path] = dir(path)
         end
         @@checksums
