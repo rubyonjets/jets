@@ -13,6 +13,9 @@ module Jets::Rack
     def process
       request = @controller.request
 
+      puts "ENV:"
+      puts ENV
+
       uri = URI("http://#{@host}:#{@port}#{request.path}")
       params = @controller.params(raw: true, path_parameters: false)
       uri.query = URI.encode_www_form(params)
