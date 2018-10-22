@@ -22,7 +22,6 @@ class Jets::Builders
 
     def app_ruby_shims
       app_files.each do |path|
-        puts "path #{path}".colorize(:red)
         # Generates one big node shim for a entire controller.
         vars = Jets::Builders::ShimVars::App.new(path)
         generate_handler(vars)

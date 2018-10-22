@@ -7,6 +7,7 @@ module Jets::Rack
     end
 
     def start
+      puts "Jets::Rack#start"
       return unless File.exist?("#{rack_project}/config.ru")
       puts "Starting additional rack server for the project under the rack subfolder..."
 

@@ -27,43 +27,33 @@ module Jets
       end
 
       if ENV['FOREGROUND'] # Usage above
-        serve
+        start_rack_server
+        serve # ruby_server
         return
       end
 
       # Reaching here means we'll run the server in the "background"
-      pid1 = Process.fork
-      if pid1.nil? # we're in the child process
-        # Only start megamode rack server when in background mode, otherwise
-        # user is expected to start the rack server independently.
+      pid = Process.fork
+
+      if pid.nil? # we're in child process
         start_rack_server
-      end
-
-      unless pid1.nil? # we're in the parent process
-        pid2 = Process.fork # fork again in the parent process another child process
-        if pid2.nil? # we're in the child process
-          wait_for_rack_socket # blocks until rack server is up
-          serve # ruby_server
-        end
-      end
-
-      unless pid1.nil? && pid2.nil? # we're in the main parent process
+        serve # ruby_server
+      else
         # Detach main jets ruby server
-        Process.detach(pid1) # dettached but still in the "foreground" since server loop runs in the foreground
-        Process.detach(pid2) # dettached but still in the "foreground" since server loop runs in the foreground
+        Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
       end
     end
 
     # Megamode support
     def start_rack_server
-      return if Jets.rack?
+      return unless Jets.rack?
 
       # Fire and forget for concurrent, will wait with wait_for_rack_socket
-      # Thread.new do
+      Thread.new do
         Jets::Rack::Server.start
-      # end
+      end
 
-      # wait_for_rack_socket # blocks until rack server is up
+      wait_for_rack_socket # blocks until rack server is up
     end
 
     # blocks until rack server is up
@@ -71,8 +61,10 @@ module Jets
       return unless Jets.rack?
 
       retries = 0
-      max_retries = 30 # 15 seconds at a delay of 0.5s
-      delay = 0.5
+      # max_retries = 30 # 15 seconds at a delay of 0.5s
+      # delay = 0.5
+      max_retries = 2 # 15 seconds at a delay of 0.5s
+      delay = 5
       begin
         server = TCPSocket.new('localhost', 9292)
         server.close
