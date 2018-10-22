@@ -15,7 +15,8 @@ module Jets::Rack
       http = Net::HTTP.new(uri.host, uri.port)
 
       # Rails sets _method=patch or _method=put as workaround
-      http_class = params['_method'] || http_method
+      # Falls back to GET when testing in lambda console
+      http_class = params['_method'] || http_method || 'GET'
       http_class.capitalize!
 
       request_class = "Net::HTTP::#{http_class}".constantize # IE: Net::HTTP::Get
@@ -26,10 +27,12 @@ module Jets::Rack
       end
 
       headers = @event['headers']
-      request['X-Forwarded-For'] = headers['X-Forwarded-For']
-      request['X-Forwarded-Host'] = headers['Host']
-      request['X-Forwarded-Port'] = headers['X-Forwarded-Port']
-      request['X-Forwarded-Proto'] = headers['X-Forwarded-Proto']
+      if headers
+        request['X-Forwarded-For'] = headers['X-Forwarded-For']
+        request['X-Forwarded-Host'] = headers['Host']
+        request['X-Forwarded-Port'] = headers['X-Forwarded-Port']
+        request['X-Forwarded-Proto'] = headers['X-Forwarded-Proto']
+      end
 
       # TODO: handle binary
       response = http.request(request)
