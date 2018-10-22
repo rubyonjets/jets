@@ -27,7 +27,7 @@ module Jets
       end
 
       if ENV['FOREGROUND'] # Usage above
-        start_rack_server
+        # start_rack_server # commented out because we expect user to start the rack server in the foreground
         serve # ruby_server
         return
       end
