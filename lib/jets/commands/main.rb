@@ -109,7 +109,7 @@ module Jets::Commands
 
     long_desc Help.text(:new)
     Jets::Commands::New.cli_options.each do |args|
-      option *args
+      option(*args)
     end
     register(Jets::Commands::New, "new", "new", "Creates a starter skeleton jets project")
   end

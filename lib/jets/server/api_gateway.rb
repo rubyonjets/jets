@@ -7,7 +7,7 @@ class Jets::Server
       route = RouteMatcher.new(env).find_route
       if route
         proxy = LambdaAwsProxy.new(route, env)
-        triplet = proxy.response
+        proxy.response # triplet
       else
         [404, {'Content-Type' => 'text/html'}, [routes_error_message(env)]]
       end
