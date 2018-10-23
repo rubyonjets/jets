@@ -26,13 +26,7 @@ module Jets::Rack
         request.set_form_data(params)
       end
 
-      headers = @event['headers']
-      if headers
-        request['X-Forwarded-For'] = headers['X-Forwarded-For']
-        request['X-Forwarded-Host'] = headers['Host']
-        request['X-Forwarded-Port'] = headers['X-Forwarded-Port']
-        request['X-Forwarded-Proto'] = headers['X-Forwarded-Proto']
-      end
+      request = set_headers!(request)
 
       # TODO: handle binary
       response = http.request(request)
@@ -41,6 +35,24 @@ module Jets::Rack
         headers: response.each_header.to_h,
         body: response.body,
       }
+    end
+
+    # Set request headers. Forwards original request info from remote API gateway.
+    # By this time, the server/api_gateway.rb middleware.
+    def set_headers!(request)
+      headers = @event['headers'] # from api gateway
+      if headers # remote API Gateway
+        # Note by the time headers get to rack they get changed to:
+        #
+        #   request['X-Forwarded-Host'] vs env['HTTP_X_FORWARDED_HOST']
+        #
+        request['X-Forwarded-For'] = headers['X-Forwarded-For'] # "1.1.1.1, 2.2.2.2" # can be comma separated list
+        request['X-Forwarded-Host'] = headers['Host'] # uhghn8z6t1.execute-api.us-east-1.amazonaws.com
+        request['X-Forwarded-Port'] = headers['X-Forwarded-Port'] # 443
+        request['X-Forwarded-Proto'] = headers['X-Forwarded-Proto'] # https # scheme
+      end
+
+      request
     end
   end
 end
