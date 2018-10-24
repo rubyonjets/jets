@@ -119,8 +119,6 @@ module Jets
           standard_request(event, '{}', handler)
 
         Jets::IO.flush # flush output and write to disk for node shim
-        # puts `ls /tmp`
-        # Jets::IO.flush # flush output and write to disk for node shim
 
         client.puts(result)
         client.close
