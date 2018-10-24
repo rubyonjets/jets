@@ -22,6 +22,7 @@ module Jets
       # INT - ^C
       trap('INT') do
         puts "Shutting down ruby_server.rb..."
+        FileUtils.rm_f("/tmp/jets-rackup.pid") # remove the rack subprocess pid in case it exists
         sleep 0.1
         exit
       end
@@ -63,13 +64,15 @@ module Jets
       retries = 0
       max_retries = 30 # 15 seconds at a delay of 0.5s
       delay = 0.5
-      # max_retries = 2 # 15 seconds at a delay of 0.5s
-      # delay = 5
+      if ENV['C9_USER'] # overrides for local testing
+        max_retries = 3
+        delay = 3
+      end
       begin
         server = TCPSocket.new('localhost', 9292)
         server.close
       rescue Errno::ECONNREFUSED
-        puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."
+        puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."  if ENV['JETS_DEBUG']
         sleep(delay)
         retries += 1
         if retries < max_retries
