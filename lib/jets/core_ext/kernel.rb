@@ -46,7 +46,7 @@ module Kernel
     chunk += "\n" unless chunk == ''
     begin
       # since we always append to the file, the node shim is responsible for truncating the file
-      IO.write(JETS_OUTPUT, chunk, mode: 'a')
+      IO.write(JETS_OUTPUT, chunk, mode: 'a') if chunk
     # Writing to log with binary content will crash the process so rescuing it and writing an info message.
     rescue Encoding::UndefinedConversionError
       IO.write(JETS_OUTPUT, "[BINARY DATA]\n", mode: 'a')
