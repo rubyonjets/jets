@@ -61,10 +61,10 @@ module Jets
       return unless Jets.rack?
 
       retries = 0
-      # max_retries = 30 # 15 seconds at a delay of 0.5s
-      # delay = 0.5
-      max_retries = 2 # 15 seconds at a delay of 0.5s
-      delay = 5
+      max_retries = 30 # 15 seconds at a delay of 0.5s
+      delay = 0.5
+      # max_retries = 2 # 15 seconds at a delay of 0.5s
+      # delay = 5
       begin
         server = TCPSocket.new('localhost', 9292)
         server.close
