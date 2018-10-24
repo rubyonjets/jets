@@ -38,7 +38,7 @@ module Jets
       if pid.nil? # we're in child process
         start_rack_server
         serve # ruby_server
-      else
+      else # we're in parent process
         # Detach main jets ruby server
         Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
       end

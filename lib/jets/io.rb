@@ -8,6 +8,16 @@ module Jets
 
       def flush
         Kernel.io_flush
+        flush_rack
+      end
+
+      def flush_rack
+        pidfile = "/tmp/jets-rackup.pid"
+        if File.exist?(pidfile)
+          pid = IO.read(pidfile).strip
+          # send signal to flush rack log, which is another process
+          Process.kill("IO", pid)
+        end
       end
     end
   end
