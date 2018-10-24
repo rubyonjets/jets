@@ -22,6 +22,7 @@ module Jets
           # send signal to flush rack log, which is another process
           begin
             Process.kill("IO", pid)
+            sleep 5 # DEBUGGING
           rescue Errno::ESRCH
            # Could have a stale pidfile from an old jets app that had a rack subfolder.
            # Then we switch over to a jets app that does not have a rack subfolder,
