@@ -216,9 +216,12 @@ class Jets::Builders
 
       return unless Jets.rack?
 
-      precompile_command = "rails assets:precompile --trace"
+      command = "rails assets:precompile --trace"
+      unless Jets.env.development?
+        command = "RAILS_ENV=#{Jets.env} #{command}"
+      end
       Bundler.with_clean_env do
-        sh("cd rack && RAILS_ENV=#{Jets.env} #{precompile_command}")
+        sh("cd rack && #{command}")
       end
     end
 
