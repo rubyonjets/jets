@@ -68,7 +68,8 @@ class Jets::Builders
       check_ruby_version
 
       clean_start
-      compile_assets # easier to do before we copy the project
+      compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
+      compile_rack_assets
       copy_project
       Dir.chdir(full(tmp_code)) do
         # These commands run from project root
@@ -188,10 +189,11 @@ class Jets::Builders
     end
     memoize :s3_bucket
 
-    # This happens in the current app directory not the tmp code for simplicity
+    # This happens in the current app directory not the tmp code for simplicity.
+    # This is because the node and yarn has likely been set up correctly there.
     def compile_assets
-      # puts "COMPILE_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
-      # return
+      puts "COMPILE_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
+      return
 
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
@@ -199,12 +201,26 @@ class Jets::Builders
       return unless webpacker_loaded
 
       sh("yarn install")
-      webpack_bin = File.exist?("#{Jets.root}bin/webpack") ?
+      webpack_command = File.exist?("#{Jets.root}bin/webpack") ?
           "bin/webpack" :
           `which webpack`.strip
-      sh("JETS_ENV=#{Jets.env} #{webpack_bin}")
+      sh("JETS_ENV=#{Jets.env} #{webpack_command}")
     end
     time :compile_assets
+
+    # This happens in the current app directory not the tmp code for simplicity
+    # This is because the node likely been set up correctly there.
+    def compile_rack_assets
+      puts "COMPILE_RACK_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
+      return
+
+      return unless Jets.rack?
+
+      precompile_command = "rails assets:precompile --trace"
+      Bundler.with_clean_env do
+        sh("cd rack && RAILS_ENV=#{Jets.env} #{precompile_command}")
+      end
+    end
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
     # for a clean start. Also ensure that the /tmp/jets/project build root exists.

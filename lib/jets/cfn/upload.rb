@@ -65,39 +65,51 @@ class Jets::Cfn
     def upload_assets
       puts "Uploading public assets"
       start_time = Time.now
-      asset_folders = Jets.config.assets.folders
-      asset_folders.each do |folder|
-        upload_asset_folder(folder)
-      end
+      upload_public_assets
       puts "Time to upload public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
 
+    def upload_public_assets
+      asset_folders = Jets.config.assets.folders # IE: ["packs", "images", "assets"]
+      asset_folders.map! { |p| "public/#{p}" } # add public to path
+      asset_folders = add_rack_assets(asset_folders)
+      asset_folders.each do |folder|
+        upload_asset_folder(folder)
+      end
+    end
+
+    def add_rack_assets(asset_folders)
+      return asset_folders unless Jets.rack?
+      asset_folders + ["rack/public/assets"]
+    end
+
+    # Examples of parameter values:
+    #
+    #   root: ./ or /full/path/to/jets/project/
+    #   prefix: public/packs
+    #   prefix: public/images
     def upload_asset_folder(folder)
-      expression = "#{Jets.root}public/#{folder}/**/*"
+      expression = "#{Jets.root}#{folder}/**/*"
       group_size = 10
       Dir.glob(expression).each_slice(group_size) do |paths|
         threads = []
-        paths.each do |path|
-          next unless File.file?(path)
-
-          regexp = Regexp.new(".*/#{folder}/")
-          relative_path = path.sub(regexp,'')
-          file = "#{folder}/#{relative_path}"
+        paths.each do |full_path|
+          next unless File.file?(full_path)
 
           threads << Thread.new do
-            upload_asset_file(file)
+            upload_to_s3(full_path)
           end
         end
         threads.each(&:join)
       end
     end
 
-    def upload_asset_file(file)
-      path = "#{Jets.root}public/#{file}"
-      key = "jets/public/#{file}"
+    def upload_to_s3(full_path)
+      relative_path = full_path.sub(Jets.root.to_s, '')
+      key = "jets/#{relative_path}"
       puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
       obj = s3_resource.bucket(bucket_name).object(key)
-      obj.upload_file(path, acl: "public-read", cache_control: cache_control)
+      obj.upload_file(full_path, acl: "public-read", cache_control: cache_control)
     end
 
     # If cache_control is provided, then it will set the entire cache-control header.
