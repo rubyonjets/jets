@@ -5,12 +5,12 @@ module Jets::AssetTagHelper
   include Jets::AwsServices
 
   def javascript_include_tag(*sources, **options)
-    sources = sources.map { |s| s3_asset_url(s, :javascripts) }
+    sources = sources.map { |s| s3_public_url(s, :javascripts) }
     super
   end
 
   def stylesheet_link_tag(*sources, **options)
-    sources = sources.map { |s| s3_asset_url(s, :stylesheets) }
+    sources = sources.map { |s| s3_public_url(s, :stylesheets) }
     super
   end
 
@@ -26,7 +26,7 @@ module Jets::AssetTagHelper
     # mimic original behavior to get /images in source
     source = "/images/#{source}" unless source.starts_with?('/')
     if on_aws?(source)
-      source = "#{s3_base_url}#{source}"
+      source = "#{s3_public}#{source}"
     end
 
     super
@@ -36,7 +36,7 @@ module Jets::AssetTagHelper
     if on_aws?(source) && asset_folder?(source)
       # mimic original behavior to get /images in source
       source = "/images/#{source}" unless source.starts_with?('/')
-      source = "#{s3_base_url}#{source}"
+      source = "#{s3_public}#{source}"
     end
 
     super
@@ -69,25 +69,26 @@ private
   # If there's a / in front then rails will not add the "javascript":
   # So we can add the javascript ourselves and then add the stag with a
   # / in front.
-  def s3_asset_url(url, asset_type)
+  def s3_public_url(url, asset_type)
     unless url.starts_with?('/') or url.starts_with?('http')
       url = "/#{asset_type}/#{url}" # /javascript/asset/test
     end
-    add_s3_base_url(url)
+    add_s3_public(url)
   end
 
   # Example:
   # Url: /packs/application-e7654c50abd78161b641.js
   # Returns: https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1jg5o076egkk4/jets/public/packs/application-e7654c50abd78161b641.js
-  def add_s3_base_url(url)
+  def add_s3_public(url)
     return url unless on_aws?(url)
-    "#{s3_base_url}#{url}"
+    "#{s3_public}#{url}"
   end
 
-  def s3_base_url
+  def s3_public
     # s3_base_url.txt is created as part of the build process
-    IO.read("#{Jets.root}config/s3_base_url.txt").strip
+    s3_base_url = IO.read("#{Jets.root}config/s3_base_url.txt").strip
+    "#{s3_base_url}/public"
   end
-  memoize :s3_base_url
+  memoize :s3_public
 end
 ActionView::Helpers.send(:include, Jets::AssetTagHelper)

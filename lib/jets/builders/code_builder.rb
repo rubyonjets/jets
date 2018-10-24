@@ -178,7 +178,7 @@ class Jets::Builders
       region = Jets.aws.region
 
       asset_base_url = "https://s3-#{region}.amazonaws.com"
-      "#{asset_base_url}/#{s3_bucket}/jets/public" # s3_base_url
+      "#{asset_base_url}/#{s3_bucket}/jets" # s3_base_url
     end
 
     def s3_bucket
@@ -192,8 +192,8 @@ class Jets::Builders
     # This happens in the current app directory not the tmp code for simplicity.
     # This is because the node and yarn has likely been set up correctly there.
     def compile_assets
-      puts "COMPILE_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
-      return
+      # puts "COMPILE_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
+      # return
 
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
@@ -211,8 +211,8 @@ class Jets::Builders
     # This happens in the current app directory not the tmp code for simplicity
     # This is because the node likely been set up correctly there.
     def compile_rack_assets
-      puts "COMPILE_RACK_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
-      return
+      # puts "COMPILE_RACK_ASSETS TEMPORARILY DISABLED".colorize(:yellow)
+      # return
 
       return unless Jets.rack?
 
