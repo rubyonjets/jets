@@ -42,13 +42,14 @@ module Kernel
   #   jets/lib/jets/core_ext/kernel.rb:20:in `write': "\x89" from ASCII-8BIT to UTF-8 (Encoding::UndefinedConversionError)
   # Rescue and discard it to keep the process alive.
   def io_flush
-    chunk = @@io_buffer.join("\n") + "\n"
+    chunk = @@io_buffer.join("\n")
+    chunk += "\n" unless chunk == ''
     begin
       # since we always append to the file, the node shim is responsible for truncating the file
       IO.write(JETS_OUTPUT, chunk, mode: 'a')
     # Writing to log with binary content will crash the process so rescuing it and writing an info message.
     rescue Encoding::UndefinedConversionError
-      IO.write(JETS_OUTPUT, "[BINARY DATAjetsn", mode: 'a')
+      IO.write(JETS_OUTPUT, "[BINARY DATA]\n", mode: 'a')
     end
     @@io_buffer = []
   end
