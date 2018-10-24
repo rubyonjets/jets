@@ -108,8 +108,8 @@ module Jets
           end
 
           # uncomment to debug
-          puts "event #{event.inspect}"
-          puts "handler #{handler.inspect}"
+          # puts "event #{event.inspect}"
+          # puts "handler #{handler.inspect}"
 
           input_completed = true
         end

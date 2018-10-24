@@ -6,13 +6,18 @@ module Jets
           base_inflections.each do |k,v|
             inflect.irregular k,v
           end
-          # Users can add custom inflections
-          Jets.config.inflections.irregular.each do |k,v|
-            inflect.irregular k,v
+          # User defined custom inflections
+          inflections_yaml = "#{Jets.root}config/inflections.yml"
+          if File.exist?(inflections_yaml)
+            inflections = YAML.load_file(inflections_yaml)
+            inflections.each do |k,v|
+              inflect.irregular k,v
+            end
           end
         end
       end
 
+      # base custom inflections
       def base_inflections
         {
           sns: 'sns'

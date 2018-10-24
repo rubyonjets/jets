@@ -11,8 +11,8 @@ class Jets::Application
   end
 
   def setup!
-    load_inflections
     load_configs # load config object so following methods can use it
+    load_inflections
     setup_auto_load_paths
     load_routes
   end
