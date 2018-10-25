@@ -18,7 +18,7 @@ class Jets::Builders
     end
 
     def copy_initializer
-      templates = File.expand_path("./after_rack_package/rails", File.dirname(__FILE__))
+      templates = File.expand_path("./reconfigure_rails", File.dirname(__FILE__))
       relative_path = "config/initializers/jets.rb"
       src = "#{templates}/#{relative_path}"
       dest = "#{@app_root}/#{relative_path}"
