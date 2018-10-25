@@ -58,7 +58,17 @@ class Jets::Builders
         )
       end
 
+      # Copy the Gemfile.lock back to the project in case it was updated.
+      # For example we add the jets-rails to the Gemfile.
+      copy_gemfile_lock
+
       puts 'Bundle install success.'
+    end
+
+    def copy_gemfile_lock
+      src = "#{cache_area}/Gemfile.lock"
+      dest = "#{@full_app_root}/Gemfile.lock"
+      FileUtils.cp_r(src, dest)
     end
 
     # Clean up extra unneeded files to reduce package size
