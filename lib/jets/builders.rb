@@ -1,4 +1,5 @@
 class Jets::Builders
+  autoload :AfterRackPackage, "jets/builders/after_rack_package"
   autoload :CodeBuilder, "jets/builders/code_builder"
   autoload :GemReplacer, "jets/builders/gem_replacer"
   autoload :HandlerGenerator, "jets/builders/handler_generator"

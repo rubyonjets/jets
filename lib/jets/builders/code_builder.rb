@@ -164,6 +164,7 @@ class Jets::Builders
     def store_s3_base_url
       return if poly_only?
       IO.write("#{full(tmp_code)}/config/s3_base_url.txt", s3_base_url)
+      IO.write("#{full(tmp_code)}/rack/config/s3_base_url.txt", s3_base_url) if Jets.rack?
     end
 
     def s3_base_url
@@ -217,9 +218,7 @@ class Jets::Builders
       return unless Jets.rack?
 
       command = "rails assets:precompile --trace"
-      unless Jets.env.development?
-        command = "RAILS_ENV=#{Jets.env} #{command}"
-      end
+      command = "RAILS_ENV=#{Jets.env} #{command}" unless Jets.env.development?
       Bundler.with_clean_env do
         sh("cd rack && #{command}")
       end
@@ -246,6 +245,7 @@ class Jets::Builders
       FileUtils.rm_rf(full(tmp_code)) # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
+        puts "cp -r #{@full_project_path} #{full(tmp_code)}".colorize(:yellow) # uncomment to debug
         FileUtils.cp_r(@full_project_path, full(tmp_code))
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back

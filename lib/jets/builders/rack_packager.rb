@@ -5,15 +5,18 @@ class Jets::Builders
 
       symlink_rack_bundled
       copy_rackup_wrappers
+      after_package
     end
 
     def symlink_rack_bundled
+      # IE: @full_app_root: /tmp/jets/demo/stage/code/rack
       rack_bundled = "#{@full_app_root}/bundled"
       FileUtils.rm_f(rack_bundled) # looks like FileUtils.ln_sf doesnt remove existing symlinks
       FileUtils.ln_sf("/var/task/bundled", rack_bundled)
     end
 
     def copy_rackup_wrappers
+      # IE: @full_app_root: /tmp/jets/demo/stage/code/rack
       rack_bin = "#{@full_app_root}/bin"
       %w[rackup rackup.rb].each do |file|
         src = File.expand_path("./rackup_wrappers/#{file}", File.dirname(__FILE__))
@@ -22,6 +25,11 @@ class Jets::Builders
         FileUtils.cp(src, dest)
         FileUtils.chmod 0755, dest
       end
+    end
+
+    # TODO: Move logic into plugin instead
+    def after_package
+      AfterRackPackage.new(@full_app_root).run
     end
   end
 end

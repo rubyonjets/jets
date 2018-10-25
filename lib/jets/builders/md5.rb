@@ -17,7 +17,7 @@ class Jets::Builders
 
       def stage_paths
         paths = %w[stage/bundled]
-        paths << "stage/rack" if File.exist?("#{Jets.root}rack")
+        paths << "stage/rack" if Jets.rack?
         # Important to have stage/code at the end, since it will use the other
         # 'symlinked' folders to adjust the md5 hash.
         paths << "stage/code"

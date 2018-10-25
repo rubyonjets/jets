@@ -107,7 +107,8 @@ module Jets::Core
     path =~ %r{/cli} ||
     path =~ %r{/core_ext} ||
     path =~ %r{/jets/stack} ||
-    path =~ %r{/rackup_wrappers}
+    path =~ %r{/rackup_wrappers} ||
+    path =~ %r{/after_} # after_rack_package
   end
 
   def class_mappings(class_name)
@@ -159,6 +160,7 @@ module Jets::Core
   end
 
   def rack?
-    File.exist?("#{Jets.root}rack")
+    path = "#{Jets.root}rack"
+    File.exist?(path) || File.symlink?(path)
   end
 end

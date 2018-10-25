@@ -39,7 +39,7 @@ class Jets::Builders
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned ou.
     def jetskeep
-      defaults = %w[.bundle bundled pack handlers]
+      defaults = %w[.bundle bundled pack handlers public/assets]
       path = "#{@project_root}/.jetskeep"
       return defaults unless File.exist?(path)
 
