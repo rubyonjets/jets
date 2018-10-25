@@ -42,7 +42,7 @@ class Jets::Builders
       lines = IO.readlines(env_file)
       new_lines = lines.map do |line|
         if line =~ /(config\.file_watcher.*)/
-          "  # #{$1}"
+          "  # #{$1}\n"
         else
           line
         end
