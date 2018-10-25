@@ -217,11 +217,16 @@ class Jets::Builders
 
       return unless Jets.rack?
 
-      command = "rails assets:precompile --trace"
-      command = "RAILS_ENV=#{Jets.env} #{command}" unless Jets.env.development?
       Bundler.with_clean_env do
-        sh("cd rack && #{command}")
+        sh(rails_assets(:clobber))
+        sh(rails_assets(:precompile))
       end
+    end
+
+    def rails_assets(cmd)
+      command = "rails assets:#{cmd} --trace"
+      command = "RAILS_ENV=#{Jets.env} #{fulL_cmd}" unless Jets.env.development?
+      "cd rack &&  #{command}"
     end
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
