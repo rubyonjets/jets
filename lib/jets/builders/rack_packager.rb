@@ -5,7 +5,6 @@ class Jets::Builders
 
       symlink_rack_bundled
       copy_rackup_wrappers
-      after_package
     end
 
     def symlink_rack_bundled
@@ -25,11 +24,6 @@ class Jets::Builders
         FileUtils.cp(src, dest)
         FileUtils.chmod 0755, dest
       end
-    end
-
-    # TODO: Move logic into plugin instead
-    def after_package
-      AfterRackPackage.new(@full_app_root).run
     end
   end
 end

@@ -1,6 +1,6 @@
 # TODO: Move logic into plugin instead
 class Jets::Builders
-  class AfterRackPackage
+  class ReconfigureRails
     def initialize(full_app_root)
       # IE: @app_root: /tmp/jets/demo/stage/code/rack
       @app_root = full_app_root
@@ -11,7 +11,7 @@ class Jets::Builders
     def run
       return unless rails?
 
-      puts "AfterPackage running for rails app"
+      puts "Reconfiguring rails app"
       templates = File.expand_path("./after_rack_package/rails", File.dirname(__FILE__))
 
       relative_path = "config/initializers/jets.rb"

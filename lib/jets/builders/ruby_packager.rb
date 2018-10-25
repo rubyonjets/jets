@@ -27,7 +27,6 @@ class Jets::Builders
 
     def gemfile_exist?
       gemfile_path = "#{@full_app_root}/Gemfile"
-      puts "gemfile_path #{gemfile_path}"
       File.exist?(gemfile_path)
     end
 
@@ -123,9 +122,6 @@ class Jets::Builders
     end
 
     def setup_bundle_config
-      puts "setup_bundle_config".colorize(:cyan)
-      puts "cache_area #{cache_area}".colorize(:cyan)
-      puts "@full_app_root #{@full_app_root}".colorize(:cyan)
       ensure_build_cache_bundle_config_exists!
 
       # Override project's .bundle/config and ensure that .bundle/config matches

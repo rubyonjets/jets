@@ -286,16 +286,29 @@ class Jets::Builders
       IO.write(webpacker_yml, new_yaml)
     end
 
-    def package_ruby
-      ruby_packager = RubyPackager.new(tmp_code)
-      rack_packager = RackPackager.new("#{tmp_code}/rack")
+    def ruby_packager
+      RubyPackager.new(tmp_code)
+    end
+    memoize :ruby_packager
 
+    def rack_packager
+      RackPackager.new("#{tmp_code}/rack")
+    end
+    memoize :rack_packager
+
+    def package_ruby
       ruby_packager.install
+      reconfigure_rails
       rack_packager.install
       ruby_packager.finish
       rack_packager.finish
     end
     time :package_ruby
+
+    # TODO: Move logic into plugin instead
+    def reconfigure_rails
+      ReconfigureRails.new("#{full(tmp_code)}/rack").run
+    end
 
     def cache_check_message
       if File.exist?("#{Jets.build_root}/cache")
