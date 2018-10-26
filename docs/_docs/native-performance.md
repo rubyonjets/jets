@@ -1,5 +1,5 @@
 ---
-title: Native-like Performance
+title: Native Performance
 ---
 
 AWS Lambda does not yet officially support Ruby. There's an online petition to encourage AWS to add Ruby support for Lambda: [We want FaaS for Ruby!](https://www.serverless-ruby.org/) Rumors suggest that AWS is working on it.
