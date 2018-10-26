@@ -78,7 +78,10 @@ class Jets::Cfn
     time :wait_for_stack
 
     def prewarm
-      return if ENV['SKIP_PREWARMING']
+      if ENV['SKIP_PREWARMING']
+        puts "Skipping prewarming" # useful for testing
+        return
+      end
       return unless @options[:stack_type] == :full # s3 bucket is available
       return unless Jets.config.prewarm.enable
       return if Jets::Commands::Build.poly_only?
