@@ -30,12 +30,24 @@ class Jets::Builders
     def update_gemfile
       gemfile = "#{@app_root}/Gemfile"
       lines = IO.readlines(gemfile)
-      return if lines.detect { |l| l =~ /jets-rails/ }
+      lines = add_jets_rails_gem(lines)
+      lines = comment_out_ruby_declaration(lines)
+      write_content(gemfile, lines)
+    end
 
-      # Add jets-rails gem
+    def add_jets_rails_gem(lines)
+      return lines if lines.detect { |l| l =~ /jets-rails/ }
       lines << "\n"
       lines << %Q|gem "jets-rails", git: "https://github.com/tongueroo/jets-rails.git"\n|
-      write_content(gemfile, lines)
+      lines
+    end
+
+    # Jets packages up and uses only one version of ruby and different declarations
+    # of ruby can cause issues.
+    def comment_out_ruby_declaration(lines)
+      lines.map do |l|
+        l =~ /^(ruby[ (].*)/ ? "# #{$1} # commented out by jets" : l
+      end
     end
 
     def update_development_environment
@@ -43,7 +55,7 @@ class Jets::Builders
       lines = IO.readlines(env_file)
       new_lines = lines.map do |line|
         if line =~ /(config\.file_watcher.*)/
-          "  # #{$1}\n"
+          "  # #{$1} # commented out by jets\n"
         else
           line
         end
