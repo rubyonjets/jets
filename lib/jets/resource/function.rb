@@ -189,12 +189,8 @@ class Jets::Resource
     end
 
     def code_s3_key
-      path = "#{Jets.build_root}/stage/ref/code.txt"
-      return "DOESNT-EXIST-stage/ref/code.txt" unless File.exist?(path)
-
-      actual_code_path = IO.read(path).strip
-      filename = File.basename(actual_code_path)
-      "jets/code/#{filename}" # s3_key
+      checksum = Jets::Builders::Md5.checksums["stage/code"]
+      "jets/code/code-#{checksum}.zip" # s3_key
     end
 
     # Examples:

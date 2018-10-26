@@ -15,7 +15,7 @@ class Jets::Builders
         @@checksums
       end
 
-      def stage_paths
+      def stage_folders
         paths = %w[stage/bundled]
         paths << "stage/rack" if Jets.rack?
         # Important to have stage/code at the end, since it will use the other
@@ -25,7 +25,7 @@ class Jets::Builders
       end
 
       def compute!
-        stage_paths.each do |path|
+        stage_folders.each do |path|
           @@checksums[path] = dir(path)
         end
         @@checksums

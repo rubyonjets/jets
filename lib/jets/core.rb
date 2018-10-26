@@ -108,7 +108,7 @@ module Jets::Core
     path =~ %r{/core_ext} ||
     path =~ %r{/jets/stack} ||
     path =~ %r{/rackup_wrappers} ||
-    path =~ %r{/after_} # after_rack_package
+    path =~ %r{/reconfigure_rails}
   end
 
   def class_mappings(class_name)

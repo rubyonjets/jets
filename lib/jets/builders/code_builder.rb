@@ -100,13 +100,27 @@ class Jets::Builders
     end
 
     def create_zip_files
-      paths = Md5.stage_paths
-      paths.each do |path|
-        zip = Md5Zip.new(path)
-        zip.create
+      folders = Md5.stage_folders
+      folders.each do |folder|
+        zip = Md5Zip.new(folder)
+        unless exist_on_s3?(zip.md5_name)
+          zip = Md5Zip.new(folder)
+          zip.create
+        end
       end
     end
     time :create_zip_files
+
+    def exist_on_s3?(filename)
+      s3_key = "jets/code/#{filename}"
+      puts "Checking s3://#{s3_bucket}/#{s3_key}".colorize(:cyan)
+      begin
+        s3.head_object(bucket: s3_bucket, key: s3_key)
+        true
+      rescue
+        false
+      end
+    end
 
     # Moves code/bundled and code/rack to build_root.
     # These files will be packaged separated and lazy loaded as part of the
