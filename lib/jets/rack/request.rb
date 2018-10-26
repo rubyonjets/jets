@@ -42,7 +42,20 @@ module Jets::Rack
     def set_headers!(request)
       headers = @event['headers'] # from api gateway
       if headers # remote API Gateway
-        # Note by the time headers get to rack they get changed to:
+        # Forward headers from API Gateway over to the sub http request.
+        # It's important to forward the headers. Here are some examples:
+        #
+        #   "Turbolinks-Referrer"=>"http://localhost:8888/posts/122",
+        #   "Referer"=>"http://localhost:8888/posts/122",
+        #   "Accept-Encoding"=>"gzip, deflate",
+        #   "Accept-Language"=>"en-US,en;q=0.9,pt;q=0.8",
+        #   "Cookie"=>"_demo_session=...",
+        #   "If-None-Match"=>"W/\"9fa479205fc6d24ca826d46f1f6cf461\"",
+        headers.each do |k,v|
+          request[k] = v
+        end
+
+        # Note by the time headers get to rack later in the they get changed to:
         #
         #   request['X-Forwarded-Host'] vs env['HTTP_X_FORWARDED_HOST']
         #
