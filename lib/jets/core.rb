@@ -163,4 +163,8 @@ module Jets::Core
     path = "#{Jets.root}rack"
     File.exist?(path) || File.symlink?(path)
   end
+
+  def lazy_load?
+    config.ruby.lazy_load
+  end
 end

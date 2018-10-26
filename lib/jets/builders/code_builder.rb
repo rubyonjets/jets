@@ -132,7 +132,7 @@ class Jets::Builders
     #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
     #
     def setup_tmp
-      tmp_symlink("bundled")
+      tmp_symlink("bundled") if Jets.lazy_load?
       tmp_symlink("rack")
     end
 

@@ -16,7 +16,8 @@ class Jets::Builders
       end
 
       def stage_folders
-        paths = %w[stage/bundled]
+        paths = []
+        paths << "stage/bundled" if Jets.lazy_load?
         paths << "stage/rack" if Jets.rack?
         # Important to have stage/code at the end, since it will use the other
         # 'symlinked' folders to adjust the md5 hash.
