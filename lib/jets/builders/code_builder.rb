@@ -164,6 +164,7 @@ class Jets::Builders
     time :code_setup
 
     def code_finish
+      update_lazy_load_config # at the top, must be called before Jets.lazy_load? is used
       store_s3_base_url
       setup_tmp
       calculate_md5s # must be called before generate_node_shims and create_zip_files
@@ -171,6 +172,25 @@ class Jets::Builders
       create_zip_files
     end
     time :code_finish
+
+    def update_lazy_load_config
+      # https://docs.aws.amazon.com/lambda/latest/dg/limits.html
+      size_limit = 250 * 1024 * 1024 # 250MB
+      code_size = dir_size(full(tmp_code))
+      if code_size > size_limit
+        # override the setting because we dont have to a choice but to lazy load
+        Jets.config.ruby.lazy_load = true
+      end
+    end
+
+    # Thanks https://stackoverflow.com/questions/9354595/recursively-getting-the-size-of-a-directory
+    # Seems to overestimate a little bit but close enough.
+    def dir_size(folder)
+      Dir.glob(File.join(folder, '**', '*'))
+        .select { |f| File.file?(f) }
+        .map{ |f| File.size(f) }
+        .inject(:+)
+    end
 
     # Store s3 base url is needed for asset serving from s3 later. Need to package this
     # as part of the code so we have a reference to it.
