@@ -34,7 +34,8 @@ Jets.application.configure do
   # Underscored format can be used for keys to make it look more ruby-ish.
 
   # Assets settings
-  # config.assets.folders = %w[packs images assets] # default packs images assets
+  # config.assets.folders files are uploaded to s3 and are set to public-read to be served directly
+  # config.assets.folders = %w[public/packs public/images public/assets] # default packs images assets
   # config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path , defaults to use s3
   # config.assets.max_age = 3600 # when to expire assets
   # config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.

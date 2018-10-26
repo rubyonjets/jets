@@ -50,7 +50,6 @@ class Jets::Builders
 
     # folders to remove in the bundled folder regardless of the level of the folder
     def tidy_bundled
-      puts "check #{@project_root}/bundled/**/*"
       Dir.glob("#{@project_root}/bundled/**/*").each do |path|
         next unless File.directory?(path)
         dir = File.basename(path)
@@ -64,7 +63,7 @@ class Jets::Builders
       exists = File.exist?("#{path}/.gitkeep") || File.exist?("#{path}/.keep")
       return if exists
 
-      say "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
+      # say "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
       # FileUtils.rm_rf(path) unless @noop
       system("rm -rf #{path}") unless @noop
     end

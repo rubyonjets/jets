@@ -12,7 +12,7 @@ public/packs | Where `app/javascript` webpacker assets are compiled to.
 public/assets | Additional custom assets you might have.
 public/images | Public images.
 
-Note: Even though `public/assets` and `public/images` files are uploaded and served for convenience.  It is recommended that you put your files in `app/javascript/images` and allow webpacker to compile and sha the assets. Files in the `public/assets` and `public/images` do not get their sha checksum added to their paths.
+Note: Even though `public/assets` and `public/images` files are uploaded and served for convenience.  It is recommended that you put your files in `app/javascript/images` and allow webpacker to compile and sha the assets. Webpacker generates and saves the files to `public/packs`. The files in `public/packs` contain checksums, whereas files in the `public/assets` and `public/images` do not get their sha checksum added to their paths.
 
 By using webpacker, it generates unique file paths each time the file changes.  Then you will be able to configure high values for the `max-age` response header to further improve performance. This article [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers) covers how cache headers work.
 
@@ -24,7 +24,7 @@ You can override the setting and configure the folders with the [Application Con
 Jets.application.configure do
   # ...
   # Default assets settings
-  config.assets.folders = %w[packs images assets]
+  config.assets.folders = %w[public/assets public/images public/packs]
   config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
   config.assets.max_age = 3600
   config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.

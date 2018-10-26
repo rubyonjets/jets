@@ -40,7 +40,7 @@ class Jets::Application
     config.inflections.irregular = {}
 
     config.assets = ActiveSupport::OrderedOptions.new
-    config.assets.folders = %w[packs images assets]
+    config.assets.folders = %w[public/assets public/images public/packs]
     config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
     config.assets.max_age = 3600
     config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
