@@ -48,9 +48,12 @@ require "bundler" # for clean_old_submodules only
 # * setup bundled config: code/.bundle/config
 #
 ### zip
-# * create zip fileC
+# * create zip file
 class Jets::Builders
   class CodeBuilder
+    # https://docs.aws.amazon.com/lambda/latest/dg/limits.html
+    AWS_CODE_SIZE_LIMIT = 250 * 1024 * 1024 # 250MB
+
     include Jets::Timing
     include Jets::AwsServices
     include Util
@@ -174,8 +177,7 @@ class Jets::Builders
     time :code_finish
 
     def update_lazy_load_config
-      # https://docs.aws.amazon.com/lambda/latest/dg/limits.html
-      size_limit = 250 * 1024 * 1024 # 250MB
+      size_limit = AWS_CODE_SIZE_LIMIT
       code_size = dir_size(full(tmp_code))
       if code_size > size_limit
         # override the setting because we dont have to a choice but to lazy load

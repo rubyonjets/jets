@@ -2,6 +2,11 @@ Jets.application.configure do
   config.project_name = "<%= @project_name %>"
   config.mode = "<%= @options[:mode] %>"
 
+  # Lazy loads ruby and gems as part of first request. Prewarming will handles
+  # this. This also keeps the code package size small and allows us to use the
+  # Lambda console for inline code editing.
+  # config.ruby.lazy_load = true # default is true
+
   # config.prewarm.enable = true # default is true
   # config.prewarm.rate = '30 minutes' # default is '30 minutes'
   # config.prewarm.concurrency = 2 # default is 2
