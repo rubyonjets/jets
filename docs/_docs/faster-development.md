@@ -30,7 +30,7 @@ Typical Home Internet Speed:
     Upload: 6.78 Mbit/s
     $
 
-In these case, there's a 162x upload speed difference. There is no comparison. The upload speed can reduce productivity, even with lazy loading optimizations.  Uploading 100MB on an EC2 internet connection to s3 usually takes less than a second. Also building and downloading new gems is also much faster.
+In these case, there's a 162x upload speed difference. There is no comparison. The upload speed can reduce productivity, even with lazy loading optimizations.  Uploading 100MB on an EC2 internet connection to s3 usually takes less than a second. Also building and downloading new gems is also much faster. Life is just better with a faster internet connection.
 
 I've actually come to enjoy using Cloud9 and have been pretty happy with it. It has some nice built-in features. It is nice to have your development environment be available anywhere on any computer in the world with a browser. It helps in a jam.
 
