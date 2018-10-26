@@ -15,6 +15,7 @@ class Jets::Builders
       copy_initializer
       update_gemfile
       update_development_environment
+      set_favicon
     end
 
     def copy_initializer
@@ -50,8 +51,25 @@ class Jets::Builders
       write_content(env_file, new_lines)
     end
 
-    # Avoid serving binary assets from API gateway, instead serve it from s3 directly.
+    # Evaluate the application layout and see if has a custom favicon defined yet.
+    # If not insert one and rewrite the application layout.
+    #
+    # This avoids serving binary assets from API gateway, instead serve it from s3 directly.
     def set_favicon
+      app_layout = "#{@app_root}/app/views/layouts/application.html.erb"
+      return  unless File.exist?(app_layout)
+
+      favicon = '<link rel="shortcut icon" href="<%= asset_path("/favicon.ico") %>">'
+
+      lines = IO.readlines(app_layout)
+      has_favicon = !!lines.find { |l| l.include?(favicon) }
+      puts "has_favicon #{has_favicon}"
+      return if has_favicon
+
+      content = IO.read(app_layout)
+      content = content.sub('</head>', "\n    #{favicon}\n  </head>")
+
+      IO.write(app_layout, content)
     end
 
     # lines is an Array
