@@ -50,6 +50,10 @@ class Jets::Builders
       write_content(env_file, new_lines)
     end
 
+    # Avoid serving binary assets from API gateway, instead serve it from s3 directly.
+    def set_favicon
+    end
+
     # lines is an Array
     def write_content(path, lines)
       content = lines.join + "\n"

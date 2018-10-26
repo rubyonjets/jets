@@ -1,4 +1,5 @@
 require 'action_view'
+require 'digest'
 
 class Jets::Cfn
   class Upload
@@ -63,7 +64,7 @@ class Jets::Cfn
     end
 
     def upload_assets
-      puts "Uploading public assets"
+      puts "Uploading modified public assets"
       start_time = Time.now
       upload_public_assets
       puts "Time to upload public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
@@ -104,11 +105,30 @@ class Jets::Cfn
     end
 
     def upload_to_s3(full_path)
-      relative_path = full_path.sub(Jets.root.to_s, '')
-      key = "jets/#{relative_path}"
-      puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
+      return if identical_on_s3?(full_path)
+
+      key = s3_key(full_path)
       obj = s3_resource.bucket(bucket_name).object(key)
+      puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
       obj.upload_file(full_path, acl: "public-read", cache_control: cache_control)
+    end
+
+    def s3_key(full_path)
+      relative_path = full_path.sub(Jets.root.to_s, '')
+      "jets/#{relative_path}"
+    end
+
+    def identical_on_s3?(full_path)
+      local_md5 = ::Digest::MD5.file(full_path)
+      key = s3_key(full_path)
+      begin
+        resp = s3.head_object(bucket: bucket_name, key: key)
+      rescue Aws::S3::Errors::NotFound
+        return false
+      end
+
+      remote_md5 = resp.etag.delete_prefix('"').delete_suffix('"')
+      local_md5 == remote_md5
     end
 
     # If cache_control is provided, then it will set the entire cache-control header.

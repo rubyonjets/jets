@@ -118,7 +118,7 @@ class Jets::Builders
       begin
         s3.head_object(bucket: s3_bucket, key: s3_key)
         true
-      rescue
+      rescue Aws::S3::Errors::NotFound
         false
       end
     end
