@@ -9,3 +9,6 @@ Rails.application.config.action_controller.asset_host = asset_host
 Rails.application.config.assets.debug = false
 Rails.application.config.assets.compile = false
 Rails.application.config.public_file_server.enabled = true
+
+# Looks better without colorizatiion in CloudWatch logs
+Rails.application.config.colorize_logging = false
