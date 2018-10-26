@@ -103,7 +103,9 @@ class Jets::Builders
       folders = Md5.stage_folders
       folders.each do |folder|
         zip = Md5Zip.new(folder)
-        unless exist_on_s3?(zip.md5_name)
+        if exist_on_s3?(zip.md5_name)
+          puts "Already exists: s3://#{s3_bucket}/jets/code/#{zip.md5_name}"
+        else
           zip = Md5Zip.new(folder)
           zip.create
         end
@@ -113,7 +115,6 @@ class Jets::Builders
 
     def exist_on_s3?(filename)
       s3_key = "jets/code/#{filename}"
-      puts "Checking s3://#{s3_bucket}/#{s3_key}".colorize(:cyan)
       begin
         s3.head_object(bucket: s3_bucket, key: s3_key)
         true
