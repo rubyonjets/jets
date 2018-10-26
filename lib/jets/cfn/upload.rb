@@ -70,7 +70,7 @@ class Jets::Cfn
     end
 
     def upload_public_assets
-      asset_folders = Jets.config.assets.folders # IE: %w[public/assets public/images public/packs]
+      asset_folders = Jets.config.assets.folders # IE: %w[public]
       asset_folders = add_rack_assets(asset_folders)
       asset_folders.each do |folder|
         upload_asset_folder(folder)
@@ -79,7 +79,7 @@ class Jets::Cfn
 
     def add_rack_assets(asset_folders)
       return asset_folders unless Jets.rack?
-      asset_folders + %w[rack/public/assets rack/public/images rack/public/packs]
+      asset_folders + %w[rack/public]
     end
 
     # Examples of parameter values:

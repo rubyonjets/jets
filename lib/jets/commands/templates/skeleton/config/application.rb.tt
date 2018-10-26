@@ -35,8 +35,9 @@ Jets.application.configure do
 
   # Assets settings
   # config.assets.folders files are uploaded to s3 and are set to public-read to be served directly
-  # config.assets.folders = %w[public/packs public/images public/assets] # default packs images assets
-  # config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path , defaults to use s3
+  # config.assets.folders = %w[public] # defaults to public
   # config.assets.max_age = 3600 # when to expire assets
-  # config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
+  # config.assets.cache_control = nil # IE: "public, max-age=3600" # override max_age for more fine-grain control.
+  # config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path, defaults to the s3 bucket url
+  #                                IE: https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1inlzkvujq8zb
 end
