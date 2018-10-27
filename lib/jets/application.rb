@@ -80,6 +80,15 @@ class Jets::Application
     set_aliases!
     normalize_env_vars!
     load_db_config
+    load_environments_config
+  end
+
+  def load_environments_config
+    env_file = "#{Jets.root}config/environments/#{Jets.env}.rb"
+    if File.exist?(env_file)
+      code = IO.read(env_file)
+      instance_eval(code)
+    end
   end
 
   # Use the shorter name in stack names, but use the full name when it
