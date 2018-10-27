@@ -46,7 +46,7 @@ class Jets::Application
     config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
 
     config.ruby = ActiveSupport::OrderedOptions.new
-    config.ruby.lazy_load = true
+    config.ruby.lazy_load = true # also set in config/environments files
 
     config
   end

@@ -32,11 +32,11 @@ To configure lazy loading set the `config.ruby.lazy_load` as part of the [Applic
 ```ruby
 Jets.application.configure do
   # ...
-  # config.ruby.lazy_load = true # defaults to true
+  # config.ruby.lazy_load = true # defaults to true in development mode
 end
 ```
 
-By default, lazy loading is enabled.  Additionally, when `jets deploy` detects that the code size exceeds the AWS Lambda code size limit lazy loading is turned on automatically.
+By default, lazy loading is enabled in `config/environments/development.rb`.  Additionally, when `jets deploy` detects that the code size exceeds the AWS Lambda code size limit lazy loading is turned on automatically.
 
 ## Advantages of Lazy Loading
 
