@@ -6,7 +6,7 @@ Jets Mega Mode is designed to achieve Rack support in the most seamless fashion 
 
 ## Reconfiguration Injection
 
-Upon `jets deploy`, the jets build process reconfigures the rack application and injects the necessary changes to run the rack application on AWS Lambda.  This minimizes the amount of changes you might have to make manually.  Here's a list of some injected changes for a Rails rack app.
+Upon `jets deploy`, the jets build process reconfigures the rack application and injects the necessary changes to run the rack application on AWS Lambda.  This minimizes the changes you might have to make manually.  Here's a list of some injected changes for a Rails rack app.
 
 1. The [jets-rails](https://github.com/tongueroo/jets-rails) gem is added to the Gemfile. The jets-rails gem adjusts the Rails application so it works with AWS Lambda and API Gateway.  Notably, it adjusts the application to account for API Gateway stage urls.
 2. The Rails logger is set up to send output to CloudWatch Logs also. This is helpful for debugging.
@@ -39,7 +39,7 @@ Since the rack sub-application is separate process it means that it's stdout ava
 
 ## Use of /tmp Folder
 
-Normally, AWS Lambda runs your application on a read-only filesystem. Rails assumes it has access to write to the filesystem. For example, it might create `tmp/cache` folders upon starting up.  Rails gems or plugins might also assume write access. Because of this the rack application runs from the `/tmp` folder which AWS Lambda allows write access to.
+Normally, AWS Lambda runs your application on a read-only filesystem. Rails assumes it has access to write to the filesystem. For example, it might create `tmp/cache` folders upon starting up.  Rails gems or plugins might also assume write access. Because of this, the rack application runs from the `/tmp` folder which AWS Lambda allows write access to.
 
 Using the `/tmp` folder also increases the amount of space available to run applications to [512MB](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). This is important because the maximum size of your uncompressed code on AWS Lambda is limited to [250MB](https://docs.aws.amazon.com/lambda/latest/dg/limits.html).  A barebones Rails app, with gems, and the Ruby intrepreter sizes in at about 250MB. Using the `/tmp` folder allows for larger applications.
 

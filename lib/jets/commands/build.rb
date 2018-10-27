@@ -31,6 +31,7 @@ module Jets::Commands
     time :build_code
 
     def build_templates
+      puts "Building CloudFormation templates."
       clean_templates
       build_minimal_template
       build_all_templates if full?

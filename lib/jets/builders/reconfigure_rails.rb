@@ -6,12 +6,12 @@ class Jets::Builders
       @app_root = full_app_root
     end
 
-    # Only support for rails right now. Move into plugin if when adding support to
-    # more frameworks.
+    # Only support Rails right now. Maybe move into plugin when adding support
+    # to more frameworks. Or maybe better to just abstract but maintain in Jets.
     def run
       return unless rails?
 
-      puts "Reconfiguring rails app"
+      puts "Mega Mode: Reconfiguring Rails app."
       copy_initializer
       update_gemfile
       update_development_environment
@@ -75,7 +75,6 @@ class Jets::Builders
 
       lines = IO.readlines(app_layout)
       has_favicon = !!lines.find { |l| l.include?(favicon) }
-      puts "has_favicon #{has_favicon}"
       return if has_favicon
 
       content = IO.read(app_layout)

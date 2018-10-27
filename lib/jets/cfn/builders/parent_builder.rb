@@ -12,8 +12,6 @@ class Jets::Cfn::Builders
 
     # compose is an interface method
     def compose
-      puts "Building parent CloudFormation template."
-
       build_minimal_resources
       build_child_resources if full?
     end
@@ -37,8 +35,6 @@ class Jets::Cfn::Builders
     end
 
     def build_child_resources
-      puts "Building child CloudFormation templates."
-
       expression = "#{Jets::Naming.template_path_prefix}-app-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|

@@ -86,7 +86,7 @@ class Jets::Cfn
       return unless Jets.config.prewarm.enable
       return if Jets::Commands::Build.poly_only?
 
-      puts "Prewarming application..."
+      puts "Prewarming application."
       if Jets::PreheatJob::CONCURRENCY > 1
         Jets::PreheatJob.perform_now(:torch, {quiet: true})
       else

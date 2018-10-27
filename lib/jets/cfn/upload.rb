@@ -18,7 +18,7 @@ class Jets::Cfn
     end
 
     def upload_cfn_templates
-      puts "Uploading child CloudFormation templates to S3"
+      puts "Uploading CloudFormation templates to S3."
       expression = "#{Jets::Naming.template_path_prefix}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
@@ -45,6 +45,7 @@ class Jets::Cfn
     # file that can be read from any places where this is needed.
     # Can also just generate a "fake file" for specs
     def upload_zip_files
+      puts "Uploading code zip files to S3."
       zip_area = "#{Jets.build_root}/stage/zips"
       Dir.glob("#{zip_area}/*").each do |file|
         upload_zip_file(file)
@@ -64,7 +65,7 @@ class Jets::Cfn
     end
 
     def upload_assets
-      puts "Uploading modified public assets"
+      puts "Uploading modified public assets to S3."
       start_time = Time.now
       upload_public_assets
       puts "Time to upload public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
