@@ -34,17 +34,6 @@ class Jets::Builders
 
       file_size = number_to_human_size(File.size(md5_dest))
       puts "Zip file created at: #{md5_dest.colorize(:green)} (#{file_size})"
-
-      # Save references state
-      # Much later: ship, base_child_builder need set an s3_key which requires the md5_dest.
-      # It is a pain to pass this all the way up from the Md5Zip class.
-      # Store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a file that can be
-      # read from any places that's needed.
-      # For specs, can generate a "fake file".
-      ref = File.dirname(@path) + "/ref/" + File.basename(@path) + ".txt"
-      # The reference to the actual md5_dest
-      FileUtils.mkdir_p(File.dirname(ref))
-      IO.write(ref, md5_dest)
     end
 
     # /tmp/jets/demo/stage/zips/code.zip
