@@ -27,7 +27,7 @@ Python function speed:
     user    0m0.047s
     sys     0m0.054s
 
-In the case above, the ruby function happened to be faster than the python function. Generally, it's a tie.
+In the case above, the ruby function happened to be faster than the python function. Generally, it's a tie. This article covers native perforamnce further: [AWS Lambda Ruby Support at Native Speed with Jets](https://blog.boltops.com/2018/09/02/aws-lambda-ruby-support-at-native-speed-with-jets).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/crud-json-activerecord.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/lambdagems.md %}">Next Step</a>
