@@ -1,5 +1,5 @@
 class Jets::Commands::Import
-  class Rack < Base
+  class Rack < Sequence
     def import
       puts "Rack import..."
     end
