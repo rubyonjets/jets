@@ -56,7 +56,7 @@ The import command understands a variety of values. Examples:
 
 ## Rails Versions Supported
 
-Jets Mega Mode has been testing with and supports Rails 5.2.1 and above.
+Jets Mega Mode has been testing with and supports Rails 5 and above.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/megamode.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/megamode-considerations.md %}">Next Step</a>
