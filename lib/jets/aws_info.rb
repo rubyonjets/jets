@@ -66,7 +66,9 @@ module Jets
       stack = resp.stacks.first
       output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
       @@s3_bucket = output["output_value"] # s3_bucket
-    rescue Aws::CloudFormation::Errors::ValidationError
+    rescue
+      # rescuing all exceptions in case here
+      # Here are the known ones: Aws::CloudFormation::Errors::ValidationError, Aws::CloudFormation::Errors::InvalidClientTokenId
       BUCKET_DOES_NOT_YET_EXIST
     end
 
