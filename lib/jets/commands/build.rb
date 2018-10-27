@@ -31,16 +31,17 @@ module Jets::Commands
     time :build_code
 
     def build_templates
-      if @options[:templates] || @options[:stack_type] == :full
-        build_all_templates
-      else
-        build_minimal_template
-      end
+      clean_templates
+      build_minimal_template
+      build_all_templates if full?
     end
     time :build_templates
 
+    def full?
+      @options[:templates] || @options[:stack_type] == :full
+    end
+
     def build_all_templates
-      clean_templates
       # CloudFormation templates
       # 1. Shared templates - child templates needs them
       build_api_gateway_templates

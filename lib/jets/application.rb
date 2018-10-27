@@ -106,10 +106,23 @@ class Jets::Application
 
     config.project_namespace = Jets.project_namespace
 
-    # Must set default iam_policy here instead of `def config` because we need access to
-    # the project_namespace and if we call it from `def config` we get an infinite loop
+    # Must set default iam_policy here instead of `def config` because we  project_namespace
+    # must have been set and if we call it from `def config` we get an infinite loop
+    set_iam_policy
+  end
+
+  def set_iam_policy
     config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
+  end
+
+  # After the mimimal template gets build, we need to reload it for the full stack
+  # creation. This is confusing to follow. Think we need to clean up the Jets.application
+  # singleton and make it more explicit?
+  def reload_iam_policy!
+    config.iam_policy = nil
+    config.managed_policy_definitions = nil
+    set_iam_policy
   end
 
   def self.default_iam_policy
