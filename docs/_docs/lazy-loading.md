@@ -10,7 +10,7 @@ Lazy loading happens as a part of the first Lambda request and occurs in the Lam
 
 Additional, [Prewarming]({% link _docs/prewarming.md %}) helps to avoid the overhead entirely. Prewarming can be tuned for your needs with a few configuration settings.
 
-When lazy loading is turned off, and the Ruby dependencies are bundled as part of the Lambda code zip file itself, the cold start overhead is about 2-3 seconds instead.
+When lazy loading is turned off, and the Ruby dependencies are bundled as part of the Lambda code zip file itself, the cold start overhead is about 2-3 seconds instead.  By default, Jets enables lazy loading in development mode and disables it for production mode.
 
 ## Cold Start Commonly Known
 
@@ -29,14 +29,15 @@ These links cover AWS Lambda performance and cold starts a little further:
 
 To configure lazy loading set the `config.ruby.lazy_load` as part of the [Application Configuration]({% link _docs/app-config.md %}).
 
+config/environments/production.rb:
+
 ```ruby
 Jets.application.configure do
-  # ...
-  # config.ruby.lazy_load = true # defaults to true in development mode
+  config.ruby.lazy_load = true
 end
 ```
 
-By default, lazy loading is enabled in `config/environments/development.rb`.  Additionally, when `jets deploy` detects that the code size exceeds the AWS Lambda code size limit lazy loading is turned on automatically.
+Additionally, when `jets deploy` detects that the code size exceeds the AWS Lambda code size limit lazy loading is turned on automatically.
 
 ## Advantages of Lazy Loading
 
@@ -44,7 +45,7 @@ There are some excellent advantages to lazy loading which is why Jets elected to
 
 With lazying loading enabled, the actual code size of your Jets project code is usually in the KB range.  This takes the code size down to under the [3 MB](https://docs.aws.amazon.com/lambda/latest/dg/limits.html) limit, which is key. At the smaller code size, you are able to see and edit your Lambda code in the AWS Lambda console code editor.  This is extremely helpful for live debugging and testing.
 
-Another advantage of lazying loading is that Jets is able to upload the bundled external dependencies like Ruby and Gems separately from the application code itself. This allows Jets to optimize the deploy process and upload the large bundled file, usually 100MB, only when it changes.  On a slow internet connection this significantly improves your [development speed]({% link _docs/faster-development.md %}) and happiness.
+Another advantage of lazying loading is that Jets is able to upload the bundled external dependencies like Ruby and Gems separately from the application code itself. This allows Jets to optimize the deploy process and upload the large bundled file only when it changes.  On a slow internet connection this significantly improves your [development speed]({% link _docs/faster-development.md %}) and happiness.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/faster-development.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/upgrading.md %}">Next Step</a>
