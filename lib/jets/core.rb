@@ -98,17 +98,18 @@ module Jets::Core
 
   # Skip these paths because eager loading doesnt work for them.
   def skip_eager_load_paths?(path)
-    path =~ %r{/templates/} ||
-    path =~ %r{/version} ||
-    path =~ %r{/rails_overrides} ||
-    path =~ %r{/default/application} ||
-    path =~ %r{/internal/app} ||
-    path =~ %r{/webpacker} ||
     path =~ %r{/cli} ||
     path =~ %r{/core_ext} ||
+    path =~ %r{/default/application} ||
+    path =~ %r{/functions} ||
+    path =~ %r{/internal/app} ||
     path =~ %r{/jets/stack} ||
     path =~ %r{/rackup_wrappers} ||
-    path =~ %r{/reconfigure_rails}
+    path =~ %r{/rails_overrides} ||
+    path =~ %r{/reconfigure_rails} ||
+    path =~ %r{/templates/} ||
+    path =~ %r{/version} ||
+    path =~ %r{/webpacker}
   end
 
   def class_mappings(class_name)
@@ -122,7 +123,7 @@ module Jets::Core
   def eager_load_app
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
-      next if path.include?('app/shared/functions')
+      next if path.include?('app/functions') || path.include?('app/shared/functions')
 
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
