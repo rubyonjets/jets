@@ -152,7 +152,7 @@ module Jets::Commands
 
         # Internal jets controllers like Welcome and Public need a different regexp
         app_file = app_file.sub(%r{.*lib/jets/internal/},'')
-        app_class = app_file.classify.constantize # IE: PostsController, Jets::PublicController
+        app_class = Jets::Klass.from_path(app_file)  # IE: PostsController, Jets::PublicController
         langs = app_class.tasks.map(&:lang)
         langs.include?(:ruby)
       end
