@@ -58,6 +58,10 @@ The import command understands a variety of values. Examples:
 
 Jets Mega Mode has been testing with and supports Rails 5 and above.
 
+## Database Support
+
+Currently only PostgreSQL with the pg gem is [supported]({% link _docs/database-support.md %}).  You will have to configure your Rails app with a version of the pg gem that is supported by Jets.
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/megamode.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/megamode-considerations.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
