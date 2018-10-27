@@ -112,7 +112,6 @@ module Jets::Commands
       expression = "#{Jets.root}app/**/**/*.rb"
       Dir.glob(expression).each do |path|
         return false unless File.file?(path)
-        next if path.include?("app/functions") # cannot lazy load these because they are anonymous classes
         next unless app_file?(path)
 
         relative_path = path.sub(Jets.root.to_s, '')
