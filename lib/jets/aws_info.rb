@@ -52,6 +52,23 @@ module Jets
     end
     memoize :account
 
+    # If bucket does not exist, do not use the cache value and check for the bucket again.
+    # This is because we can build the app before deploying it for the first time.
+    # The deploy sequence ensure an minimal stack exists and will return a s3 bucket
+    # value for real deployments though, just not for the `jets build` only command.
+    BUCKET_DOES_NOT_YET_EXIST = "bucket-does-not-yet-exist" # use const to save from misspellings
+    @@s3_bucket = BUCKET_DOES_NOT_YET_EXIST
+    def s3_bucket
+      return @@s3_bucket unless @@s3_bucket == BUCKET_DOES_NOT_YET_EXIST
+
+      resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
+      stack = resp.stacks.first
+      output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
+      @@s3_bucket = output["output_value"] # s3_bucket
+    rescue Aws::CloudFormation::Errors::ValidationError
+      BUCKET_DOES_NOT_YET_EXIST
+    end
+
     def test?
       ENV['TEST'] || ENV['CIRCLECI']
     end

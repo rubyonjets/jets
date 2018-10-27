@@ -220,12 +220,8 @@ class Jets::Builders
     end
 
     def s3_bucket
-      resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
-      stack = resp.stacks.first
-      output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
-      output["output_value"] # s3_bucket
+      Jets.aws.s3_bucket
     end
-    memoize :s3_bucket
 
     # This happens in the current app directory not the tmp code for simplicity.
     # This is because the node and yarn has likely been set up correctly there.

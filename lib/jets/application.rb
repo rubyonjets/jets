@@ -119,10 +119,11 @@ class Jets::Application
       effect: "Allow",
       resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
     }
+    s3_glob = "#{Jets.aws.s3_bucket}*"
     s3 = {
       action: ["s3:*"],
       effect: "Allow",
-      resource: "arn:aws:s3:::*", # TODO: specify bucket name
+      resource: "arn:aws:s3:::#{s3_glob}", # TODO: specify bucket name
     }
     policies = [logs, s3]
     # s3_readonly = {
