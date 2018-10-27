@@ -2,7 +2,7 @@
 title: Rails Support
 ---
 
-Jets supports Rails without little or no work.  You simply run an import command, test, and deploy.
+Jets supports Rails and allows you to run it on AWS Lambda without little or no work.  You simply run an import command, test, and deploy.
 
 ## Example
 
