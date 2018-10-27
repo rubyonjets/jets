@@ -9,7 +9,7 @@ Jets.application.configure do
     # 'https://s3.amazonaws.com/another-bucket',
   ]
 
-  config.function.timeout = 10
+  config.function.timeout = 30
   # config.function.memory_size= 3008
   # config.function.cors = true
   config.function.environment = {

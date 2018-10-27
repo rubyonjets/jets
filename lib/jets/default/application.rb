@@ -15,7 +15,7 @@ Jets.application.configure do
 
   # function properties defaults
   config.function = ActiveSupport::OrderedOptions.new
-  config.function.timeout = 10
+  config.function.timeout = 30
   # default memory setting based on:
   # https://medium.com/epsagon/how-to-make-lambda-faster-memory-performance-benchmark-be6ebc41f0fc
   config.function.memory_size = 1536

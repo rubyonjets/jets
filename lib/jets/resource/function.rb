@@ -56,7 +56,7 @@ class Jets::Resource
     #
     #   Jets.application.configure do
     #     config.function = ActiveSupport::OrderedOptions.new
-    #     config.function.timeout = 10
+    #     config.function.timeout = 30
     #     config.function.runtime = "nodejs8.10"
     #     config.function.memory_size = 1536
     #   end

@@ -52,7 +52,7 @@ To set function properties globally, edit the function key under the config obje
 ```ruby
 Jets.application.configure do
   ...
-  config.function.timeout = 10
+  config.function.timeout = 30
   # config.function.role = "arn:aws:iam::#{ENV['AWS_ACCOUNT_ID']}:role/service-role/pre-created"
   # config.function.memory_size= 3008
   # config.function.cors = true
