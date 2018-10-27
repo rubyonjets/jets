@@ -2,7 +2,7 @@
 title: Custom Inflections
 ---
 
-Jets look ups folders, files, and classes based on naming conventions. It singuarlizes or pluralizes words as a part of this naming convention. For example:
+Jets lookups folders, files, and classes based on naming conventions. It singularizes or pluralizes words as a part of this naming convention. For example:
 
 controller | model | views folder
 --- | --- | ---

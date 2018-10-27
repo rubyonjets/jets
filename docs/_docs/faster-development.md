@@ -6,7 +6,7 @@ Development speed with AWS Lambda can be slow due to having to upload the Ruby i
 
 ## Lazy Loading
 
-[Lazy loading]({% link _docs/lazy-loading.md %}) significantly improves your development workflow speed. Lazy loading is enabled by default.  Thanks to lazy loading, the `jets deploy` process optimizes things and will only upload a new bundled set of gems when there are changes. Gems do not change as much as your application code so this optimization speeds up the deploy process significantly. The bundled Ruby interpreter and gems can add up to 100MB zipped, so only uploading to s3 when required is particularly beneficial on slower internet connections.
+[Lazy loading]({% link _docs/lazy-loading.md %}) significantly improves your development workflow speed. Lazy loading is enabled by default.  Thanks to lazy loading, the `jets deploy` process optimizes things and will only upload a new bundled set of gems when there are changes. Gems do not change as much as your application code, so this optimization speeds up the deploy process significantly. The bundled Ruby interpreter and gems can add up to 100MB zipped, so only uploading to s3 when required is particularly beneficial on slower internet connections.
 
 ## Cloud9 Recommendation
 
