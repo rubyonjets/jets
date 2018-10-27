@@ -17,12 +17,5 @@ unset BUNDLE_IGNORE_CONFIG
 if [ -n "$C9_USER" ]; then
   exec ruby -rbundler/setup bin/rackup.rb "$@"
 else
-
-  set -x
-  pwd
-  ls -lh $PROJECTDIR
-
-  ls /var/task/bundled
-
   exec "$PROJECTDIR/bundled/rbenv/shims/ruby" -rbundler/setup "$PROJECTDIR/bin/rackup.rb" "$@"
 fi
