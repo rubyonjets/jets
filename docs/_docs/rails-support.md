@@ -54,6 +54,10 @@ The import command understands a variety of values. Examples:
     jets import:rails git@github.com:tongueroo/jets-examples-rails.git
     jets import:rails /path/to/folder/jets-examples-rails
 
+## Rails Versions Supported
+
+Jets Mega Mode has been testing with and supports Rails 5.2.1 and above.
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/megamode.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/megamode-considerations.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
