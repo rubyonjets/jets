@@ -146,13 +146,7 @@ module Jets::Commands
       # If any method is written in ruby then we know the app is not a
       # soley polymorphic non-ruby app.
       has_ruby = app_files.detect do |path|
-        # 1. remove app/controllers or app/jobs, etc
-        # 2. remove .rb extension
-        app_file = path.sub(%r{app/\w+/},'').sub(/\.rb$/,'')
-
-        # Internal jets controllers like Welcome and Public need a different regexp
-        app_file = app_file.sub(%r{.*lib/jets/internal/},'')
-        app_class = Jets::Klass.from_path(app_file)  # IE: PostsController, Jets::PublicController
+        app_class = Jets::Klass.from_path(path)  # IE: PostsController, Jets::PublicController
         langs = app_class.tasks.map(&:lang)
         langs.include?(:ruby)
       end
