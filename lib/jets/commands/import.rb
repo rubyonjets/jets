@@ -1,5 +1,6 @@
 module Jets::Commands
   class Import < Jets::Commands::Base
+    autoload :Base, 'jets/commands/import/base'
     autoload :Rack, 'jets/commands/import/rack'
     autoload :Rail, 'jets/commands/import/rail'
     autoload :Sequence, 'jets/commands/import/sequence'

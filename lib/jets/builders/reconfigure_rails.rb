@@ -38,7 +38,7 @@ class Jets::Builders
     def add_jets_rails_gem(lines)
       return lines if lines.detect { |l| l =~ /jets-rails/ }
       lines << "\n"
-      lines << %Q|gem "jets-rails", git: "https://github.com/tongueroo/jets-rails.git"\n|
+      lines << %Q|gem "jets-rails"\n|
       lines
     end
 

@@ -1,18 +1,5 @@
 class Jets::Commands::Import
-  class Rail < Sequence
-    def start_message
-      puts "Importing Rails app into the rack folder..."
-    end
-
-    def create_rack_folder
-      repo? ? clone_project : copy_project
-    end
-
-    def configure_ruby
-      gsub_file 'rack/Gemfile', /^ruby(.*)/, '# ruby\1' # comment out ruby declaration
-      create_file "rack/.ruby-version", RUBY_VERSION, force: true
-    end
-
+  class Rail < Base
     # We add jets-rails gem even though it's only activated within the megamode
     # rackup wrapper script so user can check run bundle install and determine early
     # if dependencies are met. The jets-rails gem is also added as part of the deploy
@@ -20,14 +7,12 @@ class Jets::Commands::Import
     # can fix before they hit the deploy phase.
     def configure_gemfile
       append_to_file 'rack/Gemfile' do
-        %Q|gem "jets-rails", git: "https://github.com/tongueroo/jets-rails.git"\n|
+        %Q|gem "jets-rails"\n|
       end
     end
 
-    def bundle_install
-      Bundler.with_clean_env do
-        run "cd rack && bundle install"
-      end
+    def install
+      bundle_install
     end
 
     def configure_routes
@@ -41,13 +26,6 @@ class Jets::Commands::Import
   any "*catchall", to: "jets/rack#process"
 CODE
       end
-    end
-
-    def create_rackup_wrappers
-      path = File.expand_path("../../builders/rackup_wrappers", File.dirname(__FILE__))
-      set_source_paths(path) # switch the source path
-      directory ".", "#{rack_folder}/bin"
-      chmod "#{rack_folder}/bin/rackup", 0755
     end
 
     def finish_message
