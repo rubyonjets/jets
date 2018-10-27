@@ -15,7 +15,7 @@ describe Jets::Cfn::Builders::FunctionBuilder do
         resources = builder.template["Resources"]
         expect(resources).to include("WorldLambdaFunction")
 
-        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-hello_function.yml"
+        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-hello.yml"
       end
     end
 

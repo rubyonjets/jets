@@ -11,12 +11,10 @@ describe Jets::Cfn::Builders::ParentBuilder do
 
         resources = builder.template["Resources"]
         expect(resources).to include("S3Bucket")
-        expect(resources).to include("IamRole")
         expect(resources).not_to include("CommentsController")
 
         resource_types = resources.values.map { |i| i["Type"] }
         expect(resource_types).to include("AWS::S3::Bucket")
-        expect(resource_types).to include("AWS::IAM::Role")
         expect(resource_types).not_to include("AWS::CloudFormation::Stack")
 
         expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test.yml"

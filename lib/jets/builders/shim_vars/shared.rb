@@ -12,6 +12,7 @@
 #
 module Jets::Builders::ShimVars
   class Shared < Base
+    # fun is a Jets::Stack::Function
     def initialize(fun)
       @fun = fun
     end

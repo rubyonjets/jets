@@ -9,9 +9,10 @@ describe Jets::Builders::Tidy do
       it "cleanup" do
         tidy.cleanup!
       end
-    end
 
-    context "rack sub app" do
+      it "excludes should not include jetskeep" do
+        expect(tidy.jetskeep).to eq [".bundle", "bundled", "pack", "handlers", "public/assets"]
+      end
     end
   end
 end

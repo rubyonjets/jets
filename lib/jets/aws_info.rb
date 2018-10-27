@@ -59,6 +59,7 @@ module Jets
     BUCKET_DOES_NOT_YET_EXIST = "bucket-does-not-yet-exist" # use const to save from misspellings
     @@s3_bucket = BUCKET_DOES_NOT_YET_EXIST
     def s3_bucket
+      return "fake-test-s3-bucket" if ENV['TEST']
       return @@s3_bucket unless @@s3_bucket == BUCKET_DOES_NOT_YET_EXIST
 
       resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
