@@ -123,20 +123,9 @@ class Jets::Application
     s3 = {
       action: ["s3:*"],
       effect: "Allow",
-      resource: "arn:aws:s3:::#{s3_glob}", # TODO: specify bucket name
+      resource: "arn:aws:s3:::#{s3_glob}",
     }
     policies = [logs, s3]
-    # s3_readonly = {
-    #   action: ["s3:Get*", "s3:List*"],
-    #   effect: "Allow",
-    #   resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:*", # TODO: specify bucket name
-    # }
-    # s3_bucket = {
-    #   action: ["s3:ListAllMyBuckets", "s3:HeadBucket"],
-    #   effect: "Allow",
-    #   resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:*",
-    # }
-    # policies = [logs, s3_readonly, s3_bucket]
 
     if Jets::Stack.has_resources?
       cloudformation = {
