@@ -5,6 +5,7 @@ class Jets::Commands::Import
       start_message
       create_rack_folder
       configure_ruby
+      create_rackup_wrappers
     end
 
   private
