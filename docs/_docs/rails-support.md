@@ -56,7 +56,7 @@ The import command understands a variety of values. Examples:
 
 ## Rails Versions Supported
 
-Jets Mega Mode has been testing with and supports Rails 5 and above.
+Jets Mega Mode has been testing with and supports Rails 4 and above.
 
 ## Database Support
 
