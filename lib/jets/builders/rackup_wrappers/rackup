@@ -2,7 +2,7 @@
 
 set -e
 
-export JETS_MEGAMODE=1
+export JETS_MEGA=1
 
 # Figure out where this script is located.
 PROJECTDIR="`dirname \"$0\"`"
