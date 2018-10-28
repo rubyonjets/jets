@@ -24,7 +24,7 @@ You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/i
 
 Then [configure it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
-    aws configure    
+    aws configure
 
 ## Dependencies
 
@@ -34,7 +34,14 @@ Jets uses Ruby 2.5.0 and code written with patch variants of it will work.
 
 ### Yarn
 
-For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets which requires node's yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended to install a desired version of node. Once node is installed, install yarn with:
+For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets which requires node's yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended to install a desired version of node.  Here's a node install cheatsheet, though prelease refer to the links for the most updated commands with possible more recent versions:
+
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+    # note follow the instructions after the curl command to source nvm
+    nvm install 8.10.0 # please check AWS Lambda for the latest node runtime
+    nvm alias default node # sets the default version
+
+Once node is installed, install yarn with:
 
     npm install -g yarn
 
