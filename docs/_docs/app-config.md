@@ -19,7 +19,7 @@ Jets.application.configure do
 
   config.function.timeout = 30
   # config.function.role = "arn:aws:iam::#{ENV['AWS_ACCOUNT_ID']}:role/service-role/pre-created"
-  # config.function.memory_size= 3008
+  # config.function.memory_size = 3008
   # config.function.cors = true
   config.function.environment = {
     global_app_key1: "global_app_value1",
@@ -46,7 +46,7 @@ config/environments/development.rb:
 
 ```ruby
 Jets.application.configure do
-  config.function.memory_size= 1536
+  config.function.memory_size = 1536
   config.ruby.lazy_load = true
 end
 ```
@@ -55,7 +55,7 @@ config/environments/production.rb:
 
 ```ruby
 Jets.application.configure do
-  config.function.memory_size= 2048
+  config.function.memory_size = 2048
   config.ruby.lazy_load = false
 end
 ```
