@@ -24,8 +24,9 @@ class Jets::Commands::Import
 
     def create_rackup_wrappers
       path = File.expand_path("../../builders/rackup_wrappers", File.dirname(__FILE__))
-      set_source_paths(path) # switch the source path
-      directory ".", "#{rack_folder}/bin"
+      Dir.glob("#{path}/*").each do |p|
+        FileUtils.cp(p, "#{rack_folder}/bin/")
+      end
       chmod "#{rack_folder}/bin/rackup", 0755
     end
 
