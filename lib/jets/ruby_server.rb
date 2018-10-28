@@ -96,9 +96,6 @@ module Jets
 
         input_completed, event, handler = nil, nil, nil
         unless input_completed
-          # event = client.gets.strip # text or nil
-          # handler = client.gets.strip # text or nil
-
           event = client.gets&.strip # text or nil
           handler = client.gets&.strip # text or nil
           # The event is nil when a client connects and immediately disconnects without sending data
@@ -106,10 +103,6 @@ module Jets
             # puts "event was nil" # uncomment to debug
             next
           end
-
-          # uncomment to debug
-          # puts "event #{event.inspect}"
-          # puts "handler #{handler.inspect}"
 
           input_completed = true
         end
