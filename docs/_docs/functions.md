@@ -2,7 +2,7 @@
 title: Functions
 ---
 
-Jets supports writing simple AWS Lambda functions with Ruby. You define them in the `app/functions` folder. A function looks like this:
+Jets supports writing AWS Lambda functions with Ruby. You define them in the `app/functions` folder. A function looks like this:
 
 app/functions/simple.rb:
 
