@@ -39,8 +39,8 @@ private
   end
 
   def copy_options
-    # list of words to include in the exclude pattern and will not be generated
-    words = %w[
+    # For job mode: list of words to include in the exclude pattern and will not be generated.
+    excludes = %w[
       Procfile
       controllers
       helpers
@@ -58,9 +58,16 @@ private
     ]
 
     if @options[:mode] == 'job'
-      { exclude_pattern: Regexp.new(words.join('|')) }
+      { exclude_pattern: Regexp.new(excludes.join('|')) }
     else
-      {}
+      if @options[:database]
+        {}
+      else
+        # Do not even generated the config/database.yml because
+        # jets webpacker:install bombs and tries to load the db since it sees a
+        # config/database.yml but has there's no database pg gem configured.
+        { exclude_pattern: Regexp.new('database.yml') }
+      end
     end
   end
 

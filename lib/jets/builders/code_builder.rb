@@ -4,7 +4,6 @@ require "colorize"
 require "socket"
 require "net/http"
 require "action_view"
-require "bundler" # for clean_old_submodules only
 
 # Some important folders to help understand how jets builds a project:
 #
