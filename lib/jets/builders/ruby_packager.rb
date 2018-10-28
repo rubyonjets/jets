@@ -119,7 +119,7 @@ class Jets::Builders
       Dir.glob("#{cache_area}/bundled/gems/ruby/2.5.0/bundler/gems/*").each do |path|
         sha = path.split('-').last[0..6] # only first 7 chars of the git sha
         unless git_shas.include?(sha)
-          puts "Removing old submoduled gem: #{path}"
+          # puts "Removing old submoduled gem: #{path}" # uncomment to see and debug
           FileUtils.rm_rf(path) # REMOVE old submodule directory
         end
       end

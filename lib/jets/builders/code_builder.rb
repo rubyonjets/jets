@@ -72,7 +72,7 @@ class Jets::Builders
 
       clean_start
       compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
-      compile_rack_assets
+      compile_rails_assets
       copy_project
       Dir.chdir(full(tmp_code)) do
         # These commands run from project root
@@ -200,8 +200,15 @@ class Jets::Builders
     # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
       return if poly_only?
-      IO.write("#{full(tmp_code)}/config/s3_base_url.txt", s3_base_url)
-      IO.write("#{full(tmp_code)}/rack/config/s3_base_url.txt", s3_base_url) if Jets.rack?
+
+      write_s3_base_url("config/s3_base_url.txt")
+      write_s3_base_url("rack/config/s3_base_url.txt") if Jets.rack?
+    end
+
+    def write_s3_base_url(relative_path)
+      full_path = "#{full(tmp_code)}/#{relative_path}"
+      FileUtils.mkdir_p(File.dirname(full_path))
+      IO.write(full_path, s3_base_url)
     end
 
     def s3_base_url
@@ -246,7 +253,9 @@ class Jets::Builders
 
     # This happens in the current app directory not the tmp code for simplicity
     # This is because the node likely been set up correctly there.
-    def compile_rack_assets
+    def compile_rails_assets
+      return unless rails?
+
       if ENV['JETS_SKIP_ASSETS']
         puts "Skip compiling rack assets".colorize(:yellow) # useful for debugging
         return
@@ -265,6 +274,13 @@ class Jets::Builders
       command = "rake assets:#{cmd} --trace"
       command = "RAILS_ENV=#{Jets.env} #{fulL_cmd}" unless Jets.env.development?
       sh("cd rack && #{command}")
+    end
+
+    # Rudimentary rails detection
+    def rails?
+      config_ru = "#{@app_root}/config.ru"
+      return false unless File.exist?(config_ru)
+      !IO.readlines(config_ru).grep(/Rails.application/).empty?
     end
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
@@ -288,7 +304,7 @@ class Jets::Builders
       FileUtils.rm_rf(full(tmp_code)) # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
-        puts "cp -r #{@full_project_path} #{full(tmp_code)}".colorize(:yellow) # uncomment to debug
+        # puts "cp -r #{@full_project_path} #{full(tmp_code)}".colorize(:yellow) # uncomment to debug
         FileUtils.cp_r(@full_project_path, full(tmp_code))
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
