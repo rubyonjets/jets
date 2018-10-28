@@ -37,7 +37,7 @@ class Jets::Builders
     end
 
     # We clean out ignored files pretty aggressively. So provide
-    # a way for users to keep files from being cleaned ou.
+    # a way for users to keep files from being cleaned out.
     def jetskeep
       defaults = %w[.bundle bundled pack handlers public/assets]
       path = "#{@project_root}/.jetskeep"
@@ -64,18 +64,12 @@ class Jets::Builders
       return if exists
 
       # say "  rm -rf #{path}".colorize(:yellow) # uncomment to debug
-      # FileUtils.rm_rf(path) unless @noop
       system("rm -rf #{path}") unless @noop
     end
 
     # These directories will be removed regardless of dir level
     def always_removals
       %w[.git spec tmp]
-    end
-
-    def top_level_removals
-      # some gems have a log folder and class
-      %w[]
     end
 
     def say(message)

@@ -1,7 +1,7 @@
 # Jets::Builders::ShimVars::Shared.new(path)
 #
-#   @deducer.functions.each do |function_name|
-#     @deducer.handler_for(function_name)
+#   @vars.functions.each do |function_name|
+#     @vars.handler_for(function_name)
 #   end
 #
 # Implements:
