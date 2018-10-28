@@ -277,7 +277,7 @@ class Jets::Builders
 
     # Rudimentary rails detection
     def rails?
-      config_ru = "#{@app_root}/config.ru"
+      config_ru = "#{Jets.root}rack/config.ru"
       return false unless File.exist?(config_ru)
       !IO.readlines(config_ru).grep(/Rails.application/).empty?
     end

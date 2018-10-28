@@ -35,7 +35,11 @@ CODE
 
         # Local Testing
 
-        Check out the config/routes.rb file and noticed how a new catchall route has been added. The catchall route passes any route not handled by the Jets app as a request onto the Rails app.  You can modified the route to selectively route what you want.
+        Check out the config/routes.rb file and noticed how a new catchall route has been added.  It looks something like this:
+
+            any "*catchall", to: "jets/rack#process"
+
+        The catchall route passes any route not handled by the Jets app as a request onto the Rails app.  You can modified the route to selectively route what you want.
 
         Test the application locally. Test that the Rails app in the rack subfolder works independently.  You can start the application up with:
 
