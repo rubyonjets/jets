@@ -37,7 +37,7 @@ end
 
 The `lookup` method is available to the `Alert` class as a part of inheriting from the `Jets::Stack` class. Also note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb). For services not included, add the gem to your project's Gemfile and set up the client in the code.
 
-**Important:** You must use singularize names for your shared resource classes. So use `shared/resources/alert.rb` instead of `shared/resources/alerts.rb`. Jets relies on this naming convention to handle autoloading of shared resources. You can override this behavior by customizing inflections though with the [Application Configuration](http://rubyonjets.com/docs/app-config/).
+**Important:** You must use singularize names for your shared resource classes. So use `shared/resources/alert.rb` instead of `shared/resources/alerts.rb`. Jets relies on this naming convention to handle autoloading of shared resources. You can override this behavior by customizing inflections though with the [Inflections]({% link _docs/custom-inflections.md %}).
 
 ## General Resource Form
 
