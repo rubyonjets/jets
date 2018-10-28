@@ -6,7 +6,7 @@ Jets supports lazy loading of dependency libraries like RubyGems and the Ruby in
 
 > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
 
-Lazy loading happens as a part of the first Lambda request and occurs in the Lambda execution context.  Lazy loading adds an overhead of about 10 seconds. The overhead might seem significant but it only happens on the first request because it runs in the Lambda Execution context. Once the Lambda function is warmed up, additional requests respond in the millisecond range. A Jets request ranges in the 10s of milliseconds and a Mega Mode Rails request ranges in the 100s of milliseconds, usually from 100ms to 500ms.
+Lazy loading happens as a part of the first Lambda request and occurs in the Lambda execution context.  Lazy loading adds an overhead of about 10 seconds. The overhead might seem significant but it only happens on the first request because it runs in the Lambda Execution context. Once the Lambda function is warmed up, additional requests respond in the millisecond range. A Jets request ranges in the 10s of milliseconds and a Mega Mode Rails request ranges in the 100s of milliseconds, usually from 100ms to 300ms.
 
 Additionally, [Prewarming]({% link _docs/prewarming.md %}) helps to avoid the overhead entirely. Prewarming can be tuned for your needs with a few configuration settings.
 
