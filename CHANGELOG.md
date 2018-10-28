@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [0.11.0]
+- Mega Mode: Rails Support, Rack Support
+- jets import:rails command
+- Lazy Loading Support
+- Separate Environment configuration support
+- config/inflections.yml support
+- Improve shim: organized code
+- Better static asset serving
+- Improve deploy performance: lazy loading, separate zip files, and only reupload if md5 checksums change.
+- Improve handler generation: ShimVars concept.
+- Improve code builder: Tidy class
+- Improve cfn builder: separate out cfn upload
+- Improve Jets IO buffer handling
+- Default function timeout 30s now and 60s for jobs
+
 ## [0.10.4]
 - Merge pull request #51 from tongueroo/fix-aws-account: fix aws account lookup when ~/.aws/config not configured
 - deprecate config.api_mode for api.mode = "api"
