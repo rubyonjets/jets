@@ -16,7 +16,7 @@ An additional benefit of lazy loading is that it keeps your application code siz
 
 The best recommendation to speed up your AWS Lambda development workflow is to use [Cloud9](https://aws.amazon.com/cloud9/).  Interestingly, the Lambda Console Editor is a slimmed down version of Cloud9.  You can even use some of the same shortcut keys. So you get the benefit of getting familar with the Lambda Console Editor when you use Cloud9.
 
-Since Cloud9 runs on an EC2 server, a huge benefit of using Cloud9 is the blazing AWS internet pipe.  Here's a comparison:
+Since Cloud9 runs on an EC2 server, a huge benefit is the blazing fast AWS internet pipe.  Here's a comparison:
 
 EC2 Instance Internet Speed:
 
