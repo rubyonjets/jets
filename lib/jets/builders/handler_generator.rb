@@ -107,6 +107,7 @@ class Jets::Builders
       vars = Jets::Builders::ShimVars::Base.new
       result = evaluate_template("shim.js", vars)
       dest = "#{tmp_code}/handlers/shim.js"
+      FileUtils.mkdir_p(File.dirname(dest))
       IO.write(dest, result)
     end
 
