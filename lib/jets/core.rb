@@ -157,7 +157,7 @@ module Jets::Core
   end
 
   def project_namespace
-    [config.project_name, config.short_env, config.env_extra].compact.join('-')
+    [config.project_name, config.short_env, config.env_extra].compact.join('-').gsub('_','-')
   end
 
   def rack?
