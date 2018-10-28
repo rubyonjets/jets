@@ -8,15 +8,15 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - jets import:rails command
 - Lazy Loading Support
 - Separate Environment configuration support
-- config/inflections.yml support
+- Default function timeout 30s now and 60s for jobs
+- Improve config/inflections.yml support
 - Improve shim: organized code
-- Better static asset serving
+- Improve static asset serving
 - Improve deploy performance: lazy loading, separate zip files, and only reupload if md5 checksums change.
 - Improve handler generation: ShimVars concept.
 - Improve code builder: Tidy class
 - Improve cfn builder: separate out cfn upload
 - Improve Jets IO buffer handling
-- Default function timeout 30s now and 60s for jobs
 
 ## [0.10.4]
 - Merge pull request #51 from tongueroo/fix-aws-account: fix aws account lookup when ~/.aws/config not configured
