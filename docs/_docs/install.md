@@ -55,7 +55,7 @@ The currently supported and default ORM database is PostgreSQL. When you run `je
     yum install -y postgresql-devel # amazonlinux2 and redhat variants
     apt-get install libpq-dev # ubuntu and debian variants
 
-If you do not need an ORM database adapter, you can use the `--no-database` option and `jets new` will not insert the `pg` gem to the Gemfile.
+If you do not need an ORM database adapter, you can use the `jets new --no-database` option and the `pg` gem will not be added to the Gemfile.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/jobs.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/structure.md %}">Next Step</a>
