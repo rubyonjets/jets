@@ -87,12 +87,12 @@ app/jobs/hard_job.rb:
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def dig
-    {done: "digging"}
+    puts "done digging"
   end
 
   cron "0 */12 * * ? *" # every 12 hours
   def lift
-    {done: "lifting"}
+    puts "done lifting"
   end
 end
 ```
