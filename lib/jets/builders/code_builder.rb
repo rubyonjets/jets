@@ -261,7 +261,8 @@ class Jets::Builders
     end
 
     def rails_assets(cmd)
-      command = "rails assets:#{cmd} --trace"
+      # rake is available in both rails 4 and 5. rails command only in 5
+      command = "rake assets:#{cmd} --trace"
       command = "RAILS_ENV=#{Jets.env} #{fulL_cmd}" unless Jets.env.development?
       sh("cd rack && #{command}")
     end
