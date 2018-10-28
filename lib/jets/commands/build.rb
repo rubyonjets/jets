@@ -145,7 +145,7 @@ module Jets::Commands
     def self.poly_only?
       # Scans all the app code and look for any methods that are ruby.
       # If any method is written in ruby then we know the app is not a
-      # soley polymorphic non-ruby app.
+      # solely polymorphic non-ruby app.
       has_ruby = app_files.detect do |path|
         app_class = Jets::Klass.from_path(path)  # IE: PostsController, Jets::PublicController
         langs = app_class.tasks.map(&:lang)

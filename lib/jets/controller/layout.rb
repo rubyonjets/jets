@@ -1,3 +1,6 @@
+require 'active_support'
+require 'active_support/core_ext'
+
 class Jets::Controller
   module Layout
     extend ActiveSupport::Concern
