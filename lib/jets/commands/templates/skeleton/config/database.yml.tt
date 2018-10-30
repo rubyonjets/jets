@@ -1,5 +1,5 @@
 default: &default
-  adapter: <%= @options[:database] == 'mysql' ? 'mysql2' : 'pg' %>
+  adapter: <%= @options[:database] == 'mysql' ? 'mysql2' : 'postgresql' %>
   encoding: utf8
   pool: <%%= ENV["DB_POOL"] || 5  %>
   database: <%%= ENV['DB_NAME'] || '<%= @project_name %>_dev' %>
