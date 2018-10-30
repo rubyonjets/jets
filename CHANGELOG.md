@@ -7,6 +7,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - Mega Mode: Rails Support, Rack Support
 - jets import:rails command
 - Lazy Loading Support
+- MySQL support. MySQL is default for jets new command.
 - Separate Environment configuration support
 - Default function timeout 30s now and 60s for jobs
 - Improve config/inflections.yml support
