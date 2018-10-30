@@ -31,10 +31,13 @@ class Jets::Commands::Upgrade
       routes_file = "#{Jets.root}config/routes.rb"
       return unless File.exist?(routes_file)
 
-      puts "Update: config/routes.rb"
       lines = IO.readlines(routes_file)
+      deprecated_code = 'root "jets/welcome#index"'
+      return unless lines.detect { |l| l.include?(deprecated_code) }
+
+      puts "Update: config/routes.rb"
       lines.map! do |line|
-        if line.include?('root "jets/welcome#index"')
+        if line.include?(deprecated_code)
           %Q|  root "jets/public#show"\n| # assume 2 spaces for simplicity
         else
           line
@@ -47,10 +50,13 @@ class Jets::Commands::Upgrade
 
     def update_mode_setting
       application_file = "#{Jets.root}config/application.rb"
-      puts "Update: config/application.rb"
       lines = IO.readlines(application_file)
+      deprecated_code = 'config.api_generator'
+      return unless lines.detect { |l| l.include?(deprecated_code) }
+
+      puts "Update: config/application.rb"
       lines.map! do |line|
-        if line.include?('config.api_generator')
+        if line.include?(deprecated_code)
           mode = Jets.config.api_generator ? 'api' : 'html'
           %Q|  config.mode = "#{mode}"\n| # assume 2 spaces for simplicity
         else

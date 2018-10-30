@@ -35,6 +35,8 @@ module Jets
           DEPRECATED: Jets.config.api_generator
           Instead, please update your config/application.rb to use:
             Jets.config.mode = 'api'
+          You can also run:
+            jets upgrade:v1
         EOL
       end
       api_mode = Jets.config.mode == 'api' || Jets.config.api_mode || Jets.config.api_generator
