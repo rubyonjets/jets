@@ -178,8 +178,10 @@ class Jets::Builders
     def update_lazy_load_config
       size_limit = AWS_CODE_SIZE_LIMIT
       code_size = dir_size(full(tmp_code))
-      if code_size > size_limit
+      if code_size > size_limit && !Jets.config.ruby.lazy_load
         # override the setting because we dont have to a choice but to lazy load
+        mb_limit = AWS_CODE_SIZE_LIMIT / 1024 / 1024
+        puts "Code size close to AWS code size limit of #{mb_limit}MB. Lazy loading automatically enabled."
         Jets.config.ruby.lazy_load = true
       end
     end
