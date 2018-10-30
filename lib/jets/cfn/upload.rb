@@ -29,21 +29,6 @@ class Jets::Cfn
       end
     end
 
-    # build was already ran and that a file that contains the md5 path exists
-    # at Jets.build_root/code/current-md5-filename.txt
-    #
-    # md5_code_zipfile: /tmp/jets/demo/code/code-2e0e18f6.zip
-    # The current-md5-filename.txt gets created as a part of CodeBuilder's build
-    # process.
-    #
-    # And is required to be used much later for cfn/ship and base_child_builder
-    # They need set an s3_key which requires the md5_zip_dest.
-    # It is a pain to pass this all the way up from the
-    # CodeBuilder class.
-    #
-    # We store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
-    # file that can be read from any places where this is needed.
-    # Can also just generate a "fake file" for specs
     def upload_zip_files
       puts "Uploading code zip files to S3."
       zip_area = "#{Jets.build_root}/stage/zips"
@@ -84,11 +69,6 @@ class Jets::Cfn
       asset_folders + %w[rack/public]
     end
 
-    # Examples of parameter values:
-    #
-    #   root: ./ or /full/path/to/jets/project/
-    #   prefix: public/packs
-    #   prefix: public/images
     def upload_asset_folder(folder)
       expression = "#{Jets.root}#{folder}/**/*"
       group_size = 10

@@ -9,9 +9,7 @@ class Jets::RackController < Jets::Controller::Base
   end
 
 private
-
   def rack_request
     Jets::Rack::Request.new(event, self).process
   end
-
 end
