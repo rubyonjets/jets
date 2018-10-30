@@ -20,6 +20,7 @@ module Jets::Commands
   autoload :Runner, 'jets/commands/runner'
   autoload :Sequence, "jets/commands/sequence"
   autoload :StackInfo, "jets/commands/stack_info"
+  autoload :Upgrade, "jets/commands/upgrade"
   autoload :Url, "jets/commands/url"
   autoload :WebpackerTemplate, 'jets/commands/webpacker_template'
 end

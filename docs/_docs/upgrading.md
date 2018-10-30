@@ -2,20 +2,25 @@
 title: Upgrading Guide
 ---
 
-Upgrading Jets to some releases require blue-green deployments.  Here's a list of releases where it's required:
+Upgrading Jets to some releases might require some extra changes.  For example, the Jets project structure can possible change. Also, some version upgrades require a blue-green deployments.  Here's a summary of the releases requiring some upgrade work.
 
-## Blue-Green Releases
+## Upgrading Releases
 
-The following table summarizes the releases that require blue-green deployments.
+The following table summarizes the releases and upgrade paths.
 
-Version | Notes
---- | ---
-0.10.0 | Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action. Also removed the managed `Jets::WelcomeController` and consolidated to the managed `Jets::PublicController`. Refer to Upgrade Details.
-0.9.0 | CloudFormation Logical ids changed to be more concise.
+Version | Notes | Blue-Green?
+--- | --- | ---
+1.0.0 | Added `config/environments` files. Going from 0.10.0 to 1.0.0 does not required a blue-green deploy. But if you're going from before 0.10.0, then you will need a blue-green deploy. | No
+0.10.0 | Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action. Also removed the managed `Jets::WelcomeController` and consolidated to the managed `Jets::PublicController`. Refer to Upgrade Details. | Yes
+0.9.0 | CloudFormation Logical ids changed to be more concise. | Yes
 
 ## Upgrade Details
 
 The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
+
+### 1.0.1
+
+The `jets upgrade:v1` command was introduced here. You can use it to upgrade the code structure.
 
 ### 0.10.0
 
@@ -31,6 +36,7 @@ With:
 root "jets/public#show"
 ```
 
+You can use the `jets upgrade:v1` command to automatically update the `config/routes.rb` file.
 
 ## Reasons
 
