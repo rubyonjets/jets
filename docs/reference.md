@@ -23,5 +23,6 @@ title: CLI Reference
 * [jets runner]({% link _reference/jets-runner.md %})
 * [jets server]({% link _reference/jets-server.md %})
 * [jets status]({% link _reference/jets-status.md %})
+* [jets upgrade:v1]({% link _reference/jets-upgrade-v1.md %})
 * [jets url]({% link _reference/jets-url.md %})
 * [jets version]({% link _reference/jets-version.md %})
