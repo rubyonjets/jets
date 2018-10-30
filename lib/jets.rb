@@ -72,4 +72,5 @@ if File.exist?("#{Jets.root}config/database.yml")
   exists = File.exist?("/var/task/bundled/gems/ruby/2.5.0/gems/pg-0.21.0/lib/pg_ext.so")
   # Jets.logger.info("pg_ext.so exists #{exists.inspect}")
   require "pg" if Gem.loaded_specs.has_key?('pg')
+  require "mysql2" if Gem.loaded_specs.has_key?('mysql2')
 end
