@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.1]
+- jets upgrade:v1 command
+- Merge pull request #52 from tongueroo/upgrade-command
+
 ## [1.0.0]
 - Mega Mode: Rails Support, Rack Support
 - jets import:rails command
@@ -18,6 +22,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - Improve code builder: Tidy class
 - Improve cfn builder: separate out cfn upload
 - Improve Jets IO buffer handling
+- Merge pull request #48 from tongueroo/megamode2
 
 ## [0.10.4]
 - Merge pull request #51 from tongueroo/fix-aws-account: fix aws account lookup when ~/.aws/config not configured
