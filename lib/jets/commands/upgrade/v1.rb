@@ -10,6 +10,7 @@ class Jets::Commands::Upgrade
       puts "Upgrading to Jets v1..."
       environment_configs
       update_routes
+      update_mode_setting
       puts "Upgrade complete."
     end
 
@@ -42,6 +43,23 @@ class Jets::Commands::Upgrade
 
       content = lines.join
       IO.write(routes_file, content)
+    end
+
+    def update_mode_setting
+      application_file = "#{Jets.root}config/application.rb"
+      puts "Update: config/application.rb"
+      lines = IO.readlines(application_file)
+      lines.map! do |line|
+        if line.include?('config.api_generator')
+          mode = Jets.config.api_generator ? 'api' : 'html'
+          %Q|  config.mode = "#{mode}"\n| # assume 2 spaces for simplicity
+        else
+          line
+        end
+      end
+
+      content = lines.join
+      IO.write(application_file, content)
     end
   end
 end
