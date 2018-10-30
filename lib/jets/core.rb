@@ -34,15 +34,6 @@ module Jets::Core
   # Ensures trailing slash
   # Useful for appending a './' in front of a path or leaving it alone.
   # Returns: '/path/with/trailing/slash/' or './'
-  # @@root = nil
-  # def root
-  #   return @@root if @@root
-  #   @@root = ENV['JETS_ROOT'].to_s
-  #   @@root = '.' if @@root == ''
-  #   @@root = "#{@@root}/" unless @@root.ends_with?('/')
-  #   @@root = Pathname.new(@@root)
-  # end
-
   def root
     root = ENV['JETS_ROOT'].to_s
     root = '.' if root == ''
@@ -107,15 +98,18 @@ module Jets::Core
 
   # Skip these paths because eager loading doesnt work for them.
   def skip_eager_load_paths?(path)
-    path =~ %r{/templates/} ||
-    path =~ %r{/version} ||
-    path =~ %r{/rails_overrides} ||
-    path =~ %r{/default/application} ||
-    path =~ %r{/internal/app} ||
-    path =~ %r{/webpacker} ||
     path =~ %r{/cli} ||
     path =~ %r{/core_ext} ||
-    path =~ %r{/jets/stack}
+    path =~ %r{/default/application} ||
+    path =~ %r{/functions} ||
+    path =~ %r{/internal/app} ||
+    path =~ %r{/jets/stack} ||
+    path =~ %r{/rackup_wrappers} ||
+    path =~ %r{/rails_overrides} ||
+    path =~ %r{/reconfigure_rails} ||
+    path =~ %r{/templates/} ||
+    path =~ %r{/version} ||
+    path =~ %r{/webpacker}
   end
 
   def class_mappings(class_name)
@@ -129,7 +123,7 @@ module Jets::Core
   def eager_load_app
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
-      next if path.include?('app/shared/functions')
+      next if path.include?('app/functions') || path.include?('app/shared/functions')
 
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
@@ -163,7 +157,15 @@ module Jets::Core
   end
 
   def project_namespace
-    [config.project_name, config.short_env, config.env_extra].compact.join('-')
+    [config.project_name, config.short_env, config.env_extra].compact.join('-').gsub('_','-')
   end
 
+  def rack?
+    path = "#{Jets.root}rack"
+    File.exist?(path) || File.symlink?(path)
+  end
+
+  def lazy_load?
+    config.ruby.lazy_load
+  end
 end

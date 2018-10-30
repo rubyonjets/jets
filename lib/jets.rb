@@ -25,6 +25,7 @@ module Jets
   autoload :Dotenv, 'jets/dotenv'
   autoload :Erb, "jets/erb"
   autoload :Generator, "jets/generator"
+  autoload :Inflections, "jets/inflections"
   autoload :IO, "jets/io"
   autoload :Job, 'jets/job'
   autoload :Klass, 'jets/klass'
@@ -34,6 +35,7 @@ module Jets
   autoload :PolyFun, 'jets/poly_fun'
   autoload :Preheat, "jets/preheat"
   autoload :Processors, 'jets/processors'
+  autoload :Rack, "jets/rack"
   autoload :Rdoc, "jets/rdoc"
   autoload :Resource, "jets/resource"
   autoload :Route, "jets/route"
@@ -44,7 +46,6 @@ module Jets
   autoload :Stack, "jets/stack"
   autoload :Timing, "jets/timing"
   autoload :Util, "jets/util"
-  autoload :Inflections, "jets/inflections"
 
   extend Core # root, logger, etc
 end
@@ -66,9 +67,6 @@ end
 # TODO: move require "pg" into loader class and abstract to support more gems
 if File.exist?("#{Jets.root}config/database.yml")
   require "active_record"
-  # Note: think this is only needed for specs
-  # Apps require pg in their own Gemfile via bundler
-  exists = File.exist?("/var/task/bundled/gems/ruby/2.5.0/gems/pg-0.21.0/lib/pg_ext.so")
-  # Jets.logger.info("pg_ext.so exists #{exists.inspect}")
   require "pg" if Gem.loaded_specs.has_key?('pg')
+  require "mysql2" if Gem.loaded_specs.has_key?('mysql2')
 end

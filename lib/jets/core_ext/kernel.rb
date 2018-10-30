@@ -1,5 +1,7 @@
-# Works with jets/io.rb
+# Works with io.rb
+# IO.flush # flush output and write to disk for node shim
 module Kernel
+  JETS_OUTPUT = "/tmp/jets-output.log"
   @@io_buffer = []
 
   # List from https://ruby-doc.org/core-2.5.1/Kernel.html
@@ -12,8 +14,8 @@ module Kernel
     printf
     putc
     puts
-    sprintf
   ]
+  # NOTE adding sprintf produces #<%s: %s:%s/%s> with puma? So not including sprintf
   OVERRIDE_METHODS.each do |meth|
     # Example of generated code:
     #
@@ -41,11 +43,13 @@ module Kernel
   # Rescue and discard it to keep the process alive.
   def io_flush
     chunk = @@io_buffer.join("\n")
+    chunk += "\n" unless chunk == ''
     begin
-      IO.write("/tmp/jets-output.log", chunk)
+      # since we always append to the file, the node shim is responsible for truncating the file
+      IO.write(JETS_OUTPUT, chunk, mode: 'a') if chunk
     # Writing to log with binary content will crash the process so rescuing it and writing an info message.
     rescue Encoding::UndefinedConversionError
-      IO.write("/tmp/jets-output.log", "[BINARY DATA]")
+      IO.write(JETS_OUTPUT, "[BINARY DATA]\n", mode: 'a')
     end
     @@io_buffer = []
   end

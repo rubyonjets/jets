@@ -1,9 +1,13 @@
 default: &default
-  adapter: postgresql
+  adapter: <%= @options[:database] == 'mysql' ? 'mysql2' : 'postgresql' %>
   encoding: utf8
   pool: <%%= ENV["DB_POOL"] || 5  %>
   database: <%%= ENV['DB_NAME'] || '<%= @project_name %>_dev' %>
+<% if @options[:database] == 'mysql' -%>
+  username: <%%= ENV['DB_USER'] || 'root' %>
+<% else -%>
   username: <%%= ENV['DB_USER'] || ENV['USER'] %>
+<% end -%>
   password: <%%= ENV['DB_PASS'] %>
   host: <%%= ENV["DB_HOST"] %>
   url: <%%= ENV['DATABASE_URL'] %> # takes higher precedence than other settings

@@ -12,10 +12,8 @@ class Jets::Cfn::Builders
 
     # compose is an interface method
     def compose
-      puts "Building parent CloudFormation template."
-
       build_minimal_resources
-      build_child_resources if @options[:templates] || @options[:stack_type] == :full
+      build_child_resources if full?
     end
 
     # template_path is an interface method
@@ -29,6 +27,7 @@ class Jets::Cfn::Builders
       add_resource(resource)
       add_outputs(resource.outputs)
 
+      return unless full?
       # Add application-wide IAM policy from Jets.config.iam_role
       resource = Jets::Resource::Iam::ApplicationRole.new
       add_resource(resource)
@@ -36,8 +35,6 @@ class Jets::Cfn::Builders
     end
 
     def build_child_resources
-      puts "Building child CloudFormation templates."
-
       expression = "#{Jets::Naming.template_path_prefix}-app-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
       Dir.glob(expression).each do |path|
@@ -53,10 +50,14 @@ class Jets::Cfn::Builders
         add_shared_resources(path)
       end
 
-      if (@options[:templates] || @options[:stack_type] == :full) and !Jets::Router.routes.empty?
+      if full? and !Jets::Router.routes.empty?
         add_api_gateway
         add_api_deployment
       end
+    end
+
+    def full?
+      @options[:templates] || @options[:stack_type] == :full
     end
 
     def add_app_class_stack(path)

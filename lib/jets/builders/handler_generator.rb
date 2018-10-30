@@ -9,14 +9,50 @@ require "erb"
 # )
 class Jets::Builders
   class HandlerGenerator
-    def initialize(path)
-      @path = path
+    def self.build!
+      new.build
     end
 
-    def generate
+    def build
+      common_base_shim
+      app_ruby_shims
       poly_shims
-      app_ruby_shim
       shared_shims
+    end
+
+    def app_ruby_shims
+      app_files.each do |path|
+        # Generates one big node shim for a entire controller.
+        vars = Jets::Builders::ShimVars::App.new(path)
+        generate_handler(vars)
+      end
+    end
+
+    def app_files
+      Jets::Commands::Build.app_files
+    end
+
+    def poly_shims
+      missing = []
+
+      app_files.each do |path|
+        vars = Jets::Builders::ShimVars::App.new(path)
+        poly_tasks = vars.klass.tasks.select { |t| t.lang != :ruby }
+        poly_tasks.each do |task|
+          source_path = get_source_path(path, task)
+          if File.exist?(source_path)
+            native_function(path, task)
+          else
+            missing << source_path
+          end
+        end
+
+        unless missing.empty?
+          puts "ERROR: Missing source files. Please make sure these source files exist or remove their declarations".colorize(:red)
+          puts missing
+          exit 1
+        end
+      end
     end
 
     def shared_shims
@@ -41,30 +77,9 @@ class Jets::Builders
         return
       end
 
-      dest_path = "#{tmp_app_root}/#{fun.handler_dest}"
+      dest_path = "#{tmp_code}/#{fun.handler_dest}"
       FileUtils.mkdir_p(File.dirname(dest_path))
       FileUtils.cp(source_path, dest_path)
-    end
-
-    def poly_shims
-      missing = []
-
-      deducer = Jets::Builders::Deducer.new(@path)
-      poly_tasks = deducer.klass.tasks.select { |t| t.lang != :ruby }
-      poly_tasks.each do |task|
-        source_path = get_source_path(@path, task)
-        if File.exist?(source_path)
-          native_function(@path, task)
-        else
-          missing << source_path
-        end
-      end
-
-      unless missing.empty?
-        puts "ERROR: Missing source files. Please make sure these source files exist or remove their declarations".colorize(:red)
-        puts missing
-        exit 1
-      end
     end
 
     def get_source_path(original_path, task)
@@ -78,35 +93,39 @@ class Jets::Builders
     def native_function(original_path, task)
       source_path = get_source_path(original_path, task)
       # Handler: handlers/controllers/posts_controller.handle
-      dest_path = "#{tmp_app_root}/#{task.handler_path}"
+      dest_path = "#{tmp_code}/#{task.handler_path}"
       FileUtils.mkdir_p(File.dirname(dest_path))
       FileUtils.cp(source_path, dest_path)
     end
 
     def shared_ruby_shim(fun)
-      deducer = Jets::Builders::SharedDeducer.new(fun)
-      generate_shim(deducer)
+      vars = Jets::Builders::ShimVars::Shared.new(fun)
+      generate_handler(vars)
     end
 
-    # Generates one big node shim for a entire controller.
-    def app_ruby_shim
-      deducer = Jets::Builders::Deducer.new(@path)
-      generate_shim(deducer)
+    def common_base_shim
+      vars = Jets::Builders::ShimVars::Base.new
+      result = evaluate_template("shim.js", vars)
+      dest = "#{tmp_code}/handlers/shim.js"
+      FileUtils.mkdir_p(File.dirname(dest))
+      IO.write(dest, result)
     end
 
-    def generate_shim(deducer)
-      js_path = "#{tmp_app_root}/#{deducer.js_path}"
-      FileUtils.mkdir_p(File.dirname(js_path))
-
-      template_path = File.expand_path('../node-shim.js', __FILE__)
-      result = Jets::Erb.result(template_path, deducer: deducer)
-
-      IO.write(js_path, result)
+    def generate_handler(vars)
+      result = evaluate_template("handler.js", vars)
+      dest = "#{tmp_code}/#{vars.js_path}"
+      FileUtils.mkdir_p(File.dirname(dest))
+      IO.write(dest, result)
     end
 
-    # TODO: move CodeBuilder.tmp_app_root to a common level for HandlerGenerator and CodeBuilder
-    def tmp_app_root
-      "#{Jets.build_root}/#{CodeBuilder.tmp_app_root}"
+    def evaluate_template(template_file, vars)
+      template_path = File.expand_path("../templates/#{template_file}", __FILE__)
+      Jets::Erb.result(template_path, vars: vars)
+    end
+
+    # TODO: move CodeBuilder.tmp_code to a common level for HandlerGenerator and CodeBuilder
+    def tmp_code
+      "#{Jets.build_root}/#{CodeBuilder.tmp_code}"
     end
   end
 end

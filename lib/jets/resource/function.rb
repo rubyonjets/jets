@@ -38,9 +38,16 @@ class Jets::Resource
 
     def environment
       env = Jets.config.environment ? Jets.config.environment.to_h : {}
-      jets_env_options = {JETS_ENV: Jets.env.to_s}
-      jets_env_options[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
-      env.deep_merge(jets_env_options)
+      env.deep_merge(jets_env)
+    end
+
+    # These jets env variables are always included
+    def jets_env
+      env = {}
+      env[:JETS_ENV] = Jets.env.to_s
+      env[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
+      env[:JETS_STAGE] = Jets::Resource::ApiGateway::Deployment.stage_name
+      env
     end
 
     # Global properties example:
@@ -49,7 +56,7 @@ class Jets::Resource
     #
     #   Jets.application.configure do
     #     config.function = ActiveSupport::OrderedOptions.new
-    #     config.function.timeout = 10
+    #     config.function.timeout = 30
     #     config.function.runtime = "nodejs8.10"
     #     config.function.memory_size = 1536
     #   end
@@ -182,7 +189,8 @@ class Jets::Resource
     end
 
     def code_s3_key
-      Jets::Naming.code_s3_key
+      checksum = Jets::Builders::Md5.checksums["stage/code"]
+      "jets/code/code-#{checksum}.zip" # s3_key
     end
 
     # Examples:

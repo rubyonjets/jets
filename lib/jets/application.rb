@@ -11,8 +11,8 @@ class Jets::Application
   end
 
   def setup!
-    load_inflections
     load_configs # load config object so following methods can use it
+    load_inflections
     setup_auto_load_paths
     load_routes
   end
@@ -40,10 +40,13 @@ class Jets::Application
     config.inflections.irregular = {}
 
     config.assets = ActiveSupport::OrderedOptions.new
-    config.assets.folders = %w[packs images assets]
+    config.assets.folders = %w[public]
     config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
     config.assets.max_age = 3600
     config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
+
+    config.ruby = ActiveSupport::OrderedOptions.new
+    config.ruby.lazy_load = true # also set in config/environments files
 
     config
   end
@@ -77,6 +80,15 @@ class Jets::Application
     set_aliases!
     normalize_env_vars!
     load_db_config
+    load_environments_config
+  end
+
+  def load_environments_config
+    env_file = "#{Jets.root}config/environments/#{Jets.env}.rb"
+    if File.exist?(env_file)
+      code = IO.read(env_file)
+      instance_eval(code)
+    end
   end
 
   # Use the shorter name in stack names, but use the full name when it
@@ -103,10 +115,23 @@ class Jets::Application
 
     config.project_namespace = Jets.project_namespace
 
-    # Must set default iam_policy here instead of `def config` because we need access to
-    # the project_namespace and if we call it from `def config` we get an infinite loop
+    # Must set default iam_policy here instead of `def config` because we  project_namespace
+    # must have been set and if we call it from `def config` we get an infinite loop
+    set_iam_policy
+  end
+
+  def set_iam_policy
     config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
+  end
+
+  # After the mimimal template gets build, we need to reload it for the full stack
+  # creation. This is confusing to follow. Think we need to clean up the Jets.application
+  # singleton and make it more explicit?
+  def reload_iam_policy!
+    config.iam_policy = nil
+    config.managed_policy_definitions = nil
+    set_iam_policy
   end
 
   def self.default_iam_policy
@@ -116,7 +141,18 @@ class Jets::Application
       effect: "Allow",
       resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
     }
-    policies = [logs]
+    s3_bucket = Jets.aws.s3_bucket
+    s3_readonly = {
+      action: ["s3:Get*", "s3:List*"],
+      effect: "Allow",
+      resource: "arn:aws:s3:::#{s3_bucket}*",
+    }
+    s3_bucket = {
+      action: ["s3:ListAllMyBuckets", "s3:HeadBucket"],
+      effect: "Allow",
+      resource: "arn:aws:s3:::*", # scoped to all buckets
+    }
+    policies = [logs, s3_readonly, s3_bucket]
 
     if Jets::Stack.has_resources?
       cloudformation = {

@@ -45,28 +45,5 @@ class Jets::Naming
     def gateway_api_name
       "#{Jets.config.project_namespace}"
     end
-
-    def code_s3_key
-      md5_zipfile = File.basename(md5_code_zipfile)
-      "jets/code/#{md5_zipfile}"
-    end
-
-    # build was already ran and that a file that contains the md5 path exists
-    # at Jets.build_root/code/current-md5-filename.txt
-    #
-    # md5_code_zipfile: /tmp/jets/demo/code/code-2e0e18f6.zip
-    def md5_code_zipfile
-      path = "#{Jets.build_root}/code/current-md5-filename.txt"
-      File.exist?(path) ? IO.read(path) : "current-md5-filename-doesnt-exist"
-    end
-    # The current-md5-filename.txt gets created as a part of CodeBuilder's build
-    # process.
-    # And is required to be used much later for cfn/ship and base_child_builder
-    # They need set an s3_key which requires the md5_zip_dest.
-    # It is a pain to pass this all the way up from the
-    # CodeBuilder class.
-    # We store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
-    # file that can be read from any places where this is needed.
-    # Can also just generate a "fake file" for specs
   end
 end

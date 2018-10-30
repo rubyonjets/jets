@@ -15,7 +15,7 @@ This builds the project and deploys it AWS Lambda. The deployment is mainly hand
     => Replacing compiled gems with AWS Lambda Linux compiled versions.
     Creating zip file.
     => cd /tmp/jets/demo/app_root && zip --symlinks -rq /tmp/jets/demo/code/code-temp.zip .
-    Building parent template.
+    Building CloudFormation templates.
     Deploying CloudFormation stack with jets app!
     Uploading /tmp/jets/demo/code/code-7169d0ac.zip (88.8 MB) to S3
     Time to upload code to s3: 1s
@@ -27,6 +27,6 @@ This builds the project and deploys it AWS Lambda. The deployment is mainly hand
     02:10:03AM UPDATE_COMPLETE AWS::CloudFormation::Stack demo-dev
     Stack success status: UPDATE_COMPLETE
     Time took for stack deployment: 1m 46s.
-    Prewarming application...
+    Prewarming application.
     API Gateway Endpoint: https://ewwnealfk0.execute-api.us-west-2.amazonaws.com/dev/
     $

@@ -22,7 +22,9 @@ class Jets::Stack
       attributes = template.values.first
       s3_key = attributes.dig('Properties','Code','S3Key')
       if s3_key == "code_s3_key_placeholder"
-        attributes['Properties']['Code']['S3Key'] = Jets::Naming.code_s3_key
+        checksum = Jets::Builders::Md5.checksums["stage/code"]
+        code_zip = "code-#{checksum}.zip"
+        attributes['Properties']['Code']['S3Key'] = "jets/code/#{code_zip}"
       end
       template
     end

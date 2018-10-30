@@ -9,12 +9,13 @@ class Jets::Controller
     #   1. path parameters have highest precdence
     #   2. query string parameters
     #   3. body parameters
-    def params(raw=false)
+    def params(raw: false, path_parameters: true)
       query_string_params = event["queryStringParameters"] || {}
       path_params = event["pathParameters"] || {}
       params = body_params
                 .deep_merge(query_string_params)
-                .deep_merge(path_params)
+      params = params.deep_merge(path_params) if path_parameters
+
       if raw
         params
       else

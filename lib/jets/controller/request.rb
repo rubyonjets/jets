@@ -51,5 +51,9 @@ class Jets::Controller
       headers["x-requested-with"] == "XMLHttpRequest"
     end
 
+    def path
+      @event["path"]
+    end
+
   end
 end

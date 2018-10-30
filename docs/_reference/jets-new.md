@@ -46,8 +46,8 @@ Use the `--repo` flag to clone an example project from GitHub instead.  With thi
 ```
 [--bootstrap], [--no-bootstrap]  # Install bootstrap css
                                  # Default: true
-[--database], [--no-database]    # Adds database
-                                 # Default: true
+[--database=DATABASE]            # Preconfigure database (options: mysql/postgresql)
+                                 # Default: mysql
 [--force]                        # Bypass overwrite are you sure prompt for existing files.
 [--git], [--no-git]              # Git initialize the project
                                  # Default: true

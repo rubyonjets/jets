@@ -68,6 +68,6 @@ Then update the Gateway API Custom Domain to point to the newly deployed `JETS_E
 6. Make sure there's no traffic hitting the old Jets environment. You can do this by checking out the CloudWatch metrics. Nothing should be hitting it aside from the pre-warming requests. You can disable the pre-warming requests manually by using the CloudWatch console also.
 7. Destroy the old environment.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/faster-development.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/lazy-loading.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/megamode.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

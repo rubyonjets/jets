@@ -10,7 +10,7 @@ The `rate` method creates a CloudWatch Event Rule resource. This Event Rule reso
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def dig
-    {done: "digging"}
+    puts "done digging"
   end
 end
 ```
@@ -33,7 +33,7 @@ class HardJob < ApplicationJob
     }
   )
   def dig
-    {done: "digging"}
+    puts "done digging"
   end
 end
 ```
@@ -62,7 +62,7 @@ class HardJob < ApplicationJob
     }
   )
   def dig
-    {done: "digging"}
+    puts "done digging"
   end
 end
 ```

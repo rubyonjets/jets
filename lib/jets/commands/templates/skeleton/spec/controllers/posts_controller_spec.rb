@@ -1,7 +1,5 @@
-require 'spec_helper'
-
 # Example:
-# RSpec.describe PostsController, type: :controller do
+# describe PostsController, type: :controller do
 #   it "index returns a success response" do
 #     event = payload("posts-index")
 #     controller = PostsController.new(event)

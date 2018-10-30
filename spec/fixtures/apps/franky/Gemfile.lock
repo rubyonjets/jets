@@ -11,7 +11,7 @@ GIT
 PATH
   remote: /home/ec2-user/environment/jets
   specs:
-    jets (0.8.18)
+    jets (0.10.4)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)

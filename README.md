@@ -87,12 +87,12 @@ app/jobs/hard_job.rb:
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def dig
-    {done: "digging"}
+    puts "done digging"
   end
 
   cron "0 */12 * * ? *" # every 12 hours
   def lift
-    {done: "lifting"}
+    puts "done lifting"
   end
 end
 ```
@@ -146,3 +146,5 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Jets Tutorial IAM Policies Part 5](https://blog.boltops.com/2018/09/11/jets-tutorial-iam-policies-part-5)
 * [Jets Tutorial Function Properties Part 6](https://blog.boltops.com/2018/09/12/jets-tutorial-function-properties-part-6)
 * [Jets Tutorial Extra Environments Part 7](https://blog.boltops.com/2018/09/13/jets-tutorial-extra-environments-part-7)
+* [Jets Tutorial Different Environments Part 8](https://blog.boltops.com/2018/09/26/jets-tutorial-different-environments-part-8)
+* [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)

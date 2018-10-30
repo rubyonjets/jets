@@ -21,6 +21,8 @@ module Jets::Commands
       exit_unless_updateable! # Stack could be in a weird rollback state or in progress state
       ship(stack_type: :minimal) if first_run?
 
+      Jets.application.reload_iam_policy!
+
       # Build code after the minimal stack because need s3 bucket for assets
       # on_aws? and s3_base_url logic
       build_code

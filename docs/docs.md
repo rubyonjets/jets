@@ -16,5 +16,5 @@ It is key to understand AWS Lambda and API Gateway to understand Jets conceptual
 You write code and Jets turns the code into Lambda functions and uploads them to AWS Lambda and API Gateway.
 
 <a id="prev" class="btn btn-basic" href="{% link quick-start.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/controllers.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/functions.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

@@ -79,7 +79,7 @@ Jets is unable to build a deployment package that will work on AWS Lambda withou
 * Wait until it added to lambdagems.com. No need to report this to us, as we've already been notified.
 * Use another gem that does not require compilation.
 
-Compiled gems usually take some time to figure out how to build as they each depend on different libraries and packages. We make an effort add new gems as soon as we can. You can support us by going to: http://rubyonjets.com/support-jets/
+Compiled gems usually take some time to figure out how to build as they each depend on different libraries and packages. We make an effort add new gems as soon as we can.
 EOL
       erb = ERB.new(template, nil, '-') # trim mode https://stackoverflow.com/questions/4632879/erb-template-removing-the-trailing-line
       erb.result(binding)

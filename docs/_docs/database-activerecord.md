@@ -2,7 +2,11 @@
 title: Database ActiveRecord
 ---
 
-Jets also supports ActiveRecord and currently the postgres adapter. Here's an example:
+Jets also supports ActiveRecord and currently the PostgreSQL and MySQL.  This is configured with your `Gemfile` and `config/database.yml`.
+
+## Migrations
+
+Here's an example of creating migrations:
 
     jets db:generate create_posts # generates migration
     jets db:migrate

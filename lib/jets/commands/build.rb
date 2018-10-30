@@ -31,16 +31,18 @@ module Jets::Commands
     time :build_code
 
     def build_templates
-      if @options[:templates] || @options[:stack_type] == :full
-        build_all_templates
-      else
-        build_minimal_template
-      end
+      puts "Building CloudFormation templates."
+      clean_templates
+      build_minimal_template
+      build_all_templates if full?
     end
     time :build_templates
 
+    def full?
+      @options[:templates] || @options[:stack_type] == :full
+    end
+
     def build_all_templates
-      clean_templates
       # CloudFormation templates
       # 1. Shared templates - child templates needs them
       build_api_gateway_templates
@@ -103,16 +105,15 @@ module Jets::Commands
       self.class.app_files
     end
 
-    # Crucial that the Dir.pwd is in the tmp_app_root because for
+    # Crucial that the Dir.pwd is in the tmp_code because for
     # because Jets.boot set ups autoload_paths and this is how project
     # classes are loaded.
-    # TODO: rework code so that Dir.pwd does not have to be in tmp_app_root for build to work.
+    # TODO: rework code so that Dir.pwd does not have to be in tmp_code for build to work.
     def self.app_files
       paths = []
       expression = "#{Jets.root}app/**/**/*.rb"
       Dir.glob(expression).each do |path|
         return false unless File.file?(path)
-        next if path.include?("app/functions") # cannot lazy load these because they are anonymous classes
         next unless app_file?(path)
 
         relative_path = path.sub(Jets.root.to_s, '')
@@ -144,15 +145,9 @@ module Jets::Commands
     def self.poly_only?
       # Scans all the app code and look for any methods that are ruby.
       # If any method is written in ruby then we know the app is not a
-      # soley polymorphic non-ruby app.
+      # solely polymorphic non-ruby app.
       has_ruby = app_files.detect do |path|
-        # 1. remove app/controllers or app/jobs, etc
-        # 2. remove .rb extension
-        app_file = path.sub(%r{app/\w+/},'').sub(/\.rb$/,'')
-
-        # Internal jets controllers like Welcome and Public need a different regexp
-        app_file = app_file.sub(%r{.*lib/jets/internal/},'')
-        app_class = app_file.classify.constantize # IE: PostsController, Jets::PublicController
+        app_class = Jets::Klass.from_path(path)  # IE: PostsController, Jets::PublicController
         langs = app_class.tasks.map(&:lang)
         langs.include?(:ruby)
       end
@@ -166,6 +161,9 @@ module Jets::Commands
 
       public_catchall = Jets::Router.has_controller?("Jets::PublicController")
       paths << "#{controllers}/public_controller.rb" if public_catchall
+
+      rack_catchall = Jets::Router.has_controller?("Jets::RackController")
+      paths << "#{controllers}/rack_controller.rb" if rack_catchall
 
       jobs = File.expand_path("../../internal/app/jobs/jets", __FILE__)
       paths << "#{jobs}/preheat_job.rb"
@@ -194,8 +192,8 @@ module Jets::Commands
       false
     end
 
-    def self.tmp_app_root(full_build_path=false)
-      full_build_path ? "#{Jets.build_root}/app_root" : "app_root"
+    def self.tmp_code(full_build_path=false)
+      full_build_path ? "#{Jets.build_root}/stage/code" : "stage/code"
     end
 
   end

@@ -4,7 +4,6 @@ require "colorize"
 require "socket"
 require "net/http"
 require "action_view"
-require "bundler" # for clean_old_submodules only
 
 # Some important folders to help understand how jets builds a project:
 #
@@ -18,7 +17,7 @@ require "bundler" # for clean_old_submodules only
 #   Initially, macosx gems but then get replaced by linux gems where appropriate.
 # cache/downloads/rubies: ruby tarballs.
 # cache/downloads/gems: gem tarballs.
-# app_root: Where project gets copied into in order for us to configure it.
+# code: Where project gets copied into in order for us to configure it.
 # app_root/bundled/gems: Where vendored gems finally end up at.  The compiled
 #   gems at this point are only linux gems.
 # artifacts/code/code-md5sha.zip: code artifact that gets uploaded to lambda.
@@ -40,20 +39,24 @@ require "bundler" # for clean_old_submodules only
 # * bundle install: cache/bundled/gems
 #
 ### setup bundled on app root from cache
-# * copy bundled to app_root: app_root/bundled
+# * copy bundled to code: code/bundled
 # * extract linux ruby: cache/downloads/rubies:
 #                       cache/bundled/rbenv, cache/bundled/linuxbrew
 # * extract linux gems: cache/downloads/gems:
 #                       cache/bundled/gems, cache/bundled/linuxbrew
-# * setup bundled config: app_root/.bundle/config
+# * setup bundled config: code/.bundle/config
 #
 ### zip
 # * create zip file
 class Jets::Builders
   class CodeBuilder
+    # https://docs.aws.amazon.com/lambda/latest/dg/limits.html
+    AWS_CODE_SIZE_LIMIT = 250 * 1024 * 1024 # 250MB
+
     include Jets::Timing
-    include ActionView::Helpers::NumberHelper # number_to_human_size
     include Jets::AwsServices
+    include Util
+    extend Memoist
 
     attr_reader :full_project_path
     def initialize
@@ -63,54 +66,148 @@ class Jets::Builders
     end
 
     def build
-      return create_zip_file(fake=true) if ENV['TEST_CODE'] # early return
-
       cache_check_message
       check_ruby_version
 
       clean_start
-      compile_assets # easier to do before we copy the project
+      compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
+      compile_rails_assets
       copy_project
-      Dir.chdir(full(tmp_app_root)) do
+      Dir.chdir(full(tmp_code)) do
         # These commands run from project root
-        start_app_root_setup
-        bundle
-        finish_app_root_setup
-        create_zip_file
+        code_setup
+        package_ruby
+        code_finish
       end
     end
     time :build
 
-    # Finds out of the app has polymorphic functions only and zero ruby functions.
-    # In this case, we can skip a lot of the ruby related building and speed up the
-    # deploy process.
-    def poly_only?
-      return true if ENV['POLY_ONLY'] # bypass to allow rapid development of handlers
-      Jets::Commands::Build.poly_only?
+    # Resolves the chicken-and-egg problem with md5 checksums. The handlers need
+    # to reference files with the md5 checksum.  The files are the:
+    #
+    #   jets/code/rack-checksum.zip
+    #   jets/code/bundled-checksum.zip
+    #
+    # We compute the checksums before we generate the node shim handlers.
+    def calculate_md5s
+      Md5.compute! # populates Md5.checksums hash
     end
 
-    def start_app_root_setup
-      tidy_project
+    def generate_node_shims
+      headline "Generating shims in the handlers folder."
+      # Crucial that the Dir.pwd is in the tmp_code because for
+      # Jets::Builders::app_files because Jets.boot set ups
+      # autoload_paths and this is how project classes are loaded.
+      Jets::Builders::HandlerGenerator.build!
+    end
+
+    def create_zip_files
+      folders = Md5.stage_folders
+      folders.each do |folder|
+        zip = Md5Zip.new(folder)
+        if exist_on_s3?(zip.md5_name)
+          puts "Already exists: s3://#{s3_bucket}/jets/code/#{zip.md5_name}"
+        else
+          zip = Md5Zip.new(folder)
+          zip.create
+        end
+      end
+    end
+    time :create_zip_files
+
+    def exist_on_s3?(filename)
+      s3_key = "jets/code/#{filename}"
+      begin
+        s3.head_object(bucket: s3_bucket, key: s3_key)
+        true
+      rescue Aws::S3::Errors::NotFound
+        false
+      end
+    end
+
+    # Moves code/bundled and code/rack to build_root.
+    # These files will be packaged separated and lazy loaded as part of the
+    # node shim. This keeps the code zipfile smaller in size and helps
+    # with the 250MB extract limited. /tmp permits up to 512MB.
+    # AWS Lambda Limits: https://amzn.to/2A7y6v6
+    #
+    #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
+    #
+    def setup_tmp
+      tmp_symlink("bundled") if Jets.lazy_load?
+      tmp_symlink("rack")
+    end
+
+    def stage_area
+      "#{Jets.build_root}/stage"
+    end
+
+    # Moves folder to a stage folder and create a symlink its place
+    # that links from /var/task to /tmp. Example:
+    #
+    #   /var/task/bundled => /tmp/bundled
+    #
+    def tmp_symlink(folder)
+      src = "#{full(tmp_code)}/#{folder}"
+      return unless File.exist?(src)
+
+      dest = "#{stage_area}/#{folder}"
+      dir = File.dirname(dest)
+      FileUtils.mkdir_p(dir) unless File.exist?(dir)
+      FileUtils.mv(src, dest)
+
+      # Create symlink
+      FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_code)}/#{folder}")
+    end
+
+    def code_setup
       reconfigure_development_webpacker
-      reconfigure_ruby_version
-      generate_node_shims
     end
-    time :start_app_root_setup
+    time :code_setup
 
-    def finish_app_root_setup
+    def code_finish
+      update_lazy_load_config # at the top, must be called before Jets.lazy_load? is used
+      store_s3_base_url
+      setup_tmp
+      calculate_md5s # must be called before generate_node_shims and create_zip_files
+      generate_node_shims
+      create_zip_files
+    end
+    time :code_finish
+
+    def update_lazy_load_config
+      size_limit = AWS_CODE_SIZE_LIMIT
+      code_size = dir_size(full(tmp_code))
+      if code_size > size_limit
+        # override the setting because we dont have to a choice but to lazy load
+        Jets.config.ruby.lazy_load = true
+      end
+    end
+
+    # Thanks https://stackoverflow.com/questions/9354595/recursively-getting-the-size-of-a-directory
+    # Seems to overestimate a little bit but close enough.
+    def dir_size(folder)
+      Dir.glob(File.join(folder, '**', '*'))
+        .select { |f| File.file?(f) }
+        .map{ |f| File.size(f) }
+        .inject(:+)
+    end
+
+    # Store s3 base url is needed for asset serving from s3 later. Need to package this
+    # as part of the code so we have a reference to it.
+    # At this point the minimal stack exists, so we can grab it with the AWS API.
+    # We do not want to grab this as part of the live request because it is slow.
+    def store_s3_base_url
       return if poly_only?
 
-      copy_bundled_to_app_root
-      setup_bundle_config
-      extract_ruby
-      extract_gems
-      store_s3_base_url
+      write_s3_base_url("config/s3_base_url.txt")
+      write_s3_base_url("rack/config/s3_base_url.txt") if Jets.rack?
     end
-    time :finish_app_root_setup
 
-    # At this point the minimal stack exists.
-    def store_s3_base_url
-      IO.write("#{full(tmp_app_root)}/config/s3_base_url.txt", s3_base_url)
+    def write_s3_base_url(relative_path)
+      full_path = "#{full(tmp_code)}/#{relative_path}"
+      FileUtils.mkdir_p(File.dirname(full_path))
+      IO.write(full_path, s3_base_url)
     end
 
     def s3_base_url
@@ -122,49 +219,68 @@ class Jets::Builders
       #
       return Jets.config.assets.base_url if Jets.config.assets.base_url
 
-      resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
-      stack = resp.stacks.first
-      output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
-      bucket_name = output["output_value"] # s3_bucket
       region = Jets.aws.region
 
       asset_base_url = "https://s3-#{region}.amazonaws.com"
-      "#{asset_base_url}/#{bucket_name}/jets/public" # s3_base_url
+      "#{asset_base_url}/#{s3_bucket}/jets" # s3_base_url
     end
 
-    def lambdagem_options
-      {
-        s3: "lambdagems",
-        build_root: cache_area, # used in lambdagem
-        project_root: full(tmp_app_root), # used in gem_replacer and lambdagem
-      }
+    def s3_bucket
+      Jets.aws.s3_bucket
     end
 
-    def extract_ruby
-      headline "Setting up a vendored copy of ruby."
-      Lambdagem.log_level = :info
-      Lambdagem::Extract::Ruby.new(Jets::RUBY_VERSION, lambdagem_options).run
-    end
-
-    def extract_gems
-      headline "Replacing compiled gems with AWS Lambda Linux compiled versions."
-      GemReplacer.new(Jets::RUBY_VERSION, lambdagem_options).run
-    end
-
-    # This happens in the current app directory not the tmp app_root for simplicity
+    # This happens in the current app directory not the tmp code for simplicity.
+    # This is because the node and yarn has likely been set up correctly there.
     def compile_assets
+      if ENV['JETS_SKIP_ASSETS']
+        puts "Skip compiling assets".colorize(:yellow) # useful for debugging
+        return
+      end
+
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
       webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
       return unless webpacker_loaded
 
       sh("yarn install")
-      webpack_bin = File.exist?("#{Jets.root}bin/webpack") ?
+      webpack_command = File.exist?("#{Jets.root}bin/webpack") ?
           "bin/webpack" :
           `which webpack`.strip
-      sh("JETS_ENV=#{Jets.env} #{webpack_bin}")
+      sh("JETS_ENV=#{Jets.env} #{webpack_command}")
     end
     time :compile_assets
+
+    # This happens in the current app directory not the tmp code for simplicity
+    # This is because the node likely been set up correctly there.
+    def compile_rails_assets
+      return unless rails?
+
+      if ENV['JETS_SKIP_ASSETS']
+        puts "Skip compiling rack assets".colorize(:yellow) # useful for debugging
+        return
+      end
+
+      return unless Jets.rack?
+
+      Bundler.with_clean_env do
+        rails_assets(:clobber)
+        rails_assets(:precompile)
+      end
+    end
+
+    def rails_assets(cmd)
+      # rake is available in both rails 4 and 5. rails command only in 5
+      command = "rake assets:#{cmd} --trace"
+      command = "RAILS_ENV=#{Jets.env} #{fulL_cmd}" unless Jets.env.development?
+      sh("cd rack && #{command}")
+    end
+
+    # Rudimentary rails detection
+    def rails?
+      config_ru = "#{Jets.root}rack/config.ru"
+      return false unless File.exist?(config_ru)
+      !IO.readlines(config_ru).grep(/Rails.application/).empty?
+    end
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
     # for a clean start. Also ensure that the /tmp/jets/project build root exists.
@@ -181,11 +297,14 @@ class Jets::Builders
     # directory untouched and we can also remove a bunch of unnecessary files like
     # logs before zipping it up.
     def copy_project
-      headline "Copying current project directory to temporary build area: #{full(tmp_app_root)}"
-      FileUtils.rm_rf(full(tmp_app_root)) # remove current app_root folder
+      headline "Copying current project directory to temporary build area: #{full(tmp_code)}"
+      FileUtils.rm_rf(stage_area) # clear out from previous build
+      FileUtils.mkdir_p(stage_area)
+      FileUtils.rm_rf(full(tmp_code)) # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
-        FileUtils.cp_r(@full_project_path, full(tmp_app_root))
+        # puts "cp -r #{@full_project_path} #{full(tmp_code)}".colorize(:yellow) # uncomment to debug
+        FileUtils.cp_r(@full_project_path, full(tmp_code))
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
       end
@@ -205,35 +324,13 @@ class Jets::Builders
       end
     end
 
-    # Because we're removing files (something dangerous) use full paths.
-    def tidy_project
-      headline "Tidying project: removing ignored files to reduce package size."
-      excludes.each do |exclude|
-        exclude = exclude.sub(%r{^/},'') # remove leading slash
-        remove_path = "#{full(tmp_app_root)}/#{exclude}"
-        FileUtils.rm_rf(remove_path)
-        # puts "  rm -rf #{remove_path}" # uncomment to debug
-      end
-    end
-
-    def generate_node_shims
-      headline "Generating node shims in the handlers folder."
-      # Crucial that the Dir.pwd is in the tmp_app_root because for
-      # Jets::Builders::app_files because Jets.boot set ups
-      # autoload_paths and this is how project classes are loaded.
-      Jets::Commands::Build.app_files.each do |path|
-        handler = Jets::Builders::HandlerGenerator.new(path)
-        handler.generate
-      end
-    end
-
     # Bit hacky but this saves the user from accidentally forgetting to change this
     # when they deploy a jets project in development mode
     def reconfigure_development_webpacker
       return unless Jets.env.development?
       headline "Reconfiguring webpacker development settings for AWS Lambda."
 
-      webpacker_yml = "#{full(tmp_app_root)}/config/webpacker.yml"
+      webpacker_yml = "#{full(tmp_code)}/config/webpacker.yml"
       return unless File.exist?(webpacker_yml)
 
       config = YAML.load_file(webpacker_yml)
@@ -242,199 +339,28 @@ class Jets::Builders
       IO.write(webpacker_yml, new_yaml)
     end
 
-    # This is in case the user has a 2.5.x variant.
-    # Force usage of ruby version that jets supports
-    # The lambda server only has ruby 2.5.0 installed.
-    def reconfigure_ruby_version
-      ruby_version = "#{full(tmp_app_root)}/.ruby-version"
-      IO.write(ruby_version, Jets::RUBY_VERSION)
+    def ruby_packager
+      RubyPackager.new(tmp_code)
     end
+    memoize :ruby_packager
 
-    def copy_bundled_to_app_root
-      app_root_bundled = "#{full(tmp_app_root)}/bundled"
-      if File.exist?(app_root_bundled)
-        puts "Removing current bundled from project"
-        FileUtils.rm_rf(app_root_bundled)
-      end
-      # Leave #{Jets.build_root}/bundled behind to act as cache
-      FileUtils.cp_r("#{cache_area}/bundled", app_root_bundled)
+    def rack_packager
+      RackPackager.new("#{tmp_code}/rack")
     end
+    memoize :rack_packager
 
-    def setup_bundle_config
-      ensure_build_cache_bundle_config_exists!
-
-      # Override project's .bundle/config and ensure that .bundle/config matches
-      # at these 2 spots:
-      #   app_root/.bundle/config
-      #   bundled/gems/.bundle/config
-      cache_bundle_config = "#{cache_area}/.bundle/config"
-      app_bundle_config = "#{full(tmp_app_root)}/.bundle/config"
-      FileUtils.mkdir_p(File.dirname(app_bundle_config))
-      FileUtils.cp(cache_bundle_config, app_bundle_config)
+    def package_ruby
+      ruby_packager.install
+      reconfigure_rails
+      rack_packager.install
+      ruby_packager.finish
+      rack_packager.finish
     end
+    time :package_ruby
 
-    # On circleci the "#{Jets.build_root}/.bundle/config" doesnt exist
-    # this only happens with ssh debugging, not when the ci.sh script gets ran.
-    # But on macosx it exists.
-    # Dont know why this is the case.
-    def ensure_build_cache_bundle_config_exists!
-      text =<<-EOL
----
-BUNDLE_PATH: "bundled/gems"
-BUNDLE_WITHOUT: "development:test"
-EOL
-      bundle_config = "#{cache_area}/.bundle/config"
-      FileUtils.mkdir_p(File.dirname(bundle_config))
-      IO.write(bundle_config, text)
-    end
-
-    def create_zip_file(fake=nil)
-      headline "Creating zip file."
-      temp_code_zipfile = "#{Jets.build_root}/code/code-temp.zip"
-      FileUtils.mkdir_p(File.dirname(temp_code_zipfile))
-
-      # Use fake if testing CloudFormation only
-      if fake
-        hello_world = "/tmp/hello.js"
-        puts "Uploading tiny #{hello_world} file to S3 for quick testing.".colorize(:red)
-        code = IO.read(File.expand_path("../node-hello.js", __FILE__))
-        IO.write(hello_world, code)
-        command = "zip --symlinks -rq #{temp_code_zipfile} #{hello_world}"
-      else
-        # https://serverfault.com/questions/265675/how-can-i-zip-compress-a-symlink
-        command = "cd #{full(tmp_app_root)} && zip --symlinks -rq #{temp_code_zipfile} ."
-      end
-
-      sh(command)
-
-      # we can get the md5 only after the file has been created
-      md5 = Digest::MD5.file(temp_code_zipfile).to_s[0..7]
-      md5_zip_dest = "#{Jets.build_root}/code/code-#{md5}.zip"
-      FileUtils.mkdir_p(File.dirname(md5_zip_dest))
-      FileUtils.mv(temp_code_zipfile, md5_zip_dest)
-      # mv /tmp/jets/demo/code/code-temp.zip /tmp/jets/demo/code/code-a8a604aa.zip
-
-      file_size = number_to_human_size(File.size(md5_zip_dest))
-      puts "Zip file with code and bundled linux ruby created at: #{md5_zip_dest.colorize(:green)} (#{file_size})"
-
-      # Save state
-      IO.write("#{Jets.build_root}/code/current-md5-filename.txt", md5_zip_dest)
-      # Much later: ship, base_child_builder need set an s3_key which requires
-      # the md5_zip_dest.
-      # It is a pain to pass this all the way up from the
-      # CodeBuilder class.
-      # Let's store the "/tmp/jets/demo/code/code-a8a604aa.zip" into a
-      # file that can be read from any places where this is needed.
-      # Can also just generate a "fake file" for specs
-    end
-    time :create_zip_file
-
-    def bundle
-      clean_old_submodules
-      bundle_install
-    end
-    time :bundle
-
-    # Installs gems on the current target system: both compiled and non-compiled.
-    # If user is on a macosx machine, macosx gems will be installed.
-    # If user is on a linux machine, linux gems will be installed.
-    #
-    # Copies Gemfile* to /tmp/jetss/demo/bundled folder and installs
-    # gems with bundle install from there.
-    #
-    # We take the time to copy Gemfile and bundle into a separate directory
-    # because it gets left around to act as a 'cache'.  So, when the builds the
-    # project gets built again not all the gems from get installed from the
-    # beginning.
-    def bundle_install
-      return if poly_only?
-
-      headline "Bundling: running bundle install in cache area: #{cache_area}."
-
-      copy_gemfiles
-
-      require "bundler" # dynamically require bundler so user can use any bundler
-      Bundler.with_clean_env do
-        # cd /tmp/jets/demo
-        sh(
-          "cd #{cache_area} && " \
-          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
-        )
-      end
-
-      puts 'Bundle install success.'
-    end
-
-    # When using submodules, bundler leaves old submodules behind. Over time this inflates
-    # the size of the the bundled gems.  So we'll clean it up.
-    def clean_old_submodules
-      # https://stackoverflow.com/questions/38800129/parsing-a-gemfile-lock-with-bundler
-      lockfile = "#{cache_area}/Gemfile.lock"
-      return unless File.exist?(lockfile)
-
-      parser = Bundler::LockfileParser.new(Bundler.read_file(lockfile))
-      specs = parser.specs
-
-      # specs = Bundler.load.specs
-      # IE: spec.source.to_s: "https://github.com/tongueroo/webpacker.git (at jets@a8c4661)"
-      submoduled_specs = specs.select do |spec|
-        spec.source.to_s =~ /@\w+\)/
-      end
-
-      # find git shas to keep
-      # IE: ["a8c4661", "abc4661"]
-      git_shas = submoduled_specs.map do |spec|
-        md = spec.source.to_s.match(/@(\w+)\)/)
-        git_sha = md[1]
-      end
-
-      # IE: /tmp/jets/demo/cache/bundled/gems/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
-      Dir.glob("#{cache_area}/bundled/gems/ruby/2.5.0/bundler/gems/*").each do |path|
-        sha = path.split('-').last[0..6] # only first 7 chars of the git sha
-        unless git_shas.include?(sha)
-          puts "Removing old submoduled gem: #{path}"
-          FileUtils.rm_rf(path) # REMOVE old submodule directory
-        end
-      end
-    end
-
-    def copy_gemfiles
-      FileUtils.mkdir_p(cache_area)
-      FileUtils.cp("#{@full_project_path}Gemfile", "#{cache_area}/Gemfile")
-      FileUtils.cp("#{@full_project_path}Gemfile.lock", "#{cache_area}/Gemfile.lock")
-    end
-
-    def excludes
-      excludes = %w[.git tmp log spec]
-      excludes += get_excludes("#{full(tmp_app_root)}/.gitignore")
-      excludes += get_excludes("#{full(tmp_app_root)}/.dockerignore")
-      excludes = excludes.reject do |p|
-        jetskeep.find do |keep|
-          p.include?(keep)
-        end
-      end
-      excludes
-    end
-
-    def get_excludes(file)
-      path = file
-      return [] unless File.exist?(path)
-
-      exclude = File.read(path).split("\n")
-      exclude.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
-      # IE: ["/handlers", "/bundled*", "/vendor/jets]
-    end
-
-    # We clean out ignored files pretty aggressively. So provide
-    # a way for users to keep files from being cleaned ou.
-    def jetskeep
-      defaults = %w[pack handlers]
-      path = Jets.root + ".jetskeep"
-      return defaults unless path.exist?
-
-      keep = path.read.split("\n")
-      keep = keep.map {|i| i.strip}.reject {|i| i =~ /^#/ || i.empty?}
-      (defaults + keep).uniq
+    # TODO: Move logic into plugin instead
+    def reconfigure_rails
+      ReconfigureRails.new("#{full(tmp_code)}/rack").run
     end
 
     def cache_check_message
@@ -461,34 +387,13 @@ EOL
       ruby[:major] == jets[:major] && ruby[:minor] == jets[:minor]
     end
 
-    def cache_area
-      "#{Jets.build_root}/cache" # cleaner to use full path for this setting
-    end
-
-    # Provide pretty clear way to desinate full path.
-    # full("bundled") => /tmp/jets/demo/bundled
-    def full(relative_path)
-      "#{Jets.build_root}/#{relative_path}"
-    end
-
     # Group all the path settings together here
-    def self.tmp_app_root
-      Jets::Commands::Build.tmp_app_root
+    def self.tmp_code
+      Jets::Commands::Build.tmp_code
     end
 
-    def tmp_app_root
-      self.class.tmp_app_root
-    end
-
-    def sh(command)
-      puts "=> #{command}".colorize(:green)
-      success = system(command)
-      abort("#{command} failed to run") unless success
-      success
-    end
-
-    def headline(message)
-      puts "=> #{message}".colorize(:cyan)
+    def tmp_code
+      self.class.tmp_code
     end
   end
 end

@@ -2,11 +2,6 @@ require 'socket'
 require 'json'
 require 'stringio'
 
-# Save copy of old stdout, since Jets.boot messes with it.
-# So we can use $normal_stdout.puts for debugging.
-$normal_stdout ||= $stdout
-$normal_stderr ||= $stderr
-
 # https://ruby-doc.org/stdlib-2.3.0/libdoc/socket/rdoc/TCPServer.html
 # https://stackoverflow.com/questions/806267/how-to-fire-and-forget-a-subprocess
 #
@@ -27,27 +22,73 @@ module Jets
       # INT - ^C
       trap('INT') do
         puts "Shutting down ruby_server.rb..."
+        FileUtils.rm_f("/tmp/jets-rackup.pid") # remove the rack subprocess pid in case it exists
         sleep 0.1
         exit
       end
+
       if ENV['FOREGROUND'] # Usage above
-        serve
+        # start_rack_server # commented out because we expect user to start the rack server in the foreground
+        serve # ruby_server
         return
       end
 
-      # Reaching here means we'll run the server in the background
+      # Reaching here means we'll run the server in the "background"
       pid = Process.fork
-      if pid.nil?
-        serve
-      else
-        # parent process
-        Process.detach(pid)
+
+      if pid.nil? # we're in child process
+        start_rack_server
+        serve # ruby_server
+      else # we're in parent process
+        # Detach main jets ruby server
+        Process.detach(pid) # dettached but still in the "foreground" since server loop runs in the foreground
       end
     end
 
+    # Megamode support
+    def start_rack_server
+      return unless Jets.rack?
+
+      # Fire and forget for concurrent, will wait with wait_for_rack_socket
+      Thread.new do
+        Jets::Rack::Server.start
+      end
+
+      wait_for_rack_socket # blocks until rack server is up
+    end
+
+    # blocks until rack server is up
+    def wait_for_rack_socket
+      return unless Jets.rack?
+
+      retries = 0
+      max_retries = 30 # 15 seconds at a delay of 0.5s
+      delay = 0.5
+      if ENV['C9_USER'] # overrides for local testing
+        max_retries = 3
+        delay = 3
+      end
+      begin
+        server = TCPSocket.new('localhost', 9292)
+        server.close
+      rescue Errno::ECONNREFUSED
+        puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."  if ENV['JETS_DEBUG']
+        sleep(delay)
+        retries += 1
+        if retries < max_retries
+          retry
+        else
+          puts "Giving up on trying to connect to localhost:9292"
+          return false
+        end
+      end
+      puts "Connected to localhost:9292 successfully"
+      true
+    end
+
+    # runs in the child process
     def serve
-      # child process
-      server = TCPServer.new(8080) # Server bind to port 8080
+      server = TCPServer.new(PORT) # Server bind to port 8080
       puts "Ruby server started on port #{PORT}" if ENV['FOREGROUND'] || ENV['JETS_DEBUG'] || ENV['C9_USER']
 
       loop do
@@ -55,10 +96,14 @@ module Jets
 
         input_completed, event, handler = nil, nil, nil
         unless input_completed
-          event = client.gets.strip # text
-          # puts event # uncomment for debugging, Jets has changed stdout to stderr
-          handler = client.gets.strip # text
-          # puts handler # uncomment for debugging, Jets has changed stdout to stderr
+          event = client.gets&.strip # text or nil
+          handler = client.gets&.strip # text or nil
+          # The event is nil when a client connects and immediately disconnects without sending data
+          if event.nil?
+            # puts "event was nil" # uncomment to debug
+            next
+          end
+
           input_completed = true
         end
 

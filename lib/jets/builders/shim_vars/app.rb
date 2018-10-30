@@ -1,6 +1,17 @@
-# Build::Deducers figure out required values to create the node shim
-class Jets::Builders
-  class Deducer
+# Jets::Builders::ShimVars::Shared.new(path)
+#
+#   @vars.functions.each do |function_name|
+#     @vars.handler_for(function_name)
+#   end
+#
+# Implements:
+#
+#   functions
+#   handler_for(function_name)
+#   js_path
+#
+module Jets::Builders::ShimVars
+  class App < Base
     # Allow user to specify relative or full path. The right path gets used
     # internally. Example paths:
     #   app/controllers/posts_controller.rb
@@ -37,13 +48,6 @@ class Jets::Builders
     # Returns the public methods of the child_class.
     # Example: [:create, :update]
     def functions
-      # Example: require: /tmp/jets/demo/app_root/app/controllers/admin/posts_controller.rb
-      class_name = @full_path.sub(/.*\/app\/\w+\//,'').sub(/\.rb/,'') # admin/posts_controller
-      class_name = class_name.classify # Admin::PostsController
-      # Autoload instead of require to avoid accidentallly double requiring and
-      # it resulting WARNINGs when there are constants already defined
-      klass = class_name.constantize # autoload
-
       klass.lambda_functions
     end
 

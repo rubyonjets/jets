@@ -14,7 +14,7 @@ For example, the `rate` method creates a CloudWatch Event Rule resource. This Ev
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def dig
-    {done: "digging"}
+    puts "done digging"
   end
 end
 ```
@@ -37,7 +37,7 @@ class HardJob < ApplicationJob
     }
   )
   def dig
-    {done: "digging"}
+    puts "done digging"
   end
 end
 ```

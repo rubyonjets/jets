@@ -9,14 +9,17 @@ You can set application-wide configurations in the `config/application.rb` file.
 ```ruby
 Jets.application.configure do
   config.project_name = "demo"
+
   # config.prewarm.rate = '30 minutes' # default is '30 minutes'
   # config.prewarm.concurrency = 1 # default is 1
   # config.env_extra = 2 # change also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
 
-  config.function.timeout = 10
+  # config.ruby.lazy_load = true # defaults to true
+
+  config.function.timeout = 30
   # config.function.role = "arn:aws:iam::#{ENV['AWS_ACCOUNT_ID']}:role/service-role/pre-created"
-  # config.function.memory_size= 3008
+  # config.function.memory_size = 3008
   # config.function.cors = true
   config.function.environment = {
     global_app_key1: "global_app_value1",
@@ -32,12 +35,28 @@ Jets.application.configure do
   # The config.function settings to the CloudFormation Lambda Function properties.
   # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
   # Underscored format can be used for keys to make it look more ruby-ish.
+end
+```
 
-  # Add irregular inflections example:
-  # config.inflections.irregular = {
-  #   octopus: 'octopi',
-  #   person: 'people',
-  # }
+## Environment Specific Configs
+
+You can set specific configs for different JETS_ENV in the `config/environments` folder. Examples:
+
+config/environments/development.rb:
+
+```ruby
+Jets.application.configure do
+  config.function.memory_size = 1536
+  config.ruby.lazy_load = true
+end
+```
+
+config/environments/production.rb:
+
+```ruby
+Jets.application.configure do
+  config.function.memory_size = 2048
+  config.ruby.lazy_load = false
 end
 ```
 

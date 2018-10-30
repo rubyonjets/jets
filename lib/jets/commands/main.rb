@@ -41,6 +41,7 @@ module Jets::Commands
       command = "bundle exec shotgun --port #{o[:port]} --host #{o[:host]}"
       puts "=> #{command}".colorize(:green)
       puts Jets::Booter.message
+      Jets::Rack::Server.start unless ENV['JETS_RACK'] == '0' # rack server runs in background by default
       system(command)
     end
 
@@ -108,7 +109,7 @@ module Jets::Commands
 
     long_desc Help.text(:new)
     Jets::Commands::New.cli_options.each do |args|
-      option *args
+      option(*args)
     end
     register(Jets::Commands::New, "new", "new", "Creates a starter skeleton jets project")
   end

@@ -10,6 +10,7 @@ module Jets::Commands
   autoload :Deploy, "jets/commands/deploy"
   autoload :Dynamodb, "jets/commands/dynamodb"
   autoload :Help, "jets/commands/help"
+  autoload :Import, "jets/commands/import"
   autoload :Main, "jets/commands/main"
   autoload :Markdown, "jets/commands/markdown"
   autoload :New, "jets/commands/new"
