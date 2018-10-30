@@ -9,7 +9,7 @@ module Jets::Commands
     def self.cli_options
       [
         [:bootstrap, type: :boolean, default: true, desc: "Install bootstrap css"], # same option in WebpackerTemplate
-        [:database, type: :boolean, default: true, desc: "Adds database"],
+        [:database, type: :string, default: 'mysql', desc: "Preconfigure database (options: mysql/postgresql)"],
         [:force, type: :boolean, desc: "Bypass overwrite are you sure prompt for existing files."],
         [:git, type: :boolean, default: true, desc: "Git initialize the project"],
         [:mode, default: 'html', desc: "mode: #{VALID_MODES.join(',')}"],

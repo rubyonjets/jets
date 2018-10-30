@@ -6,9 +6,12 @@ gem "jets"
 # Include webpacker if you are you are building html pages
 gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
 <% end -%>
-<% if @options[:database] %>
+<% if @options[:database] == 'postgresql' %>
 # Include pg gem if you are using ActiveRecord, remove if you are not
-gem "pg", "~> 0.21"
+gem "pg", "~> 1.1.3"
+<% elsif @options[:database] == 'mysql' %>
+# Include mysql2 gem if you are using ActiveRecord, remove if you are not
+gem "mysql2", "~> 0.5.2"
 <% end %>
 
 group :development, :test do
