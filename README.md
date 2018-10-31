@@ -115,6 +115,10 @@ After deployment, you can test the Lambda functions with the AWS Lambda console 
 
 Here's a [Live Demo](https://demo.rubyonjets.com/posts) of the quintessential CRUD Jets app.
 
+### Rails Support
+
+Jets Mega Mode provides Rails support with little effort.  This allows you run a Rails application on AWS Lambda. Refer to the [Rails Support](http://rubyonjets.com/docs/rails-support/) docs for more info.
+
 ### More Info
 
 For more documentation, check out the official docs: [Ruby on Jets](http://rubyonjets.com/).  Here's a list of useful links:
@@ -127,8 +131,11 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [App Configuration](http://rubyonjets.com/app-config/)
 * [Database Support](http://rubyonjets.com/docs/database-support/)
 * [Polymorphic Support](http://rubyonjets.com/docs/polymorphic-support/)
+* [Rails Support](http://rubyonjets.com/docs/rails-support/)
 * [Tutorials](http://rubyonjets.com/docs/tutorials/)
 * [Prewarming](http://rubyonjets.com/docs/prewarming/)
+* [Custom Resources](http://rubyonjets.com/docs/associated-resources/)
+* [Shared Resources](http://rubyonjets.com/docs/shared-resources/)
 * [Installation](http://rubyonjets.com/docs/install/)
 * [CLI Reference](http://rubyonjets.com/reference/)
 * [Contributing](http://rubyonjets.com/docs/contributing/)
