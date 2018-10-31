@@ -9,7 +9,7 @@ module Jets::Gems::Extract
       @name = name
       @options = options
 
-      @downloads_root = options[:downloads_root] || "/tmp/lambdagem"
+      @downloads_root = options[:downloads_root] || "/tmp/jets/lambdagems"
       @source_url = options[:source_url] || "https://gems.lambdagems.com"
     end
 

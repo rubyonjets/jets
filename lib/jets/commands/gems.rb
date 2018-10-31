@@ -1,20 +1,16 @@
 module Jets::Commands
   class Gems < Jets::Commands::Base
-    desc "check", "Check pre-built Lambda gem is available in the sources"
+    desc "check", "Check pre-built Lambda gems are available from the sources"
     long_desc Help.text(:check)
     def check
-      # gem_name = "pg-0.21.0"
-      # options = {
-      #   :s3=>"lambdagems",
-      #   :build_root=>"/tmp/jets/demo/cache",
-      #   :project_root=>"/tmp/jets/demo/stage/code"}
-      # source = "https://gems.lambdagems.com"
-      # gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, options.merge(source_url: source))
-      # gem_extractor.run
-
-
-
-      # Jets::Gems::Check.new(options).run
+      check = Jets::Gems::Check.new(use_gemspecs: true)
+      check.run
+      if check.missing?
+        puts check.missing_message
+        Jets::Gems::Report.missing(check.missing_gems)
+      else
+        puts "All gems are available in as pre-built Lambda gems 👍"
+      end
     end
   end
 end
