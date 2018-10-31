@@ -9,12 +9,12 @@ module Jets::Gems::Extract
       @name = name
       @options = options
 
-      @build_root = options[:build_root] || "/tmp/lambdagem"
+      @downloads_root = options[:downloads_root] || "/tmp/lambdagem"
       @source_url = options[:source_url] || "https://gems.lambdagems.com"
     end
 
     def clean_downloads(folder)
-      path = "#{@build_root}/downloads/#{folder}"
+      path = "#{@downloads_root}/downloads/#{folder}"
       say "Removing cache: #{path}"
       FileUtils.rm_rf(path)
     end

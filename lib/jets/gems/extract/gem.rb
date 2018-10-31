@@ -3,7 +3,7 @@ require "gems"
 # Usage:
 #
 #   Jets::Gems::Extract::Gem.new("pg-0.21.0",
-#     build_root: cache_area, # defaults to /tmp/lambdagem
+#     downloads_root: cache_area, # defaults to /tmp/lambdagem
 #     dest: cache_area, # defaults to . (project_root)
 #   ).run
 #
@@ -65,7 +65,7 @@ module Jets::Gems::Extract
     end
 
     def download_path(filename)
-      "#{@build_root}/downloads/gems/#{filename}"
+      "#{@downloads_root}/downloads/gems/#{filename}"
     end
 
     # Finds any currently install gems that matched with the gem name and version

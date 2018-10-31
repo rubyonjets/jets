@@ -1,7 +1,7 @@
 # Usage:
 #
 #   Jets::Gems::Extract::Ruby.new("2.5.0",
-#     build_root: cache_area, # defaults to /tmp/lambdagem
+#     downloads_root: cache_area, # defaults to /tmp/lambdagem
 #     dest: cache_area, # defaults to . (project_root)
 #   ).run
 #
@@ -34,7 +34,7 @@ module Jets::Gems::Extract
     end
 
     def download_path(filename)
-      "#{@build_root}/downloads/rubies/#{filename}"
+      "#{@downloads_root}/downloads/rubies/#{filename}"
     end
 
     # If only the ruby version is given, then append ruby- in front. Otherwise
