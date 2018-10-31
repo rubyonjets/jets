@@ -24,7 +24,7 @@ module Jets::Gems::Extract
         message = "Url: #{url} not found"
         if @options[:exit_on_error]
           say message
-          # exit # TODO: ADD BACK IN
+          exit
         else
           raise NotFound.new(message)
         end

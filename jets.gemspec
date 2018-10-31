@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-sns"
   spec.add_dependency "colorize"
   spec.add_dependency "dotenv"
+  spec.add_dependency "gems"
   spec.add_dependency "hashie"
   spec.add_dependency "json"
   spec.add_dependency "kramdown"
@@ -49,8 +50,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "recursive-open-struct"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"
-
-  spec.add_dependency "gems" # lambdagem dependency
 
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"

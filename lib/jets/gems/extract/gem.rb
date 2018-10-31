@@ -24,7 +24,6 @@ module Jets::Gems::Extract
     def full_gem_name
       return @full_gem_name if @full_gem_name
 
-      @name # TODO: make sure that we always have the full gem name with version number
       if @name.match(VERSION_PATTERN)
         @full_gem_name = @name
         return @full_gem_name

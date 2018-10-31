@@ -10,7 +10,6 @@ module Jets::Gems::Extract
       @options = options
 
       @build_root = options[:build_root] || "/tmp/lambdagem"
-      @artifacts_root = "#{@build_root}/artifacts"
       @source_url = options[:source_url] || "https://gems.lambdagems.com"
     end
 
