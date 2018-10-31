@@ -6,7 +6,7 @@ module Jets::Gems
 
     attr_reader :missing_gems
     def initialize(options={})
-      @use_gemspecs = options[:use_gemspecs]
+      @options = options
       @missing_gems = [] # keeps track of gems that are not found in any of the lambdagems sources
     end
 
@@ -23,7 +23,7 @@ module Jets::Gems
       puts "Checking projects gems are available as pre-built Lambda gems..."
       found_gems = {}
       compiled_gems.each do |gem_name|
-        puts "Checking #{gem_name}..."
+        puts "Checking #{gem_name}..." if @options[:cli]
         gem_exists = false
         Jets.config.lambdagems.sources.each do |source|
           exist = Jets::Gems::Exist.new(source_url: source)
@@ -83,10 +83,15 @@ EOL
       # This is because it seems like some gems like json are remove and screws things up.
       # We'll filter out for the json gem as a hacky workaround, unsure if there are more
       # gems though that exhibit this behavior.
-      if @use_gemspecs
+      if @options[:cli]
         gemspec_compiled_gems
       else
-        compiled_gem_paths.map { |p| gem_name_from_path(p) }.uniq# + ["whatever-0.0.1"]
+        compiled_gems = compiled_gem_paths.map { |p| gem_name_from_path(p) }.uniq
+        # Double check that the gems are also in the gemspec list since that
+        # one is scoped to Bundler and will only included gems used in the project.
+        # This handles the possiblity of stale gems leftover from previous builds
+        # in the cache.
+        compiled_gems.select { |g| gemspec_compiled_gems.include?(g) }
       end
     end
     memoize :compiled_gems

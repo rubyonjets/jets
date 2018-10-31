@@ -3,7 +3,7 @@ module Jets::Commands
     desc "check", "Check pre-built Lambda gems are available from the sources"
     long_desc Help.text(:check)
     def check
-      check = Jets::Gems::Check.new(use_gemspecs: true)
+      check = Jets::Gems::Check.new(cli: true)
       check.run
       if check.missing?
         puts check.missing_message
