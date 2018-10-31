@@ -63,7 +63,7 @@ class Jets::Commands::Base < Thor
                       .sub(/\.rb$/,'')
                       .sub(%r{.*/jets/commands}, 'jets/commands')
                       .classify
-        class_name.sub!(/Task$/, "Tasks") # special rule here for Tasks class
+        class_name = special_class_map(class_name)
         # NOTE: Weird thing where Jets::Commands::Db::Task => Thor::Command
         # because Task is a class available to Thor I believe.
         # puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
@@ -124,8 +124,17 @@ class Jets::Commands::Base < Thor
       else
         class_name = namespace.gsub(':','/')
         class_name = "Jets::Commands::#{class_name.classify}"
+        class_name = special_class_map(class_name)
         class_name.constantize
       end
+    end
+
+    def special_class_map(class_name)
+      map = {
+        'Jets::Commands::RakeTask' => 'Jets::Commands::RakeTasks',
+        'Jets::Commands::Gem' => 'Jets::Commands::Gems',
+      }
+      map[class_name] || class_name
     end
 
     # If this fails to find a match then return the original full command

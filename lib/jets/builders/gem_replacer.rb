@@ -29,7 +29,7 @@ class Jets::Builders
       compiled_gems.each do |gem_name|
         gem_exists = false
         Jets.config.lambdagems.sources.each do |source|
-          exist = Lambdagem::Exist.new(lambdagems_url: source)
+          exist = Jets::Gems::Exist.new(source_url: source)
           found = exist.check(gem_name)
           # gem exists on at least of the lambdagem sources
           if found
@@ -55,7 +55,8 @@ class Jets::Builders
       # Reaching here means we can download and extract the gems
       Lambdagem.log_level = :info
       found_gems.each do |gem_name, source|
-        gem_extractor = Lambdagem::Extract::Gem.new(gem_name, @options.merge(lambdagems_url: source))
+        options = @options.merge(source_url: source)
+        gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, options)
         gem_extractor.run
       end
 

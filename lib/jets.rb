@@ -24,6 +24,7 @@ module Jets
   autoload :Core, "jets/core"
   autoload :Dotenv, 'jets/dotenv'
   autoload :Erb, "jets/erb"
+  autoload :Gems, "jets/gems"
   autoload :Generator, "jets/generator"
   autoload :Inflections, "jets/inflections"
   autoload :IO, "jets/io"
