@@ -47,6 +47,7 @@ class Jets::Builders
       # It better to error now than deploy a broken package to AWS Lambda.
       # Provide users with message about using their own lambdagems source.
       unless @missing_gems.empty?
+        report_missing_gems
         puts missing_gems_message
         exit 1
       end
@@ -59,6 +60,10 @@ class Jets::Builders
       end
 
       tidy
+    end
+
+    def report_missing_gems
+      Lambdagems.report_missing(@missing_gems)
     end
 
     def missing_gems_message
