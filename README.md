@@ -132,7 +132,7 @@ Here's a [Live Demo](https://demo.rubyonjets.com/posts) of the quintessential CR
 
 ### Rails Support
 
-Jets Mega Mode provides Rails support with little effort.  This allows you run a Rails application on AWS Lambda. Refer to the [Rails Support](http://rubyonjets.com/docs/rails-support/) docs for more info.
+Jets [Mega Mode](http://rubyonjets.com/docs/megamode/) provides Rails support with little effort.  This allows you run a Rails application on AWS Lambda. Refer to the [Rails Support](http://rubyonjets.com/docs/rails-support/) docs for more info.
 
 ### More Info
 
