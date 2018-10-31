@@ -4,14 +4,13 @@ module Jets::Gems::Extract
   class Base
     class NotFound < RuntimeError; end
 
-    attr_reader :s3_bucket, :source_url
+    attr_reader :source_url
     def initialize(name, options={})
       @name = name
       @options = options
 
       @build_root = options[:build_root] || "/tmp/lambdagem"
       @artifacts_root = "#{@build_root}/artifacts"
-      @s3_bucket = options[:s3] || 'lambdagems'
       @source_url = options[:source_url] || "https://gems.lambdagems.com"
     end
 

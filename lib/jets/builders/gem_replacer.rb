@@ -46,7 +46,6 @@ class Jets::Builders
       end
 
       # Reaching here means we can download and extract the gems
-      Lambdagem.log_level = :info
       found_gems.each do |gem_name, source|
         options = @options.merge(source_url: source)
         gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, options)

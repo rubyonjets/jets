@@ -36,8 +36,6 @@ module Jets::Gems
     end
 
     def source_url
-      s3_bucket = @options[:s3] || "lambdagems"
-      s3_url = "https://s3.amazonaws.com/#{s3_bucket}"
       @options[:source_url] || s3_url
     end
 

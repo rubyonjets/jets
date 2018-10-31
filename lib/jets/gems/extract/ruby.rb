@@ -1,7 +1,6 @@
 # Usage:
 #
 #   Jets::Gems::Extract::Ruby.new("2.5.0",
-#     s3: "lambdagems",
 #     build_root: cache_area, # defaults to /tmp/lambdagem
 #     dest: cache_area, # defaults to . (project_root)
 #   ).run

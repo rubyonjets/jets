@@ -3,15 +3,10 @@ require "gems"
 # Usage:
 #
 #   Jets::Gems::Extract::Gem.new("pg-0.21.0",
-#     s3: "lambdagems",
 #     build_root: cache_area, # defaults to /tmp/lambdagem
 #     dest: cache_area, # defaults to . (project_root)
 #   ).run
 #
-
-# {:s3=>"lambdagems",
-# :build_root=>"/tmp/jets/demo/cache",
-# :project_root=>"/tmp/jets/demo/stage/code"}
 module Jets::Gems::Extract
   class Gem < Base
     VERSION_PATTERN = /-(\d+\.\d+\.\d+.*)/
