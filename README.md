@@ -157,7 +157,7 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Support Jets](http://rubyonjets.com/support-jets/)
 * [Example Projects](https://github.com/tongueroo/jets-examples)
 
-## Articles
+## Learning Content
 
 * [Introducing Jets: A Ruby Serverless Framework](https://blog.boltops.com/2018/08/18/introducing-jets-a-ruby-serverless-framework)
 * [AWS Lambda Ruby Support at Native Speed with Jets](https://blog.boltops.com/2018/09/02/aws-lambda-ruby-support-at-native-speed-with-jets)
