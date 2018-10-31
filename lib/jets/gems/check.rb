@@ -128,19 +128,23 @@ EOL
     #   https://stackoverflow.com/questions/5165950/how-do-i-get-a-list-of-gems-that-are-installed-that-have-native-extensions
     def specs_with_extensions
       specs = Gem::Specification.each.select { |spec| spec.extensions.any?  }
-      # Filter out the weird special case gems that bundler deletes?
-      # Probably to fix some bug.
-      #
-      #   $ bundle show json
-      #   The gem json has been deleted. It was installed at:
-      #   /home/ec2-user/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/json-2.1.0
-      #
-      specs.reject! { |spec| spec.name == 'json' } #
+      specs.reject! { |spec| weird_gems.include?(spec.name) }
       specs
     end
 
     def gemspec_compiled_gems
       specs_with_extensions.map(&:full_name)
+    end
+
+    # Filter out the weird special case gems that bundler deletes?
+    # Probably to fix some bug.
+    #
+    #   $ bundle show json
+    #   The gem json has been deleted. It was installed at:
+    #   /home/ec2-user/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/json-2.1.0
+    #
+    def weird_gems
+      %w[json]
     end
   end
 end
