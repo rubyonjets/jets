@@ -57,6 +57,15 @@ class Jets::Builders
 
         rm_rf(path)
       end
+
+      remove_gem_cache
+    end
+
+    # Reason do not remove the cache folder generally is because some gems have
+    # actual cache folders that they used.
+    def remove_gem_cache
+      ruby_minor_version = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.0'
+      FileUtils.rm_rf("#{@project_root}/bundled/gems/ruby/#{ruby_minor_version}/cache")
     end
 
     def rm_rf(path)
