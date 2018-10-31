@@ -49,7 +49,7 @@ You can use any version of yarn that works with webpacker.
 
 ## Database
 
-By default, when you run a `jets new` command, it generates a Gemfile that has database adapter gem like `pg` or `mysql2`. A `bundle install` is run immediately as part of the `jets new` command. So you need a database installed as a dependency.  The currently supported and default ORM database is MySQL.
+By default, when you run a `jets new` command, it generates a Gemfile that has database adapter gem like `pg` or `mysql2`. A `bundle install` is run immediately as part of the `jets new` command. So the specific database needs to be installed.  The current default ORM database is MySQL.
 
 If you do not need an ORM database adapter, you can use the `jets new --no-database` option, and a database gem will not be added to the Gemfile.
 
