@@ -23,6 +23,21 @@ The official documentation is at: [Ruby on Jets](http://rubyonjets.com).
 
 Refer to the official docs for more info, but here's a quick intro.
 
+### Jets Functions
+
+Jets supports writing AWS Lambda functions with Ruby. You define them in the `app/functions` folder. A function looks like this:
+
+app/functions/simple.rb:
+
+```ruby
+def handle(event, context)
+  puts "hello world"
+  {hello: "world"}
+end
+```
+
+Though simple functions are supported by Jets, aside from the ability to use Ruby, they do not as much value as other ways to write code with Jets.
+
 ### Jets Controllers
 
 A Jets controller handles a web request and renders a response.  Here's an example:
