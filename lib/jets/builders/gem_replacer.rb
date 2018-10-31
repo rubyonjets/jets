@@ -1,10 +1,3 @@
-# def extract_gems
-#   headline "Replacing compiled gems with Lambda Linux versions."
-#   Lambdagem::Extract::Gem.new(Jets::RUBY_VERSION,
-#     s3: "lambdagems",
-#     dest: full(cache_area),
-#   ).run
-# end
 class Jets::Builders
   class GemReplacer
     extend Memoist
