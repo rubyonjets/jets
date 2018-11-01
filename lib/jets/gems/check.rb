@@ -21,7 +21,7 @@ module Jets::Gems
     #   }
     #
     def run
-      puts "Checking projects gems are available as pre-built Lambda gems..."
+      puts "Checking projects gems for pre-built Lambda gems..."
       found_gems = {}
       compiled_gems.each do |gem_name|
         puts "Checking #{gem_name}..." if @options[:cli]
