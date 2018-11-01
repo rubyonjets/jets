@@ -22,6 +22,7 @@ module Jets
   autoload :Commands, "jets/commands"
   autoload :Controller, 'jets/controller'
   autoload :Core, "jets/core"
+  autoload :Db, 'jets/db'
   autoload :Dotenv, 'jets/dotenv'
   autoload :Erb, "jets/erb"
   autoload :Generator, "jets/generator"
