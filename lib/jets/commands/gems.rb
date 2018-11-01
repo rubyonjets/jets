@@ -9,7 +9,7 @@ module Jets::Commands
         puts check.missing_message
         Jets::Gems::Report.missing(check.missing_gems)
       else
-        puts "All gems are available in as pre-built Lambda gems 👍"
+        puts "Congrats! All gems are available in as pre-built Lambda gems 👍"
       end
     end
   end
