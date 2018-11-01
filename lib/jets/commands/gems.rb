@@ -1,7 +1,7 @@
 module Jets::Commands
   class Gems < Jets::Commands::Base
     desc "check", "Check if pre-built Lambda gems are available from the sources"
-    long_desc Help.text(:check)
+    long_desc Help.text("gems:check")
     def check
       check = Jets::Gems::Check.new(cli: true)
       check.run
@@ -14,7 +14,7 @@ module Jets::Commands
     end
     
     desc "sources", "List configured sources", hide: true
-    long_desc Help.text(:sources)
+    long_desc Help.text("gems:sources")
     def sources
       puts "Your pre-built lambda gem sources are:"
       Jets.config.lambdagems.sources.each do |source|
