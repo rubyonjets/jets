@@ -1,5 +1,6 @@
 # Assumes gems were just built and checks the filesystem to find and detect for
-# compiled gems.
+# compiled gems.  Unless the cli option is set to true, the it'll just check
+# based on the gemspecs.
 module Jets::Gems
   class Check
     extend Memoist
