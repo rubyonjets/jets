@@ -54,7 +54,6 @@ require "jets/core_ext/kernel"
 
 $:.unshift(File.expand_path("../../vendor/jets-gems/lib", __FILE__))
 require "jets-gems"
-require "gems" # jets-gems dependency
 
 # lazy loaded dependencies: depends what project. Mainly determined by Gemfile
 # and config files.
