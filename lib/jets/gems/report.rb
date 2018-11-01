@@ -10,7 +10,7 @@ module Jets::Gems
 
     def report
       @gems.each do |gem_name|
-        puts "Send API call to report missing gem: #{gem_name}"
+        # puts "Send API call to report missing gem: #{gem_name}"
       end
     end
   end
