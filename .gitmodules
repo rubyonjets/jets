@@ -1,3 +1,6 @@
 [submodule "vendor/dynomite"]
 	path = vendor/dynomite
 	url = https://github.com/tongueroo/dynomite.git
+[submodule "vendor/jets-gems"]
+	path = vendor/jets-gems
+	url = https://github.com/tongueroo/jets-gems

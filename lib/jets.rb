@@ -8,7 +8,7 @@ require "fileutils"
 require "memoist"
 
 module Jets
-  # When we update Jets::RUBY_VERSION, need to update lambdagem/base.rb: def jets_ruby_version also
+  # When we update Jets::RUBY_VERSION, need to update jets-gems/base.rb: def jets_ruby_version also
   RUBY_VERSION = "2.5.0"
 
   autoload :Application, "jets/application"
@@ -24,7 +24,6 @@ module Jets
   autoload :Core, "jets/core"
   autoload :Dotenv, 'jets/dotenv'
   autoload :Erb, "jets/erb"
-  autoload :Gems, "jets/gems"
   autoload :Generator, "jets/generator"
   autoload :Inflections, "jets/inflections"
   autoload :IO, "jets/io"
@@ -52,6 +51,10 @@ module Jets
 end
 
 require "jets/core_ext/kernel"
+
+$:.unshift(File.expand_path("../../vendor/jets-gems/lib", __FILE__))
+require "jets-gems"
+require "gems" # jets-gems dependency
 
 # lazy loaded dependencies: depends what project. Mainly determined by Gemfile
 # and config files.
