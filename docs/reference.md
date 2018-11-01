@@ -16,6 +16,7 @@ title: CLI Reference
 * [jets dynamodb:migrate]({% link _reference/jets-dynamodb-migrate.md %})
 * [jets dynamodb:migrate:down]({% link _reference/jets-dynamodb-migrate-down.md %})
 * [jets gems:check]({% link _reference/jets-gems-check.md %})
+* [jets gems:sources]({% link _reference/jets-gems-sources.md %})
 * [jets generate]({% link _reference/jets-generate.md %})
 * [jets import:rack]({% link _reference/jets-import-rack.md %})
 * [jets import:rails]({% link _reference/jets-import-rails.md %})

@@ -9,6 +9,14 @@ reference: true
 
 ## Description
 
-Check pre-built Lambda gems are available from the sources
+Check if pre-built Lambda gems are available from the sources.
+
+You can configure additional gem sources in config/application.rb:
+
+    Jets.application.configure do
+      config.lambdagems.sources = [
+        "https://gems.lambdagems.com"
+      ]
+    end
 
 
