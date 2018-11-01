@@ -18,7 +18,7 @@ module Jets::Commands
     def sources
       puts "Your pre-built lambda gem sources are:"
       Jets.config.lambdagems.sources.each do |source|
-        puts " #{source}"
+        puts "  #{source}"
       end
     end
   end
