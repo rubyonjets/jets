@@ -161,7 +161,7 @@ EOL
       IO.write(bundle_config, text)
     end
 
-    def lambdagem_options
+    def gems_options
       {
         s3: "lambdagems",
         build_root: cache_area, # used in lambdagem
@@ -171,13 +171,12 @@ EOL
 
     def extract_ruby
       headline "Setting up a vendored copy of ruby."
-      Lambdagem.log_level = :info
-      Lambdagem::Extract::Ruby.new(Jets::RUBY_VERSION, lambdagem_options).run
+      Jets::Gems::Extract::Ruby.new(Jets::RUBY_VERSION, gems_options).run
     end
 
     def extract_gems
       headline "Replacing compiled gems with AWS Lambda Linux compiled versions."
-      GemReplacer.new(Jets::RUBY_VERSION, lambdagem_options).run
+      GemReplacer.new(Jets::RUBY_VERSION, gems_options).run
     end
 
     def copy_bundled_cache

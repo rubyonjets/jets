@@ -8,7 +8,7 @@ require "fileutils"
 require "memoist"
 
 module Jets
-  # When we update Jets::RUBY_VERSION, need to update lambdagem/base.rb: def jets_ruby_version also
+  # When we update Jets::RUBY_VERSION, need to update jets-gems/base.rb: def jets_ruby_version also
   RUBY_VERSION = "2.5.0"
 
   autoload :Application, "jets/application"
@@ -22,6 +22,7 @@ module Jets
   autoload :Commands, "jets/commands"
   autoload :Controller, 'jets/controller'
   autoload :Core, "jets/core"
+  autoload :Db, 'jets/db'
   autoload :Dotenv, 'jets/dotenv'
   autoload :Erb, "jets/erb"
   autoload :Generator, "jets/generator"
@@ -52,9 +53,8 @@ end
 
 require "jets/core_ext/kernel"
 
-$:.unshift(File.expand_path("../../vendor/lambdagem/lib", __FILE__))
-require "lambdagem"
-require "gems" # lambdagem dependency
+$:.unshift(File.expand_path("../../vendor/jets-gems/lib", __FILE__))
+require "jets-gems"
 
 # lazy loaded dependencies: depends what project. Mainly determined by Gemfile
 # and config files.
@@ -63,10 +63,4 @@ if File.exist?("#{Jets.root}config/dynamodb.yml")
   require "dynomite"
 end
 
-# Thanks: https://makandracards.com/makandra/42521-detecting-if-a-ruby-gem-is-loaded
-# TODO: move require "pg" into loader class and abstract to support more gems
-if File.exist?("#{Jets.root}config/database.yml")
-  require "active_record"
-  require "pg" if Gem.loaded_specs.has_key?('pg')
-  require "mysql2" if Gem.loaded_specs.has_key?('mysql2')
-end
+Jets::Db # trigger autoload

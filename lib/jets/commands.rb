@@ -9,6 +9,7 @@ module Jets::Commands
   autoload :Delete, "jets/commands/delete"
   autoload :Deploy, "jets/commands/deploy"
   autoload :Dynamodb, "jets/commands/dynamodb"
+  autoload :Gems, 'jets/commands/gems'
   autoload :Help, "jets/commands/help"
   autoload :Import, "jets/commands/import"
   autoload :Main, "jets/commands/main"
