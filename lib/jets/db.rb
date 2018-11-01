@@ -1,3 +1,5 @@
+module Jets::Db ; end
+
 # Thanks: https://makandracards.com/makandra/42521-detecting-if-a-ruby-gem-is-loaded
 return unless File.exist?("#{Jets.root}config/database.yml")
 

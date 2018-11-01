@@ -63,4 +63,4 @@ if File.exist?("#{Jets.root}config/dynamodb.yml")
   require "dynomite"
 end
 
-require "jets/db"
+Jets::Db # trigger autoload
