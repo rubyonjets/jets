@@ -17,7 +17,9 @@ module Jets::Gems
       @gems.each do |gem_name|
         if md = gem_name.match(version_pattern)
           name, version = md[1], md[2]
-          call_api("report/missing?name=#{name}&version=#{version}")
+          Thread.new do
+            call_api("report/missing?name=#{name}&version=#{version}")
+          end
         else
           puts "WARN: Unable to extract the version from the gem name."
         end
