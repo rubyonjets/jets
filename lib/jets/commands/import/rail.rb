@@ -28,6 +28,13 @@ CODE
       end
     end
 
+    def copy_database_yaml
+      src = "#{Jets.root}config/database.yml"
+      dest = "#{Jets.root}rack/config/database.yml"
+      puts "Copying #{src} to #{dest}"
+      FileUtils.cp(src, dest)
+    end
+
     def finish_message
       puts <<~EOL
         #{"="*30}
