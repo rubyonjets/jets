@@ -25,4 +25,9 @@ Note, generic rack projects will likely need some adjustments to take into accou
     jets import:rack git@github.com:tongueroo/jets-mega-rails.git
     jets import:rack /path/to/folder/jets-mega-rails
 
+## Options
+
+```
+[--submodule], [--no-submodule]  # Imports the project as a submodule
+```
 
