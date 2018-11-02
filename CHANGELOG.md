@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.2]
+- jets import:rails --submodule option. pull request #54 from tongueroo/import
+- upgrade to jets-gems. pull request #53 from tongueroo/gems
+- jets gems:check command
+- jets gems:sources hidden command
+
 ## [1.0.1]
 - jets upgrade:v1 command
 - Merge pull request #52 from tongueroo/upgrade-command
