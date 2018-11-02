@@ -9,7 +9,7 @@ Jets supports Rails and allows you to run it on AWS Lambda with little effort.  
 Mega Mode can be set up with the `jets import` command.  Here's an example of importing a Rails application and setting it up with Mega Mode.
 
     cd demo # demo is jets app
-    jets import:rails http://github.com/tongueroo/jets-examples-rails.git
+    jets import:rails http://github.com/tongueroo/demo-rails.git
 
 This essentially copies the project to a rack folder within the demo jets app. The import command also adds an example route to `config/routes.rb` to enable mega mode.  It looks something like this:
 
@@ -50,9 +50,9 @@ When you're ready to deploy, run:
 
 The import command understands a variety of values. Examples:
 
-    jets import:rails tongueroo/jets-examples-rails # expands to github
-    jets import:rails git@github.com:tongueroo/jets-examples-rails.git
-    jets import:rails /path/to/folder/jets-examples-rails
+    jets import:rails tongueroo/demo-rails # expands to github
+    jets import:rails git@github.com:tongueroo/demo-rails.git
+    jets import:rails /path/to/folder/demo-rails
 
 ## Rails Versions Supported
 
