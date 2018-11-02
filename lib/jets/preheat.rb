@@ -30,14 +30,16 @@ module Jets
       threads = []
       all_functions.each do |function_name|
         next if function_name.include?('jets-public_controller') # handled by warm_public_controller_more
+        next if function_name.include?('jets-rack_controller') # handled by warm_rack_controller_more
         threads << Thread.new do
           warm(function_name)
         end
       end
       threads.each { |t| t.join }
 
-      # Warm the jets-public_controller more since it gets called more naturally
+      # Warm the these controllers more since they can be hit more often
       warm_public_controller_more
+      warm_rack_controller_more
 
       # return the funciton names so we can see in the Lambda console
       # the functions being prewarmed
@@ -55,6 +57,25 @@ module Jets
 
       threads = []
       public_ratio.times do
+        threads << Thread.new do
+          warm(function_name)
+        end
+      end
+      threads.each { |t| t.join }
+    end
+
+    def warm_rack_controller_more
+      return unless Jets.rack?
+      function_name = 'jets-rack_controller-process' # key function name
+      return unless all_functions.include?(function_name)
+
+      rack_ratio = Jets.config.prewarm.rack_ratio
+      return if rack_ratio == 0
+
+      puts "Prewarming the rack controller extra at a ratio of #{rack_ratio}" unless @options[:mute]
+
+      threads = []
+      rack_ratio.times do
         threads << Thread.new do
           warm(function_name)
         end
