@@ -1,5 +1,15 @@
 class Jets::Commands::Import
   class Base < Sequence
+    # Ugly, but when the class_option is only defined in the Thor::Group class
+    # it doesnt show up with jets new help :(
+    # If anyone knows how to fix this let me know.
+    def self.cli_options
+      [
+        [:submodule, type: :boolean, default: false, desc: "Imports the project as a submodule"],
+      ]
+    end
+    cli_options.each { |args| class_option(*args) }
+
     # Since setup is public it will automatically run in the subclasses
     def setup
       start_message
