@@ -10,7 +10,7 @@ The Lambda Gems service is currently available for free. Bandwidth and maintaini
 
 ```ruby
 Jets.application.configure do
-  # checks the list in order
+  # Sources for check for pre-compiled Lambda gems. Checks the list in order.
   config.gems.sources = [
     "https://gems.lambdagems.com",
     "https://yoursource.com",

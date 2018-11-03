@@ -16,7 +16,7 @@ module Jets::Commands
     desc "sources", "List configured sources", hide: true
     long_desc Help.text("gems:sources")
     def sources
-      puts "Your pre-built lambda gem sources are:"
+      puts "Your pre-built Lambda gem sources are:"
       Jets.config.gems.sources.each do |source|
         puts "  #{source}"
       end
