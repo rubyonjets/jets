@@ -60,6 +60,21 @@ module Jets::Commands
 
     def webpacker_install
       return unless @webpacker
+      unless yarn_installed?
+        puts "Yarn is not installed or has not been detected. Please double check that yarn has been installed.".colorize(:red)
+        puts <<~EOL
+          To check:
+
+              which yarn
+
+          If it is not installed, you can usually install it with:
+
+              npm install -g yarn
+
+          Refer to the install docs for more info: http://rubyonjets.com/docs/install/
+        EOL
+        exit 1
+      end
 
       command = "jets webpacker:install"
       command += " FORCE=1" if options[:force]

@@ -69,6 +69,10 @@ private
   end
 
   def git_installed?
-    system("type git > /dev/null")
+    system("type git > /dev/null 2>&1")
+  end
+
+  def yarn_installed?
+    system("type yarn > /dev/null 2>&1")
   end
 end
