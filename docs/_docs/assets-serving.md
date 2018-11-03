@@ -4,7 +4,7 @@ title: Assets Serving
 
 Jets handles asset serving by uploading asset files to s3 and serving them directly from s3. This is particularly beneficial for binary assets like images as s3 is better suited for serving them.
 
-By default, the `public` folder is automatically uploaded to s3 as part of the `jets deploy` command.  Here are some notable folders within the `public` folder.
+Using the `asset_path` helper will server the assets in the public folder from the filesystem locally and from s3 remotely. By default, the `public` folder is automatically uploaded to s3 as part of the `jets deploy` command.  Here are some notable folders within the `public` folder.
 
 Folder | Description | Checksum
 --- | --- | ---
@@ -16,7 +16,7 @@ public/images | Public images. | No
 
 Even though `public/assets` and `public/images` files are uploaded and served for convenience.  It is recommended that you put your files in `app/javascript/images` and allow webpacker to compile, sha the assets, and save them to `public/packs`.  The files in `public/packs` contain checksums, whereas files in the `public/assets` and `public/images` do not get their sha checksum added to their paths.
 
-By using webpacker, it generates unique file paths each time the file changes.  Then you will be able to configure high values for the `max-age` response header to further improve performance. This article [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers) covers how cache headers work.
+By using webpacker, it generates unique file paths each time the file changes.  Then you will be able to configure high values for the `max-age` response header to further improve performance. This article [Increasing Application Performance with HTTP Cache Headers](https://devcenter.heroku.com/articles/increasing-application-performance-with-http-cache-headers) covers how cache headers work.  The default max age for assets serving out of s3 is 3600s or 1h.
 
 ## Configure Settings
 

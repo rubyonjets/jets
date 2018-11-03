@@ -26,7 +26,9 @@ For example, with a rate of 2 hours and concurrent of 2, this results in the Lam
 
 ## Public Ratio
 
-The `prewarm.public_ratio` activates extra prewarming for the internal `jets/public_controller.rb`.  The `jets/public_controller.rb` handles serving static files out of the `public` folder. This includes css and js assets that have been packaged up. Generally, each web request usually results in additional assets file requests.  The `prewarm.public_ratio` tells Jets to prewarm the public_controller's lambda function a little bit extra. You can tune the extra prewarming ratio higher or lower according to your needs.
+The `prewarm.public_ratio` activates extra prewarming for the internal `jets/public_controller.rb`.  The `jets/public_controller.rb` handles serving static files out of the `public` folder. The `prewarm.public_ratio` tells Jets to prewarm the public_controller's lambda function a little bit extra. You can tune the extra prewarming ratio higher or lower according to your needs.
+
+Note: Even though you can serve assets out of the public folder directly, it is recommended to use the `asset_path` helper which will serve these files out of s3 instead when the app is running on API Gateway and Lambda.  For more info about [Asset Servering]({% link _docs/assets-serving.md %}) refer to the docs.
 
 ## Rack Ratio
 
