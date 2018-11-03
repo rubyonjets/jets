@@ -4,16 +4,12 @@ module Jets::Commands
     long_desc Help.text("gems:check")
     def check
       check = Jets::Gems::Check.new(cli: true)
-      check.run
-      if check.missing?
-        puts check.missing_message
-        Jets::Gems::Report.missing(check.missing_gems)
-      else
-        puts "Congrats! All gems are available in as pre-built Lambda gems 👍"
-      end
+      check.run! # exits early if missing gems found
+      # If reach here, means all gems are ok.
+      puts "Congrats! All gems are available in as pre-built Lambda gems 👍"
     end
-    
-    desc "sources", "List configured sources", hide: true
+
+    desc "sources", "List pre-built Lambda gem sources"
     long_desc Help.text("gems:sources")
     def sources
       puts "Your pre-built Lambda gem sources are:"

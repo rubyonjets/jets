@@ -8,15 +8,7 @@ class Jets::Builders
 
     def run
       check = Jets::Gems::Check.new
-      found_gems = check.run
-      if check.missing?
-        # Exits early if not all the linux gems are available.
-        # Better to error now than deploy a broken package to AWS Lambda.
-        # Provide users with message about using their own lambdagems source.
-        puts check.missing_message
-        Jets::Gems::Report.missing(check.missing_gems)
-        exit 1
-      end
+      found_gems = check.run! # exits early if missing gems found
 
       # Reaching here means its safe to download and extract the gems
       found_gems.each do |gem_name, source|
