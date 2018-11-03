@@ -298,8 +298,8 @@ module Jets::Lambda::Dsl
 
         # Methods can be made private with the :private keyword after the method has been defined.
         # To account for this, loop back thorugh all the methods and check if the method is indeed public.
-        tasks = merged_tasks
-        tasks.each do |meth, task|
+        tasks = ActiveSupport::OrderedHash.new
+        merged_tasks.each do |meth, task|
           if public
             tasks[meth] = task if task.public_meth?
           else
