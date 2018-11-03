@@ -26,7 +26,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
     describe "compose" do
       it "builds a child stack with controller resources" do
         builder.compose
-        puts builder.text # uncomment to see template text
+        # puts builder.text # uncomment to see template text
 
         resources = builder.template["Resources"]
         resource_types = resources.values.map { |i| i["Type"] }

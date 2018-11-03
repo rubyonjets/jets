@@ -277,7 +277,7 @@ module Jets::Lambda::Dsl
       #   Jets::Lambda::Functions > Jets::Controller::Base > ApplicationController ...
       #     > PostsController > ChildPostsController
       #
-      # Do not include tasks form the direct subclasses of Jets::Lambda::Functions
+      # Do not include tasks from the direct subclasses of Jets::Lambda::Functions
       # because those classes are abstract.  Dont want those methods to be included.
       def find_all_tasks(public: true)
         klass = self
@@ -286,7 +286,7 @@ module Jets::Lambda::Dsl
 
         # Go up class inheritance and builds lookup structure in memory
         until direct_subclasses.include?(klass)
-          lookup << klass.send(:all_tasks) # one place we want private all_tasks
+          lookup << klass.send(:all_tasks) # one place we want to call private all_tasks method
           klass = klass.superclass
         end
         merged_tasks = ActiveSupport::OrderedHash.new
