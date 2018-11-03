@@ -1,5 +1,5 @@
 default: &default
-  adapter: postgresql
+  adapter: mysql2
   encoding: utf8
   pool: <%= ENV["DB_POOL"] || 5  %>
   database: <%= ENV['DB_NAME'] || 'demo_dev' %>

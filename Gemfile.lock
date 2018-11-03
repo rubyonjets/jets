@@ -118,9 +118,9 @@ GEM
     mimemagic (0.3.2)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
+    mysql2 (0.5.2)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
-    pg (1.1.3)
     rack (2.0.5)
     rack-proxy (0.6.5)
       rack
@@ -167,7 +167,7 @@ DEPENDENCIES
   bundler
   byebug
   jets!
-  pg (~> 1.1.3)
+  mysql2 (~> 0.5.2)
   rake
   rspec
   rspec_junit_formatter
