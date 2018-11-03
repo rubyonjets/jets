@@ -28,11 +28,25 @@ CODE
       end
     end
 
-    def copy_database_yaml
-      src = "#{Jets.root}config/database.yml"
-      dest = "#{Jets.root}rack/config/database.yml"
-      puts "Copying #{src} to #{dest}"
-      FileUtils.cp(src, dest)
+    def reconfigure_database_yml
+      current_yaml = "#{Jets.root}rack/config/database.yml"
+      return unless File.exist?(current_yaml)
+
+      vars = {}
+      data = YAML.load_file(current_yaml)
+      # Grab values from current database.yml
+      %w[development test production].each do |env|
+        vars["database_#{env}"] = data[env]['database']
+      end
+      vars['adapter'] = data['development']['adapter']
+
+      path = File.expand_path("templates/config/database.yml", File.dirname(__FILE__))
+      content = Jets::Erb.result(path, vars)
+      IO.write(current_yaml, content)
+      puts "Reconfigured #{current_yaml}"
+    rescue Exception
+      # If unable to copy the database.yml settings just slightly fail.
+      # Do this because really unsure what is in the current database.yml
     end
 
     def finish_message
@@ -48,12 +62,14 @@ CODE
 
         The catchall route passes any route not handled by the Jets app as a request onto the Rails app.  You can modified the route to selectively route what you want.
 
+        Please double check that rack/config/database.yml is appropriately configured, it likely needs to be updated.
+
         Test the application locally. Test that the Rails app in the rack subfolder works independently.  You can start the application up with:
 
             cd rack # cd into the imported Rails project
             bundle exec rackup
 
-        The rack server starts up on http://localhost:9292  You might have to make sure that the database is configured.
+        The rack server starts up on http://localhost:9292
 
         Once tested, stop that server with CTRL-C.
 
