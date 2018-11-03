@@ -8,6 +8,8 @@ To run unit tests:
 
 ## Integration
 
+These commands run all from the jets repo itself. The demo folder has been added to the `.gitignore`.
+
 ### Locally
 
 To run the integration tests locally, you need to create a new Jets CRUD project and start the server:
@@ -38,4 +40,9 @@ Then you can deploy the jets app and test it on real AWS Lambda.
 
 Run the remote integration script:
 
-    spec/integration/remote.sh
+    BASE_URL=xxx spec/integration/remote.sh
+
+Example:
+
+    BASE_URL=https://wb5dcjc09a.execute-api.us-west-2.amazonaws.com/dev spec/integration/remote.sh
+    
