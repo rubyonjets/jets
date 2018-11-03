@@ -3,10 +3,10 @@ default: &default
   encoding: utf8
   pool: <%%= ENV["DB_POOL"] || 5  %>
   database: <%%= ENV['DB_NAME'] || '<%= @database_development %>' %>
-<% if @adapter == 'mysql' -%>
-  username: <%%= ENV['DB_USER'] || 'root' %>
-<% else -%>
+<% if @adapter == 'postgresql' -%>
   username: <%%= ENV['DB_USER'] || ENV['USER'] %>
+<% else -%>
+  username: <%%= ENV['DB_USER'] || 'root' %>
 <% end -%>
   password: <%%= ENV['DB_PASS'] %>
   host: <%%= ENV["DB_HOST"] %>
