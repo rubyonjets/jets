@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.4]
+- import:rails reconfigure database.yml pull request #56 from tongueroo/database-yml
+
 ## [1.0.3]
 - Allow control to prewarming of rack endpoint more
 - add config.prewarm.rack_ratio setting pull request #55 from tongueroo/prewarm-rack-more
