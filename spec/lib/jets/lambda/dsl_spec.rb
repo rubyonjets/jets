@@ -76,7 +76,7 @@ describe Jets::Lambda::Dsl do
       expect(meths).to eq [:index, :new, :show, :create, :edit, :update, :delete, :foobar]
       expect(tasks[:index].class_name).to eq "ChildPostsController"
       expect(tasks[:foobar].class_name).to eq "ChildPostsController"
-      expect(tasks[:show].class_name).to eq "PostsController"
+      expect(tasks[:show].class_name).to eq "ChildPostsController"
     end
   end
 end

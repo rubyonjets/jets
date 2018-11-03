@@ -296,6 +296,13 @@ module Jets::Lambda::Dsl
           merged_tasks.merge!(tasks_hash)
         end
 
+        # The cfn builders required the right final child class to build the lambda functions correctly.
+        merged_tasks.each do |meth, task|
+          # Override the class name for the cfn builders
+          task.instance_variable_set(:@class_name, self.name)
+          merged_tasks[meth] = task
+        end
+
         # Methods can be made private with the :private keyword after the method has been defined.
         # To account for this, loop back thorugh all the methods and check if the method is indeed public.
         tasks = ActiveSupport::OrderedHash.new

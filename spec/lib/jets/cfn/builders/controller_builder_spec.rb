@@ -21,6 +21,23 @@ describe Jets::Cfn::Builders::ControllerBuilder do
     end
   end
 
+  context "ChildPostsController" do
+    let(:app_class) { ChildPostsController }
+    describe "compose" do
+      it "builds a child stack with controller resources" do
+        builder.compose
+        puts builder.text # uncomment to see template text
+
+        resources = builder.template["Resources"]
+        resource_types = resources.values.map { |i| i["Type"] }
+        expect(resource_types).to include("AWS::Lambda::Function")
+        # didnt hook up a route in the fixture project so no AWS::ApiGateway::Method expected
+
+        expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-app-child_posts_controller.yml"
+      end
+    end
+  end
+
   context "StoresController" do
     let(:app_class) { StoresController }
     describe "show function properties" do
