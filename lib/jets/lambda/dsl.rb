@@ -270,25 +270,53 @@ module Jets::Lambda::Dsl
       # Do not call all tasks outside this class, instead use: tasks or lambda functions
       private :all_tasks
 
+      # Goes up the class inheritance chain to build the tasks.
+      #
+      # Example heirarchy:
+      #
+      #   Jets::Lambda::Functions > Jets::Controller::Base > ApplicationController ...
+      #     > PostsController > ChildPostsController
+      #
+      # Do not include tasks form the direct subclasses of Jets::Lambda::Functions
+      # because those classes are abstract.  Dont want those methods to be included.
+      def find_all_tasks(public: true)
+        klass = self
+        direct_subclasses = Jets::Lambda::Functions.subclasses
+        lookup = []
+
+        while true
+          break if direct_subclasses.include?(klass)
+          lookup << klass.send(:all_tasks) # one place we want private all_tasks
+          klass = klass.superclass
+        end
+        merged_tasks = ActiveSupport::OrderedHash.new
+        # Go back down the class inheritance chain in reverse order and merge the tasks
+        lookup.reverse.each do |tasks_hash|
+          # tasks_hash is a result of all_tasks. Example: PostsController.all_tasks
+          merged_tasks.merge!(tasks_hash)
+        end
+
+        tasks = merged_tasks
+        tasks.each do |meth, task|
+          if public
+            tasks[meth] = task if task.public_meth?
+          else
+            tasks[meth] = task unless task.public_meth?
+          end
+        end
+        tasks
+      end
+      memoize :find_all_tasks
+
       # Methods can be made private with the :private keyword after the method has been defined.
       # To account for this, loop back thorugh all the methods and check if the method is indeed public.
       def all_public_tasks
-        public_tasks = ActiveSupport::OrderedHash.new
-        all_tasks.each do |meth, task|
-          public_tasks[meth] = task if task.public_meth?
-        end
-        public_tasks
+        find_all_tasks(public: true)
       end
-      memoize :all_public_tasks
 
       def all_private_tasks
-        private_tasks = ActiveSupport::OrderedHash.new
-        all_tasks.each do |meth, task|
-          private_tasks[meth] = task unless task.public_meth?
-        end
-        private_tasks
+        find_all_tasks(public: false)
       end
-      memoize :all_private_tasks
 
       # Returns the tasks for this class in Array form.
       #

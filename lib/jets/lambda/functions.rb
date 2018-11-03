@@ -18,5 +18,17 @@ module Jets::Lambda
 
     include Dsl # At the end so methods like event, context and method
       # do not trigger method_added
+
+    class << self
+      # Tracking subclasses because it helps with Lambda::Dsl#find_all_tasks
+      def subclasses
+        @subclasses ||= []
+      end
+
+      def inherited(base)
+        super
+        self.subclasses << base if base.name
+      end
+    end
   end
 end

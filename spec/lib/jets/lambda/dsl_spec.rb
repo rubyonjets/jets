@@ -68,4 +68,15 @@ describe Jets::Lambda::Dsl do
       expect(has_resource).to be true
     end
   end
+
+  context "Class with inherited tasks" do
+    it "contains tasks from parent classes" do
+      tasks = ChildPostsController.all_public_tasks
+      meths = tasks.keys
+      expect(meths).to eq [:index, :new, :show, :create, :edit, :update, :delete, :foobar]
+      expect(tasks[:index].class_name).to eq "ChildPostsController"
+      expect(tasks[:foobar].class_name).to eq "ChildPostsController"
+      expect(tasks[:show].class_name).to eq "PostsController"
+    end
+  end
 end
