@@ -19,7 +19,7 @@ It is key to understand AWS Lambda and API Gateway to understand Jets conceptual
 * **AWS Lambda** is Functions as a Service. It allows you to upload and run functions without worrying about the underlying infrastructure.
 * **API Gateway** is the routing layer for Lambda. It is used to route REST URL endpoints to Lambda functions.
 
-The official documentation is at: [Ruby on Jets](http://rubyonjets.com).
+The official documentation is at [Ruby on Jets](http://rubyonjets.com).
 
 Refer to the official docs for more info, but here's a quick intro.
 
@@ -60,7 +60,7 @@ class PostsController < ApplicationController
 end
 ```
 
-Jets creates Lambda functions each the public method in your controller.
+Jets creates Lambda functions for each public method in your controller.
 
 ### Jets Routing
 
@@ -86,15 +86,15 @@ end
 
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
-	$ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/dev/posts" | jq .
-	{
-	  "hello": "world",
-	  "action": "index"
-	}
+    $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/dev/posts" | jq .
+    {
+      "hello": "world",
+      "action": "index"
+    }
 
 ### Jets Jobs
 
-A Jets job handles asynchrous background jobs performed outside of the web request/response cycle. Here's an example:
+A Jets job handles asynchronous background jobs performed outside of the web request/response cycle. Here's an example:
 
 app/jobs/hard_job.rb:
 
@@ -118,7 +118,7 @@ end
 
 You can test your application with a local server that mimics API Gateway: [Jets Local Server](http://rubyonjets.com/docs/local-server/). Once ready, deploying to AWS Lambda is a single command.
 
-	jets deploy
+    jets deploy
 
 After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
 
@@ -132,7 +132,7 @@ Here's a [Live Demo](https://demo.rubyonjets.com/posts) of the quintessential CR
 
 ### Rails Support
 
-Jets [Mega Mode](http://rubyonjets.com/docs/megamode/) provides Rails support with little effort.  This allows you run a Rails application on AWS Lambda. Refer to the [Rails Support](http://rubyonjets.com/docs/rails-support/) docs for more info.
+Jets [Mega Mode](http://rubyonjets.com/docs/megamode/) provides Rails support with little effort.  This allows you to run a Rails application on AWS Lambda. Refer to the [Rails Support](http://rubyonjets.com/docs/rails-support/) docs for more info.
 
 ### More Info
 
@@ -141,7 +141,6 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Quick Start](http://rubyonjets.com/quick-start/)
 * [Local Jets Server](http://rubyonjets.com/docs/local-server/)
 * [REPL Console](http://rubyonjets.com/docs/repl-console/)
-* [Jets Call](http://rubyonjets.com/docs/jets-call/)
 * [Project Structure](http://rubyonjets.com/project-structure/)
 * [App Configuration](http://rubyonjets.com/app-config/)
 * [Database Support](http://rubyonjets.com/docs/database-support/)
