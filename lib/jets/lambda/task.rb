@@ -19,8 +19,13 @@ class Jets::Lambda::Task
   end
 
   def public_meth?
+    # For anonoymous classes (app/functions/hello.rb) the class name will be blank.
+    # These types of classes are treated specially and has only one handler method
+    # that is registered. So we know it is public.
+    return true if @class_name == ''
+
     klass = @class_name.constantize
-    public_methods = klass.public_instance_methods - Object.methods
+    public_methods = klass.public_instance_methods
     public_methods.include?(meth.to_sym)
   end
 
