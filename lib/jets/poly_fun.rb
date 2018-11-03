@@ -56,7 +56,12 @@ module Jets
     end
 
     def task
-      @app_class.all_public_tasks[@app_meth]
+      task = @app_class.all_public_tasks[@app_meth]
+      # Provider user a aetter error message to user than a nil failure.
+      unless task
+        raise "Unable to find #{@app_class}##{@app_meth}"
+      end
+      task
     end
     memoize :task
 
