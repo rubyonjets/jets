@@ -1,7 +1,7 @@
 You can configure additional gem sources in config/application.rb:
 
     Jets.application.configure do
-      config.lambdagems.sources = [
+      config.gems.sources = [
         "https://gems.lambdagems.com"
       ]
     end

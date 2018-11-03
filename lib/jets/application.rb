@@ -32,8 +32,8 @@ class Jets::Application
     config.prewarm.public_ratio = 3
     config.prewarm.rack_ratio = 5
 
-    config.lambdagems = ActiveSupport::OrderedOptions.new
-    config.lambdagems.sources = [
+    config.gems = ActiveSupport::OrderedOptions.new
+    config.gems.sources = [
       'https://gems.lambdagems.com'
     ]
 
