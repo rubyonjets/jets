@@ -9,6 +9,6 @@ reference: true
 
 ## Description
 
-List configured sources
+List pre-built Lambda gem sources
 
 
