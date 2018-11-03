@@ -8,6 +8,8 @@ To run unit tests:
 
 ## Integration
 
+These commands run all from the jets repo itself. The demo folder has been added to the `.gitignore`.
+
 ### Locally
 
 To run the integration tests locally, you need to create a new Jets CRUD project and start the server:
