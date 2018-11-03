@@ -61,9 +61,6 @@ module Jets
     memoize :task
 
     def check_private_method!
-      pp @app_class.all_private_tasks.keys
-      puts "@app_meth #{@app_meth.inspect}"
-
       private_detected = @app_class.all_private_tasks.keys.include?(@app_meth)
       return unless private_detected # Ok to continue
 

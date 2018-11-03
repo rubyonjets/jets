@@ -284,8 +284,8 @@ module Jets::Lambda::Dsl
         direct_subclasses = Jets::Lambda::Functions.subclasses
         lookup = []
 
-        while true
-          break if direct_subclasses.include?(klass)
+        # Go up class inheritance and builds lookup structure in memory
+        until direct_subclasses.include?(klass)
           lookup << klass.send(:all_tasks) # one place we want private all_tasks
           klass = klass.superclass
         end
@@ -296,6 +296,8 @@ module Jets::Lambda::Dsl
           merged_tasks.merge!(tasks_hash)
         end
 
+        # Methods can be made private with the :private keyword after the method has been defined.
+        # To account for this, loop back thorugh all the methods and check if the method is indeed public.
         tasks = merged_tasks
         tasks.each do |meth, task|
           if public
@@ -308,8 +310,6 @@ module Jets::Lambda::Dsl
       end
       memoize :find_all_tasks
 
-      # Methods can be made private with the :private keyword after the method has been defined.
-      # To account for this, loop back thorugh all the methods and check if the method is indeed public.
       def all_public_tasks
         find_all_tasks(public: true)
       end
