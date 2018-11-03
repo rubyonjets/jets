@@ -58,7 +58,7 @@ class Jets::Route
     rescue NameError
       return false
     end
-    controller_class.all_tasks.keys.include?(action_name.to_sym)
+    controller_class.lambda_functions.include?(action_name.to_sym)
   end
 
   # Extracts the path parameters from the actual path

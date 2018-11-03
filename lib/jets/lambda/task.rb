@@ -14,12 +14,23 @@ class Jets::Lambda::Task
     @replacements = options[:replacements] || {} # added to baseline replacements
   end
 
-  def build_function_iam?
-    !!(@iam_policy || @managed_iam_policy)
-  end
-
   def name
     @meth
+  end
+
+  def public_meth?
+    # For anonymous classes (app/functions/hello.rb) the class name will be blank.
+    # These types of classes are treated specially and has only one handler method
+    # that is registered. So we know it is public.
+    return true if @class_name.nil? || @class_name == ''
+
+    klass = @class_name.constantize
+    public_methods = klass.public_instance_methods
+    public_methods.include?(meth.to_sym)
+  end
+
+  def build_function_iam?
+    !!(@iam_policy || @managed_iam_policy)
   end
 
   @@lang_exts = {

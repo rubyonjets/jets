@@ -6,14 +6,14 @@ describe Jets::Job::Base do
   # the lambda functions
   context HardJob do
     it "tasks" do
-      tasks = HardJob.all_tasks.keys
+      tasks = HardJob.all_public_tasks.keys
       expect(tasks).to eq [:dig, :drive, :lift]
 
-      dig_task = HardJob.all_tasks[:dig]
+      dig_task = HardJob.all_public_tasks[:dig]
       expect(dig_task).to be_a(Jets::Job::Task)
       expect(dig_task.schedule_expression).to eq "rate(10 hours)"
 
-      drive_task = HardJob.all_tasks[:lift]
+      drive_task = HardJob.all_public_tasks[:lift]
       expect(drive_task).to be_a(Jets::Job::Task)
       expect(drive_task.schedule_expression).to eq "cron(0 */12 * * ? *)"
     end
@@ -23,7 +23,7 @@ describe Jets::Job::Base do
       expect(tasks.first).to be_a(Jets::Job::Task)
 
       task_names = tasks.map(&:name)
-      expect(task_names).to eq(HardJob.all_tasks.keys)
+      expect(task_names).to eq(HardJob.all_public_tasks.keys)
     end
 
     it "perform_now" do
@@ -40,7 +40,7 @@ describe Jets::Job::Base do
 
   context EasyJob do
     it "tasks" do
-      tasks = EasyJob.all_tasks.keys
+      tasks = EasyJob.all_public_tasks.keys
       expect(tasks).to eq [:sleep]
     end
   end

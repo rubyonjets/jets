@@ -13,6 +13,8 @@ module Jets::Lambda::Dsl
 
   included do
     class << self
+      extend Memoist
+
       def class_properties(options=nil)
         if options
           @class_properties ||= {}
@@ -259,11 +261,69 @@ module Jets::Lambda::Dsl
       # Returns the all tasks for this class with their method names as keys.
       #
       # ==== Returns
-      # OrderedHash:: An ordered hash with tasks names as keys and JobTask
+      # OrderedHash:: An ordered hash with tasks names as keys and Task
       #               objects as values.
       #
       def all_tasks
         @all_tasks ||= ActiveSupport::OrderedHash.new
+      end
+      # Do not call all tasks outside this class, instead use: tasks or lambda functions
+      private :all_tasks
+
+      # Goes up the class inheritance chain to build the tasks.
+      #
+      # Example heirarchy:
+      #
+      #   Jets::Lambda::Functions > Jets::Controller::Base > ApplicationController ...
+      #     > PostsController > ChildPostsController
+      #
+      # Do not include tasks from the direct subclasses of Jets::Lambda::Functions
+      # because those classes are abstract.  Dont want those methods to be included.
+      def find_all_tasks(public: true)
+        klass = self
+        direct_subclasses = Jets::Lambda::Functions.subclasses
+        lookup = []
+
+        # Go up class inheritance and builds lookup structure in memory
+        until direct_subclasses.include?(klass)
+          lookup << klass.send(:all_tasks) # one place we want to call private all_tasks method
+          klass = klass.superclass
+        end
+        merged_tasks = ActiveSupport::OrderedHash.new
+        # Go back down the class inheritance chain in reverse order and merge the tasks
+        lookup.reverse.each do |tasks_hash|
+          # tasks_hash is a result of all_tasks. Example: PostsController.all_tasks
+          merged_tasks.merge!(tasks_hash)
+        end
+
+        # The cfn builders required the right final child class to build the lambda functions correctly.
+        merged_tasks.each do |meth, task|
+          # Override the class name for the cfn builders
+          task = task.clone # do not stomp over current tasks since things are usually looked by reference
+          task.instance_variable_set(:@class_name, self.name)
+          merged_tasks[meth] = task
+        end
+
+        # Methods can be made private with the :private keyword after the method has been defined.
+        # To account for this, loop back thorugh all the methods and check if the method is indeed public.
+        tasks = ActiveSupport::OrderedHash.new
+        merged_tasks.each do |meth, task|
+          if public
+            tasks[meth] = task if task.public_meth?
+          else
+            tasks[meth] = task unless task.public_meth?
+          end
+        end
+        tasks
+      end
+      memoize :find_all_tasks
+
+      def all_public_tasks
+        find_all_tasks(public: true)
+      end
+
+      def all_private_tasks
+        find_all_tasks(public: false)
       end
 
       # Returns the tasks for this class in Array form.
@@ -272,13 +332,7 @@ module Jets::Lambda::Dsl
       # Array of task objects
       #
       def tasks
-        all_tasks.values
-      end
-
-      # Used in Jets::Cfn::Builders::Interface#build
-      # Overridden in rule/dsl.rb
-      def build?
-        !tasks.empty?
+        all_public_tasks.values
       end
 
       # The public methods defined in the project app class ulimately become
@@ -287,7 +341,13 @@ module Jets::Lambda::Dsl
       # Example return value:
       #   [:index, :new, :create, :show]
       def lambda_functions
-        all_tasks.keys
+        all_public_tasks.keys
+      end
+
+      # Used in Jets::Cfn::Builders::Interface#build
+      # Overridden in rule/dsl.rb
+      def build?
+        !tasks.empty?
       end
 
       # Polymorphic support

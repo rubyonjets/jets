@@ -18,7 +18,7 @@ describe Jets::Rule::Dsl do
     let(:rule) { FullPropertiesRule.new({}, nil, "protect") }
 
     it "associated_resources" do
-      protect_task = FullPropertiesRule.all_tasks[:protect]
+      protect_task = FullPropertiesRule.all_public_tasks[:protect]
       expect(protect_task).to be_a(Jets::Lambda::Task)
       resources = protect_task.associated_resources
       associated_resource = resources.first
@@ -32,7 +32,7 @@ describe Jets::Rule::Dsl do
     let(:rule) { PrettyPropertiesRule.new({}, nil, "protect") }
 
     it "scope expands to full ComplianceResourceTypes with AWS::EC2::SecurityGroup" do
-      protect_task = PrettyPropertiesRule.all_tasks[:protect]
+      protect_task = PrettyPropertiesRule.all_public_tasks[:protect]
       expect(protect_task).to be_a(Jets::Lambda::Task)
       resources = protect_task.associated_resources
       associated_resource = resources.first
