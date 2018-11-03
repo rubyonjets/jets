@@ -33,12 +33,10 @@ CODE
       return unless File.exist?(current_yaml)
 
       vars = {}
-      data = YAML.load_file(current_yaml)
-      # Grab values from current database.yml
-      %w[development test production].each do |env|
-        vars["database_#{env}"] = data[env]['database']
-      end
-      vars['adapter'] = data['development']['adapter']
+      current_database = YAML.load_file(current_yaml)
+      database_names = infer_database_name(current_database)
+      vars.merge!(database_names)
+      vars['adapter'] = current_database['development']['adapter']
 
       path = File.expand_path("templates/config/database.yml", File.dirname(__FILE__))
       content = Jets::Erb.result(path, vars)
@@ -82,10 +80,28 @@ CODE
 
         # Deploy
 
-        When you're ready deploy to AWS Lambda with:
+        When you are ready deploy to AWS Lambda with:
 
             jets deploy
-      EOL
+        EOL
+    end
+
+  private
+    def infer_database_name(current_database)
+      vars = {}
+      %w[development test production].each do |env|
+        if !current_database[env]['database'].include?('<%') # already has ERB
+          vars["database_#{env}"] = current_database[env]['database']
+        else
+          lines = IO.readlines("#{Jets.root}rack/config/application.rb")
+          module_line = lines.find { |l| l =~ /^module / }
+          app_module = module_line.gsub(/^module /,'').strip
+          app_name = app_module.underscore
+          vars["database_#{env}"] = "#{app_name}_#{env}"
+        end
+      end
+
+      vars
     end
   end
 end

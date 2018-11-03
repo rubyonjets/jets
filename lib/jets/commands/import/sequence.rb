@@ -40,7 +40,7 @@ class Jets::Commands::Import
       puts "Creating rack folder"
       template_path = File.expand_path(@source)
       set_source_paths(template_path)
-      directory ".", rack_folder
+      directory ".", rack_folder, exclude_pattern: %r{.git}
     end
 
     def set_source_paths(*paths)
