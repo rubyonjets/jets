@@ -38,4 +38,9 @@ Then you can deploy the jets app and test it on real AWS Lambda.
 
 Run the remote integration script:
 
+    BASE_URL=xxx spec/integration/remote.sh
+
+Example:
+
     BASE_URL=https://wb5dcjc09a.execute-api.us-west-2.amazonaws.com/dev spec/integration/remote.sh
+    
