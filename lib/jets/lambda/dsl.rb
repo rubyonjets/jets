@@ -281,6 +281,15 @@ module Jets::Lambda::Dsl
       end
       memoize :all_public_tasks
 
+      def all_private_tasks
+        private_tasks = ActiveSupport::OrderedHash.new
+        all_tasks.each do |meth, task|
+          private_tasks[meth] = task unless task.public_meth?
+        end
+        private_tasks
+      end
+      memoize :all_private_tasks
+
       # Returns the tasks for this class in Array form.
       #
       # ==== Returns
@@ -290,12 +299,6 @@ module Jets::Lambda::Dsl
         all_public_tasks.values
       end
 
-      # Used in Jets::Cfn::Builders::Interface#build
-      # Overridden in rule/dsl.rb
-      def build?
-        !tasks.empty?
-      end
-
       # The public methods defined in the project app class ulimately become
       # lambda functions.
       #
@@ -303,6 +306,12 @@ module Jets::Lambda::Dsl
       #   [:index, :new, :create, :show]
       def lambda_functions
         all_public_tasks.keys
+      end
+
+      # Used in Jets::Cfn::Builders::Interface#build
+      # Overridden in rule/dsl.rb
+      def build?
+        !tasks.empty?
       end
 
       # Polymorphic support

@@ -1,6 +1,6 @@
 describe Jets::PolyFun::NodeExecutor do
   let(:fun) { Jets::PolyFun::NodeExecutor.new(task) }
-  let(:task) { BooksController.all_tasks[:list] }
+  let(:task) { BooksController.all_public_tasks[:list] }
 
   context("python") do
     context("lets see the script") do

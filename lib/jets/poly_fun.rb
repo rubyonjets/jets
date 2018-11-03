@@ -17,6 +17,8 @@ module Jets
     end
 
     def run(event, context={})
+      check_private_method!
+
       if task.lang == :ruby
         # controller = PostsController.new(event, content)
         # resp = controller.edit
@@ -54,8 +56,18 @@ module Jets
     end
 
     def task
-      @app_class.all_tasks[@app_meth]
+      @app_class.all_public_tasks[@app_meth]
     end
     memoize :task
+
+    def check_private_method!
+      pp @app_class.all_private_tasks.keys
+      puts "@app_meth #{@app_meth.inspect}"
+
+      private_detected = @app_class.all_private_tasks.keys.include?(@app_meth)
+      return unless private_detected # Ok to continue
+
+      raise "The #{@app_class}##{@app_meth} is a private method.  Unable to call it unless it is public"
+    end
   end
 end
