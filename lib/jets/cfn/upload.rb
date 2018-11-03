@@ -50,10 +50,10 @@ class Jets::Cfn
     end
 
     def upload_assets
-      puts "Uploading modified public assets to S3."
+      puts "Checking for modified public assets and uploading to S3."
       start_time = Time.now
       upload_public_assets
-      puts "Time to upload public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
+      puts "Time for public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
     end
 
     def upload_public_assets
