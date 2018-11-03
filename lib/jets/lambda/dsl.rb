@@ -299,6 +299,7 @@ module Jets::Lambda::Dsl
         # The cfn builders required the right final child class to build the lambda functions correctly.
         merged_tasks.each do |meth, task|
           # Override the class name for the cfn builders
+          task = task.clone # do not stomp over current tasks since things are usually looked by reference
           task.instance_variable_set(:@class_name, self.name)
           merged_tasks[meth] = task
         end
