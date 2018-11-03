@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.5]
+- change config.lambdagems to config.gems
+- friendly info message when yarn is not installed
+- improve rails:import rack/config/database.yml generation
+- update gems check
+
 ## [1.0.4]
 - import:rails reconfigure database.yml pull request #56 from tongueroo/database-yml
 
