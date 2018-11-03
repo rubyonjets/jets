@@ -1,0 +1,26 @@
+default: &default
+  adapter:  <%= @adapter %>
+  encoding: utf8
+  pool: <%%= ENV["DB_POOL"] || 5  %>
+  database: <%%= ENV['DB_NAME'] || '<%= @database_development %>' %>
+<% if @adapter == 'mysql' -%>
+  username: <%%= ENV['DB_USER'] || 'root' %>
+<% else -%>
+  username: <%%= ENV['DB_USER'] || ENV['USER'] %>
+<% end -%>
+  password: <%%= ENV['DB_PASS'] %>
+  host: <%%= ENV["DB_HOST"] %>
+  url: <%%= ENV['DATABASE_URL'] %> # takes higher precedence than other settings
+
+development:
+  <<: *default
+  database: <%%= ENV['DB_NAME'] || '<%= @database_development %>' %>
+
+test:
+  <<: *default
+  database: <%= @database_test %>
+
+production:
+  <<: *default
+  database: <%= @database_production %>
+  url: <%%= ENV['DATABASE_URL'] %>
