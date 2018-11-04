@@ -14,7 +14,7 @@ In a hurry? No problem!  Here's a quick start to get going.
     jets db:create db:migrate
     jets server
 
-The `jets server` command starts a server that mimics API Gateway so you can test locally.  Open [http://localhost:8888/posts](http://localhost:8888/posts) and check out the site. Note, the `DATABASE_URL` format looks like this: `postgresql://dbuser:dbpass@localhost/demo_dev?pool=5`
+The `jets server` command starts a server that mimics API Gateway so you can test locally.  Open [http://localhost:8888/posts](http://localhost:8888/posts) and check out the site. Note, the `DATABASE_URL` format looks like this: `mysql2://dbuser:dbpass@localhost/demo_dev?pool=5`
 
 Create some posts records. The posts page should look something like this:
 
