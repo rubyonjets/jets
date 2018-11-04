@@ -9,7 +9,6 @@ app/functions/simple.rb:
 ```ruby
 def handle(event, context)
   puts "hello world"
-  {hello: "world"}
 end
 ```
 
