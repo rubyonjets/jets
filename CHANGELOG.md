@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.9]
+- adjust starter .env.development and config/application.rb
+
 ## [1.0.8]
 - fix s3 assets to work with custom domains #58 from tongueroo/fix-assets
 
