@@ -32,19 +32,62 @@ module Jets::Controller::Renderers
     # default options:
     #   https://github.com/rails/rails/blob/master/actionpack/lib/action_controller/renderer.rb#L41-L47
     def renderer_options
+      options = {
+        # script_name: "", # unfortunately doesnt seem to effect relative_url_root like desired
+        # input: ""
+      }
+
       origin = headers["origin"]
       if origin
         uri = URI.parse(origin)
-        https = uri.scheme == "https"
+        options[:https] = uri.scheme == "https"
       end
-      options = {
-        http_host: headers["host"],
-        https: https,
-        # script_name: "",
-        # input: ""
-      }
+
+      # Important to not use rack_headers as local variable instead of headers.
+      # headers is a method that gets deleted to controller.headers and using it
+      # seems to cause issues.
+      rack_headers = rackify_headers(headers)
+      options.merge!(rack_headers)
+
+      # Note @options[:method] uses @options vs options on purpose
       @options[:method] = event["httpMethod"].downcase if event["httpMethod"]
       options
+    end
+
+    # Takes headers and adds HTTP_ to front of the keys because that is what rack
+    # does to the headers passed from a request. This seems to be the standard
+    # when testing with curl and inspecting the headers in a Rack app.  Example:
+    # https://gist.github.com/tongueroo/94f22f6c261c8999e4f4f776547e2ee3
+    #
+    # This is useful for:
+    #
+    #   ActionController::Base.renderer.new(renderer_options)
+    #
+    # renderer_options are rack normalized headers.
+    #
+    # Example input (from api gateway)
+    #
+    #   {"host"=>"localhost:8888",
+    #   "user-agent"=>"curl/7.53.1",
+    #   "accept"=>"*/*",
+    #   "version"=>"HTTP/1.1",
+    #   "x-amzn-trace-id"=>"Root=1-5bde5b19-61d0d4ab4659144f8f69e38f"}
+    #
+    # Example output:
+    #
+    #   {"HTTP_HOST"=>"localhost:8888",
+    #   "HTTP_USER_AGENT"=>"curl/7.53.1",
+    #   "HTTP_ACCEPT"=>"*/*",
+    #   "HTTP_VERSION"=>"HTTP/1.1",
+    #   "HTTP_X_AMZN_TRACE_ID"=>"Root=1-5bde5b19-61d0d4ab4659144f8f69e38f"}
+    #
+    def rackify_headers(headers)
+      results = {}
+      headers.each do |k,v|
+        rack_key = 'HTTP_' + k.gsub('-','_').upcase
+        results[rack_key] = v
+      end
+      results
     end
 
     def render_options

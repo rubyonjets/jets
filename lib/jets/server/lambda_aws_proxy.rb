@@ -79,6 +79,11 @@ class Jets::Server
         end
       end
 
+      # Way to fake X-Amzn-Trace-Id which on_aws? helper checks
+      if ENV['JETS_ON_AWS']
+        headers["X-Amzn-Trace-Id"] = "Root=fake-trace-id"
+      end
+
       # There are also a couple of other headers that are specific to
       # AWS Lambda Proxy and API Gateway. Example:
       #
