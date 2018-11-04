@@ -25,7 +25,7 @@ module Jets::AssetTagHelper
   def image_tag(source, options = {})
     # mimic original behavior to get /images in source
     source = "/images/#{source}" unless source.starts_with?('/')
-    if on_aws?(source)
+    if on_aws?
       source = "#{s3_public}#{source}"
     end
 
@@ -33,13 +33,22 @@ module Jets::AssetTagHelper
   end
 
   def asset_path(source, options = {})
-    if on_aws?(source) && asset_folder?(source)
+    if on_aws? && asset_folder?(source)
       # mimic original behavior to get /images in source
       source = "/images/#{source}" unless source.starts_with?('/')
       source = "#{s3_public}#{source}"
     end
 
     super
+  end
+
+  # Serves favicon out of s3 when on API gateway.
+  #
+  # Useful helper for API Gateway since serving binary data like images without
+  # an Accept header doesnt work well. You can changed Media Types to '*/*'
+  # but then that messes up form data.
+  def favicon_path(path='favicon.ico')
+    on_aws? ? "#{s3_public}/#{path}" : "/#{path}"
   end
 
 private
@@ -80,7 +89,7 @@ private
   # Url: /packs/application-e7654c50abd78161b641.js
   # Returns: https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1jg5o076egkk4/jets/public/packs/application-e7654c50abd78161b641.js
   def add_s3_public(url)
-    return url unless on_aws?(url)
+    return url unless on_aws?
     "#{s3_public}#{url}"
   end
 
