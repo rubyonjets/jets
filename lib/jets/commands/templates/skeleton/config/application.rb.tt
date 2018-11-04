@@ -17,17 +17,17 @@ Jets.application.configure do
 
   # config.asset_base_url = 'https://cloudfront.domain.com/assets' # example
 
-  config.cors = true # for '*''
+  # config.cors = true # for '*'' # defaults to true
   # config.cors = '*.mydomain.com' # for specific domain
 
-  config.function.timeout = 30
+  # config.function.timeout = 30 # defaults to 30
   # config.function.role = "arn:aws:iam::#{Jets.aws.account}:role/service-role/pre-created"
   # config.function.memory_size = 1536
 
-  config.function.environment = {
-    global_app_key1: "global_app_value1",
-    global_app_key2: "global_app_value2",
-  }
+  # config.function.environment = {
+  #   global_app_key1: "global_app_value1",
+  #   global_app_key2: "global_app_value2",
+  # }
   # More examples:
   # config.function.dead_letter_queue = { target_arn: "arn" }
   # config.function.vpc_config = {
