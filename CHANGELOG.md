@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.7]
+- jets new: adjust skeleton template project
+- jets import:rails: update config/database.yml
+
 ## [1.0.6]
 - method fixes: account for inheritance and private keyword #57
 
