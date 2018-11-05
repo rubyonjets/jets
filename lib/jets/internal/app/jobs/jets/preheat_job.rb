@@ -22,7 +22,7 @@ class Jets::PreheatJob < ApplicationJob
     }
   )
 
-  unless Jets::Commands::Build.poly_only?
+  unless Jets.poly_only?
     rate(PREWARM_RATE) if torching
     def torch
       threads = []

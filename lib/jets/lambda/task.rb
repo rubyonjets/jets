@@ -24,6 +24,9 @@ class Jets::Lambda::Task
     # that is registered. So we know it is public.
     return true if @class_name.nil? || @class_name == ''
 
+    # Consider all polymorphic methods public for now
+    return true if @lang != :ruby
+
     klass = @class_name.constantize
     public_methods = klass.public_instance_methods
     public_methods.include?(meth.to_sym)

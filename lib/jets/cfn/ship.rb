@@ -84,7 +84,7 @@ class Jets::Cfn
       end
       return unless @options[:stack_type] == :full # s3 bucket is available
       return unless Jets.config.prewarm.enable
-      return if Jets::Commands::Build.poly_only?
+      return if Jets.poly_only?
 
       puts "Prewarming application."
       if Jets::PreheatJob::CONCURRENCY > 1
