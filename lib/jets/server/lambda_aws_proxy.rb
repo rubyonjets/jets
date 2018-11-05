@@ -7,9 +7,10 @@ class Jets::Server
     def initialize(route, env)
       @route = route
       @env = env
-      # @env.each do |k,v|
-      #   puts "#{k}: #{v}"
-      # end
+      puts "Rack env:".colorize(:yellow)
+      @env.each do |k,v|
+        puts "#{k}: #{v}"
+      end
     end
 
     def response
@@ -33,7 +34,7 @@ class Jets::Server
 
     def build_event
       resource = @route.path(:api_gateway) # posts/{id}/edit
-      path = @env['PATH_INFO'].sub('/','') # remove beginning space
+      path = @env['PATH_INFO'].sub('/','') # remove beginning slash
       {
         "resource" => "/#{resource}", # "/posts/{id}/edit"
         "path" => @env['PATH_INFO'],  # /posts/tung/edit
@@ -62,6 +63,23 @@ class Jets::Server
       "Upgrade-Insecure-Requests" => "upgrade-insecure-requests",
     }
 
+    # Map rack env headers to Api Gateway event headers. Most rack env headers are
+    # prepended by HTTP_.
+    #
+    # Some API Gateway Lambda Proxy are also in the rack env headers. Example:
+    #
+    #   "X-Amz-Cf-Id": "W8DF6J-lx1bkV00eCiBwIq5dldTSGGiG4BinJlxvN_4o8fCZtbsVjw==",
+    #   "X-Amzn-Trace-Id": "Root=1-5a0dc1ac-58a7db712a57d6aa4186c2ac",
+    #   "X-Forwarded-For": "88.88.88.88, 54.239.203.117",
+    #   "X-Forwarded-Port": "443",
+    #   "X-Forwarded-Proto": "https",
+    #
+    # For sample dump of the event headers, check out:
+    #   spec/fixtures/samples/event-headers-form-post.json
+    #
+    # We generally do add those API Gateway Lambda specific headers because
+    # they would be fake anyway and by not adding them we can distinguish a
+    # local request from a remote request on API Gateway.
     def request_headers
       headers = @env.select { |k,v| k =~ /^HTTP_/ }.inject({}) do |h,(k,v)|
           # map things like HTTP_USER_AGENT to "User-Agent"
@@ -79,22 +97,11 @@ class Jets::Server
         end
       end
 
-      # Way to fake X-Amzn-Trace-Id which on_aws? helper checks
+      # Way to fake X-Amzn-Trace-Id which on_aws? helper checks.
+      # This is how we distinguish a request from API gateway vs local.
       if ENV['JETS_ON_AWS']
         headers["X-Amzn-Trace-Id"] = "Root=fake-trace-id"
       end
-
-      # There are also a couple of other headers that are specific to
-      # AWS Lambda Proxy and API Gateway. Example:
-      #
-      # "X-Amz-Cf-Id": "W8DF6J-lx1bkV00eCiBwIq5dldTSGGiG4BinJlxvN_4o8fCZtbsVjw==",
-      # "X-Amzn-Trace-Id": "Root=1-5a0dc1ac-58a7db712a57d6aa4186c2ac",
-      # "X-Forwarded-For": "88.88.88.88, 54.239.203.117",
-      # "X-Forwarded-Port": "443",
-      # "X-Forwarded-Proto": "https",
-      #
-      # For sample dump of the event headers, check out:
-      #   spec/fixtures/samples/event-headers-form-post.json
 
       headers
     end
