@@ -57,6 +57,7 @@ module Jets
         puts "INFO: You're missing AWS credentials. Only local services are currently available"
       end
     end
+    memoize :account
 
     # If bucket does not exist, do not use the cache value and check for the bucket again.
     # This is because we can build the app before deploying it for the first time.
