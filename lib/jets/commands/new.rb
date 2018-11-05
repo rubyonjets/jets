@@ -105,6 +105,7 @@ JS
       return if !options[:git]
       return unless git_installed?
       return if File.exist?(".git") # this is a clone repo
+      return unless git_credentials_set?
 
       run("git init")
       run("git add .")

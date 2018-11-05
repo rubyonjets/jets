@@ -72,6 +72,13 @@ private
     system("type git > /dev/null 2>&1")
   end
 
+  # In order to automatically create first commit
+  # the user needs to have their credentials set
+  def git_credentials_set?
+    configs = `git config --list`.split("\n")
+    configs.any? { |c| c.start_with? 'user.name=' } && configs.any? { |c| c.start_with? 'user.email=' }
+  end
+
   def yarn_installed?
     system("type yarn > /dev/null 2>&1")
   end
