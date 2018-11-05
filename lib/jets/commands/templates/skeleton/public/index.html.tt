@@ -66,7 +66,7 @@
   <div class="container">
     <header class="header">
       <img src="https://s3.amazonaws.com/jets-public/jets/images/jets.png" class="logo" alt="logo" />
-      <h1 class="title">Welcome and congrats 🎉<br /> Jets is running.</h1>
+      <h1 class="title">Welcome and congrats!<br /> Jets is running.</h1>
     </header>
     <div class="intro">
       <p>
