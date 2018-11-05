@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.13]
+- Fix notice when Jets fails to create first git commit This happens when user doesn't have git credentials available yet
+- Merge pull request #63 from onnimonni/fix-missing-git-credentials
+
 ## [1.0.12]
 - Fix notice when Jets tries to use aws-cli even when it's not available in PATH
 - Merge pull request #62 from onnimonni/fix-notice-missing-aws-cli
