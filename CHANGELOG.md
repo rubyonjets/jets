@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.11]
+- Don't fail if AWS credentials are missing Fixes #60
+- Merge pull request #61 from onnimonni/fix-missing-aws-credentials-local-server
+
 ## [1.0.10]
 - remove emoji from skeleton index.html starter
 
