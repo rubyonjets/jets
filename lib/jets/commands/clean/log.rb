@@ -25,6 +25,24 @@ class Jets::Commands::Clean
       say "Removed CloudWatch logs for #{prefix_guess}"
     end
 
+    def clean_deploys
+      groups = deploy_log_groups.sort_by do |g|
+        g.log_group_name
+      end
+      # Keep the last 2 recent log groups so we can see the deleted logic
+      groups = groups[0..-3]
+      groups.each do |g|
+        logs.delete_log_group(log_group_name: g.log_group_name) unless @options[:noop]
+      end
+    end
+
+    def deploy_log_groups
+      log_groups.select do |g|
+        !keep_log_group?(g.log_group_name) &&
+        g.log_group_name.include?('jets-base-path')
+      end
+    end
+
   private
     def prefix_guess
       Jets::Naming.parent_stack_name

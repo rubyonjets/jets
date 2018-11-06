@@ -18,6 +18,7 @@ class Jets::Builders
       app_ruby_shims
       poly_shims
       shared_shims
+      internal_shims
     end
 
     def app_ruby_shims
@@ -65,6 +66,20 @@ class Jets::Builders
           end
         end
       end
+    end
+
+    def internal_shims
+      jets_base_path if Jets.custom_domain?
+    end
+
+    def jets_base_path
+      path = "jets/base_path.rb"
+      internal = File.expand_path("../internal", File.dirname(__FILE__))
+      src = "#{internal}/app/functions/#{path}"
+      result = Jets::Erb.result(src, stage_name: Jets::Resource::ApiGateway::Deployment.stage_name)
+      dest = "#{tmp_code}/handlers/functions/#{path}"
+      FileUtils.mkdir_p(File.dirname(dest))
+      IO.write(dest, result)
     end
 
     # app/shared/functions/kevin.py => /tmp/jets/demo/app_root/handlers/shared/functions/kevin.py

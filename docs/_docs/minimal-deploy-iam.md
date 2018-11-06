@@ -6,12 +6,13 @@ The IAM user you use to run the `jets deploy` command needs a minimal set of IAM
 
 Service | Description
 --- | ---
-APIGateway | To create the API Gateway resources.
+API Gateway | To create the API Gateway resources.
 CloudFormation | To create the CloudFormation stacks that then creates the most of the AWS resources that Jets creates.
 Events | To create the CloudWatch Event Rules for jobs.
 IAM | To create IAM roles to be associated with the Lambda functions.
 Lambda | To prewarm the application upon deployment completion.
 Logs | To clean up CloudWatch logs when deleting the application.
+Route53 | To create vanity DNS endpoint when using [custom domains]({% link _docs/routing-custom-domain.md %}).
 S3 | To upload code to s3.
 
 ## Instructions
@@ -36,6 +37,7 @@ Here's a summary of the commands:
                     "iam:*",
                     "lambda:*",
                     "logs:*",
+                    "route53:*",
                     "s3:*"
                  ],
                 "Resource": [

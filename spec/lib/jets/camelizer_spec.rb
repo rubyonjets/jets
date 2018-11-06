@@ -48,9 +48,9 @@ describe "Camelizer" do
   end
 
   it "special map keys" do
-    h = {template_url: 1}
+    h = {template_url: 1, ttl: 60}
     result = Jets::Camelizer.transform(h)
     # pp result
-    expect(result).to eq("TemplateURL"=>1)
+    expect(result).to eq("TemplateURL"=>1, "TTL"=> 60)
   end
 end

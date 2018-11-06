@@ -1,6 +1,3 @@
-require "active_support/core_ext/hash"
-require "active_support/core_ext/object"
-
 # Guesser transforms the user provided function name to the actual lambda
 # function name.
 #

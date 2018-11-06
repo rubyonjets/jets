@@ -1,3 +1,4 @@
+require "aws-sdk-apigateway"
 require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
 require "aws-sdk-lambda"
@@ -11,20 +12,25 @@ module Jets::AwsServices
   include StackStatus
   extend Memoist
 
+  def apigateway
+    Aws::APIGateway::Client.new
+  end
+  memoize :apigateway
+
   def cfn
     Aws::CloudFormation::Client.new
   end
   memoize :cfn
 
-  def logs
-    Aws::CloudWatchLogs::Client.new
-  end
-  memoize :logs
-
   def lambda
     Aws::Lambda::Client.new
   end
   memoize :lambda
+
+  def logs
+    Aws::CloudWatchLogs::Client.new
+  end
+  memoize :logs
 
   def s3
     Aws::S3::Client.new
@@ -36,13 +42,13 @@ module Jets::AwsServices
   end
   memoize :s3_resource
 
-  def sts
-    Aws::STS::Client.new
-  end
-  memoize :sts
-
   def sns
     Aws::SNS::Client.new
   end
   memoize :sns
+
+  def sts
+    Aws::STS::Client.new
+  end
+  memoize :sts
 end

@@ -17,7 +17,7 @@ class Jets::Stack
       end
 
       def self.included(base)
-        base_path = "#{Jets.root}/app/shared/extensions"
+        base_path = "#{Jets.root}app/shared/extensions"
         ActiveSupport::Dependencies.autoload_paths += [base_path]
 
         Dir.glob("#{base_path}/**/*.rb").each do |path|

@@ -1,8 +1,12 @@
 $:.unshift(File.expand_path("../", __FILE__))
 require "jets/version"
 require "jets/camelizer"
-require "active_support/core_ext/string"
+require "active_support"
+require "active_support/core_ext"
+require "active_support/dependencies"
 require "active_support/ordered_hash"
+require "active_support/ordered_options"
+require "active_support/concern"
 require "colorize"
 require "fileutils"
 require "memoist"

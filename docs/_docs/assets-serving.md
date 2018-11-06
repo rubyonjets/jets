@@ -4,7 +4,7 @@ title: Assets Serving
 
 Jets handles asset serving by uploading asset files to s3 and serving them directly from s3. This is particularly beneficial for binary assets like images as s3 is better suited for serving them.
 
-Using the `asset_path` helper will server the assets in the public folder from the filesystem locally and from s3 remotely. By default, the `public` folder is automatically uploaded to s3 as part of the `jets deploy` command.  Here are some notable folders within the `public` folder.
+Using the `asset_path` helper will serve the assets in the public folder from the filesystem locally and from s3 remotely. By default, the `public` folder is automatically uploaded to s3 as part of the `jets deploy` command.  Here are some notable folders within the `public` folder.
 
 Folder | Description | Checksum
 --- | --- | ---

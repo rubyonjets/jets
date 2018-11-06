@@ -3,6 +3,10 @@ require 'rack'
 
 module Jets::Mega
   class Request
+    autoload :Source, 'jets/mega/request/source'
+
+    extend Memoist
+
     def initialize(event, controller)
       @event = event
       @controller = controller # Jets::Controller instance
@@ -12,10 +16,10 @@ module Jets::Mega
       http_method = @event['httpMethod'] # GET, POST, PUT, DELETE, etc
       params = @controller.params(raw: true, path_parameters: false)
 
-      uri = URI("http://localhost:9292#{@controller.request.path}") # local rack server
+      uri = get_uri
+
       http = Net::HTTP.new(uri.host, uri.port)
-      http.open_timeout = 60
-      http.read_timeout = 60
+      http.open_timeout = http.read_timeout = 60
 
       # Rails sets _method=patch or _method=put as workaround
       # Falls back to GET when testing in lambda console
@@ -24,31 +28,58 @@ module Jets::Mega
 
       request_class = "Net::HTTP::#{http_class}".constantize # IE: Net::HTTP::Get
       request = request_class.new(uri.path)
+
+      # Set form data
       if %w[Post Patch Put].include?(http_class)
         params = HashConverter.encode(params)
         request.set_form_data(params)
       end
 
+      # Set body info
+      request.body = source.body
+      request.content_length = source.content_length
+
+      # Need to set headers after body and form_data for some reason
       request = set_headers!(request)
 
-      # Setup body
-      env = Jets::Controller::Rack::Env.new(@event, {}).convert # convert to Rack env
-      source_request = Rack::Request.new(env)
-      if source_request.body.respond_to?(:read)
-        request.body = source_request.body.read
-        request.content_length = source_request.content_length.to_i
-        source_request.body.rewind
-      end
-
+      # Make request
       response = http.request(request)
 
-      # TODO: handle binary
       {
         status: response.code.to_i,
         headers: response.each_header.to_h,
         body: response.body,
       }
     end
+
+    def get_uri
+      url = "http://localhost:9292#{@controller.request.path}" # local rack server
+      unless @controller.query_parameters.empty?
+        # Thanks: https://stackoverflow.com/questions/798710/ruby-how-to-turn-a-hash-into-http-parameters
+        query_string = Rack::Utils.build_nested_query(@controller.query_parameters)
+        url += "?#{query_string}"
+      end
+      URI(url)
+    end
+
+    def source
+      Source.new(@event)
+    end
+    memoize :source
+
+    # Rails sets _method=patch or _method=put as workaround
+    # Falls back to GET when testing in lambda console
+    # @event['httpMethod'] is GET, POST, PUT, DELETE, etc
+    def http_class
+      http_class = params['_method'] || @event['httpMethod'] || 'GET'
+      http_class.capitalize!
+      http_class
+    end
+
+    def params
+      @controller.params(raw: true, path_parameters: false, body_parameters: true)
+    end
+    memoize :params
 
     # Set request headers. Forwards original request info from remote API gateway.
     # By this time, the server/api_gateway.rb middleware.

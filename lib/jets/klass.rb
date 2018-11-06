@@ -28,12 +28,12 @@ class Jets::Klass
     # app/controllers, app/jobs, and app/functions.
     def from_path(path)
       class_name = class_name(path)
-
       if path.include?("/functions/") # simple function
-        load_anonymous_class(class_name, path)
+        class_name = load_anonymous_class(class_name, path)
+        class_name.constantize # removed :: for anonymous classes
+      else
+        class_name.constantize # autoload
       end
-
-      class_name.constantize # autoload or nothing if load_anonymous_class called
     end
 
     # app/controllers/posts_controller.rb => PostsController
@@ -61,15 +61,48 @@ class Jets::Klass
 
     @@loaded_anonymous_classes = []
     def load_anonymous_class(class_name, path)
+      parent_mod = modularize(class_name)
+
       constructor = Jets::Lambda::FunctionConstructor.new(path)
       # Dont load anonyomous class more than once to avoid these warnings:
       #   warning: already initialized constant Hello
       #   warning: previous definition of Hello was here
       unless @@loaded_anonymous_classes.include?(class_name)
         # use class_name as the variable name for prettier class name.
-        Object.const_set(class_name, constructor.build)
+        leaf_class_name = class_name.split('::').last
+        parent_mod.const_set(leaf_class_name, constructor.build)
         @@loaded_anonymous_classes << class_name
       end
+
+      class_name
+    end
+
+    # Ensures the parent namespace modules are defined. Example:
+    #
+    #   modularize("Foo::Bar::Test")
+    #   => Foo::Bar # is a now defined as a module if it wasnt before
+    #
+    # Also returns the parent module, so we can use it to do a const_set if needed. IE:
+    #
+    #   parent_mod = modularize("Foo::Bar::Test")
+    #   parent_mod.const_set("Test")
+    def modularize(class_name)
+      leaves = []
+      mods = class_name.split('::')[0..-2] # drop the last word
+      # puts "mods: #{mods}"
+      return Object if mods.empty?
+
+      leaves = []
+      mods.each do |leaf_mod|
+        leaves += [leaf_mod]
+        namespace = leaves.join('::')
+        previous_namespace = leaves[0..-2].join('::')
+        previous_namespace = "Object" if previous_namespace.empty?
+        previous_namespace = previous_namespace.constantize
+        previous_namespace.const_set(leaf_mod, Module.new) unless Object.const_defined?(namespace)
+      end
+
+      mods.join('::').constantize
     end
 
   end

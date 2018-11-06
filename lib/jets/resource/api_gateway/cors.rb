@@ -9,7 +9,7 @@ module Jets::Resource::ApiGateway
 
           properties: {
             resource_id: "!Ref #{resource_id}",
-            rest_api_id: "!Ref RestApi",
+            rest_api_id: "!Ref #{RestApi.logical_id}",
             authorization_type: authorization_type,
             http_method: "OPTIONS",
             method_responses: [{

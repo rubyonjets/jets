@@ -1,4 +1,3 @@
-require "active_support/ordered_options"
 require "singleton"
 require "rack"
 
@@ -13,7 +12,10 @@ class Jets::Application
   end
 
   def setup!
-    load_configs # load config object so following methods can use it
+    load_configs
+  end
+
+  def finish!
     load_inflections
     setup_auto_load_paths
     load_routes
@@ -31,14 +33,7 @@ class Jets::Application
     config = ActiveSupport::OrderedOptions.new
     config.project_name = project_name
     config.cors = true
-    config.autoload_paths = %w[
-                              app/controllers
-                              app/models
-                              app/jobs
-                              app/rules
-                              app/helpers
-                              app/shared/resources
-                            ]
+    config.autoload_paths = default_autoload_paths
     config.extra_autoload_paths = []
 
     # function properties defaults
@@ -80,7 +75,13 @@ class Jets::Application
 
     config.api = ActiveSupport::OrderedOptions.new
     config.api.authorization_type = "NONE"
+    config.api.binary_media_types = ['multipart/form-data']
     config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
+
+    config.domain = ActiveSupport::OrderedOptions.new
+    # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is nil
+    # config.domain.cert_arn = "..."
+    config.domain.endpoint_type = "REGIONAL" # EDGE or REGIONAL. Default to EDGE because CloudFormation update is faster
 
     config
   end
@@ -110,7 +111,14 @@ class Jets::Application
 
   def eval_app_config
     app_config = "#{Jets.root}config/application.rb"
-    require app_config
+    load app_config # use load instead of require so reload_configs! works
+  end
+
+  # After the mimimal template gets build, we need to reload it for the full stack
+  # creation. This allows us to reference IAM policies configs that depend on the
+  # creation of the s3 bucket.
+  def reload_configs!
+    load_configs
   end
 
   def load_environments_config
@@ -129,10 +137,29 @@ class Jets::Application
 
   def setup_auto_load_paths
     autoload_paths = config.autoload_paths + config.extra_autoload_paths
-    autoload_paths = autoload_paths.uniq.map { |p| "#{Jets.root}#{p}" }
     # internal_autoload_paths are last
     autoload_paths += internal_autoload_paths
     ActiveSupport::Dependencies.autoload_paths += autoload_paths
+  end
+
+  # Essentially folders under app folder will be the default_autoload_paths. Example:
+  #   app/controllers
+  #   app/helpers
+  #   app/jobs
+  #   app/models
+  #   app/rules
+  #   app/shared/resources
+  def default_autoload_paths
+    paths = []
+    Dir.glob("#{Jets.root}app/*").each do |p|
+      p.sub!('./','')
+      paths << p unless exclude_autoload_path?(p)
+    end
+    paths
+  end
+
+  def exclude_autoload_path?(path)
+    path =~ %r{app/javascript} || path =~ %r{app/views}
   end
 
   def internal_autoload_paths
@@ -173,13 +200,6 @@ class Jets::Application
   def set_iam_policy
     config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
-  end
-
-  # After the mimimal template gets build, we need to reload it for the full stack
-  # creation. This allows us to reference IAM policies configs that depend on the
-  # creation of the s3 bucket.
-  def reload_configs!
-    load_configs
   end
 
   def self.default_iam_policy

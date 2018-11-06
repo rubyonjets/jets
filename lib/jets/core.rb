@@ -1,22 +1,9 @@
-require 'active_support/dependencies'
-require 'memoist'
-
 module Jets::Core
   extend Memoist
 
-  # Calling application triggers load of configs.
-  # Jets' the default config/application.rb is loaded,
-  # then the project's config/application.rb is loaded.
-  @@application = nil
   def application
-    return @@application if @@application
-
-    @@application = Jets::Application.instance
-    @@application.setup!
-    @@application
+    Jets::Application.instance
   end
-  # For some reason memoize doesnt work with application, think there's
-  # some circular dependency issue. Figure this out later.
 
   def config
     application.config
@@ -123,7 +110,7 @@ module Jets::Core
   def eager_load_app
     Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
-      next if path.include?('app/functions') || path.include?('app/shared/functions')
+      next if path.include?('app/functions') || path.include?('app/shared/functions') || path.include?('app/internal/functions')
 
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
@@ -177,9 +164,14 @@ module Jets::Core
 
   def report_exception(exception)
     Jets::Turbine.subclasses.each do |subclass|
-      subclass.exception_reporters.each do |label, block|
+      reporters = subclass.exception_reporters || []
+      reporters.each do |label, block|
         block.call(exception)
       end
     end
+  end
+
+  def custom_domain?
+    Jets.config.domain.hosted_zone_name
   end
 end

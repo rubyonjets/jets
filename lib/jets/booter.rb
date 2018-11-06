@@ -7,10 +7,14 @@ class Jets::Booter
       confirm_jets_project!
       require_bundle_gems
       Jets::Dotenv.load!
-      Jets.application # triggers Application.instance setup # autoload_paths, routes, etc
-      setup_db
+
+      Jets.application.setup!
       app_initializers
       turbine_initializers
+      Jets.application.finish!
+
+      Jets.eager_load!
+      setup_db
       # build_middleware_stack # TODO: figure out how to build middleware during Jets.boot without breaking jets new and webpacker:install
 
       @booted = true

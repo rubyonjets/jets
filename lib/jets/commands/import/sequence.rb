@@ -1,8 +1,7 @@
-require 'fileutils'
-require 'colorize'
-require 'active_support/core_ext/string'
-require 'thor'
 require 'bundler'
+require 'colorize'
+require 'fileutils'
+require 'thor'
 
 class Jets::Commands::Import
   class Sequence < Thor::Group

@@ -1,6 +1,5 @@
 require "base64"
 require "json"
-require "active_support/core_ext/string"
 
 class Jets::Commands::Call
   autoload :BaseGuesser, "jets/commands/call/base_guesser"

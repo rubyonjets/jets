@@ -1,5 +1,3 @@
-require "active_support/core_ext/hash"
-require "active_support/core_ext/object"
 require "json"
 require "rack/utils" # Rack::Utils.parse_nested_query
 
@@ -37,9 +35,7 @@ class Jets::Controller
 
     def dispatch!
       t1 = Time.now
-      Jets.logger.info "Processing by #{self.class.name}##{@meth}"
-      Jets.logger.info "  Event: #{@event.inspect}"
-      Jets.logger.info "  Parameters: #{params(raw: true).to_h.inspect}"
+      log_info_start
 
       run_before_actions
       send(@meth)
@@ -51,6 +47,26 @@ class Jets::Controller
       Jets.logger.info "Completed Status Code #{status} in #{took}s"
 
       triplet # status, headers, body
+    end
+
+    def log_info_start
+      display_event = @event.dup
+      display_event['body'] = '[BASE64_ENCODED]' if @event['isBase64Encoded']
+      # Interesting, JSON.dump makes logging look like JSON.pretty_generate in
+      # CloudWatch but not locally. This is what we want.
+      ip = request.ip
+      Jets.logger.info "Started #{@event['httpMethod']} \"#{@event['path']}\" for #{ip} at #{Time.now}"
+      Jets.logger.info "Processing #{self.class.name}##{@meth}"
+      Jets.logger.info "  Event: #{json_dump(display_event)}"
+      Jets.logger.info "  Parameters: #{JSON.dump(params(raw: true).to_h)}"
+    end
+
+    # Handles binary data safely
+    def json_dump(data)
+      JSON.dump(data)
+    rescue Encoding::UndefinedConversionError
+      data['body'] = '[BINARY]'
+      JSON.dump(data)
     end
 
     def self.process(event, context={}, meth)

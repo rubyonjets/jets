@@ -71,7 +71,10 @@ class Jets::Controller
     end
 
     def url_for(url)
-      add_stage_name(url)
+      # No longer need to add stage name, think this is due to rack middleware support
+      # Leaving in as comment for now just in case.
+      # add_stage_name(url)
+      url
     end
 
     def actual_host

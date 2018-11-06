@@ -10,6 +10,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green?
 --- | --- | ---
+1.2.0 | Set default `config.api.binary_media_types` to `multipart/form-data` to handle binary support.  | No
 1.1.0 | Added `Jets.boot` to `config.ru`. You can run the `jets upgrade:v1` command to add it. | No
 1.0.0 | Added `config/environments` files. You can use the `jets upgrade:v1` command. Going from 0.10.0 to 1.0.0 does not required a blue-green deploy. But if you're going from before 0.10.0, then you will need a blue-green deploy. | No
 0.10.0 | Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action. Also removed the managed `Jets::WelcomeController` and consolidated to the managed `Jets::PublicController`. Refer to Upgrade Details. | Yes
@@ -18,6 +19,13 @@ Version | Notes | Blue-Green?
 ## Upgrade Details
 
 The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
+
+### 1.2.0
+
+Some notable changes for version 1.2.0:
+
+* For binary support, the API Gateway binary_media_types settings needs to have `multipart/form-data`.  With this version, automated blue-green deployments was introduced. So Jets will do an automated blue-green deployment as part of adding the `multipart/form-data` binary_media_types.
+* Jets also added managed custom domains for vanity endpoints. This requires an additional minimal Route53 IAM permission. This is noted in [Minimal Deploy IAM]({% link _docs/minimal-deploy-iam.md %}).  You will have to add this permission to your IAM deploy permission.
 
 ### 1.0.1
 
@@ -76,5 +84,5 @@ Then update the Gateway API Custom Domain to point to the newly deployed `JETS_E
 7. Destroy the old environment.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/lazy-loading.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/megamode.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/routing-overview.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

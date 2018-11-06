@@ -1,3 +1,5 @@
+require 'base64'
+
 module Jets::Controller::Rack
   class Adapter
     extend Memoist
@@ -21,15 +23,16 @@ module Jets::Controller::Rack
     end
 
     def env
-      Env.new(@event, @context).convert # convert to Rack env
+      Env.new(@event, @context, adapter: true).convert # convert to Rack env
     end
     memoize :env
 
     # Transform the structure to AWS_PROXY compatiable structure
     # http://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-output-format
     def convert_to_api_gateway(status, headers, body)
-      base64 = headers["x-jets-base64"] == 'true'
+      base64 = headers["x-jets-base64"] == 'yes'
       body = body.respond_to?(:read) ? body.read : body
+      body = Base64.encode64(body) if base64
       {
         "statusCode" => status,
         "headers" => headers,

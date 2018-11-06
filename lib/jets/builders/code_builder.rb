@@ -165,10 +165,24 @@ class Jets::Builders
       update_lazy_load_config # at the top, must be called before Jets.lazy_load? is used
       store_s3_base_url
       disable_webpacker_middleware
+      copy_internal_jets_code
       setup_tmp
       calculate_md5s # must be called before generate_node_shims and create_zip_files
       generate_node_shims
       create_zip_files
+    end
+
+    # We copy the files into the project because we cannot require simple functions
+    # directly since they are wrapped by an anonymous class.
+    # TODO: Do this with the other files we required the same way.
+    def copy_internal_jets_code
+      files = []
+      files.each do |relative_path|
+        src = File.expand_path("../internal/#{relative_path}", File.dirname(__FILE__))
+        dest = "#{full(tmp_code)}/#{relative_path}"
+        FileUtils.mkdir_p(File.dirname(dest))
+        FileUtils.cp(src, dest)
+      end
     end
 
     def update_lazy_load_config

@@ -13,6 +13,7 @@ class Jets::Cfn::Builders
       return unless @options[:templates] || @options[:stack_type] != :minimal
 
       add_gateway_rest_api
+      add_custom_domain
       add_gateway_routes
     end
 
@@ -33,7 +34,26 @@ class Jets::Cfn::Builders
       add_outputs(rest_api.outputs)
 
       deployment = Jets::Resource::ApiGateway::Deployment.new
-      add_output("RestApiUrl", Value: deployment.outputs["RestApiUrl"])
+      outputs = deployment.outputs(true)
+      add_output("RestApiUrl", Value: outputs["RestApiUrl"])
+    end
+
+    def add_custom_domain
+      return unless Jets.custom_domain?
+      add_domain_name
+      add_route53_dns
+    end
+
+    def add_domain_name
+      domain_name = Jets::Resource::ApiGateway::DomainName.new
+      add_resource(domain_name)
+      add_outputs(domain_name.outputs)
+    end
+
+    def add_route53_dns
+      dns = Jets::Resource::Route53::RecordSet.new
+      add_resource(dns)
+      add_outputs(dns.outputs)
     end
 
     # Adds route related Resources and Outputs
@@ -51,7 +71,7 @@ class Jets::Cfn::Builders
         homepage = path == ''
         next if homepage # handled by RootResourceId output already
 
-        resource = Jets::Resource::ApiGateway::Resource.new(path)
+        resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true)
         add_resource(resource)
         add_outputs(resource.outputs)
       end

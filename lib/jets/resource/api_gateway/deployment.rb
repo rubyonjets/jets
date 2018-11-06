@@ -6,23 +6,27 @@ module Jets::Resource::ApiGateway
           type: "AWS::ApiGateway::Deployment",
           properties: {
             description: "Version #{timestamp} deployed by jets",
-            rest_api_id: "!Ref RestApi",
+            rest_api_id: "!Ref #{RestApi.logical_id}",
             stage_name: stage_name,
           }
         }
       }
     end
 
-    # value is Description
     def parameters
-      {
+      p = {
+        "IamRole" => "IamRole",
         "RestApi" => "RestApi",
+        "S3Bucket" => "S3Bucket",
       }
+      p[:DomainName] = "DomainName" if Jets.custom_domain?
+      p
     end
 
-    def outputs
+    def outputs(internal=false)
+      rest_api = internal ? RestApi.internal_logical_id : "RestApi"
       {
-        "RestApiUrl" => "!Sub 'https://${RestApi}.execute-api.${AWS::Region}.amazonaws.com/#{stage_name}/'",
+        "RestApiUrl" => "!Sub 'https://${#{rest_api}}.execute-api.${AWS::Region}.amazonaws.com/#{stage_name}/'",
       }
     end
 

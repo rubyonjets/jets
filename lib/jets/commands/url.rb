@@ -16,14 +16,16 @@ module Jets::Commands
       stack = cfn.describe_stacks(stack_name: stack_name).stacks.first
 
       api_gateway_stack_arn = lookup(stack[:outputs], "ApiGateway")
-      if api_gateway_stack_arn
-        STDOUT.puts get_url(api_gateway_stack_arn)
+      if api_gateway_stack_arn && endpoint_available?
+        api_gateway_endpoint = get_gateway_endpoint(api_gateway_stack_arn)
+        STDOUT.puts "API Gateway Endpoint: #{api_gateway_endpoint}"
+        show_custom_domain
       else
         puts "API Gateway not found. This jets app does have an API Gateway associated with it.  Please double check your config/routes.rb if you were expecting to see a url for the app. Also check that #{stack_name.colorize(:green)} is a jets app."
       end
     end
 
-    def get_url(api_gateway_stack_arn)
+    def get_gateway_endpoint(api_gateway_stack_arn)
       stack = cfn.describe_stacks(stack_name: api_gateway_stack_arn).stacks.first
       rest_api = lookup(stack[:outputs], "RestApi")
       region_id = lookup(stack[:outputs], "Region")
@@ -34,10 +36,33 @@ module Jets::Commands
       "https://#{rest_api}.execute-api.#{region_id}.amazonaws.com/#{stage_name}"
     end
 
-    # Lookup output value
-    def lookup(outputs, key)
-      out = outputs.find { |o| o.output_key == key }
-      out&.output_value
+    def show_custom_domain
+      return unless endpoint_available? && Jets.custom_domain?
+
+      domain_name = Jets::Resource::ApiGateway::DomainName.new
+      # Looks funny but its right.
+      # domain_name is a method on the Jets::Resource::ApiGateway::Domain instance
+      url = "https://#{domain_name.domain_name}"
+      puts "Custom Domain: #{url}"
     end
+
+    def endpoint_unavailable?
+      return false if Jets::Router.routes.empty?
+      resp, status = stack_status
+      return false if status.include?("ROLLBACK")
+    end
+
+    def endpoint_available?
+      !endpoint_unavailable?
+    end
+
+    # All CloudFormation states listed here:
+    # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
+    def stack_status
+      resp = cfn.describe_stacks(stack_name: @parent_stack_name)
+      status = resp.stacks[0].stack_status
+      [resp, status]
+    end
+
   end
 end

@@ -1,7 +1,8 @@
 module Jets::Resource::ApiGateway
   class Resource < Jets::Resource::Base
-    def initialize(path)
+    def initialize(path, internal: false)
       @path = path # Examples: "posts/:id/edit" or "posts"
+      @internal = internal
     end
 
     def definition
@@ -11,7 +12,7 @@ module Jets::Resource::ApiGateway
           properties: {
             parent_id: parent_id,
             path_part: path_part,
-            rest_api_id: "!Ref RestApi",
+            rest_api_id: "!Ref #{RestApi.logical_id(@internal)}",
           }
         }
       }
@@ -42,7 +43,7 @@ module Jets::Resource::ApiGateway
         parent_logical_id = path_logical_id(parent_path)
         "!Ref #{parent_logical_id}ApiResource"
       else
-        "!GetAtt RestApi.RootResourceId"
+        "!GetAtt #{RestApi.logical_id(@internal)}.RootResourceId"
       end
     end
 
