@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.14]
+- remove debugging puts
+
 ## [1.0.13]
 - Fix notice when Jets fails to create first git commit This happens when user doesn't have git credentials available yet
 - Merge pull request #63 from onnimonni/fix-missing-git-credentials
