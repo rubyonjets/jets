@@ -7,10 +7,10 @@ class Jets::Server
     def initialize(route, env)
       @route = route
       @env = env
-      puts "Rack env:".colorize(:yellow)
-      @env.each do |k,v|
-        puts "#{k}: #{v}"
-      end
+      # puts "Rack env:".colorize(:yellow)
+      # @env.each do |k,v|
+      #   puts "#{k}: #{v}"
+      # end
     end
 
     def response
