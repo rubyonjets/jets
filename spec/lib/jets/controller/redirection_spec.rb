@@ -13,9 +13,9 @@ describe RedirectionController do
         json_file("spec/fixtures/dumps/rack/posts/create.json")
       end
       it "redirect_to" do
-        resp = controller.send(:redirect_to, "/myurl", status: 301)
-        redirect_url = resp["headers"]["Location"]
-        expect(redirect_url).to eq "http://localhost:8888/myurl"
+        status, headers, body = controller.send(:redirect_to, "/myurl", status: 301)
+        expect(status).to eq "301"
+        expect(headers["Location"]).to eq "http://localhost:8888/myurl"
       end
     end
   end
@@ -27,9 +27,9 @@ describe RedirectionController do
         json_file("spec/fixtures/dumps/api_gateway/posts/create.json")
       end
       it "redirect_to adds the stage name to the url" do
-        resp = controller.send(:redirect_to, "/myurl", status: 301)
-        redirect_url = resp["headers"]["Location"]
-        expect(redirect_url).to eq "https://8s1wzivnz4.execute-api.us-east-1.amazonaws.com/test/myurl"
+        status, headers, body = controller.send(:redirect_to, "/myurl", status: 301)
+        expect(status).to eq "301"
+        expect(headers["Location"]).to eq "https://8s1wzivnz4.execute-api.us-east-1.amazonaws.com/test/myurl"
       end
     end
   end

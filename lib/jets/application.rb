@@ -1,12 +1,12 @@
 require "active_support/ordered_options"
 require "singleton"
+require "rack"
 
 class Jets::Application
   include Singleton
   extend Memoist
-  # Middleware used for development only
-  autoload :Middleware, "jets/application/middleware"
-  include Middleware
+  autoload :Middleware, "jets/middleware"
+  include Jets::Middleware
 
   def configure(&block)
     instance_eval(&block) if block
@@ -23,9 +23,30 @@ class Jets::Application
     Jets::Inflections.load!
   end
 
-  # Default config
   def config
+    @config ||= ActiveSupport::OrderedOptions.new # dont use memoize since we reset @config later
+  end
+
+  def default_config(project_name=nil)
     config = ActiveSupport::OrderedOptions.new
+    config.project_name = project_name
+    config.cors = true
+    config.autoload_paths = %w[
+                              app/controllers
+                              app/models
+                              app/jobs
+                              app/rules
+                              app/helpers
+                              app/shared/resources
+                            ]
+    config.extra_autoload_paths = []
+
+    # function properties defaults
+    config.function = ActiveSupport::OrderedOptions.new
+    config.function.timeout = 30
+    # default memory setting based on:
+    # https://medium.com/epsagon/how-to-make-lambda-faster-memory-performance-benchmark-be6ebc41f0fc
+    config.function.memory_size = 1536
 
     config.prewarm = ActiveSupport::OrderedOptions.new
     config.prewarm.enable = true
@@ -51,9 +72,52 @@ class Jets::Application
     config.ruby = ActiveSupport::OrderedOptions.new
     config.ruby.lazy_load = true # also set in config/environments files
 
+    config.middleware = Jets::Middleware::Configurator.new
+
+    config.session = ActiveSupport::OrderedOptions.new
+    config.session.store = Rack::Session::Cookie # note when accessing it use session[:store] since .store is an OrderedOptions method
+    config.session.options = {}
+
     config
   end
-  memoize :config
+
+  def load_app_config
+    # First time loading will not have all correct values. Some values like
+    # project_namespace depend on project_name. Loading the config twice
+    # resolves the chicken-and-egg problem with config.project_name.
+    # TODO: Improve the way we this is solved.
+    eval_app_config(squash_exception: true) # first time load to capture the config.project_name
+    @config = default_config(config.project_name) # reset config with the captured project_name
+
+    set_dependent_configs! # things like project_namespace that need project_name
+
+    # Running eval_app_config the second time, hack to solve the chicken-and-egg problem
+    eval_app_config
+
+    set_iam_policy # relies on dependent values, must be called afterwards
+    normalize_env_vars!
+  end
+
+  def eval_app_config(squash_exception: false)
+    app_config = "#{Jets.root}config/application.rb"
+    load app_config
+  rescue NoMethodError => e
+    raise(e) unless squash_exception
+  end
+
+  def load_environments_config
+    env_file = "#{Jets.root}config/environments/#{Jets.env}.rb"
+    if File.exist?(env_file)
+      code = IO.read(env_file)
+      instance_eval(code)
+    end
+  end
+
+  def load_configs
+    load_app_config
+    load_db_config
+    load_environments_config
+  end
 
   def setup_auto_load_paths
     autoload_paths = config.autoload_paths + config.extra_autoload_paths
@@ -71,41 +135,6 @@ class Jets::Application
       app/jobs
     ]
     paths.map { |path| "#{internal}/#{path}" }
-  end
-
-  def load_configs
-    # The Jets default/application.rb is loaded.
-    load File.expand_path("../default/application.rb", __FILE__)
-    # Then project config/application.rb is loaded.
-    load_app_config
-    load_db_config
-    load_environments_config
-  end
-
-  # First time loading this might not have all the values. Some values like
-  # project_namespace depend on project_name. Loading the config twice
-  # resolves the chicken and egg problem here.
-  def load_app_config
-    eval_app_config
-    # Normalize config and setup some shortcuts
-    set_dependent_configs! # things like project_namespace that need project_name
-    eval_app_config # twice to fix values that rely on the dependent configs
-
-    set_iam_policy # relies on dependent values, must be called late
-    normalize_env_vars!
-  end
-
-  def eval_app_config
-    app_config = "#{Jets.root}config/application.rb"
-    load app_config if File.exist?(app_config)
-  end
-
-  def load_environments_config
-    env_file = "#{Jets.root}config/environments/#{Jets.env}.rb"
-    if File.exist?(env_file)
-      code = IO.read(env_file)
-      instance_eval(code)
-    end
   end
 
   # Use the shorter name in stack names, but use the full name when it

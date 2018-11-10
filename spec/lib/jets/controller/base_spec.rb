@@ -11,7 +11,7 @@ describe Jets::Controller::Base do
   let(:meth) { "index" }
 
   context "general" do
-    let(:event) { nil }
+    let(:event) { {} }
     it "lambda_functions returns public user-defined methods" do
       expect(controller.lambda_functions).to eq(
         [:handler1, :handler2]
@@ -30,18 +30,11 @@ describe Jets::Controller::Base do
   context "AWS_PROXY lambda proxy integration request from api gateway" do
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
 
-    it "#render returns AWS_PROXY compatiable response format" do
-      resp = controller.send(:render, json: {"my": "data"})
-      # Example of AWS_PROXY compatiable response format
-      # {
-      #   "statusCode": 200,
-      #   "body": "must be a string, even if it is json, it should be a string"
-      # }
-      expect(resp).to be_a(Hash)
-      expect(resp.keys).to include("statusCode")
-      expect(resp.keys).to include("body")
-      expect(resp["statusCode"]).to eq "200"
-      expect(resp["body"]).to be_a(String)
+    it "#render returns rack triplet" do
+      status, headers, body = controller.send(:render, json: {"my": "data"})
+      expect(status).to eq "200"
+      expect(headers).to be_a(Hash)
+      expect(body).to respond_to(:each)
     end
 
     # Spec is to help understand the AWS_PROXY request format and
@@ -66,9 +59,9 @@ describe Jets::Controller::Base do
     end
 
     it "adds cors headers" do
-      resp = controller.send(:render, json: {"my": "data"})
-      expect(resp["headers"].keys).to include("Access-Control-Allow-Origin")
-      expect(resp["headers"].keys).to include("Access-Control-Allow-Credentials")
+      status, headers, body = controller.send(:render, json: {"my": "data"})
+      expect(headers.keys).to include("Access-Control-Allow-Origin")
+      expect(headers.keys).to include("Access-Control-Allow-Credentials")
     end
   end
 
@@ -133,6 +126,19 @@ describe Jets::Controller::Base do
     it "process headers" do
       resp = StoresController.process(event, {}, :index)
       expect(resp["headers"]["Set-Cookie"]).to eq "foo=bar"
+    end
+  end
+
+  context "posts index" do
+    let(:meth) { "index" }
+    let(:event) { json_file("spec/fixtures/dumps/api_gateway/posts/index.json") }
+
+    it "new adapter" do
+      resp = PostsController.process(event, {}, :index)
+      expect(resp['statusCode']).to eq "200"
+      expect(resp['headers']).to include('X-Runtime') # confirm going through full middleware stack
+      # expect(body.read).to eq "whatever"
+      expect(resp['headers']['x-jets-base64']).to eq "false"
     end
   end
 end

@@ -17,7 +17,7 @@ To run the integration tests locally, you need to create a new Jets CRUD project
     jets new demo
     cd demo
     jets generate scaffold Post title:string
-    jets server
+    jets server --no-reload
 
 Then you can run the postman tests:
 
@@ -45,4 +45,7 @@ Run the remote integration script:
 Example:
 
     BASE_URL=https://wb5dcjc09a.execute-api.us-west-2.amazonaws.com/dev spec/integration/remote.sh
-    
+
+## Manual Test
+
+Test books create, update and delete manually until it's scripted.

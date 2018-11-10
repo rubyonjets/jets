@@ -6,38 +6,60 @@ require "rack/utils" # Rack::Utils.parse_nested_query
 # Controller public methods get turned into Lambda functions.
 class Jets::Controller
   class Base < Jets::Lambda::Functions
-    include Layout
     include Callbacks
-    include Rendering
+    include Cookies
+    include Layout
     include Params
-
-    def self.process(event, context={}, meth)
-      t1 = Time.now
-      Jets.logger.info "Processing by #{self}##{meth}"
-
-      controller = new(event, context, meth)
-
-      Jets.logger.info "  Event: #{event.inspect}"
-      Jets.logger.info "  Parameters: #{controller.params(raw: true).to_h.inspect}"
-
-      controller.run_before_actions
-      controller.send(meth)
-      resp = controller.ensure_render
-      controller.run_after_actions
-
-      took = Time.now - t1
-      Jets.logger.info "Completed Status Code #{resp["statusCode"]} in #{took}s"
-
-      resp
-    end
+    include Rendering
 
     delegate :headers, to: :request
     delegate :set_header, to: :response
     attr_reader :request, :response
+    attr_accessor :session
     def initialize(event, context={}, meth)
       super
-      @request = Request.new(event)
-      @response = Response.new(event)
+      @request = Request.new(event, context)
+      @response = Response.new
+    end
+
+    def process!
+      adapter = Jets::Controller::Rack::Adapter.new(event, context, meth)
+      adapter.rack_vars(
+        'jets.controller' => self,
+        'lambda.context' => context,
+        'lambda.event' => event,
+        'lambda.meth' => meth,
+      )
+      # adapter.process ultimately calls app controller action at the very last
+      # middleware stack.
+      adapter.process # Returns API Gateway hash structure
+    end
+
+    def dispatch!
+      t1 = Time.now
+      Jets.logger.info "Processing by #{self.class.name}##{@meth}"
+      Jets.logger.info "  Event: #{@event.inspect}"
+      Jets.logger.info "  Parameters: #{params(raw: true).to_h.inspect}"
+
+      run_before_actions
+      send(@meth)
+      triplet = ensure_render
+      run_after_actions
+
+      took = Time.now - t1
+      status = triplet[0]
+      Jets.logger.info "Completed Status Code #{status} in #{took}s"
+
+      triplet # status, headers, body
+    end
+
+    def self.process(event, context={}, meth)
+      controller = new(event, context, meth)
+      # Using send because process! is private method in Jets::RackController so
+      # it doesnt create a lambda function.  It's doesnt matter what scope process!
+      # is in Controller::Base because Jets lambda functions inheritance doesnt
+      # include methods in Controller::Base.
+      controller.send(:process!)
     end
 
     class_attribute :internal_controller

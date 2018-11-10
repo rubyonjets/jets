@@ -35,13 +35,16 @@ module Jets::Commands
     long_desc Help.text(:server)
     option :port, default: "8888", desc: "use PORT"
     option :host, default: "127.0.0.1", desc: "listen on HOST"
+    option :reload, type: :boolean, default: true, desc: "Enables hot-reloading for development"
     def server
       # shell out to shotgun for automatic reloading
       o = options
-      command = "bundle exec shotgun --port #{o[:port]} --host #{o[:host]}"
+      server_command = o[:reload] ? "shotgun" : "rackup"
+      command = "bundle exec #{server_command} --port #{o[:port]} --host #{o[:host]}"
       puts "=> #{command}".colorize(:green)
       puts Jets::Booter.message
-      Jets::Rack::Server.start unless ENV['JETS_RACK'] == '0' # rack server runs in background by default
+      Jets::Booter.check_config_ru!
+      Jets::Server.start(options) unless ENV['JETS_RACK'] == '0' # rack server runs in background by default
       system(command)
     end
 
@@ -80,6 +83,16 @@ module Jets::Commands
     option :guess, type: :boolean, default: true, desc: "Enables guess mode. Uses inference to allows use of all dashes to specify functions. Smart mode verifies that the function exists in the code base."
     option :local, type: :boolean, desc: "Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode guess mode is always used."
     def call(function_name, payload='')
+      # Printing to stdout can mangle up the response when piping
+      # the value to jq. For example:
+      #
+      #   `jets call --local .. | jq`
+      #
+      # By redirecting stderr we can use jq safely.
+      #
+      $stdout.sync = true
+      $stderr.sync = true
+      $stdout = $stderr # jets call operation
       Call.new(function_name, payload, options).run
     end
 
@@ -99,6 +112,22 @@ module Jets::Commands
     long_desc Help.text(:url)
     def url
       Jets::Commands::Url.new(options).display
+    end
+
+    desc "secret", "Generates secret"
+    long_desc Help.text(:secret)
+    def secret
+      puts SecureRandom.hex(64)
+    end
+
+    desc "middleware", "Prints list of middleware"
+    long_desc Help.text(:middleware)
+    def middleware
+      stack = Jets.application.middlewares
+      stack.middlewares.each do |middleware|
+        puts "use #{middleware.name}"
+      end
+      puts "run #{Jets.application.endpoint}"
     end
 
     desc "version", "Prints Jets version"

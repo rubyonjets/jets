@@ -1,4 +1,5 @@
 require "action_controller/metal/strong_parameters"
+require "rack"
 
 class Jets::Controller
   module Params
@@ -39,7 +40,7 @@ class Jets::Controller
       # API Gateway seems to use either: content-type or Content-Type
       content_type = headers["content-type"]
       if content_type.to_s.include?("application/x-www-form-urlencoded")
-        return Rack::Utils.parse_nested_query(body)
+        return ::Rack::Utils.parse_nested_query(body)
       end
 
       {} # fallback to empty Hash
