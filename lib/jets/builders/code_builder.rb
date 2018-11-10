@@ -352,6 +352,8 @@ class Jets::Builders
     memoize :rack_packager
 
     def package_ruby
+      return if Jets.poly_only?
+
       ruby_packager.install
       reconfigure_rails
       rack_packager.install

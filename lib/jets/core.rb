@@ -166,6 +166,7 @@ module Jets::Core
   end
 
   def lazy_load?
+    return false if poly_only? # no need to lazy load when poly_only?
     config.ruby.lazy_load
   end
 
