@@ -17,12 +17,8 @@ class Jets::Builders
       "#{Jets.build_root}/#{relative_path}"
     end
 
-    # Finds out of the app has polymorphic functions only and zero ruby functions.
-    # In this case, we can skip a lot of the ruby related building and speed up the
-    # deploy process.
     def poly_only?
-      return true if ENV['POLY_ONLY'] # bypass to allow rapid development of handlers
-      Jets::Commands::Build.poly_only?
+      Jets.poly_only?
     end
   end
 end

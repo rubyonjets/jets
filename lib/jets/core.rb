@@ -166,6 +166,12 @@ module Jets::Core
   end
 
   def lazy_load?
+    return false if poly_only? # no need to lazy load when poly_only?
     config.ruby.lazy_load
+  end
+
+  def poly_only?
+    return true if ENV['JETS_POLY_ONLY'] # bypass to allow rapid development of handlers
+    Jets::Commands::Build.poly_only?
   end
 end

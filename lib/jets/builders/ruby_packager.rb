@@ -186,7 +186,9 @@ EOL
         FileUtils.rm_rf(app_root_bundled)
       end
       # Leave #{Jets.build_root}/bundled behind to act as cache
-      FileUtils.cp_r("#{cache_area}/bundled", app_root_bundled)
+      if File.exist?("#{cache_area}/bundled")
+        FileUtils.cp_r("#{cache_area}/bundled", app_root_bundled)
+      end
     end
 
   private

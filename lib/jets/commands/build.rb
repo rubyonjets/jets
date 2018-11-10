@@ -142,10 +142,10 @@ module Jets::Commands
       paths
     end
 
+    # Finds out of the app has polymorphic functions only and zero ruby functions.
+    # In this case, we can skip a lot of the ruby related building and speed up the
+    # deploy process.
     def self.poly_only?
-      # Scans all the app code and look for any methods that are ruby.
-      # If any method is written in ruby then we know the app is not a
-      # solely polymorphic non-ruby app.
       has_ruby = app_files.detect do |path|
         app_class = Jets::Klass.from_path(path)  # IE: PostsController, Jets::PublicController
         langs = app_class.tasks.map(&:lang)
