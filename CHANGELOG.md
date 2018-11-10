@@ -3,7 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
-## [1.0.14]
+## [1.0.15]
+- Fix polymorphic support: #67 from tongueroo/poly-fixes
+- update .env.development example
 - remove debugging puts
 
 ## [1.0.13]
