@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.16]
+- fix application iam policy when Jets::Application.default_iam_policy is used in config/application.rb
+- #69 from tongueroo/fix-app-iam-policy
+
 ## [1.0.15]
 - Fix polymorphic support: #67 from tongueroo/poly-fixes
 - update .env.development example
