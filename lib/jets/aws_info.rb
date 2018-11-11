@@ -73,8 +73,15 @@ module Jets
       stack = resp.stacks.first
       output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
       @@s3_bucket = output["output_value"] # s3_bucket
-    rescue
-      # rescuing all exceptions in case here
+    rescue Exception => e
+      # When user uses Jets::Application.default_iam_policy in their config/application.rb
+      # it looks up the s3 bucket for the iam policy, but the project name has
+      # not been loaded in the config yet.  We do some trickery with loading
+      # the config twice in Application#load_app_config
+      # The first load will result in a Aws::CloudFormation::Errors::ValidationError
+      # since the Jets::Naming.parent_stack_name has not been properly set yet.
+      #
+      # Rescuing all exceptions in case there are other exceptions dont know about yet
       # Here are the known ones: Aws::CloudFormation::Errors::ValidationError, Aws::CloudFormation::Errors::InvalidClientTokenId
       BUCKET_DOES_NOT_YET_EXIST
     end

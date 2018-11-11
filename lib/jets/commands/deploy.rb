@@ -19,9 +19,11 @@ module Jets::Commands
       # Delete existing rollback stack from previous bad minimal deploy
       delete_minimal_stack if minimal_rollback_complete?
       exit_unless_updateable! # Stack could be in a weird rollback state or in progress state
-      ship(stack_type: :minimal) if first_run?
 
-      Jets.application.reload_iam_policy!
+      if first_run?
+        ship(stack_type: :minimal)
+        Jets.application.reload_configs!
+      end
 
       # Build code after the minimal stack because need s3 bucket for assets
       # on_aws? and s3_base_url logic
