@@ -1,7 +1,7 @@
 describe Jets::Application do
-  context "Jets::Application.new" do
+  context "Jets::Application.instance" do
     let(:app) do
-      Jets::Application.new
+      Jets::Application.instance
     end
 
     describe "configure" do

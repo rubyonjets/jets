@@ -11,7 +11,7 @@ module Jets::Core
   def application
     return @@application if @@application
 
-    @@application = Jets::Application.new
+    @@application = Jets::Application.instance
     @@application.setup!
     @@application
   end

@@ -1,6 +1,8 @@
 require "active_support/ordered_options"
+require "singleton"
 
 class Jets::Application
+  include Singleton
   extend Memoist
   # Middleware used for development only
   autoload :Middleware, "jets/application/middleware"
@@ -73,15 +75,29 @@ class Jets::Application
 
   def load_configs
     # The Jets default/application.rb is loaded.
-    require File.expand_path("../default/application.rb", __FILE__)
+    load File.expand_path("../default/application.rb", __FILE__)
     # Then project config/application.rb is loaded.
-    app_config = "#{Jets.root}config/application.rb"
-    require app_config if File.exist?(app_config)
-    # Normalize config and setup some shortcuts
-    set_aliases!
-    normalize_env_vars!
+    load_app_config
     load_db_config
     load_environments_config
+  end
+
+  # First time loading this might not have all the values. Some values like
+  # project_namespace depend on project_name. Loading the config twice
+  # resolves the chicken and egg problem here.
+  def load_app_config
+    eval_app_config
+    # Normalize config and setup some shortcuts
+    set_dependent_configs! # things like project_namespace that need project_name
+    eval_app_config # twice to fix values that rely on the dependent configs
+
+    set_iam_policy # relies on dependent values, must be called late
+    normalize_env_vars!
+  end
+
+  def eval_app_config
+    app_config = "#{Jets.root}config/application.rb"
+    load app_config if File.exist?(app_config)
   end
 
   def load_environments_config
@@ -104,7 +120,7 @@ class Jets::Application
     production: 'prod',
     staging: 'stag',
   }
-  def set_aliases!
+  def set_dependent_configs!
     # env_extra can be also be set with JETS_ENV_EXTRA.
     # JETS_ENV_EXTRA higher precedence than config.env_extra
     config.env_extra = ENV['JETS_ENV_EXTRA'] if ENV['JETS_ENV_EXTRA']
@@ -115,10 +131,6 @@ class Jets::Application
     config.table_namespace = [config.project_name, config.short_env].compact.join('-')
 
     config.project_namespace = Jets.project_namespace
-
-    # Must set default iam_policy here instead of `def config` because we  project_namespace
-    # must have been set and if we call it from `def config` we get an infinite loop
-    set_iam_policy
   end
 
   def set_iam_policy
@@ -127,12 +139,10 @@ class Jets::Application
   end
 
   # After the mimimal template gets build, we need to reload it for the full stack
-  # creation. This is confusing to follow. Think we need to clean up the Jets.application
-  # singleton and make it more explicit?
-  def reload_iam_policy!
-    config.iam_policy = nil
-    config.managed_policy_definitions = nil
-    set_iam_policy
+  # creation. This allows us to reference IAM policies configs that depend on the
+  # creation of the s3 bucket.
+  def reload_configs!
+    load_configs
   end
 
   def self.default_iam_policy
