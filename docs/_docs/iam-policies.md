@@ -45,7 +45,7 @@ end
 
 ## IAM Policies Inheritance
 
-IAM policies defined at lower levels of precedence inherit and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add a simple additional permission. For example, the default application-wide IAM policy looks something like this:
+IAM policies defined at lower levels of precedence **inherit** and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add a simple additional permission. For example, the default application-wide IAM policy looks something like this:
 
 ```ruby
 [{
@@ -81,7 +81,26 @@ The resulting policy for the method will look something like this:
 }]
 ```
 
-So the IAM policies are additive.
+So the IAM policies are **additive**.
+
+## Application-wide: Override but Keep Default
+
+If you would like to override the default Application-wide IAM policy in `config/application.rb` and still use the Jets default application IAM policy.  You can use something like this:
+
+```ruby
+Jets.application.configure do |config|
+  config.iam_policy = [
+    Jets::Application.default_iam_policy,
+    {
+      action: ["dynamodb:*"],
+      effect: "Allow",
+      resource: "arn:aws:dynamodb:#{Jets.aws.region}:#{Jets.aws.account}:table/#{Jets.project_namespace}-*",
+    }
+  ]
+end
+```
+
+This is useful because the Jets default application IAM policy is dynamically calculated depending on what the resources are being provisioned.  For example, using [Shared Resources]({% link _docs/shared-resources.md %}) will add CloudFormation read permissions.
 
 ## IAM Policy Definition Styles
 
