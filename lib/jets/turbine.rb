@@ -21,10 +21,6 @@ module Jets
         self.exception_reporters ||= {}
         self.exception_reporters[label] = block
       end
-
-      # def run_hooks(phase, type, context)
-      #   puts "Running hook for #{phase} #{type} #{context}".colorize(:red)
-      # end
     end
   end
 end
