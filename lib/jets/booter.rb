@@ -10,8 +10,24 @@ class Jets::Booter
       Jets::Dotenv.load!
       Jets.application # triggers application.setup! # autoload_paths, routes, etc
       setup_db
+      app_initializers
+      turbine_initializers
 
       @booted = true
+    end
+
+    def turbine_initializers
+      Jets::Turbine.subclasses.each do |subclass|
+        subclass.initializers.each do |label, block|
+          block.call(Jets.application)
+        end
+      end
+    end
+
+    def app_initializers
+      Dir.glob("#{Jets.root}config/initializers/**/*").each do |path|
+        load path
+      end
     end
 
     # AWS Lambda for natively supported languages prints to CloudWatch instead of

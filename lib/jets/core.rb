@@ -174,4 +174,12 @@ module Jets::Core
     return true if ENV['JETS_POLY_ONLY'] # bypass to allow rapid development of handlers
     Jets::Commands::Build.poly_only?
   end
+
+  def report_exception(exception)
+    Jets::Turbine.subclasses.each do |subclass|
+      subclass.exception_reporters.each do |label, block|
+        block.call(exception)
+      end
+    end
+  end
 end

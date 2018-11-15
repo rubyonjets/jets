@@ -55,9 +55,8 @@ class Jets::Processors::MainProcessor
       # No need to having error in stderr above anymore because errors are handled in memory
       # at ruby_server.rb but keeping around for posterity.
 
+      Jets.report_exception(e)
       raise # raise error to ruby_server.rb to rescue and handle
-
-      # $stderr.puts("END OF RUBY OUTPUT") # uncomment for debugging
     end
   end
 end

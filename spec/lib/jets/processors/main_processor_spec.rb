@@ -41,6 +41,16 @@ describe Jets::Processors::MainProcessor do
     end
   end
 
+  context "error job" do
+    let(:handler) { 'handlers/jobs/error_job.break' }
+    it "throws error" do
+      result = main.run
+      # data = JSON.load(result)
+      # # pp data
+      # expect(data["done"]).to eq "digging"
+    end
+  end
+
   context "function" do
     let(:handler) { 'handlers/functions/hello.world' }
     let(:event) { {"key1" => "value1"} }
