@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.17]
+- Initial Jets Turbine support. http://rubyonjets.com/docs/jets-turbines/
+- pull request #71 from tongueroo/turbine
+- Addresses #70 Exception reporting
+
 ## [1.0.16]
 - fix application iam policy when Jets::Application.default_iam_policy is used in config/application.rb
 - #69 from tongueroo/fix-app-iam-policy
