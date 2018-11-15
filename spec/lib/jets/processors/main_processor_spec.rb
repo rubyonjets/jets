@@ -44,10 +44,11 @@ describe Jets::Processors::MainProcessor do
   context "error job" do
     let(:handler) { 'handlers/jobs/error_job.break' }
     it "throws error" do
-      result = main.run
-      # data = JSON.load(result)
-      # # pp data
-      # expect(data["done"]).to eq "digging"
+      allow(Jets).to receive(:report_exception)
+      expect {
+        main.run
+      }.to raise_error(RuntimeError)
+      expect(Jets).to have_received(:report_exception)
     end
   end
 
