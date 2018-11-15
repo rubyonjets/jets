@@ -2,7 +2,7 @@
 title: Jets Turbines
 ---
 
-A `Jets::Turbine` provides hooks to extend Jets and or modify the initialization process. This is inspired from Railities.
+A `Jets::Turbine` provides hooks to extend Jets and or modify the initialization process. This is inspired from Railties.
 
 The interface is currently being developed and will be refined. Here's a table of the currently supported methods:
 
