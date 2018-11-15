@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.0.18]
+- re-raise exception properly after reporting locally
+
 ## [1.0.17]
 - Initial Jets Turbine support. http://rubyonjets.com/docs/jets-turbines/
 - pull request #71 from tongueroo/turbine
