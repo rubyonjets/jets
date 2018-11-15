@@ -22,7 +22,7 @@ module Jets
       if task.lang == :ruby
         # controller = PostsController.new(event, content)
         # resp = controller.edit
-        @app_class.process(event, context, @app_meth)
+        run_ruby_code(event, context)
       else
         executor = LambdaExecutor.new(task)
         resp = executor.run(event, context)
@@ -31,6 +31,12 @@ module Jets
         end
         resp
       end
+    end
+
+    def run_ruby_code(event, context)
+      @app_class.process(event, context, @app_meth)
+    rescue Exception => e
+      Jets.report_exception(e)
     end
 
     def raise_error(resp)

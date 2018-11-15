@@ -41,6 +41,17 @@ describe Jets::Processors::MainProcessor do
     end
   end
 
+  context "error job" do
+    let(:handler) { 'handlers/jobs/error_job.break' }
+    it "throws error" do
+      allow(Jets).to receive(:report_exception)
+      expect {
+        main.run
+      }.to raise_error(RuntimeError)
+      expect(Jets).to have_received(:report_exception)
+    end
+  end
+
   context "function" do
     let(:handler) { 'handlers/functions/hello.world' }
     let(:event) { {"key1" => "value1"} }

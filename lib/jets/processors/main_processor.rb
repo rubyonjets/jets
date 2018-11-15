@@ -46,18 +46,19 @@ class Jets::Processors::MainProcessor
       # json string, it just dumps it to a plain text string.
       Jets::Util.normalize_result(result) # resp is a String
     rescue Exception => e
-      # Customize error message slightly so nodejs shim can process the
-      # returned error message.
-      # The "RubyError: " is a marker that the javascript shim scans for.
-      $stderr.puts("RubyError: #{e.class}: #{e.message}") # js needs this as the first line
-      backtrace = e.backtrace.map {|l| "  #{l}" }
-      $stderr.puts(backtrace)
-      # No need to having error in stderr above anymore because errors are handled in memory
-      # at ruby_server.rb but keeping around for posterity.
+      unless ENV['TEST']
+        # Customize error message slightly so nodejs shim can process the
+        # returned error message.
+        # The "RubyError: " is a marker that the javascript shim scans for.
+        $stderr.puts("RubyError: #{e.class}: #{e.message}") # js needs this as the first line
+        backtrace = e.backtrace.map {|l| "  #{l}" }
+        $stderr.puts(backtrace)
+        # No need to having error in stderr above anymore because errors are handled in memory
+        # at ruby_server.rb but keeping around for posterity.
+      end
 
+      Jets.report_exception(e)
       raise # raise error to ruby_server.rb to rescue and handle
-
-      # $stderr.puts("END OF RUBY OUTPUT") # uncomment for debugging
     end
   end
 end

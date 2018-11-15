@@ -46,6 +46,7 @@ module Jets
   autoload :Server, "jets/server"
   autoload :Stack, "jets/stack"
   autoload :Timing, "jets/timing"
+  autoload :Turbine, 'jets/turbine'
   autoload :Util, "jets/util"
 
   extend Core # root, logger, etc
