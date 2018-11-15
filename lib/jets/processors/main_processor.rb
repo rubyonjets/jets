@@ -58,7 +58,7 @@ class Jets::Processors::MainProcessor
       end
 
       Jets.report_exception(e)
-      raise # raise error to ruby_server.rb to rescue and handle
+      raise(e) # raise error to ruby_server.rb to rescue and handle
     end
   end
 end

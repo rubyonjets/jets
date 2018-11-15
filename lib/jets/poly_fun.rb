@@ -37,6 +37,7 @@ module Jets
       @app_class.process(event, context, @app_meth)
     rescue Exception => e
       Jets.report_exception(e)
+      raise(e)
     end
 
     def raise_error(resp)
