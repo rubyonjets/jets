@@ -46,7 +46,6 @@ module Jets
   autoload :Rule, 'jets/rule'
   autoload :Server, "jets/server"
   autoload :Stack, "jets/stack"
-  autoload :Timing, "jets/timing"
   autoload :Turbine, 'jets/turbine'
   autoload :Util, "jets/util"
 

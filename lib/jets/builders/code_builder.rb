@@ -53,7 +53,6 @@ class Jets::Builders
     # https://docs.aws.amazon.com/lambda/latest/dg/limits.html
     AWS_CODE_SIZE_LIMIT = 250 * 1024 * 1024 # 250MB
 
-    include Jets::Timing
     include Jets::AwsServices
     include Util
     extend Memoist
@@ -80,7 +79,6 @@ class Jets::Builders
         code_finish
       end
     end
-    time :build
 
     # Resolves the chicken-and-egg problem with md5 checksums. The handlers need
     # to reference files with the md5 checksum.  The files are the:
@@ -113,7 +111,6 @@ class Jets::Builders
         end
       end
     end
-    time :create_zip_files
 
     def exist_on_s3?(filename)
       s3_key = "jets/code/#{filename}"
@@ -163,7 +160,6 @@ class Jets::Builders
     def code_setup
       reconfigure_development_webpacker
     end
-    time :code_setup
 
     def code_finish
       update_lazy_load_config # at the top, must be called before Jets.lazy_load? is used
@@ -174,7 +170,6 @@ class Jets::Builders
       generate_node_shims
       create_zip_files
     end
-    time :code_finish
 
     def update_lazy_load_config
       size_limit = AWS_CODE_SIZE_LIMIT
@@ -257,7 +252,6 @@ class Jets::Builders
           `which webpack`.strip
       sh("JETS_ENV=#{Jets.env} #{webpack_command}")
     end
-    time :compile_assets
 
     # This happens in the current app directory not the tmp code for simplicity
     # This is because the node likely been set up correctly there.
@@ -318,7 +312,6 @@ class Jets::Builders
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
       end
     end
-    time :copy_project
 
     # Move the node modules to the tmp build folder to speed up project copying.
     # A little bit risky because a ctrl-c in the middle of the project copying
@@ -367,7 +360,6 @@ class Jets::Builders
       ruby_packager.finish
       rack_packager.finish
     end
-    time :package_ruby
 
     # TODO: Move logic into plugin instead
     def reconfigure_rails
