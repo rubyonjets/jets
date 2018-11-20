@@ -18,6 +18,8 @@ Jets.application.routes.draw do
   get "admin/pages", to: "admin/pages#index"
   get "related_posts/:id", to: "related_posts#show"
 
+  resources :stores
+
   # to demo ActiveRecord support
   resources :articles
 

@@ -32,11 +32,12 @@ module Jets
   autoload :Klass, 'jets/klass'
   autoload :Lambda, 'jets/lambda'
   autoload :Logger, "jets/logger"
+  autoload :Mega, "jets/mega"
+  autoload :Middleware, "jets/middleware"
   autoload :Naming, 'jets/naming'
   autoload :PolyFun, 'jets/poly_fun'
   autoload :Preheat, "jets/preheat"
   autoload :Processors, 'jets/processors'
-  autoload :Rack, "jets/rack"
   autoload :Rdoc, "jets/rdoc"
   autoload :Resource, "jets/resource"
   autoload :Route, "jets/route"

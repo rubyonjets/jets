@@ -203,7 +203,7 @@ class Jets::Resource
       #   method: admin/pages_controller
       #   method: admin-pages_controller-index
       method = @app_class.underscore
-      method = method.sub('/','-') + "-#{@task.meth}"
+      method = method.sub('/','-').gsub(/[^0-9a-z\-_]/i, '') + "-#{@task.meth}"
       "#{Jets.config.project_namespace}-#{method}"
     end
   end

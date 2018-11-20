@@ -30,10 +30,12 @@ Start up server binding to host `0.0.0.0`:
 ## Options
 
 ```
-[--port=PORT]          # use PORT
-                       # Default: 8888
-[--host=HOST]          # listen on HOST
-                       # Default: 127.0.0.1
-[--noop], [--no-noop]  
+[--port=PORT]              # use PORT
+                           # Default: 8888
+[--host=HOST]              # listen on HOST
+                           # Default: 127.0.0.1
+[--reload], [--no-reload]  # Enables hot-reloading for development
+                           # Default: true
+[--noop], [--no-noop]      
 ```
 

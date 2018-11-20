@@ -8,9 +8,5 @@ module Jets::Controller::Renderers
       @controller = controller
       @options = options
     end
-
-    def render_aws_proxy(options)
-      AwsProxyRenderer.new(@controller, options).render
-    end
   end
 end

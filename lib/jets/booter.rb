@@ -4,16 +4,21 @@ class Jets::Booter
     def boot!(options={})
       return if @booted
 
-      redirect_output
       confirm_jets_project!
       require_bundle_gems
       Jets::Dotenv.load!
-      Jets.application # triggers application.setup! # autoload_paths, routes, etc
+      Jets.application # triggers Application.instance setup # autoload_paths, routes, etc
       setup_db
       app_initializers
       turbine_initializers
+      build_middleware_stack
 
       @booted = true
+    end
+
+    # Builds and memoize stack so it only gets built on bootup
+    def build_middleware_stack
+      Jets.application.build_stack
     end
 
     def turbine_initializers
@@ -28,23 +33,6 @@ class Jets::Booter
       Dir.glob("#{Jets.root}config/initializers/**/*").each do |path|
         load path
       end
-    end
-
-    # AWS Lambda for natively supported languages prints to CloudWatch instead of
-    # mungling up the response. We'll redirect stdout to stderr to mimic AWS Lambda
-    # behavior.
-    #
-    # Also, for local use, printing to stdout can mangle up the response when piping
-    # the value to jq. For example:
-    #
-    #   `jets call --local .. | jq`
-    #
-    # By redirecting stderr we can use jq safely.
-    #
-    def redirect_output
-      $stdout.sync = true
-      $stderr.sync = true
-      $stdout = $stderr # jets call and local jets operation
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It
@@ -105,12 +93,21 @@ class Jets::Booter
     def confirm_jets_project!
       unless File.exist?("#{Jets.root}config/application.rb")
         puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
-        exit
+        exit 1
       end
     end
 
     def message
       "Jets booting up in #{Jets.env.colorize(:green)} mode!"
+    end
+
+    def check_config_ru!
+      config_ru = File.read("#{Jets.root}config.ru")
+      unless config_ru.include?("Jets.boot")
+        puts 'The config.ru file is missing Jets.boot.  Please add Jets.boot after require "jets"'.colorize(:red)
+        puts "This was changed as made in Jets v1.1.0"
+        exit 1
+      end
     end
   end
 end

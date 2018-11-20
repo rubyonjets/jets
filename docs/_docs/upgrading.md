@@ -10,6 +10,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green?
 --- | --- | ---
+1.1.0 | Added `Jets.boot` to `config.ru`. You can run the `jets upgrade:v1` command to add it. | No
 1.0.0 | Added `config/environments` files. You can use the `jets upgrade:v1` command. Going from 0.10.0 to 1.0.0 does not required a blue-green deploy. But if you're going from before 0.10.0, then you will need a blue-green deploy. | No
 0.10.0 | Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action. Also removed the managed `Jets::WelcomeController` and consolidated to the managed `Jets::PublicController`. Refer to Upgrade Details. | Yes
 0.9.0 | CloudFormation Logical ids changed to be more concise. | Yes

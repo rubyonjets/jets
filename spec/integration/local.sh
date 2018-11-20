@@ -16,6 +16,19 @@ cd demo
 jets runner 'Post.create(id: 1) unless Post.find_by(id: 1)'
 jets runner 'Post.create(id: 2) unless Post.find_by(id: 2)'
 
+# Assume rack project has been imported via mega mode
+cd rack
+# Create a data record that the postman tests assumes to exist.  The postman collection deletes this record.
+rails runner 'Book.create(id: 1) unless Book.find_by(id: 1)'
+rails runner 'Book.create(id: 2) unless Book.find_by(id: 2)'
+
 # Integration postman script lives in jets
 cd jets
 newman run spec/integration/fixtures/postman/collection.json -e spec/integration/fixtures/postman/environment.json
+
+# TODO: export global variables and run multiple scripts to handle create, edit
+# https://github.com/postmanlabs/newman/issues/831
+# Useful options:
+#   --export-globals globals.json
+#   -g globals.json
+# Unsure how to grab authentication token for delete

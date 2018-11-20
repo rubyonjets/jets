@@ -168,6 +168,7 @@ class Jets::Builders
     def code_finish
       update_lazy_load_config # at the top, must be called before Jets.lazy_load? is used
       store_s3_base_url
+      disable_webpacker_middleware
       setup_tmp
       calculate_md5s # must be called before generate_node_shims and create_zip_files
       generate_node_shims
@@ -229,6 +230,12 @@ class Jets::Builders
 
     def s3_bucket
       Jets.aws.s3_bucket
+    end
+
+    def disable_webpacker_middleware
+      full_path = "#{full(tmp_code)}/config/disable-webpacker-middleware.txt"
+      FileUtils.mkdir_p(File.dirname(full_path))
+      FileUtils.touch(full_path)
     end
 
     # This happens in the current app directory not the tmp code for simplicity.

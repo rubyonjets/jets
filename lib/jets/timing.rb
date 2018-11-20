@@ -14,7 +14,6 @@ module Jets
   module Timing
     autoload :Report, 'jets/timing/report'
     extend ActiveSupport::Concern
-    RECORD_LOG_PATH = "#{Jets.build_root}/timing/records.log"
 
     def record_data(meth, type)
       # https://stackoverflow.com/questions/17267935/display-time-down-to-milliseconds-in-ruby-1-8-7
@@ -30,15 +29,23 @@ module Jets
 
     def record_log(meth, type)
       data = record_data(meth, type)
-      path = Timing::RECORD_LOG_PATH
+      path = Timing::record_log_path
       FileUtils.mkdir_p(File.dirname(path))
       File.open(path, 'a') {|f| f.write(data + "\n") }
     end
 
     # Clear out all timing data
     def self.clear
-      return unless File.exist?(RECORD_LOG_PATH)
-      FileUtils.cp("/dev/null", RECORD_LOG_PATH)
+      return unless File.exist?(record_log_path)
+      FileUtils.cp("/dev/null", record_log_path)
+    end
+
+    def self.record_log_path
+      "#{Jets.build_root}/timing/records.log"
+    end
+
+    def record_log_path
+      self.class.record_log_path
     end
 
     def self.report

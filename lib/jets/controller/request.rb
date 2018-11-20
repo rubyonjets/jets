@@ -1,42 +1,21 @@
-# Somewhat based off of: https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/http/request.rb
+require 'rack/request'
+
 class Jets::Controller
-  class Request
-    def initialize(event)
-      @event = event
+  class Request < ::Rack::Request
+    def initialize(event, context)
+      @event, @context = event, context
+      super(env)
     end
 
-    # lambda integration proxy headers
-    HEADER_METHODS = %w[
-      Accept
-      Accept-Encoding
-      Accept-Language
-      cache-control
-      CloudFront-Forwarded-Proto
-      CloudFront-Is-Desktop-Viewer
-      CloudFront-Is-Mobile-Viewer
-      CloudFront-Is-SmartTV-Viewer
-      CloudFront-Is-Tablet-Viewer
-      CloudFront-Viewer-Country
-      content-type
-      Host
-      origin
-      Referer
-      upgrade-insecure-requests
-      User-Agent
-      Via
-      X-Amz-Cf-Id
-      X-Amzn-Trace-Id
-      X-Forwarded-For
-      X-Forwarded-Port
-      X-Forwarded-Proto
-    ].freeze
+    def env
+      @env ||= Jets::Controller::Rack::Env.new(@event, @context).convert # convert to Rack env
+    end
 
-    HEADER_METHODS.each do |meth|
-      class_eval <<-METHOD, __FILE__, __LINE__ + 1
-        def #{meth.downcase.underscore}       # def content_type
-          headers["#{meth.downcase}"].freeze  #   headers["content-type"]
-        end                                   # end
-      METHOD
+    # When request hits the middleware Controller::Rack::Middleware::Main endpoint
+    # We set the it with the updated env since it could had been mutated down the
+    # middleware stack.
+    def set_env!(env)
+      @env = env
     end
 
     # API Gateway is inconsistent about how it cases it keys.
@@ -46,14 +25,5 @@ class Jets::Controller
       headers = @event["headers"] || {}
       headers.transform_keys { |key| key.downcase }
     end
-
-    def xhr?
-      headers["x-requested-with"] == "XMLHttpRequest"
-    end
-
-    def path
-      @event["path"]
-    end
-
   end
 end

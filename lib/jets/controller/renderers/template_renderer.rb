@@ -16,7 +16,7 @@ module Jets::Controller::Renderers
       body = renderer.render(render_options)
       @options[:body] = body # important to set as it was originally nil
 
-      render_aws_proxy(@options)
+      RackRenderer.new(@controller, @options).render
     end
 
     # Example: posts/index

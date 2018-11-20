@@ -7,14 +7,12 @@
 	},
 	"item": [
 		{
-			"_postman_id": "154ebb9d-4235-4d4b-9984-d5e3ab3c20d5",
-			"name": "PostsController#index",
+			"name": "post index",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "f91acb11-eee6-4c83-956e-ef21f4adf246",
-						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"response is ok\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -23,14 +21,18 @@
 							"pm.test(\"Content-Type is present\", function () {",
 							"    pm.response.to.have.header(\"Content-Type\");",
 							"});"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{BASE_URL}}posts",
 					"host": [
@@ -41,14 +43,12 @@
 			"response": []
 		},
 		{
-			"_postman_id": "7c6d9207-3303-4d9c-8628-3ec9fdbdd56f",
-			"name": "PostsController#create",
+			"name": "post create",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "4f349f21-09e6-436d-bd70-89324ad334e8",
-						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"response is ok\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -61,7 +61,8 @@
 							"pm.test(\"Body matches string\", function () {",
 							"    pm.expect(pm.response.text()).to.include(\"test1\");",
 							"});"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -70,7 +71,9 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded"
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
 					}
 				],
 				"body": {
@@ -87,8 +90,7 @@
 			"response": []
 		},
 		{
-			"_postman_id": "4be8797b-1da7-4386-96b9-f2a2d3bfff16",
-			"name": "PostsController#new",
+			"name": "post new",
 			"event": [
 				{
 					"listen": "test",
@@ -111,7 +113,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{BASE_URL}}posts/new",
 					"host": [
@@ -125,8 +130,7 @@
 			"response": []
 		},
 		{
-			"_postman_id": "8389acfe-5b9a-489e-b9ff-97cc32e9a899",
-			"name": "PostsController#edit",
+			"name": "post edit",
 			"event": [
 				{
 					"listen": "test",
@@ -149,7 +153,10 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "{{BASE_URL}}posts/1/edit",
 					"host": [
@@ -164,14 +171,12 @@
 			"response": []
 		},
 		{
-			"_postman_id": "22161f8e-1387-44b0-a890-edda95e8ebaf",
-			"name": "PostsController#update",
+			"name": "post update",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "f597eb8f-34ea-461b-8793-3c257480f315",
-						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"response is ok\", function () {",
 							"    pm.response.to.have.status(200);",
@@ -185,7 +190,8 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.success).to.eql(true);",
 							"});"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -194,12 +200,13 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded; charset=UTF-8"
+						"value": "application/x-www-form-urlencoded; charset=UTF-8",
+						"disabled": false
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "utf8=%E2%9C%93&_method=put&post%5Btitle%5D=test1edit&post%5Bbody%5D=test1"
+					"raw": "utf8=%E2%9C%93&_method=put&post%5Btitle%5D=test1editanother&post%5Bbody%5D=test1"
 				},
 				"url": {
 					"raw": "{{BASE_URL}}posts/1",
@@ -214,8 +221,7 @@
 			"response": []
 		},
 		{
-			"_postman_id": "17a8cbb5-ead2-4949-9103-4dba5fb65309",
-			"name": "PostsController#create2",
+			"name": "post create2",
 			"event": [
 				{
 					"listen": "test",
@@ -260,8 +266,7 @@
 			"response": []
 		},
 		{
-			"_postman_id": "c18f1c89-b15d-429a-bc1f-e58630802cba",
-			"name": "PostsController#delete",
+			"name": "post delete",
 			"event": [
 				{
 					"listen": "test",
@@ -292,6 +297,168 @@
 					],
 					"path": [
 						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "book index",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f91acb11-eee6-4c83-956e-ef21f4adf246",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{BASE_URL}}books",
+					"host": [
+						"{{BASE_URL}}books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "book new",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c80cb0d-9c9c-4e26-ae53-4eb43531cb58",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"var html = cheerio(pm.response.text());",
+							"var token = html.find('[name=\"authenticity_token\"]').val();",
+							"",
+							"console.log(token);",
+							"pm.globals.set(\"authenticity_token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{BASE_URL}}books/new",
+					"host": [
+						"{{BASE_URL}}books"
+					],
+					"path": [
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "book edit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f3ac4857-58f8-40b0-8161-d2e2d6d921f3",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"var html = cheerio(pm.response.text());",
+							"var token = html.find('[name=\"authenticity_token\"]').val();",
+							"",
+							"pm.globals.set(\"authenticity_token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{BASE_URL}}books/1/edit",
+					"host": [
+						"{{BASE_URL}}books"
+					],
+					"path": [
+						"1",
+						"edit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f91acb11-eee6-4c83-956e-ef21f4adf246",
+						"exec": [
+							"pm.test(\"response is ok\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{BASE_URL}}info",
+					"host": [
+						"{{BASE_URL}}info"
 					]
 				}
 			},

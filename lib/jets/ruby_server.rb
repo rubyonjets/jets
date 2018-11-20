@@ -51,7 +51,7 @@ module Jets
 
       # Fire and forget for concurrent, will wait with wait_for_rack_socket
       Thread.new do
-        Jets::Rack::Server.start
+        Jets::Server.start
       end
 
       wait_for_rack_socket # blocks until rack server is up

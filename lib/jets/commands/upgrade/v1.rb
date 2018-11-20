@@ -1,5 +1,6 @@
 require 'fileutils'
 
+# This class tries to be idempotent, so users should be able to run it multiple times safely.
 class Jets::Commands::Upgrade
   class V1
     def initialize(options)
@@ -11,6 +12,7 @@ class Jets::Commands::Upgrade
       environment_configs
       update_routes
       update_mode_setting
+      update_config_ru
       puts "Upgrade complete."
     end
 
@@ -66,6 +68,16 @@ class Jets::Commands::Upgrade
 
       content = lines.join
       IO.write(application_file, content)
+    end
+
+    def update_config_ru
+      config_ru = File.read("#{Jets.root}config.ru")
+      return if config_ru.include?("Jets.boot")
+
+      src = File.expand_path("../templates/skeleton/config.ru", File.dirname(__FILE__))
+      dest = "#{Jets.root}config.ru"
+      puts "Update: config.ru"
+      FileUtils.cp(src, dest)
     end
   end
 end
