@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.0.18)
+    jets (1.1.0)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -66,7 +66,7 @@ GEM
     arel (9.0.0)
     aws-eventstream (1.0.1)
     aws-partitions (1.114.0)
-    aws-sdk-cloudformation (1.11.1)
+    aws-sdk-cloudformation (1.12.0)
       aws-sdk-core (~> 3, >= 3.37.0)
       aws-sigv4 (~> 1.0)
     aws-sdk-cloudwatchlogs (1.10.0)
@@ -83,8 +83,8 @@ GEM
     aws-sdk-kms (1.11.0)
       aws-sdk-core (~> 3, >= 3.26.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-lambda (1.13.0)
-      aws-sdk-core (~> 3, >= 3.26.0)
+    aws-sdk-lambda (1.14.0)
+      aws-sdk-core (~> 3, >= 3.37.0)
       aws-sigv4 (~> 1.0)
     aws-sdk-s3 (1.24.1)
       aws-sdk-core (~> 3, >= 3.37.0)

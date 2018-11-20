@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.1.0]
+- rack compatibility pull request #72 from tongueroo/rack
+- remove Jets::Timing pull request #73 from tongueroo/rm-timing
+
 ## [1.0.18]
 - re-raise exception properly after reporting locally
 
