@@ -2,7 +2,6 @@ module Jets::Commands
   class Deploy
     extend Memoist
     include StackInfo
-    include Jets::Timing
 
     def initialize(options)
       @options = options
@@ -32,7 +31,6 @@ module Jets::Commands
       # deploy full nested stack when stack already exists
       ship(stack_type: :full, s3_bucket: s3_bucket)
     end
-    time :run
 
     def delete_minimal_stack
       puts "Existing stack is in ROLLBACK_COMPLETE state from a previous failed minimal deploy. Deleting stack and continuing."
@@ -51,7 +49,6 @@ module Jets::Commands
     def build_code
       Jets::Commands::Build.new(@options).build_code
     end
-    time :build_code
 
     # Checks that all routes are validate and have corresponding lambda functions
     def validate_routes!
@@ -70,7 +67,6 @@ module Jets::Commands
       Jets::Commands::Build.new(options).build_templates
       Jets::Cfn::Ship.new(options).run
     end
-    time :ship
 
     def status
       Jets::Cfn::Status.new(stack_name)

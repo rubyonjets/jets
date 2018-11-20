@@ -1,6 +1,5 @@
 class Jets::Cfn
   class Ship
-    include Jets::Timing
     include Jets::AwsServices
 
     def initialize(options)
@@ -35,7 +34,6 @@ class Jets::Cfn
       prewarm
       show_api_endpoint
     end
-    time :run
 
     def save_stack
       if stack_exists?(@parent_stack_name)
@@ -49,7 +47,6 @@ class Jets::Cfn
       # parent stack template is on filesystem and child stacks templates is on s3
       cfn.create_stack(stack_options)
     end
-    time :create_stack
 
     def update_stack
       begin
@@ -59,7 +56,6 @@ class Jets::Cfn
         true # error
       end
     end
-    time :update_stack
 
     # options common to both create_stack and update_stack
     def stack_options
@@ -75,7 +71,6 @@ class Jets::Cfn
     def wait_for_stack
       Jets::Cfn::Status.new(@options).wait
     end
-    time :wait_for_stack
 
     def prewarm
       if ENV['SKIP_PREWARMING']
@@ -147,6 +142,5 @@ class Jets::Cfn
       uploader = Upload.new(@options[:s3_bucket])
       uploader.upload
     end
-    time :upload_to_s3
   end
 end
