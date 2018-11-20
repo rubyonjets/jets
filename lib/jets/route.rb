@@ -120,6 +120,10 @@ class Jets::Route
     { key => value }
   end
 
+  def authorization_type
+    @options[:authorization_type]
+  end
+
 private
   def ensure_jets_format(path)
     path.split('/').map do |s|

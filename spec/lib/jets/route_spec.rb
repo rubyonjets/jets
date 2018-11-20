@@ -129,4 +129,18 @@ describe "Route" do
       expect(jets_format).to eq "others/*proxy"
     end
   end
+
+  context "route with authorization controls" do
+    let(:route) do
+      Jets::Route.new(path: "posts", method: :get, to: "posts#index", authorization_type: 'AWS_IAM')
+    end
+
+    it 'authorization can be specified' do
+      expect(route.authorization_type).to eq 'AWS_IAM'
+    end
+
+    it 'authorization can be nil' do
+      expect(Jets::Route.new(path: "posts", method: :get, to: "posts#index").authorization_type).to be_nil
+    end
+  end
 end
