@@ -1,12 +1,18 @@
 describe Jets::Resource::ApiGateway::RestApi do
 
   context 'endpoint configuration' do
+    let(:types) do
+      Jets::Resource::ApiGateway::RestApi.new.properties["EndpointConfiguration"]["Types"]
+    end
+    
     it 'defaults to edge-optimized' do
-      expect(Jets::Resource::ApiGateway::RestApi.new(endpoint_type: nil).properties["EndpointConfiguration"]["Types"][0]).to eq 'EDGE'
+      allow(Jets.config.api).to receive(:endpoint_type).and_return(nil)
+      expect(types).to eq ['EDGE']
     end
 
     it 'can be set explicitly' do
-      expect(Jets::Resource::ApiGateway::RestApi.new(endpoint_type: 'PRIVATE').properties["EndpointConfiguration"]["Types"][0]).to eq 'PRIVATE'
+      allow(Jets.config.api).to receive(:endpoint_type).and_return('PRIVATE')
+      expect(types).to eq ['PRIVATE']
     end
   end
 

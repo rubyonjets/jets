@@ -78,6 +78,9 @@ class Jets::Application
     config.session.store = Rack::Session::Cookie # note when accessing it use session[:store] since .store is an OrderedOptions method
     config.session.options = {}
 
+    config.api = ActiveSupport::OrderedOptions.new
+    config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
+
     config
   end
 
