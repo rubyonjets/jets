@@ -24,6 +24,8 @@ Jets.application.configure do
   # config.function.role = "arn:aws:iam::#{Jets.aws.account}:role/service-role/pre-created"
   # config.function.memory_size = 1536
 
+  # config.endpoint_type = 'PRIVATE' # Default is 'EDGE' (https://docs.aws.amazon.com/apigateway/api-reference/link-relation/restapi-create/#endpointConfiguration)
+
   # config.function.environment = {
   #   global_app_key1: "global_app_value1",
   #   global_app_key2: "global_app_value2",
