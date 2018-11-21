@@ -25,7 +25,8 @@ module Jets::Resource::ApiGateway
     end
 
     def types
-      [Jets.config.api.endpoint_type || 'EDGE']
+      endpoint_type = Jets.config.api.endpoint_type || 'EDGE'
+      [endpoint_type.upcase]
     end
   end
 end

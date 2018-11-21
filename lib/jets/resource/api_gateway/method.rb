@@ -66,7 +66,8 @@ module Jets::Resource::ApiGateway
   private
 
     def authorization_type
-      @route.authorization_type || "NONE"
+      type = @route.authorization_type || Jets.config.api.authorization_type
+      type.upcase
     end
 
     def resource_id

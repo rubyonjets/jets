@@ -79,6 +79,7 @@ class Jets::Application
     config.session.options = {}
 
     config.api = ActiveSupport::OrderedOptions.new
+    config.api.authorization_type = "NONE"
     config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
 
     config
