@@ -1,10 +1,6 @@
 module Jets::Resource::ApiGateway
   class RestApi < Jets::Resource::Base
 
-    def initialize(options)
-      @options = options
-    end
-
     def definition
       {
         rest_api: {
@@ -12,20 +8,24 @@ module Jets::Resource::ApiGateway
           properties: {
             name: Jets::Naming.gateway_api_name,
             endpoint_configuration: {
-              types: [@options[:endpoint_type] || 'EDGE']
+              types: types
             }
             # binary_media_types: ['*/*'], # TODO: comment out, breaking form post
           }
         }
       }
     end
-
+    
     def outputs
       {
         "RestApi" => "!Ref RestApi",
         "Region" => "!Ref AWS::Region",
         "RootResourceId" => "!GetAtt RestApi.RootResourceId",
       }
+    end
+
+    def types
+      [Jets.config.api.endpoint_type || 'EDGE']
     end
   end
 end

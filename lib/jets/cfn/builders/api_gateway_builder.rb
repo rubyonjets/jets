@@ -28,7 +28,7 @@ class Jets::Cfn::Builders
 
     # If the are routes in config/routes.rb add Gateway API in parent stack
     def add_gateway_rest_api
-      rest_api = Jets::Resource::ApiGateway::RestApi.new(endpoint_type: Jets.config.endpoint_type)
+      rest_api = Jets::Resource::ApiGateway::RestApi.new
       add_resource(rest_api)
       add_outputs(rest_api.outputs)
 
