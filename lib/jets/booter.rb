@@ -11,7 +11,7 @@ class Jets::Booter
       setup_db
       app_initializers
       turbine_initializers
-      build_middleware_stack
+      # build_middleware_stack # TODO: figure out how to build middleware during Jets.boot without breaking jets new and webpacker:install
 
       @booted = true
     end
