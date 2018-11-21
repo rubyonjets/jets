@@ -32,6 +32,7 @@ Jets.application.configure do
   #   security_group_ids: [ "sg-1", "sg-2" ],
   #   subnet_ids: [ "subnet-1", "subnet-2" ]
   # }
+  # config.endpoint_type = 'PRIVATE' # Default is 'EDGE' (https://docs.aws.amazon.com/apigateway/api-reference/link-relation/restapi-create/#endpointConfiguration) 
   # The config.function settings to the CloudFormation Lambda Function properties.
   # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
   # Underscored format can be used for keys to make it look more ruby-ish.
