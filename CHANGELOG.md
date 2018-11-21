@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.1.2]
+- Add option to specify authorization type application-wide option and on a per-route basis.
+- Add option to specify endpoint type of the ApiGateway: config.api.endpoint_type option
+- pull request #74 from adam-harwood/route_authorization
+- pull request #75 from adam-harwood/apig_endpoint_configuration
+- pull request #76 from tongueroo/api-endpoint
+- pull request #77 from tongueroo/api-auth
+- fix jets new, comment out building of middleware during boot for now
+
 ## [1.1.1]
 - provide instructions to run jets upgrade:v1 for config.ru update
 
