@@ -13,6 +13,19 @@ describe Jets::Resource::ApiGateway::Cors do
       expect(properties["ResourceId"]).to eq "!Ref PostsApiResource"
       expect(properties["HttpMethod"]).to eq "OPTIONS"
     end
+
+    it 'defaults to no authorization' do
+      expect(resource.properties["AuthorizationType"]).to eq 'NONE'
+    end
+  end
+
+  context "authorization" do
+    let(:route) do
+      Jets::Route.new(path: "posts", method: :get, to: "posts#index", authorization_type: 'AWS_IAM')
+    end
+    it "can specify an authorization type" do
+      expect(resource.properties["AuthorizationType"]).to eq 'AWS_IAM'
+    end
   end
 end
 

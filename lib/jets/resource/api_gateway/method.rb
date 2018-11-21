@@ -21,7 +21,7 @@ module Jets::Resource::ApiGateway
             rest_api_id: "!Ref RestApi",
             http_method: @route.method,
             request_parameters: {},
-            authorization_type: "NONE",
+            authorization_type: authorization_type,
             integration: {
               integration_http_method: "POST",
               type: "AWS_PROXY",
@@ -64,6 +64,11 @@ module Jets::Resource::ApiGateway
     memoize :cors
 
   private
+
+    def authorization_type
+      @route.authorization_type || "NONE"
+    end
+
     def resource_id
       @route.path == '' ?
        "RootResourceId" :

@@ -34,6 +34,17 @@ You can check the routes on the API Gateway console:
 
 ![](/img/quick-start/demo-api-gateway.png)
 
+##Authorization
+By default, each route specified will not require any authorization in order to call it.
+You can choose to enable authorization on a per-route basis:
+```ruby
+Jets.application.routes.draw do
+  get  "posts", to: "posts#index", authorization_type: "AWS_IAM"
+end
+```
+This will require a caller to authenticate using IAM before being able to access the endpoint.
+The complete list of authorization types is available in the [AWS API Gateway docs](https://docs.aws.amazon.com/apigateway/api-reference/resource/method/#authorizationType).
+
 ## jets routes
 
 You can also check the routes with the `jets routes` cli command. Here's an example:

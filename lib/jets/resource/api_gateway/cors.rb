@@ -10,7 +10,7 @@ module Jets::Resource::ApiGateway
           properties: {
             resource_id: "!Ref #{resource_id}",
             rest_api_id: "!Ref RestApi",
-            authorization_type: "NONE",
+            authorization_type: authorization_type,
             http_method: "OPTIONS",
             method_responses: [{
               status_code: '200',
