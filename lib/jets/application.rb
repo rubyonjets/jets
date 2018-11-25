@@ -85,28 +85,32 @@ class Jets::Application
     config
   end
 
+  # Double evaling config/application.rb causes subtle issues:
+  #   * double loading of shared resources: Jets::Stack.subclasses will have the same
+  #   class twice when config is called when declaring a function
+  #   * forces us to rescue all exceptions, which is a big hammer
+  #
+  # Lets parse for the project name instead for now.
+  #
+  def parse_project_name
+    lines = IO.readlines("#{Jets.root}config/application.rb")
+    project_name_line = lines.find { |l| l =~ /project_name/ }
+    project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') # project_name
+  end
+
   def load_app_config
-    # First time loading will not have all correct values. Some values like
-    # project_namespace depend on project_name. Loading the config twice
-    # resolves the chicken-and-egg problem with config.project_name.
-    # TODO: Improve the way we this is solved.
-    eval_app_config(squash_exception: true) # first time load to capture the config.project_name
-    @config = default_config(config.project_name) # reset config with the captured project_name
-
+    project_name = parse_project_name
+    @config = default_config(project_name)
     set_dependent_configs! # things like project_namespace that need project_name
-
-    # Running eval_app_config the second time, hack to solve the chicken-and-egg problem
     eval_app_config
 
     set_iam_policy # relies on dependent values, must be called afterwards
     normalize_env_vars!
   end
 
-  def eval_app_config(squash_exception: false)
+  def eval_app_config
     app_config = "#{Jets.root}config/application.rb"
-    load app_config
-  rescue NoMethodError => e
-    raise(e) unless squash_exception
+    require app_config
   end
 
   def load_environments_config
