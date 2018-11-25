@@ -65,6 +65,15 @@ private
         database.yml
         models/application_record
       ]
+    else
+      []
+    end
+
+    if excludes.empty?
+      {}
+    else
+      pattern = Regexp.new(excludes.join('|'))
+      {exclude_pattern: pattern }
     end
   end
 
