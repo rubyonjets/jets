@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.1.3]
+- Merge pull request #79 from tongueroo/misc-fixes
+- fix has_poly? check to account for shared functions
+- fix jets new mode job copy_options
+- fix Jets Turbine require active support fixes issue #78
+- parse for project name as workaround to avoid double loading config/application.rb
+
 ## [1.1.2]
 - Add option to specify authorization type application-wide option and on a per-route basis.
 - Add option to specify endpoint type of the ApiGateway: config.api.endpoint_type option
