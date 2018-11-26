@@ -1,3 +1,6 @@
+require 'active_support'
+require 'active_support/core_ext'
+
 module Jets
   class Turbine
     class_attribute :initializers

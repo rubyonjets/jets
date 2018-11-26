@@ -141,12 +141,29 @@ module Jets::Commands
     # In this case, we can skip a lot of the ruby related building and speed up the
     # deploy process.
     def self.poly_only?
+      !app_has_ruby? && !shared_has_ruby?
+    end
+
+    def self.app_has_ruby?
       has_ruby = app_files.detect do |path|
         app_class = Jets::Klass.from_path(path)  # IE: PostsController, Jets::PublicController
         langs = app_class.tasks.map(&:lang)
         langs.include?(:ruby)
       end
-      !has_ruby
+      !!has_ruby
+    end
+
+    def self.shared_has_ruby?
+      has_ruby = false
+      Jets::Stack.subclasses.each do |klass|
+        klass.functions.each do |fun|
+          if fun.lang == :ruby
+            has_ruby = true
+            break
+          end
+        end
+      end
+      has_ruby
     end
 
     # Add internal Jets controllers if they are being used
