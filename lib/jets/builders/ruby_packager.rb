@@ -56,7 +56,7 @@ class Jets::Builders
         # cd /tmp/jets/demo
         sh(
           "cd #{cache_area} && " \
-          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path bundled/gems --without development test"
+          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path #{cache_area}/bundled/gems --without development test"
         )
       end
 
