@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.1.5]
+- Support multiple path parameters. Also allow path parameters to hold any value other than '/'.
+- Merge pull request #82 from adam-harwood/master
+
 ## [1.1.4]
 - Fully qualify bundle install path, to fix issue when building on CodeBuild. Fixes #80.
 - Merge pull request #81 from adam-harwood/master
