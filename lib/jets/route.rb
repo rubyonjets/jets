@@ -4,7 +4,7 @@
 #   to: "posts#index",
 # )
 class Jets::Route
-  CAPTURE_REGEX = "([a-zA\\-Z0-9_.]*)" # as string
+  CAPTURE_REGEX = "([^/]*)" # as string
 
   def initialize(options)
     @options = options
@@ -105,19 +105,23 @@ class Jets::Route
   def extract_parameters_capture(actual_path)
     # changes path to a string used for a regexp
     # posts/:id/edit => posts\/(.*)\/edit
+    labels = []
     regexp_string = path.split('/').map do |s|
-                      s.include?(':') ? CAPTURE_REGEX : s
+                      if s.start_with?(':')
+                        labels << s.delete_prefix(':')
+                        CAPTURE_REGEX
+                      else
+                        s
+                      end
                     end.join('\/')
     # make sure beginning and end of the string matches
     regexp_string = "^#{regexp_string}$"
     regexp = Regexp.new(regexp_string)
-    value = regexp.match(actual_path)[1]
 
-    # only supports one path parameter key right now
-    key = path.split('/').find {|s| s.include?(':') } # :id
-    key = key.sub(':','')
-
-    { key => value }
+    values = regexp.match(actual_path).captures
+    labels.map do |next_label|
+      [next_label, values.delete_at(0)]
+    end.to_h
   end
 
   def authorization_type

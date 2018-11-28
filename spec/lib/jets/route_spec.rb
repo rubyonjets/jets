@@ -37,6 +37,24 @@ describe "Route" do
     end
   end
 
+  context "route with multiple captures" do
+    let(:route) do
+      Jets::Route.new(path: "posts/:type/:id", method: :get, to: "posts#edit")
+    end
+    it "extract_parameters" do
+      parameters = route.extract_parameters("posts/sometype/someid")
+      expect(parameters).to eq({
+         "type" => "sometype",
+          "id" => "someid"
+      })
+    end
+
+    it "api_gateway_format" do
+      api_gateway_path = route.send(:api_gateway_format, route.path)
+      expect(api_gateway_path).to eq "posts/{type}/{id}"
+    end
+  end
+
   context "route with captures and extension" do
     let(:route) do
       Jets::Route.new(path: "posts/:id", method: :get, to: "posts#show")
