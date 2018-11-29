@@ -12,8 +12,7 @@ require "fileutils"
 require "memoist"
 
 module Jets
-  # When we update Jets::RUBY_VERSION, need to update jets-gems/base.rb: def jets_ruby_version also
-  RUBY_VERSION = "2.5.0"
+  RUBY_VERSION = "2.5.3"
 
   autoload :Application, "jets/application"
   autoload :AwsInfo, "jets/aws_info"
@@ -42,14 +41,14 @@ module Jets
   autoload :PolyFun, 'jets/poly_fun'
   autoload :Preheat, "jets/preheat"
   autoload :Processors, 'jets/processors'
+  autoload :RackServer, "jets/rack_server"
   autoload :Rdoc, "jets/rdoc"
   autoload :Resource, "jets/resource"
   autoload :Route, "jets/route"
   autoload :Router, "jets/router"
-  autoload :RubyServer, "jets/ruby_server"
   autoload :Rule, 'jets/rule'
-  autoload :Server, "jets/server"
   autoload :Stack, "jets/stack"
+  autoload :TmpLoader, "jets/tmp_loader"
   autoload :Turbine, 'jets/turbine'
   autoload :Util, "jets/util"
 

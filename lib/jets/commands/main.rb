@@ -42,7 +42,7 @@ module Jets::Commands
       puts "=> #{command}".colorize(:green)
       puts Jets::Booter.message
       Jets::Booter.check_config_ru!
-      Jets::Server.start(options) unless ENV['JETS_RACK'] == '0' # rack server runs in background by default
+      Jets::RackServer.start(options) unless ENV['JETS_RACK'] == '0' # rack server runs in background by default
       system(command)
     end
 

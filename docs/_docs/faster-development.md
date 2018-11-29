@@ -4,11 +4,13 @@ title: Faster Development
 
 Development speed with AWS Lambda can be slow due to having to upload the Ruby interpreter and gems as part of the deployment package.  Here are some suggestions:
 
-## Lazy Loading
+## Minimize Gemfile Changes
 
-[Lazy loading]({% link _docs/lazy-loading.md %}) significantly improves your development workflow speed. Lazy loading is enabled by default in development.  Thanks to lazy loading, the `jets deploy` process optimizes things and will only upload a new bundled set of gems when there are changes. Gems do not change as much as your application code, so this optimization speeds up the deploy process significantly. The bundled Ruby interpreter and gems can add up to 100MB zipped, so only uploading to s3 when required is particularly beneficial on slower internet connections.  On a typical internet connection, it can take 5 minutes to upload 100MB to S3.  The optimization removes this upload time and takes the deploy down to usually about 1 minute after the first deploy.
+Jets creates a [Gem Layer]({% link _docs/gem-layer.md %}) to help improve your development workflow speed. The Gem Layer is your application's gem dependencies bundled into a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). This is done as as part of the [jets deploy](/reference/jets-deploy/) command.
 
-An additional benefit of lazy loading is that it keeps your application code size small. With lazy loading, your app code is usually under the 3MB limit, which is the current maximum package size for the AWS Lambda Console Editor.  This means you can live edit your code, develop, and test without a full deploy.  This is even faster than being able to ssh into the server. Here's a screenshot:
+Thanks to the use of Lambda Layers, the `jets deploy` process optimizes things and will only upload a new bundled set of gems to s3 when there are changes. As gems do not change as much as your application code, this optimization speeds up the deploy process significantly. It is not uncommon for gems to add up to 50MB zipped, so only uploading to s3 when required is particularly beneficial on slower internet connections.  On a typical internet connection, it can take 3 minutes to upload 50MB to S3.  The optimization removes this upload time and takes the deploy down to usually about 1 minute after the first deploy.
+
+An additional benefit of the Gem Layer is that it keeps your application code size small. Your our app code is usually under the 3MB limit, which is the current maximum package size for the AWS Lambda Console Editor.  This means you can live edit your code, develop, and test without a full deploy.  This is even faster than being able to ssh into the server. Here's a screenshot:
 
 ![](/img/docs/faster-development-live-edit.png)
 
@@ -45,5 +47,5 @@ I've actually come to enjoy using Cloud9 and have been pretty happy with it. It 
 Another approach for a team is to set up a CI/CD pipeline that will deploy when git commits are pushed.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/debug-ruby-errors.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/lazy-loading.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/gem-layer.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

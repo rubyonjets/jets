@@ -3,7 +3,11 @@ class Jets::Builders
     def sh(command)
       puts "=> #{command}".colorize(:green)
       success = system(command)
-      abort("#{command} failed to run") unless success
+      unless success
+        puts "#{command} failed to run.".colorize(:red)
+        puts caller[0]
+        exit 1
+      end
       success
     end
 
@@ -17,8 +21,12 @@ class Jets::Builders
       "#{Jets.build_root}/#{relative_path}"
     end
 
-    def poly_only?
-      Jets.poly_only?
+    def stage_area
+      "#{Jets.build_root}/stage"
+    end
+
+    def code_area
+      "#{stage_area}/code"
     end
   end
 end

@@ -48,9 +48,9 @@ class Jets::Builders
       (defaults + keep).uniq
     end
 
-    # folders to remove in the bundled folder regardless of the level of the folder
+    # folders to remove in the vendor/bundle folder regardless of the level of the folder
     def tidy_bundled
-      Dir.glob("#{@project_root}/bundled/**/*").each do |path|
+      Dir.glob("#{@project_root}/vendor/bundle/**/*").each do |path|
         next unless File.directory?(path)
         dir = File.basename(path)
         next unless always_removals.include?(dir)
@@ -65,7 +65,8 @@ class Jets::Builders
     # actual cache folders that they used.
     def remove_gem_cache
       ruby_minor_version = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.0'
-      FileUtils.rm_rf("#{@project_root}/bundled/gems/ruby/#{ruby_minor_version}/cache")
+      cache_path = "#{@project_root}/vendor/bundle/ruby/#{ruby_minor_version}/cache"
+      FileUtils.rm_rf(cache_path)
     end
 
     def rm_rf(path)

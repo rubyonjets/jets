@@ -1,4 +1,4 @@
-class Jets::Resource::Function
+class Jets::Resource::Lambda::Function
   module Environment
     def env_properties
       env_vars = Jets::Dotenv.load!(true)

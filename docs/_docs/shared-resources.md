@@ -24,6 +24,7 @@ This creates an SNS Topic resource.  You can then reference the SNS Topic with t
 class PostmanJob < ApplicationJob
   include Jets::AwsServices
 
+  iam_policy("sns")
   def deliver
     topic_arn = Alert.lookup(:delivery_completed) # looks up output from the Alert cfn stack
     sns.publish(

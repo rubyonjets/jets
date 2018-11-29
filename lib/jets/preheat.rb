@@ -18,6 +18,7 @@ module Jets
     def initialize(options)
       @options = options # passed to Call.new options
       @options[:mute_output] = true if @options[:mute_output].nil?
+      @options[:lambda_proxy] = false # do not transform controller event from {"event": "1"} to {"queryStringParameters":{"_prewarm":"1"}}
     end
 
     # Makes remote call to the Lambda function.

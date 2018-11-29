@@ -2,7 +2,7 @@
 title: Deploy
 ---
 
-Once you are ready to deploy your app to lambda, it's one command to do so:
+Once you are ready to deploy your app to Lambda, it's one command to do so:
 
     jets deploy
 

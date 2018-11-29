@@ -8,7 +8,7 @@ describe Jets::Builders::ShimVars::App do
       expect(vars.klass).to eq(PostsController)
       expect(vars.process_type).to eq("controller")
       expect(vars.handler_for(:create)).to eq "handlers/controllers/posts_controller.create"
-      expect(vars.js_path).to eq "handlers/controllers/posts_controller.js"
+      expect(vars.dest_path).to eq "handlers/controllers/posts_controller.rb"
 
       expect(vars.functions.sort).to eq(
         [:create, :delete, :edit, :index, :new, :show, :update].sort)
@@ -24,7 +24,7 @@ describe Jets::Builders::ShimVars::App do
       expect(vars.klass).to eq(Admin::PagesController)
       expect(vars.process_type).to eq("controller")
       expect(vars.handler_for(:create)).to eq "handlers/controllers/admin/pages_controller.create"
-      expect(vars.js_path).to eq "handlers/controllers/admin/pages_controller.js"
+      expect(vars.dest_path).to eq "handlers/controllers/admin/pages_controller.rb"
 
       expect(vars.functions).to eq [:index]
     end
@@ -39,7 +39,7 @@ describe Jets::Builders::ShimVars::App do
       expect(vars.klass).to eq(HardJob)
       expect(vars.process_type).to eq("job")
       expect(vars.handler_for(:dig)).to eq "handlers/jobs/hard_job.dig"
-      expect(vars.js_path).to eq "handlers/jobs/hard_job.js"
+      expect(vars.dest_path).to eq "handlers/jobs/hard_job.rb"
 
       expect(vars.functions).to eq([:dig, :drive, :lift])
     end
@@ -54,7 +54,7 @@ describe Jets::Builders::ShimVars::App do
       expect(vars.klass).to eq(Hello)
       expect(vars.process_type).to eq("function")
       expect(vars.handler_for(:world)).to eq "handlers/functions/hello.world"
-      expect(vars.js_path).to eq "handlers/functions/hello.js"
+      expect(vars.dest_path).to eq "handlers/functions/hello.rb"
 
       expect(vars.functions).to eq([:world])
     end
@@ -69,7 +69,7 @@ describe Jets::Builders::ShimVars::App do
       expect(vars.klass).to eq(SimpleFunction)
       expect(vars.process_type).to eq("function")
       expect(vars.handler_for(:world)).to eq "handlers/functions/simple_function.world"
-      expect(vars.js_path).to eq "handlers/functions/simple_function.js"
+      expect(vars.dest_path).to eq "handlers/functions/simple_function.rb"
 
       expect(vars.functions).to eq([:handler])
     end

@@ -1,4 +1,4 @@
-require "jets/rails_overrides"
+require "jets/overrides/rails"
 
 class FakeView
   include Jets::RenderingHelper

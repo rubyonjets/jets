@@ -45,6 +45,11 @@ Run the remote integration script:
     eval "export $(cat demo/.env.development.remote)" # for DATABASE_URL for mega mode
     BASE_URL=xxx spec/integration/remote.sh
 
+Manually seed Rails data. Will add this to the remote.sh in the future.
+
+    cd demo/rack
+    rails runner 'Book.create(id: 1) unless Book.find_by(id: 1)'
+
 Example:
 
     eval "export $(cat demo/.env.development.remote)" # for DATABASE_URL for mega mode

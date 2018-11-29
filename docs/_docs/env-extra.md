@@ -16,7 +16,7 @@ Jets.application.configure do
 end
 ```
 
-Interestingly, since AWS Lambda pricing is based on usage. These extra environments cost you pretty much nothing. They're literally free until you exceed the [free tier](https://aws.amazon.com/free/).  Create 10 extra development, staging or uat environments if you need to 🎉
+Interestingly, since AWS Lambda pricing is based on usage. These extra environments cost you pretty much nothing. They're literally free until you exceed the [free tier](https://aws.amazon.com/free/).  Create 10 extra Development, Staging or UAT environments if you need them 🎉
 
 ## Precedence
 

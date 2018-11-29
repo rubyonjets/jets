@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.0]
+- Official AWS Ruby Support
+- Ruby Version 2.5.3 upgrade
+- Gem Layer introduced
+- Removed node shim
+- Build purger: /tmp/jets/project is auto purge when major or minor version changes
+- Update default gems source to https://gems2.lambdagems.com
+
 ## [1.2.1]
 - remove comments about routes workaround, auto blue-green deployments resolves this
 

@@ -58,7 +58,7 @@ class Jets::Cfn::Builders
       defaults = { Type: "String" }
       options = defaults.merge(options)
       @template[:Parameters] ||= {}
-      @template[:Parameters][name.camelize] = options
+      @template[:Parameters][name.to_s.camelize] = options
     end
 
     def add_outputs(attributes)

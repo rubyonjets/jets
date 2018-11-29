@@ -1,10 +1,10 @@
 module Jets
-  class Server
+  class RackServer
     def self.start(options={})
       new(options).start
     end
 
-    def initialize(options)
+    def initialize(options={})
       @options = options
     end
 
@@ -42,6 +42,35 @@ module Jets
         puts "=> #{command}".colorize(:green)
         system(command)
       end
+    end
+
+    # blocks until rack server is up
+    def wait_for_socket
+      return unless Jets.rack?
+
+      retries = 0
+      max_retries = 30 # 15 seconds at a delay of 0.5s
+      delay = 0.5
+      if ENV['C9_USER'] # overrides for local testing
+        max_retries = 3
+        delay = 3
+      end
+      begin
+        server = TCPSocket.new('localhost', 9292)
+        server.close
+      rescue Errno::ECONNREFUSED
+        puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."  if ENV['JETS_DEBUG']
+        sleep(delay)
+        retries += 1
+        if retries < max_retries
+          retry
+        else
+          puts "Giving up on trying to connect to localhost:9292"
+          return false
+        end
+      end
+      puts "Connected to localhost:9292 successfully"
+      true
     end
 
     def rack_project

@@ -28,13 +28,13 @@ For example, with a rate of 2 hours and concurrent of 2, this results in the Lam
 
 The `prewarm.public_ratio` activates extra prewarming for the internal `jets/public_controller.rb`.  The `jets/public_controller.rb` handles serving static files out of the `public` folder. The `prewarm.public_ratio` tells Jets to prewarm the public_controller's lambda function a little bit extra. You can tune the extra prewarming ratio higher or lower according to your needs.
 
-Note: Even though you can serve assets out of the public folder directly, it is recommended to use the `asset_path` helper which will serve these files out of s3 instead when the app is running on API Gateway and Lambda.  For more info about [Asset Servering]({% link _docs/assets-serving.md %}) refer to the docs.
+Note: Even though you can serve assets out of the public folder directly, it is recommended to use the `asset_path` helper which will serve these files out of s3 instead when the app is running on API Gateway and Lambda.  For more info about [Asset Serving]({% link _docs/assets-serving.md %}) refer to the docs.
 
 ## Rack Ratio
 
 The `prewarm.rack_ratio` activates extra prewarming for the internal `jets/rack_controller.rb`.  This prewarming only occurs if [Mega Mode]({% link _docs/megamode.md %}) has been set up. Mega Mode and [Rails Support]({% link _docs/rails-support.md %}) can be be set up with the [jets import:rails]({% link _reference/jets-import-rails.md %}) command.
 
-This is useful because in Mega Mode, requests from the main Jets application are passed to a single jets/rack#process controller endpoint. This means that this Lambda function could require additional prewarming. You can tune the ratio up or down for your needs with the `prewarm.rack_ratio` setting.
+This is useful for Mega Mode, where requests from the main Jets application are passed to a single `jets/rack#process` controller endpoint. This means that this Lambda function could require additional prewarming. You can tune the ratio up or down for your needs with the `prewarm.rack_ratio` setting.
 
 ## Prewarm After Deployment
 

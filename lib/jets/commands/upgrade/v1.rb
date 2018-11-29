@@ -13,6 +13,7 @@ class Jets::Commands::Upgrade
       update_routes
       update_mode_setting
       update_config_ru
+      remove_ruby_lazy_load
       puts "Upgrade complete."
     end
 
@@ -78,6 +79,26 @@ class Jets::Commands::Upgrade
       dest = "#{Jets.root}config.ru"
       puts "Update: config.ru"
       FileUtils.cp(src, dest)
+    end
+
+    def remove_ruby_lazy_load
+      app_config = "#{Jets.root}config/application.rb"
+      remove_ruby_lazy_load_for(app_config)
+      Dir.glob("#{Jets.root}config/environments/*.rb").each do |env_config|
+        remove_ruby_lazy_load_for(env_config)
+      end
+    end
+
+    def remove_ruby_lazy_load_for(path)
+      lines = IO.readlines(path)
+      new_lines = lines.reject do |l|
+        l =~ %r{config.ruby.lazy_load}
+      end
+      return unless lines != new_lines
+
+      content = new_lines.join("")
+      IO.write(path, content)
+      puts "Update: #{path}"
     end
   end
 end

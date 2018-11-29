@@ -22,7 +22,9 @@ class PostsController < ApplicationController
 end
 ```
 
-Jets creates Lambda functions for each public method in your controller.
+Helper methods like `params` provide the parameters from the API Gateway event.  The `render` method renders a Lambda Proxy structure back that API Gateway understands.
+
+For each public method in your controller, Jets creates a Lambda function:
 
 ![](/img/docs/demo-lambda-functions-controller.png)
 

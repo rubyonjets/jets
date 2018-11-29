@@ -92,7 +92,7 @@ module Jets::Core
     path =~ %r{/internal/app} ||
     path =~ %r{/jets/stack} ||
     path =~ %r{/rackup_wrappers} ||
-    path =~ %r{/rails_overrides} ||
+    path =~ %r{/overrides} ||
     path =~ %r{/reconfigure_rails} ||
     path =~ %r{/templates/} ||
     path =~ %r{/version} ||
@@ -152,11 +152,6 @@ module Jets::Core
     File.exist?(path) || File.symlink?(path)
   end
 
-  def lazy_load?
-    return false if poly_only? # no need to lazy load when poly_only?
-    config.ruby.lazy_load
-  end
-
   def poly_only?
     return true if ENV['JETS_POLY_ONLY'] # bypass to allow rapid development of handlers
     Jets::Commands::Build.poly_only?
@@ -173,5 +168,49 @@ module Jets::Core
 
   def custom_domain?
     Jets.config.domain.hosted_zone_name
+  end
+
+  def process(event, context, handler)
+    if event['_prewarm']
+      Jets.increase_prewarm_count
+      Jets.logger.info("Prewarm request")
+      {prewarmed_at: Time.now.to_s}
+    else
+      Jets::Processors::MainProcessor.new(event, context, handler).run
+    end
+  end
+
+  # Example: Jets.handler(self, "handlers/controllers/posts_controller.index")
+  def handler(lambda_context, handler)
+    meth = handler.split('.').last
+    lambda_context.send(:define_method, meth) do |event:, context:|
+      Jets.process(event, context, handler)
+    end
+  end
+
+  def once
+    boot
+    override_lambda_ruby_runtime
+    tmp_load!
+    start_rack_server
+  end
+
+  def tmp_load!
+    Jets::TmpLoader.load!
+  end
+
+  # Megamode support
+  def start_rack_server(options={})
+    rack = Jets::RackServer.new(options)
+    rack.start
+    rack.wait_for_socket
+  end
+
+  def default_gems_source
+    "https://gems2.lambdagems.com"
+  end
+
+  def override_lambda_ruby_runtime
+    require "jets/overrides/lambda"
   end
 end

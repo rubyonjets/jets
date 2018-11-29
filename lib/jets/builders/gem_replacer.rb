@@ -17,15 +17,36 @@ class Jets::Builders
         gem_extractor.run
       end
 
+      # At this point the current compiled gems have been removed and compiled gems
+      # have been unpacked to code/opt. We can take the unpacked gems in opt and fully
+      # move them into vendor/bundle gems now.
+      move_opt_gems_to_vendor
+
       tidy
     end
 
-    def report_missing_gems
+    def move_opt_gems_to_vendor
+      code = "#{Jets.build_root}/stage/code"
+      opt_gems = "#{code}/opt/ruby/gems/#{Jets::Gems.ruby_folder}"
+      vendor_gems = "#{code}/vendor/bundle/ruby/#{Jets::Gems.ruby_folder}"
+      # https://stackoverflow.com/questions/23698183/how-to-force-cp-to-overwrite-directory-instead-of-creating-another-one-inside
+      # $ cp -TRv foo/ bar/
+      sh "cp -TR #{opt_gems} #{vendor_gems}"
+      # clean up opt compiled gems
+      FileUtils.rm_rf("#{code}/opt/ruby")
+    end
 
+    def sh(command)
+      puts "=> #{command}".colorize(:green)
+      success = system(command)
+      abort("Command Failed") unless success
+      success
     end
 
     # remove unnecessary files to reduce package size
     def tidy
+      # project_root: /tmp/jets/demo/stage/code/
+      # /tmp/jets/demo/stage/code/bundled
       tidy_gems("#{@options[:project_root]}/bundled/gems/ruby/*/gems/*")
       tidy_gems("#{@options[:project_root]}/bundled/gems/ruby/*/bundler/gems/*")
     end

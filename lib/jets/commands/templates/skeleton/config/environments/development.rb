@@ -1,3 +1,4 @@
 Jets.application.configure do
-  config.ruby.lazy_load = true
+  # Example:
+  # config.function.memory_size = 1536
 end

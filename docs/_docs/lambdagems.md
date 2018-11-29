@@ -12,13 +12,13 @@ The Lambda Gems service is currently available for free. Bandwidth and maintaini
 Jets.application.configure do
   # Sources for check for pre-compiled Lambda gems. Checks the list in order.
   config.gems.sources = [
-    "https://gems.lambdagems.com",
+    "https://gems2.lambdagems.com",
     "https://yoursource.com",
   ]
   # ...
 end
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/native-performance.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/articles.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link faq.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/contributing.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

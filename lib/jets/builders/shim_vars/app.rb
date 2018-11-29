@@ -8,7 +8,7 @@
 #
 #   functions: IE [:index, :show]
 #   handler_for(function_name): IE handlers/controllers/posts_controller.index
-#   js_path: IE: handlers/controllers/posts_controller.js
+#   dest_path: IE: handlers/controllers/posts_controller.js
 #
 module Jets::Builders::ShimVars
   class App < Base
@@ -69,10 +69,10 @@ module Jets::Builders::ShimVars
     end
 
     # Example return: "handlers/controllers/posts.js"
-    def js_path
+    # TODO: rename this to dest_path or something better now since using native ruby
+    def dest_path
       @relative_path
         .sub("app", "handlers")
-        .sub(/\.rb$/, ".js")
     end
   end
 end

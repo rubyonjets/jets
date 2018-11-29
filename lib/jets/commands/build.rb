@@ -85,7 +85,9 @@ module Jets::Commands
       #   Jets::Cfn::Builders::FunctionBuilder.new(HelloFunction)
       app_class = Jets::Klass.from_path(path)
       builder = builder_class.new(app_class)
-      builder.build
+      unless Jets.poly_only? && app_class == Jets::PreheatJob
+        builder.build
+      end
     end
 
     def build_parent_template
@@ -148,7 +150,7 @@ module Jets::Commands
       has_ruby = app_files.detect do |path|
         app_class = Jets::Klass.from_path(path)  # IE: PostsController, Jets::PublicController
         langs = app_class.tasks.map(&:lang)
-        langs.include?(:ruby)
+        langs.include?(:ruby) && app_class != Jets::PreheatJob
       end
       !!has_ruby
     end

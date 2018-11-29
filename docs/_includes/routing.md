@@ -18,6 +18,10 @@ Jets.application.routes.draw do
 end
 ```
 
+Jets evaluates the `routes.rb` file and creates corresponding API Gateway resources.  You can check the routes on the API Gateway console:
+
+![](/img/quick-start/demo-api-gateway.png)
+
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
     $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/dev/posts" | jq .
@@ -25,10 +29,6 @@ Test your API Gateway endpoints with curl or postman. Note, replace the URL endp
       "hello": "world",
       "action": "index"
     }
-
-You can check the routes on the API Gateway console:
-
-![](/img/quick-start/demo-api-gateway.png)
 
 ## jets routes
 

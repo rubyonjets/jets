@@ -22,6 +22,14 @@ Jets.application.routes.draw do
 end
 ```
 
+
+There are several authorization types available:
+
+* NONE - open access
+* AWS_IAM - use [AWS IAM](https://aws.amazon.com/iam/) permissions
+* CUSTOM - custom authorizer
+* COGNITO_USER_POOLS - [Cognito](https://aws.amazon.com/cognito/) User Pool
+
 The complete list of authorization types is available in the [AWS API Gateway docs](https://docs.aws.amazon.com/apigateway/api-reference/resource/method/#authorizationType).
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/routing-overview.md %}">Back</a>
