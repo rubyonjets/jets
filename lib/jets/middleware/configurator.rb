@@ -1,6 +1,6 @@
 # Based on Rails MiddlewareStackProxy
 #
-# Configurator is a proxy for the Jets middleware stack that allows
+# Configurator is a recorder for the Jets middleware stack that allows
 # you to configure middlewares in your application. It works basically as a
 # command recorder, saving each command to be applied after initialization
 # over the default middleware stack, so you can add, swap, or remove any
