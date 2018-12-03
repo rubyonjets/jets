@@ -2,6 +2,8 @@
 
 # NOTE: Script assumes that demo and jets folder are in your CDPATH
 
+unset DATABASE_URL
+
 # check if `jets server` is running
 # https://serverfault.com/questions/562524/bash-script-to-check-if-a-public-https-site-is-up
 if ! curl -s --head  --request GET http://localhost:8888 | grep "200 OK" > /dev/null; then

@@ -1,0 +1,64 @@
+---
+title: Custom Domain
+---
+
+Jets can create and associate a route53 custom domain with the API Gateway endpoint.  Jets mananges the vanity route53 endpoint that points to the API Gateway endpoint.  It adjusts the endpoint transparently without you having to update your endpoint if Jets determines that a new API Gateway Rest API needs to be created. The route53 record is also updated. Here's a table with some example values to explain:
+
+Vanity Endpoint | API Gateway Endpoint | Jets env
+--- | --- | ---
+dev-demo.coolapp.com | a02oy4fs56.execute-api.us-west-2.amazonaws.com | (not set)
+dev-demo-2.coolapp.com | xyzoabc123.execute-api.us-west-2.amazonaws.com | 2
+
+Here's a diagram also:
+
+![](/img/docs/jets-vanity-endpoint.png)
+
+## Vanity Endpoint
+
+To create a vanity endpoint edit the `config/application.rb` and edit `dns.certificate_arn` and `dns.hosted_zone_name`:
+
+```ruby
+Jets.application.configure do
+  config.domain.certificate_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
+  config.domain.hosted_zone_name = "coolapp.com" # String
+  # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is nil
+
+  # NOTE: Changing the endpoint_configuration results in 10 minutes of downtime
+  config.domain.endpoint_configuration = { types: ["REGIONAL"] } # EDGE or REGIONAL
+  config.domain.regional_certificate_arn = "..." # String
+end
+```
+
+You can create an AWS Certificate with ACM by following the docs: [Request a Public Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html). The hosted zone name must also be created on Route53. Here are the docs: [Creating a Public Hosted Zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html).
+
+## Controlling Domain Name
+
+By default, the domain name is a subdomain with `Jets.project_namespace` as the value. Example:
+
+    #{Jets.project_namespace}.coolapp.com = demo-dev.coolapp.com
+
+When `JETS_ENV_EXTRA=1` is set the values looks like this:
+
+    #{Jets.project_namespace}.coolapp.com = demo-dev-1.coolapp.com
+
+You can set the domain name yourself and override the default behavior like so:
+
+```ruby
+Jets.application.configure do
+  config.domain.name = "mysubdomain.coolapp.com"
+end
+```
+
+## Changing Endpoint Configuration Warning
+
+When routes change, Jets detects this and fully re-creates the Rest API Gateway. If you are changing the API Gateway [domain endpoint_type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-domainname-endpointconfiguration.html) REGIONAL to EDGE and vice versa. This result in downtime as the CloudFormation updates the endpoint type in-place. It deletes and updates of the old endpoint type as part of the update.
+
+* Going from REGIONAL to EDGE results in about **10 minutes** of unavailability. That's about how long it takes API Gateway to create the CloudFront Edge endpoint.
+* Going from EDGE to REGIONAL results in about **30 seconds** of unavailability. That's about how long it takes API Gateway to create the Regional endpoint.
+
+If you need to switch this and avoid downtime, you will need to do a manual blue-green deployment by creating a new environment with `JETS_ENV_EXTRA`.
+
+
+<a id="prev" class="btn btn-basic" href="{% link _docs/routing-authorization.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/megamode.md %}">Next Step</a>
+<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

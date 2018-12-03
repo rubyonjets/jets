@@ -27,12 +27,12 @@ class Jets::Controller::Middleware::Local
     end
 
     def event
-      ApiGateway.new(@route, @env).event
+      @env['adapter.event'] || ApiGateway.new(@route, @env).event
     end
     memoize :event
 
     def context
-      {}
+      @env['adapter.context'] || {"fake" => "context in mimic_aws_call.rb"}
     end
   end
 end

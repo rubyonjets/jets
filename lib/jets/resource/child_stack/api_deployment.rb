@@ -19,9 +19,13 @@ module Jets::Resource::ChildStack
     end
 
     def parameters
-      {
+      p = {
+        IamRole: "!GetAtt IamRole.Arn",
         RestApi: "!GetAtt ApiGateway.Outputs.RestApi",
+        S3Bucket: "!Ref S3Bucket",
       }
+      p[:DomainName] = "!GetAtt ApiGateway.Outputs.DomainName" if Jets.custom_domain?
+      p
     end
 
     def depends_on

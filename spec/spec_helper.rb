@@ -18,6 +18,9 @@ Jets.boot
 require "aws-sdk-lambda" # for Aws.config.update
 
 module Helpers
+  autoload :Multipart, "./spec/spec_helper/multipart"
+  include Multipart
+
   def execute(cmd)
     puts "Running: TEST=1 JETS_ROOT=#{ENV['JETS_ROOT']} #{cmd}" if ENV['JETS_DEBUG']
     exit
@@ -28,15 +31,6 @@ module Helpers
 
   def json_file(path)
     JSON.load(IO.read(path))
-  end
-end
-
-# pretty hacky way of stubbing out md5_code_zipfile
-Jets::Naming # autoload it
-class Jets::Naming
-  # override for specs
-  def self.md5_code_zipfile
-    "/tmp/jets/demo/code/code-2e0e18f6.zip"
   end
 end
 

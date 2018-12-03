@@ -6,9 +6,9 @@
 #
 # Implements:
 #
-#   functions
-#   handler_for(function_name)
-#   js_path
+#   functions: IE [:index, :show]
+#   handler_for(function_name): IE handlers/controllers/posts_controller.index
+#   js_path: IE: handlers/controllers/posts_controller.js
 #
 module Jets::Builders::ShimVars
   class App < Base
@@ -61,6 +61,7 @@ module Jets::Builders::ShimVars
     end
 
     # This gets called in the node shim js template
+    # IE handlers/controllers/posts_controller.index
     def handler_for(meth)
       # possibly not include _function
       underscored_name = @relative_path.sub(%r{app/(\w+)/},'').sub('.rb','')

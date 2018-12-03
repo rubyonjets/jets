@@ -1,6 +1,6 @@
 class Jets::Commands::Runner
   def self.run(code)
-    Jets.eager_load!
+    Jets.boot
 
     if code =~ %r{^file://}
       path = code.sub('file://', '')

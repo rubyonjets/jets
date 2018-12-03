@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionview", ">= 5.2.1"
   spec.add_dependency "activerecord", ">= 5.2.1"
   spec.add_dependency "activesupport", ">= 5.2.1"
+  spec.add_dependency "aws-sdk-apigateway"
   spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-cloudwatchlogs"
   spec.add_dependency "aws-sdk-dynamodb"

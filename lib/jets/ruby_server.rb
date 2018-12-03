@@ -17,7 +17,6 @@ module Jets
 
     def run
       Jets.boot(stringio: true) # outside of child process for COW
-      Jets.eager_load!
 
       # INT - ^C
       trap('INT') do
@@ -94,9 +93,10 @@ module Jets
       loop do
         client = server.accept    # Wait for a client to connect
 
-        input_completed, event, handler = nil, nil, nil
+        input_completed, event, context, handler = nil, nil, nil
         unless input_completed
           event = client.gets&.strip # text or nil
+          context = client.gets&.strip # text or nil
           handler = client.gets&.strip # text or nil
           # The event is nil when a client connects and immediately disconnects without sending data
           if event.nil?
@@ -107,9 +107,12 @@ module Jets
           input_completed = true
         end
 
+        # puts "ruby_server.rb event: #{event.inspect}"
+        # puts "ruby_server.rb context: #{context.inspect}"
+
         result = event['_prewarm'] ?
           prewarm_request(event) :
-          standard_request(event, '{}', handler)
+          standard_request(event, context, handler)
 
         Jets::IO.flush # flush output and write to disk for node shim
 

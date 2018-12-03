@@ -56,7 +56,8 @@ module Jets
       # Some keys have special mappings
       def special_map
         {
-          "TemplateUrl" => "TemplateURL"
+          "TemplateUrl" => "TemplateURL",
+          "Ttl" => "TTL",
         }
       end
     end

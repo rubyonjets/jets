@@ -138,7 +138,7 @@ describe Jets::Controller::Base do
       expect(resp['statusCode']).to eq "200"
       expect(resp['headers']).to include('X-Runtime') # confirm going through full middleware stack
       # expect(body.read).to eq "whatever"
-      expect(resp['headers']['x-jets-base64']).to eq "false"
+      expect(resp['headers']['x-jets-base64']).to eq "no"
     end
   end
 end

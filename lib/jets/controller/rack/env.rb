@@ -1,11 +1,12 @@
 require 'rack'
+require 'base64'
 
 # Takes an ApiGateway event and converts it to an Rack env that can be used for
 # rack.call(env).
 module Jets::Controller::Rack
   class Env
-    def initialize(event, context)
-      @event, @context = event, context
+    def initialize(event, context, options={})
+      @event, @context, @options = event, context, options
     end
 
     def convert
@@ -13,7 +14,12 @@ module Jets::Controller::Rack
       options = add_top_level(options)
       options = add_http_headers(options)
       path = @event['path'] || '/' # always set by API Gateway but might not be when testing shim, so setting it to make testing easier
-      Rack::MockRequest.env_for(path, options)
+      env = Rack::MockRequest.env_for(path, options)
+      if @options[:adapter]
+        env['adapter.event'] = @event
+        env['adapter.context'] = @context
+      end
+      env
     end
 
   private
@@ -35,10 +41,7 @@ module Jets::Controller::Rack
 
       map['CONTENT_LENGTH'] = content_length if content_length
       # Even if not set, Rack always assigns an StringIO to "rack.input"
-      map[:input] = StringIO.new(body) if body
-
-      # TODO: handle decoding base64 encoded body from API Gateaway
-      # Will need to make sure that pass the base64 info via a request header
+      map['rack.input'] = StringIO.new(body) if body
 
       options.merge(map)
     end
@@ -52,8 +55,14 @@ module Jets::Controller::Rack
       headers['Content-Length'] || bytesize
     end
 
+    # Decoding base64 from API Gateaway if necessary
+    # Rack will be none the wiser
     def body
-      @event['body']
+      if @event['isBase64Encoded']
+        Base64.decode64(@event['body'])
+      else
+        @event['body']
+      end
     end
 
     def add_http_headers(options)

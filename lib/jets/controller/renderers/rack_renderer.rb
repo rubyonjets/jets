@@ -17,7 +17,7 @@ module Jets::Controller::Renderers
       headers = cors_headers.merge(headers)
       headers["Content-Type"] ||= @options[:content_type] || Jets::Controller::DEFAULT_CONTENT_TYPE
       # x-jets-base64 to convert this Rack triplet to a API Gateway hash structure later
-      headers["x-jets-base64"] = base64 ? "true" : "false"
+      headers["x-jets-base64"] = base64 ? 'yes' : 'no' # headers values must be Strings
       body = StringIO.new(body)
       [status, headers, body] # triplet
     end

@@ -1,5 +1,3 @@
-require 'active_support/concern'
-
 # Other dsl that rely on this must implement
 #
 #   default_associated_resource_definition

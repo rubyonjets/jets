@@ -1,5 +1,6 @@
 class Jets::Cfn
   class Ship
+    extend Memoist
     include Jets::AwsServices
 
     def initialize(options)
@@ -32,7 +33,9 @@ class Jets::Cfn
 
       wait_for_stack
       prewarm
+      clean_deploy_logs
       show_api_endpoint
+      show_custom_domain
     end
 
     def save_stack
@@ -89,15 +92,34 @@ class Jets::Cfn
       end
     end
 
-    def show_api_endpoint
-      return unless @options[:stack_type] == :full # s3 bucket is available
-      return if Jets::Router.routes.empty?
-      resp, status = stack_status
-      return if status.include?("ROLLBACK")
+    def clean_deploy_logs
+      Jets::Commands::Clean::Log.new.clean_deploys
+    end
 
+    def endpoint_unavailable?
+      return true unless @options[:stack_type] == :full # s3 bucket is available
+      return true if Jets::Router.routes.empty?
+      _, status = stack_status
+      return true if status.include?("ROLLBACK")
+      return true unless api_gateway
+    end
+
+    # Do not memoize this because on first stack run it will be nil
+    # It only gets called one more time so just let it get called.
+    def api_gateway
       resp = cfn.describe_stack_resources(stack_name: @parent_stack_name)
       resources = resp.stack_resources
-      api_gateway = resources.find { |resource| resource.logical_resource_id == "ApiGateway" }
+      resources.find { |resource| resource.logical_resource_id == "ApiGateway" }
+    end
+    memoize :api_gateway
+
+    def endpoint_available?
+      !endpoint_unavailable?
+    end
+
+    def show_api_endpoint
+      return unless endpoint_available?
+
       stack_id = api_gateway["physical_resource_id"]
 
       resp = cfn.describe_stacks(stack_name: stack_id)
@@ -105,6 +127,16 @@ class Jets::Cfn
       output = stack["outputs"].find { |o| o["output_key"] == "RestApiUrl" }
       endpoint = output["output_value"]
       puts "API Gateway Endpoint: #{endpoint}"
+    end
+
+    def show_custom_domain
+      return unless endpoint_available? && Jets.custom_domain?
+
+      domain_name = Jets::Resource::ApiGateway::DomainName.new
+      # Looks funny but its right.
+      # domain_name is a method on the Jets::Resource::ApiGateway::Domain instance
+      url = "https://#{domain_name.domain_name}"
+      puts "Custom Domain: #{url}"
     end
 
     # All CloudFormation states listed here:

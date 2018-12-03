@@ -4,13 +4,15 @@ describe Jets::CLI do
   context Jets::CLI do
     it "tracks subclasses" do
       # trigger classes to autload for spec
-      classes = [
+      some_classes_for_test = [
         Jets::Commands::Clean,
         Jets::Commands::Dynamodb,
         Jets::Commands::Dynamodb::Migrate,
         Jets::Commands::Main,
       ]
-      expect(Jets::Commands::Base.subclasses).to eq classes
+      klass = Jets::Commands::Base.subclasses & some_classes_for_test
+      # validates that the list above is included
+      expect(klass.size).to eq 4
     end
 
     it "thor_tasks" do

@@ -63,10 +63,10 @@ class Jets::Controller::Middleware::Local
           h[key] = v
           h
         end
-      # Content type is not prepended with HTTP_ but is part of Lambda's event headers thankfully
+      # Content type is not prepended with HTTP_
       headers["Content-Type"] = @env["CONTENT_TYPE"] if @env["CONTENT_TYPE"]
 
-      # Adjust the casing so it matches the Lambda AWS Proxy's structure
+      # Adjust the casing so it matches the Lambda AWS Proxy structure
       CASING_MAP.each do |nice_casing, bad_casing|
         if headers.key?(nice_casing)
           headers[bad_casing] = headers.delete(nice_casing)
@@ -83,9 +83,6 @@ class Jets::Controller::Middleware::Local
     # To get the post body:
     #   rack.input: #<StringIO:0x007f8ccf8db9a0>
     def get_body
-      # @env["rack.input"] is always provided by rack and we should make
-      # the test data always have rack.input to mimic rack defaulting to
-      # StringIO.new to help make testing easier
       input = @env["rack.input"] || StringIO.new
       body = input.read
       input.rewind # IMPORTANT or else it screws up other middlewares that use the body

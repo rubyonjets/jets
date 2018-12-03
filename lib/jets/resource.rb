@@ -11,6 +11,7 @@ class Jets::Resource
   autoload :Iam, 'jets/resource/iam'
   autoload :Permission, 'jets/resource/permission'
   autoload :Replacer, 'jets/resource/replacer'
+  autoload :Route53, 'jets/resource/route53'
   autoload :S3, 'jets/resource/s3'
   autoload :Sns, 'jets/resource/sns'
   autoload :Standardizer, 'jets/resource/standardizer'

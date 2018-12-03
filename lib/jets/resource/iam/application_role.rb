@@ -15,7 +15,7 @@ module Jets::Resource::Iam
     end
 
     def role_name
-      "#{Jets.config.project_namespace}-application-role" # camelized because used as template value
+      "#{Jets.config.project_namespace}-application-role"
     end
 
     def outputs

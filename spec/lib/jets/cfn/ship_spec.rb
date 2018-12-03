@@ -8,6 +8,7 @@ describe Jets::Cfn::Ship do
       expect(ship).to receive(:stack_in_progress?) # stub
       expect(ship).to receive(:save_stack)  # stub
       expect(ship).to receive(:wait_for_stack) # stub
+      expect(ship).to receive(:endpoint_available?).twice # stub
       ship.run
     end
   end

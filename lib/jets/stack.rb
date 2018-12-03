@@ -1,5 +1,3 @@
-require 'active_support/concern'
-
 module Jets
   class Stack
     autoload :Definition, 'jets/stack/definition' # Registration and definitions
@@ -75,7 +73,7 @@ module Jets
 
       def eager_load_shared_resources!
         ActiveSupport::Dependencies.autoload_paths += ["#{Jets.root}app/shared/resources"]
-        Dir.glob("#{Jets.root}app/shared/resources/*.rb").select do |path|
+        Dir.glob("#{Jets.root}app/shared/resources/**/*.rb").select do |path|
           next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
 
           class_name = path

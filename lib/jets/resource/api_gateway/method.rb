@@ -1,5 +1,3 @@
-require "active_support/core_ext/object"
-
 # Converts a Jets::Route to a CloudFormation Jets::Resource::ApiGateway::Method resource
 module Jets::Resource::ApiGateway
   class Method < Jets::Resource::Base
@@ -18,7 +16,7 @@ module Jets::Resource::ApiGateway
           type: "AWS::ApiGateway::Method",
           properties: {
             resource_id: "!Ref #{resource_id}",
-            rest_api_id: "!Ref RestApi",
+            rest_api_id: "!Ref #{RestApi.logical_id}",
             http_method: @route.method,
             request_parameters: {},
             authorization_type: authorization_type,
@@ -47,7 +45,8 @@ module Jets::Resource::ApiGateway
               .gsub(/[^0-9a-z]/i, ' ')
               .gsub(/\s+/, '_')
       path = nil if path == ''
-      [path, "{namespace}_api_method"].compact.join('_')
+      http_verb = @route.method.downcase
+      [path, "{namespace}_#{http_verb}_api_method"].compact.join('_')
     end
 
     def replacements

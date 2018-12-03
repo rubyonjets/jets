@@ -35,8 +35,10 @@ Jets.application.configure do
   # The config.function settings to the CloudFormation Lambda Function properties.
   # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
   # Underscored format can be used for keys to make it look more ruby-ish.
-  
-  # config.api.endpoint_type = 'PRIVATE' # Default is 'EDGE' (https://docs.aws.amazon.com/apigateway/api-reference/link-relation/restapi-create/#endpointConfiguration) 
+
+  # config.api.authorization_type = "AWS_IAM" # default is 'NONE' https://amzn.to/2qZ7zLh
+  # config.api.binary_media_types = ['multipart/form-data'] # default is ['multipart/form-data'] # Changing this will update the API Gateway DNS
+  # config.api.endpoint_type = 'PRIVATE' # Default is 'EDGE' https://amzn.to/2r0Iu2L
 end
 ```
 

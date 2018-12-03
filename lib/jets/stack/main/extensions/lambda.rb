@@ -21,8 +21,10 @@ module Jets::Stack::Main::Dsl
     def function(id, props={})
       # Required: code, handler, role, runtime Docs: https://amzn.to/2pdot7S
       meth = id.to_s.underscore
+      class_namespace = self.to_s.underscore.gsub('/','-') # IE: Jets::Domain => jets-domain
+      function_name = "#{Jets.config.project_namespace}-#{class_namespace}-#{id.to_s.underscore}"
       defaults = {
-        function_name: "#{Jets.config.project_namespace}-#{id.to_s.underscore}",
+        function_name: function_name,
         code: {
           s3_bucket: "!Ref S3Bucket",
           s3_key: code_s3_key
@@ -52,7 +54,7 @@ module Jets::Stack::Main::Dsl
     def node_function(id, props={})
       meth = id.to_s.underscore
       props[:handler] ||= "#{meth}.handler" # default python convention
-      props[:runtime] = "node8.10"
+      props[:runtime] = "nodejs8.10"
       function(id, props)
     end
 
