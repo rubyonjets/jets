@@ -2,7 +2,7 @@
 title: Custom Domain
 ---
 
-Jets can create and associate a route53 custom domain with the API Gateway endpoint.  Jets mananges the vanity route53 endpoint that points to the API Gateway endpoint.  It adjusts the endpoint transparently without you having to update your endpoint if Jets determines that a new API Gateway Rest API needs to be created. The route53 record is also updated. Here's a table with some example values to explain:
+Jets can create and associate a route53 custom domain with the API Gateway endpoint.  Jets manages the vanity route53 endpoint that points to the API Gateway endpoint.  It adjusts the endpoint transparently without you having to update your endpoint if Jets determines that a new API Gateway Rest API needs to be created. The route53 record is also updated. Here's a table with some example values to explain:
 
 Vanity Endpoint | API Gateway Endpoint | Jets env
 --- | --- | ---
@@ -15,7 +15,7 @@ Here's a diagram also:
 
 ## Vanity Endpoint
 
-To create a vanity endpoint edit the `config/application.rb` and edit `dns.certificate_arn` and `dns.hosted_zone_name`:
+To create a vanity endpoint edit the `config/application.rb` and edit `domain.certificate_arn` and `domain.hosted_zone_name`:
 
 ```ruby
 Jets.application.configure do
@@ -29,7 +29,7 @@ Jets.application.configure do
 end
 ```
 
-You can create an AWS Certificate with ACM by following the docs: [Request a Public Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html). The hosted zone name must also be created on Route53. Here are the docs: [Creating a Public Hosted Zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html).
+You can create an AWS Certificate with ACM by following the docs: [Request a Public Certificate](https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html). The hosted zone name on Route53 is required. Here are the docs to create one: [Creating a Public Hosted Zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html).
 
 ## Controlling Domain Name
 
@@ -51,7 +51,7 @@ end
 
 ## Changing Endpoint Configuration Warning
 
-When routes change, Jets detects this and fully re-creates the Rest API Gateway. If you are changing the API Gateway [domain endpoint_type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-domainname-endpointconfiguration.html) REGIONAL to EDGE and vice versa. This result in downtime as the CloudFormation updates the endpoint type in-place. It deletes and updates of the old endpoint type as part of the update.
+When routes change, Jets detects this and fully re-creates the Rest API Gateway. If you change the API Gateway [domain endpoint_type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-domainname-endpointconfiguration.html) REGIONAL to EDGE and vice versa, this results in downtime as the CloudFormation updates the endpoint type in-place.
 
 * Going from REGIONAL to EDGE results in about **10 minutes** of unavailability. That's about how long it takes API Gateway to create the CloudFront Edge endpoint.
 * Going from EDGE to REGIONAL results in about **30 seconds** of unavailability. That's about how long it takes API Gateway to create the Regional endpoint.
