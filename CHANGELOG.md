@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.2.0]
+- major upgrades: binary support, custom domain, bluegreen
+- binary support
+- custom domains support: http://rubyonjets.com/docs/routing-custom-domain/
+- automated bluegreen deploy for api gateway when needed: http://rubyonjets.com/docs/blue-green-deployment/
+- Merge pull request #84 from tongueroo/bluegreen
+
 ## [1.1.5]
 - Support multiple path parameters. Also allow path parameters to hold any value other than '/'.
 - Merge pull request #82 from adam-harwood/master
