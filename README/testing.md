@@ -18,6 +18,10 @@ To run the integration tests locally, you need to create a new Jets CRUD project
     cd demo
     jets generate scaffold Post title:string
     jets server --no-reload
+    
+Import rails application with mega mode:
+
+    jets import:rails http://github.com/tongueroo/demo-rails.git
 
 Then you can run the postman tests:
 
