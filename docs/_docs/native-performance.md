@@ -2,9 +2,9 @@
 title: Native Performance
 ---
 
-AWS Lambda does not yet officially support Ruby. There's an online petition to encourage AWS to add Ruby support for Lambda: [We want FaaS for Ruby!](https://www.serverless-ruby.org/) Rumors suggest that AWS is working on it.
+**Update**: [Official Ruby Support](https://aws.amazon.com/blogs/compute/announcing-ruby-support-for-aws-lambda/) was announced at [AWS re:Invent 2018 on Nov 29](https://twitter.com/tongueroo/status/1068199997097750528)! Jets will be switching over to it!  From a Jets user perspective, the switch should be seamless.
 
-To run Ruby on AWS Lambda today, we can resort to using a shim. This was detailed in the AWS Blog post [Scripting Languages for AWS Lambda: Running PHP, Ruby, and Go
+Currently Jets uses a shim to run Ruby. This was detailed in the AWS Blog post [Scripting Languages for AWS Lambda: Running PHP, Ruby, and Go
 ](https://aws.amazon.com/blogs/compute/scripting-languages-for-aws-lambda-running-php-ruby-and-go/).  Essentially, you write a lambda function in a natively supported Lambda language like node and then have that function shell out to Ruby. Additionally, the Ruby interpreter itself is packaged with the Lambda code zip file.
 
 One of the issues with shelling out to a Ruby interpreter is the overhead in doing so is pretty high. If your Lambda function is allocated only 128MB the overhead is a nasty 5+ seconds. Vlad Holubiev discovered that if you allocate more memory to your Lambda functions, then the functions get faster CPU hardware: [My Accidental 3–5x Speed Increase of AWS Lambda Functions
