@@ -54,5 +54,5 @@ The [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/limits.html
 Lazy Loading adds overhead on the first Lambda request of about 10 seconds.  This performance is addressed by [Prewarming]({% link _docs/prewarming.md %}) the application.  Additional requests after the prewarm request are in the milliseconds range. A Jets request ranges in the 10s of milliseconds and a Rails request ranges in the 100s of milliseconds, usually from 50ms to 500ms.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/rails-support.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/routing-overview.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
