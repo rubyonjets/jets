@@ -30,13 +30,13 @@ Jets supports writing AWS Lambda functions with Ruby. You define them in the `ap
 app/functions/simple.rb:
 
 ```ruby
-def handle(event, context)
+def handle(event:, context:)
   puts "hello world"
   {hello: "world"}
 end
 ```
 
-Though simple functions are supported by Jets, aside from the ability to use Ruby, they do not as much value as other ways to write code with Jets.
+Though simple functions are supported by Jets, they do not really add much value as other ways to write Ruby code with Jets. Classes like Controllers and Jobs add many conveniences and are more powerful to use. We’ll cover them next.
 
 ### Jets Controllers
 

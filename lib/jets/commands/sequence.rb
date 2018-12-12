@@ -56,7 +56,7 @@ private
         yarn
         public
       ]
-    elsif !@options[:database]
+    elsif !@database
       # Do not even generated the config/database.yml because
       # jets webpacker:install bombs and tries to load the db since it sees a
       # config/database.yml but has there's no database pg gem configured.

@@ -1,6 +1,6 @@
-class Jets::Resource
+module Jets::Resource::Lambda
   class Function < Jets::Resource::Base
-    autoload :Environment, 'jets/resource/function/environment'
+    autoload :Environment, 'jets/resource/lambda/function/environment'
     include Environment
 
     def initialize(task)
@@ -120,15 +120,17 @@ class Jets::Resource
       properties
     end
 
-    # Properties managed by Jets with more finality.
+    # Properties managed by Jets with merged with finality.
     def finalize_properties!(props)
       handler = full_handler(props)
       runtime = get_runtime(props)
-      props.merge!(
+      managed = {
         function_name: function_name,
         handler: handler,
         runtime: runtime,
-      )
+      }
+      managed[:layers] = ["!Ref GemLayer"] if runtime =~ /^ruby/
+      props.merge!(managed)
     end
 
     def get_runtime(props)
@@ -139,7 +141,7 @@ class Jets::Resource
       map = {
         node: "nodejs8.10",
         python: "python3.6",
-        ruby: "nodejs8.10", # node shim for ruby support
+        ruby: "ruby2.5",
       }
       map[@task.lang]
     end

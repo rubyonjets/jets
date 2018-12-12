@@ -51,7 +51,6 @@ config/environments/development.rb:
 ```ruby
 Jets.application.configure do
   config.function.memory_size = 1536
-  config.ruby.lazy_load = true
 end
 ```
 
@@ -60,7 +59,6 @@ config/environments/production.rb:
 ```ruby
 Jets.application.configure do
   config.function.memory_size = 2048
-  config.ruby.lazy_load = false
 end
 ```
 

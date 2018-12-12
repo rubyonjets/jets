@@ -22,8 +22,11 @@ class Jets::Cfn::Builders
     end
 
     def add_common_parameters
-      add_parameter("IamRole", Description: "Iam Role that Lambda function uses.")
-      add_parameter("S3Bucket", Description: "S3 Bucket for source code.")
+      common_parameters = Jets::Resource::ChildStack::AppClass.common_parameters
+      common_parameters.each do |k,_|
+        add_parameter(k, Description: k)
+      end
+
       depends_on_params.each do |logical_id, desc|
         add_parameter(logical_id, Description: desc)
       end
@@ -58,7 +61,7 @@ class Jets::Cfn::Builders
     end
 
     def add_function(task)
-      resource = Jets::Resource::Function.new(task)
+      resource = Jets::Resource::Lambda::Function.new(task)
       add_resource(resource)
     end
 

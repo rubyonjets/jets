@@ -8,7 +8,7 @@
 #
 #   functions: IE [:index, :show]
 #   handler_for(function_name): IE handlers/controllers/posts_controller.index
-#   js_path: IE: handlers/controllers/posts_controller.js
+#   dest_path: IE: handlers/controllers/posts_controller.js
 #
 module Jets::Builders::ShimVars
   class Shared < Base
@@ -30,7 +30,7 @@ module Jets::Builders::ShimVars
     end
 
     # IE handlers/shared/functions/bob.js
-    def js_path
+    def dest_path
       @fun.handler_dest
     end
   end

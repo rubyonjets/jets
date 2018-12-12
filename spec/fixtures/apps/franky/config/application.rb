@@ -4,7 +4,7 @@ Jets.application.configure do
   # config.extra_autoload_paths = []
 
   config.gems.sources = [
-    'https://gems.lambdagems.com',
+    'https://gems2.lambdagems.com',
     'https://gems.test.lambdagems.com',
     # 'https://s3.amazonaws.com/another-bucket',
   ]

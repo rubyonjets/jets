@@ -52,7 +52,7 @@ class Jets::Application
 
     config.gems = ActiveSupport::OrderedOptions.new
     config.gems.sources = [
-      'https://gems.lambdagems.com'
+      Jets.default_gems_source
     ]
 
     config.inflections = ActiveSupport::OrderedOptions.new
@@ -65,7 +65,6 @@ class Jets::Application
     config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
 
     config.ruby = ActiveSupport::OrderedOptions.new
-    config.ruby.lazy_load = true # also set in config/environments files
 
     config.middleware = Jets::Middleware::Configurator.new
 
@@ -133,6 +132,18 @@ class Jets::Application
     load_app_config
     load_db_config
     load_environments_config
+    deprecated_configs_message
+  end
+
+  def deprecated_configs_message
+    unless config.ruby.lazy_load.nil?
+      puts "Detected config.ruby.lazy_load = #{config.ruby.lazy_load.inspect}".colorize(:yellow)
+      puts "Deprecated: config.ruby.lazy_load".colorize(:yellow)
+      puts "Gems are now bundled with with Lambda Layer and there's no need to lazy load them."
+      puts "Please remove the config in your config/application.rb or config/environments files."
+      puts "You can have Jets automatically do this by running:"
+      puts "  jets upgrade:v1"
+    end
   end
 
   def setup_auto_load_paths

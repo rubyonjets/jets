@@ -5,9 +5,8 @@ require 'stringio'
 class Jets::Processors::MainProcessor
   attr_reader :event, :context, :handler
   def initialize(event, context, handler)
-    # assume valid json from Lambda
-    @event = JSON.parse(event)
-    @context = JSON.parse(context)
+    @event = event
+    @context = context
     @handler = handler
   end
 
@@ -38,13 +37,7 @@ class Jets::Processors::MainProcessor
         result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count
       end
 
-      # Puts the return value of project code to stdout because this is
-      # what eventually gets used by API Gateway.
-      # Explicitly using $stdout since puts has been redirected to $stderr.
-      #
-      # JSON.dump is pretty robust.  If it cannot dump the structure into a
-      # json string, it just dumps it to a plain text string.
-      Jets::Util.normalize_result(result) # resp is a String
+      result
     rescue Exception => e
       unless ENV['TEST']
         # Customize error message slightly so nodejs shim can process the

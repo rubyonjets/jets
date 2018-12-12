@@ -1,12 +1,12 @@
-describe Jets::Resource::Function do
-  let(:resource) { Jets::Resource::Function.new(task) }
+describe Jets::Resource::Lambda::Function do
+  let(:resource) { Jets::Resource::Lambda::Function.new(task) }
 
   context "function timeout 18" do
     let(:task) do
-      PostsController.all_tasks[:index]
+      PostsController.all_public_tasks[:index]
     end
     it "uses function properties" do
-      expect(resource.logical_id).to eq "PostsControllerIndexLambdaFunction"
+      expect(resource.logical_id).to eq "IndexLambdaFunction"
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
       expect(properties["FunctionName"]).to eq "demo-test-posts_controller-index"
@@ -16,11 +16,11 @@ describe Jets::Resource::Function do
 
   context "controller" do
     let(:task) do
-      PostsController.all_tasks[:index]
+      PostsController.all_public_tasks[:index]
     end
 
     it "contains info for CloudFormation Controller Function Resources" do
-      expect(resource.logical_id).to eq "PostsControllerIndexLambdaFunction"
+      expect(resource.logical_id).to eq "IndexLambdaFunction"
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
       expect(properties["FunctionName"]).to eq "demo-test-posts_controller-index"
@@ -31,11 +31,11 @@ describe Jets::Resource::Function do
 
   context("job") do
     let(:task) do
-      HardJob.all_tasks[:dig]
+      HardJob.all_public_tasks[:dig]
     end
 
     it "contains info for CloudFormation Job Function Resources" do
-      expect(resource.logical_id).to eq "HardJobDigLambdaFunction"
+      expect(resource.logical_id).to eq "DigLambdaFunction"
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
       expect(properties["FunctionName"]).to eq "demo-test-hard_job-dig"
@@ -50,7 +50,7 @@ describe Jets::Resource::Function do
     end
 
     it "contains info for CloudFormation Job Function Resources" do
-      expect(resource.logical_id).to eq "SimpleFunctionHandlerLambdaFunction"
+      expect(resource.logical_id).to eq "HandlerLambdaFunction"
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
       expect(properties["FunctionName"]).to eq "demo-test-simple_function-handler"
@@ -65,7 +65,7 @@ describe Jets::Resource::Function do
     end
 
     it "contains info for CloudFormation Job Function Resources" do
-      expect(resource.logical_id).to eq "HelloWorldLambdaFunction"
+      expect(resource.logical_id).to eq "WorldLambdaFunction"
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
       expect(properties["FunctionName"]).to eq "demo-test-hello-world"

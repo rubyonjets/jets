@@ -4,6 +4,7 @@ require 'rack'
 module Jets::Mega
   class Request
     autoload :Source, 'jets/mega/request/source'
+    JETS_OUTPUT = "/tmp/jets-output.log"
 
     extend Memoist
 
@@ -45,11 +46,21 @@ module Jets::Mega
       # Make request
       response = http.request(request)
 
+      puts_rack_output
+
       {
         status: response.code.to_i,
         headers: response.each_header.to_h,
         body: response.body,
       }
+    end
+
+    # Grab the rack output from the /tmp/jets-output.log and puts it back in the
+    # main process' stdout
+    def puts_rack_output
+      return unless File.exist?(JETS_OUTPUT)
+      puts IO.readlines(JETS_OUTPUT)
+      File.truncate(JETS_OUTPUT, 0)
     end
 
     def get_uri

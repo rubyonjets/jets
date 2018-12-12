@@ -2,13 +2,13 @@
 title: Jobs
 ---
 
-A Jets job handles background jobs. They run outside of the web request/response cycle. Here's an example:
+A Jets job handles background work, better suited to run outside of the web request/response cycle. Here's an example:
 
 app/jobs/hard_job.rb:
 
 ```ruby
 class HardJob < ApplicationJob
-  class_timeout 300
+  class_timeout 300 # 300s or 5m, current Lambda max is 15m
 
   rate "10 hours" # every 10 hours
   def dig
@@ -28,7 +28,7 @@ You can check for the job functions in the Lambda console:
 
 ![](/img/docs/demo-lambda-functions-jobs.png)
 
-You can also see associated CloudWatch Event Rule in the CloudWatch console:
+The `rate` and `cron` methhods creates CloudWatch Event Rules to handle scheduling. You can see associated CloudWatch Event Rule in the CloudWatch console:
 
 ![](/img/docs/demo-job-cloudwatch-rule.png)
 

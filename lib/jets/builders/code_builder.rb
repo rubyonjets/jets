@@ -10,49 +10,10 @@ require "action_view"
 # /tmp/jets: build root where different jets projects get built.
 # /tmp/jets/project: each jets project gets built in a different subdirectory.
 #
-# The rest of the folders are subfolders under /tmp/jets/project:
+# The rest of the folders are subfolders under /tmp/jets/project.
 #
-# cache: Gemfile is here, this is where we run bundle install.
-# cache/bundled/gems: Vendored gems that get created as part of bundled install.
-#   Initially, macosx gems but then get replaced by linux gems where appropriate.
-# cache/downloads/rubies: ruby tarballs.
-# cache/downloads/gems: gem tarballs.
-# code: Where project gets copied into in order for us to configure it.
-# app_root/bundled/gems: Where vendored gems finally end up at.  The compiled
-#   gems at this point are only linux gems.
-# artifacts/code/code-md5sha.zip: code artifact that gets uploaded to lambda.
-#
-# Building Steps:
-#
-### Before copy
-# * compile assets: easier to do this before the copy
-#
-### copy project
-# * copy project: to app_root
-#
-### setup app_root project
-# * clean project: remove log and ignored files to reduce size
-# * reconfigure webpacker: config/webpacker.yml
-# * generate node shims: handlers
-#
-### build bundled in cache area
-# * bundle install: cache/bundled/gems
-#
-### setup bundled on app root from cache
-# * copy bundled to code: code/bundled
-# * extract linux ruby: cache/downloads/rubies:
-#                       cache/bundled/rbenv, cache/bundled/linuxbrew
-# * extract linux gems: cache/downloads/gems:
-#                       cache/bundled/gems, cache/bundled/linuxbrew
-# * setup bundled config: code/.bundle/config
-#
-### zip
-# * create zip file
 class Jets::Builders
   class CodeBuilder
-    # https://docs.aws.amazon.com/lambda/latest/dg/limits.html
-    AWS_CODE_SIZE_LIMIT = 250 * 1024 * 1024 # 250MB
-
     include Jets::AwsServices
     include Util
     extend Memoist
@@ -62,11 +23,13 @@ class Jets::Builders
       # Expanding to the full path and capture now.
       # Dir.chdir gets called later and we'll lose this info.
       @full_project_path = File.expand_path(Jets.root) + "/"
+      @version_purger = Purger.new
     end
 
     def build
-      cache_check_message
       check_ruby_version
+      @version_purger.purge
+      cache_check_message
 
       clean_start
       compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
@@ -101,6 +64,7 @@ class Jets::Builders
 
     def create_zip_files
       folders = Md5.stage_folders
+      # Md5.stage_folders ["stage/bundled", "stage/code"]
       folders.each do |folder|
         zip = Md5Zip.new(folder)
         if exist_on_s3?(zip.md5_name)
@@ -122,39 +86,8 @@ class Jets::Builders
       end
     end
 
-    # Moves code/bundled and code/rack to build_root.
-    # These files will be packaged separated and lazy loaded as part of the
-    # node shim. This keeps the code zipfile smaller in size and helps
-    # with the 250MB extract limited. /tmp permits up to 512MB.
-    # AWS Lambda Limits: https://amzn.to/2A7y6v6
-    #
-    #   > Each Lambda function receives an additional 512MB of non-persistent disk space in its own /tmp directory. The /tmp directory can be used for loading additional resources like dependency libraries or data sets during function initialization.
-    #
-    def setup_tmp
-      tmp_symlink("bundled") if Jets.lazy_load?
-      tmp_symlink("rack")
-    end
-
     def stage_area
       "#{Jets.build_root}/stage"
-    end
-
-    # Moves folder to a stage folder and create a symlink its place
-    # that links from /var/task to /tmp. Example:
-    #
-    #   /var/task/bundled => /tmp/bundled
-    #
-    def tmp_symlink(folder)
-      src = "#{full(tmp_code)}/#{folder}"
-      return unless File.exist?(src)
-
-      dest = "#{stage_area}/#{folder}"
-      dir = File.dirname(dest)
-      FileUtils.mkdir_p(dir) unless File.exist?(dir)
-      FileUtils.mv(src, dest)
-
-      # Create symlink
-      FileUtils.ln_sf("/tmp/#{folder}", "/#{full(tmp_code)}/#{folder}")
     end
 
     def code_setup
@@ -162,14 +95,27 @@ class Jets::Builders
     end
 
     def code_finish
-      update_lazy_load_config # at the top, must be called before Jets.lazy_load? is used
+      # Reconfigure code
       store_s3_base_url
       disable_webpacker_middleware
       copy_internal_jets_code
-      setup_tmp
+
+      # Code prep and zipping
+      build_lambda_layer
+      check_code_size!
       calculate_md5s # must be called before generate_node_shims and create_zip_files
       generate_node_shims
       create_zip_files
+    end
+
+    def build_lambda_layer
+      return if Jets.poly_only?
+      lambda_layer = LambdaLayer.new
+      lambda_layer.build
+    end
+
+    def check_code_size!
+      CodeSize.check!
     end
 
     # We copy the files into the project because we cannot require simple functions
@@ -182,17 +128,6 @@ class Jets::Builders
         dest = "#{full(tmp_code)}/#{relative_path}"
         FileUtils.mkdir_p(File.dirname(dest))
         FileUtils.cp(src, dest)
-      end
-    end
-
-    def update_lazy_load_config
-      size_limit = AWS_CODE_SIZE_LIMIT
-      code_size = dir_size(full(tmp_code))
-      if code_size > size_limit && !Jets.config.ruby.lazy_load
-        # override the setting because we dont have to a choice but to lazy load
-        mb_limit = AWS_CODE_SIZE_LIMIT / 1024 / 1024
-        puts "Code size close to AWS code size limit of #{mb_limit}MB. Lazy loading automatically enabled."
-        Jets.config.ruby.lazy_load = true
       end
     end
 
@@ -210,8 +145,6 @@ class Jets::Builders
     # At this point the minimal stack exists, so we can grab it with the AWS API.
     # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
-      return if poly_only?
-
       write_s3_base_url("config/s3_base_url.txt")
       write_s3_base_url("rack/config/s3_base_url.txt") if Jets.rack?
     end
@@ -369,9 +302,9 @@ class Jets::Builders
       return if Jets.poly_only?
 
       ruby_packager.install
-      reconfigure_rails
+      reconfigure_rails # call here after full(tmp_code) is available
       rack_packager.install
-      ruby_packager.finish
+      ruby_packager.finish # by this time we have a /tmp/jets/demo/stage/code/bundled
       rack_packager.finish
     end
 

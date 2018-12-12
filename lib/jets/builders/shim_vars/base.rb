@@ -8,13 +8,18 @@ module Jets::Builders::ShimVars
     end
 
     def rack_zip
-      checksum = Jets::Builders::Md5.checksums["stage/rack"]
-      "rack-#{checksum}.zip"
+      checksum_zip(:rack)
     end
 
     def bundled_zip
-      checksum = Jets::Builders::Md5.checksums["stage/bundled"]
-      "bundled-#{checksum}.zip"
+      checksum_zip(:bundled)
+    end
+
+  private
+    def checksum_zip(name)
+      checksum = Jets::Builders::Md5.checksums["stage/#{name}"]
+      return unless checksum
+      "#{name}-#{checksum}.zip"
     end
 
     def stage_area

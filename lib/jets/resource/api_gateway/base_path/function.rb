@@ -1,6 +1,6 @@
 module Jets::Resource::ApiGateway::BasePath
   class Function < Jets::Resource::Base
-    include Jets::Resource::Function::Environment
+    include Jets::Resource::Lambda::Function::Environment
 
     def definition
       {

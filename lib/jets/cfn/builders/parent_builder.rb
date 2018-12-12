@@ -32,6 +32,11 @@ class Jets::Cfn::Builders
       resource = Jets::Resource::Iam::ApplicationRole.new
       add_resource(resource)
       add_outputs(resource.outputs)
+
+      return if Jets.poly_only?
+      resource = Jets::Resource::Lambda::GemLayer.new
+      add_resource(resource)
+      add_outputs(resource.outputs)
     end
 
     def build_child_resources

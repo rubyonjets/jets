@@ -29,11 +29,13 @@ module Jets::Commands
       # Also had trouble unfreezing it with .dup. So using instance variables instead
       case options[:mode]
       when 'html'
-        @webpacker = options[:webpacker]
         @bootstrap = options[:bootstrap]
+        @database = options[:database]
+        @webpacker = options[:webpacker]
       when 'api', 'job'
-        @webpacker = false
         @bootstrap = false
+        @database = false
+        @webpacker = false
       else
         puts "Invalid mode provided: #{@options[:mode].colorize(:red)}. Please pass in an valid mode: #{VALID_MODES.join(',').colorize(:green)}."
         exit 1

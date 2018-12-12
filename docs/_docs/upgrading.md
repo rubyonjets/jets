@@ -2,7 +2,11 @@
 title: Upgrading Guide
 ---
 
-Upgrading Jets to some releases might require some extra changes.  For example, the Jets project structure can possible change. Also, some version upgrades require a blue-green deployments.  Here's a summary of the releases requiring some upgrade work.
+Upgrading Jets to some releases might require some extra changes.  For example, the Jets project structure can change. Or some version require a manual blue-green deployment.  This page provides a summary of the releases requiring some upgrade work.
+
+## Upgrade Command
+
+A `jets upgrade:v1` command is provided to help with upgrades.  The command is designed to be idempotent. This means it is safe to run repeatedly and will only upgrade the files and structure if needed.  Before running the command, it is recommended to back up your project first just in case though. This usually can be done by committing any unsaved changes to git.
 
 ## Upgrading Releases
 
@@ -10,6 +14,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green?
 --- | --- | ---
+1.3.0 | Official AWS Ruby Support added.  Removed longer needed `config.ruby.lazy_load` feature. | No
 1.2.0 | Set default `config.api.binary_media_types` to `multipart/form-data` to handle binary support.  | No
 1.1.0 | Added `Jets.boot` to `config.ru`. You can run the `jets upgrade:v1` command to add it. | No
 1.0.0 | Added `config/environments` files. You can use the `jets upgrade:v1` command. Going from 0.10.0 to 1.0.0 does not required a blue-green deploy. But if you're going from before 0.10.0, then you will need a blue-green deploy. | No
@@ -19,6 +24,11 @@ Version | Notes | Blue-Green?
 ## Upgrade Details
 
 The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
+
+### 1.3.0
+
+* Use of Official AWS Ruby Support.
+* Project gems are built as a Lambda Layer, removing the need to lazy load the gems. The `config.ruby.lazy_load` option has been removed. You can use the `jets upgrade:v1` to automatically remove the option from your config files.
 
 ### 1.2.0
 
@@ -49,7 +59,7 @@ You can use the `jets upgrade:v1` command to automatically update the `config/ro
 
 ## Reasons
 
-The reason a blue-green deployment sometimes required is that enough of Jets has changed where a regular CloudFormation stack update rolls back.  An example is in `v0.9.0`, Jets changes a few of the CloudFormation logical ids. In this case, CloudFormation fails to create Lambda functions with the same name and switch over to them because the Lambda functions already exist with their old logical ids. If you're seeing the CloudFormation stack rollback after upgrading, you might want to try a blue-green deployment.
+The reason a blue-green deployment sometimes required is that enough of Jets has changed where a regular CloudFormation stack update rolls back.  An example is in `v0.9.0`, Jets changes a few of the CloudFormation logical ids. In this case, CloudFormation fails to create Lambda functions with the same name and switch over to them because the Lambda functions already exist with their old logical ids. If you're seeing the CloudFormation stack rollback after upgrading, you might want to try a manual [blue-green deployment]({% link _docs/blue-green-deployment.md %}).  Below are some additional notes on blue-green deployments.
 
 It is easy to do a blue-green deployment with Jets, and you will only need to do a blue-green deployment once after upgrading Jets for that version. Once done, you can normally deploy again.
 
@@ -83,6 +93,6 @@ Then update the Gateway API Custom Domain to point to the newly deployed `JETS_E
 6. Make sure there's no traffic hitting the old Jets environment. You can do this by checking out the CloudWatch metrics. Nothing should be hitting it aside from the pre-warming requests. You can disable the pre-warming requests manually by using the CloudWatch console also.
 7. Destroy the old environment.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/lazy-loading.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/gem-layer.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/rack.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

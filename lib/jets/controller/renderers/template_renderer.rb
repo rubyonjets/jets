@@ -117,7 +117,7 @@ module Jets::Controller::Renderers
     class << self
       def setup!
         require "action_controller"
-        require "jets/rails_overrides"
+        require "jets/overrides/rails"
 
         # Load helpers
         # Assign local variable because scoe in the `:action_view do` changes

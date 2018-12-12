@@ -14,7 +14,7 @@ If you have configured a [Custom Domain]({% link _docs/routing-custom-domain.md 
 
 ## Manual Blue-Green Deployment
 
-For the most part, Jets auto blue-green deployments suffice.  Sometimes manual blue-green deployments are sometimes required though.  For example, [upgrading]({% link _docs/upgrading.md %}) between different versions of Jets can required a blue-green deployment.
+For the most part, Jets auto blue-green deployments suffice.  Manual blue-green deployments are sometimes required though.  For example, [upgrading]({% link _docs/upgrading.md %}) between different versions of Jets can required a blue-green deployment.
 
 This is where Jets and AWS Lambda power shines. We simply create another [extra environment]({% link _docs/env-extra.md %}) and switch to it to do a manual blue-green deployment.  Here are the steps:
 

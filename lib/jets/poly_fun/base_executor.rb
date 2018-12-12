@@ -116,7 +116,7 @@ class Jets::PolyFun
     def handler
       # Must use the generated CloudFormation template to get the handler because
       # the handler is derived from mutiple sources.
-      resource = Jets::Resource::Function.new(@task)
+      resource = Jets::Resource::Lambda::Function.new(@task)
       full_handler = resource.properties["Handler"] # full handler here
       File.extname(full_handler).sub(/^./,'') # the extension of the full handler is the handler
     end

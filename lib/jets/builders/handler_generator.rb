@@ -14,19 +14,45 @@ class Jets::Builders
     end
 
     def build
-      common_base_shim
+      generate_data_yaml
       app_ruby_shims
       poly_shims
       shared_shims
       internal_shims
     end
 
+    # The handlers/data.yml is used by the shims
+    def generate_data_yaml
+      vars = Jets::Builders::ShimVars::Base.new
+      data = {
+        "s3_bucket" => vars.s3_bucket
+      }
+      data["rack_zip"] = vars.rack_zip if vars.rack_zip
+
+      content = YAML.dump(data)
+      path = "#{tmp_code}/handlers/data.yml"
+      FileUtils.mkdir_p(File.dirname(path))
+      IO.write(path, content)
+    end
+
     def app_ruby_shims
       app_files.each do |path|
-        # Generates one big node shim for a entire controller.
+        # Generates one shim for each app class: controller, job, etc
         vars = Jets::Builders::ShimVars::App.new(path)
-        generate_handler(vars)
+        if path.include?('app/functions')
+          copy_simple_function(path)
+        else
+          generate_handler(vars)
+        end
       end
+    end
+
+    # source_path: app/functions/simple.rb
+    def copy_simple_function(source_path)
+      # Handler: handlers/controllers/posts_controller.handle
+      dest_path = source_path.sub('app/functions', 'handlers/functions')
+      FileUtils.mkdir_p(File.dirname(dest_path))
+      FileUtils.cp(source_path, dest_path)
     end
 
     def app_files
@@ -127,8 +153,8 @@ class Jets::Builders
     end
 
     def generate_handler(vars)
-      result = evaluate_template("handler.js", vars)
-      dest = "#{tmp_code}/#{vars.js_path}"
+      result = evaluate_template("handler.rb", vars)
+      dest = "#{tmp_code}/#{vars.dest_path}"
       FileUtils.mkdir_p(File.dirname(dest))
       IO.write(dest, result)
     end

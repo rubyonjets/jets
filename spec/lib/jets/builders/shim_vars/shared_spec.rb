@@ -17,7 +17,7 @@ describe Jets::Builders::ShimVars::Shared do
     it "deduces info for node shim" do
       expect(vars.functions.size).to eq 1
       expect(vars.handler_for(:whatever)).to eq "handlers/shared/functions/bob.js"
-      expect(vars.js_path).to eq "handlers/shared/functions/bob.js"
+      expect(vars.dest_path).to eq "handlers/shared/functions/bob.js"
     end
   end
 end

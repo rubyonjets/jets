@@ -3,15 +3,17 @@ class Jets::Builders
     def finish
       return unless gemfile_exist?
 
-      symlink_rack_bundled
+      symlink_gems
+      rack_symlink
       copy_rackup_wrappers
     end
 
-    def symlink_rack_bundled
+    def symlink_gems
+      ruby_folder = Jets::Gems.ruby_folder
       # IE: @full_app_root: /tmp/jets/demo/stage/code/rack
-      rack_bundled = "#{@full_app_root}/bundled"
-      FileUtils.rm_f(rack_bundled) # looks like FileUtils.ln_sf doesnt remove existing symlinks
-      FileUtils.ln_sf("/var/task/bundled", rack_bundled)
+      dest = "#{@full_app_root}/vendor/bundle/ruby/#{ruby_folder}"
+      FileUtils.mkdir_p(File.dirname(dest))
+      FileUtils.ln_sf("/opt/ruby/gems/#{ruby_folder}", dest)
     end
 
     def copy_rackup_wrappers
@@ -24,6 +26,24 @@ class Jets::Builders
         FileUtils.cp(src, dest)
         FileUtils.chmod 0755, dest
       end
+    end
+
+    # Moves folder to a stage folder and create a symlink its place
+    # that links from /var/task to /tmp. Example:
+    #
+    #   code_area/rack => /tmp/rack
+    #
+    def rack_symlink
+      src = "#{@full_app_root}/rack"
+      return unless File.exist?(src)
+
+      dest = "#{stage_area}/rack"
+      dir = File.dirname(dest)
+      FileUtils.mkdir_p(dir) unless File.exist?(dir)
+      FileUtils.mv(src, dest)
+
+      # Create symlink
+      FileUtils.ln_sf("/tmp/rack", "/#{@full_app_root}/rack")
     end
   end
 end

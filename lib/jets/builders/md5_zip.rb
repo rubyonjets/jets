@@ -20,6 +20,7 @@ class Jets::Builders
 
     def create
       headline "Creating zip file for #{@path}"
+      # => Creating zip file for /tmp/jets/demo/stage/bundled
 
       # https://serverfault.com/questions/265675/how-can-i-zip-compress-a-symlink
       command = "cd #{@path} && zip --symlinks -rq #{zip_file} ."
