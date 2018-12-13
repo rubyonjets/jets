@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.1]
+- Merge pull request #87 from tongueroo/on-exception
+- fix helpers for binary support
+- deprecate report_exception in favor of on_exception
+- docs: binary upload support
+
 ## [1.3.0]
 - Official AWS Ruby Support
 - Ruby Version 2.5.3 upgrade
