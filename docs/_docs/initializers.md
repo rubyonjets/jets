@@ -2,7 +2,7 @@
 title: Initializers
 ---
 
-Jets supports custom iniitalization by running your app's `config/initalizers` files during the bootup process.  Here's an example:
+Jets supports custom initalization by running your app's `config/initalizers` files during the bootup process.  Here's an example:
 
 config/initializers/custom.rb:
 
