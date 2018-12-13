@@ -158,6 +158,11 @@ module Jets::Core
   end
 
   def report_exception(exception)
+    puts "DEPRECATED: report_exception. Use on_exception instead.".colorize(:yellow)
+    on_exception(exception)
+  end
+
+  def on_exception(exception)
     Jets::Turbine.subclasses.each do |subclass|
       reporters = subclass.exception_reporters || []
       reporters.each do |label, block|

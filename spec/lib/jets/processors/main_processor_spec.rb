@@ -44,11 +44,11 @@ describe Jets::Processors::MainProcessor do
   context "error job" do
     let(:handler) { 'handlers/jobs/error_job.break' }
     it "throws error" do
-      allow(Jets).to receive(:report_exception)
+      allow(Jets).to receive(:on_exception)
       expect {
         main.run
       }.to raise_error(RuntimeError)
-      expect(Jets).to have_received(:report_exception)
+      expect(Jets).to have_received(:on_exception)
     end
   end
 

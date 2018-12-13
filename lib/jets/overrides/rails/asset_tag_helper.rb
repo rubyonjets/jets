@@ -23,9 +23,11 @@ module Jets::AssetTagHelper
   #
   #   image_tag("jets.png") => https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1kih4n2te0n66/jets/public/images/jets.png
   def image_tag(source, options = {})
+    source = source.to_s # convert to String because passing a posts.photo object to results in failure to resolve the immage to a URL since we haven't defined polymorphic_url yet
+
     # mimic original behavior to get /images in source
-    source = "/images/#{source}" unless source.starts_with?('/')
-    if on_aws?
+    source = "/images/#{source}" unless source.starts_with?('/') || source.starts_with?('http')
+    if on_aws? && !source.starts_with?('http')
       source = "#{s3_public}#{source}"
     end
 
@@ -33,9 +35,11 @@ module Jets::AssetTagHelper
   end
 
   def asset_path(source, options = {})
-    if on_aws? && asset_folder?(source)
-      # mimic original behavior to get /images in source
-      source = "/images/#{source}" unless source.starts_with?('/')
+    source = source.to_s # convert to String because passing a posts.photo object to results in failure to resolve the immage to a URL since we haven't defined polymorphic_url yet
+    # mimic original behavior to get /images in source
+    source = "/images/#{source}" unless source.starts_with?('/') || source.starts_with?('http')
+
+    if on_aws? && asset_folder?(source) && !source.starts_with?('http')
       source = "#{s3_public}#{source}"
     end
 

@@ -29,7 +29,11 @@ class <%= controller_class_name %>Controller < ApplicationController
     @<%= singular_table_name %> = <%= orm_class.build(class_name, "#{singular_table_name}_params") %>
 
     if @<%= orm_instance.save %>
-      redirect_to "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"
+      if request.xhr?
+        render json: {success: true, location: url_for("/<%= plural_table_name %>/#@{<%= singular_table_name %>.id}")}
+      else
+        redirect_to "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"
+      end
     else
       render :new
     end
@@ -38,7 +42,11 @@ class <%= controller_class_name %>Controller < ApplicationController
   # PUT <%= route_url %>/1
   def update
     if @<%= orm_instance.update("#{singular_table_name}_params") %>
-      render json: {success: true, location: url_for("/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}")}
+      if request.xhr?
+        render json: {success: true, location: url_for("/<%= plural_table_name %>/#@{<%= singular_table_name %>.id}")}
+      else
+        redirect_to "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"
+      end
     else
       render :edit
     end

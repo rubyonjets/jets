@@ -50,7 +50,7 @@ class Jets::Processors::MainProcessor
         # at ruby_server.rb but keeping around for posterity.
       end
 
-      Jets.report_exception(e)
+      Jets.on_exception(e)
       raise(e) # raise error to ruby_server.rb to rescue and handle
     end
   end
