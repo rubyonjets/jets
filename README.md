@@ -30,7 +30,7 @@ Jets supports writing AWS Lambda functions with Ruby. You define them in the `ap
 app/functions/simple.rb:
 
 ```ruby
-def handle(event:, context:)
+def handler_function(event:, context:)
   puts "hello world"
   {hello: "world"}
 end
