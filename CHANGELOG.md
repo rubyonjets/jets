@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.2]
+- Merge pull request #88 from mveer99/master: faulty -T cp option
+
 ## [1.3.1]
 - Merge pull request #87 from tongueroo/on-exception
 - fix helpers for binary support
