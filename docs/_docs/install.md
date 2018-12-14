@@ -20,7 +20,7 @@ gem "jets"
 
 ### Ruby
 
-Jets uses Ruby 2.5.0 and code written with patch variants of it will work.
+Jets uses Ruby 2.5 and code written with patch variants of it will work.
 
 ### Yarn
 
