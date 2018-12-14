@@ -29,9 +29,8 @@ class Jets::Builders
       code = "#{Jets.build_root}/stage/code"
       opt_gems = "#{code}/opt/ruby/gems/#{Jets::Gems.ruby_folder}"
       vendor_gems = "#{code}/vendor/bundle/ruby/#{Jets::Gems.ruby_folder}"
-      # https://stackoverflow.com/questions/23698183/how-to-force-cp-to-overwrite-directory-instead-of-creating-another-one-inside
-      # $ cp -TRv foo/ bar/
-      sh "cp -TR #{opt_gems} #{vendor_gems}"
+      # https://unix.stackexchange.com/questions/146441/copy-over-existing-files-without-confirmation
+      sh "yes | cp -rf #{opt_gems} #{vendor_gems}"
       # clean up opt compiled gems
       FileUtils.rm_rf("#{code}/opt/ruby")
     end
