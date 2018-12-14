@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.4]
+- fix gem replacer for macosx by using rsync to copy
+
 ## [1.3.3]
 - Revert Merge pull request #88 from mveer99/master: faulty -T cp option for now
 
