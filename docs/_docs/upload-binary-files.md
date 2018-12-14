@@ -27,6 +27,8 @@ When the user submits the form, the controller will receive a `params` containin
 
 You can use `params[:post][:photo]` in the controller to read the file and save it to whenever you need, say s3.
 
+This blog tutorial provides and an example of image uploading with Jets and Carrierwave: [Image Upload Carrierwave Tutorial](https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support).
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/assets-serving.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/action-filters.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
