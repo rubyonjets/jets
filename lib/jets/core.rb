@@ -164,7 +164,7 @@ module Jets::Core
 
   def on_exception(exception)
     Jets::Turbine.subclasses.each do |subclass|
-      reporters = subclass.exception_reporters || []
+      reporters = subclass.on_exceptions || []
       reporters.each do |label, block|
         block.call(exception)
       end
