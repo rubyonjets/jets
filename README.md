@@ -36,7 +36,12 @@ def handler_function(event:, context:)
 end
 ```
 
-Though simple functions are supported by Jets, they do not really add much value as other ways to write Ruby code with Jets. Classes like Controllers and Jobs add many conveniences and are more powerful to use. We’ll cover them next.
+Here's the function in the Lambda console:
+
+![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/jets-simple-lambda-function-console.png)
+
+
+Though simple functions are supported by Jets, they do not add much value as other ways to write Ruby code with Jets. Classes like [Controllers](http://rubyonjets.com/docs/controllers/) and [Jobs](http://rubyonjets.com/docs/jobs/) add many conveniences and are more powerful to use. We’ll cover them next.
 
 ### Jets Controllers
 
@@ -60,7 +65,11 @@ class PostsController < ApplicationController
 end
 ```
 
-Jets creates Lambda functions for each public method in your controller.
+Helper methods like `params` provide the parameters from the API Gateway event. The `render` method renders a Lambda Proxy structure back that API Gateway understands.
+
+Jets creates Lambda functions for each public method in your controller. Here they are in the Lambda console:
+
+![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-lambda-functions-controller.png)
 
 ### Jets Routing
 
@@ -83,6 +92,10 @@ Jets.application.routes.draw do
   any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 end
 ```
+
+The `routes.rb` gets translated to API Gateway resources:
+
+![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/quick-start/demo-api-gateway.png)
 
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
@@ -112,7 +125,9 @@ class HardJob < ApplicationJob
 end
 ```
 
-`HardJob#dig` runs every 10 hours and `HardJob#lift` runs every 12 hours.
+`HardJob#dig` runs every 10 hours and `HardJob#lift` runs every 12 hours.  The `rate` and `cron` methods created CloudWatch Event Rules. Example:
+
+![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-job-cloudwatch-rule.png)
 
 ### Jets Deployment
 
@@ -126,9 +141,15 @@ After deployment, you can test the Lambda functions with the AWS Lambda console 
 
 ![Lambda Console](https://s3.amazonaws.com/boltops-demo/images/screenshots/lambda-console-posts-controller-index.png)
 
-### Live Demo
+### Live Demos
 
-Here's a [Live Demo](https://demo.rubyonjets.com/posts) of the quintessential CRUD Jets app.
+Here are some demos of Jets applications:
+
+* [Quintessential CRUD Jets app](https://demo.rubyonjets.com/posts)
+* [Rails Running on AWS Lambda Mega Mode Example](https://mega.demo.rubyonjets.com/)
+* [Image Upload Example](https://upload.demo.rubyonjets.com/)
+
+Please feel free to add your own example to the [jets-examples](https://github.com/tongueroo/jets-examples) repo.
 
 ### Rails Support
 
@@ -169,3 +190,7 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Jets Tutorial Extra Environments Part 7](https://blog.boltops.com/2018/09/13/jets-tutorial-extra-environments-part-7)
 * [Jets Tutorial Different Environments Part 8](https://blog.boltops.com/2018/09/26/jets-tutorial-different-environments-part-8)
 * [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
+* [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
+* [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
+* [Jets Delete Tutorial](https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete)
+* [Jets Image Uploads Tutorial with CarrierWave](https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support)
