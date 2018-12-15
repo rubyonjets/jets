@@ -52,7 +52,7 @@ end
 
 ## Changing Endpoint Configuration Warning
 
-When routes change, Jets detects this and fully re-creates the Rest API Gateway. For most 99% of the changes there's no downtime. However, if you change the API Gateway [domain endpoint_type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-domainname-endpointconfiguration.html) REGIONAL to EDGE and vice versa, this results in downtime while the new endpoint is being created.
+When routes change, Jets detects this and fully re-creates the Rest API Gateway. There is no downtime when routes are changed. However, if you change the API Gateway [domain endpoint_type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-domainname-endpointconfiguration.html) REGIONAL to EDGE and vice versa, this results in downtime while the new endpoint type is being created.
 
 * Going from REGIONAL to EDGE results in about **10 minutes** of unavailability. That's about how long it takes API Gateway to create the CloudFront Edge endpoint.
 * Going from EDGE to REGIONAL results in about **30 seconds** of unavailability. That's about how long it takes API Gateway to create the Regional endpoint.
