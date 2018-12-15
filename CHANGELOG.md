@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.5]
+- Merge pull request #90 from tongueroo/on-exception fix on_exception hook
+
 ## [1.3.4]
 - fix gem replacer for macosx by using rsync to copy
 
