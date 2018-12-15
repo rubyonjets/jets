@@ -9,7 +9,7 @@ The interface is currently being developed and will be refined. Here's a table o
 Method | Description
 --- | ---
 initalizer | Runs as part of the Jets boot process. This runs after Jets application has been booted with database setup.
-exception_reporter | Registers an exception reporter. Whenever there is an application-wide exception, the registered block of code will be run. This is useful to report errors to error reporting services.
+on_exception | Fires whenever there is an application-wide exception, the registered block of code will be run. This is useful to report errors to error reporting services.
 
 ## Turbine Form
 
@@ -26,7 +26,7 @@ module SentryJets
       end
     end
 
-    exception_reporter 'sentry.capture' do |exception|
+    on_exception 'sentry.capture' do |exception|
       Raven.capture_exception(exception)
     end
   end
