@@ -15,17 +15,18 @@ Here's a diagram also:
 
 ## Vanity Endpoint
 
+NOTE: If you have already previously set up an API Custom Domain, when Jets tries to add the Custom Domain it will fail. This is because the Custom Domain already exists, CloudFormation sees this, and will not destructively delete existing resources managed outside of its purview. Currently, both the Custom Domain and the Route53 record associated with that domain must be delete before running `jets deploy`. This will occur downtime until the `jets deploy` completes. Fortunately, this only needs to be done once and after that Jets manages the vanity endpoint.  It is recommended that you set up the Custom Domain as early as possible so you do not run into this down the road.
+
 To create a vanity endpoint edit the `config/application.rb` and edit `domain.certificate_arn` and `domain.hosted_zone_name`:
 
 ```ruby
 Jets.application.configure do
-  config.domain.certificate_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
+  config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
   config.domain.hosted_zone_name = "coolapp.com" # String
-  # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is nil
+  # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is the example convention
 
-  # NOTE: Changing the endpoint_configuration results in 10 minutes of downtime
-  config.domain.endpoint_configuration = { types: ["REGIONAL"] } # EDGE or REGIONAL
-  config.domain.regional_certificate_arn = "..." # String
+  # NOTE: Changing the endpoint_configuration can result 10 minutes of downtime if going from REGIONAL to EDGE
+  # config.domain.endpoint_configuration = { types: ["REGIONAL"] } # EDGE or REGIONAL
 end
 ```
 
@@ -51,7 +52,7 @@ end
 
 ## Changing Endpoint Configuration Warning
 
-When routes change, Jets detects this and fully re-creates the Rest API Gateway. If you change the API Gateway [domain endpoint_type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-domainname-endpointconfiguration.html) REGIONAL to EDGE and vice versa, this results in downtime as the CloudFormation updates the endpoint type in-place.
+When routes change, Jets detects this and fully re-creates the Rest API Gateway. For most 99% of the changes there's no downtime. However, if you change the API Gateway [domain endpoint_type](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-apigateway-domainname-endpointconfiguration.html) REGIONAL to EDGE and vice versa, this results in downtime while the new endpoint is being created.
 
 * Going from REGIONAL to EDGE results in about **10 minutes** of unavailability. That's about how long it takes API Gateway to create the CloudFront Edge endpoint.
 * Going from EDGE to REGIONAL results in about **30 seconds** of unavailability. That's about how long it takes API Gateway to create the Regional endpoint.
