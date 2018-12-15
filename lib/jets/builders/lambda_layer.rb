@@ -43,7 +43,7 @@ class Jets::Builders
       ruby_folder = Jets::Gems.ruby_folder
       dest = "#{code_area}/vendor/bundle/ruby/#{ruby_folder}"
       FileUtils.mkdir_p(File.dirname(dest))
-      puts "ln -sf /opt/ruby/gems/#{ruby_folder} #{dest}" # uncommen to debug
+      # puts "ln -sf /opt/ruby/gems/#{ruby_folder} #{dest}" # uncomment to debug
       FileUtils.ln_sf("/opt/ruby/gems/#{ruby_folder}", dest)
     end
   end

@@ -1,7 +1,7 @@
 module Jets
   class Turbine
     class_attribute :initializers
-    class_attribute :exception_reporters
+    class_attribute :on_exceptions
 
     class << self
       def subclasses
@@ -17,9 +17,13 @@ module Jets
         self.initializers[label] = block
       end
 
+      def on_exception(label, &block)
+        self.on_exceptions ||= {}
+        self.on_exceptions[label] = block
+      end
+
       def exception_reporter(label, &block)
-        self.exception_reporters ||= {}
-        self.exception_reporters[label] = block
+        on_exception(label, &block)
       end
     end
   end
