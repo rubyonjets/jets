@@ -17,7 +17,7 @@ Here's a diagram also:
 
 NOTE: If you have already previously set up an API Custom Domain, when Jets tries to add the Custom Domain it will fail. This is because the Custom Domain already exists, CloudFormation sees this, and will not destructively delete existing resources managed outside of its purview. Currently, both the Custom Domain and the Route53 record associated with that domain must be delete before running `jets deploy`. This will occur downtime until the `jets deploy` completes. Fortunately, this only needs to be done once and after that Jets manages the vanity endpoint.  It is recommended that you set up the Custom Domain as early as possible so you do not run into this down the road.
 
-To create a vanity endpoint edit the `config/application.rb` and edit `domain.certificate_arn` and `domain.hosted_zone_name`:
+To create a vanity endpoint edit the `config/application.rb` and edit `domain.cert_arn` and `domain.hosted_zone_name`:
 
 ```ruby
 Jets.application.configure do
