@@ -6,6 +6,10 @@
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_800/https://blog.boltops.com/img/posts/2018/08/introducing-jets-v5.png
   title: "Introducing Jets: A Ruby Serverless Framework"
 
+- url: https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_640/https://blog.boltops.com/img/posts/2018/11/jets-mega-mode-rails-on-aws-lambda-v1.png
+  title: "Mega Mode: Rails Support"
+
 - url: https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_490/https://blog.boltops.com/img/posts/2018/12/image-upload-tutorial-v1.png
   title: "Image Upload Carrierwave Tutorial"
@@ -13,10 +17,6 @@
 - url: https://blog.boltops.com/2018/09/25/toronto-serverless-presentation-jets-framework-on-aws-lambda
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_657/https://blog.boltops.com/img/posts/2018/09/jets-toronto-serverless-meetup-v1.png
   title: "Toronto Serverless Presentation"
-
-- url: https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda
-  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_640/https://blog.boltops.com/img/posts/2018/11/jets-mega-mode-rails-on-aws-lambda-v1.png
-  title: "Mega Mode: Rails Support"
 
 - url: https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_746/https://blog.boltops.com/img/posts/2018/11/jets-delete-v2.png
