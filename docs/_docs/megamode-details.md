@@ -1,5 +1,5 @@
 ---
-title: Mega Mode Considerations
+title: Mega Mode Details
 ---
 
 Jets Mega Mode is designed to achieve Rack support in the most seamless fashion possible.  Here are some aspects of how Mega Mode works.
@@ -11,7 +11,7 @@ Upon `jets deploy`, the jets build process reconfigures the rack application and
 1. The [jets-rails](https://github.com/tongueroo/jets-rails) gem is added to the Gemfile. The jets-rails gem adjusts the Rails application so it works with AWS Lambda and API Gateway.  Notably, it adjusts the application to account for API Gateway stage urls.
 2. The Rails logger is set up to send output to CloudWatch Logs also. This is helpful for debugging.
 3. A `config/initializers/jets.rb` initializer is added to override some settings like assets pipeline settings and account for the API Gateway stage name.
-4. The `Gemfile` is checked for a ruby declaration and comments it out.  Jets packages its own version of ruby. So the ruby declaration is not necessary and can cause issues when it mismatches with the Jets ruby version.
+4. The `Gemfile` is checked for a ruby declaration and is commented it out.  The ruby declaration is not necessary and can cause issues when it mismatches with the AWS Lambda Ruby version.
 
 ## Separate Server Process
 
@@ -47,7 +47,7 @@ Using the `/tmp` folder also increases the amount of space available to run appl
 
 To take advantage of the `/tmp` space Jets lazy loads files into it.  [Lazy loading]({% link _docs/lazy-loading.md %}) means the rack app is loaded as part of the first Lambda request within the [Lambda Execution Context](https://docs.aws.amazon.com/lambda/latest/dg/running-lambda-code.html).
 
-Lazy Loading adds overhead on the first Lambda request.  The overhead depends on how large your rack folder is.  If the rack folder is a few megabytes, then the overhead is about 1-3 seconds. This performance is addressed by [Prewarming]({% link _docs/prewarming.md %}) the application.  Additional requests after the prewarm request are in the milliseconds range. A Jets request ranges in the 10s of milliseconds and a Rails request ranges in the 100s of milliseconds, usually from 50ms to 500ms.
+Lazy Loading adds overhead on the first Lambda request.  The overhead depends on how large your rack folder is.  If the rack folder is a few megabytes, then the overhead is about 1-3 seconds. This performance is addressed by [Prewarming]({% link _docs/prewarming.md %}) the application.  Additional requests after the prewarm request are in the milliseconds range. A Jets request ranges in the 10s of milliseconds and a Rails request ranges in the 100s of milliseconds, usually from 30ms to 300ms.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/rails-support.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/routing-overview.md %}">Next Step</a>

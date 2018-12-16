@@ -63,5 +63,5 @@ Jets Mega Mode has been tested and works Rails 4 and above.
 Currently MySQL and PostgreSQL are supported via [ActiveRecord]({% link _docs/database-activerecord.md %}).  You will have to configure your Rails app with a version of the database adapter that is supported by Jets.  This is usually done with the Gemfile and the `config/database.yml`.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/megamode.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/megamode-considerations.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/megamode-details.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

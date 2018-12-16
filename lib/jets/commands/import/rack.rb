@@ -9,7 +9,7 @@ class Jets::Commands::Import
         #{"="*30}
         Congrats! The Rack project from #{@source} has been imported to the rack folder.
 
-        Note, generic rack projects will likely need some adjustments to take into account API Gateway stages and logging. For more info refer to [Mega Mode Considerations](http://rubyonjets.com//megamode-considerations/).
+        Note, generic rack projects will likely need some adjustments to take into account API Gateway stages and logging. For more info refer to [Mega Mode Considerations](http://rubyonjets.com//megamode-details/).
       EOL
     end
   end
