@@ -180,7 +180,10 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 ## Learning Content
 
 * [Introducing Jets: A Ruby Serverless Framework](https://blog.boltops.com/2018/08/18/introducing-jets-a-ruby-serverless-framework)
-* [AWS Lambda Ruby Support at Native Speed with Jets](https://blog.boltops.com/2018/09/02/aws-lambda-ruby-support-at-native-speed-with-jets)
+* [Official AWS Ruby Support for Jets](https://blog.boltops.com/2018/12/12/official-aws-ruby-support-for-jets-serverless-framework)
+* [Mega Mode: Rails Support](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda)
+* [Toronto Serverless Presentation](https://blog.boltops.com/2018/09/25/toronto-serverless-presentation-jets-framework-on-aws-lambda)
+* [Jets Image Uploads Tutorial with CarrierWave](https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support)
 * [Jets Tutorial An Introductory CRUD App Part 1](https://blog.boltops.com/2018/09/07/jets-tutorial-crud-app-introduction-part-1)
 * [Jets Tutorial Deploy to AWS Lambda Part 2](https://blog.boltops.com/2018/09/08/jets-tutorial-deploy-to-aws-lambda-part-2)
 * [Jets Tutorial Debugging Logs Part 3](https://blog.boltops.com/2018/09/09/jets-tutorial-debugging-logs-part-3)
@@ -193,4 +196,3 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
 * [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
 * [Jets Delete Tutorial](https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete)
-* [Jets Image Uploads Tutorial with CarrierWave](https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support)
