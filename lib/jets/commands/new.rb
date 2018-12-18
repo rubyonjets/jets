@@ -32,7 +32,11 @@ module Jets::Commands
         @bootstrap = options[:bootstrap]
         @database = options[:database]
         @webpacker = options[:webpacker]
-      when 'api', 'job'
+      when 'api'
+        @bootstrap = false
+        @database = options[:database]
+        @webpacker = false
+      when 'job'
         @bootstrap = false
         @database = false
         @webpacker = false
