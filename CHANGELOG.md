@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.7]
+- #100 from tongueroo/vendor-gems bundle in vendor/gems folder to avoid vendor/bundle collison
+- use database from cli option in api mode for new
+
 ## [1.3.6]
 - Merge pull request #91 from mveer99/patch-1 jets deploy production docs
 - #96 from tongueroo/mega-mode-prod-deploy fix mega mode prod deploy, fix typo
