@@ -39,7 +39,12 @@ class Jets::Commands::Import
       puts "Creating rack folder"
       template_path = File.expand_path(@source)
       set_source_paths(template_path)
-      directory ".", rack_folder, exclude_pattern: %r{.git}
+      begin
+        directory ".", rack_folder, exclude_pattern: %r{.git}
+      rescue Thor::Error => e
+        puts e.message.colorize(:red)
+        exit 1
+      end
     end
 
     def set_source_paths(*paths)
@@ -54,15 +59,18 @@ class Jets::Commands::Import
 
     # normalize repo_url
     def repo_url
-      if @source.include?('github.com')
+      if repo?
         @source # leave as is, user has provided full github url
       else
+        # Defaults to GitHub
         "https://github.com/#{@source}"
       end
     end
 
     def repo?
-      @source.include?('github.com')
+      @source.include?('github.com') ||
+      @source.include?('bitbucket.org') ||
+      @source.include?('gitlab.com')
     end
 
     def check_git_installed
