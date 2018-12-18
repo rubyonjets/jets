@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.6]
+- Merge pull request #91 from mveer99/patch-1 jets deploy production docs
+- #96 from tongueroo/mega-mode-prod-deploy fix mega mode prod deploy, fix typo
+- #97 from tongueroo/jets-delete-env support jets delete ENV
+- #98 from tongueroo/support-import-bb-and-gitlab add import support for bitbucket and gitlab also
+
 ## [1.3.5]
 - Merge pull request #90 from tongueroo/on-exception fix on_exception hook
 
