@@ -39,7 +39,7 @@ class Jets::Builders
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned out.
     def jetskeep
-      defaults = %w[.bundle bundled pack handlers public/assets]
+      defaults = %w[.bundle pack handlers public/assets]
       path = "#{@project_root}/.jetskeep"
       return defaults unless File.exist?(path)
 
@@ -48,9 +48,9 @@ class Jets::Builders
       (defaults + keep).uniq
     end
 
-    # folders to remove in the vendor/bundle folder regardless of the level of the folder
+    # folders to remove in the vendor/gems folder regardless of the level of the folder
     def tidy_bundled
-      Dir.glob("#{@project_root}/vendor/bundle/**/*").each do |path|
+      Dir.glob("#{@project_root}/vendor/gems/**/*").each do |path|
         next unless File.directory?(path)
         dir = File.basename(path)
         next unless always_removals.include?(dir)
@@ -65,7 +65,7 @@ class Jets::Builders
     # actual cache folders that they used.
     def remove_gem_cache
       ruby_minor_version = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.0'
-      cache_path = "#{@project_root}/vendor/bundle/ruby/#{ruby_minor_version}/cache"
+      cache_path = "#{@project_root}/vendor/gems/ruby/#{ruby_minor_version}/cache"
       FileUtils.rm_rf(cache_path)
     end
 
