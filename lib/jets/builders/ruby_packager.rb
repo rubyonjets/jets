@@ -18,11 +18,11 @@ class Jets::Builders
       setup_bundle_config
     end
 
-    #   build gems in vendor/bundle/ruby/2.5.0 (done in install phase)
+    #   build gems in vendor/gems/ruby/2.5.0 (done in install phase)
     # replace_compiled_gems:
-    #   remove binary gems in vendor/bundle/ruby/2.5.0
+    #   remove binary gems in vendor/gems/ruby/2.5.0
     #   extract binary gems in opt/ruby/gems/2.5.0
-    #   move binary gems from opt/ruby/gems/2.5.0 to vendor/bundle/ruby/2.5.0
+    #   move binary gems from opt/ruby/gems/2.5.0 to vendor/gems/ruby/2.5.0
     def finish
       return unless gemfile_exist?
 
@@ -57,7 +57,7 @@ class Jets::Builders
       Bundler.with_clean_env do
         sh(
           "cd #{cache_area} && " \
-          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path #{cache_area}/vendor/bundle --without development test"
+          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path #{cache_area}/vendor/gems --without development test"
         )
       end
 
@@ -118,8 +118,8 @@ class Jets::Builders
         md[1] # git_sha
       end
 
-      # IE: /tmp/jets/demo/cache/vendor/bundle/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
-      Dir.glob("#{cache_area}/vendor/bundle/ruby/2.5.0/bundler/gems/*").each do |path|
+      # IE: /tmp/jets/demo/cache/vendor/gems/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
+      Dir.glob("#{cache_area}/vendor/gems/ruby/2.5.0/bundler/gems/*").each do |path|
         sha = path.split('-').last[0..6] # only first 7 chars of the git sha
         unless git_shas.include?(sha)
           # puts "Removing old submoduled gem: #{path}" # uncomment to see and debug
@@ -140,7 +140,7 @@ class Jets::Builders
       # Override project's .bundle/config and ensure that .bundle/config matches
       # at these 2 spots:
       #   app_root/.bundle/config
-      #   vendor/bundle/.bundle/config
+      #   vendor/gems/.bundle/config
       cache_bundle_config = "#{cache_area}/.bundle/config"
       app_bundle_config = "#{@full_app_root}/.bundle/config"
       FileUtils.mkdir_p(File.dirname(app_bundle_config))
@@ -155,7 +155,7 @@ class Jets::Builders
       text =<<-EOL
 ---
 BUNDLE_FROZEN: "true"
-BUNDLE_PATH: "vendor/bundle"
+BUNDLE_PATH: "vendor/gems"
 BUNDLE_WITHOUT: "development:test"
 EOL
       bundle_config = "#{cache_area}/.bundle/config"
@@ -177,15 +177,15 @@ EOL
     end
 
     def copy_cache_gems
-      vendor_bundle = "#{@full_app_root}/vendor/bundle"
+      vendor_bundle = "#{@full_app_root}/vendor/gems"
       if File.exist?(vendor_bundle)
         puts "Removing current vendor_bundle from project"
         FileUtils.rm_rf(vendor_bundle)
       end
       # Leave #{Jets.build_root}/vendor_bundle behind to act as cache
-      if File.exist?("#{cache_area}/vendor/bundle")
+      if File.exist?("#{cache_area}/vendor/gems")
         FileUtils.mkdir_p(File.dirname(vendor_bundle))
-        FileUtils.cp_r("#{cache_area}/vendor/bundle", vendor_bundle)
+        FileUtils.cp_r("#{cache_area}/vendor/gems", vendor_bundle)
       end
     end
 

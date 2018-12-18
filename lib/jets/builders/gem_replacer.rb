@@ -19,7 +19,7 @@ class Jets::Builders
 
       # At this point the current compiled gems have been removed and compiled gems
       # have been unpacked to code/opt. We can take the unpacked gems in opt and fully
-      # move them into vendor/bundle gems now.
+      # move them into vendor/gems gems now.
       move_opt_gems_to_vendor
 
       tidy
@@ -28,7 +28,7 @@ class Jets::Builders
     def move_opt_gems_to_vendor
       code = "#{Jets.build_root}/stage/code"
       opt_gems = "#{code}/opt/ruby/gems/#{Jets::Gems.ruby_folder}"
-      vendor_gems = "#{code}/vendor/bundle/ruby/#{Jets::Gems.ruby_folder}"
+      vendor_gems = "#{code}/vendor/gems/ruby/#{Jets::Gems.ruby_folder}"
       # https://stackoverflow.com/questions/23698183/how-to-force-cp-to-overwrite-directory-instead-of-creating-another-one-inside
       # Trailing slashes are required
       sh "rsync -a --links #{opt_gems}/ #{vendor_gems}/"
