@@ -44,7 +44,7 @@ class Jets::CLI
   def boot_jets
     command = thor_args.first
     if !%w[new help].include?(command)
-      set_jets_env_for_deploy_command!
+      set_jets_env_from_cli_arg!
       Jets.boot
     end
   end
@@ -56,9 +56,9 @@ class Jets::CLI
   # at the time.
   #
   # Defaults to development when not set.
-  def set_jets_env_for_deploy_command!
+  def set_jets_env_from_cli_arg!
     command, env = thor_args[0..1]
-    return unless command == "deploy"
+    return unless %w[deploy delete].include?(command)
     env = nil if env&.starts_with?('-')
     ENV['JETS_ENV'] = env ? env : 'development'
   end

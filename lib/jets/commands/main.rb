@@ -16,7 +16,7 @@ module Jets::Commands
     long_desc Help.text(:deploy)
     # Note the environment is here to trick the Thor parser to allowing an
     # environment parameter. It is not actually set here.  It is set earlier
-    # in cli.rb: set_jets_env_for_deploy_command!
+    # in cli.rb: set_jets_env_from_cli_arg!
     def deploy(environment=nil)
       Deploy.new(options).run
     end
@@ -25,7 +25,10 @@ module Jets::Commands
     long_desc Help.text(:delete)
     option :sure, type: :boolean, desc: "Skip are you sure prompt."
     option :wait, type: :boolean, default: true, desc: "Wait for stack deletion to complete."
-    def delete
+    # Note the environment is here to trick the Thor parser to allowing an
+    # environment parameter. It is not actually set here.  It is set earlier
+    # in cli.rb: set_jets_env_from_cli_arg!
+    def delete(environment=nil)
       Delete.new(options).run
     end
 
