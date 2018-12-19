@@ -180,7 +180,7 @@ module Jets::Lambda::Dsl
           logical_id = associated.logical_id
           attributes = associated.attributes
 
-          logical_id = logical_id.sub(/\d+$/,'')
+          logical_id = logical_id.to_s.sub(/\d+$/,'')
           new_definition = { "#{logical_id}#{n}" => attributes }
           numbered_resources << Jets::Resource::Associated.new(new_definition)
           n += 1
