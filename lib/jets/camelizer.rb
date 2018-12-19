@@ -59,7 +59,7 @@ module Jets
           "TemplateUrl" => "TemplateURL",
           "Ttl" => "TTL",
           "MaxReceiveCount" => "maxReceiveCount",
-          "DeadLetterQueueArn" => "deadLetterQueueArn",
+          "DeadLetterTargetArn" => "deadLetterTargetArn",
         }
       end
     end
