@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.3.9]
+- #106 from eamsc/sqs-special-map
+- #107 from eamsc/sqs-resource
+- Added SQS sdk/client/resource for use in custom resources
+- Fix shared ruby function runtime
+
+## [1.3.8]
+- Merge pull request #101 from eamsc/sqs-special-map Added SQS RedrivePolicy attributes to special map because they aren't being properly camelized.
+- Merge pull request #102 from eamsc/resource-symbol-sub fix for undefined method `sub` for symbol
+
 ## [1.3.7]
 - #100 from tongueroo/vendor-gems bundle in vendor/gems folder to avoid vendor/bundle collison
 - use database from cli option in api mode for new

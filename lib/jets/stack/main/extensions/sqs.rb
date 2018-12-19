@@ -1,14 +1,19 @@
 module Jets::Stack::Main::Dsl
   module Sqs
     def sqs_queue(id, props={})
+      id = logical_id(id)
       resource(id, "AWS::SQS::Queue", props)
       output(id)
     end
+
     def sqs_lambda_trigger(id, props={})
+      id = logical_id(id)
       resource(id, "AWS::Lambda::EventSourceMapping", props)
       output(id)
     end
+
     def sqs_queue_with_lambda_trigger(id, props={})
+      id = logical_id(id)
       defaults = {
         dlq: {
           queue_name: "#{id}-DLQ"
@@ -27,10 +32,26 @@ module Jets::Stack::Main::Dsl
         }
       }
 
-      sqs_queue("#{id}DeadLetterQueue", defaults[:dlq].deep_merge(props.fetch(:dlq, {})))
-      sqs_queue("#{id}Queue", defaults[:queue].deep_merge(props.fetch(:queue, {})))
-      sqs_lambda_trigger("#{id}LambdaTrigger", defaults[:lambda].deep_merge(props.fetch(:lambda, {})))
+      # Setup properties for each resource
+      dlq = queue_props(:dlq, defaults, props)
+      queue = queue_props(:queue, defaults, props)
+      lambda = queue_props(:lambda, defaults, props)
+
+      sqs_queue("#{id}DeadLetterQueue", dlq)
+      sqs_queue("#{id}Queue", queue)
+      sqs_lambda_trigger("#{id}LambdaTrigger", lambda)
+
       [output("#{id}DeadLetterQueue"), output("#{id}Queue"), output("#{id}LambdaTrigger")]
-    end    
+    end
+
+  private
+    # name - :dlq, :queue, or :lambda - resource name as a symbol
+    def queue_props(name, defaults, props)
+      if name == :lambda
+        props[:lambda][:function_name] = "!Ref #{logical_id(props[:lambda][:function_name])}"
+      end
+
+      defaults[name].deep_merge(props.fetch(name, {}))
+    end
   end
 end

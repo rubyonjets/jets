@@ -36,7 +36,7 @@ module Jets::Stack::Main::Dsl
         memory_size: Jets.config.function.memory_size,
       }
       props = defaults.merge(props)
-      props[:runtime] = "nodejs8.10" if props[:runtime].to_s == "ruby"
+      props[:runtime] = "ruby2.5" if props[:runtime].to_s == "ruby"
       props[:handler] = handler(props[:handler])
 
       resource(id, "AWS::Lambda::Function", props)

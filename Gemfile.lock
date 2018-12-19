@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.3.7)
+    jets (1.3.9)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -23,6 +23,7 @@ PATH
       aws-sdk-lambda
       aws-sdk-s3
       aws-sdk-sns
+      aws-sdk-sqs
       colorize
       dotenv
       gems
@@ -66,7 +67,7 @@ GEM
       tzinfo (~> 1.1)
     arel (9.0.0)
     aws-eventstream (1.0.1)
-    aws-partitions (1.125.0)
+    aws-partitions (1.126.0)
     aws-sdk-apigateway (1.23.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
@@ -97,6 +98,9 @@ GEM
     aws-sdk-sns (1.9.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
+    aws-sdk-sqs (1.10.0)
+      aws-sdk-core (~> 3, >= 3.39.0)
+      aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
     builder (3.2.3)
     byebug (10.0.2)
@@ -105,7 +109,7 @@ GEM
     crass (1.0.4)
     diff-lcs (1.3)
     dotenv (2.5.0)
-    erubi (1.7.1)
+    erubi (1.8.0)
     gems (1.1.1)
       json
     hashie (3.6.0)
