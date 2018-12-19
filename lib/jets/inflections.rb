@@ -17,7 +17,8 @@ module Jets
       # base custom inflections
       def base
         {
-          sns: 'sns'
+          sns: 'sns',
+          sqs: 'sqs'
         }
       end
 

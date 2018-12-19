@@ -23,6 +23,7 @@ PATH
       aws-sdk-lambda
       aws-sdk-s3
       aws-sdk-sns
+      aws-sdk-sqs
       colorize
       dotenv
       gems
@@ -97,6 +98,9 @@ GEM
     aws-sdk-sns (1.9.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
+    aws-sdk-sqs (1.10.0)
+      aws-sdk-core (~> 3, >= 3.39.0)
+      aws-sigv4 (~> 1.0)           
     aws-sigv4 (1.0.3)
     builder (3.2.3)
     byebug (10.0.2)

@@ -6,6 +6,7 @@ require "aws-sdk-s3"
 require "aws-sdk-sts"
 # Not used in Jets internally but convenient for shared resources
 require "aws-sdk-sns"
+require "aws-sdk-sqs"
 
 module Jets::AwsServices
   autoload :StackStatus, 'jets/aws_services/stack_status'
@@ -46,6 +47,11 @@ module Jets::AwsServices
     Aws::SNS::Client.new
   end
   memoize :sns
+
+  def sqs
+    Aws::SQS::Client.new
+  end
+  memoize :sqs
 
   def sts
     Aws::STS::Client.new

@@ -14,6 +14,7 @@ class Jets::Resource
   autoload :Route53, 'jets/resource/route53'
   autoload :S3, 'jets/resource/s3'
   autoload :Sns, 'jets/resource/sns'
+  autoload :Sqs, 'jets/resource/sqs'
   autoload :Standardizer, 'jets/resource/standardizer'
 
   attr_reader :definition, :replacements
