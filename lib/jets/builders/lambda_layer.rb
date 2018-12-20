@@ -2,50 +2,68 @@ class Jets::Builders
   class LambdaLayer
     include Util
 
-    # At this point we gems have all been moved to stage/code/vendor/gems, this includes
-    # binary gems, a good state. This method moves them:
+    # At this point gems are in the stage/code and stage/rack folders still.
+    # We consolidate all gems to stage/opt.
+    # Then replace the binary gems.
+    def build
+      consolidate_gems_to_opt
+      replace_compiled_gems
+    end
+
+    # Also restructure the folder from:
+    #   vendor/gems/ruby/2.5.0
+    # To:
+    #   ruby/gems/2.5.0
+    #
+    # For Lambda Layer structure
+    def consolidate_gems_to_opt
+      src = "#{stage_area}/code/vendor/gems/ruby/2.5.0"
+      dest = "#{stage_area}/opt/ruby/gems/2.5.0"
+      rsync_and_link(src, dest)
+
+      return unless Jets.rack?
+
+      src = "#{stage_area}/rack/vendor/gems/ruby/2.5.0"
+      rsync_and_link(src, dest)
+    end
+
+    def rsync_and_link(src, dest)
+      FileUtils.mkdir_p(dest)
+      # Trailing slashes are required
+      sh "rsync -a --links #{src}/ #{dest}/"
+
+      FileUtils.rm_rf(src) # blow away original 2.5.0 folder
+
+      # Create symlink that will point to the gems in the Lambda Layer:
+      #   stage/opt/ruby/gems/2.5.0 -> /opt/ruby/gems/2.5.0
+      FileUtils.ln_sf("/opt/ruby/gems/#{Jets::Gems.ruby_folder}", src)
+    end
+
+    # replace_compiled_gems:
+    #   remove binary gems in vendor/gems/ruby/2.5.0
+    #   extract binary gems in opt/ruby/gems/2.5.0
+    #   move binary gems from opt/ruby/gems/2.5.0 to vendor/gems/ruby/2.5.0
+    #
+    # After this point, gems have been replace in stage/code/vendor/gems with their
+    # binary extensions: a good state. This method moves these gems to the Lambda
+    # Layers structure and creates a symlinks to it.  First:
     #
     #   from stage/code/vendor/gems/ruby/2.5.0
     #   to stage/opt/ruby/gems/2.5.0
     #
-    # So we can move gems into the Lambda Layer. Important folders later:
+    # Then:
     #
-    #   stage/code/opt/lib
-    #   stage/code/opt/ruby
+    #   stage/code/vendor/gems/ruby/2.5.0 -> /opt/ruby/gems/2.5.0
     #
-    def build
-      move_opt_to_stage
-      move_vendor_to_opt
-      symlink_vendor_gems
-    end
-
-    def move_opt_to_stage
-      opt_original = "#{code_area}/opt"
-      opt = "#{stage_area}/opt"
-      FileUtils.mkdir_p(File.dirname(opt))
-      FileUtils.mv(opt_original, opt)
-    end
-
-    def move_vendor_to_opt
-      ruby_folder = Jets::Gems.ruby_folder
-      gems_original = "#{code_area}/vendor/gems/ruby/#{ruby_folder}"
-      gems = "#{stage_area}/opt/ruby/gems/#{ruby_folder}"
-
-      FileUtils.mkdir_p(File.dirname(gems))
-      FileUtils.mv(gems_original, gems)
-      # Deleting in this way to make sure folders are empty before we delete them
-      FileUtils.rmdir("#{code_area}/vendor/gems/ruby")
-      FileUtils.rmdir("#{code_area}/vendor/gems")
-      FileUtils.rmdir("#{code_area}/vendor") if Dir.empty?("#{code_area}/vendor")
-    end
-
-    # Simple logic: vendor/gems/ruby/2.5.0 -> /opt/ruby/gems/2.5.0
-    def symlink_vendor_gems
-      ruby_folder = Jets::Gems.ruby_folder
-      dest = "#{code_area}/vendor/gems/ruby/#{ruby_folder}"
-      FileUtils.mkdir_p(File.dirname(dest))
-      # puts "ln -sf /opt/ruby/gems/#{ruby_folder} #{dest}" # uncomment to debug
-      FileUtils.ln_sf("/opt/ruby/gems/#{ruby_folder}", dest)
+    def replace_compiled_gems
+      project_root = "#{stage_area}/opt"
+      headline "Replacing compiled gems with AWS Lambda Linux compiled versions: #{project_root}"
+      options = {
+        s3: "lambdagems2",
+        build_root: cache_area, # used in jets-gems
+        project_root: project_root, # used in gem_replacer and jets-gems
+      }
+      GemReplacer.new(options).run
     end
   end
 end

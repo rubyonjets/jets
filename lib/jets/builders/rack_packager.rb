@@ -3,9 +3,11 @@ class Jets::Builders
     def finish
       return unless gemfile_exist?
 
+      super
+
       symlink_gems
-      rack_symlink
       copy_rackup_wrappers
+      rack_symlink
     end
 
     def symlink_gems
@@ -31,10 +33,10 @@ class Jets::Builders
     # Moves folder to a stage folder and create a symlink its place
     # that links from /var/task to /tmp. Example:
     #
-    #   code_area/rack => /tmp/rack
+    #   stage/code/rack => /tmp/rack
     #
     def rack_symlink
-      src = "#{@full_app_root}/rack"
+      src = @full_app_root
       return unless File.exist?(src)
 
       dest = "#{stage_area}/rack"
@@ -43,7 +45,7 @@ class Jets::Builders
       FileUtils.mv(src, dest)
 
       # Create symlink
-      FileUtils.ln_sf("/tmp/rack", "/#{@full_app_root}/rack")
+      FileUtils.ln_sf("/tmp/rack", src)
     end
   end
 end

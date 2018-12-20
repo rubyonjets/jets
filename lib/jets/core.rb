@@ -22,12 +22,12 @@ module Jets::Core
   # Useful for appending a './' in front of a path or leaving it alone.
   # Returns: '/path/with/trailing/slash/' or './'
   def root
+    # Do not memoize this method. Turbo mode can change it
     root = ENV['JETS_ROOT'].to_s
     root = '.' if root == ''
     root = "#{root}/" unless root.ends_with?('/')
     Pathname.new(root)
   end
-  memoize :root
 
   def env
     env = ENV['JETS_ENV'] || 'development'
@@ -91,10 +91,11 @@ module Jets::Core
     path =~ %r{/functions} ||
     path =~ %r{/internal/app} ||
     path =~ %r{/jets/stack} ||
-    path =~ %r{/rackup_wrappers} ||
     path =~ %r{/overrides} ||
+    path =~ %r{/rackup_wrappers} ||
     path =~ %r{/reconfigure_rails} ||
     path =~ %r{/templates/} ||
+    path =~ %r{/turbo/project/} ||
     path =~ %r{/version} ||
     path =~ %r{/webpacker}
   end

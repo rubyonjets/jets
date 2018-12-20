@@ -2,7 +2,6 @@ module Jets::Commands
   class Deploy
     extend Memoist
     include StackInfo
-
     def initialize(options)
       @options = options
     end
@@ -15,6 +14,7 @@ module Jets::Commands
       check_dev_mode
       validate_routes!
 
+      # deploy full nested stack when stack already exists
       # Delete existing rollback stack from previous bad minimal deploy
       delete_minimal_stack if minimal_rollback_complete?
       exit_unless_updateable! # Stack could be in a weird rollback state or in progress state
@@ -28,7 +28,6 @@ module Jets::Commands
       # on_aws? and s3_base_url logic
       build_code
 
-      # deploy full nested stack when stack already exists
       ship(stack_type: :full, s3_bucket: s3_bucket)
     end
 

@@ -32,7 +32,7 @@ Note: Even though you can serve assets out of the public folder directly, it is 
 
 ## Rack Ratio
 
-The `prewarm.rack_ratio` activates extra prewarming for the internal `jets/rack_controller.rb`.  This prewarming only occurs if [Mega Mode]({% link _docs/megamode.md %}) has been set up. Mega Mode and [Rails Support]({% link _docs/rails-support.md %}) can be be set up with the [jets import:rails]({% link _reference/jets-import-rails.md %}) command.
+The `prewarm.rack_ratio` activates extra prewarming for the internal `jets/rack_controller.rb`.  This prewarming only occurs if you're running a Rails app via Jets.
 
 This is useful for Mega Mode, where requests from the main Jets application are passed to a single `jets/rack#process` controller endpoint. This means that this Lambda function could require additional prewarming. You can tune the ratio up or down for your needs with the `prewarm.rack_ratio` setting.
 

@@ -6,7 +6,7 @@ class Jets::Builders
 
     attr_reader :full_app_root
     def initialize(relative_app_root)
-      @full_app_root = full(relative_app_root)
+      @full_app_root = "#{build_area}/#{relative_app_root}"
     end
 
     def install
@@ -16,18 +16,12 @@ class Jets::Builders
       clean_old_submodules
       bundle_install
       setup_bundle_config
+      copy_cache_gems
     end
 
     #   build gems in vendor/gems/ruby/2.5.0 (done in install phase)
-    # replace_compiled_gems:
-    #   remove binary gems in vendor/gems/ruby/2.5.0
-    #   extract binary gems in opt/ruby/gems/2.5.0
-    #   move binary gems from opt/ruby/gems/2.5.0 to vendor/gems/ruby/2.5.0
     def finish
       return unless gemfile_exist?
-
-      copy_cache_gems
-      replace_compiled_gems
       tidy
     end
 
@@ -52,6 +46,9 @@ class Jets::Builders
       headline "Bundling: running bundle install in cache area: #{cache_area}."
 
       copy_gemfiles(full_project_path)
+
+      # Uncomment out to always remove the cache/vendor/gems to debug
+      # FileUtils.rm_rf("#{cache_area}/vendor/gems")
 
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_clean_env do
@@ -131,7 +128,9 @@ class Jets::Builders
     def copy_gemfiles(full_project_path)
       FileUtils.mkdir_p(cache_area)
       FileUtils.cp("#{full_project_path}/Gemfile", "#{cache_area}/Gemfile")
-      FileUtils.cp("#{full_project_path}/Gemfile.lock", "#{cache_area}/Gemfile.lock")
+
+      gemfile_lock = "#{full_project_path}/Gemfile.lock"
+      FileUtils.cp(gemfile_lock, "#{cache_area}/Gemfile.lock") if File.exist?(gemfile_lock)
     end
 
     def setup_bundle_config
@@ -163,19 +162,6 @@ EOL
       IO.write(bundle_config, text)
     end
 
-    def gems_options
-      {
-        s3: "lambdagems",
-        build_root: cache_area, # used in lambdagem
-        project_root: @full_app_root, # used in gem_replacer and lambdagem
-      }
-    end
-
-    def replace_compiled_gems
-      headline "Replacing compiled gems with AWS Lambda Linux compiled versions."
-      GemReplacer.new(Jets::RUBY_VERSION, gems_options).run
-    end
-
     def copy_cache_gems
       vendor_bundle = "#{@full_app_root}/vendor/gems"
       if File.exist?(vendor_bundle)
@@ -187,11 +173,6 @@ EOL
         FileUtils.mkdir_p(File.dirname(vendor_bundle))
         FileUtils.cp_r("#{cache_area}/vendor/gems", vendor_bundle)
       end
-    end
-
-  private
-    def cache_area
-      "#{Jets.build_root}/cache" # cleaner to use full path for this setting
     end
   end
 end

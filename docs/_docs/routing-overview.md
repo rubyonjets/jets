@@ -4,6 +4,6 @@ title: Routing
 
 {% include routing.md %}
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/megamode-details.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/cookies.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/routing-authorization.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

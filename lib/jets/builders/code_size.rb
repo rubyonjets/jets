@@ -35,11 +35,13 @@ class Jets::Builders
       say "Gem Layer: #{megabytes(opt_size)} - #{stage_area}/opt"
       say "Total Package: #{megabytes(total_size)}"
       say "Over limit by: #{megabytes(overlimit)}"
-      # sh "du -csh #{stage_area}/*" unless ENV['TEST'] # uncomment to debug
+      say "Sometimes blowing away the /tmp/jets cache will reduce the size: rm -rf /tmp/jets"
+      # sh "du -kcsh #{stage_area}/*" unless ENV['TEST'] # uncomment to debug
     end
 
     def compute_size(path)
-      out = `du -s #{path}`
+      # -k option is required for macosx but not for linux
+      out = `du -ks #{path}`
       out.split(' ').first.to_i # bytes
     end
 

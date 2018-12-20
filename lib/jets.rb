@@ -50,6 +50,7 @@ module Jets
   autoload :Stack, "jets/stack"
   autoload :TmpLoader, "jets/tmp_loader"
   autoload :Turbine, 'jets/turbine'
+  autoload :Turbo, 'jets/turbo'
   autoload :Util, "jets/util"
 
   extend Core # root, logger, etc

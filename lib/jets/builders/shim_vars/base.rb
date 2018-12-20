@@ -21,9 +21,5 @@ module Jets::Builders::ShimVars
       return unless checksum
       "#{name}-#{checksum}.zip"
     end
-
-    def stage_area
-      "#{Jets.build_root}/stage"
-    end
   end
 end
