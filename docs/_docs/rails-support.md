@@ -9,7 +9,8 @@ Jets supports deploying Rails applications usually without any changes to your c
 Rails applications require some environment variables like `DATABASE_URL` . These should be configured before you deploy your app. You can configure them in [env files]({% link _docs/env-files.md %}) like `.jets/app/.env` within your Rails project.
 
     $ gem install jets # outside of Gemfile
-    $ cd rails-project
+    $ git clone https://github.com/tongueroo/demo-rails
+    $ cd demo-rails
     $ mkdir -p .jets/app
     $ vim .jets/app/.env # add your env variables
     $ jets deploy
