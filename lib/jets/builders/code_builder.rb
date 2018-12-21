@@ -35,7 +35,7 @@ class Jets::Builders
       compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
       compile_rails_assets
       copy_project
-      Dir.chdir(full(tmp_code)) do
+      Dir.chdir("#{stage_area}/code") do
         # These commands run from project root
         code_setup
         package_ruby
@@ -47,7 +47,7 @@ class Jets::Builders
     # to reference files with the md5 checksum.  The files are the:
     #
     #   jets/code/rack-checksum.zip
-    #   jets/code/bundled-checksum.zip
+    #   jets/code/opt-checksum.zip
     #
     # We compute the checksums before we generate the node shim handlers.
     def calculate_md5s
@@ -86,10 +86,6 @@ class Jets::Builders
       end
     end
 
-    def stage_area
-      "#{Jets.build_root}/stage"
-    end
-
     def code_setup
       reconfigure_development_webpacker
     end
@@ -101,17 +97,10 @@ class Jets::Builders
       copy_internal_jets_code
 
       # Code prep and zipping
-      build_lambda_layer
       check_code_size!
       calculate_md5s # must be called before generate_node_shims and create_zip_files
       generate_node_shims
       create_zip_files
-    end
-
-    def build_lambda_layer
-      return if Jets.poly_only?
-      lambda_layer = LambdaLayer.new
-      lambda_layer.build
     end
 
     def check_code_size!
@@ -125,7 +114,7 @@ class Jets::Builders
       files = []
       files.each do |relative_path|
         src = File.expand_path("../internal/#{relative_path}", File.dirname(__FILE__))
-        dest = "#{full(tmp_code)}/#{relative_path}"
+        dest = "#{"#{stage_area}/code"}/#{relative_path}"
         FileUtils.mkdir_p(File.dirname(dest))
         FileUtils.cp(src, dest)
       end
@@ -145,12 +134,11 @@ class Jets::Builders
     # At this point the minimal stack exists, so we can grab it with the AWS API.
     # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
-      write_s3_base_url("config/s3_base_url.txt")
-      write_s3_base_url("rack/config/s3_base_url.txt") if Jets.rack?
+      write_s3_base_url("#{stage_area}/code/config/s3_base_url.txt")
+      write_s3_base_url("#{stage_area}/rack/config/s3_base_url.txt") if Jets.rack?
     end
 
-    def write_s3_base_url(relative_path)
-      full_path = "#{full(tmp_code)}/#{relative_path}"
+    def write_s3_base_url(full_path)
       FileUtils.mkdir_p(File.dirname(full_path))
       IO.write(full_path, s3_base_url)
     end
@@ -175,7 +163,7 @@ class Jets::Builders
     end
 
     def disable_webpacker_middleware
-      full_path = "#{full(tmp_code)}/config/disable-webpacker-middleware.txt"
+      full_path = "#{"#{stage_area}/code"}/config/disable-webpacker-middleware.txt"
       FileUtils.mkdir_p(File.dirname(full_path))
       FileUtils.touch(full_path)
     end
@@ -212,17 +200,25 @@ class Jets::Builders
 
       return unless Jets.rack?
 
+      # Need to capture JETS_ROOT since can be changed by Turbo mode
+      jets_root = Jets.root
       Bundler.with_clean_env do
-        rails_assets(:clobber)
-        rails_assets(:precompile)
+        gemfile = ENV['BUNDLE_GEMFILE']
+        ENV['BUNDLE_GEMFILE'] = "#{jets_root}/rack/Gemfile"
+
+        sh "cd #{jets_root} && bundle install"
+        rails_assets(:clobber, jets_root: jets_root)
+        rails_assets(:precompile, jets_root: jets_root)
+
+        ENV['BUNDLE_GEMFILE'] = gemfile
       end
     end
 
-    def rails_assets(cmd)
+    def rails_assets(cmd, jets_root:)
       # rake is available in both rails 4 and 5. rails command only in 5
       command = "bundle exec rake assets:#{cmd} --trace"
       command = "RAILS_ENV=#{Jets.env} #{command}" unless Jets.env.development?
-      sh("cd rack && #{command}")
+      sh("cd #{jets_root}rack && #{command}")
     end
 
     # Rudimentary rails detection
@@ -247,14 +243,14 @@ class Jets::Builders
     # directory untouched and we can also remove a bunch of unnecessary files like
     # logs before zipping it up.
     def copy_project
-      headline "Copying current project directory to temporary build area: #{full(tmp_code)}"
-      FileUtils.rm_rf(stage_area) # clear out from previous build
-      FileUtils.mkdir_p(stage_area)
-      FileUtils.rm_rf(full(tmp_code)) # remove current code folder
+      headline "Copying current project directory to temporary build area: #{"#{stage_area}/code"}"
+      FileUtils.rm_rf("#{build_area}/stage") # clear out from previous build's stage area
+      FileUtils.mkdir_p("#{build_area}/stage")
+      FileUtils.rm_rf("#{stage_area}/code") # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
-        # puts "cp -r #{@full_project_path} #{full(tmp_code)}".colorize(:yellow) # uncomment to debug
-        FileUtils.cp_r(@full_project_path, full(tmp_code))
+        # puts "cp -r #{@full_project_path} #{"#{stage_area}/code"}".colorize(:yellow) # uncomment to debug
+        FileUtils.cp_r(@full_project_path, "#{stage_area}/code")
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
       end
@@ -279,7 +275,7 @@ class Jets::Builders
       return unless Jets.env.development?
       headline "Reconfiguring webpacker development settings for AWS Lambda."
 
-      webpacker_yml = "#{full(tmp_code)}/config/webpacker.yml"
+      webpacker_yml = "#{"#{stage_area}/code"}/config/webpacker.yml"
       return unless File.exist?(webpacker_yml)
 
       config = YAML.load_file(webpacker_yml)
@@ -302,15 +298,23 @@ class Jets::Builders
       return if Jets.poly_only?
 
       ruby_packager.install
-      reconfigure_rails # call here after full(tmp_code) is available
+      reconfigure_rails # call here after "#{stage_area}/code" is available
       rack_packager.install
-      ruby_packager.finish # by this time we have a /tmp/jets/demo/stage/code/bundled
+      ruby_packager.finish # by this time we have a /tmp/jets/demo/stage/code/vendor/gems
       rack_packager.finish
+
+      build_lambda_layer
+    end
+
+    def build_lambda_layer
+      return if Jets.poly_only?
+      lambda_layer = LambdaLayer.new
+      lambda_layer.build
     end
 
     # TODO: Move logic into plugin instead
     def reconfigure_rails
-      ReconfigureRails.new("#{full(tmp_code)}/rack").run
+      ReconfigureRails.new("#{"#{stage_area}/code"}/rack").run
     end
 
     def cache_check_message
@@ -321,9 +325,9 @@ class Jets::Builders
 
     def check_ruby_version
       unless ruby_version_supported?
-        puts "You are using ruby version #{RUBY_VERSION} which is not supported by Jets."
+        puts "You are using Ruby version #{RUBY_VERSION} which is not supported by Jets."
         ruby_variant = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.x'
-        abort("Jets uses ruby #{Jets::RUBY_VERSION}.  You should use a variant of ruby #{ruby_variant}".colorize(:red))
+        abort("Jets uses Ruby #{Jets::RUBY_VERSION}.  You should use a variant of Ruby #{ruby_variant}".colorize(:red))
       end
     end
 

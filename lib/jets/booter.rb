@@ -4,8 +4,9 @@ class Jets::Booter
     def boot!(options={})
       return if @booted
 
+      turbo_charge
       confirm_jets_project!
-      require_bundle_gems
+      require_bundle_gems unless bypass_bundler_setup?
       Jets::Dotenv.load!
 
       Jets.application.setup!
@@ -18,6 +19,16 @@ class Jets::Booter
       # build_middleware_stack # TODO: figure out how to build middleware during Jets.boot without breaking jets new and webpacker:install
 
       @booted = true
+    end
+
+    def bypass_bundler_setup?
+      command = ARGV.first
+      %w[build delete deploy].include?(command)
+    end
+
+    def turbo_charge
+      turbo = Jets::Turbo.new
+      turbo.charge
     end
 
     # Builds and memoize stack so it only gets built on bootup

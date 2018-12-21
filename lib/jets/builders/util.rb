@@ -1,5 +1,6 @@
 class Jets::Builders
   module Util
+  private
     def sh(command)
       puts "=> #{command}".colorize(:green)
       success = system(command)
@@ -15,18 +16,16 @@ class Jets::Builders
       puts "=> #{message}".colorize(:cyan)
     end
 
-    # Provide pretty clear way to desinate full path.
-    # full("bundled") => /tmp/jets/demo/bundled
-    def full(relative_path)
-      "#{Jets.build_root}/#{relative_path}"
+    def build_area
+      Jets.build_root
     end
 
     def stage_area
-      "#{Jets.build_root}/stage"
+      "#{build_area}/stage"
     end
 
-    def code_area
-      "#{stage_area}/code"
+    def cache_area
+      "#{build_area}/cache" # cleaner to use full path for this setting
     end
   end
 end

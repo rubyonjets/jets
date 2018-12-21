@@ -1,8 +1,7 @@
 class Jets::Builders
   class GemReplacer
     extend Memoist
-    def initialize(ruby_version, options)
-      @ruby_version = ruby_version
+    def initialize(options)
       @options = options
     end
 
@@ -17,23 +16,7 @@ class Jets::Builders
         gem_extractor.run
       end
 
-      # At this point the current compiled gems have been removed and compiled gems
-      # have been unpacked to code/opt. We can take the unpacked gems in opt and fully
-      # move them into vendor/gems gems now.
-      move_opt_gems_to_vendor
-
       tidy
-    end
-
-    def move_opt_gems_to_vendor
-      code = "#{Jets.build_root}/stage/code"
-      opt_gems = "#{code}/opt/ruby/gems/#{Jets::Gems.ruby_folder}"
-      vendor_gems = "#{code}/vendor/gems/ruby/#{Jets::Gems.ruby_folder}"
-      # https://stackoverflow.com/questions/23698183/how-to-force-cp-to-overwrite-directory-instead-of-creating-another-one-inside
-      # Trailing slashes are required
-      sh "rsync -a --links #{opt_gems}/ #{vendor_gems}/"
-      # clean up opt compiled gems
-      FileUtils.rm_rf("#{code}/opt/ruby")
     end
 
     def sh(command)
@@ -43,12 +26,16 @@ class Jets::Builders
       success
     end
 
+    def ruby_folder
+      Jets::Gems.ruby_folder
+    end
+
     # remove unnecessary files to reduce package size
     def tidy
       # project_root: /tmp/jets/demo/stage/code/
       # /tmp/jets/demo/stage/code/bundled
-      tidy_gems("#{@options[:project_root]}/bundled/gems/ruby/*/gems/*")
-      tidy_gems("#{@options[:project_root]}/bundled/gems/ruby/*/bundler/gems/*")
+      tidy_gems("#{@options[:project_root]}/ruby/gems/#{ruby_folder}/*/gems/*")
+      tidy_gems("#{@options[:project_root]}/ruby/gems/#{ruby_folder}/*/bundler/gems/*")
     end
 
     def tidy_gems(gems_path)
