@@ -10,7 +10,7 @@ Rails applications require some environment variables like `DATABASE_URL` . Thes
 
     $ gem install jets # outside of Gemfile
     $ cd rails-project
-    $ mkdir .jets/app
+    $ mkdir -p .jets/app
     $ vim .jets/app/.env # add your env variables
     $ jets deploy
     => Rails app detected: Enabling Jets Afterburner to deploy to AWS Lambda.
