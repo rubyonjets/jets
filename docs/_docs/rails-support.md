@@ -41,7 +41,8 @@ By default, Jets will infer the project name from the folder you are in.  You ca
 
 ## Notes
 
-You should install jets outside of the Gemfile of the Rails project. Adding it to the Gemfile might result in bundler being unable to unresolved dependencies. In Afterburner mode Jets works as a standalone tool.
+* Install jets outside of the Gemfile of the Rails project. Adding it to the Gemfile might result in bundler being unable to unresolved dependencies. In Afterburner mode Jets works as a standalone tool.
+* AWS currently limits the total Lambda code size + [Gem Layer]({% link _docs/gem-layer.md %}) to 250MB. AWS Docs [Lambda Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). The baseline Rails gems add up to about 146MB, so we have about 104MB of space left for additional gems.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/upgrading.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/rack.md %}">Next Step</a>
