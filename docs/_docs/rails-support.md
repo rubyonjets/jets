@@ -26,6 +26,10 @@ Rails applications require some environment variables like `DATABASE_URL` . Thes
     API Gateway Endpoint: https://jp65zxlwf8.execute-api.us-west-2.amazonaws.com/dev/
     $
 
+## Setting the Project Name
+
+By default, Jets will infer the project name from the folder you are in.  You can override this with a special `.jets/app/project_name` file.  The contents of `.jets/app/project_name` will be used as the project name if it exists.
+
 ## Customizations with .jets/app
 
 Additionally, you can override things like [Function Properties]({% link _docs/function-properties.md %}) by adding files to your `.jets/app` folder.  For example, here's how you set the timeout for development environments with `.jets/app/config/environments/development.rb`:
@@ -35,10 +39,6 @@ Jets.application.configure do
   config.function.memory_size = 1024
 end
 ```
-
-## Setting the Project Name
-
-By default, Jets will infer the project name from the folder you are in.  You can override this with a special `.jets/app/project_name` file.  The contents of `.jets/app/project_name` will be used as the project name if it exists.
 
 ## Notes
 
