@@ -29,9 +29,9 @@ class Jets::Application
     @config ||= ActiveSupport::OrderedOptions.new # dont use memoize since we reset @config later
   end
 
-  def default_config(project_name=nil)
+  def default_config
     config = ActiveSupport::OrderedOptions.new
-    config.project_name = project_name
+    config.project_name = parse_project_name # must set early because other configs requires this
     config.cors = true
     config.autoload_paths = default_autoload_paths
     config.extra_autoload_paths = []
@@ -93,16 +93,18 @@ class Jets::Application
   # Lets parse for the project name instead for now.
   #
   def parse_project_name
+    return ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME'] # override
+
     lines = IO.readlines("#{Jets.root}config/application.rb")
     project_name_line = lines.find { |l| l =~ /project_name/ }
     project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') # project_name
   end
 
   def load_app_config
-    project_name = parse_project_name
-    @config = default_config(project_name)
+    @config = default_config
     set_dependent_configs! # things like project_namespace that need project_name
-    eval_app_config
+    eval_app_config # this overwrites Jets.config.project_name
+    Jets.config.project_name = parse_project_name # Must set again because JETS_PROJECT_NAME is possible
 
     set_iam_policy # relies on dependent values, must be called afterwards
     normalize_env_vars!
