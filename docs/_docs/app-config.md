@@ -15,8 +15,6 @@ Jets.application.configure do
   # config.env_extra = 2 # change also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
 
-  # config.ruby.lazy_load = true # defaults to true
-
   config.function.timeout = 30
   # config.function.role = "arn:aws:iam::#{ENV['AWS_ACCOUNT_ID']}:role/service-role/pre-created"
   # config.function.memory_size = 3008
