@@ -163,15 +163,15 @@ EOL
     end
 
     def copy_cache_gems
-      vendor_bundle = "#{@full_app_root}/vendor/gems"
-      if File.exist?(vendor_bundle)
-        puts "Removing current vendor_bundle from project"
-        FileUtils.rm_rf(vendor_bundle)
+      vendor_gems = "#{@full_app_root}/vendor/gems"
+      if File.exist?(vendor_gems)
+        puts "Removing current vendor_gems from project"
+        FileUtils.rm_rf(vendor_gems)
       end
-      # Leave #{Jets.build_root}/vendor_bundle behind to act as cache
+      # Leave #{Jets.build_root}/vendor_gems behind to act as cache
       if File.exist?("#{cache_area}/vendor/gems")
-        FileUtils.mkdir_p(File.dirname(vendor_bundle))
-        FileUtils.cp_r("#{cache_area}/vendor/gems", vendor_bundle)
+        FileUtils.mkdir_p(File.dirname(vendor_gems))
+        FileUtils.cp_r("#{cache_area}/vendor/gems", vendor_gems)
       end
     end
   end
