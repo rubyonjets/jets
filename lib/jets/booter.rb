@@ -23,7 +23,7 @@ class Jets::Booter
 
     def bypass_bundler_setup?
       command = ARGV.first
-      %w[build delete deploy].include?(command)
+      %w[build delete deploy url].include?(command)
     end
 
     def turbo_charge
