@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.1]
+
 ## [1.4.0]
 - Afterburner mode: Allows you to deploy from within a Rails app
 - #110 from tongueroo/jet-pack: Turbo charge mode: enabling afterburner
