@@ -1,5 +1,4 @@
 require "action_view"
-require "bundler"
 require "colorize"
 require "fileutils"
 require "net/http"
@@ -178,16 +177,25 @@ class Jets::Builders
       end
 
       headline "Compling assets in current project directory"
-      # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
-      require "bundler/setup"
-      webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
-      return unless webpacker_loaded
+      return unless webpacker_included?
 
       sh("yarn install")
       webpack_command = File.exist?("#{Jets.root}bin/webpack") ?
           "bin/webpack" :
           `which webpack`.strip
       sh "JETS_ENV=#{Jets.env} #{webpack_command}"
+    end
+
+    def webpacker_included?
+      # Old code, leaving around for now:
+      # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
+      # webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
+      # return unless webpacker_loaded
+
+      # Checking this way because when using jets standalone for Afterburner mode we don't want to run into
+      # bundler gem collisions.  TODO: figure out the a better way to handle the collisions.
+      lines = IO.readlines("#{Jets.root}Gemfile")
+      lines.detect { |l| l =~ /webpacker/ }
     end
 
     # This happens in the current app directory not the tmp code for simplicity
