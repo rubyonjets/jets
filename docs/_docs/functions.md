@@ -22,7 +22,7 @@ You can run the function in the AWS Lambda console and see the results:
 
 ![](/img/docs/jets-simple-lambda-function-result.png)
 
-Here's an article that covers a writing simple lambda function with Jets: [Jets Simple AWS Lambda Ruby Function](https://blog.boltops.com/2018/10/26/jets-simple-aws-lambda-ruby-function).
+Here's an article that covers writing a simple lambda function with Jets: [Jets Simple AWS Lambda Ruby Function](https://blog.boltops.com/2018/10/26/jets-simple-aws-lambda-ruby-function).
 
 Though manually creating simple Lambda functions is possible with Jets, the full power of Jets is in automatically generating the Lambda functions that your API requires. Your API's Lambda functions are defined for you behind the scenes when you use Jets [Controllers]({% link _docs/controllers.md %}) and [Jobs]({% link _docs/jobs.md %}). These classes give you many conveniences methods to make your life easier. We'll cover them next.
 
