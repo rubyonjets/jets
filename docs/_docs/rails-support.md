@@ -4,6 +4,8 @@ title: Rails Support
 
 Jets supports deploying Rails applications usually without any changes to your code.
 
+<div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/_o-CmDo2wyo" frameborder="0" allowfullscreen=""></iframe></div></div>
+
 ## Usage
 
 Rails applications require some environment variables like `DATABASE_URL` . These should be configured before you deploy your app. You can configure them in [env files]({% link _docs/env-files.md %}) like `.jets/app/.env` within your Rails project.
