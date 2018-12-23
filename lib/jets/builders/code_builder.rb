@@ -1,9 +1,10 @@
-require "fileutils"
-require "open-uri"
-require "colorize"
-require "socket"
-require "net/http"
 require "action_view"
+require "bundler"
+require "colorize"
+require "fileutils"
+require "net/http"
+require "open-uri"
+require "socket"
 
 # Some important folders to help understand how jets builds a project:
 #
@@ -178,6 +179,7 @@ class Jets::Builders
 
       headline "Compling assets in current project directory"
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
+      require "bundler/setup"
       webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
       return unless webpacker_loaded
 
@@ -185,7 +187,7 @@ class Jets::Builders
       webpack_command = File.exist?("#{Jets.root}bin/webpack") ?
           "bin/webpack" :
           `which webpack`.strip
-      sh("JETS_ENV=#{Jets.env} #{webpack_command}")
+      sh "JETS_ENV=#{Jets.env} #{webpack_command}"
     end
 
     # This happens in the current app directory not the tmp code for simplicity
