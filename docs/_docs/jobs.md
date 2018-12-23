@@ -2,7 +2,7 @@
 title: Jobs
 ---
 
-A Jets job handles background work, better suited to run outside of the web request/response cycle. Here's an example:
+A Jets job handles work which is better suited to run in the background - outside of the web request/response cycle. Here's an example:
 
 app/jobs/hard_job.rb:
 
@@ -22,19 +22,19 @@ class HardJob < ApplicationJob
 end
 ```
 
-`HardJob#dig` will run every 10 hours and `HardJob#lift` will run every 12 hours.
+In our exmple, the job `HardJob#dig` will run every 10 hours, and `HardJob#lift` will run every 12 hours.
 
-You can check for the job functions in the Lambda console:
+You can see the lambda functions which correspond to your job functions in the Lambda console:
 
 ![](/img/docs/demo-lambda-functions-jobs.png)
 
-The `rate` and `cron` methhods creates CloudWatch Event Rules to handle scheduling. You can see associated CloudWatch Event Rule in the CloudWatch console:
+The `rate` and `cron` methods create CloudWatch Event Rules to handle scheduling. You can see these CloudWatch Event Rules in the CloudWatch console:
 
 ![](/img/docs/demo-job-cloudwatch-rule.png)
 
 ## Running Jobs Explicitly
 
-You can run jobs explicitly with code. Example:
+You can run background jobs explicitly. Example:
 
 ```ruby
 event = {key1: "value1"}
@@ -42,9 +42,9 @@ HardJob.perform_now(:dig, event)
 HardJob.perform_later(:lift, event)
 ```
 
-In the example above, the `perform_now` results in the job running in the **same process**.
+In the example above, the `perform_now` method executes the job in the **current process**.
 
-The `perform_later` runs the job by calling the AWS Lambda function associated with it in a **new process**.  It usually runs a few seconds later.
+The `perform_later` function runs the job by invoking the AWS Lambda function associated with it in a **new process**.  It usually runs a few seconds later.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/routing.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/install.md %}">Next Step</a>

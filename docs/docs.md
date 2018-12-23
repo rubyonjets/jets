@@ -4,16 +4,11 @@ title: Overview
 
 ## What is Jets?
 
-Jets is a Serverless Framework that allows you to create applications with Ruby. It includes everything required to build an application and deploy it to AWS Lambda.
-
-It is key to understand AWS Lambda and API Gateway to understand Jets conceptually. Jets maps your code to Lambda functions and API Gateway resources.
-
-* **AWS Lambda** is Functions as a Service. It allows you to upload and run functions without worrying about the underlying infrastructure.
-* **API Gateway** is the routing layer for Lambda. It is used to route REST URL endpoints to Lambda functions.
+Jets is a Ruby serverless Framework that allows you to create and deploy microservices easily. It includes everything you need to build APIs and deploy them to AWS Lambda. Jets is also perfect for writing functions that glue AWS services and resources together.
 
 ## How It Works
 
-You write code and Jets turns the code into Lambda functions and uploads them to AWS Lambda and API Gateway.
+You write code and Jets turns your code into Lambda functions and other AWS resources. Jets orchestrates provisioning and deployment so you can focus on writing code, which is what serverless is all about!
 
 <a id="prev" class="btn btn-basic" href="{% link quick-start.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/functions.md %}">Next Step</a>

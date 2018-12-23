@@ -1,4 +1,4 @@
-You connect Lambda functions to API Gateway URL endpoints with a routes file:
+Jets translates your `routes.rb` file into API Gateway resources, and connects them to your Lambda functions:
 
 config/routes.rb:
 
@@ -18,11 +18,11 @@ Jets.application.routes.draw do
 end
 ```
 
-Jets evaluates the `routes.rb` file and creates corresponding API Gateway resources.  You can check the routes on the API Gateway console:
+You can check your routes in the API Gateway console:
 
 ![](/img/quick-start/demo-api-gateway.png)
 
-Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
+You can get your API Gateway endpoints from the API Gateway console, and test them with curl or postman. Example:
 
     $ curl -s "https://quabepiu80.execute-api.us-east-1.amazonaws.com/dev/posts" | jq .
     {
@@ -32,7 +32,7 @@ Test your API Gateway endpoints with curl or postman. Note, replace the URL endp
 
 ## jets routes
 
-You can also check the routes with the `jets routes` cli command. Here's an example:
+Run the `jets routes` cli command to get a list of your routes.
 
     $ jets routes
     +--------+----------------+--------------------+
