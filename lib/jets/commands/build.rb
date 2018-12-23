@@ -10,6 +10,7 @@ module Jets::Commands
 
     def run
       puts "Building project for Lambda..."
+
       return if @options[:noop]
       # run gets called from the CLI and does not have all the stack_options yet.
       # We compute it and change the options early here.

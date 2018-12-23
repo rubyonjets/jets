@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.3]
+- fix webpacker:compile on jets build and allow jets deploy to work standalone
+
+## [1.4.2]
+- fix webpacker:compile on jets build
+
+## [1.4.1]
+- allow jets url to run in afterburner mode
+- #111 from tongueroo/db-seed fix jets db:seed
+- #112 from tongueroo/jets-project-name fix JETS_ENV=production jets deploy
+- allow JETS_PROJECT_NAME override
+
 ## [1.4.0]
 - Afterburner mode: Allows you to deploy from within a Rails app
 - #110 from tongueroo/jet-pack: Turbo charge mode: enabling afterburner
