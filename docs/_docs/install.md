@@ -31,9 +31,9 @@ You can use any version of yarn that works with webpacker.
 
 ## Database
 
-By default, when you run a `jets new` command, Jets calls `bundle install` and attempts to install the `mysql2` gem. Make sure that you have mySQL installed.
+By default, when you run a `jets new` command, Jets calls `bundle install` and attempts to install the `mysql2` gem. If you want to use PostgreSQ, run `jets new --database=postgresql`. Make sure that you have mySQL or PostgreSQL installed beforehand.
 
-If you don't need an ORM database adapter, or want to use another database, use the `jets new --no-database` option so that Jets doesn't attempt to install MySQL. You can subsequently add your chosen adapter gem to the Gemfile and run `bundle install`.
+If you don't need an ORM database adapter, or want to use another database, use the `jets new --no-database` option. You can subsequently add any datastore adapter gem to the Gemfile and run `bundle install`.
 
 Here are the instructions to install MySQL and PostgreSQL:
 
