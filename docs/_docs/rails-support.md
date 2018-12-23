@@ -1,18 +1,20 @@
 ---
-title: Rails Support
+title: Rails Support (Afterburner mode)
 ---
 
 Jets supports deploying Rails applications usually without any changes to your code.
 
 ## Usage
 
-Rails applications require some environment variables like `DATABASE_URL` . These should be configured before you deploy your app. You can configure them in [env files]({% link _docs/env-files.md %}) like `.jets/app/.env` within your Rails project.
+If your Rails application uses environment variables such as `DATABASE_URL` or `DATABASE_PASSWORD`, Jets needs to know about them prior to deployment in order to make them available to the generated Lambda functions. You should set the variables in `.env` files which should be placed in your Rails project's `.jets/app/` directory. Be sure to read the `.env` file [documentation]({% link _docs/env-files.md %}) so that you know how to name your `.env` files.
 
-    $ gem install jets # outside of Gemfile
-    $ git clone https://github.com/tongueroo/demo-rails
-    $ cd demo-rails
+    $ cd <your Rails project directory>
     $ mkdir -p .jets/app
-    $ vim .jets/app/.env # add your env variables
+    $ touch .jets/app/.env # you should add your environment variables here
+
+Once your `.env` files are configured, just do the following to deploy your Rails app:
+
+    $ gem install jets # note: do not add jets to your Rails project's Gemfile
     $ jets deploy
     => Rails app detected: Enabling Jets Afterburner to deploy to AWS Lambda.
     ...
@@ -28,22 +30,23 @@ Rails applications require some environment variables like `DATABASE_URL` . Thes
 
 ## Setting the Project Name
 
-By default, Jets will infer the project name from the folder you are in.  You can override this with a special `.jets/app/project_name` file.  The contents of `.jets/app/project_name` will be used as the project name if it exists.
+By default, Jets will infer the project name from the folder you are in.  You can override this with a special `.jets/app/project_name` file.  The first line in `.jets/app/project_name` will be used as the project name if the file exists.
 
-## Customizations with .jets/app
+## Advanced customizations
 
-Additionally, you can override things like [Function Properties]({% link _docs/function-properties.md %}) by adding files to your `.jets/app` folder.  For example, here's how you set the timeout for development environments with `.jets/app/config/environments/development.rb`:
+If you want to make Lambda-specific application-wide configurations, you can add config files in the `.jets/app` directory.  For example, you can set the Lamba function memory size for the production environment inside of `.jets/app/config/environments/production.rb`:
 
 ```ruby
 Jets.application.configure do
   config.function.memory_size = 1024
 end
 ```
+Read the documentation for [Function Properties]({% link _docs/function-properties.md %}) to learn about other properties which can be set.
 
 ## Notes
 
-* Install jets outside of the Gemfile of the Rails project. Adding it to the Gemfile might result in bundler being unable to unresolved dependencies. In Afterburner mode Jets works as a standalone tool.
-* AWS currently limits the total Lambda code size + [Gem Layer]({% link _docs/gem-layer.md %}) to 250MB. AWS Docs [Lambda Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). The baseline Rails gems add up to about 146MB, so we have about 104MB of space left for additional gems.
+* Don't add jets to your Rails project's Gemfile. Adding it to the Gemfile might result in bundler being unable to resolve dependencies.
+* AWS currently limits the total Lambda code size + [Gem Layer]({% link _docs/gem-layer.md %}) to 250MB. AWS Docs [Lambda Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). The baseline Rails gems add up to about 146MB, so you have about 104MB of space left for additional gems.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/upgrading.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/rack.md %}">Next Step</a>

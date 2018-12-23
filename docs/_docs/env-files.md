@@ -2,13 +2,12 @@
 title: Env Files
 ---
 
-Jets can load environment variables from `.env` files. There can be few different dotenv files that get loaded and combined. An example best explains how dotenv files work.
+Jets loads environment variables from `.env` files. The naming convention for these files is `.env.<environment>` .
 
-Say you have a Jets project that has the following dotenv files:
+Let's say you have a Jets project that has the following dotenv files:
 
     .env
     .env.development
-    .env.development.remote
     .env.test
     .env.production
 
@@ -18,21 +17,21 @@ The `.env` file will always get loaded.
 
 ## Environment Specific Variables
 
-The second word is the `JETS_ENV` value. So:
+The other `.env` files will be loaded based on value of the `JETS_ENV` environment variable in the machine you're deploying from. So:
 
-* `JETS_ENV=development` corresponds to `.env.development`
-* `JETS_ENV=test` corresponds to `.env.test`
-* `JETS_ENV=production` corresponds to `.env.production`
+* `JETS_ENV=development jets deploy` will use `.env.development`
+* `JETS_ENV=test jets deploy` will use `.env.test`
+* `JETS_ENV=production jets deploy` will use `.env.production`
 
-These files only get loaded for the configured valued of `JETS_ENV`. This allows you to use different environment variables for different environments.
+You can set `JETS_ENV` to any value, depending on whatever you want to name your environment.
 
 ## Remote Only Variables
 
-The last example file is `.env.development.remote`.  The values from this file only get loaded for the deployed remote Lambda Functions. It can be useful if you need different values on the lambda function and would like to keep the same `JETS_ENV`.
+If you add ".remote" to the end of the filename, Jets will only load the values to the deployed Lambda environment. This can be useful if you need a local and remote version of the same environment. For example, you may want both a local and remote dev environment, and have the remote version use AWS RDS.
 
-To use the remote values also in the `jets console` you can use the `JETS_ENV_REMOTE=1` env variable. Example:
+To use the remote version within the `jets console`, you can use the `JETS_ENV_REMOTE=1` env variable. Example:
 
-    JETS_ENV_REMOTE=1 jets console
+    JETS_ENV=development JETS_ENV_REMOTE=1 jets console
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/prewarming.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/env-extra.md %}">Next Step</a>
