@@ -4,27 +4,19 @@ title: Installation
 
 ## RubyGems
 
-You can install jets via RubyGems.
+Install jets via RubyGems.
 
     gem install jets
 
-Or you can add jets to your Gemfile in your project.
-
-```ruby
-gem "jets"
-```
-
-## Prerequisites
-
-## Dependencies
+## Prerequisites and Dependencies
 
 ### Ruby
 
-Jets uses Ruby 2.5 and code written with patch variants of it will work.
+Jets uses Ruby 2.5, and code written with patch variants of it should also work.
 
 ### Yarn
 
-For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets which requires node's yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended to install a desired version of node.  Here's a node install cheatsheet, though please refer to the links for the most updated commands with possible more recent versions:
+For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets, which requires yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended if you want to manage node versions.
 
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
     # note follow the instructions after the curl command to source nvm
@@ -39,11 +31,11 @@ You can use any version of yarn that works with webpacker.
 
 ## Database
 
-By default, when you run a `jets new` command, it generates a Gemfile that has database adapter gem like `mysql2` or `pg`. A `bundle install` is run immediately as part of the `jets new` command. So the specific database needs to be installed.  The current default ORM database is MySQL.
+By default, when you run a `jets new` command, Jets calls `bundle install` and attempts to install the `mysql2` gem. Make sure that you have mySQL installed.
 
-If you do not need an ORM database adapter, you can use the `jets new --no-database` option, and a database gem will not be added to the Gemfile.
+If you don't need an ORM database adapter, or want to use another database, use the `jets new --no-database` option so that Jets doesn't attempt to install MySQL. You can subsequently add your chosen adapter gem to the Gemfile and run `bundle install`.
 
-Here are various ways to install different databases:
+Here are the instructions to install MySQL and PostgreSQL:
 
 ### MySQL
 
@@ -59,7 +51,7 @@ Here are various ways to install different databases:
 
 ### AWS CLI
 
-The AWS CLI is not required but strongly recommended so you can make use of AWS Profiles. You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) via pip.
+The AWS CLI is not required but is strongly recommended so that you can make use of AWS Profiles. You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) via pip.
 
     pip install awscli --upgrade --user
 
