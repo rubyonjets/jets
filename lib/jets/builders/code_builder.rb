@@ -307,6 +307,7 @@ class Jets::Builders
     def package_ruby
       return if Jets.poly_only?
 
+      check_agree
       ruby_packager.install
       reconfigure_rails # call here after "#{stage_area}/code" is available
       rack_packager.install
@@ -314,6 +315,11 @@ class Jets::Builders
       rack_packager.finish
 
       build_lambda_layer
+    end
+
+    def check_agree
+      agree = Jets::Gems::Agree.new
+      agree.prompt
     end
 
     def build_lambda_layer
