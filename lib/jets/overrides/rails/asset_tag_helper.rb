@@ -39,6 +39,13 @@ module Jets::AssetTagHelper
     # mimic original behavior to get /images in source
     source = "/images/#{source}" unless source.starts_with?('/') || source.starts_with?('http')
 
+    # Examples to help understand:
+    #
+    #   puts "AssetTagHelper#asset_path source #{source}"
+    #   puts "AssetTagHelper#asset_path asset_folder?(source) #{asset_folder?(source).inspect}"
+    #   AssetTagHelper#asset_path source /packs/images/myimage-e5f675d1ba26865fd65e919beb5bb86b.png
+    #   AssetTagHelper#asset_path asset_folder?(source) "images"
+    #
     if on_aws? && asset_folder?(source) && !source.starts_with?('http')
       source = "#{s3_public}#{source}"
     end
