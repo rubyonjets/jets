@@ -28,7 +28,7 @@ module Jets::Mega
       http_class.capitalize!
 
       request_class = "Net::HTTP::#{http_class}".constantize # IE: Net::HTTP::Get
-      request = request_class.new(uri.path)
+      request = request_class.new(uri)
 
       # Set form data
       if %w[Post Patch Put].include?(http_class)
