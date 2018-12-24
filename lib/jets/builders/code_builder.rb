@@ -213,14 +213,14 @@ class Jets::Builders
       # Need to capture JETS_ROOT since can be changed by Turbo mode
       jets_root = Jets.root
       Bundler.with_clean_env do
+        # Switch gemfile for Afterburner mode
         gemfile = ENV['BUNDLE_GEMFILE']
         ENV['BUNDLE_GEMFILE'] = "#{jets_root}/rack/Gemfile"
-
         sh "cd #{jets_root} && bundle install"
+        ENV['BUNDLE_GEMFILE'] = gemfile
+
         rails_assets(:clobber, jets_root: jets_root)
         rails_assets(:precompile, jets_root: jets_root)
-
-        ENV['BUNDLE_GEMFILE'] = gemfile
       end
     end
 
