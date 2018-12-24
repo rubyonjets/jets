@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.4]
+- #116 from tongueroo/assets: fix public assets folders to serve directly from s3
+
 ## [1.4.3]
 - fix webpacker:compile on jets build and allow jets deploy to work standalone
 
