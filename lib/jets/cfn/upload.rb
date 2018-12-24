@@ -57,16 +57,16 @@ class Jets::Cfn
     end
 
     def upload_public_assets
-      asset_folders = Jets.config.assets.folders # IE: %w[public]
-      asset_folders = add_rack_assets(asset_folders)
-      asset_folders.each do |folder|
+      public_folders = %w[public]
+      public_folders = add_rack_assets(public_folders)
+      public_folders.each do |folder|
         upload_asset_folder(folder)
       end
     end
 
-    def add_rack_assets(asset_folders)
-      return asset_folders unless Jets.rack?
-      asset_folders + %w[rack/public]
+    def add_rack_assets(public_folders)
+      return public_folders unless Jets.rack?
+      public_folders + %w[rack/public]
     end
 
     def upload_asset_folder(folder)
