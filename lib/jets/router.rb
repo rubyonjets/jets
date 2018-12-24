@@ -38,7 +38,7 @@ module Jets
           Instead, please update your config/application.rb to use:
             Jets.config.mode = 'api'
           You can also run:
-            jets upgrade:v1
+            jets upgrade
         EOL
       end
       api_mode = Jets.config.mode == 'api' || Jets.config.api_mode || Jets.config.api_generator

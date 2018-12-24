@@ -107,7 +107,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - fix jets new, comment out building of middleware during boot for now
 
 ## [1.1.1]
-- provide instructions to run jets upgrade:v1 for config.ru update
+- provide instructions to run jets upgrade for config.ru update
 
 ## [1.1.0]
 - rack compatibility pull request #72 from tongueroo/rack
@@ -178,7 +178,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 - jets gems:sources hidden command
 
 ## [1.0.1]
-- jets upgrade:v1 command
+- jets upgrade command
 - Merge pull request #52 from tongueroo/upgrade-command
 
 ## [1.0.0]

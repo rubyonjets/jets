@@ -6,20 +6,21 @@ Upgrading Jets to some releases might require some extra changes.  For example, 
 
 ## Upgrade Command
 
-A `jets upgrade:v1` command is provided to help with upgrades.  The command is designed to be idempotent. This means it is safe to run repeatedly and will only upgrade the files and structure if needed.  Before running the command, it is recommended to back up your project first just in case though. This usually can be done by committing any unsaved changes to git.
+A `jets upgrade` command is provided to help with upgrades.  The command is designed to be idempotent. This means it is safe to run repeatedly and will only upgrade the files and structure if needed.  Before running the command, it is recommended to back up your project first just in case though. This usually can be done by committing any unsaved changes to git.
 
 ## Upgrading Releases
 
 The following table summarizes the releases and upgrade paths.
 
-Version | Notes | Blue-Green?
---- | --- | ---
-1.3.0 | Official AWS Ruby Support added.  Removed longer needed `config.ruby.lazy_load` feature. | No
-1.2.0 | Set default `config.api.binary_media_types` to `multipart/form-data` to handle binary support.  | No
-1.1.0 | Added `Jets.boot` to `config.ru`. You can run the `jets upgrade:v1` command to add it. | No
-1.0.0 | Added `config/environments` files. You can use the `jets upgrade:v1` command. Going from 0.10.0 to 1.0.0 does not required a blue-green deploy. But if you're going from before 0.10.0, then you will need a blue-green deploy. | No
-0.10.0 | Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action. Also removed the managed `Jets::WelcomeController` and consolidated to the managed `Jets::PublicController`. Refer to Upgrade Details. | Yes
-0.9.0 | CloudFormation Logical ids changed to be more concise. | Yes
+Version | Notes | Blue-Green? | Run jets upgrade?
+--- | --- | --- | ---
+1.5.0 | Update webpacker. Please run `jets upgrade` to update the `bin/webpack*` binstubs. | No | Yes
+1.3.0 | Official AWS Ruby Support added.  Removed longer needed `config.ruby.lazy_load` feature. | No | No
+1.2.0 | Set default `config.api.binary_media_types` to `multipart/form-data` to handle binary support.  | No | No
+1.1.0 | Added `Jets.boot` to `config.ru`. You can run the `jets upgrade` command to add it. | No | Yes
+1.0.0 | Added `config/environments` files. You can use the `jets upgrade` command. Going from 0.10.0 to 1.0.0 does not required a blue-green deploy. But if you're going from before 0.10.0, then you will need a blue-green deploy. | Yes | No
+0.10.0 | Bug fix: CloudFormation routing logical ids changed to allow multiple routes to point to the same controller action. Also removed the managed `Jets::WelcomeController` and consolidated to the managed `Jets::PublicController`. Refer to Upgrade Details. | Yes | No
+0.9.0 | CloudFormation Logical ids changed to be more concise. | Yes | No
 
 ## Upgrade Details
 
@@ -28,7 +29,7 @@ The following section provides a little more detail on each version upgrade. Not
 ### 1.3.0
 
 * Use of Official AWS Ruby Support.
-* Project gems are built as a Lambda Layer, removing the need to lazy load the gems. The `config.ruby.lazy_load` option has been removed. You can use the `jets upgrade:v1` to automatically remove the option from your config files.
+* Project gems are built as a Lambda Layer, removing the need to lazy load the gems. The `config.ruby.lazy_load` option has been removed. You can use the `jets upgrade` to automatically remove the option from your config files.
 
 ### 1.2.0
 
@@ -39,7 +40,7 @@ Some notable changes for version 1.2.0:
 
 ### 1.0.1
 
-The `jets upgrade:v1` command was introduced here. You can use it to upgrade the code structure.
+The `jets upgrade` command was introduced here. You can use it to upgrade the code structure.
 
 ### 0.10.0
 
@@ -55,7 +56,7 @@ With:
 root "jets/public#show"
 ```
 
-You can use the `jets upgrade:v1` command to automatically update the `config/routes.rb` file.
+You can use the `jets upgrade` command to automatically update the `config/routes.rb` file.
 
 ## Reasons
 

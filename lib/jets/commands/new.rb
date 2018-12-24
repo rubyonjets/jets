@@ -55,6 +55,7 @@ module Jets::Commands
     end
 
     def make_bin_executable
+      return unless File.exist?("bin")
       chmod "bin", 0755 & ~File.umask, verbose: false
     end
 

@@ -122,7 +122,7 @@ class Jets::Booter
         puts 'The config.ru file is missing Jets.boot.  Please add Jets.boot after require "jets"'.colorize(:red)
         puts "This was changed as made in Jets v1.1.0."
         puts "To have Jets update the config.fu file for you, you can run:\n\n"
-        puts "  jets upgrade:v1"
+        puts "  jets upgrade"
         exit 1
       end
     end

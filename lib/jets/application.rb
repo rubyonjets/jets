@@ -144,7 +144,7 @@ class Jets::Application
       puts "Gems are now bundled with with Lambda Layer and there's no need to lazy load them."
       puts "Please remove the config in your config/application.rb or config/environments files."
       puts "You can have Jets automatically do this by running:"
-      puts "  jets upgrade:v1"
+      puts "  jets upgrade"
     end
   end
 

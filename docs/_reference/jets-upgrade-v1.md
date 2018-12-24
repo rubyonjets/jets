@@ -1,11 +1,11 @@
 ---
-title: jets upgrade:v1
+title: jets upgrade
 reference: true
 ---
 
 ## Usage
 
-    jets upgrade:v1
+    jets upgrade
 
 ## Description
 

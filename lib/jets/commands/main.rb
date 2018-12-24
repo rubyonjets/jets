@@ -131,6 +131,12 @@ module Jets::Commands
       puts "run #{Jets.application.endpoint}"
     end
 
+    desc "upgrade", "Upgrade Jets"
+    long_desc Help.text(:upgrade)
+    def upgrade
+      Jets::Commands::Upgrade.new(options).run
+    end
+
     desc "version", "Prints Jets version"
     long_desc Help.text(:version)
     def version
