@@ -11,11 +11,12 @@ class Jets::Resource::Lambda::Function
       env.deep_merge(jets_env)
     end
 
-    # These jets env variables are always included
+    # These jets env variables are special variables that get included to keeps some state
     def jets_env
       env = {}
       env[:JETS_ENV] = Jets.env.to_s
       env[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
+      env[:JETS_PROJECT_NAME] = ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME']
       env[:JETS_STAGE] = Jets::Resource::ApiGateway::Deployment.stage_name
       env
     end
