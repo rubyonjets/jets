@@ -96,7 +96,7 @@ class Jets::Application
     return ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME'] # override
 
     lines = IO.readlines("#{Jets.root}config/application.rb")
-    project_name_line = lines.find { |l| l =~ /project_name/ }
+    project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ }
     project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') # project_name
   end
 
