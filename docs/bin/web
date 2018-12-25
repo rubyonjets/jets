@@ -1,4 +1,4 @@
 #!/bin/bash -ex
 
 jekyll clean
-exec jekyll serve -H 0.0.0.0 -P 8888
+exec jekyll serve -H 0.0.0.0

@@ -1,10 +1,8 @@
 ---
-title: Rails Support (Afterburner mode)
+title: "Rails Support: Afterburner Mode"
 ---
 
 Jets supports deploying Rails applications usually without any changes to your code.
-
-<div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/_o-CmDo2wyo" frameborder="0" allowfullscreen=""></iframe></div></div>
 
 ## Usage
 
