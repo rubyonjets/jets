@@ -1,5 +1,7 @@
 class Jets::Builders
   class Tidy
+    include Util
+
     def initialize(project_root, noop: false)
       @project_root = project_root
       @noop = noop
@@ -23,10 +25,10 @@ class Jets::Builders
       FileUtils.rm_rf("#{@project_root}/app/javascript/src")
 
       return unless File.exist?("#{@project_root}/public/packs") # this class works for rack subfolder too
-      FileUtils.cp("#{@project_root}/public/packs/manifest.json", "#{@project_root}/manifest.json")
+      FileUtils.mv("#{@project_root}/public/packs/manifest.json", "#{stage_area}/manifest.json")
       FileUtils.rm_rf("#{@project_root}/public/packs")
       FileUtils.mkdir_p("#{@project_root}/public/packs")
-      FileUtils.cp("#{@project_root}/manifest.json", "#{@project_root}/public/packs/manifest.json")
+      FileUtils.mv("#{stage_area}/manifest.json", "#{@project_root}/public/packs/manifest.json")
     end
 
     def removals
