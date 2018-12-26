@@ -12,7 +12,21 @@ class Jets::Builders
         rm_rf(path)
       end
 
-      tidy_bundled
+      clean_vendor_gems
+      clean_webpack_assets
+    end
+
+    # Clean out unnecessary src and compiled packs because Jets serves them out of s3.
+    # This keeps the code size down to help keep it in size limit so we can use the
+    # live Lambda console editor.
+    def clean_webpack_assets
+      FileUtils.rm_rf("#{@project_root}/app/javascript/src")
+
+      return unless File.exist?("#{@project_root}/public/packs") # this class works for rack subfolder too
+      FileUtils.cp("#{@project_root}/public/packs/manifest.json", "#{@project_root}/manifest.json")
+      FileUtils.rm_rf("#{@project_root}/public/packs")
+      FileUtils.mkdir_p("#{@project_root}/public/packs")
+      FileUtils.cp("#{@project_root}/manifest.json", "#{@project_root}/public/packs/manifest.json")
     end
 
     def removals
@@ -39,17 +53,17 @@ class Jets::Builders
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned out.
     def jetskeep
-      defaults = %w[.bundle pack handlers public/assets]
+      always = %w[.bundle packs]
       path = "#{@project_root}/.jetskeep"
-      return defaults unless File.exist?(path)
+      return always unless File.exist?(path)
 
       keep = IO.readlines(path)
       keep = keep.map {|i| i.strip}.reject { |i| i =~ /^#/ || i.empty? }
-      (defaults + keep).uniq
+      (always + keep).uniq
     end
 
     # folders to remove in the vendor/gems folder regardless of the level of the folder
-    def tidy_bundled
+    def clean_vendor_gems
       Dir.glob("#{@project_root}/vendor/gems/**/*").each do |path|
         next unless File.directory?(path)
         dir = File.basename(path)
