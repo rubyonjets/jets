@@ -27,6 +27,6 @@ title: CLI Reference
 * [jets secret]({% link _reference/jets-secret.md %})
 * [jets server]({% link _reference/jets-server.md %})
 * [jets status]({% link _reference/jets-status.md %})
-* [jets upgrade:v1]({% link _reference/jets-upgrade-v1.md %})
+* [jets upgrade]({% link _reference/jets-upgrade.md %})
 * [jets url]({% link _reference/jets-url.md %})
 * [jets version]({% link _reference/jets-version.md %})
