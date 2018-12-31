@@ -260,7 +260,7 @@ class Jets::Builders
       move_node_modules(Jets.root, Jets.build_root)
       begin
         # puts "cp -r #{@full_project_path} #{"#{stage_area}/code"}".colorize(:yellow) # uncomment to debug
-        FileUtils.cp_r(@full_project_path, "#{stage_area}/code")
+        Jets::Util.cp_r(@full_project_path, "#{stage_area}/code")
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
       end

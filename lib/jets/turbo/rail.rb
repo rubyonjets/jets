@@ -39,7 +39,7 @@ class Jets::Turbo
 
       FileUtils.mkdir_p(build_area)
       FileUtils.rm_rf(project_path)
-      FileUtils.cp_r(jets_project, project_path)
+      Jets::Util.cp_r(jets_project, project_path)
 
       IO.write("#{project_path}/date.txt", Time.now) # update date.txt file to ensure Lambda function code changes and updates
     end
@@ -90,7 +90,7 @@ class Jets::Turbo
     def copy_rack_project
       dest = "#{build_area}/#{@project_folder}/rack"
       # puts "cp -r #{Dir.pwd} #{dest}" # uncomment to see and debug
-      FileUtils.cp_r(Dir.pwd, dest)
+      Jets::Util.cp_r(Dir.pwd, dest)
     end
 
     # TODO: remove duplication, copied from jets/commands/import/base.rb

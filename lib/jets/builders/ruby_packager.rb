@@ -68,7 +68,7 @@ class Jets::Builders
     def copy_gemfile_lock
       src = "#{cache_area}/Gemfile.lock"
       dest = "#{@full_app_root}/Gemfile.lock"
-      FileUtils.cp_r(src, dest)
+      Jets::Util.cp_r(src, dest)
     end
 
     # Clean up extra unneeded files to reduce package size
@@ -171,7 +171,7 @@ EOL
       # Leave #{Jets.build_root}/vendor_gems behind to act as cache
       if File.exist?("#{cache_area}/vendor/gems")
         FileUtils.mkdir_p(File.dirname(vendor_gems))
-        FileUtils.cp_r("#{cache_area}/vendor/gems", vendor_gems)
+        Jets::Util.cp_r("#{cache_area}/vendor/gems", vendor_gems)
       end
     end
   end
