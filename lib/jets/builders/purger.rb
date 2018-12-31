@@ -9,7 +9,7 @@ class Jets::Builders
     def purge
       if version_changed?
         last_version = @last_version || "unknown"
-        puts "The jets version has changed enough since the last build to merit freshing the build cache."
+        puts "The jets version has changed enough since the last build to merit refreshing the build cache."
         puts "Current jets version: #{Jets::VERSION} Last built jets version: #{last_version}"
         puts "Removing /tmp/jets/#{@project_name} to start fresh."
         FileUtils.rm_rf("/tmp/jets/#{@project_name}")
