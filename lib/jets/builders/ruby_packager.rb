@@ -68,7 +68,7 @@ class Jets::Builders
     def copy_gemfile_lock
       src = "#{cache_area}/Gemfile.lock"
       dest = "#{@full_app_root}/Gemfile.lock"
-      Jets::Util.cp_r(src, dest)
+      FileUtils.cp(src, dest)
     end
 
     # Clean up extra unneeded files to reduce package size

@@ -24,6 +24,9 @@ Jets.application.configure do
   config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
   config.domain.hosted_zone_name = "coolapp.com" # String
   # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is the example convention
+  # config.domain.route53 = true # false to disable route53 from being managed by jets.
+      # The domain.route53 seetting defaults to true if if a hosted_zone_name is set.
+      # It might be useful to turn of route53 if you are managing the DNS yourself.
 
   # NOTE: Changing the endpoint_configuration can result 10 minutes of downtime if going from REGIONAL to EDGE
   # config.domain.endpoint_configuration = { types: ["REGIONAL"] } # EDGE or REGIONAL

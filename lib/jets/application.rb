@@ -81,6 +81,9 @@ class Jets::Application
     # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is nil
     # config.domain.cert_arn = "..."
     config.domain.endpoint_type = "REGIONAL" # EDGE or REGIONAL. Default to EDGE because CloudFormation update is faster
+    config.domain.route53 = true # controls whether or not to create the managed route53 record.
+      # Useful to disable this when user wants to manage the route themself like pointing
+      # it to CloudFront for blue-green deployments instead.
 
     config
   end
