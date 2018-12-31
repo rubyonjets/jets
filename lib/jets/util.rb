@@ -13,11 +13,11 @@ class Jets::Util
       # Using rsync to perform the copy.
       src.chop! if src.ends_with?('/')
       dest.chop! if dest.ends_with?('/')
-      sh "rsync -a --links --no-specials --no-devices #{src}/ #{dest}/"
+      sh "rsync -a --links --no-specials --no-devices #{src}/ #{dest}/", quiet: true
     end
 
-    def sh(command)
-      puts "=> #{command}"
+    def sh(command, quiet: false)
+      puts "=> #{command}" unless quiet
       system(command)
     end
   end

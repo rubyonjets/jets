@@ -130,7 +130,7 @@ class Jets::Cfn
     end
 
     def show_custom_domain
-      return unless endpoint_available? && Jets.custom_domain?
+      return unless endpoint_available? && Jets.custom_domain? && Jets.config.domain.route53
 
       domain_name = Jets::Resource::ApiGateway::DomainName.new
       # Looks funny but its right.

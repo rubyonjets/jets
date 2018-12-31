@@ -41,7 +41,7 @@ class Jets::Cfn::Builders
     def add_custom_domain
       return unless Jets.custom_domain?
       add_domain_name
-      add_route53_dns
+      add_route53_dns if Jets.config.domain.route53
     end
 
     def add_domain_name
