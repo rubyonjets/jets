@@ -12,4 +12,5 @@ Funds donated via Patreon go directly to support Tung Nguyen's full-time work on
 
 <!--10 start-->
 - Erlend Finvåg
+- Nate Clark
 <!--10 end-->
