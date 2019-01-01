@@ -1,4 +1,9 @@
 #!/bin/bash -ex
 
+# Usage:
+#   bin/web
+#   bin/web -H 0.0.0.0
+#   bin/web -H 0.0.0.0 -P 8888
+
 jekyll clean
-exec jekyll serve -H 0.0.0.0
+exec jekyll serve "$@"
