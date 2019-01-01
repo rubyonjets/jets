@@ -21,7 +21,7 @@ Thanks!
 ## Checklist
 
 <!--
-Make sure that you've done all of these.
+Make sure that you've done all of these.  To mark a checkbox done, replace [ ] with [x].
 -->
 
 - [ ] Upgrade Jets: Are you using the latest version of Jets? This allows Jets to fix issues fast. There's a `jets upgrade` command that makes this a simple task. There's also an Upgrading Guide: http://rubyonjets.com/docs/upgrading/
@@ -32,11 +32,11 @@ Make sure that you've done all of these.
 
 <!-- Please fill out the table below with debugging info to help: -->
 
-| Software         | Version(s) |
-| ---------------- | ---------- |
-| Operating System |            |
-| `jets`           | Latest     |
-| `ruby`           | Latest     |
+| Software         | Version |
+| ---------------- | ------- |
+| Operating System |         |
+| `jets`           |         |
+| `ruby`           |         |
 
 ---
 
@@ -48,16 +48,16 @@ What is it you expected to happen? This should be a description of how the funct
 
 ## Current Behavior
 
-<!-- 
+<!--   
 Describe the details of the bug.  Try to keep this to one-paragraph.
 -->
 
 ## Step-by-step reproduction instructions
 
-<!-- 
+<!--   
 Be sure to include any steps you took for the problem to exist. This is likely the longest part of the report.
 
-Please include any logs you think relevant here. If the logs are long (more than 50 lines) please make a gist of the logs and link to it. https://gist.github.com 
+Please include any logs you think relevant here. If the logs are long (more than 50 lines) please make a gist of the logs and link to it. https://gist.github.com   
 -->
 
 ## Code Sample
