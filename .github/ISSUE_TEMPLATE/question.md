@@ -10,7 +10,7 @@ assignees: ''
 <!--
 The Jets issue tracker IS NOT for usage questions! Please post your question on our dedicated forum at https://community.rubyonjets.com
 
-Also, Here are some additional options for questions http://rubyonjets.com/docs/support/ 👌
+Also, here are some additional options for questions http://rubyonjets.com/docs/support/ 👌
 
 Thank you!
 -->
