@@ -12,7 +12,7 @@ See [the support guidelines](https://rubyonjets.com/docs/support/)
 
 Whether you're a developer, an infrastructure engineer, or just an enthusiast, there are lots of ways to contribute. Here are a few ideas:
 
-* [Install Jets on your computer](https://rubyonjets.com/docs/install/) and kick the tires. Does it work? Does it do what you'd expect? If not, [open an issue](https://github.com/tongueroo/jets/issues/new) and let us know.
+* [Install Jets on your computer](https://rubyonjets.com/docs/install/) and kick the tires. Does it work? Does it do what you'd expect? If not, [open an issue](https://github.com/tongueroo/jets/issues/new/choose) and let us know.
 * Comment on some of the project's [open issues](https://github.com/tongueroo/jets/issues). Have you experienced the same problem? Know a workaround? Do you have a suggestion for how the feature could be better?
 * Read through [the documentation](https://rubyonjets.com/docs/), and click the "improve this page" button, any time you see something confusing or have a suggestion for something that could be improved.
 * Browse through the [Jets Community forum](https://community.rubyonjets.com), and lend a hand answering questions. There's a good chance you've already experienced what another user is experiencing.

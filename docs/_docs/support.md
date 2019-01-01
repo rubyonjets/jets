@@ -16,7 +16,7 @@ There are a bunch of helpful community members on these services that should be 
 
 ## Report a bug
 
-* If you think you've found a bug within the Jets repository, [open an issue](https://github.com/tongueroo/jets/issues/new).
+* If you think you've found a bug within the Jets repository, [open an issue](https://github.com/tongueroo/jets/issues/new/choose).
 
 Happy Hackin' 😁
 
