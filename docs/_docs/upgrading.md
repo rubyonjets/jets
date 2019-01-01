@@ -14,7 +14,6 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green? | Run jets upgrade?
 --- | --- | --- | ---
-1.5.0 | Update webpacker. Please run `jets upgrade` to update the `bin/webpack*` binstubs. | No | Yes
 1.3.0 | Official AWS Ruby Support added.  Removed longer needed `config.ruby.lazy_load` feature. | No | No
 1.2.0 | Set default `config.api.binary_media_types` to `multipart/form-data` to handle binary support.  | No | No
 1.1.0 | Added `Jets.boot` to `config.ru`. You can run the `jets upgrade` command to add it. | No | Yes

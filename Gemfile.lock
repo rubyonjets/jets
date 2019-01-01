@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/tongueroo/webpacker.git
-  revision: a8c46614c6757fab65e4d0c47d8203014e7b4ef9
+  revision: 3651cc317358018ebd16de75df3b8184adf1b818
   branch: jets
   specs:
     webpacker (3.2.0)
@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.4.5)
+    jets (1.4.6)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)

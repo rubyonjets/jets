@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.6]
+- #118 from tongueroo/fix-mega-query-string
+- #120 from tongueroo/tidy-webpacker
+- #123 from tongueroo/cp-r
+- #124 from tongueroo/webpacker-update
+- #125 from tongueroo/fix-redirect-for-custom-domains
+- #126 from tongueroo/route-53-option config.domain.route53 option
+- #127 from tongueroo/github-templates
+- more specific regexp for project_name in parse_project_name
+- tidy webpacker app/javascript/src and public/packs to keep code sizes down
+
 ## [1.4.5]
 - include JETS_PROJECT_NAME as jets_env function var when set
 
