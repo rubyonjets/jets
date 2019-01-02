@@ -8,11 +8,9 @@ assignees: ''
 ---
 
 <!--
-The Jets issue tracker IS NOT for usage questions! Please post your question on our dedicated forum at https://community.rubyonjets.com
+The Jets issue tracker IS NOT for usage questions! Please post your question on our dedicated forum at https://community.rubyonjets.com 
 
-Posting your questions in the Jets community forum is the best place. This helps questions get answered faster and also benefits others by making them easier to find.
-
-Also, here are some additional options for questions http://rubyonjets.com/docs/support/ 👌
+To be sensitive to everyone's time, we may close issues asking questions without comment. Posting your questions in the Jets community forum is the best place. It also benefits others by making the questions easier to find. Here are some additional options also http://rubyonjets.com/docs/support/ 👌
 
 Thank you!
 -->
