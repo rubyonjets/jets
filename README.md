@@ -7,6 +7,7 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 ![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiUE12K3ljQTFQUjVpRW0reGhGVHVQdkplTHlOdUtENnBya2JhVWVXaFIvTU92MlBtV3hIUE9pb25jWGw0MS9jN2RXMERKRHh5Nzhvd01Za0NyeUs5SCtzPSIsIml2UGFyYW1ldGVyU3BlYyI6IkMybEJFaXdzejJEaHNWVmEiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 [![CircleCI](https://circleci.com/gh/tongueroo/jets.svg?style=svg)](https://circleci.com/gh/tongueroo/jets)
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
+[![Support](https://img.shields.io/badge/Support-Help-blue.svg)](http://rubyonjets.com/docs/support/)
 
 **Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/upgrading/).
 
@@ -153,7 +154,7 @@ Please feel free to add your own example to the [jets-examples](https://github.c
 
 ### Rails Support
 
-Jets [Mega Mode](http://rubyonjets.com/docs/megamode/) provides Rails support with little effort.  This allows you to run a Rails application on AWS Lambda. Refer to the [Rails Support](http://rubyonjets.com/docs/rails-support/) docs for more info.  Also here's a Tutorial Blog Post on Mega Mode: [Run Rails on AWS Lambda](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda).
+[Jets Afterburner Mode](http://rubyonjets.com/docs/rails-support/) provides Rails support with little effort.  This allows you to run a Rails application on AWS Lambda. Also here's a Tutorial Blog Post: [Jets Afterburner: Rails Support](https://blog.boltops.com/2018/12/21/jets-afterburner-serverless-rails-on-aws-lambda-in-5-minutes).
 
 ### More Info
 
@@ -181,7 +182,8 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 
 * [Introducing Jets: A Ruby Serverless Framework](https://blog.boltops.com/2018/08/18/introducing-jets-a-ruby-serverless-framework)
 * [Official AWS Ruby Support for Jets](https://blog.boltops.com/2018/12/12/official-aws-ruby-support-for-jets-serverless-framework)
-* [Mega Mode: Rails Support](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda)
+* [Jets Afterburner: Rails Support](https://blog.boltops.com/2018/12/21/jets-afterburner-serverless-rails-on-aws-lambda-in-5-minutes)
+* [Jets Mega Mode: Jets and Rails](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda)
 * [Toronto Serverless Presentation](https://blog.boltops.com/2018/09/25/toronto-serverless-presentation-jets-framework-on-aws-lambda)
 * [Jets Image Uploads Tutorial with CarrierWave](https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support)
 * [Jets Tutorial An Introductory CRUD App Part 1](https://blog.boltops.com/2018/09/07/jets-tutorial-crud-app-introduction-part-1)
