@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.4.7)
+    jets (1.4.8)
       actionpack (>= 5.2.1)
       actionview (>= 5.2.1)
       activerecord (>= 5.2.1)
@@ -127,7 +127,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     mysql2 (0.5.2)
-    nokogiri (1.9.1)
+    nokogiri (1.10.0)
       mini_portile2 (~> 2.4.0)
     rack (2.0.6)
     rack-proxy (0.6.5)
