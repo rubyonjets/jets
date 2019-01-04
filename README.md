@@ -146,9 +146,10 @@ After deployment, you can test the Lambda functions with the AWS Lambda console 
 
 Here are some demos of Jets applications:
 
-* [Quintessential CRUD Jets app](https://demo.rubyonjets.com/posts)
-* [Rails Running on AWS Lambda Mega Mode Example](https://mega.demo.rubyonjets.com/)
-* [Image Upload Example](https://upload.demo.rubyonjets.com/)
+* [Quintessential CRUD Jets app](https://demo.rubyonjets.com/)
+* [Jets Afterburner: Easy Rails Support](https://afterburner.demo.rubyonjets.com/)
+* [Mega Mode: Jets and Rails Combined](https://mega.demo.rubyonjets.com/)
+* [Image Upload with CarrierWave](https://upload.demo.rubyonjets.com/)
 
 Please feel free to add your own example to the [jets-examples](https://github.com/tongueroo/jets-examples) repo.
 
@@ -196,3 +197,4 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Jets Tutorial Different Environments Part 8](https://blog.boltops.com/2018/09/26/jets-tutorial-different-environments-part-8)
 * [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
 * [Jets Delete Tutorial](https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete)
+* [Serverless Ruby Cron Jobs Tutorial: Route53 Backup](https://blog.boltops.com/2019/01/03/serverless-ruby-cron-jobs-with-jets-route53-backup)
