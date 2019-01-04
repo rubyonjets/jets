@@ -22,7 +22,7 @@ class HardJob < ApplicationJob
 end
 ```
 
-In our exmple, the job `HardJob#dig` will run every 10 hours, and `HardJob#lift` will run every 12 hours.
+In our example, the job `HardJob#dig` will run every 10 hours, and `HardJob#lift` will run every 12 hours.
 
 You can see the lambda functions which correspond to your job functions in the Lambda console:
 
