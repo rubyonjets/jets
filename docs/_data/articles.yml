@@ -22,6 +22,10 @@
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_657/https://blog.boltops.com/img/posts/2018/09/jets-toronto-serverless-meetup-v1.png
   title: "Toronto Serverless Presentation"
 
+- url: http://5by5.tv/rubyonrails/253
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_470/https://blog.boltops.com/img/posts/2019/01/ror-podcast-jets-episode-v1.png
+  title: "Ruby on Rails Podcast Jets Episode"
+
 - url: https://blog.boltops.com/2018/09/07/jets-tutorial-crud-app-introduction-part-1
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_708/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-1-crud-v1.png
   title: "Intro CRUD App Part 1"
@@ -54,10 +58,6 @@
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_780/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-8-different-environments-v2.png
   title: "Different Environments Part 8"
 
-- url: https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9
-  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_584/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-9-polymorphic-support-v1.png
-  title: "Polymorphic Support Part 9"
-
 - url: https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_746/https://blog.boltops.com/img/posts/2018/11/jets-delete-v2.png
   title: "Jets Delete Tutorial"
@@ -70,3 +70,6 @@
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_640/https://blog.boltops.com/img/posts/2018/11/jets-mega-mode-rails-on-aws-lambda-v1.png
   title: "Mega Mode: Jets + Rails"
 
+- url: https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_584/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-9-polymorphic-support-v1.png
+  title: "Polymorphic Support Part 9"
