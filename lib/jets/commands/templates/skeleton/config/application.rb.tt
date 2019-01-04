@@ -2,10 +2,14 @@ Jets.application.configure do
   config.project_name = "<%= @project_name %>"
   config.mode = "<%= @options[:mode] %>"
 
-  # config.prewarm.enable = true # default is true
+<% if @options[:mode] == 'job' -%>
+  config.prewarm.enable = false
+<% else -%>
+  config.prewarm.enable = true # default is true
   # config.prewarm.rate = '30 minutes' # default is '30 minutes'
   # config.prewarm.concurrency = 2 # default is 2
   # config.prewarm.public_ratio = 3 # default is 3
+<% end -%>
 
   # config.env_extra = 2 # can also set this with JETS_ENV_EXTRA
   # config.extra_autoload_paths = []
