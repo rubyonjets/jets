@@ -10,6 +10,10 @@
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_470/https://blog.boltops.com/img/posts/2018/12/jets-afterburner-v1.png
   title: "Rails Support: Jets Afterburner"
 
+- url: https://blog.boltops.com/2019/01/03/serverless-ruby-cron-jobs-with-jets-route53-backup
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_547/https://blog.boltops.com/img/posts/2019/01/severless-ruby-cron-v1.png
+  title: "Cron Jobs Tutorial: Route53 Backup"
+
 - url: https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_490/https://blog.boltops.com/img/posts/2018/12/image-upload-tutorial-v1.png
   title: "Image Upload Carrierwave Tutorial"
@@ -17,10 +21,6 @@
 - url: https://blog.boltops.com/2018/09/25/toronto-serverless-presentation-jets-framework-on-aws-lambda
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_657/https://blog.boltops.com/img/posts/2018/09/jets-toronto-serverless-meetup-v1.png
   title: "Toronto Serverless Presentation"
-
-- url: https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete
-  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_746/https://blog.boltops.com/img/posts/2018/11/jets-delete-v2.png
-  title: "Jets Delete Tutorial"
 
 - url: https://blog.boltops.com/2018/09/07/jets-tutorial-crud-app-introduction-part-1
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_708/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-1-crud-v1.png
@@ -58,6 +58,15 @@
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_584/https://blog.boltops.com/img/posts/2018/09/jets-tutorial-part-9-polymorphic-support-v1.png
   title: "Polymorphic Support Part 9"
 
+- url: https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_746/https://blog.boltops.com/img/posts/2018/11/jets-delete-v2.png
+  title: "Jets Delete Tutorial"
+
+- url: https://blog.boltops.com/2019/01/01/introducing-lamdagems-hassle-free-serverless-ruby-build-and-deploy
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_635/https://blog.boltops.com/img/posts/2019/01/lambdagems-v3.png
+  title: "Lambda Gems: Hassle-Free Serverless Ruby"
+
 - url: https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_640/https://blog.boltops.com/img/posts/2018/11/jets-mega-mode-rails-on-aws-lambda-v1.png
   title: "Mega Mode: Jets + Rails"
+

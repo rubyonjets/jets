@@ -2,8 +2,7 @@
 
 # Usage:
 #   bin/web
-#   bin/web -H 0.0.0.0
-#   bin/web -H 0.0.0.0 -P 8888
+#   bin/web -P 8888
 
 jekyll clean
-exec jekyll serve "$@"
+exec jekyll serve --host 0.0.0.0 "$@"
