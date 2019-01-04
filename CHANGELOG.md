@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.7]
+- only create preheat job if prewarm.enable
+
 ## [1.4.6]
 - #118 from tongueroo/fix-mega-query-string
 - #120 from tongueroo/tidy-webpacker
