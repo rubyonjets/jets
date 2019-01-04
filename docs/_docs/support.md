@@ -4,15 +4,13 @@ title: Support
 
 ## Getting Help
 
-**The Jets GitHub issue tracker is not a support forum.**
-
-If you're looking for support for Jets, there are a lot of options:
+If you're looking for support for Jets, here are some options:
 
 * Read the [Jets Documentation](http://rubyonjets.com)
 * If you have a question about using Jets, start a discussion on [Jets Community Forum](https://community.rubyonjets.com/) or [StackOverflow](https://stackoverflow.com/questions/tagged/rubyonjets)
 * Chat with Jets users &mdash; Join [the Gitter channel](https://gitter.im/tongueroo/jets) or [our IRC channel on Freenode](irc:irc.freenode.net/rubyonjets)
 
-There are a bunch of helpful community members on these services that should be willing to point you in the right direction.
+The Jets community is small and growing. Would love for community members to be helpful and point others in the right direction. We've all been there before and sometimes the littlest helpful tip goes a long way for others.
 
 ## Report a bug
 
