@@ -195,6 +195,4 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Jets Tutorial Extra Environments Part 7](https://blog.boltops.com/2018/09/13/jets-tutorial-extra-environments-part-7)
 * [Jets Tutorial Different Environments Part 8](https://blog.boltops.com/2018/09/26/jets-tutorial-different-environments-part-8)
 * [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
-* [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
-* [Jets Tutorial Polymorphic Support Part 9](https://blog.boltops.com/2018/09/27/jets-tutorial-polymorphic-support-part-9)
 * [Jets Delete Tutorial](https://blog.boltops.com/2018/11/12/jets-tutorial-jets-delete)
