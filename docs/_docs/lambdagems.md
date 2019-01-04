@@ -6,7 +6,7 @@ Jets deploy packages up the gems used by your application as part of the zip fil
 
 So Jets downloads pre-compiled gems from the [Lambda Gems](https://www.lambdagems.com) service. This makes for a much more seamless and pleasant developer experience. Lambda Gems will always be free for open source projects as long it continues to be sustainable.
 
-You can also host your own pre-compiled gems and download from your own repo sources. The repo structure should follow:
+You can also always pre-compile your own gems and host them yourself. The repo structure should follow:
 
     gems/[ruby-version]/[gem-name]/[gem-name]-[gem-version].zip
 
