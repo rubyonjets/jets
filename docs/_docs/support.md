@@ -14,7 +14,7 @@ The Jets community is small and growing.  There are some benefits with a smaller
 
 ## Report a bug
 
-* If you think you've found a bug within the Jets repository, [open an issue](https://github.com/tongueroo/jets/issues/new/choose).
+If you think you've found a bug within the Jets repository, [open an issue](https://github.com/tongueroo/jets/issues/new/choose).
 
 Happy Hackin' 😁
 
