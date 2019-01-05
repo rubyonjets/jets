@@ -35,8 +35,8 @@ Make sure that you've done all of these.  To mark a checkbox done, replace [ ] w
 | Software         | Version |
 | ---------------- | ------- |
 | Operating System |         |
-| `jets`           |         |
-| `ruby`           |         |
+| Jets             |         |
+| Ruby             |         |
 
 ---
 
