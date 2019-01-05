@@ -2,6 +2,8 @@ require 'text-table'
 
 module Jets
   class Router
+    autoload :Scope, 'jets/router/scope'
+
     attr_reader :routes
     def initialize
       @routes = []
@@ -16,6 +18,33 @@ module Jets
       define_method method_name do |path, options|
         create_route(options.merge(path: path, method: __method__))
       end
+    end
+
+    def create_route(options)
+      # Currently only using scope to add namespace
+      # TODO: Can use it to add additional things like authorization_type
+      # Would be good to add authorization_type at the controller level also
+      options[:path] = add_namespace(options[:path])
+      @routes << Route.new(options)
+    end
+
+    def add_namespace(path)
+      return path unless @scope
+      ns = @scope.full_namespace
+      return path unless ns
+      "#{ns}/#{path}"
+    end
+
+    def namespace(ns, &block)
+      scope(namespace: ns, &block)
+    end
+
+    def scope(options={})
+      root_level = @scope.nil?
+      @scope = root_level ? Scope.new(options) : @scope.new(options)
+      yield
+    ensure
+      @scope = @scope.parent if @scope
     end
 
     # resources macro expands to all the routes
@@ -43,10 +72,6 @@ module Jets
       end
       api_mode = Jets.config.mode == 'api' || Jets.config.api_mode || Jets.config.api_generator
       api_mode
-    end
-
-    def create_route(options)
-      @routes << Route.new(options)
     end
 
     # root "posts#index"
