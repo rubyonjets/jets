@@ -66,7 +66,8 @@ class Jets::Builders
 
     # folders to remove in the vendor/gems folder regardless of the level of the folder
     def clean_vendor_gems
-      Dir.glob("#{@project_root}/vendor/gems/**/*").each do |path|
+      # Thanks: https://stackoverflow.com/questions/11385795/ruby-list-directory-with-dir-including-dotfiles-but-not-and
+      Dir.glob("#{@project_root}/vendor/gems/**/*", File::FNM_DOTMATCH).each do |path|
         next unless File.directory?(path)
         dir = File.basename(path)
         next unless always_removals.include?(dir)
