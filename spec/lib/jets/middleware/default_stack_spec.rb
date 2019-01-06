@@ -8,7 +8,8 @@ describe Jets::Middleware::DefaultStack do
     end
 
     it "session store" do
-      expect(default_stack.session_store).to eq Rack::Session::Cookie
+      session_store = default_stack.send(:session_store)
+      expect(session_store).to eq Rack::Session::Cookie
     end
   end
 end

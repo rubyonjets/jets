@@ -53,10 +53,9 @@ describe Jets::Lambda::Dsl do
   context "Admin::StoresController" do
     let(:controller) { Admin::StoresController.new({}, nil, "new") }
 
-    it "tasks should not include tasks from parent class" do
+    it "tasks should include tasks from parent class" do
       tasks = Admin::StoresController.all_public_tasks.keys
-      # pp tasks
-      expect(tasks).to eq []
+      expect(tasks).to eq [:index, :new, :show]
     end
   end
 
@@ -64,8 +63,8 @@ describe Jets::Lambda::Dsl do
     it "creates custom resource" do
       task = TemperatureJob.tasks.first
       # pp task # uncomment to see and debug
-      has_resource = task.associated_resources.first.key?("room_topic_rule")
-      expect(has_resource).to be true
+      logical_id = task.associated_resources.first.logical_id
+      expect(logical_id).to eq "room_topic_rule"
     end
   end
 

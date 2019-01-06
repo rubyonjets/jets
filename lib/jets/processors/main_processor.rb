@@ -28,10 +28,12 @@ class Jets::Processors::MainProcessor
       #   deducer.code => HelloFunction.process(event, context, "world")
       #   deducer.path => app/functions/hello.rb
       deducer.load_class
-      result = instance_eval(deducer.code, deducer.path)
       # result = PostsController.process(event, context, "create")
+      result = instance_eval(deducer.code, deducer.path)
+      result = HashWithIndifferentAccess.new(result) if result.is_a?(Hash)
 
       Jets.increase_call_count
+
       if result.is_a?(Hash) && result["headers"]
         result["headers"]["x-jets-call-count"] = Jets.call_count
         result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count

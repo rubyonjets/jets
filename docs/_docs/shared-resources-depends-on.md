@@ -37,6 +37,7 @@ class Alarm < Jets::Stack
     threshold: "100",
     comparison_operator: "GreaterThanThreshold",
     alarm_actions: [ref(:billing_alert)],
+  )
 end
 ```
 

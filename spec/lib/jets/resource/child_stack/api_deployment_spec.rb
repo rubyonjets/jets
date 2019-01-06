@@ -7,7 +7,7 @@ describe Jets::Resource::ChildStack::ApiDeployment do
     it "contains child stack info" do
       expect(resource.logical_id).to match(/ApiDeployment(\d+)/)
       properties = resource.properties
-      expect(properties["TemplateUrl"]).to eq "https://s3.amazonaws.com/s3-bucket/jets/cfn-templates/#{Jets.config.project_namespace}-api-deployment.yml"
+      expect(properties["TemplateURL"]).to eq "https://s3.amazonaws.com/s3-bucket/jets/cfn-templates/#{Jets.config.project_namespace}-api-deployment.yml"
     end
   end
 end

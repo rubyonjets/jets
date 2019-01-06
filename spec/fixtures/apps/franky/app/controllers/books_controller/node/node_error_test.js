@@ -1,6 +1,6 @@
 'use strict';
 
-exports.handle = function(event, context, callback) {
+exports.handler = function(event, context, callback) {
     INTENTIONAL_NODE_ERROR
     var body = {'message': 'hi from node'};
     var response = {

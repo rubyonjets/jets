@@ -15,6 +15,12 @@ describe Jets::Resource::Iam::ClassRole do
             "Effect"=>"Allow",
             "Resource"=>
              "arn:aws:logs:us-east-1:123456789:log-group:/aws/lambda/demo-test-*"},
+           {"Action"=>["s3:Get*", "s3:List*"],
+            "Effect"=>"Allow",
+            "Resource"=>"arn:aws:s3:::fake-test-s3-bucket*"},
+           {"Action"=>["s3:ListAllMyBuckets", "s3:HeadBucket"],
+            "Effect"=>"Allow",
+            "Resource"=>"arn:aws:s3:::*"},
            {"Action"=>["cloudformation:DescribeStacks"],
             "Effect"=>"Allow",
             "Resource"=>

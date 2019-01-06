@@ -15,6 +15,8 @@ describe Jets::Mega::Request do
         # Uncomment this stubbing to test live request
         # Will need a rack server up and running
         http = double(:http)
+        allow(http).to receive(:open_timeout=)
+        allow(http).to receive(:read_timeout=)
         response = double(:response).as_null_object
         allow(response).to receive(:code).and_return("200")
         allow(response).to receive(:each_header).and_return({})
@@ -22,7 +24,7 @@ describe Jets::Mega::Request do
         allow(http).to receive(:request).and_return(response)
         allow(Net::HTTP).to receive(:new).and_return(http)
 
-        resp = request.process
+        resp = request.proxy
         # pp resp # uncomment to see and debug
         expect(resp).to eq({:status=>200, :headers=>{}, :body=>"test body"})
       end

@@ -1,4 +1,10 @@
 describe Jets::Commands::Build do
+  before(:each) do
+    # hack to reset subclasses, Stack classes from other specs pollutes it.
+    # Dont really want to define a reset_subclasses! method because this is only used for specs.
+    Jets::Stack.instance_variable_set(:@subclasses, [])
+  end
+
   context "templates only and fake full" do
     let(:build) do
       Jets::Commands::Build.new(templates: true, full: true)
@@ -9,20 +15,6 @@ describe Jets::Commands::Build do
       file_exist = File.exist?("/tmp/jets/demo/templates/demo-test-app-posts_controller.yml")
       expect(file_exist).to be true
     end
-
-    # it "builds handlers javascript files" do
-    # end
-
-    # Would be nice to be able to automate testing the shim
-    # context "node shim" do
-    #   it "posts create should return json" do
-    #     # build.build
-    #     # Dir.chdir(ENV["JETS_ROOT"]) do
-    #       out = execute("cd #{ENV["JETS_ROOT"]} && node handlers/controllers/posts.js")
-    #       puts out
-    #     # end
-    #   end
-    # end
   end
 
   context "methods" do
@@ -48,6 +40,7 @@ describe Jets::Commands::Build do
       router = Jets::Router.drawn_router
       files = Jets::Commands::Build.internal_app_files
       files.reject! { |p| p.include?("preheat_job") }
+      files.reject! { |p| p.include?("public_controller") }
       expect(files).to eq([])
 
       router.draw do

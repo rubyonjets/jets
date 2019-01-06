@@ -97,21 +97,24 @@ describe "Stack templates" do
   let(:stack) { ExampleStack2.new }
   it "parameters" do
     templates = stack.parameters.map(&:template)
+    # pp templates
     expect(templates).to eq(
       [{"InstanceType"=>
          {"Default"=>"t2.micro", "Description"=>"instance type", "Type"=>"String"}},
        {"Company"=>{"Default"=>"boltops", "Type"=>"String"}},
-       {"AmiId"=>{"Default"=>"ami-123", "Type"=>"String"}}]
+       {"AmiId"=>{"Default"=>"ami-123", "Type"=>"String"}},
+       {"IamRole"=>{"Type"=>"String"}},
+       {"S3Bucket"=>{"Type"=>"String"}}]
     )
   end
 
   it "outputs" do
     templates = stack.outputs.map(&:template)
     expect(templates).to eq(
-      [{"VpcId"=>{"Description"=>"vpc id", "Value"=>"!Ref vpc_id"}},
-      {"StackName"=>{"Value"=>"!Ref AWS::StackName"}},
-      {"Elb"=>{"Value"=>"!Ref Elb"}},
-      {"Elb2"=>{"Value"=>"!Ref Elb2"}}]
+      [{"VpcId"=>{"Description"=>"vpc id", "Value"=>"!Ref VpcId"}},
+       {"StackName"=>{"Value"=>"!Ref AWS::StackName"}},
+       {"Elb"=>{"Value"=>"!Ref Elb"}},
+       {"Elb2"=>{"Value"=>"!Ref Elb2"}}]
     )
   end
 
@@ -130,7 +133,7 @@ describe "Stack templates" do
 
   context "depends_on" do
     it "works" do
-      expect(ExampleAlarm.depends_on).to eq [:alert]
+      expect(ExampleAlarm.depends_on).to eq [:example_alert]
       expect(ExampleAlert.depends_on).to be nil
     end
   end

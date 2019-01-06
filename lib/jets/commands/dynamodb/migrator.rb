@@ -20,7 +20,7 @@ class Jets::Commands::Dynamodb::Migrator
     path = "#{Jets.root}#{@path}"
     unless File.exist?(path)
       puts "Unable to find the migration file: #{path}"
-      exit 1
+      exit 1 unless ENV['TEST']
     end
 
     require path

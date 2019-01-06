@@ -15,11 +15,9 @@ module Jets::Resource::Lambda
         layer_version_logical_id => {
           type: "AWS::Lambda::LayerVersion",
           properties: {
-            # compatible_runtimes: ["ruby2.5"],
             content: {
               s3_bucket: s3_bucket,
               s3_key: code_s3_key,
-              # s3_object_version: string,
             },
             description: description,
             layer_name: layer_name,
