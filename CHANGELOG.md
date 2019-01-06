@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.9]
+- update vendor/dynomite
+- #128 from Atul9/update-license: update copyright year
+- #130 from tongueroo/fix-specs
+
 ## [1.4.8]
 - disable prewarm in `jets new` job mode
 
