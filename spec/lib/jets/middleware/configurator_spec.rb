@@ -21,7 +21,8 @@ describe Jets::Middleware::Configurator do
       event = json_file("spec/fixtures/dumps/api_gateway/posts/index.json")
       context = nil
       env = Jets::Controller::Rack::Env.new(event, context).convert
-      mimic = Jets::Controller::Middleware::Local::MimicAwsCall.new(env)
+      route = Jets::Controller::Middleware::Local::RouteMatcher.new(env).find_route
+      mimic = Jets::Controller::Middleware::Local::MimicAwsCall.new(route, env)
       env.merge!(mimic.vars)
       env
     end
@@ -32,7 +33,7 @@ describe Jets::Middleware::Configurator do
       config_middleware.use Rack::TempfileReaper
 
       middleware = config_middleware.merge_into(default_stack)
-      stack = middleware.build(Jets::Controller::Rack::Main)
+      stack = middleware.build(Jets::Controller::Middleware::Main)
       status, headers, body = stack.call(rack_env)
       expect(status).to eq "200"
       expect(headers).to be_a(Hash)

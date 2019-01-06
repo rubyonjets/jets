@@ -5,10 +5,10 @@ describe Jets::Rule::Base do
   # been load loaded so we can use them later to configure the lambda functions
   context GameRule do
     it "tasks" do
-      tasks = GameRule.all_tasks.keys
+      tasks = GameRule.all_public_tasks.keys
       expect(tasks).to eq [:protect]
 
-      protect_task = GameRule.all_tasks[:protect]
+      protect_task = GameRule.all_public_tasks[:protect]
       expect(protect_task).to be_a(Jets::Lambda::Task)
     end
 
@@ -17,7 +17,7 @@ describe Jets::Rule::Base do
       expect(tasks.first).to be_a(Jets::Lambda::Task)
 
       task_names = tasks.map(&:name)
-      expect(task_names).to eq(GameRule.all_tasks.keys)
+      expect(task_names).to eq(GameRule.all_public_tasks.keys)
     end
   end
 end

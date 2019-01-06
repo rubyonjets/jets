@@ -6,7 +6,7 @@ describe Jets::Resource::ApiGateway::RestApi do
     end
 
     it 'defaults to edge-optimized' do
-      allow(Jets.config.api).to receive(:endpoint_type).and_return(nil)
+      allow(Jets.config.api).to receive(:endpoint_type).and_return('EDGE')
       expect(endpoint_types).to eq ['EDGE']
     end
 

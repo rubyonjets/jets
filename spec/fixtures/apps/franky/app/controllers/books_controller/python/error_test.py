@@ -13,7 +13,7 @@ def response(message, status_code):
             },
         }
 
-def handle(event, context):
+def lambda_handler(event, context):
     # TODO: figure out why this does not print out to stderr with python 3
     # print("BooksController#show", file=sys.stderr)
     # print(pprint.pformat(event), file=sys.stderr))
@@ -24,4 +24,4 @@ def handle(event, context):
         return response({'message': e.message}, 400)
 
 if __name__ == '__main__':
-    print(handle({"test": "1"}, {}))
+    print(lambda_handler({"test": "1"}, {}))

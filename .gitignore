@@ -19,3 +19,4 @@ spec/fixtures/project/handlers
 .codebuild/definitions
 demo*
 /html
+spec/fixtures/apps/franky/dynamodb/migrate

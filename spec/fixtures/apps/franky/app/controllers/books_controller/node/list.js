@@ -1,6 +1,6 @@
 'use strict';
 
-exports.handle = function(event, context, callback) {
+exports.handler = function(event, context, callback) {
     var body = {'message': 'hi from node'};
     var response = {
       statusCode: "200",

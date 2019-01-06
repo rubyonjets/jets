@@ -51,7 +51,7 @@ describe Jets::Router do
         router.draw do
           resources :posts
         end
-        tos = router.routes.map(&:to).sort
+        tos = router.routes.map(&:to).sort.uniq
         expect(tos).to eq(
           ["posts#create", "posts#delete", "posts#edit", "posts#index", "posts#new", "posts#show", "posts#update"].sort
         )
@@ -72,9 +72,9 @@ describe Jets::Router do
           resources :posts
           any "*catchall", to: "catch#all"
         end
-        expect(router.ordered_routes.map(&:path)).to eq(
-          ["posts/new", "posts", "posts", "posts/:id/edit", "posts/:id", "posts/:id", "posts/:id", "*catchall"])
-
+        paths = router.ordered_routes.map(&:path).uniq
+        expect(paths).to eq(
+          ["posts/new", "posts", "posts/:id/edit", "posts/:id", "*catchall"])
       end
     end
   end

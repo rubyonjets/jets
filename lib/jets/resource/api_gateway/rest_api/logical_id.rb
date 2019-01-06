@@ -6,12 +6,17 @@ class Jets::Resource::ApiGateway::RestApi
     def get
       return default unless stack_exists?(parent_stack_name) && api_gateway_exists?
 
-      change_detection = ChangeDetection.new
-      if change_detection.changed?
+
+      if changed?
         new_id
       else
         current
       end
+    end
+
+    def changed?
+      change_detection = ChangeDetection.new
+      change_detection.changed?
     end
 
     # Takes current logical id and increments the number that is appended to it.

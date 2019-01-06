@@ -10,17 +10,15 @@ describe Jets::Job::Base do
       expect(tasks).to eq [:dig, :drive, :lift]
 
       dig_task = HardJob.all_public_tasks[:dig]
-      expect(dig_task).to be_a(Jets::Job::Task)
-      expect(dig_task.schedule_expression).to eq "rate(10 hours)"
+      expect(dig_task).to be_a(Jets::Lambda::Task)
 
       drive_task = HardJob.all_public_tasks[:lift]
-      expect(drive_task).to be_a(Jets::Job::Task)
-      expect(drive_task.schedule_expression).to eq "cron(0 */12 * * ? *)"
+      expect(drive_task).to be_a(Jets::Lambda::Task)
     end
 
     it "tasks contains flatten Array structure" do
       tasks = HardJob.tasks
-      expect(tasks.first).to be_a(Jets::Job::Task)
+      expect(tasks.first).to be_a(Jets::Lambda::Task)
 
       task_names = tasks.map(&:name)
       expect(task_names).to eq(HardJob.all_public_tasks.keys)

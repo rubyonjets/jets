@@ -9,13 +9,13 @@ describe Jets::Resource::Iam::PolicyDocument do
       iam_policy_document = <<~EOL
         Version: '2012-10-17'
         Statement:
-        - Sid: Stmt1
-          Action:
+        - Action:
           - logs:*
           Effect: Allow
           Resource: "*"
       EOL
       expected_policy = YAML.load(iam_policy_document)
+      # puts YAML.dump(document.policy_document) # uncomment to debug
       expect(document.policy_document).to eq expected_policy
     end
   end
@@ -26,8 +26,7 @@ describe Jets::Resource::Iam::PolicyDocument do
       iam_policy_document = <<~EOL
         Version: '2012-10-17'
         Statement:
-        - Sid: Stmt1
-          Action:
+        - Action:
           - logs:*
           Effect: Allow
           Resource: "*"
@@ -43,8 +42,7 @@ describe Jets::Resource::Iam::PolicyDocument do
       iam_policy_document = <<~EOL
         Version: '2012-10-17'
         Statement:
-        - Sid: Stmt1
-          Action:
+        - Action:
           - logs:*
           Effect: Allow
           Resource: "*"
@@ -60,13 +58,11 @@ describe Jets::Resource::Iam::PolicyDocument do
       iam_policy_document = <<~EOL
         Version: '2012-10-17'
         Statement:
-        - Sid: Stmt1
-          Action:
+        - Action:
           - ec2:*
           Effect: Allow
           Resource: "*"
-        - Sid: Stmt2
-          Action:
+        - Action:
           - logs:*
           Effect: Allow
           Resource: "*"

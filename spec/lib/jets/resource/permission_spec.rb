@@ -24,7 +24,7 @@ describe Jets::Resource::Permission do
       properties = permission.properties
       # pp properties # uncomment to debug
       expect(properties["Principal"]).to eq "events.amazonaws.com"
-      expect(properties["SourceArn"]).to eq "!GetAtt HardJobDigEventsRule1.Arn"
+      expect(properties["SourceArn"]).to be nil
     end
   end
 end

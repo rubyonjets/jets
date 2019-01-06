@@ -13,12 +13,12 @@ describe Jets::Resource::Route53::RecordSet do
       expect(record_set.logical_id).to eq "DnsRecord"
       properties = record_set.properties
       # pp properties # uncomment to debug
-      expect(properties["HostedZoneName"]).to eq "example.com"
+      expect(properties["HostedZoneName"]).to eq "example.com."
       expect(properties["Comment"]).to eq "DNS record managed by Jets"
       expect(properties["Name"]).to eq "demo-test.example.com"
       expect(properties["Type"]).to eq "CNAME"
       expect(properties["TTL"]).to eq "60" # special casing
-      expect(properties["ResourceRecords"]).to eq ["fakerestapi.execute-api.${AWS::Region}.amazonaws.com"]
+      expect(properties["ResourceRecords"]).to eq ["!GetAtt DomainName.RegionalDomainName"]
     end
   end
 

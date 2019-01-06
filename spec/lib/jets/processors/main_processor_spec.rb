@@ -1,8 +1,8 @@
 describe Jets::Processors::MainProcessor do
   let(:main) do
     Jets::Processors::MainProcessor.new(
-      JSON.dump(event),
-      JSON.dump(context),
+      event,
+      context,
       handler
     )
   end
@@ -11,9 +11,8 @@ describe Jets::Processors::MainProcessor do
 
   context "controller create" do
     let(:handler) { 'handlers/controllers/posts_controller.create' }
-    it "returns result" do
-      result = main.run
-      data = JSON.load(result)
+    it "returns data" do
+      data = main.run
       # pp data
       expect(data["statusCode"]).to eq "200"
       expect(data["body"]).to be_a(String)
@@ -22,10 +21,9 @@ describe Jets::Processors::MainProcessor do
 
   context "controller new" do
     let(:handler) { 'handlers/controllers/posts_controller.new' }
+    let(:event) { { "path" => "/posts/new"} }
     it "process:controller event context handler" do
-      out = main.run
-      # pp out # uncomment to debug
-      data = JSON.parse(out)
+      data = main.run
       expect(data["statusCode"]).to eq "200"
       expect(data["body"]).to eq('{"action":"new"}') # body is JSON encoded String
     end
@@ -33,11 +31,11 @@ describe Jets::Processors::MainProcessor do
 
   context "job" do
     let(:handler) { 'handlers/jobs/hard_job.dig' }
-    it "returns result" do
-      result = main.run
-      data = JSON.load(result)
+    it "returns data" do
+      data = main.run
       # pp data
-      expect(data["done"]).to eq "digging"
+      expect(data[:done]).to eq "digging"
+      expect(data["done"]).to eq "digging" # testing HashWithIndifferentAccess
     end
   end
 
@@ -55,9 +53,8 @@ describe Jets::Processors::MainProcessor do
   context "function" do
     let(:handler) { 'handlers/functions/hello.world' }
     let(:event) { {"key1" => "value1"} }
-    it "returns result" do
-      result = main.run
-      data = JSON.load(result)
+    it "returns data" do
+      data = main.run
       # pp data
       expect(data).to eq 'hello world: "value1"'
     end
@@ -66,9 +63,8 @@ describe Jets::Processors::MainProcessor do
   context "shared function" do
     let(:handler) { 'handlers/shared/functions/whatever.handle' }
     let(:event) { {"key1" => "value1"} }
-    it "returns result" do
-      result = main.run
-      data = JSON.load(result)
+    it "returns data" do
+      data = main.run
       # pp data
       expect(data).to eq 'hello world: "value1"'
     end

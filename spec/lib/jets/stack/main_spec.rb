@@ -44,8 +44,7 @@ describe "Stack templates" do
             "ComparisonOperator"=>"GreaterThanThreshold",
             "AlarmActions"=>["!Ref BillingNotification"]},
           "Type"=>"AWS::CloudWatch::Alarm"}},
-       {"BillingNotification"=>
-         {"Type"=>"AWS::SNS::Topic", "Properties"=>{"Properties"=>{}}}}]
+       {"BillingNotification"=>{"Type"=>"AWS::SNS::Topic"}}]
     )
   end
 end

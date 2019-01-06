@@ -22,9 +22,10 @@ describe Jets::Rule::Dsl do
       expect(protect_task).to be_a(Jets::Lambda::Task)
       resources = protect_task.associated_resources
       associated_resource = resources.first
-      attributes = associated_resource.values.first
+      expect(associated_resource.logical_id).to eq "{namespace}_config_rule"
+      attributes = associated_resource.attributes
       props = attributes[:properties]
-      expect(props[:config_rule_name]).to eq "{config_rule_name}" # will eventually be replaced
+      expect(props[:config_rule_name]).to eq "demo-test-full-properties-protect"
     end
   end
 
@@ -36,7 +37,7 @@ describe Jets::Rule::Dsl do
       expect(protect_task).to be_a(Jets::Lambda::Task)
       resources = protect_task.associated_resources
       associated_resource = resources.first
-      attributes = associated_resource.values.first
+      attributes = associated_resource.attributes
       props = attributes[:properties]
       expect(props[:scope][:compliance_resource_types]).to eq(["AWS::EC2::SecurityGroup"])
     end

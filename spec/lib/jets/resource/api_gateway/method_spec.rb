@@ -6,7 +6,7 @@ describe Jets::Resource::ApiGateway::Method do
       Jets::Route.new(path: "posts", method: :get, to: "posts#index")
     end
     it "resource" do
-      expect(resource.logical_id).to eq "PostsIndexApiMethod"
+      expect(resource.logical_id).to eq "PostsIndexGetApiMethod"
       properties = resource.properties
       # pp properties # uncomment to debug
       expect(properties["RestApiId"]).to eq "!Ref RestApi"

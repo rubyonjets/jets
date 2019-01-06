@@ -7,7 +7,8 @@ describe Jets::Middleware do
     event = json_file("spec/fixtures/dumps/api_gateway/posts/index.json")
     context = nil
     env = Jets::Controller::Rack::Env.new(event, context).convert
-    mimic = Jets::Controller::Middleware::Local::MimicAwsCall.new(env)
+    route = Jets::Controller::Middleware::Local::RouteMatcher.new(env).find_route
+    mimic = Jets::Controller::Middleware::Local::MimicAwsCall.new(route, env)
     env.merge!(mimic.vars)
     env
   end
