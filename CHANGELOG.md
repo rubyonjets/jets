@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.10]
+- update vendor/dynomite: fix index creation dsl
+
 ## [1.4.9]
 - update vendor/dynomite
 - #128 from Atul9/update-license: update copyright year
