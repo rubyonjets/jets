@@ -118,5 +118,5 @@ This results in the rules looking something like this `cis-check-incoming-ssh-di
 * [AWS::Config::ConfigRule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-config-configrule.html) CloudFormation reference
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/custom-inflections.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/polymorphic-support.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/custom-lambda-layers.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

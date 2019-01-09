@@ -85,6 +85,10 @@ class Jets::Application
       # Useful to disable this when user wants to manage the route themself like pointing
       # it to CloudFront for blue-green deployments instead.
 
+    # Custom user lambda layers
+    config.lambda = ActiveSupport::OrderedOptions.new
+    config.lambda.layers = []
+
     config
   end
 
