@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.4.11]
+- #133 from tongueroo/custom-layer add custom lambda layer support
+- #134 from tongueroo/remove-dynomite-vendor remove vendor/dynomite
+
 ## [1.4.10]
 - update vendor/dynomite: fix index creation dsl
 
