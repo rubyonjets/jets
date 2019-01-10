@@ -129,8 +129,14 @@ module Jets::Resource::Lambda
         handler: handler,
         runtime: runtime,
       }
-      managed[:layers] = ["!Ref GemLayer"] if runtime =~ /^ruby/
+      layers = get_layers(runtime)
+      managed[:layers] = layers if layers
       props.merge!(managed)
+    end
+
+    def get_layers(runtime)
+      return nil unless runtime =~ /^ruby/
+      ["!Ref GemLayer"] + Jets.config.lambda.layers
     end
 
     def get_runtime(props)
