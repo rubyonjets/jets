@@ -8,6 +8,7 @@ end
 
 gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
 gem "mysql2", "~> 0.5.2"
+gem "dynomite"
 # gem "pg", '~> 1.1.3'
 
 group :development, :test do
