@@ -61,11 +61,4 @@ require "jets/core_ext/kernel"
 $:.unshift(File.expand_path("../../vendor/jets-gems/lib", __FILE__))
 require "jets-gems"
 
-# lazy loaded dependencies: depends what project. Mainly determined by Gemfile
-# and config files.
-if File.exist?("#{Jets.root}config/dynamodb.yml")
-  $:.unshift(File.expand_path("../../vendor/dynomite/lib", __FILE__))
-  require "dynomite"
-end
-
 Jets::Db # trigger autoload

@@ -8,6 +8,7 @@ gemspec
 # Need both because of jets/application.rb and jets/webpacker/middleware_setup.rb
 group :development, :test do
   gem "mysql2", "~> 0.5.2"
+  gem "dynomite"
   gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
   gem "rspec_junit_formatter"
 end
