@@ -77,5 +77,50 @@ describe Jets::Router do
           ["posts/new", "posts", "posts/:id/edit", "posts/:id", "*catchall"])
       end
     end
+
+    context "routes with namespaces" do
+      # more general scope method
+      it "admin namespace" do
+        router.draw do
+          scope(namespace: :admin) do
+            get "posts", to: "posts#index"
+          end
+        end
+        route = router.routes.first
+        expect(route.path).to eq "admin/posts"
+      end
+
+      it "api/v1 namespace nested" do
+        router.draw do
+          scope(namespace: :api) do
+            scope(namespace: :v1) do
+              get "posts", to: "posts#index"
+            end
+          end
+        end
+        route = router.routes.first
+        expect(route.path).to eq "api/v1/posts"
+      end
+      it "api/v1 namespace oneline" do
+        router.draw do
+          scope(namespace: "api/v1") do
+            get "posts", to: "posts#index"
+          end
+        end
+        route = router.routes.first
+        expect(route.path).to eq "api/v1/posts"
+      end
+
+      # prettier namespace method
+      it "api/v2 namespace" do
+        router.draw do
+          namespace "api/v2" do
+            get "posts", to: "posts#index"
+          end
+        end
+        route = router.routes.first
+        expect(route.path).to eq "api/v2/posts"
+      end
+    end
   end
 end
