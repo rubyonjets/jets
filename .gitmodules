@@ -4,6 +4,3 @@
 [submodule "vendor/rails"]
 	path = vendor/rails
 	url = https://github.com/tongueroo/rails.git
-[submodule "vendor/jets-html-sanitizer"]
-	path = vendor/jets-html-sanitizer
-	url = https://github.com/tongueroo/jets-html-sanitizer
