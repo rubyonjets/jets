@@ -58,7 +58,14 @@ end
 
 require "jets/core_ext/kernel"
 
-$:.unshift(File.expand_path("../../vendor/jets-gems/lib", __FILE__))
+root = File.expand_path("..", File.dirname(__FILE__))
+
+$:.unshift("#{root}/vendor/jets-gems/lib")
 require "jets-gems"
+
+$:.unshift("#{root}/vendor/rails/actionpack/lib")
+$:.unshift("#{root}/vendor/rails/actionview/lib")
+$:.unshift("#{root}/vendor/jets-html-sanitizer/lib") # required by action_view/helpers/sanitize_helper.rb
+# will require action_controller, action_pack, etc later when needed
 
 Jets::Db # trigger autoload

@@ -1,10 +1,11 @@
-require "rails"
-require "active_record"
-require "recursive-open-struct"
-
 class Jets::Commands::Db::Tasks
   # Ugly but it loads ActiveRecord database tasks
   def self.load!
+    # Lazy require rails so Rails const is only defined in jets db:* tasks
+    require "rails"
+    require "active_record"
+    require "recursive-open-struct"
+
     # Jets.boot # Jets.boot here screws up jets -h, the db_config doesnt seem to match exactly
     # but seems to be working anyway.
     db_configs = Jets.application.config.database

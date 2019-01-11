@@ -27,8 +27,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "actionpack", ">= 5.2.1"
-  spec.add_dependency "actionview", ">= 5.2.1"
+  # spec.add_dependency "actionpack", ">= 5.2.1" # using vendor/rails version
+  # spec.add_dependency "actionview", ">= 5.2.1" # using vendor/rails version
   spec.add_dependency "activerecord", ">= 5.2.1"
   spec.add_dependency "activesupport", ">= 5.2.1"
   spec.add_dependency "aws-sdk-apigateway"

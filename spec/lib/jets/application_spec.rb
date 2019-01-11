@@ -41,7 +41,9 @@ describe Jets::Application do
       expect(router).to be_a(Jets::Router)
       expect(router.routes).not_to be_empty
     end
+
+    it "Rails constant should not be defined" do
+      expect { Rails }.to raise_error(NameError)
+    end
   end
-
 end
-
