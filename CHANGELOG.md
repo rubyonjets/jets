@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.1]
+- #137 from tongueroo/gems-check bypass gems check exit for custom lambda layers
+
 ## [1.5.0]
 - #135 from tongueroo/remove-rails-constant Remove Rails Constant
 - #136 from tongueroo/routes-namespace routes namespace support (ghost release, not documented yet on purpose)
