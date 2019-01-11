@@ -7,9 +7,14 @@ class Jets::Builders
 
     def run
       check = Jets::Gems::Check.new
-      found_gems = check.run! # exits early if missing gems found
+      if Jets.config.lambda.layers.empty?
+        found_gems = check.run! # exits early if missing gems found
+      else
+        # assumes missing gems are in the provided custom layer by the user
+        found_gems = check.run # does not exist early
+      end
 
-      # Reaching here means its safe to download and extract the gems
+      # found gems will only have gems that were found
       found_gems.each do |gem_name, source|
         options = @options.merge(source_url: source)
         gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, options)
