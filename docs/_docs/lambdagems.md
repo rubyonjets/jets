@@ -10,26 +10,6 @@ So Jets downloads pre-compiled gems from the [Lambda Gems](https://www.lambdagem
 
 For gems that are not provided by the Lambda Gems, you can build your own custom Lambda Layer and use it as part of your Jets project. Details here: [Custom Lambda Layers]({% link _docs/custom-lambda-layers.md %}).
 
-## Pre-compiled Gems
-
-You can also pre-compile gems and host them yourself. The repo structure should follow:
-
-    gems/[ruby-version]/[gem-name]/[gem-name]-[gem-version].zip
-
-The files themselves should follow the layer format per the AWS docs: [AWS Lambda Layers
-](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). To configure your own source:
-
-```ruby
-Jets.application.configure do
-  # Sources for check for pre-compiled Lambda gems. Checks the list in order.
-  config.gems.sources = [
-    "https://gems2.lambdagems.com",
-    "https://yoursource.com",
-  ]
-  # ...
-end
-```
-
 <a id="prev" class="btn btn-basic" href="{% link faq.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/contributing.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
