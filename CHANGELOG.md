@@ -3,13 +3,17 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
-## [UNRELEASED]
+## [1.5.2]
+- #138 from patchkit-net/feature/before_action_chain_break Change before_action behavior: allow chain break
+- #139 from patchkit-net/bugfix/spec-gem-files-dir Fix jets.gemspec files listing method
+- #140 from patchkit-net/feature/config-logger Add configurable Jets.application.config.logger
 - Change before_action behavior: When any before action renders or redirects, the filter chain
   is halted, and action code is not executed. This allows before_action to act as guards.
 - Fix jets.gemspec how git command is executed to list files. The listing no longer needs to be done
   from the jets root directory. This change enables including Jets as local bundler gem.
 - Add Jets.application.config.logger field to enable custom logger instance to
   be configured in config/environments/*.rb files.
+- Fix scaffold ajax redirect url
 
 ## [1.5.1]
 - #137 from tongueroo/gems-check bypass gems check exit for custom lambda layers
