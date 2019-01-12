@@ -42,7 +42,7 @@ module Jets::Core
   memoize :build_root
 
   def logger
-    Jets::Logger.new($stderr)
+    Jets.application.config.logger
   end
   memoize :logger
 

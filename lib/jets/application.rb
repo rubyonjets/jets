@@ -35,6 +35,7 @@ class Jets::Application
     config.cors = true
     config.autoload_paths = default_autoload_paths
     config.extra_autoload_paths = []
+    config.logger = Jets::Logger.new($stderr)
 
     # function properties defaults
     config.function = ActiveSupport::OrderedOptions.new

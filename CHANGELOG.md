@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [UNRELEASED]
+- Add Jets.application.config.logger field to enable custom logger instance to
+  be configured in config/environments/*.rb files.
+
 ## [1.5.1]
 - #137 from tongueroo/gems-check bypass gems check exit for custom lambda layers
 
