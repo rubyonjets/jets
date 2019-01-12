@@ -20,8 +20,9 @@ class Jets::Controller
 
     # Instance Methods
     # define run_before_actions and run_after_actions
+    # returns true if all actions were run, false if break_if condition yielded `true`
     [:before, :after].each do |type|
-      define_method "run_#{type}_actions" do
+      define_method "run_#{type}_actions" do |break_if: nil|
         called_method = @meth.to_sym
         callbacks = self.class.send("#{type}_actions")
         callbacks.each do |array|
@@ -36,7 +37,11 @@ class Jets::Controller
           else
             send(callback)
           end
+          @last_callback_name = callback
+
+          return false if !break_if.nil? && break_if.call
         end
+        true
       end
     end
   end # ClassOptions
