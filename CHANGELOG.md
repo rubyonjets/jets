@@ -6,6 +6,8 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 ## [UNRELEASED]
 - Fix jets.gemspec how git command is executed to list files. The listing no longer needs to be done
   from the jets root directory. This change enables including Jets as local bundler gem.
+- Add Jets.application.config.logger field to enable custom logger instance to
+  be configured in config/environments/*.rb files.
 
 ## [1.5.1]
 - #137 from tongueroo/gems-check bypass gems check exit for custom lambda layers
