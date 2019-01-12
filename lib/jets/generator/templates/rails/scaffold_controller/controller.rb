@@ -30,7 +30,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
     if @<%= orm_instance.save %>
       if request.xhr?
-        render json: {success: true, location: url_for("/<%= plural_table_name %>/#@{<%= singular_table_name %>.id}")}
+        render json: {success: true, location: url_for("/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}")}
       else
         redirect_to "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"
       end
@@ -43,7 +43,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   def update
     if @<%= orm_instance.update("#{singular_table_name}_params") %>
       if request.xhr?
-        render json: {success: true, location: url_for("/<%= plural_table_name %>/#@{<%= singular_table_name %>.id}")}
+        render json: {success: true, location: url_for("/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}")}
       else
         redirect_to "/<%= plural_table_name %>/#{@<%= singular_table_name %>.id}"
       end

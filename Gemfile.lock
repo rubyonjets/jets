@@ -76,7 +76,7 @@ GEM
     aws-sdk-cloudwatchlogs (1.12.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.44.2)
+    aws-sdk-core (3.45.0)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
@@ -90,7 +90,7 @@ GEM
     aws-sdk-lambda (1.16.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.30.0)
+    aws-sdk-s3 (1.30.1)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
@@ -108,7 +108,7 @@ GEM
     crass (1.0.4)
     diff-lcs (1.3)
     dotenv (2.6.0)
-    dynomite (1.1.1)
+    dynomite (1.2.0)
       activesupport
       aws-sdk-dynamodb
     erubi (1.8.0)
