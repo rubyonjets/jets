@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [UNRELEASED]
+- Fix jets.gemspec how git command is executed to list files. The listing no longer needs to be done
+  from the jets root directory. This change enables including Jets as local bundler gem.
+
 ## [1.5.1]
 - #137 from tongueroo/gems-check bypass gems check exit for custom lambda layers
 

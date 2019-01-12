@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.rdoc_options += Jets::Rdoc.options
 
   vendor_files       = Dir.glob("vendor/**/*")
-  gem_files          = `git ls-files -z`.split("\x0").reject do |f|
+  gem_files          = `git -C "#{File.dirname(__FILE__)}" ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features|docs)/})
   end
   spec.files         = gem_files + vendor_files
