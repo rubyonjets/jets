@@ -58,4 +58,9 @@ Jets.application.configure do
   # us-east-1 EDGE endpoint
   # config.domain.cert_arn = "arn:aws:acm:us-east-1:112233445566:certificate/d68472ba-04f8-45ba-b9db-14f839d57123"
   # config.domain.endpoint_type = "EDGE"
+
+  # By default logger needs to log to $stderr for CloudWatch to receive Lambda messages, but for
+  # local testing environment you may want to log these messages to 'test.log' file to keep your
+  # testing suite output readable.
+  # config.logger = Jets::Logger.new($strerr)
 end
