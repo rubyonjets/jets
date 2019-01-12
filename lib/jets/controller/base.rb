@@ -37,10 +37,14 @@ class Jets::Controller
       t1 = Time.now
       log_info_start
 
-      run_before_actions
-      send(@meth)
-      triplet = ensure_render
-      run_after_actions
+      if run_before_actions(break_if: -> { @rendered })
+        send(@meth)
+        triplet = ensure_render
+        run_after_actions
+      else
+        Jets.logger.info "Filter chain halted as #{@last_callback_name} rendered or redirected"
+        triplet = ensure_render
+      end
 
       took = Time.now - t1
       status = triplet[0]

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [UNRELEASED]
+- Change before_action behavior: When any before action renders or redirects, the filter chain
+  is halted, and action code is not executed. This allows before_action to act as guards.
+
 ## [1.5.1]
 - #137 from tongueroo/gems-check bypass gems check exit for custom lambda layers
 
