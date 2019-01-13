@@ -1,14 +1,13 @@
 class Jets::Controller
-  autoload :Renderers, "jets/controller/renderers"
-
   module Rendering
+    autoload :RackRenderer, "jets/controller/rendering/rack_renderer"
     include Redirection
 
     def ensure_render
       return @rendered_data if @rendered
 
       # defaults to rendering templates
-      Renderers::TemplateRenderer.new(self, managed_options).render
+      RackRenderer.new(self, managed_options).render
     end
 
     # Many different ways to render:
@@ -27,7 +26,8 @@ class Jets::Controller
 
       options.reverse_merge!(managed_options)
       adjust_content_type!(options)
-      @rendered_data = Renderers::TemplateRenderer.new(self, options).render
+
+      @rendered_data = RackRenderer.new(self, options).render
 
       @rendered = true
       @rendered_data
