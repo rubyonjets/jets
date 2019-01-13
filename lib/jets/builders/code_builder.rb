@@ -201,14 +201,12 @@ class Jets::Builders
     # This happens in the current app directory not the tmp code for simplicity
     # This is because the node likely been set up correctly there.
     def compile_rails_assets
-      return unless rails?
+      return unless Jets.rack? && rails? && !rails_api?
 
       if ENV['JETS_SKIP_ASSETS']
         puts "Skip compiling rack assets".colorize(:yellow) # useful for debugging
         return
       end
-
-      return unless Jets.rack?
 
       # Need to capture JETS_ROOT since can be changed by Turbo mode
       jets_root = Jets.root
@@ -232,10 +230,21 @@ class Jets::Builders
     end
 
     # Rudimentary rails detection
+    # Duplicated in builders/reconfigure_rails.rb
     def rails?
       config_ru = "#{Jets.root}rack/config.ru"
       return false unless File.exist?(config_ru)
       !IO.readlines(config_ru).grep(/Rails.application/).empty?
+    end
+
+    # Rudimentary rails api detection
+    # Duplicated in builders/reconfigure_rails.rb
+    # Another way of checking is loading a rails console and checking Rails.application.config.api_only
+    # Using this way for simplicity.
+    def rails_api?
+      config_app = "#{Jets.root}rack/config/application.rb"
+      return false unless File.exist?(config_app)
+      !IO.readlines(config_app).grep(/config.api_only.*=.*true/).empty?
     end
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root

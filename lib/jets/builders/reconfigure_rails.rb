@@ -22,9 +22,13 @@ class Jets::Builders
       templates = File.expand_path("./reconfigure_rails", File.dirname(__FILE__))
       relative_path = "config/initializers/jets.rb"
       src = "#{templates}/#{relative_path}"
+      result = Jets::Erb.result(src, api_mode: rails_api?)
       dest = "#{@app_root}/#{relative_path}"
       FileUtils.mkdir_p(File.dirname(dest))
-      FileUtils.cp(src, dest)
+      IO.write(dest, result)
+    end
+
+    def api_mode?
     end
 
     def update_gemfile
@@ -90,10 +94,21 @@ class Jets::Builders
     end
 
     # Rudimentary rails detection
+    # Duplicated in builders/code_builders.rb
     def rails?
       config_ru = "#{@app_root}/config.ru"
       return false unless File.exist?(config_ru)
       !IO.readlines(config_ru).grep(/Rails.application/).empty?
+    end
+
+    # Rudimentary rails api detection
+    # Duplicated in builders/code_builders.rb
+    # Another way of checking is loading a rails console and checking Rails.application.config.api_only
+    # Using this way for simplicity.
+    def rails_api?
+      config_app = "#{@app_root}/config/application.rb"
+      return false unless File.exist?(config_app)
+      !IO.readlines(config_app).grep(/config.api_only.*=.*true/).empty?
     end
   end
 end

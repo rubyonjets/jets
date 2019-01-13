@@ -19,7 +19,7 @@ class Jets::Controller
 
       redirect_url = ensure_protocol(redirect_url)
 
-      aws_proxy = Renderers::RackRenderer.new(self,
+      aws_proxy = Rendering::RackRenderer.new(self,
         status: options[:status] || 302,
         headers: { "Location" => redirect_url },
         body: "",
