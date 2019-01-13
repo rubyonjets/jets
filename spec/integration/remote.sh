@@ -24,6 +24,11 @@ cd demo
 JETS_ENV_REMOTE=1 jets runner 'Post.create(id: 1) unless Post.find_by(id: 1)'
 JETS_ENV_REMOTE=1 jets runner 'Post.create(id: 2) unless Post.find_by(id: 2)'
 
+cd rack
+# Create a data record that the postman tests assumes to exist.  The postman collection deletes this record.
+rails runner 'Book.create(id: 1) unless Book.find_by(id: 1)'
+rails runner 'Book.create(id: 2) unless Book.find_by(id: 2)'
+
 # Integration postman script lives in jets
 cd jets
 
