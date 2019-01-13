@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.5.2)
+    jets (1.5.3)
       activerecord (>= 5.2.1)
       activesupport (>= 5.2.1)
       aws-sdk-apigateway
@@ -131,7 +131,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     mysql2 (0.5.2)
-    nokogiri (1.10.0)
+    nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     rack (2.0.6)
     rack-proxy (0.6.5)

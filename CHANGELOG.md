@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.3]
+- #142 from tongueroo/rails-api-afterburner fix jets afterburner for rails api mode apps
+
 ## [1.5.2]
 - #138 from patchkit-net/feature/before_action_chain_break Change before_action behavior: allow chain break
 - #139 from patchkit-net/bugfix/spec-gem-files-dir Fix jets.gemspec files listing method
