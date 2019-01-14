@@ -23,7 +23,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 
 ## [1.5.0]
 - #135 from tongueroo/remove-rails-constant Remove Rails Constant
-- #136 from tongueroo/routes-namespace routes namespace support
+- #136 from tongueroo/routes-namespace routes namespace support (will be adjusted)
 
 ## [1.4.11]
 - #133 from tongueroo/custom-layer add custom lambda layer support
