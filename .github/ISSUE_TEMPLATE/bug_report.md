@@ -65,3 +65,9 @@ Please include any logs you think relevant here. If the logs are long (more than
 <!--
 Please provide a code repository, gist, code snippet or sample files to reproduce the issue.
 -->
+
+## Solution Suggestion
+
+<!--
+Please provide possible solutions. If you can't think of anything, that's okay.
+-->
