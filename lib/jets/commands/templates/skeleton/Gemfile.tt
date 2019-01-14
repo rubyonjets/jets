@@ -13,17 +13,23 @@ gem "pg", "~> 1.1.3"
 # Include mysql2 gem if you are using ActiveRecord, remove if you are not
 gem "mysql2", "~> 0.5.2"
 <% end %>
+<% unless options[:mode] == 'job' -%>
 gem "dynomite"
+<% end -%>
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+<% unless options[:mode] == 'job' -%>
   gem 'shotgun'
   gem 'rack'
+<% end -%>
 end
 
 group :test do
   gem 'rspec' # rspec test group only or we get the "irb: warn: can't alias context from irb_context warning" when starting jets console
+<% unless options[:mode] == 'job' -%>
   gem 'launchy'
   gem 'capybara'
+<% end -%>
 end
