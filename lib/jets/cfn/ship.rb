@@ -31,7 +31,18 @@ class Jets::Cfn
         end
       end
 
-      wait_for_stack
+      success = wait_for_stack
+      unless success
+        puts <<~EOL
+          The Jets application failed to deploy. Jets creates a few CloudFormation stacks to deploy your application.
+          The logs above show the CloudFormation parent stack events and points to the stack with the error.
+          Please go to the CloudFormation console and look for the specific stack with the error.
+          The specific child stack usually shows more detailed information and can be used to resolve the issue.
+          Example of checking the CloudFormation console: http://rubyonjets.com/docs/debugging-cloudformation/
+        EOL
+        return
+      end
+
       prewarm
       clean_deploy_logs
       show_api_endpoint
