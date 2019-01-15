@@ -54,6 +54,7 @@ class Jets::Cfn
         return
       end
 
+      success = false
       if last_event_status =~ /_FAILED/
         puts "Stack failed: #{last_event_status}".colorize(:red)
         puts "Stack reason #{@events[0]["resource_status_reason"]}".colorize(:red)
@@ -61,6 +62,7 @@ class Jets::Cfn
         puts "Stack rolled back: #{last_event_status}".colorize(:red)
       else # success
         puts "Stack success status: #{last_event_status}".colorize(:green)
+        success = true
       end
 
       # Never gets here when deleting a stack because the describe stack returns nothing
@@ -68,6 +70,8 @@ class Jets::Cfn
       return if @hide_time_took # set in run
       took = Time.now - start_time
       puts "Time took for stack deployment: #{pretty_time(took).green}."
+
+      success
     end
 
     def completed
