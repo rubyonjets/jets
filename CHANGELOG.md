@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.4]
+- #146 add and point to helpful docs on deploy error
+- #147 update turbo Gemfile.lock, fixes Jets afterburner when using custom layers
+- slimmer job mode Gemfile
+
 ## [1.5.3]
 - #142 from tongueroo/rails-api-afterburner fix jets afterburner for rails api mode apps
 

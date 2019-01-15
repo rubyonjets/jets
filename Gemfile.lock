@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.5.3)
+    jets (1.5.4)
       activerecord (>= 5.2.1)
       activesupport (>= 5.2.1)
       aws-sdk-apigateway
@@ -115,7 +115,7 @@ GEM
     gems (1.1.1)
       json
     hashie (3.6.0)
-    i18n (1.5.1)
+    i18n (1.5.2)
       concurrent-ruby (~> 1.0)
     jets-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
