@@ -29,7 +29,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (9.0.0)
     aws-eventstream (1.0.1)
-    aws-partitions (1.126.0)
+    aws-partitions (1.131.0)
     aws-sdk-apigateway (1.23.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
@@ -39,12 +39,12 @@ GEM
     aws-sdk-cloudwatchlogs (1.12.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.44.1)
+    aws-sdk-core (3.45.0)
       aws-eventstream (~> 1.0)
       aws-partitions (~> 1.0)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-dynamodb (1.18.1)
+    aws-sdk-dynamodb (1.19.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
     aws-sdk-kms (1.13.0)
@@ -53,7 +53,7 @@ GEM
     aws-sdk-lambda (1.16.0)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.30.0)
+    aws-sdk-s3 (1.30.1)
       aws-sdk-core (~> 3, >= 3.39.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
@@ -78,16 +78,14 @@ GEM
     concurrent-ruby (1.1.4)
     crass (1.0.4)
     diff-lcs (1.3)
-    dotenv (2.5.0)
+    dotenv (2.6.0)
     erubi (1.8.0)
     gems (1.1.1)
       json
     hashie (3.6.0)
-    i18n (1.3.0)
+    i18n (1.5.2)
       concurrent-ruby (~> 1.0)
-    jets (1.3.9)
-      actionpack (>= 5.2.1)
-      actionview (>= 5.2.1)
+    jets (1.5.3)
       activerecord (>= 5.2.1)
       activesupport (>= 5.2.1)
       aws-sdk-apigateway
@@ -102,6 +100,7 @@ GEM
       dotenv
       gems
       hashie
+      jets-html-sanitizer
       json
       kramdown
       memoist
@@ -111,6 +110,8 @@ GEM
       recursive-open-struct
       text-table
       thor
+    jets-html-sanitizer (1.0.4)
+      loofah (~> 2.2, >= 2.2.2)
     jmespath (1.4.0)
     json (2.1.0)
     kramdown (1.17.0)
@@ -125,7 +126,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
-    nokogiri (1.9.1)
+    nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     public_suffix (3.0.3)
     rack (2.0.6)
