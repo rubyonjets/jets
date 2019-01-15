@@ -16,9 +16,9 @@ Make our lives easier! Choose one of the following by uncommenting it:
 Before you submit this pull request, make sure to have a look at the following checklist. If you don't know how to do some of these, that's fine!  Submit your pull request and we will help you out on the way.
 -->
 
-- [] I've added tests (if it's a bug, feature or enhancement)
-- [] I've adjusted the documentation (if it's a feature or enhancement)
-- [] The test suite passes (run `bundle exec rspec` to verify this)
+- [ ] I've added tests (if it's a bug, feature or enhancement)
+- [ ] I've adjusted the documentation (if it's a feature or enhancement)
+- [ ] The test suite passes (run `bundle exec rspec` to verify this)
 
 ## Summary
 
