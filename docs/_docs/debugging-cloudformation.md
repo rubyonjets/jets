@@ -27,7 +27,7 @@ The main error is on the `JetsPreheatJob Embedded stack`.  You can check on this
 
 ![](/img/docs/debug/cloudformation-child-stack-error.png)
 
-You can see here that the error is because the user does not have the necessarily IAM permission. In this case, giving the user the [Minimal Deploy IAM Policy]({% link _docs/minimal-deploy-iam.md %}) will resolve the issue.
+You can see here that the error is because the user does not have the necessary IAM permission. In this case, giving the user the [Minimal Deploy IAM Policy]({% link _docs/minimal-deploy-iam.md %}) will resolve the issue.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/debugging-help.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/jets-turbines.md %}">Next Step</a>
