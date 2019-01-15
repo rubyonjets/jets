@@ -25,6 +25,22 @@ class BreakableController < Jets::Controller::Base
   end
 end
 
+class PrependAppendBeforeController < Jets::Controller::Base
+  append_before_action :normal
+  prepend_before_action :prepended
+
+  def normal; end
+  def prepended; end
+end
+
+class PrependAppendAfterController < Jets::Controller::Base
+  append_after_action :normal
+  prepend_after_action :prepended
+
+  def normal; end
+  def prepended; end
+end
+
 describe Jets::Controller::Base do
   context FakeController do
     let(:controller) { FakeController.new({}, nil, "meth") }
@@ -49,6 +65,20 @@ describe Jets::Controller::Base do
       response = controller.dispatch!
       expect(response[0]).to eq '404'
       expect(response[2].read).to eq '{}'
+    end
+  end
+
+  context PrependAppendBeforeController do
+    subject { PrependAppendBeforeController.new({}, nil, :index) }
+    it "prepends method" do
+      expect(subject.class.before_actions).to eq [[:prepended, {}], [:normal, {}]]
+    end
+  end
+
+  context PrependAppendAfterController do
+    subject { PrependAppendAfterController.new({}, nil, :index) }
+    it "prepends method" do
+      expect(subject.class.after_actions).to eq [[:prepended, {}], [:normal, {}]]
     end
   end
 end

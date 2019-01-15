@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [UNRELEASED]
+- Add prepend/append_before_action and prepend/append_after_action callbacks
+
 ## [1.5.5]
 - #148 check reserved lambda variables and let user know
 
