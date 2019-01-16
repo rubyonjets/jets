@@ -15,7 +15,7 @@ class Jets::Controller
         end
 
         def prepend_before_action(meth, options={})
-          self.before_actions.unshift([meth, options])
+          self.before_actions = [[meth, options]] + self.before_actions
         end
 
         alias_method :append_before_action, :before_action
@@ -25,7 +25,7 @@ class Jets::Controller
         end
 
         def prepend_after_action(meth, options={})
-          self.after_actions.unshift([meth, options])
+          self.after_actions = [[meth, options]] + self.after_actions
         end
 
         alias_method :append_after_action, :after_action
