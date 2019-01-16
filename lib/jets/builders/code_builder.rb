@@ -154,7 +154,9 @@ class Jets::Builders
 
       region = Jets.aws.region
 
-      asset_base_url = "https://s3-#{region}.amazonaws.com"
+      asset_base_url = region == 'us-east-1' ?
+        "https://s3.amazonaws.com" :
+        "https://s3-#{region}.amazonaws.com"
       "#{asset_base_url}/#{s3_bucket}/jets" # s3_base_url
     end
 
