@@ -49,8 +49,12 @@ module Jets::Commands
       Jets::Commands::Build.new(@options).build_code
     end
 
-    # Checks that all routes are validate and have corresponding lambda functions
     def validate_routes!
+      check_route_connected_functions
+    end
+
+    # Checks that all routes are validate and have corresponding lambda functions
+    def check_route_connected_functions
       return if Jets::Router.all_routes_valid
 
       puts "Deploy fail: The jets application contain invalid routes.".colorize(:red)
