@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.7]
+- Fix prepend_* callbacks: These could modify a global callback array if used first
+
 ## [1.5.6]
 - #149 from patchkit-net/feature/prepend-append-callbacks Add prepend/append_before_action and prepend/append_after_action callbacks
 - #150 special s3 url for us-east-1

@@ -1,3 +1,18 @@
+# There was a bug that prepending action modified the global callbacks array throwing a lot of
+# errors in this spec and others
+#
+# If you see unwanted :prepended actions in your callback, it means that prepend_* methods are
+# modifying the global callbacks table.
+class PrependBeforeBugController < Jets::Controller::Base
+  prepend_before_action :prepended
+  def prepended; end
+end
+
+class PrependAfterBugController < Jets::Controller::Base
+  prepend_after_action :prepended
+  def prepended; end
+end
+
 class FakeController < Jets::Controller::Base
   before_action :find_article
   def find_article; end
