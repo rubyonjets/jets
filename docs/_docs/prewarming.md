@@ -2,7 +2,7 @@
 title: Prewarming
 ---
 
-Jets supports prewarming your application to remedy the Lambda cold start issue.  Prewarming is enabled by default.  To adjust the prewarming settings, edit your `config/application.rb`. Example:
+Jets supports prewarming your application to remedy the Lambda cold start issue.  Prewarming is enabled by default.  Only [Controller]({% link _docs/controllers.md %}) functions are prewarmed. To adjust the prewarming settings, edit your `config/application.rb`. Example:
 
 ```ruby
 Jets.application.configure do
@@ -50,7 +50,7 @@ We can see that the lambda function had been prewarmed once and called 4 times s
 
 ## Custom Prewarming
 
-Jets prewarms most Ruby functions in your application with the same weight. If you want to prewarm a specific function that gets a high volume of traffic, you can create a custom prewarm job.  Here's a starter example:
+Jets prewarms most Ruby functions in your application with the same weight. If you want to prewarm a specific function that gets an extremely high volume of traffic, you can create a custom prewarm job.  Here's a starter example:
 
 app/jobs/prewarm_job.rb:
 
