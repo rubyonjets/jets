@@ -12,8 +12,8 @@ PATH
   remote: .
   specs:
     jets (1.5.8)
-      activerecord (>= 5.2.1)
-      activesupport (>= 5.2.1)
+      activerecord (~> 5.2.1)
+      activesupport (~> 5.2.1)
       aws-sdk-apigateway
       aws-sdk-cloudformation
       aws-sdk-cloudwatchlogs
@@ -32,7 +32,7 @@ PATH
       memoist
       mimemagic
       rack
-      railties (>= 5.2.1)
+      railties (~> 5.2.1)
       recursive-open-struct
       text-table
       thor
