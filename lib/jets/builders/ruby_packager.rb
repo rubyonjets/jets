@@ -99,6 +99,8 @@ class Jets::Builders
       lockfile = "#{cache_area}/Gemfile.lock"
       return unless File.exist?(lockfile)
 
+      return if Bundler.bundler_major_version <= 1 # LockfileParser only works for Bundler version 2+
+
       parser = Bundler::LockfileParser.new(Bundler.read_file(lockfile))
       specs = parser.specs
 
@@ -131,7 +133,9 @@ class Jets::Builders
 
       gemfile_lock = "#{full_project_path}/Gemfile.lock"
       dest = "#{cache_area}/Gemfile.lock"
-      FileUtils.cp(gemfile_lock, dest) if File.exist?(gemfile_lock)
+      return unless File.exist?(gemfile_lock)
+
+      FileUtils.cp(gemfile_lock, dest)
       adjust_gemfile_lock(dest)
     end
 
