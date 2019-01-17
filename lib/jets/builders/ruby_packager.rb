@@ -58,6 +58,8 @@ class Jets::Builders
         )
       end
 
+      remove_bundled_with("#{cache_area}/Gemfile.lock")
+
       # Copy the Gemfile.lock back to the project in case it was updated.
       # For example we add the jets-rails to the Gemfile.
       copy_back_gemfile_lock
@@ -136,19 +138,18 @@ class Jets::Builders
       return unless File.exist?(gemfile_lock)
 
       FileUtils.cp(gemfile_lock, dest)
-      adjust_gemfile_lock(dest)
     end
 
     # Remove the BUNDLED WITH line since we don't control the bundler gem version on AWS Lambda
     # And this can cause issues with require 'bundler/setup'
-    def adjust_gemfile_lock(path)
-      lines = IO.readlines(path)
+    def remove_bundled_with(gemfile_lock)
+      lines = IO.readlines(gemfile_lock)
       n = lines.index { |l| l.include?("BUNDLED WITH") }
       return unless n
 
       new_lines = lines[0..n-1]
       content = new_lines.join('')
-      IO.write(path, content)
+      IO.write(gemfile_lock, content)
     end
 
     def setup_bundle_config
