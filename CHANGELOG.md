@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.9]
+- #154 from tongueroo/variable-collision raise error on multiple sibling variable paths collision
+- #156 from konnected-io/master: don't prewarm jobs, only prewarm controllers
+- ensure remove BUNDLED WITH remove when no project Gemfile.lock and it gets created by build process
+- jets upgrade: add dynomite to gemfile if needed
+- only clean submodules for bundler version 2+
+- turbo wrapper project: remove Gemfile.lock and let afterburner mode run on latest jets version
+- use pessimistic version for dependencies
+
 ## [1.5.8]
 - #155 remove BUNDLED WITH from Gemfile.lock to fix newly released bundler issue
 
