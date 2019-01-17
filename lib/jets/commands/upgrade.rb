@@ -15,6 +15,7 @@ module Jets::Commands
       update_config_ru
       remove_ruby_lazy_load
       update_webpack_binstubs
+      add_dynomite_to_gemfile
       puts "Upgrade complete."
     end
 
@@ -114,6 +115,19 @@ module Jets::Commands
       update_project_file("bin/webpack")
       update_project_file("bin/webpack-dev-server")
       puts "Updated webpack binstubs."
+    end
+
+    def add_dynomite_to_gemfile
+      return unless File.exist?("app/models/application_item.rb")
+
+      lines = IO.readlines("Gemfile")
+      dynomite_found = lines.detect { |l| l =~ /dynomite/ }
+      return if dynomite_found
+
+      File.open('Gemfile', 'a') do |f|
+        f.puts 'gem "dynomite"'
+      end
+      puts "Updated Gemfile: add dynomite gem"
     end
 
   private

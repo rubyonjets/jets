@@ -11,6 +11,14 @@ module Jets
 
     def draw(&block)
       instance_eval(&block)
+      check_collision!
+    end
+
+    # Validate routes that deployable
+    def check_collision!
+      collision = Jets::Resource::ApiGateway::RestApi::Routes::Collision.new(self.routes)
+      collide = collision.collision?
+      raise collision.exception if collide
     end
 
     # Methods supported by API Gateway

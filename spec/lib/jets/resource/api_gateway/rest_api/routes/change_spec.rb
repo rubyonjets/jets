@@ -1,6 +1,6 @@
-describe Jets::Resource::ApiGateway::RestApi do
-  let(:routes) do
-    Jets::Resource::ApiGateway::RestApi::Routes.new
+describe Jets::Resource::ApiGateway::RestApi::Routes::Change do
+  let(:change) do
+    Jets::Resource::ApiGateway::RestApi::Routes::Change.new
   end
 
   context "no changes detected" do
@@ -9,8 +9,8 @@ describe Jets::Resource::ApiGateway::RestApi do
       # no routes have been changed
       new_routes = Jets::Router.routes
       deployed_routes = new_routes
-      allow(routes).to receive(:build).and_return(deployed_routes)
-      changed = routes.changed?
+      allow(change).to receive(:deployed_routes).and_return(deployed_routes)
+      changed = change.changed?
       expect(changed).to be false
     end
   end
