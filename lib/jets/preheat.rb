@@ -106,6 +106,7 @@ module Jets
       Jets::Commands::Build.app_files.map do |path|
         next if path.include?("preheat_job.rb") # dont want to cause an infinite loop
         next if path =~ %r{app/functions} # dont support app/functions
+        next if path =~ %r{app/jobs} # no need to prewarm jobs
 
         class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
         class_name = class_path.classify
