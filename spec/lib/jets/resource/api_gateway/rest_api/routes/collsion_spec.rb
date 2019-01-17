@@ -27,8 +27,6 @@ describe Jets::Resource::ApiGateway::RestApi do
       ]
       collide = collision.variable_collision_exists?(parent, paths)
       expect(collide).to be true
-
-      pp collision.collisions
     end
   end
 
@@ -50,10 +48,6 @@ describe Jets::Resource::ApiGateway::RestApi do
       parent_path = "posts"
       paths = ["posts", "posts/new", "posts/:id", "posts/:id/edit", "", "*catchall"]
       collide = collision.variable_collision_exists?(parent_path, paths)
-
-      puts "collision:"
-      pp collision.collisions
-
       expect(collide).to be false
     end
   end
@@ -84,7 +78,7 @@ describe Jets::Resource::ApiGateway::RestApi do
     it "parent_variables" do
       parent = "users"
       paths = %w[
-        users/:user_id/posts/:id/edit
+        users/:user_id/posts/:post_id/edit
         users/:id
         posts/:id/users
         admin
@@ -113,6 +107,21 @@ describe Jets::Resource::ApiGateway::RestApi do
       path = "users/:id/posts/:post_id"
       is_parent = collision.direct_parent?(parent, path)
       expect(is_parent).to be true
+
+      parent = "users"
+      leaf = "users/:user_id/posts/:id"
+      direct_parent = collision.direct_parent?(parent, leaf)
+      expect(direct_parent).to be false
+
+      parent = "users/:user_id/posts"
+      leaf = "users/:user_id/posts/:id"
+      direct_parent = collision.direct_parent?(parent, leaf)
+      expect(direct_parent).to be true
+
+      parent = "users"
+      leaf = "users/:user_id"
+      direct_parent = collision.direct_parent?(parent, leaf)
+      expect(direct_parent).to be true
     end
 
     it "parent? does not have to be direct" do
@@ -135,23 +144,6 @@ describe Jets::Resource::ApiGateway::RestApi do
       path = "users/:id/posts/:post_id"
       is_parent = collision.parent?(parent, path)
       expect(is_parent).to be true
-    end
-
-    it "direct_parent?" do
-      parent = "users"
-      leaf = "users/:user_id/posts/:id"
-      direct_parent = collision.direct_parent?(parent, leaf)
-      expect(direct_parent).to be false
-
-      parent = "users/:user_id/posts"
-      leaf = "users/:user_id/posts/:id"
-      direct_parent = collision.direct_parent?(parent, leaf)
-      expect(direct_parent).to be true
-
-      parent = "users"
-      leaf = "users/:user_id"
-      direct_parent = collision.direct_parent?(parent, leaf)
-      expect(direct_parent).to be true
     end
   end
 end

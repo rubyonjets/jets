@@ -127,7 +127,6 @@ module Jets
 
     # Class methods
     def self.draw
-      puts "router.rb Router.draw class meth called"
       drawn_router
     end
 

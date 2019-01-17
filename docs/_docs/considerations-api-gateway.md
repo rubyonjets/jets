@@ -51,7 +51,7 @@ Going to the `ApiGateway Embedded stack` child stack allows you to see see the e
 
 ![](/img/docs/cloudformation-multiple-variables-path-error.png)
 
-You can also manually reproduce the error by in the API Gateway console also.
+You can manually reproduce the error in the API Gateway console also.
 
 ![](/img/docs/api-gateway-multiple-variables-path-error.png)
 
