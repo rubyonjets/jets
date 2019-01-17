@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.8]
+- #155 remove BUNDLED WITH from Gemfile.lock to fix newly released bundler issue
+
 ## [1.5.7]
 - Fix prepend_* callbacks: These could modify a global callback array if used first
 
