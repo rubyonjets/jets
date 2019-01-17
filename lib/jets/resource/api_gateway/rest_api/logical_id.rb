@@ -6,7 +6,6 @@ class Jets::Resource::ApiGateway::RestApi
     def get
       return default unless stack_exists?(parent_stack_name) && api_gateway_exists?
 
-
       if changed?
         new_id
       else
