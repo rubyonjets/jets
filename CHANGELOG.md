@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.5.10]
+- #157 Improve Route Change Detection: Path Variables
+
 ## [1.5.9]
 - #154 from tongueroo/variable-collision raise error on multiple sibling variable paths collision
 - #156 from konnected-io/master: don't prewarm jobs, only prewarm controllers
