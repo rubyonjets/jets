@@ -45,7 +45,7 @@ When you try to deploy this, it will fail with an error that looks something lik
     11:30:01PM UPDATE_FAILED AWS::CloudFormation::Stack ApiGateway Embedded stack arn:aws:cloudformation:us-west-2:536766270177:stack/demo-dev-ApiGateway-154WB3G5JW51D/9725de30-19e4-11e9-8459-0688a7bf983a was not successfully updated. Currently in UPDATE_ROLLBACK_IN_PROGRESS with reason: The following resource(s) ...
     $
 
-Going to the [CloudFormation console]{% link _docs/debugging-cloudformation.md %} and clicking on the `ApiGateway Embedded stack` child stack allows you to see the error details:
+Going to the [CloudFormation console]({% link _docs/debugging-cloudformation.md %}) and clicking on the `ApiGateway Embedded stack` child stack allows you to see the error details:
 
 > A sibling ({id}) of this resource already has a variable path part -- only one is allowed
 
