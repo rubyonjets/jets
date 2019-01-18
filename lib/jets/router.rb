@@ -16,8 +16,9 @@ module Jets
 
     # Validate routes that deployable
     def check_collision!
-      collision = Jets::Resource::ApiGateway::RestApi::Routes::Collision.new(self.routes)
-      collide = collision.collision?
+      paths = self.routes.map(&:path)
+      collision = Jets::Resource::ApiGateway::RestApi::Routes::Collision.new
+      collide = collision.collision?(paths)
       raise collision.exception if collide
     end
 

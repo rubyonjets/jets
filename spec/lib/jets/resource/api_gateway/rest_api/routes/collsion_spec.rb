@@ -1,8 +1,7 @@
 describe Jets::Resource::ApiGateway::RestApi do
   let(:collision) do
-    Jets::Resource::ApiGateway::RestApi::Routes::Collision.new(routes)
+    Jets::Resource::ApiGateway::RestApi::Routes::Collision.new
   end
-  let(:routes) { [] }
 
   context "collides" do
     it "variable_collision_exists?" do
@@ -31,6 +30,12 @@ describe Jets::Resource::ApiGateway::RestApi do
   end
 
   context "no collisions" do
+    it "collision?" do
+      paths = Jets.application.routes.routes.map(&:path)
+      collide = collision.collision?(paths)
+      expect(collide).to be false
+    end
+
     it "variable_collision_exists?" do
       parent_path = "users"
       paths = %w[

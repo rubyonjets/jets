@@ -134,6 +134,7 @@ JS
 
           Scaffold example:
             jets generate scaffold Post title:string body:text published:boolean
+            jets db:create db:migrate
 
           To deploy to AWS Lambda, edit your .env.development.remote and add a DATABASE_URL endpoint.
           Then run:

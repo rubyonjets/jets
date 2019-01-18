@@ -1,16 +1,15 @@
 # Detects path variable collisions
 class Jets::Resource::ApiGateway::RestApi::Routes
-  class Collision < Base
+  class Collision
     autoload :VariableException, 'jets/resource/api_gateway/rest_api/routes/collision/variable_exception'
 
     attr_reader :collisions
-    def initialize(routes)
-      @routes = routes
+    def initialize
       @collisions = []
     end
 
-    def collision?
-      paths = paths_with_variables(@routes.map(&:path))
+    def collision?(paths)
+      paths = paths_with_variables(paths)
       parents = variable_parents(paths)
 
       collide = false
@@ -21,7 +20,11 @@ class Jets::Resource::ApiGateway::RestApi::Routes
     end
 
     def exception
-      collision_message = <<~EOL
+      VariableException.new(collision_message)
+    end
+
+    def collision_message
+      <<~EOL
         There are routes with sibling variables under the same parent that collide.
 
         Collisions:
@@ -34,7 +37,6 @@ class Jets::Resource::ApiGateway::RestApi::Routes
         Please check your `config/routes.rb` and remove the colliding routes.
         More info: http://rubyonjets.com/docs/considerations-api-gateway/
       EOL
-      VariableException.new(collision_message)
     end
 
     def variable_collision_exists?(parent, paths)
@@ -88,13 +90,9 @@ class Jets::Resource::ApiGateway::RestApi::Routes
       parents.uniq.sort
     end
 
-    def paths_with_variables(paths)
-      paths.select { |p| p.include?(':') }.uniq
-    end
-
     # Strips the path down until only the leaf node part is a variable
     # Example: users/:user_id/posts/:post_id/edit
-    # Returns: users/:user_id/posts/:post_id
+    # Returns: users/:user_id/posts
     def variable_parent(path)
       path = variable_leaf(path)
       # drop last variable to leave behind the parent
@@ -105,7 +103,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes
     # Example: users/:user_id/posts/:post_id/edit
     # Returns: users/:user_id/posts
     def variable_leaf(path)
-      return unless path.include?(':')
+      return '' unless path.include?(':')
 
       parts = path.split('/')
       is_variable = parts.last.include?(':')
@@ -114,6 +112,10 @@ class Jets::Resource::ApiGateway::RestApi::Routes
         is_variable = parts.last.include?(':')
       end
       parts[0..-1].join('/') # parent
+    end
+
+    def paths_with_variables(paths)
+      paths.select { |p| p.include?(':') }.uniq
     end
   end
 end
