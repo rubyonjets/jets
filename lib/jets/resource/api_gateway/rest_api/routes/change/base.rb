@@ -72,10 +72,15 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
       # TODO: If this hits the Lambda Rate limit, then list_functions also contains the Lambda
       # function description. So we can paginate through list_functions results and store
       # description from there if needed.
-      resp = lambda.get_function(function_name: function_arn)
-      desc = resp.configuration.description # contains full info: PostsController#index
+      desc = lambda_function_description(function_arn)
       controller, action = desc.split('#')
+      controller = controller.underscore.sub(/_controller$/,'')
       "#{controller}##{action}" # IE: posts#new
+    end
+
+    def lambda_function_description(function_arn)
+      resp = lambda.get_function(function_name: function_arn)
+      resp.configuration.description # contains full info: PostsController#index
     end
 
     # Duplicated in rest_api/change_detection.rb, base_path/role.rb, rest_api/routes.rb
