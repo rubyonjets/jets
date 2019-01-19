@@ -108,6 +108,7 @@ module Jets::Commands
     end
 
     def update_webpack_binstubs
+      return unless File.exist?("bin/webpack")
       lines = IO.readlines("bin/webpack")
       already_upgraded = lines.detect { |l| l =~ /WebpackRunner/ }
       return if already_upgraded
