@@ -68,12 +68,13 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     #   posts#new
     def recreate_to(method_uri)
       md = method_uri.match(/function:(.*)\//)
-      function_name = md[1] # IE: demo-dev-posts_controller-new
-      controller_action = function_name.sub("#{Jets.project_namespace}-", '')
-      md = controller_action.match(/(.*)_controller-(.*)/)
-      controller = md[1]
-      controller = controller.gsub('-','/')
-      action = md[2]
+      function_arn = md[1] # IE: demo-dev-posts_controller-new
+      # TODO: If this hits the Lambda Rate limit, then list_functions also contains the Lambda
+      # function description. So we can paginate through list_functions results and store
+      # description from there if needed.
+      resp = lambda.get_function(function_name: function_arn)
+      desc = resp.configuration.description # contains full info: PostsController#index
+      controller, action = desc.split('#')
       "#{controller}##{action}" # IE: posts#new
     end
 
