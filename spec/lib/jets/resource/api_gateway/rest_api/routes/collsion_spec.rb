@@ -48,6 +48,21 @@ describe Jets::Resource::ApiGateway::RestApi do
       expect(collide).to be false
     end
 
+    it "variable_collision_exists long path?" do
+      parent_path = "users/:user_id/posts"
+      paths = %w[
+        users/:user_id
+        users/:user_id/posts
+        users/:user_id/posts/:id
+        users/:user_id/posts/:id/edit
+        users/:user_id/apps
+        posts/:id
+        admin
+      ]
+      collide = collision.variable_collision_exists?(parent_path, paths)
+      expect(collide).to be false
+    end
+
     # actual data
     it "variable_collision_exists? post crud" do
       parent_path = "posts"

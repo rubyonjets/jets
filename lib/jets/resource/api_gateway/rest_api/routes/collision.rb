@@ -68,6 +68,8 @@ class Jets::Resource::ApiGateway::RestApi::Routes
     end
 
     def parent?(parent, path)
+      return false if parent == path
+
       parent_parts = parent.split('/')
       path_parts = path.split('/')
 
