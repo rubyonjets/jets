@@ -10,7 +10,7 @@ If you're looking for support for Jets, here are some options:
 * If you have a question about using Jets, start a discussion on [Jets Community Forum](https://community.rubyonjets.com/) or [StackOverflow](https://stackoverflow.com/questions/tagged/rubyonjets)
 * Chat with Jets users &mdash; Join [the Gitter channel](https://gitter.im/tongueroo/jets) or [our IRC channel on Freenode](irc:irc.freenode.net/rubyonjets)
 * Videos: There are few video tutorials on the [YouTube tongueroo channel](https://www.youtube.com/tongueroo). For updates, [subscribe to the channel](https://www.youtube.com/user/tongueroo?sub_confirmation=1).
-* Blog: There are tutorial articles on the BoltOps [Bolt and Nuts Blog](https://blog.boltops.com/).  For updates, [Sign up for the email newsletter](http://eepurl.com/c3JcID).
+* Blog: There are tutorial articles on the BoltOps [Bolt and Nuts Blog](https://blog.boltops.com/).  For updates, [sign up for the email newsletter](http://eepurl.com/c3JcID).
 
 The Jets community is small and growing.  There are some benefits with a smaller community as you’ll have a better chance of getting to know folks. You will likely find other folks who are interested in Jets and just figuring things out also. Would love for community members to be helpful and point others in the right direction. We've all been there before, and sometimes the littlest tip goes a long way to help others.
 
