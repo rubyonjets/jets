@@ -2,10 +2,6 @@ describe Jets::Resource::ApiGateway::RestApi::Routes::Change::Base do
   let(:base) do
     Jets::Resource::ApiGateway::RestApi::Routes::Change::Base.new
   end
-  let(:lambda) do
-    lambda = double(:lambda).as_null_object
-    lambda
-  end
 
   it "recreate_path" do
     path = base.recreate_path('/posts/{id}/edit')
