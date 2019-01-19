@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [UNRELEASED]
+- Fix invalid collision detection on paths that already contains path variables
+
 ## [1.5.10]
 - #157 Improve Route Change Detection: Path Variables
 
