@@ -125,10 +125,10 @@ module Jets::Resource::Lambda
       handler = full_handler(props)
       runtime = get_runtime(props)
       managed = {
-        function_name: function_name,
         handler: handler,
         runtime: runtime,
       }
+      managed[:function_name] = function_name if function_name
       layers = get_layers(runtime)
       managed[:layers] = layers if layers
       props.merge!(managed)
@@ -184,6 +184,7 @@ module Jets::Resource::Lambda
       "jets/code/code-#{checksum}.zip" # s3_key
     end
 
+    MAX_FUNCTION_NAME_SIZE = 64
     # Examples:
     #   "#{Jets.config.project_namespace}-sleep_job-perform"
     #   "demo-dev-sleep_job-perform"
@@ -195,7 +196,11 @@ module Jets::Resource::Lambda
       #   method: admin-pages_controller-index
       method = @app_class.underscore
       method = method.sub('/','-').gsub(/[^0-9a-z\-_]/i, '') + "-#{@task.meth}"
-      "#{Jets.config.project_namespace}-#{method}"
+      function_name = "#{Jets.config.project_namespace}-#{method}"
+      # Returns nil if function name is too long.
+      # CloudFormation will managed the the function name in this case.
+      # A pretty function name won't be generated but the deploy will be successful.
+      function_name.size > MAX_FUNCTION_NAME_SIZE ? nil : function_name
     end
   end
 end
