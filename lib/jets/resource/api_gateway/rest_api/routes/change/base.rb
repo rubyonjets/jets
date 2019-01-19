@@ -68,13 +68,43 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     #   posts#new
     def recreate_to(method_uri)
       md = method_uri.match(/function:(.*)\//)
-      function_name = md[1] # IE: demo-dev-posts_controller-new
-      controller_action = function_name.sub("#{Jets.project_namespace}-", '')
+      function_arn = md[1] # IE: demo-dev-posts_controller-new
+      controller, action = get_controller_action(function_arn)
+      "#{controller}##{action}" # IE: posts#new
+    end
+
+    def get_controller_action(function_arn)
+      if function_arn.include?('_controller-')
+        controller_action_from_string(function_arn)
+      else
+        controller_action_from_api(function_arn)
+      end
+    end
+
+    # TODO: If this hits the Lambda Rate limit, then list_functions also contains the Lambda
+    # function description. So we can paginate through list_functions results and store
+    # description from there if needed.
+    # Dont think this will be needed though because controller_action_from_string gets called
+    # most of the time. Also, user might be able to request their Lambda limit to be increased.
+    def controller_action_from_api(function_arn)
+      desc = lambda_function_description(function_arn)
+      controller, action = desc.split('#')
+      controller = controller.underscore.sub(/_controller$/,'')
+      [controller, action]
+    end
+
+    def controller_action_from_string(function_arn)
+      controller_action = function_arn.sub("#{Jets.project_namespace}-", '')
       md = controller_action.match(/(.*)_controller-(.*)/)
       controller = md[1]
       controller = controller.gsub('-','/')
       action = md[2]
-      "#{controller}##{action}" # IE: posts#new
+      [controller, action]
+    end
+
+    def lambda_function_description(function_arn)
+      resp = lambda.get_function(function_name: function_arn)
+      resp.configuration.description # contains full info: PostsController#index
     end
 
     # Duplicated in rest_api/change_detection.rb, base_path/role.rb, rest_api/routes.rb

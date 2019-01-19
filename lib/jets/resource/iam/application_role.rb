@@ -14,8 +14,8 @@ module Jets::Resource::Iam
       "iam_role"
     end
 
-    def role_name
-      "#{Jets.config.project_namespace}-application-role"
+    def policy_name
+      "#{Jets.config.project_namespace}-application-policy"
     end
 
     def outputs

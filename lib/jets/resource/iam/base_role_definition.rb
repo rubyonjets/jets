@@ -5,11 +5,12 @@ module Jets::Resource::Iam
     def definition
       logical_id = role_logical_id
 
+      # Do not assign pretty role_name because long controller names might hit the 64-char
+      # limit. Also, IAM roles are global, so assigning role names prevents cross region deploys.
       definition = {
         logical_id => {
           type: "AWS::IAM::Role",
           properties: {
-            role_name: role_name,
             path: "/",
             assume_role_policy_document: {
               version: "2012-10-17",
@@ -24,7 +25,7 @@ module Jets::Resource::Iam
       }
 
       definition[logical_id][:properties][:policies] = [
-        policy_name: "#{role_name}-policy",
+        policy_name: "#{policy_name[0..127]}", # required, limited to 128-chars
         policy_document: policy_document,
       ] unless policy_document['Statement'].empty?
 
