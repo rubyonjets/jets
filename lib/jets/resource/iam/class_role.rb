@@ -12,9 +12,9 @@ module Jets::Resource::Iam
       "{namespace}_iam_role".underscore
     end
 
-    def role_name
+    def policy_name
       class_namespace = replacements[:namespace].underscore.dasherize
-      "#{Jets.config.project_namespace}-#{class_namespace}-role" # camelized because used as template value
+      "#{Jets.config.project_namespace}-#{class_namespace}-policy" # camelized because used as template value
     end
 
     def replacements
