@@ -24,6 +24,7 @@ describe Jets::Resource::Lambda::Function do
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
       expect(properties["FunctionName"]).to eq "demo-test-posts_controller-index"
+      expect(properties["Description"]).to eq "PostsController#index"
       expect(properties["Handler"]).to eq "handlers/controllers/posts_controller.index"
       expect(properties["Code"]["S3Key"]).to include("jets/code")
     end
@@ -39,6 +40,7 @@ describe Jets::Resource::Lambda::Function do
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
       expect(properties["FunctionName"]).to eq "demo-test-hard_job-dig"
+      expect(properties["Description"]).to eq "HardJob#dig"
       expect(properties["Handler"]).to eq "handlers/jobs/hard_job.dig"
       expect(properties["Code"]["S3Key"]).to include("jets/code")
     end
@@ -46,15 +48,16 @@ describe Jets::Resource::Lambda::Function do
 
   context("function with _function") do
     let(:task) do
-      Jets::Lambda::Task.new("SimpleFunction", :handler)
+      Jets::Lambda::Task.new("SimpleFunction", :lambda_handler)
     end
 
     it "contains info for CloudFormation Job Function Resources" do
-      expect(resource.logical_id).to eq "HandlerLambdaFunction"
+      expect(resource.logical_id).to eq "LambdaHandlerLambdaFunction"
       properties = resource.properties
       # puts YAML.dump(properties) # uncomment to debug
-      expect(properties["FunctionName"]).to eq "demo-test-simple_function-handler"
-      expect(properties["Handler"]).to eq "handlers/functions/simple_function.handler"
+      expect(properties["FunctionName"]).to eq "demo-test-simple_function-lambda_handler"
+      expect(properties["Description"]).to eq "SimpleFunction#lambda_handler"
+      expect(properties["Handler"]).to eq "handlers/functions/simple_function.lambda_handler"
       expect(properties["Code"]["S3Key"]).to include("jets/code")
     end
   end

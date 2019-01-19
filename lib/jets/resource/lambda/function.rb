@@ -127,6 +127,7 @@ module Jets::Resource::Lambda
       managed = {
         handler: handler,
         runtime: runtime,
+        description: description,
       }
       managed[:function_name] = function_name if function_name
       layers = get_layers(runtime)
@@ -201,6 +202,15 @@ module Jets::Resource::Lambda
       # CloudFormation will managed the the function name in this case.
       # A pretty function name won't be generated but the deploy will be successful.
       function_name.size > MAX_FUNCTION_NAME_SIZE ? nil : function_name
+    end
+
+    def description
+      # Example values:
+      #   @app_class: Admin/PagesController
+      #   @task.meth: index
+      # Returns:
+      #   Admin/PagesController#index
+      "#{@app_class}##{@task.meth}"
     end
   end
 end
