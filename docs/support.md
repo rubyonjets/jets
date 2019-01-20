@@ -27,7 +27,7 @@ If you would like professional help, [BoltOps](https://www.boltops.com/) provide
 * Support: Troubleshooting, Debugging, Guidance, and Help
 * Development: Can help you develop a serverless application that essentially scales infinitely.
 * Training: Mentorship, education, and understanding how to leverage and use AWS and serverless paradigms.
-* Consulting: Can help review, design, and architect your serverless application or just provide general guidance. Can evaluate trade-offs, limits, and benefits.
+* Consulting: Can help review, design, and architect your serverless application. Can evaluate trade-offs, limits, and benefits. Or just provide general guidance. 
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/contributing.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/conduct.md %}">Next Step</a>
