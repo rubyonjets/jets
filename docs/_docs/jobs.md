@@ -43,9 +43,26 @@ HardJob.perform_now(:dig, event)
 HardJob.perform_later(:lift, event)
 ```
 
+In the example above, the `perform_now` method executes the job in the **current process**. The `perform_later` function runs the job by invoking the AWS Lambda function associated with it in a **new process**.  It usually runs a few seconds later.
+
+## Additional Arguments
+
 Additional arguments are passed to the HardJob with an event hash.
 
-In the example above, the `perform_now` method executes the job in the **current process**. The `perform_later` function runs the job by invoking the AWS Lambda function associated with it in a **new process**.  It usually runs a few seconds later.
+```ruby
+event = {key1: "value1"}
+HardJob.perform_now(:dig, event)
+```
+
+The `event` helper is available in the method.
+
+```ruby
+class HardJob
+  def dig
+    puts "event #{event.inspect}" # event hash is avaialble
+  end
+end
+```
 
 ## Cron Expression
 
