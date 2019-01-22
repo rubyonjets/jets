@@ -15,6 +15,7 @@ class HardJob < ApplicationJob
     puts "done digging"
   end
 
+  # Cron expression is AWS Cron Format and require 6 fields
   cron "0 */12 * * ? *" # every 12 hours
   def lift
     puts "done lifting"
@@ -42,9 +43,13 @@ HardJob.perform_now(:dig, event)
 HardJob.perform_later(:lift, event)
 ```
 
-In the example above, the `perform_now` method executes the job in the **current process**.
+Additional arguments are passed to the HardJob with an event hash.
 
-The `perform_later` function runs the job by invoking the AWS Lambda function associated with it in a **new process**.  It usually runs a few seconds later.
+In the example above, the `perform_now` method executes the job in the **current process**. The `perform_later` function runs the job by invoking the AWS Lambda function associated with it in a **new process**.  It usually runs a few seconds later.
+
+## Cron Expression
+
+The cron expression is in the [AWS Cron format](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html).  The AWS Cron format has six required fields, separated by white space.  This is slightly different from the traditional Linux cron format which has 5 fields.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/routing.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/install.md %}">Next Step</a>
