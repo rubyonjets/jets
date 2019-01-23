@@ -97,7 +97,8 @@ module Jets::Core
     path =~ %r{/templates/} ||
     path =~ %r{/turbo/project/} ||
     path =~ %r{/version} ||
-    path =~ %r{/webpacker}
+    path =~ %r{/webpacker} ||
+    path =~ %r{/jets/spec}
   end
 
   def class_mappings(class_name)

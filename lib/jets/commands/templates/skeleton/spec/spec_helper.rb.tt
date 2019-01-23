@@ -10,6 +10,8 @@ require "jets"
 abort("The Jets environment is running in production mode!") if Jets.env == "production"
 Jets.boot
 
+require "jets/spec/helpers"
+
 <% if @webpacker -%>
 require 'capybara/rspec'
 Capybara.app = Jets.application
