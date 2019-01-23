@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [UNRELEASED]
+- Add jets/spec/helpers.rb with rails-style controller testing helpers
+
 ## [1.6.0]
 - #158 from mmyoji/fix-docs-urls
 - #159 from patchkit-net/bugfix/invalid-longpath-collision Fix invalid collision detection on paths that already contains path variables
