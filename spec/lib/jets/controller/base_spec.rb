@@ -1,4 +1,4 @@
-class SimpleController < Jets::Controller::Base
+class TestSimpleController < Jets::Controller::Base
   layout :application
 
   def handler1; end
@@ -6,7 +6,7 @@ class SimpleController < Jets::Controller::Base
 end
 
 describe Jets::Controller::Base do
-  let(:controller) { SimpleController.new(event, context, meth) }
+  let(:controller) { TestSimpleController.new(event, context, meth) }
   let(:context) { nil }
   let(:meth) { "index" }
 
