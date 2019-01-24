@@ -84,8 +84,10 @@ module Jets
     end
 
     # root "posts#index"
-    def root(to)
-      @routes << Route.new(path: '', to: to, method: :get, root: true)
+    def root(to, options={})
+      default = {path: '', to: to, method: :get, root: true}
+      options = default.merge(options)
+      @routes << Route.new(options)
     end
 
     # Useful for creating API Gateway Resources
