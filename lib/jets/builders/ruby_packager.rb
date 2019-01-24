@@ -144,10 +144,20 @@ class Jets::Builders
     # And this can cause issues with require 'bundler/setup'
     def remove_bundled_with(gemfile_lock)
       lines = IO.readlines(gemfile_lock)
-      n = lines.index { |l| l.include?("BUNDLED WITH") }
-      return unless n
 
-      new_lines = lines[0..n-1]
+      # amount is the number of lines to remove
+      new_lines, capture, count, amount = [], true, 0, 2
+      lines.each do |l|
+        capture = false if l.include?('BUNDLED WITH')
+        if capture
+          new_lines << l
+        end
+        if capture == false
+          count += 1
+          capture = count > amount # renable capture
+        end
+      end
+
       content = new_lines.join('')
       IO.write(gemfile_lock, content)
     end
