@@ -48,11 +48,25 @@ module Jets::Mega
 
       puts_rack_output
 
+      status = response.code.to_i
+      headers = response.each_header.to_h
+      encoding = get_encoding(headers['content-type'])
+      body = response.body.force_encoding(encoding)
       {
-        status: response.code.to_i,
-        headers: response.each_header.to_h,
-        body: response.body,
+        status: status,
+        headers: headers,
+        body: body,
       }
+    end
+
+    def get_encoding(content_type)
+      default = Jets.config.encoding
+      return default unless content_type
+
+      md = content_type.match(/charset=(.+)/)
+      return default unless md
+
+      md[1]
     end
 
     # Grab the rack output from the /tmp/jets-output.log and puts it back in the

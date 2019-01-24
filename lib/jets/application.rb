@@ -90,6 +90,12 @@ class Jets::Application
     config.lambda = ActiveSupport::OrderedOptions.new
     config.lambda.layers = []
 
+    # Only used for Jets Afterburner, Mega Mode currently. This is a fallback default
+    # encoding.  Usually, the Rails response will return a content-type header and
+    # the encoding in there is used when possible. Example Content-Type header:
+    #   Content-Type    text/html; charset=utf-8
+    config.encoding = "utf-8"
+
     config
   end
 
