@@ -1,5 +1,5 @@
 describe Jets::Mega::Request do
-  let(:request) do
+  let(:req) do
     Jets::Mega::Request.new(event, controller)
   end
   let(:event) do
@@ -11,20 +11,20 @@ describe Jets::Mega::Request do
 
   context "api gateway event" do
     describe "process" do
-      it "sends request using net/http" do
-        # Uncomment this stubbing to test live request
+      it "sends req using net/http" do
+        # Uncomment this stubbing to test live req
         # Will need a rack server up and running
         http = double(:http)
         allow(http).to receive(:open_timeout=)
         allow(http).to receive(:read_timeout=)
-        response = double(:response).as_null_object
-        allow(response).to receive(:code).and_return("200")
-        allow(response).to receive(:each_header).and_return({})
-        allow(response).to receive(:body).and_return("test body")
-        allow(http).to receive(:request).and_return(response)
+        resp = double(:resp).as_null_object
+        allow(resp).to receive(:code).and_return("200")
+        allow(resp).to receive(:each_header).and_return({})
+        allow(resp).to receive(:body).and_return("test body")
+        allow(http).to receive(:request).and_return(resp)
         allow(Net::HTTP).to receive(:new).and_return(http)
 
-        resp = request.proxy
+        resp = req.proxy
         # pp resp # uncomment to see and debug
         expect(resp).to eq({:status=>200, :headers=>{}, :body=>"test body"})
       end

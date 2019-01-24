@@ -5,9 +5,10 @@
 #     expect(response.status).to eq 200
 #     pp response.body
 #   end
-
+#
 #   it "show returns a success response" do
-#     get '/posts/:post_id', post_id: 1
+#     Post.create(id: 1) unless Post.find_by(id: 1) # TODO: set up factory_bot
+#     get '/posts/:id', id: 1
 #     expect(response.status).to eq 200
 #     pp response.body
 #   end

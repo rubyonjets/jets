@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "jets/spec/helpers"
+require "jets/spec_helpers"
 
 class SimpleController < Jets::Controller::Base
   layout :application
@@ -30,7 +30,7 @@ class SimpleController < Jets::Controller::Base
   end
 end
 
-describe Jets::Spec::Helpers do
+describe Jets::SpecHelpers do
   before do
     Jets.application.routes.draw do
       get 'spec_helper_test', to: 'simple#index'
@@ -64,7 +64,7 @@ describe Jets::Spec::Helpers do
 
   context "post" do
     it "posts 201" do
-      post '/spec_helper_test', params: { id: 123 }
+      post '/spec_helper_test', params: { id: 123 } # params also works
       expect(response.status).to eq 201
       expect(JSON.parse(response.body)['id']).to eq '123'
     end
