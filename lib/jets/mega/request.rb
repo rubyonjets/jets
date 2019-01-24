@@ -60,7 +60,7 @@ module Jets::Mega
     end
 
     def get_encoding(content_type)
-      default = Jets.config.encoding
+      default = Jets.config.encoding.default
       return default unless content_type
 
       md = content_type.match(/charset=(.+)/)

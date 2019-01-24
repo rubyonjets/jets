@@ -94,7 +94,8 @@ class Jets::Application
     # encoding.  Usually, the Rails response will return a content-type header and
     # the encoding in there is used when possible. Example Content-Type header:
     #   Content-Type    text/html; charset=utf-8
-    config.encoding = "utf-8"
+    config.encoding = ActiveSupport::OrderedOptions.new
+    config.encoding.default = "utf-8"
 
     config
   end
