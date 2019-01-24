@@ -30,5 +30,5 @@ The main error is on the `JetsPreheatJob Embedded stack`.  You can check on this
 You can see here that the error is because the user does not have the necessary IAM permission. In this case, giving the user the [Minimal Deploy IAM Policy]({% link _docs/minimal-deploy-iam.md %}) will resolve the issue.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/debugging-help.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/jets-turbines.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/debugging-payloads.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
