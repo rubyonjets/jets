@@ -34,7 +34,7 @@ class Jets::Commands::Delete
     start_time = Time.now
     status.wait
     took = Time.now - start_time
-    puts "Time took for deletion: #{status.pretty_time(took).green}."
+    puts "Time took for deletion: #{status.pretty_time(took).color(:green)}."
   end
 
   def delete_logs
