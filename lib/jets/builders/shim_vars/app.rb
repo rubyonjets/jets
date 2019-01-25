@@ -30,7 +30,7 @@ module Jets::Builders::ShimVars
 
     def relative(path)
       full_path = full(path)
-      full_path.sub(Jets.root.to_s, "")
+      full_path.sub("#{Jets.root}/", "")
                .sub(/.*internal\/app/, "app")
 
     end
