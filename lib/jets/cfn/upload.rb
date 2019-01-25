@@ -70,7 +70,7 @@ class Jets::Cfn
     end
 
     def upload_asset_folder(folder)
-      expression = "#{Jets.root}#{folder}/**/*"
+      expression = "#{Jets.root}/#{folder}/**/*"
       group_size = 10
       Dir.glob(expression).each_slice(group_size) do |paths|
         threads = []

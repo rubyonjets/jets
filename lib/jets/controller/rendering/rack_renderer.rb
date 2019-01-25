@@ -215,7 +215,7 @@ module Jets::Controller::Rendering
           end
         end
 
-        ActionController::Base.append_view_path("#{Jets.root}app/views")
+        ActionController::Base.append_view_path("#{Jets.root}/app/views")
 
         setup_webpacker if Jets.webpacker?
       end
@@ -223,10 +223,10 @@ module Jets::Controller::Rendering
       # Does not include ApplicationHelper, will include ApplicationHelper explicitly first.
       def find_app_helper_classes
         klasses = []
-        expression = "#{Jets.root}app/helpers/**/*"
+        expression = "#{Jets.root}/app/helpers/**/*"
         Dir.glob(expression).each do |path|
           next unless File.file?(path)
-          class_name = path.sub("#{Jets.root}app/helpers/","").sub(/\.rb/,'')
+          class_name = path.sub("#{Jets.root}/app/helpers/","").sub(/\.rb/,'')
           unless class_name == "application_helper"
             klasses << class_name.classify.constantize # autoload
           end

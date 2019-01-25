@@ -24,7 +24,7 @@ module Jets::Builders::ShimVars
     end
 
     def full(path)
-      path = "#{Jets.root}#{path}" unless path.starts_with?("/")
+      path = "#{Jets.root}/#{path}" unless path.starts_with?("/")
       path
     end
 

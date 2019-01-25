@@ -7,7 +7,7 @@ module Jets
     end
 
     def initialize(yaml_path=nil)
-      yaml_path ||= "#{Jets.root}handlers/data.yml"
+      yaml_path ||= "#{Jets.root}/handlers/data.yml"
       @data = YAML.load_file(yaml_path)
       @s3_bucket = @data['s3_bucket']
       @rack_zip = @data['rack_zip']

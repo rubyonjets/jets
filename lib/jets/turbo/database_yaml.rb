@@ -1,7 +1,7 @@
 class Jets::Turbo
   class DatabaseYaml
     def reconfigure
-      current_yaml = "#{Jets.root}rack/config/database.yml"
+      current_yaml = "#{Jets.root}/rack/config/database.yml"
       return unless File.exist?(current_yaml)
 
       vars = {}
@@ -27,7 +27,7 @@ class Jets::Turbo
         if !current_database[env]['database'].include?('<%') # already has ERB
           vars["database_#{env}"] = current_database[env]['database']
         else
-          lines = IO.readlines("#{Jets.root}rack/config/application.rb")
+          lines = IO.readlines("#{Jets.root}/rack/config/application.rb")
           module_line = lines.find { |l| l =~ /^module / }
           app_module = module_line.gsub(/^module /,'').strip
           app_name = app_module.underscore

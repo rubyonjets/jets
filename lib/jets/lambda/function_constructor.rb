@@ -33,7 +33,7 @@ module Jets::Lambda
     end
 
     def full(path)
-      path = "#{Jets.root}#{path}" unless path.include?(Jets.root.to_s)
+      path = "#{Jets.root}/#{path}" unless path.include?(Jets.root.to_s)
       path
     end
 

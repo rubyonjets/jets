@@ -106,7 +106,7 @@ private
 
   def s3_public
     # s3_base_url.txt is created as part of the build process
-    s3_base_url = IO.read("#{Jets.root}config/s3_base_url.txt").strip
+    s3_base_url = IO.read("#{Jets.root}/config/s3_base_url.txt").strip
     "#{s3_base_url}/public"
   end
   memoize :s3_public

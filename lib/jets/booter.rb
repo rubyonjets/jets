@@ -45,7 +45,7 @@ class Jets::Booter
     end
 
     def app_initializers
-      Dir.glob("#{Jets.root}config/initializers/**/*").each do |path|
+      Dir.glob("#{Jets.root}/config/initializers/**/*").each do |path|
         load path
       end
     end
@@ -83,7 +83,7 @@ class Jets::Booter
     # config/database.yml exists.
     # Dynomite handles connecting to the clients lazily.
     def setup_db
-      return unless File.exist?("#{Jets.root}config/database.yml")
+      return unless File.exist?("#{Jets.root}/config/database.yml")
 
       db_configs = Jets.application.config.database
       # DatabaseTasks.database_configuration for db:create db:migrate tasks
@@ -106,7 +106,7 @@ class Jets::Booter
 
     # Cannot call this for the jets new
     def confirm_jets_project!
-      unless File.exist?("#{Jets.root}config/application.rb")
+      unless File.exist?("#{Jets.root}/config/application.rb")
         puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".color(:red)
         exit 1
       end
@@ -117,7 +117,7 @@ class Jets::Booter
     end
 
     def check_config_ru!
-      config_ru = File.read("#{Jets.root}config.ru")
+      config_ru = File.read("#{Jets.root}/config.ru")
       unless config_ru.include?("Jets.boot")
         puts 'The config.ru file is missing Jets.boot.  Please add Jets.boot after require "jets"'.color(:red)
         puts "This was changed as made in Jets v1.1.0."

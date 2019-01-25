@@ -106,7 +106,7 @@ module Jets::Core
 
   # Eager load user's application
   def eager_load_app
-    Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
+    Dir.glob("#{Jets.root}/app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
       next if path.include?('app/functions') || path.include?('app/shared/functions') || path.include?('app/internal/functions')
 
@@ -146,7 +146,7 @@ module Jets::Core
   end
 
   def rack?
-    path = "#{Jets.root}rack"
+    path = "#{Jets.root}/rack"
     File.exist?(path) || File.symlink?(path)
   end
 

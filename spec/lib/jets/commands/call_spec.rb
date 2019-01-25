@@ -42,7 +42,7 @@ describe Jets::Commands::Call do
 
       it "loads the json from a file" do
         text = call.transformed_event
-        fixture_payload = IO.read("#{Jets.root}payloads/create.json")
+        fixture_payload = IO.read("#{Jets.root}/payloads/create.json")
         expect(text).to eq(fixture_payload)
       end
     end

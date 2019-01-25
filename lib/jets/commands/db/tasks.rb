@@ -11,7 +11,7 @@ class Jets::Commands::Db::Tasks
     db_configs = Jets.application.config.database
     ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = ["db/migrate"]
-    ActiveRecord::Tasks::DatabaseTasks.seed_loader = Seeder.new("#{Jets.root}db/seeds.rb")
+    ActiveRecord::Tasks::DatabaseTasks.seed_loader = Seeder.new("#{Jets.root}/db/seeds.rb")
 
     # Need to mock out the usage of Rails.application in:
     # activerecord-5.1.4/lib/active_record/tasks/database_tasks.rb
