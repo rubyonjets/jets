@@ -3,7 +3,7 @@ describe "jets generate" do
     it "creates a migration file" do
       command = "exe/jets dynamodb:generate create_posts --partition-key id:string"
       out = execute(command)
-      puts "HIII".colorize(:yellow)
+      puts "HIII".color(:yellow)
       # pp out # uncomment to debug
       expect(out).to include("Generating migration")
       migration_path = Dir.glob("#{Dynomite.app_root}dynamodb/migrate/*").first
