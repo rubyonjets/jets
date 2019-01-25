@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'colorize'
 require 'thor'
 require 'bundler'
 
@@ -27,7 +26,7 @@ private
   def confirm_jets_project
     jets_project = File.exist?("#{project_folder}/config/application.rb")
     unless jets_project
-      puts "It does not look like the repo #{options[:repo]} is a jets project. Maybe double check that it is?  Exited.".colorize(:red)
+      puts "It does not look like the repo #{options[:repo]} is a jets project. Maybe double check that it is?  Exited.".color(:red)
       exit 1
     end
   end

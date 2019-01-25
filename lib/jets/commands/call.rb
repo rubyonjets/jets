@@ -67,12 +67,12 @@ class Jets::Commands::Call
     begin
       resp = lambda.invoke(options)
     rescue Aws::Lambda::Errors::ResourceNotFoundException
-      puts "The function #{function_name} was not found.  Maybe check the spelling or the AWS_PROFILE?".colorize(:red)
+      puts "The function #{function_name} was not found.  Maybe check the spelling or the AWS_PROFILE?".color(:red)
       return
     end
 
     if @options[:show_log]
-      puts "Last 4KB of log in the x-amz-log-result header:".colorize(:green)
+      puts "Last 4KB of log in the x-amz-log-result header:".color(:green)
       puts Base64.decode64(resp.log_result)
     end
 
@@ -104,7 +104,7 @@ class Jets::Commands::Call
 
     check_valid_json!(text)
 
-    puts "Function name: #{function_name.colorize(:green)}" unless @options[:mute]
+    puts "Function name: #{function_name.color(:green)}" unless @options[:mute]
     return text unless function_name.include?("_controller-")
     return text if @options[:lambda_proxy] == false
 
@@ -117,7 +117,7 @@ class Jets::Commands::Call
     path = text.gsub('file://','')
     path = "#{Jets.root}#{path}" unless path[0..0] == '/'
     unless File.exist?(path)
-      puts "File #{path} does not exist.  Are you sure the file exists?".colorize(:red)
+      puts "File #{path} does not exist.  Are you sure the file exists?".color(:red)
       exit
     end
     text = IO.read(path)

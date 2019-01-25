@@ -9,7 +9,7 @@ module Jets::Commands
     def display
       stack_name = Jets::Naming.parent_stack_name
       unless stack_exists?(stack_name)
-        puts "Stack for #{Jets.config.project_name.colorize(:green)} project for environment #{Jets.env.colorize(:green)}.  Couldn't find #{stack_name.colorize(:green)} stack."
+        puts "Stack for #{Jets.config.project_name.color(:green)} project for environment #{Jets.env.color(:green)}.  Couldn't find #{stack_name.color(:green)} stack."
         exit
       end
 
@@ -21,7 +21,7 @@ module Jets::Commands
         STDOUT.puts "API Gateway Endpoint: #{api_gateway_endpoint}"
         show_custom_domain
       else
-        puts "API Gateway not found. This jets app does have an API Gateway associated with it.  Please double check your config/routes.rb if you were expecting to see a url for the app. Also check that #{stack_name.colorize(:green)} is a jets app."
+        puts "API Gateway not found. This jets app does have an API Gateway associated with it.  Please double check your config/routes.rb if you were expecting to see a url for the app. Also check that #{stack_name.color(:green)} is a jets app."
       end
     end
 

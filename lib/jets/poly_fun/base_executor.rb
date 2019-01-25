@@ -87,7 +87,7 @@ class Jets::PolyFun
       interpreter = @task.lang
       command = %Q|#{interpreter} #{lambda_executor_script} '#{JSON.dump(event)}' '#{JSON.dump(context)}'|
       stdout, stderr, status = Open3.capture3(command)
-      # puts "=> #{command}".colorize(:green)
+      # puts "=> #{command}".color(:green)
       # puts "stdout #{stdout}"
       # puts "stderr #{stderr}"
       # puts "status #{status}"

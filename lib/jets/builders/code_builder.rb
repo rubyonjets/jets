@@ -1,5 +1,4 @@
 require "action_view"
-require "colorize"
 require "fileutils"
 require "net/http"
 require "open-uri"
@@ -174,7 +173,7 @@ class Jets::Builders
     # This is because the node and yarn has likely been set up correctly there.
     def compile_assets
       if ENV['JETS_SKIP_ASSETS']
-        puts "Skip compiling assets".colorize(:yellow) # useful for debugging
+        puts "Skip compiling assets".color(:yellow) # useful for debugging
         return
       end
 
@@ -206,7 +205,7 @@ class Jets::Builders
       return unless Jets.rack? && rails? && !rails_api?
 
       if ENV['JETS_SKIP_ASSETS']
-        puts "Skip compiling rack assets".colorize(:yellow) # useful for debugging
+        puts "Skip compiling rack assets".color(:yellow) # useful for debugging
         return
       end
 
@@ -270,7 +269,7 @@ class Jets::Builders
       FileUtils.rm_rf("#{stage_area}/code") # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
-        # puts "cp -r #{@full_project_path} #{"#{stage_area}/code"}".colorize(:yellow) # uncomment to debug
+        # puts "cp -r #{@full_project_path} #{"#{stage_area}/code"}".color(:yellow) # uncomment to debug
         Jets::Util.cp_r(@full_project_path, "#{stage_area}/code")
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
@@ -354,7 +353,7 @@ class Jets::Builders
       unless ruby_version_supported?
         puts "You are using Ruby version #{RUBY_VERSION} which is not supported by Jets."
         ruby_variant = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.x'
-        abort("Jets uses Ruby #{Jets::RUBY_VERSION}.  You should use a variant of Ruby #{ruby_variant}".colorize(:red))
+        abort("Jets uses Ruby #{Jets::RUBY_VERSION}.  You should use a variant of Ruby #{ruby_variant}".color(:red))
       end
     end
 

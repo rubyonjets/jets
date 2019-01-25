@@ -154,8 +154,8 @@ class Jets::Application
 
   def deprecated_configs_message
     unless config.ruby.lazy_load.nil?
-      puts "Detected config.ruby.lazy_load = #{config.ruby.lazy_load.inspect}".colorize(:yellow)
-      puts "Deprecated: config.ruby.lazy_load".colorize(:yellow)
+      puts "Detected config.ruby.lazy_load = #{config.ruby.lazy_load.inspect}".color(:yellow)
+      puts "Deprecated: config.ruby.lazy_load".color(:yellow)
       puts "Gems are now bundled with with Lambda Layer and there's no need to lazy load them."
       puts "Please remove the config in your config/application.rb or config/environments files."
       puts "You can have Jets automatically do this by running:"

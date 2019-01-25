@@ -27,7 +27,7 @@ class Jets::Resource::Lambda::Function
       found_reserved_vars = variables.keys & reserved_variables
       return if found_reserved_vars.empty?
 
-      puts "You have configured some environment variables that are reserved by AWS Lambda.".colorize(:red)
+      puts "You have configured some environment variables that are reserved by AWS Lambda.".color(:red)
       puts found_reserved_vars
       puts "The deployment to AWS Lambda will failed when using reserved variables."
       puts "Please remove these reserved variables. "

@@ -2,10 +2,10 @@ class Jets::Builders
   module Util
   private
     def sh(command)
-      puts "=> #{command}".colorize(:green)
+      puts "=> #{command}".color(:green)
       success = system(command)
       unless success
-        puts "#{command} failed to run.".colorize(:red)
+        puts "#{command} failed to run.".color(:red)
         puts caller[0]
         exit 1
       end
@@ -13,7 +13,7 @@ class Jets::Builders
     end
 
     def headline(message)
-      puts "=> #{message}".colorize(:cyan)
+      puts "=> #{message}".color(:cyan)
     end
 
     def build_area

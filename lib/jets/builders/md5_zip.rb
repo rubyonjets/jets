@@ -34,7 +34,7 @@ class Jets::Builders
       FileUtils.mv(zip_dest, md5_dest)
 
       file_size = number_to_human_size(File.size(md5_dest))
-      puts "Zip file created at: #{md5_dest.colorize(:green)} (#{file_size})"
+      puts "Zip file created at: #{md5_dest.color(:green)} (#{file_size})"
     end
 
     # /tmp/jets/demo/stage/zips/code.zip

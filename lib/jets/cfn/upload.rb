@@ -45,15 +45,15 @@ class Jets::Cfn
       s3_key = "jets/code/#{File.basename(path)}"
       obj = s3_resource.bucket(bucket_name).object(s3_key)
       obj.upload_file(path)
-      puts "Uploaded to s3://#{bucket_name}/#{s3_key}".colorize(:green)
-      puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
+      puts "Uploaded to s3://#{bucket_name}/#{s3_key}".color(:green)
+      puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).color(:green)}"
     end
 
     def upload_assets
       puts "Checking for modified public assets and uploading to S3."
       start_time = Time.now
       upload_public_assets
-      puts "Time for public assets to s3: #{pretty_time(Time.now-start_time).colorize(:green)}"
+      puts "Time for public assets to s3: #{pretty_time(Time.now-start_time).color(:green)}"
     end
 
     def upload_public_assets

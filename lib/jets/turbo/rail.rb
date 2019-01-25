@@ -20,9 +20,9 @@ class Jets::Turbo
     def afterburners_message
       command = ARGV.first
       if command == "deploy"
-        puts "=> Rails app detected: Enabling Jets Afterburner to deploy to AWS Lambda.".colorize(:green)
+        puts "=> Rails app detected: Enabling Jets Afterburner to deploy to AWS Lambda.".color(:green)
       else
-        puts "=> Rails app detected: Enabling Jets Afterburner.".colorize(:green)
+        puts "=> Rails app detected: Enabling Jets Afterburner.".color(:green)
       end
     end
 

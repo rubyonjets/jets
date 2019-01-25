@@ -1,15 +1,15 @@
 $:.unshift(File.expand_path("../", __FILE__))
-require "jets/version"
-require "jets/camelizer"
 require "active_support"
+require "active_support/concern"
 require "active_support/core_ext"
 require "active_support/dependencies"
 require "active_support/ordered_hash"
 require "active_support/ordered_options"
-require "active_support/concern"
-require "colorize"
 require "fileutils"
+require "jets/camelizer"
+require "jets/version"
 require "memoist"
+require "rainbow/ext/string"
 
 module Jets
   RUBY_VERSION = "2.5.3"

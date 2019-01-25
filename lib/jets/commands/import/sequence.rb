@@ -1,5 +1,4 @@
 require 'bundler'
-require 'colorize'
 require 'fileutils'
 require 'thor'
 
@@ -42,7 +41,7 @@ class Jets::Commands::Import
       begin
         directory ".", rack_folder, exclude_pattern: %r{.git}
       rescue Thor::Error => e
-        puts e.message.colorize(:red)
+        puts e.message.color(:red)
         exit 1
       end
     end

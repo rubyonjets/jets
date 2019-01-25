@@ -23,7 +23,7 @@ class Jets::Cfn
         confirm = prompt_for_iam(capabilities)
         if confirm =~ /^y/
           @options.merge!(capabilities: [capabilities])
-          puts "Re-running: #{command_with_iam(capabilities).colorize(:green)}"
+          puts "Re-running: #{command_with_iam(capabilities).color(:green)}"
           retry
         else
           puts "Exited"

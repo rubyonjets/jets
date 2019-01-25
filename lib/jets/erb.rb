@@ -24,7 +24,7 @@ class Jets::Erb
         error_info ||= e.backtrace.grep(/\(erb\)/)[0]
         raise unless error_info # unable to find the (erb):xxx: error line
         line = error_info.split(':')[1].to_i
-        puts "Error evaluating ERB template on line #{line.to_s.colorize(:red)} of: #{path.sub(/^\.\//, '').colorize(:green)}"
+        puts "Error evaluating ERB template on line #{line.to_s.color(:red)} of: #{path.sub(/^\.\//, '').color(:green)}"
 
         template_lines = template.split("\n")
         context = 5 # lines of context
@@ -33,7 +33,7 @@ class Jets::Erb
         template_lines[top..bottom].each_with_index do |line_content, index|
           line_number = top+index+1
           if line_number == line
-            printf("%#{spacing}d %s\n".colorize(:red), line_number, line_content)
+            printf("%#{spacing}d %s\n".color(:red), line_number, line_content)
           else
             printf("%#{spacing}d %s\n", line_number, line_content)
           end

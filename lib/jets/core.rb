@@ -160,7 +160,7 @@ module Jets::Core
   end
 
   def report_exception(exception)
-    puts "DEPRECATED: report_exception. Use on_exception instead.".colorize(:yellow)
+    puts "DEPRECATED: report_exception. Use on_exception instead.".color(:yellow)
     on_exception(exception)
   end
 

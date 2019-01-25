@@ -107,19 +107,19 @@ class Jets::Booter
     # Cannot call this for the jets new
     def confirm_jets_project!
       unless File.exist?("#{Jets.root}config/application.rb")
-        puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".colorize(:red)
+        puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".color(:red)
         exit 1
       end
     end
 
     def message
-      "Jets booting up in #{Jets.env.colorize(:green)} mode!"
+      "Jets booting up in #{Jets.env.color(:green)} mode!"
     end
 
     def check_config_ru!
       config_ru = File.read("#{Jets.root}config.ru")
       unless config_ru.include?("Jets.boot")
-        puts 'The config.ru file is missing Jets.boot.  Please add Jets.boot after require "jets"'.colorize(:red)
+        puts 'The config.ru file is missing Jets.boot.  Please add Jets.boot after require "jets"'.color(:red)
         puts "This was changed as made in Jets v1.1.0."
         puts "To have Jets update the config.fu file for you, you can run:\n\n"
         puts "  jets upgrade"

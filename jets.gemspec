@@ -39,7 +39,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-s3"
   spec.add_dependency "aws-sdk-sns"
   spec.add_dependency "aws-sdk-sqs"
-  spec.add_dependency "colorize"
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency
   spec.add_dependency "hashie"
@@ -50,6 +49,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "mimemagic"
   spec.add_dependency "rack"
   spec.add_dependency "railties", "~> 5.2.1" # ActiveRecord database_tasks.rb require this
+  spec.add_dependency "rainbow"
   spec.add_dependency "recursive-open-struct"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"

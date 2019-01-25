@@ -19,7 +19,7 @@ class Jets::Stack
         ext = File.extname(source_file).sub(/^\./,'').to_sym
         lang_map[ext]
       else
-        puts "WARN: Unable to find a source file for function. Looked at: #{search_expression}".colorize(:yellow)
+        puts "WARN: Unable to find a source file for function. Looked at: #{search_expression}".color(:yellow)
       end
     end
 

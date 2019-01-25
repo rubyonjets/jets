@@ -20,13 +20,13 @@ class Jets::Commands::Delete
     stack_in_progress?(parent_stack_name)
 
     cfn.delete_stack(stack_name: parent_stack_name)
-    puts "Deleting #{Jets.config.project_namespace.colorize(:green)}..."
+    puts "Deleting #{Jets.config.project_namespace.color(:green)}..."
 
     wait_for_stack if @options[:wait]
 
     delete_logs
 
-    puts "Project #{Jets.config.project_namespace.colorize(:green)} deleted!"
+    puts "Project #{Jets.config.project_namespace.color(:green)} deleted!"
   end
 
   def wait_for_stack
@@ -49,7 +49,7 @@ class Jets::Commands::Delete
     rescue Aws::CloudFormation::Errors::ValidationError
       # Aws::CloudFormation::Errors::ValidationError is thrown when the stack
       # does not exist
-      puts "The parent stack #{Jets.config.project_namespace.colorize(:green)} for the project #{Jets.config.project_name.colorize(:green)} does not exist. So it cannot be deleted."
+      puts "The parent stack #{Jets.config.project_namespace.color(:green)} for the project #{Jets.config.project_name.color(:green)} does not exist. So it cannot be deleted."
       exit 0
     end
   end
@@ -104,12 +104,12 @@ class Jets::Commands::Delete
     if @options[:sure]
       sure = 'y'
     else
-      puts "Are you sure you want to want to delete the #{Jets.config.project_namespace.colorize(:green)} project? (y/N)"
+      puts "Are you sure you want to want to delete the #{Jets.config.project_namespace.color(:green)} project? (y/N)"
       sure = $stdin.gets
     end
 
     unless sure =~ /^y/
-      puts "Phew! Jets #{Jets.config.project_namespace.colorize(:green)} project was not deleted."
+      puts "Phew! Jets #{Jets.config.project_namespace.color(:green)} project was not deleted."
       exit 0
     end
   end
@@ -128,7 +128,7 @@ class Jets::Commands::Delete
 
       if status =~ /_IN_PROGRESS$/
         puts "The '#{@parent_stack_name}' stack status is #{status}. " \
-             "It is not in an updateable status. Please wait until the stack is ready and try again.".colorize(:red)
+             "It is not in an updateable status. Please wait until the stack is ready and try again.".color(:red)
         exit 0
       elsif resp.stacks[0].outputs.empty?
         # This Happens when the miminal stack fails at the very beginning.

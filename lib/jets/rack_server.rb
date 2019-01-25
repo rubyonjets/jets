@@ -39,7 +39,7 @@ module Jets
         args << " --host #{@options[:host]}" if @options[:host] # only forward the host option
                                                                 # port is always 9292 for simplicity
         command = "cd #{rack_project} && bin/rackup#{args}" # leads to the same wrapper rack scripts
-        puts "=> #{command}".colorize(:green)
+        puts "=> #{command}".color(:green)
         system(command)
       end
     end

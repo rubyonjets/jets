@@ -9,7 +9,7 @@ class Jets::Builders
 
     def check
       return if within_lambda_limit?
-      say "Over the Lambda size limit of #{LAMBDA_SIZE_LIMIT}MB".colorize(:red)
+      say "Over the Lambda size limit of #{LAMBDA_SIZE_LIMIT}MB".color(:red)
       say "Please reduce the size of your code."
       display_sizes
       exit 1

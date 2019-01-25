@@ -42,7 +42,7 @@ module Jets::Commands
       o = options
       server_command = o[:reload] ? "shotgun" : "rackup"
       command = "bundle exec #{server_command} --port #{o[:port]} --host #{o[:host]}"
-      puts "=> #{command}".colorize(:green)
+      puts "=> #{command}".color(:green)
       puts Jets::Booter.message
       Jets::Booter.check_config_ru!
       Jets::RackServer.start(options) unless ENV['JETS_RACK'] == '0' # rack server runs in background by default

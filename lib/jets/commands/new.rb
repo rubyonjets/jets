@@ -41,7 +41,7 @@ module Jets::Commands
         @database = false
         @webpacker = false
       else
-        puts "Invalid mode provided: #{@options[:mode].colorize(:red)}. Please pass in an valid mode: #{VALID_MODES.join(',').colorize(:green)}."
+        puts "Invalid mode provided: #{@options[:mode].color(:red)}. Please pass in an valid mode: #{VALID_MODES.join(',').color(:green)}."
         exit 1
       end
     end
@@ -68,7 +68,7 @@ module Jets::Commands
     def webpacker_install
       return unless @webpacker
       unless yarn_installed?
-        puts "Yarn is not installed or has not been detected. Please double check that yarn has been installed.".colorize(:red)
+        puts "Yarn is not installed or has not been detected. Please double check that yarn has been installed.".color(:red)
         puts <<~EOL
           To check:
 

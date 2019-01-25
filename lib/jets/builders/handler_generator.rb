@@ -75,7 +75,7 @@ class Jets::Builders
         end
 
         unless missing.empty?
-          puts "ERROR: Missing source files. Please make sure these source files exist or remove their declarations".colorize(:red)
+          puts "ERROR: Missing source files. Please make sure these source files exist or remove their declarations".color(:red)
           puts missing
           exit 1
         end
@@ -114,7 +114,7 @@ class Jets::Builders
       unless source_path
         attributes = fun.template.values.first
         function_name = attributes['Properties']['FunctionName']
-        puts "WARN: missing source file for: '#{function_name}' function".colorize(:yellow)
+        puts "WARN: missing source file for: '#{function_name}' function".color(:yellow)
         return
       end
 

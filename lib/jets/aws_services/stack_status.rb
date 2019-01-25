@@ -36,7 +36,7 @@ module Jets::AwsServices
       status = resp.stacks[0].stack_status
       if status =~ /_IN_PROGRESS$/
         puts "The '#{stack_name}' stack status is #{status}. " \
-             "Please wait until the stack is ready and try again.".colorize(:red)
+             "Please wait until the stack is ready and try again.".color(:red)
         exit 0
       elsif resp.stacks[0].outputs.empty? && status != 'ROLLBACK_COMPLETE'
         # This Happens when the miminal stack fails at the very beginning.

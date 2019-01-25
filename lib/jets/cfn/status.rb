@@ -12,14 +12,14 @@ class Jets::Cfn
     # used for the jets status command
     def run
       unless stack_exists?(@stack_name)
-        puts "The stack #{@stack_name.colorize(:green)} does not exist."
+        puts "The stack #{@stack_name.color(:green)} does not exist."
         return
       end
 
       resp = cfn.describe_stacks(stack_name: @stack_name)
       stack = resp.stacks.first
 
-      puts "The current status for the stack #{@stack_name.colorize(:green)} is #{stack.stack_status.colorize(:green)}"
+      puts "The current status for the stack #{@stack_name.color(:green)} is #{stack.stack_status.color(:green)}"
       if stack.stack_status =~ /_IN_PROGRESS$/
         puts "Stack events (tailing):"
         # tail all events until done
@@ -56,12 +56,12 @@ class Jets::Cfn
 
       success = false
       if last_event_status =~ /_FAILED/
-        puts "Stack failed: #{last_event_status}".colorize(:red)
-        puts "Stack reason #{@events[0]["resource_status_reason"]}".colorize(:red)
+        puts "Stack failed: #{last_event_status}".color(:red)
+        puts "Stack reason #{@events[0]["resource_status_reason"]}".color(:red)
       elsif last_event_status =~ /_ROLLBACK_/
-        puts "Stack rolled back: #{last_event_status}".colorize(:red)
+        puts "Stack rolled back: #{last_event_status}".color(:red)
       else # success
-        puts "Stack success status: #{last_event_status}".colorize(:green)
+        puts "Stack success status: #{last_event_status}".color(:green)
         success = true
       end
 
@@ -116,7 +116,7 @@ class Jets::Cfn
         e["logical_resource_id"],
         e["resource_status_reason"]
       ].join(" ")
-      message = message.colorize(:red) if e["resource_status"] =~ /_FAILED/
+      message = message.color(:red) if e["resource_status"] =~ /_FAILED/
       puts message
     end
 
