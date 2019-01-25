@@ -3,8 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
-## [UNRELEASED]
+## [1.6.1]
+- #162 from patchkit-net/feature/spec_helpers
+- #163 from tongueroo/spec-helpers
 - Add jets/spec/helpers.rb with rails-style controller testing helpers
+- #164 from tongueroo/encoding-fix: use encoding from content-type for mega request
+- use rainbow gem for terminal colors
 
 ## [1.6.0]
 - #158 from mmyoji/fix-docs-urls
