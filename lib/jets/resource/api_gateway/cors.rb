@@ -10,7 +10,7 @@ module Jets::Resource::ApiGateway
           properties: {
             resource_id: "!Ref #{resource_id}",
             rest_api_id: "!Ref #{RestApi.logical_id}",
-            authorization_type: authorization_type,
+            authorization_type: cors_authorization_type,
             http_method: "OPTIONS",
             method_responses: [{
               status_code: '200',
@@ -44,6 +44,10 @@ module Jets::Resource::ApiGateway
           } # closes properties
         } # closes logical id
       } # closes definition
+    end
+
+    def cors_authorization_type
+      Jets.config.api.cors_authorization_type || "NONE"
     end
 
     def cors_logical_id
