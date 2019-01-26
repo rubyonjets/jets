@@ -60,8 +60,8 @@ describe Jets::Controller::Base do
 
     it "adds cors headers" do
       status, headers, body = controller.send(:render, json: {"my": "data"})
-      expect(headers.keys).to include("Access-Control-Allow-Origin")
-      expect(headers.keys).to include("Access-Control-Allow-Credentials")
+      expect(headers.keys).to_not include("Access-Control-Allow-Origin")
+      expect(headers.keys).to_not include("Access-Control-Allow-Credentials")
     end
   end
 

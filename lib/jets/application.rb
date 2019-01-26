@@ -32,7 +32,7 @@ class Jets::Application
   def default_config
     config = ActiveSupport::OrderedOptions.new
     config.project_name = parse_project_name # must set early because other configs requires this
-    config.cors = true
+    config.cors = false
     config.autoload_paths = default_autoload_paths
     config.extra_autoload_paths = []
     config.logger = Jets::Logger.new($stderr)
@@ -75,6 +75,7 @@ class Jets::Application
 
     config.api = ActiveSupport::OrderedOptions.new
     config.api.authorization_type = "NONE"
+    config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
     config.api.binary_media_types = ['multipart/form-data']
     config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
 
