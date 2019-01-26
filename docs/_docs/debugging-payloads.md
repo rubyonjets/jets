@@ -2,7 +2,7 @@
 title: Debugging Event Payloads
 ---
 
-Here are examples of event payloads for a typical CRUD controller.
+Here are examples of event payloads for a typical CRUD controller.  You must always specify the `path` key.
 
 Action | Payload | Notes
 --- | --- | ---
