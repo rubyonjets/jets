@@ -13,7 +13,7 @@ Jets.application.configure do
 end
 ```
 
-A `config.cors = true` will add a response header with `Access-Control-AllowOrigin='*'`.  If you would like more specificity then you can set the domain name like so:
+A `config.cors = true` will add a response header with `Access-Control-Allow-Origin='*'`.  If you would like more specificity then you can set the domain name like so:
 
 ```ruby
 Jets.application.configure do
@@ -22,7 +22,7 @@ Jets.application.configure do
 end
 ```
 
-The example above adds a response header with `Access-Control-AllowOrigin='*.mydomain.com'`.
+The example above adds a response header with `Access-Control-Allow-Origin='*.mydomain.com'`.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/routing-custom-domain.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
