@@ -75,7 +75,7 @@ class Jets::Application
 
     config.api = ActiveSupport::OrderedOptions.new
     config.api.authorization_type = "NONE"
-    config.api.cors_authorization_type = "NONE" # specifially for the OPTIONS request
+    config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
     config.api.binary_media_types = ['multipart/form-data']
     config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
 
