@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.3]
+- #168 cors specific authorization_type, default none
+
 ## [1.6.2]
 - #165 remove always trailing slash from Jets.root
 - #166 fix cors headers
