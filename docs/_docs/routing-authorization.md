@@ -37,7 +37,7 @@ class PostsController < ApplicationController
 end
 ```
 
-All controller actions will be use `AWS_IAM` authorization.
+All PostsController actions will be use `AWS_IAM` authorization.
 
 ### Route Specific
 
