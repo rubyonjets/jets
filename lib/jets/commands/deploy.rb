@@ -39,7 +39,7 @@ module Jets::Commands
     end
 
     def check_dev_mode
-      if File.exist?("#{Jets.root}dev.mode")
+      if File.exist?("#{Jets.root}/dev.mode")
         puts "The dev.mode file exists. Please removed it and run bundle update before you deploy.".color(:red)
         exit 1
       end

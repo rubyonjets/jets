@@ -4,7 +4,7 @@ class Jets::Commands::Runner
 
     if code =~ %r{^file://}
       path = code.sub('file://', '')
-      full_path = "#{Jets.root}#{path}"
+      full_path = "#{Jets.root}/#{path}"
       if File.exist?(full_path)
         code = IO.read(full_path)
       else

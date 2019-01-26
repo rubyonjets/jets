@@ -24,13 +24,13 @@ module Jets::Builders::ShimVars
     end
 
     def full(path)
-      path = "#{Jets.root}#{path}" unless path.starts_with?("/")
+      path = "#{Jets.root}/#{path}" unless path.starts_with?("/")
       path
     end
 
     def relative(path)
       full_path = full(path)
-      full_path.sub(Jets.root.to_s, "")
+      full_path.sub("#{Jets.root}/", "")
                .sub(/.*internal\/app/, "app")
 
     end

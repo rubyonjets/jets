@@ -110,7 +110,7 @@ class Jets::Application
   def parse_project_name
     return ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME'] # override
 
-    lines = IO.readlines("#{Jets.root}config/application.rb")
+    lines = IO.readlines("#{Jets.root}/config/application.rb")
     project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ }
     project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') # project_name
   end
@@ -126,7 +126,7 @@ class Jets::Application
   end
 
   def eval_app_config
-    app_config = "#{Jets.root}config/application.rb"
+    app_config = "#{Jets.root}/config/application.rb"
     load app_config # use load instead of require so reload_configs! works
   end
 
@@ -138,7 +138,7 @@ class Jets::Application
   end
 
   def load_environments_config
-    env_file = "#{Jets.root}config/environments/#{Jets.env}.rb"
+    env_file = "#{Jets.root}/config/environments/#{Jets.env}.rb"
     if File.exist?(env_file)
       code = IO.read(env_file)
       instance_eval(code)
@@ -179,7 +179,7 @@ class Jets::Application
   #   app/shared/resources
   def default_autoload_paths
     paths = []
-    Dir.glob("#{Jets.root}app/*").each do |p|
+    Dir.glob("#{Jets.root}/app/*").each do |p|
       p.sub!('./','')
       paths << p unless exclude_autoload_path?(p)
     end
@@ -277,7 +277,7 @@ class Jets::Application
     config.database = {}
 
     Jets::Dotenv.load!
-    database_yml = "#{Jets.root}config/database.yml"
+    database_yml = "#{Jets.root}/config/database.yml"
     if File.exist?(database_yml)
       text = Jets::Erb.result(database_yml)
       db_config = YAML.load(text)
@@ -295,7 +295,7 @@ class Jets::Application
   end
 
   def load_routes
-    routes_file = "#{Jets.root}config/routes.rb"
+    routes_file = "#{Jets.root}/config/routes.rb"
     require routes_file if File.exist?(routes_file)
   end
 

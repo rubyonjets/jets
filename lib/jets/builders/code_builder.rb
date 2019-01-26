@@ -181,7 +181,7 @@ class Jets::Builders
       return unless webpacker_included?
 
       sh("yarn install")
-      webpack_command = File.exist?("#{Jets.root}bin/webpack") ?
+      webpack_command = File.exist?("#{Jets.root}/bin/webpack") ?
           "bin/webpack" :
           `which webpack`.strip
       sh "JETS_ENV=#{Jets.env} #{webpack_command}"
@@ -195,7 +195,7 @@ class Jets::Builders
 
       # Checking this way because when using jets standalone for Afterburner mode we don't want to run into
       # bundler gem collisions.  TODO: figure out the a better way to handle the collisions.
-      lines = IO.readlines("#{Jets.root}Gemfile")
+      lines = IO.readlines("#{Jets.root}/Gemfile")
       lines.detect { |l| l =~ /webpacker/ }
     end
 
@@ -233,7 +233,7 @@ class Jets::Builders
     # Rudimentary rails detection
     # Duplicated in builders/reconfigure_rails.rb
     def rails?
-      config_ru = "#{Jets.root}rack/config.ru"
+      config_ru = "#{Jets.root}/rack/config.ru"
       return false unless File.exist?(config_ru)
       !IO.readlines(config_ru).grep(/Rails.application/).empty?
     end
@@ -243,7 +243,7 @@ class Jets::Builders
     # Another way of checking is loading a rails console and checking Rails.application.config.api_only
     # Using this way for simplicity.
     def rails_api?
-      config_app = "#{Jets.root}rack/config/application.rb"
+      config_app = "#{Jets.root}/rack/config/application.rb"
       return false unless File.exist?(config_app)
       !IO.readlines(config_app).grep(/config.api_only.*=.*true/).empty?
     end

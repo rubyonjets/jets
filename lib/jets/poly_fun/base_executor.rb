@@ -41,7 +41,7 @@ class Jets::PolyFun
       internal = app_class.respond_to?(:internal) && app_class.internal
       src = internal ?
         "#{File.expand_path("../internal", File.dirname(__FILE__))}/#{@task.poly_src_path}" :
-        "#{Jets.root}#{@task.poly_src_path}"
+        "#{Jets.root}/#{@task.poly_src_path}"
       dest = "#{@temp_dir}/#{@task.poly_src_path}"
 
       FileUtils.mkdir_p(File.dirname(dest))

@@ -24,7 +24,7 @@ module Jets
 
       # User defined custom inflections
       def custom
-        path = "#{Jets.root}config/inflections.yml"
+        path = "#{Jets.root}/config/inflections.yml"
         File.exist?(path) ? YAML.load_file(path) : {}
       end
     end

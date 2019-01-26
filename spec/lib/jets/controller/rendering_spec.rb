@@ -32,7 +32,7 @@ describe Jets::Controller::Base do
     end
 
     it "render file" do
-      status, headers, body = controller.render(file: "#{Jets.root}public/assets/a.txt")
+      status, headers, body = controller.render(file: "#{Jets.root}/public/assets/a.txt")
       expect(body).to respond_to(:each)
     end
 

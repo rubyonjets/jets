@@ -18,7 +18,7 @@ class Jets::PolyFun
 
     # https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-handler.html
     def async_syntax?
-      app_path = Jets.root + @task.handler_path.sub('handlers/', 'app/')
+      app_path = "#{Jets.root}/" + @task.handler_path.sub('handlers/', 'app/')
       source_code = IO.read(app_path)
       source_code.match(/=\s*async.*\(/)
     end

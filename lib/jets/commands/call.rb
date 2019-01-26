@@ -115,7 +115,7 @@ class Jets::Commands::Call
 
   def load_event_from_file(text)
     path = text.gsub('file://','')
-    path = "#{Jets.root}#{path}" unless path[0..0] == '/'
+    path = "#{Jets.root}/#{path}" unless path[0..0] == '/'
     unless File.exist?(path)
       puts "File #{path} does not exist.  Are you sure the file exists?".color(:red)
       exit

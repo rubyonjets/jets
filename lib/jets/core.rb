@@ -18,14 +18,10 @@ module Jets::Core
     Jets::Booter.boot!(options)
   end
 
-  # Ensures trailing slash
-  # Useful for appending a './' in front of a path or leaving it alone.
-  # Returns: '/path/with/trailing/slash/' or './'
   def root
     # Do not memoize this method. Turbo mode can change it
     root = ENV['JETS_ROOT'].to_s
-    root = '.' if root == ''
-    root = "#{root}/" unless root.ends_with?('/')
+    root = Dir.pwd if root == ''
     Pathname.new(root)
   end
 
@@ -110,14 +106,14 @@ module Jets::Core
 
   # Eager load user's application
   def eager_load_app
-    Dir.glob("#{Jets.root}app/**/*.rb").select do |path|
+    Dir.glob("#{Jets.root}/app/**/*.rb").select do |path|
       next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
       next if path.include?('app/functions') || path.include?('app/shared/functions') || path.include?('app/internal/functions')
 
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
                     .sub(%{^\./},'') # remove ./
-                    .sub(Jets.root.to_s,'')
+                    .sub("#{Jets.root}/",'')
                     .sub(%r{app/shared/\w+/},'') # remove shared/resources or shared/extensions
                     .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
       class_name = class_name.classify
@@ -150,7 +146,7 @@ module Jets::Core
   end
 
   def rack?
-    path = "#{Jets.root}rack"
+    path = "#{Jets.root}/rack"
     File.exist?(path) || File.symlink?(path)
   end
 

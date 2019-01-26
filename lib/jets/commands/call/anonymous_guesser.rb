@@ -2,7 +2,7 @@ class Jets::Commands::Call
   class AnonymousGuesser < BaseGuesser
     def detect_class_name
       found_path = function_paths.find do |path|
-        File.exist?("#{Jets.root}#{path}")
+        File.exist?("#{Jets.root}/#{path}")
       end
 
       klass = Jets::Klass.from_path(found_path) if found_path

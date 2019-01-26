@@ -84,7 +84,7 @@ class Jets::Commands::Import
     end
 
     def rack_folder
-      "#{Jets.root}rack"
+      "#{Jets.root}/rack"
     end
   end
 end

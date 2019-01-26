@@ -70,7 +70,7 @@ class Jets::Cfn
     end
 
     def upload_asset_folder(folder)
-      expression = "#{Jets.root}#{folder}/**/*"
+      expression = "#{Jets.root}/#{folder}/**/*"
       group_size = 10
       Dir.glob(expression).each_slice(group_size) do |paths|
         threads = []
@@ -95,7 +95,7 @@ class Jets::Cfn
     end
 
     def s3_key(full_path)
-      relative_path = full_path.sub(Jets.root.to_s, '')
+      relative_path = full_path.sub("#{Jets.root}/", '')
       "jets/#{relative_path}"
     end
 

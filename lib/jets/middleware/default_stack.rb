@@ -27,7 +27,7 @@ module Jets::Middleware
       # Different check for middleware because we need webpacker helpers for url helpers.
       # But we dont want to actually serve via webpacker middleware when running on AWS.
       # By this time the url helpers are serving assets out of s3.
-      return if File.exist?("#{Jets.root}config/disable-webpacker-middleware.txt") # created as part of `jets deploy`
+      return if File.exist?("#{Jets.root}/config/disable-webpacker-middleware.txt") # created as part of `jets deploy`
       require "jets/controller/middleware/webpacker_setup"
       middleware.use Webpacker::DevServerProxy
     end

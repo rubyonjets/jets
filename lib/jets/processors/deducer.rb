@@ -21,7 +21,7 @@ class Jets::Processors::Deducer
   # Input: @handler_path: handlers/jobs/hard_job.rb
   # Output: #{Jets.root/app/jobs/hard_job.rb
   def path
-    Jets.root.to_s + @handler_path.sub("handlers", "app") + ".rb"
+    @handler_path.sub("handlers", "app") + ".rb"
   end
 
   # process_type is key. It can be either "controller" or "job". It is used to

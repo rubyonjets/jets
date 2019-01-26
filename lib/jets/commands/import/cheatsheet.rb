@@ -11,7 +11,7 @@ class Jets::Commands::Import
     def create
       path = File.expand_path("./templates/", File.dirname(__FILE__)) + "/submodules-cheatsheet.md"
       basename = File.basename(path)
-      dest = "#{Jets.root}#{basename}"
+      dest = "#{Jets.root}/#{basename}"
       cheatsheet = Jets::Erb.result(path, cheatsheet_vars)
       FileUtils.mkdir_p(File.dirname(dest))
       IO.write(dest, cheatsheet)

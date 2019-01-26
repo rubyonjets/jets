@@ -109,12 +109,12 @@ module Jets::Commands
     # TODO: rework code so that Dir.pwd does not have to be in tmp_code for build to work.
     def self.app_files
       paths = []
-      expression = "#{Jets.root}app/**/**/*.rb"
+      expression = "#{Jets.root}/app/**/**/*.rb"
       Dir.glob(expression).each do |path|
         return false unless File.file?(path)
         next unless app_file?(path)
 
-        relative_path = path.sub(Jets.root.to_s, '')
+        relative_path = path.sub("#{Jets.root}/", '')
         # Rids of the Jets.root at beginning
         paths << relative_path
       end
@@ -128,12 +128,12 @@ module Jets::Commands
 
     def self.shared_files
       paths = []
-      expression = "#{Jets.root}app/**/**/*.rb"
+      expression = "#{Jets.root}/app/**/**/*.rb"
       Dir.glob(expression).each do |path|
         return false unless File.file?(path)
         next unless path.include?("app/shared/resources")
 
-        relative_path = path.sub(Jets.root.to_s, '')
+        relative_path = path.sub("#{Jets.root}/", '')
         # Rids of the Jets.root at beginning
         paths << relative_path
       end

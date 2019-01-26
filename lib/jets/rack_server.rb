@@ -74,7 +74,7 @@ module Jets
     end
 
     def rack_project
-      "#{Jets.root}rack"
+      "#{Jets.root}/rack"
     end
   end
 end

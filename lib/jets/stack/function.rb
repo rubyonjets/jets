@@ -40,7 +40,7 @@ class Jets::Stack
       attributes = @template.values.first
       handler = attributes['Properties']['Handler']
       search_expression = handler.split('.')[0..-2].join('.') + '.*'
-      search_expression.sub('handlers/shared/', "#{Jets.root}app/shared/")
+      search_expression.sub('handlers/shared/', "#{Jets.root}/app/shared/")
     end
 
     # Relative path
