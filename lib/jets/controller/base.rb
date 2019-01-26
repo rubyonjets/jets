@@ -90,5 +90,14 @@ class Jets::Controller
         self.internal_controller
       end
     end
+
+    class_attribute :auth_type
+    def self.authorization_type(value=nil)
+      if !value.nil?
+        self.auth_type = value
+      else
+        self.auth_type
+      end
+    end
   end
 end

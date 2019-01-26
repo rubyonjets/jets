@@ -65,8 +65,17 @@ module Jets::Resource::ApiGateway
   private
 
     def authorization_type
-      type = @route.authorization_type || Jets.config.api.authorization_type
-      type.upcase
+      type = @route.authorization_type ||
+             controller_auth_type ||
+             Jets.config.api.authorization_type
+      type.to_s.upcase
+    end
+
+    def controller_auth_type
+      controller_name = @route.to.split('#').first
+      controller = "#{controller_name}_controller".classify.constantize
+      # Already handles inheritance via class_attribute
+      controller.authorization_type
     end
 
     def resource_id
