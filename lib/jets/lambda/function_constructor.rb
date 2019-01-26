@@ -29,12 +29,7 @@
 module Jets::Lambda
   class FunctionConstructor
     def initialize(code_path)
-      @code_path = full(code_path)
-    end
-
-    def full(path)
-      path = "#{Jets.root}/#{path}" unless path.include?(Jets.root.to_s)
-      path
+      @code_path = "#{Jets.root}/#{code_path}"
     end
 
     def build
@@ -48,7 +43,7 @@ module Jets::Lambda
     # For anonymous classes method_added during task registration contains ""
     # for the class name.  We adjust it here.
     def adjust_tasks(klass)
-      class_name = @code_path.sub(/.*\/functions\//,'').sub(/\.rb$/, '')
+      class_name = @code_path.to_s.sub(/.*\/functions\//,'').sub(/\.rb$/, '')
       class_name = class_name.classify
       klass.tasks.each do |task|
         task.class_name = class_name
