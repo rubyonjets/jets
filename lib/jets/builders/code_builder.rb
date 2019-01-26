@@ -227,7 +227,7 @@ class Jets::Builders
       # rake is available in both rails 4 and 5. rails command only in 5
       command = "bundle exec rake assets:#{cmd} --trace"
       command = "RAILS_ENV=#{Jets.env} #{command}" unless Jets.env.development?
-      sh("cd #{jets_root}rack && #{command}")
+      sh("cd #{jets_root}/rack && #{command}")
     end
 
     # Rudimentary rails detection
