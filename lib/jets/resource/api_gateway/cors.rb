@@ -15,10 +15,10 @@ module Jets::Resource::ApiGateway
             method_responses: [{
               status_code: '200',
               response_parameters: {
-                "method.response.header.Access-Control-AllowOrigin": true,
-                "method.response.header.Access-Control-AllowHeaders": true,
-                "method.response.header.Access-Control-AllowMethods": true,
-                "method.response.header.Access-Control-AllowCredentials": true,
+                "method.response.header.Access-Control-Allow-Origin": true,
+                "method.response.header.Access-Control-Allow-Headers": true,
+                "method.response.header.Access-Control-Allow-Methods": true,
+                "method.response.header.Access-Control-Allow-Credentials": true,
               },
               response_models: {},
             }],
@@ -31,10 +31,10 @@ module Jets::Resource::ApiGateway
               integration_responses: [{
                 status_code: '200',
                 response_parameters: {
-                  "method.response.header.Access-Control-AllowOrigin": "'#{allow_origin}'",
-                  "method.response.header.Access-Control-AllowHeaders": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                  "method.response.header.Access-Control-AllowMethods": "'OPTIONS,GET'",
-                  "method.response.header.Access-Control-AllowCredentials": "'false'",
+                  "method.response.header.Access-Control-Allow-Origin": "'#{allow_origin}'",
+                  "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                  "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'",
+                  "method.response.header.Access-Control-Allow-Credentials": "'false'",
                 },
                 response_templates: {
                   "application/json": '',
