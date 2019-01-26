@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.2]
+- #165 remove always trailing slash from Jets.root
+- #166 fix cors headers
+- #167 controller authorization_type declaration
+
 ## [1.6.1]
 - #162 from patchkit-net/feature/spec_helpers
 - #163 from tongueroo/spec-helpers
