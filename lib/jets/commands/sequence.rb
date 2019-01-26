@@ -37,7 +37,8 @@ private
   end
 
   def copy_options
-    excludes = if @options[:mode] == 'job'
+    excludes = case @options[:mode]
+    when 'job'
       # For job mode: list of words to include in the exclude pattern and will not be generated.
       %w[
         Procfile
@@ -55,16 +56,22 @@ private
         yarn
         public
       ]
-    elsif !@database
+    when 'api'
+      %w[
+        views
+      ]
+    else # html
+      []
+    end
+
+    unless @database
       # Do not even generated the config/database.yml because
       # jets webpacker:install bombs and tries to load the db since it sees a
       # config/database.yml but has there's no database pg gem configured.
-      %w[
+      excludes += %w[
         database.yml
         models/application_record
       ]
-    else
-      []
     end
 
     if excludes.empty?
