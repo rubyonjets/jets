@@ -5,6 +5,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 
 ## [1.6.3]
 - #168 cors specific authorization_type, default none
+- cors defaults to false. enabled with config.cors = true in config/application.rb
 
 ## [1.6.2]
 - #165 remove always trailing slash from Jets.root
