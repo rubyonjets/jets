@@ -78,7 +78,7 @@ module Jets
 
           class_name = path
                         .sub(/\.rb$/,'') # remove .rb
-                        .sub(Jets.root.to_s,'') # remove ./
+                        .sub("#{Jets.root}/",'') # remove ./
                         .sub(%r{app/shared/resources/},'') # remove app/shared/resources/
                         .classify
           class_name.constantize # use constantize instead of require so dont have to worry about order.

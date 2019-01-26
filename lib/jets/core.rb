@@ -113,7 +113,7 @@ module Jets::Core
       class_name = path
                     .sub(/\.rb$/,'') # remove .rb
                     .sub(%{^\./},'') # remove ./
-                    .sub(Jets.root.to_s,'')
+                    .sub("#{Jets.root}/",'')
                     .sub(%r{app/shared/\w+/},'') # remove shared/resources or shared/extensions
                     .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
       class_name = class_name.classify

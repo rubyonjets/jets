@@ -114,7 +114,7 @@ module Jets::Commands
         return false unless File.file?(path)
         next unless app_file?(path)
 
-        relative_path = path.sub(Jets.root.to_s, '')
+        relative_path = path.sub("#{Jets.root}/", '')
         # Rids of the Jets.root at beginning
         paths << relative_path
       end
@@ -133,7 +133,7 @@ module Jets::Commands
         return false unless File.file?(path)
         next unless path.include?("app/shared/resources")
 
-        relative_path = path.sub(Jets.root.to_s, '')
+        relative_path = path.sub("#{Jets.root}/", '')
         # Rids of the Jets.root at beginning
         paths << relative_path
       end

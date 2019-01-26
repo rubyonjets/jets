@@ -95,7 +95,7 @@ class Jets::Cfn
     end
 
     def s3_key(full_path)
-      relative_path = full_path.sub(Jets.root.to_s, '')
+      relative_path = full_path.sub("#{Jets.root}/", '')
       "jets/#{relative_path}"
     end
 
