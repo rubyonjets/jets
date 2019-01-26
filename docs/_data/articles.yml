@@ -6,13 +6,17 @@
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_800/https://blog.boltops.com/img/posts/2018/08/introducing-jets-v5.png
   title: "Introducing Jets: A Ruby Serverless Framework"
 
+- url: https://blog.boltops.com/2019/01/13/build-an-api-service-with-jets-ruby-serverless-framework
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_590/https://blog.boltops.com/img/posts/2019/01/build-an-api-v2.png
+  title: "Build an API with Jets"
+
+- url: https://blog.boltops.com/2019/01/14/serverless-slack-commands-with-ruby
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_586/https://blog.boltops.com/img/posts/2019/01/slack-command-title-image-v6.png
+  title: "Serverless Slack Commands: Fun with AWS Image Recognition"
+
 - url: https://blog.boltops.com/2018/12/21/jets-afterburner-serverless-rails-on-aws-lambda-in-5-minutes
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_470/https://blog.boltops.com/img/posts/2018/12/jets-afterburner-v1.png
   title: "Rails Support: Jets Afterburner"
-
-- url: https://blog.boltops.com/2019/01/03/serverless-ruby-cron-jobs-with-jets-route53-backup
-  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_547/https://blog.boltops.com/img/posts/2019/01/severless-ruby-cron-v1.png
-  title: "Cron Jobs Tutorial: Route53 Backup"
 
 - url: https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_490/https://blog.boltops.com/img/posts/2018/12/image-upload-tutorial-v1.png
