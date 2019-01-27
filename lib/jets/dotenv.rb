@@ -14,12 +14,13 @@ class Jets::Dotenv
     ::Dotenv.load(*dotenv_files)
   end
 
-  # dotenv files will load the following files, starting from the bottom. The first value set (or those already defined in the environment) take precedence:
-
-  # - `.env` - The Original®
-  # - `.env.development`, `.env.test`, `.env.production` - Environment-specific settings.
-  # - `.env.local` - Local overrides. This file is loaded for all environments _except_ `test`.
-  # - `.env.development.local`, `.env.test.local`, `.env.production.local` - Local overrides of environment-specific settings.
+  # dotenv files with the following precedence:
+  #
+  # - .env.development.remote (highest)
+  # - .env.development.local
+  # - .env.development
+  # - .env.local - This file is loaded for all environments _except_ `test`.
+  # - .env` - The original (lowest)
   #
   def dotenv_files
     files = [
@@ -29,7 +30,7 @@ class Jets::Dotenv
       root.join(".env.#{Jets.env}.local"),
     ]
     files << root.join(".env.#{Jets.env}.remote") if @remote
-    files.compact
+    files.reverse.compact # reverse so the precedence is right
   end
 
   def root
