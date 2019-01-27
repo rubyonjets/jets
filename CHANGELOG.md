@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.4]
+- #171 fix precedence of dotenv files
+- update cors comment on generated skeleton app
+
 ## [1.6.3]
 - #168 cors specific authorization_type, default none
 - cors defaults to false. enabled with config.cors = true in config/application.rb
