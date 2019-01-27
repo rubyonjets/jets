@@ -29,7 +29,7 @@ Provide a description of what your pull request changes.
 ## Context
 
 <!--
-Is this related to any GitHub issue(s)?
+Is this related to any GitHub issue(s) or another relevant link?
 -->
 
 ## Version Changes
