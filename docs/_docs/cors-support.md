@@ -26,7 +26,7 @@ The example above adds a response header with `Access-Control-Allow-Origin='*.my
 
 ## Authorization Type
 
-By default, OPTIONS requests will have an `authorization_type = "NONE"`. This allows libraries and frameworks like AWS Amplify to use this HTTP endpoint to create, sign, and authorize the sigv4 signature. For some reason if you want to specify authorization_type for the OPTIONS request, you can do this:
+By default, OPTIONS requests will have an `authorization_type = "NONE"`. This allows libraries and frameworks like AWS Amplify to use this HTTP endpoint to send an unsigned preflight request. For some reason if you want to specify authorization_type for the OPTIONS request, you can do this:
 
 ```ruby
 Jets.application.configure do
