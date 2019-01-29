@@ -30,9 +30,9 @@ class Jets::Util
     def sh(command, quiet: false)
       puts "=> #{command}" unless quiet
       system(command)
-      unless $?.success?
-        raise Jets::Error.new("Command failed: #{command}")
-      end
+      success = $?.success?
+      raise Jets::Error.new("Command failed: #{command}") unless success
+      success
     end
   end
 end
