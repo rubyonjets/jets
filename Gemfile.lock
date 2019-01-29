@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.6.5)
+    jets (1.6.6)
       activerecord (~> 5.2.1)
       activesupport (~> 5.2.1)
       aws-sdk-apigateway

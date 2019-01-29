@@ -3,9 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
-## [UNRELEASED]
-- Fix invalid route changes reading routine when route contains more than one variable in path
-- Fix invalid lambda function names for controllers in deep namespaces like A::B::MyController
+## [1.6.6]
+- #175 Fix invalid route changes reading routine when route contains more than one variable in path
+- #175 Fix invalid lambda function names for controllers in deep namespaces like A::B::MyController
+- #176 fix cors for specific domains
+- #177 check if rsync is installed. also stop on sh fail
+- #178 strip trailing period from custom domain if accidentally set
 
 ## [1.6.5]
 - #173 application/xml content-type on render xml
