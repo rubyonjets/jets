@@ -193,6 +193,11 @@ module Jets::Controller::Rendering
           "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
           "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
         }
+      when String
+        {
+          "Access-Control-Allow-Origin" => Jets.config.cors, # contains Hash with Access-Control-Allow-* values
+          "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
+        }
       when Hash
         Jets.config.cors # contains Hash with Access-Control-Allow-* values
       else
