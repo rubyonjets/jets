@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [UNRELEASED]
+- Fix invalid route changes reading routine when route contains more than one variable in path
+
 ## [1.6.5]
 - #173 application/xml content-type on render xml
 
