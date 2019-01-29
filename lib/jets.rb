@@ -13,6 +13,7 @@ require "rainbow/ext/string"
 
 module Jets
   RUBY_VERSION = "2.5.3"
+  class Error < StandardError; end
 
   autoload :Application, "jets/application"
   autoload :AwsInfo, "jets/aws_info"
