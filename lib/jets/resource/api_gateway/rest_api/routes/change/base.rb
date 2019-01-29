@@ -43,8 +43,8 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
 
     def recreate_path(path)
       path = path.gsub(%r{^/},'')
-      path = path.sub(/{(.*)\+}/, '*\1')
-      path.sub(/{(.*)}/, ':\1')
+      path = path.gsub(/{([^}]*)\+}/, '*\1')
+      path.gsub(/{([^}]*)}/, ':\1')
     end
 
     def to(resource_id, http_method)

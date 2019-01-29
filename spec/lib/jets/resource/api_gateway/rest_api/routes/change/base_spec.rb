@@ -6,6 +6,9 @@ describe Jets::Resource::ApiGateway::RestApi::Routes::Change::Base do
   it "recreate_path" do
     path = base.recreate_path('/posts/{id}/edit')
     expect(path).to eq 'posts/:id/edit'
+
+    path = base.recreate_path('/posts/{id}/edit/{another_id}')
+    expect(path).to eq 'posts/:id/edit/:another_id'
   end
 
   it "recreate_to controller_action_from_string" do
