@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.6.4)
+    jets (1.6.5)
       activerecord (~> 5.2.1)
       activesupport (~> 5.2.1)
       aws-sdk-apigateway
@@ -187,4 +187,4 @@ DEPENDENCIES
   webpacker!
 
 BUNDLED WITH
-   1.17.2
+   1.17.3

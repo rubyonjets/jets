@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.5]
+- #173 application/xml content-type on render xml
+
 ## [1.6.4]
 - #171 fix precedence of dotenv files
 - update cors comment on generated skeleton app
