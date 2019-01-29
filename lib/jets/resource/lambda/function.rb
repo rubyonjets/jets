@@ -196,7 +196,7 @@ module Jets::Resource::Lambda
       #   method: admin/pages_controller
       #   method: admin-pages_controller-index
       method = @app_class.underscore
-      method = method.sub('/','-').gsub(/[^0-9a-z\-_]/i, '') + "-#{@task.meth}"
+      method = method.gsub('/','-').gsub(/[^0-9a-z\-_]/i, '') + "-#{@task.meth}"
       function_name = "#{Jets.config.project_namespace}-#{method}"
       # Returns nil if function name is too long.
       # CloudFormation will managed the the function name in this case.

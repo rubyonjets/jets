@@ -5,6 +5,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 
 ## [UNRELEASED]
 - Fix invalid route changes reading routine when route contains more than one variable in path
+- Fix invalid lambda function names for controllers in deep namespaces like A::B::MyController
 
 ## [1.6.5]
 - #173 application/xml content-type on render xml

@@ -30,6 +30,30 @@ describe Jets::Resource::Lambda::Function do
     end
   end
 
+  context "deeply namespaced controller" do
+    module Deep
+      module Namespace
+        class TestController < Jets::Controller::Base
+          def index; end
+        end
+      end
+    end
+
+    let(:task) do
+      Deep::Namespace::TestController.all_public_tasks[:index]
+    end
+
+    it "contains info for CloudFormation Controller Function Resources" do
+      expect(resource.logical_id).to eq "IndexLambdaFunction"
+      properties = resource.properties
+      # puts YAML.dump(properties) # uncomment to debug
+      expect(properties["FunctionName"]).to eq "demo-test-deep-namespace-test_controller-index"
+      expect(properties["Description"]).to eq "Deep::Namespace::TestController#index"
+      expect(properties["Handler"]).to eq "handlers/controllers/deep/namespace/test_controller.index"
+      expect(properties["Code"]["S3Key"]).to include("jets/code")
+    end
+  end
+
   context("job") do
     let(:task) do
       HardJob.all_public_tasks[:dig]
