@@ -41,7 +41,7 @@ describe Jets::Controller::Base do
     # help document out important elements.
     it "expects AWS_PROXY request format" do
       event = controller.event
-      # Example of AWS_PROXY compatiable request format
+      # Example of AWS_PROXY compatible request format
       # {
       #   "statusCode": 200,
       #   "body": "must be a string, even if it is json, it should be a string"
