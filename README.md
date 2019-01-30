@@ -53,7 +53,7 @@ app/controllers/posts_controller.rb:
 ```ruby
 class PostsController < ApplicationController
   def index
-    # renders Lambda Proxy structure compatiable with API Gateway
+    # renders Lambda Proxy structure compatible with API Gateway
     render json: {hello: "world", action: "index"}
   end
 
