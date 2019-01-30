@@ -21,7 +21,7 @@ Thanks!
 ## Checklist
 
 <!--
-Make sure that you've done all of these.  To mark a checkbox done, replace [ ] with [x].
+Make sure that you've done all of these.  To mark a checkbox done, replace [ ] with [x]. Or after you create the issue you can click the checkbox.
 -->
 
 - [ ] Upgrade Jets: Are you using the latest version of Jets? This allows Jets to fix issues fast. There's a `jets upgrade` command that makes this a simple task. There's also an Upgrading Guide: http://rubyonjets.com/docs/upgrading/
