@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
 
   # spec.add_dependency "actionpack", "~> 5.2.1" # using vendor/rails version
   # spec.add_dependency "actionview", "~> 5.2.1" # using vendor/rails version
+  spec.add_dependency "actionmailer", "~> 5.2.1"
   spec.add_dependency "activerecord", "~> 5.2.1"
   spec.add_dependency "activesupport", "~> 5.2.1"
   spec.add_dependency "aws-sdk-apigateway"

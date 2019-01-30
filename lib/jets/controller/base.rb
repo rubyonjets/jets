@@ -56,8 +56,7 @@ class Jets::Controller
     def log_info_start
       display_event = @event.dup
       display_event['body'] = '[BASE64_ENCODED]' if @event['isBase64Encoded']
-      # Interesting, JSON.dump makes logging look like JSON.pretty_generate in
-      # CloudWatch but not locally. This is what we want.
+      # JSON.dump makes logging look pretty in CloudWatch logs because it keeps it on 1 line
       ip = request.ip
       Jets.logger.info "Started #{@event['httpMethod']} \"#{@event['path']}\" for #{ip} at #{Time.now}"
       Jets.logger.info "Processing #{self.class.name}##{@meth}"

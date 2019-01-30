@@ -30,6 +30,7 @@ module Jets::Controller::Rendering
       if drop_content_info?(status)
         body = StringIO.new
       else
+
         renderer = ActionController::Base.renderer.new(renderer_options)
         body = renderer.render(render_options)
         body = StringIO.new(body)
@@ -191,7 +192,7 @@ module Jets::Controller::Rendering
         require "jets/overrides/rails"
 
         # Load helpers
-        # Assign local variable because scoe in the `:action_view do` changes
+        # Assign local variable because scope in the `:action_view do` block changes
         app_helper_classes = find_app_helper_classes
         ActiveSupport.on_load :action_view do
           include ApplicationHelper # include first
@@ -207,11 +208,18 @@ module Jets::Controller::Rendering
 
       # Does not include ApplicationHelper, will include ApplicationHelper explicitly first.
       def find_app_helper_classes
+        internal_path = File.expand_path("../../internal", File.dirname(__FILE__))
+        internal_classes = find_app_helper_classes_from(internal_path)
+        app_classes = find_app_helper_classes_from(Jets.root)
+        (internal_classes + app_classes).uniq
+      end
+
+      def find_app_helper_classes_from(project_root)
         klasses = []
-        expression = "#{Jets.root}/app/helpers/**/*"
+        expression = "#{project_root}/app/helpers/**/*"
         Dir.glob(expression).each do |path|
           next unless File.file?(path)
-          class_name = path.sub("#{Jets.root}/app/helpers/","").sub(/\.rb/,'')
+          class_name = path.sub("#{project_root}/app/helpers/","").sub(/\.rb/,'')
           unless class_name == "application_helper"
             klasses << class_name.classify.constantize # autoload
           end

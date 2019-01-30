@@ -55,72 +55,6 @@ module Jets::Core
     Jets::VERSION
   end
 
-  def eager_load!
-    eager_load_jets
-    eager_load_app
-  end
-
-  # Eager load jet's lib and classes
-  def eager_load_jets
-    lib_jets = File.expand_path(".", File.dirname(__FILE__))
-    Dir.glob("#{lib_jets}/**/*.rb").select do |path|
-      next if !File.file?(path)
-      next if skip_eager_load_paths?(path)
-
-      path = path.sub("#{lib_jets}/","jets/")
-      class_name = path
-                    .sub(/\.rb$/,'') # remove .rb
-                    .sub(/^\.\//,'') # remove ./
-                    .sub(/app\/\w+\//,'') # remove app/controllers or app/jobs etc
-                    .camelize
-      # special class mappings
-      class_name = class_mappings(class_name)
-      class_name.constantize # use constantize instead of require so dont have to worry about order.
-    end
-  end
-
-  # Skip these paths because eager loading doesnt work for them.
-  def skip_eager_load_paths?(path)
-    path =~ %r{/cli} ||
-    path =~ %r{/core_ext} ||
-    path =~ %r{/default/application} ||
-    path =~ %r{/functions} ||
-    path =~ %r{/internal/app} ||
-    path =~ %r{/jets/stack} ||
-    path =~ %r{/overrides} ||
-    path =~ %r{/rackup_wrappers} ||
-    path =~ %r{/reconfigure_rails} ||
-    path =~ %r{/templates/} ||
-    path =~ %r{/turbo/project/} ||
-    path =~ %r{/version} ||
-    path =~ %r{/webpacker} ||
-    path =~ %r{/jets/spec}
-  end
-
-  def class_mappings(class_name)
-    map = {
-      "Jets::Io" => "Jets::IO",
-    }
-    map[class_name] || class_name
-  end
-
-  # Eager load user's application
-  def eager_load_app
-    Dir.glob("#{Jets.root}/app/**/*.rb").select do |path|
-      next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
-      next if path.include?('app/functions') || path.include?('app/shared/functions') || path.include?('app/internal/functions')
-
-      class_name = path
-                    .sub(/\.rb$/,'') # remove .rb
-                    .sub(%{^\./},'') # remove ./
-                    .sub("#{Jets.root}/",'')
-                    .sub(%r{app/shared/\w+/},'') # remove shared/resources or shared/extensions
-                    .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
-      class_name = class_name.classify
-      class_name.constantize # use constantize instead of require so dont have to worry about order.
-    end
-  end
-
   # NOTE: In development this will always be 1 because the app gets reloaded.
   # On AWS Lambda, this will be ever increasing until the container gets replaced.
   @@call_count = 0
@@ -161,12 +95,7 @@ module Jets::Core
   end
 
   def on_exception(exception)
-    Jets::Turbine.subclasses.each do |subclass|
-      reporters = subclass.on_exceptions || []
-      reporters.each do |label, block|
-        block.call(exception)
-      end
-    end
+    Jets::Booter.run_turbines(:on_exceptions)
   end
 
   def custom_domain?

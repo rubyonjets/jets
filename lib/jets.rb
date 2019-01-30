@@ -36,6 +36,7 @@ module Jets
   autoload :Klass, 'jets/klass'
   autoload :Lambda, 'jets/lambda'
   autoload :Logger, "jets/logger"
+  autoload :Mailer, "jets/mailer"
   autoload :Mega, "jets/mega"
   autoload :Middleware, "jets/middleware"
   autoload :Naming, 'jets/naming'

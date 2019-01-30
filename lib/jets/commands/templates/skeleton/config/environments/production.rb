@@ -1,4 +1,9 @@
 Jets.application.configure do
   # Example:
   # config.function.memory_size = 2048
+
+  # Ignore bad email addresses and do not raise email delivery errors.
+  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  # config.action_mailer.raise_delivery_errors = false
+  # Docs: http://rubyonjets.com/docs/email-sending/
 end

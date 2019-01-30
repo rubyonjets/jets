@@ -11,7 +11,8 @@ GIT
 PATH
   remote: /home/ec2-user/environment/jets
   specs:
-    jets (1.6.9)
+    jets (1.7.2)
+      actionmailer (~> 5.2.1)
       activerecord (~> 5.2.1)
       activesupport (~> 5.2.1)
       aws-sdk-apigateway
@@ -40,6 +41,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    actionmailer (5.2.2)
+      actionpack (= 5.2.2)
+      actionview (= 5.2.2)
+      activejob (= 5.2.2)
+      mail (~> 2.5, >= 2.5.4)
+      rails-dom-testing (~> 2.0)
     actionpack (5.2.2)
       actionview (= 5.2.2)
       activesupport (= 5.2.2)
@@ -53,6 +60,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    activejob (5.2.2)
+      activesupport (= 5.2.2)
+      globalid (>= 0.3.6)
     activemodel (5.2.2)
       activesupport (= 5.2.2)
     activerecord (5.2.2)
@@ -113,6 +123,8 @@ GEM
     erubi (1.8.0)
     gems (1.1.1)
       json
+    globalid (0.4.2)
+      activesupport (>= 4.2.0)
     hashie (3.6.0)
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
@@ -124,9 +136,12 @@ GEM
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
     memoist (0.16.0)
     method_source (0.9.2)
     mimemagic (0.3.3)
+    mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     mysql2 (0.5.2)
@@ -186,4 +201,4 @@ DEPENDENCIES
   webpacker!
 
 BUNDLED WITH
-   1.16.3
+   2.0.1
