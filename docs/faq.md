@@ -30,13 +30,13 @@ You can set headers with the `set_header` method in the controller.  Here is an 
 
 You use the env `JETS_AGREE` env variable. Examples:
 
-  export JETS_AGREE=yes
-  jets deploy
+    export JETS_AGREE=yes
+    jets deploy
 
 or
 
-  JETS_AGREE=yes jets deploy
-  JETS_AGREE=no jets deploy
+    JETS_AGREE=yes jets deploy
+    JETS_AGREE=no jets deploy
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/articles.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/lambdagems.md %}">Next Step</a>
