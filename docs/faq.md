@@ -28,12 +28,14 @@ You can set headers with the `set_header` method in the controller.  Here is an 
 
 **Q: How do I skip the prompt for the question "Is it okay to send your gem data to Lambdagems? (Y/n)?" in a script or CI Pipeline?**
 
-You use the env `JETS_AGREE` env variable. Example:
+You use the env `JETS_AGREE` env variable. Examples:
 
-  JETS_AGREE=yes jets deploy
+  export JETS_AGREE=yes
+  jets deploy
 
 or
 
+  JETS_AGREE=yes jets deploy
   JETS_AGREE=no jets deploy
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/articles.md %}">Back</a>
