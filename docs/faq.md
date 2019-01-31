@@ -31,11 +31,13 @@ You can set headers with the `set_header` method in the controller.  Here is an 
 You can place the string `yes` or `no` into the `$HOME/.jets/agree` file.
 
 ```bash
-echo 'yes' > $HOME/.jets/agree
+mkdir $HOME/.jets
+echo 'no' > $HOME/.jets/agree
 ```
 or 
 
 ```bash
+mkdir $HOME/.jets
 echo 'no' > $HOME/.jets/agree
 ```
 
