@@ -32,7 +32,7 @@ You can place the string `yes` or `no` into the `$HOME/.jets/agree` file.
 
 ```bash
 mkdir $HOME/.jets
-echo 'no' > $HOME/.jets/agree
+echo 'yes' > $HOME/.jets/agree
 ```
 or 
 
