@@ -28,18 +28,13 @@ You can set headers with the `set_header` method in the controller.  Here is an 
 
 **Q: How do I skip the prompt for the question "Is it okay to send your gem data to Lambdagems? (Y/n)?" in a script or CI Pipeline?**
 
-You can place the string `yes` or `no` into the `$HOME/.jets/agree` file.
+You use the env `JETS_AGREE` env variable. Example:
 
-```bash
-mkdir $HOME/.jets
-echo 'yes' > $HOME/.jets/agree
-```
-or 
+  JETS_AGREE=yes jets deploy
 
-```bash
-mkdir $HOME/.jets
-echo 'no' > $HOME/.jets/agree
-```
+or
+
+  JETS_AGREE=no jets deploy
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/articles.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/lambdagems.md %}">Next Step</a>
