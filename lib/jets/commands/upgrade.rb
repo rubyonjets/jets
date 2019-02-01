@@ -78,11 +78,13 @@ module Jets::Commands
     end
 
     def update_config_ru
-      config_ru = File.read("#{Jets.root}/config.ru")
+      src = "#{Jets.root}/config.ru"
+      return unless File.exist?(src)
+      config_ru = File.read(src)
       return if config_ru.include?("Jets.boot")
 
       src = File.expand_path("templates/skeleton/config.ru", File.dirname(__FILE__))
-      dest = "#{Jets.root}/config.ru"
+      dest = src
       puts "Update: config.ru"
       FileUtils.cp(src, dest)
     end
