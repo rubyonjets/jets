@@ -22,7 +22,6 @@ module Jets::Controller::Rendering
       base64 = normalized_base64_option(@options)
 
       headers = @options[:headers] || {}
-      headers = cors_headers.merge(headers)
       set_content_type!(status, headers)
       # x-jets-base64 to convert this Rack triplet to a API Gateway hash structure later
       headers["x-jets-base64"] = base64 ? 'yes' : 'no' # headers values must be Strings
@@ -184,25 +183,6 @@ module Jets::Controller::Rendering
       base64 = @options[:base64] if options.key?(:base64)
       base64 = @options[:isBase64Encoded] if options.key?(:isBase64Encoded)
       base64
-    end
-
-    def cors_headers
-      case Jets.config.cors
-      when true
-        {
-          "Access-Control-Allow-Origin" => "*", # Required for CORS support to work
-          "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
-        }
-      when String
-        {
-          "Access-Control-Allow-Origin" => Jets.config.cors, # contains Hash with Access-Control-Allow-* values
-          "Access-Control-Allow-Credentials" => "true" # Required for cookies, authorization headers with HTTPS
-        }
-      when Hash
-        Jets.config.cors # contains Hash with Access-Control-Allow-* values
-      else
-        {}
-      end
     end
 
     class << self
