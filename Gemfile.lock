@@ -11,7 +11,7 @@ GIT
 PATH
   remote: .
   specs:
-    jets (1.6.7)
+    jets (1.6.8)
       activerecord (~> 5.2.1)
       activesupport (~> 5.2.1)
       aws-sdk-apigateway
@@ -120,7 +120,7 @@ GEM
       loofah (~> 2.2, >= 2.2.2)
     jmespath (1.4.0)
     json (2.1.0)
-    kramdown (2.0.0)
+    kramdown (2.1.0)
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
