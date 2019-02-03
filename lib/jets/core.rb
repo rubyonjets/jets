@@ -183,14 +183,6 @@ module Jets::Core
     end
   end
 
-  # Example: Jets.handler(self, "handlers/controllers/posts_controller.index")
-  def handler(lambda_context, handler)
-    meth = handler.split('.').last
-    lambda_context.send(:define_method, meth) do |event:, context:|
-      Jets.process(event, context, handler)
-    end
-  end
-
   def once
     boot
     override_lambda_ruby_runtime
