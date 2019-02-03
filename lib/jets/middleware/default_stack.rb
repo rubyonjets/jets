@@ -8,6 +8,7 @@ module Jets::Middleware
 
     def build_stack
       Stack.new do |middleware|
+        middleware.use Jets::Controller::Middleware::Cors if cors_enabled?
         middleware.use Rack::Runtime
         middleware.use Rack::MethodOverride # must come before Middleware::Local for multipart post forms to work
         middleware.use Jets::Controller::Middleware::Local # mimics AWS Lambda for local server only
@@ -20,6 +21,10 @@ module Jets::Middleware
     end
 
   private
+    def cors_enabled?
+      Jets.config.cors
+    end
+
     # Written as method to easily not include webpacker for case when either
     # webpacker not installed at all or disabled upon `jets deploy`.
     def use_webpacker(middleware)
