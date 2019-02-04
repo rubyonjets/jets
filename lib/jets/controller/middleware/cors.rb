@@ -50,10 +50,11 @@ module Jets::Controller::Middleware
     def preflight_headers
       # FYI: Jets as part of the rack processing normalizes the casing of these headers eventually.
       # IE: Access-Control-Allow-Methods
-      {
-        "access-control-allow-methods" => "OPTIONS,GET",
+      default = {
+        "access-control-allow-methods" => "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
         "access-control-allow-headers" => "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent",
       }
+      Jets.config.cors_preflight || default
     end
   end
 end
