@@ -8,8 +8,8 @@ module Jets::Middleware
 
     def build_stack
       Stack.new do |middleware|
-        middleware.use Jets::Controller::Middleware::Cors if cors_enabled?
         middleware.use Rack::Runtime
+        middleware.use Jets::Controller::Middleware::Cors if cors_enabled?
         middleware.use Rack::MethodOverride # must come before Middleware::Local for multipart post forms to work
         middleware.use Jets::Controller::Middleware::Local # mimics AWS Lambda for local server only
         middleware.use session_store, session_options # use session_store, session_options

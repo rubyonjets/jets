@@ -3,6 +3,8 @@ Jets.application.configure do
   # config.env_extra = 2
   # config.extra_autoload_paths = []
 
+  config.cors = true
+
   config.gems.sources = [
     'https://gems2.lambdagems.com',
     'https://gems.test.lambdagems.com',
