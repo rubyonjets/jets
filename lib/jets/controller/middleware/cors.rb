@@ -22,7 +22,6 @@ module Jets::Controller::Middleware
       [status, headers, body]
     end
 
-  private
     def cors_headers(preflight=false)
       headers = case Jets.config.cors
       when true
@@ -45,6 +44,7 @@ module Jets::Controller::Middleware
       headers
     end
 
+  private
     # Preflight OPTIONS request has extra headers.
     # This is only used locally. Remotely on AWS Lambda, OPTIONS requests are handled by an API Gateway Method.
     def preflight_headers

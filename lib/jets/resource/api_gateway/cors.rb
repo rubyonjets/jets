@@ -14,12 +14,7 @@ module Jets::Resource::ApiGateway
             http_method: "OPTIONS",
             method_responses: [{
               status_code: '200',
-              response_parameters: {
-                "method.response.header.Access-Control-Allow-Origin": true,
-                "method.response.header.Access-Control-Allow-Headers": true,
-                "method.response.header.Access-Control-Allow-Methods": true,
-                "method.response.header.Access-Control-Allow-Credentials": true,
-              },
+              response_parameters: response_parameters(true),
               response_models: {},
             }],
             request_parameters: {},
@@ -30,12 +25,7 @@ module Jets::Resource::ApiGateway
               },
               integration_responses: [{
                 status_code: '200',
-                response_parameters: {
-                  "method.response.header.Access-Control-Allow-Origin": "'#{allow_origin}'",
-                  "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                  "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'",
-                  "method.response.header.Access-Control-Allow-Credentials": "'false'",
-                },
+                response_parameters: response_parameters,
                 response_templates: {
                   "application/json": '',
                 },
@@ -46,20 +36,26 @@ module Jets::Resource::ApiGateway
       } # closes definition
     end
 
+    def response_parameters(method_response=false)
+      cors_headers.map do |k,v|
+        k = "method.response.header.#{k}"
+        v = method_response ? true : "'#{v}'" # surround value with single quotes
+        [k,v]
+      end.to_h
+    end
+
+    # Always the pre-flight headers in this case
+    def cors_headers
+      rack = Jets::Controller::Middleware::Cors.new(Jets.application)
+      rack.cors_headers(true)
+    end
+
     def cors_authorization_type
       Jets.config.api.cors_authorization_type || @route.authorization_type || "NONE"
     end
 
     def cors_logical_id
       "#{resource_logical_id}_cors_api_method"
-    end
-
-    def allow_origin
-      if Jets.config.cors == true
-        '*'
-      elsif Jets.config.cors
-        Jets.config.cors
-      end
     end
   end
 end
