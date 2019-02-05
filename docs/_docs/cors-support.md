@@ -30,7 +30,7 @@ The example above adds a response header with `Access-Control-Allow-Origin='*.my
 
 ### Full Customization
 
-If you really need full customization of the CORS response headers, you can set `config.cors` as a Hash.
+If you need full customization of the CORS response headers, you can set `config.cors` as a Hash.
 
 ```ruby
 Jets.application.configure do
