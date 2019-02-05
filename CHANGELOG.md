@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.6.9]
+- #184 improve default cors options request access-control-allow-methods
+
 ## [1.6.8]
 - #181 cors middleware
 - #182 more robust handler shim
