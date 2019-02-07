@@ -57,16 +57,17 @@ module Jets
     end
 
     # resources macro expands to all the routes
-    def resources(name)
-      get "#{name}", to: "#{name}#index"
-      get "#{name}/new", to: "#{name}#new" unless api_mode?
-      get "#{name}/:id", to: "#{name}#show"
-      post "#{name}", to: "#{name}#create"
-      get "#{name}/:id/edit", to: "#{name}#edit" unless api_mode?
-      put "#{name}/:id", to: "#{name}#update"
-      post "#{name}/:id", to: "#{name}#update" # for binary uploads
-      patch "#{name}/:id", to: "#{name}#update"
-      delete "#{name}/:id", to: "#{name}#delete"
+    def resources(name, options = {})
+      to_controller = options[:controller] || name
+      get "#{name}", to: "#{to_controller}#index"
+      get "#{name}/new", to: "#{to_controller}#new" unless api_mode?
+      get "#{name}/:id", to: "#{to_controller}#show"
+      post "#{name}", to: "#{to_controller}#create"
+      get "#{name}/:id/edit", to: "#{to_controller}#edit" unless api_mode?
+      put "#{name}/:id", to: "#{to_controller}#update"
+      post "#{name}/:id", to: "#{to_controller}#update" # for binary uploads
+      patch "#{name}/:id", to: "#{to_controller}#update"
+      delete "#{name}/:id", to: "#{to_controller}#delete"
     end
 
     def api_mode?

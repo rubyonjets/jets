@@ -76,6 +76,29 @@ describe Jets::Router do
         expect(paths).to eq(
           ["posts/new", "posts", "posts/:id/edit", "posts/:id", "*catchall"])
       end
+
+      context "when controller option is present" do
+        before do
+          router.draw do
+            resources :posts, controller: 'articles'
+          end
+        end
+        it "all_paths list all subpaths" do
+          # pp router.routes # uncomment to debug
+          expect(router.all_paths).to eq(
+            ["posts", "posts/:id", "posts/:id/edit", "posts/new"])
+        end
+
+        it "expands macro to all the REST routes with the controller name" do
+          tos = router.routes.map(&:to).sort.uniq
+          expect(tos).to eq(
+            [
+              "articles#create", "articles#delete", "articles#edit",
+              "articles#index", "articles#new", "articles#show", "articles#update"
+            ].sort
+          )
+        end
+      end
     end
 
     context "routes with namespaces" do
