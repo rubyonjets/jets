@@ -14,6 +14,8 @@ Jets.application.routes.draw do
 
   resources :comments # expands to the RESTful routes above
 
+  resources 'api/v1/articles', controller: 'posts' # creates the proper routes for api/v1/articles but the controller is posts
+
   any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 end
 ```
