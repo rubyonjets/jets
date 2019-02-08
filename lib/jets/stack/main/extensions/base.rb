@@ -4,6 +4,10 @@ module Jets::Stack::Main::Dsl
       "!Ref #{value.to_s.camelize}"
     end
 
+    def getatt(value, attribute=:arn)
+      "!GetAtt #{value.to_s.camelize}.#{attribute.to_s.camelize}"
+    end
+
     def logical_id(value)
       value.to_s.camelize
     end

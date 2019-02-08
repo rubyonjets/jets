@@ -8,9 +8,12 @@
 #
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
+  autoload :EventSourceMapping, "jets/job/dsl/event_source_mapping"
 
   included do
     class << self
+      include EventSourceMapping
+
       # Public: Creates CloudWatch Event Rule
       #
       # expression - The rate expression.
