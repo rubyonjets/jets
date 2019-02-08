@@ -38,7 +38,8 @@ class Jets::Booter
 
     def turbine_initializers
       Jets::Turbine.subclasses.each do |subclass|
-        subclass.initializers.each do |label, block|
+        initializers = subclass.initializers || []
+        initializers.each do |label, block|
           block.call(Jets.application)
         end
       end
