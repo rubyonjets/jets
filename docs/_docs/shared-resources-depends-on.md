@@ -64,15 +64,14 @@ class HardJob < ApplicationJob
   depends_on :list
   class_timeout 30 # less than to equal to the default queue timeout
 
-  sqs_queue "!Ref WaitlistArn"
+  sqs_queue "!Ref Waitlist"
   def dig
     puts "done digging"
   end
 end
 ```
 
-Note, the use of shared resources in this way requires pretty decent understanding of what is happening underneath the hood with Jets and CloudFormation. Remember each class gets translated into a nested child stack. The parameters are then passed between the stacks. The depends_on declaration in this case will pass all the outputs from the `List` stack as paramaeters to the `HardJob` stack.  One of the outputs that Jets happens to make available via the `sqs_queue(:waitlist)` resource declaration is `WaitlistArn`.  The code takes advantage of that
-
+Understanding of what is happening underneath the hood with Jets and CloudFormation helps to understand shared resources usage. Remember that each class gets translated into a nested child stack. The parameters are possibly passed between the stacks. The depends_on declaration tells Jets to pass all the outputs from the `List` stack as input parameters to the `HardJob` stack.  In this case, one of the outputs from the `sqs_queue(:waitlist)` resource declaration is `Waitlist`. The `Wailist` output contains the SQS arn.  `HardJob` references the input parameter. This is how it is possible for `HardJob` to refer to a resource created in another stack.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/shared-resources-extensions.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/shared-resources-functions.md %}">Next Step</a>

@@ -1,4 +1,4 @@
-# Note the Lambda function timeout must be less than sqs queue default timeout.
+# Note the Lambda function timeout must be less than or equal to the sqs queue default timeout.
 module Jets::Resource::Lambda
   class EventSourceMapping < Jets::Resource::Base
     def initialize(props)
