@@ -155,7 +155,7 @@ module Jets::Lambda::Dsl
       # interfere with being able to pass in any keys for the properties hash at the end.
       #
       # TODO: If there's a cleaner way of doing this, let me know.
-      def with_resource_options(fresh_properties: false, multiple_resources: false)
+      def with_fresh_properties(fresh_properties: true, multiple_resources: true)
         @associated_properties = nil if fresh_properties # dont use any current associated_properties
         @multiple_resources = multiple_resources
 

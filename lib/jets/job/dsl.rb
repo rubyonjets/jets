@@ -8,11 +8,15 @@
 #
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
-  autoload :EventSourceMapping, "jets/job/dsl/event_source_mapping"
+  autoload :EventSourceMapping, "jets/job/dsl/event_source_mapping" # base for sqs_event, etc
+  autoload :SnsEvent, "jets/job/dsl/sns_event"
+  autoload :SqsEvent, "jets/job/dsl/sqs_event"
 
   included do
     class << self
       include EventSourceMapping
+      include SnsEvent
+      include SqsEvent
 
       # Public: Creates CloudWatch Event Rule
       #
@@ -41,30 +45,27 @@ module Jets::Job::Dsl
       end
 
       def schedule_job(expression, props={})
-        @associated_properties = nil # dont use any current associated_properties
-        props = props.merge(schedule_expression: expression)
-        associated_properties(props)
-        # Eager define resource
-        resource(events_rule_definition) # add associated resources immediately
-        @associated_properties = nil # reset for next definition, since we're defining eagerly
+        with_fresh_properties(multiple_resources: false) do
+          props = props.merge(schedule_expression: expression)
+          associated_properties(props)
+          resource(events_rule_definition) # add associated resource immediately
+        end
       end
 
       def event_pattern(details={}, props={})
-        @associated_properties = nil # dont use any current associated_properties
-        props = props.merge(event_pattern: details)
-        associated_properties(props)
-        # Eager define resource
-        resource(events_rule_definition) # add associated resources immediately
-        @associated_properties = nil # reset for next definition, since we're defining eagerly
+        with_fresh_properties(multiple_resources: false) do
+          props = props.merge(event_pattern: details)
+          associated_properties(props)
+          resource(events_rule_definition) # add associated resource immediately
+        end
         add_descriptions # useful: generic description in the Event Rule console
       end
 
       def events_rule(props={})
-        @associated_properties = nil # dont use any current associated_properties
-        associated_properties(props)
-        # Eager define resource
-        resource(events_rule_definition) # add associated resources immediately
-        @associated_properties = nil # reset for next definition, since we're defining eagerly
+        with_fresh_properties(multiple_resources: false) do
+          associated_properties(props)
+          resource(events_rule_definition) # add associated resource immediately
+        end
       end
 
       # Works with eager definitions
