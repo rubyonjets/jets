@@ -3,12 +3,16 @@ module Jets::Job::Dsl
     def declare_queue(props)
       props ||= {} # since options.delete(:queue_properties) can be nil
       r = Jets::Resource::Sqs::Queue.new(props)
-      resource(r.definition, fresh_properties: true, multiple: true) # add associated resources immediately
+      with_resource_options(fresh_properties: true, multiple: true) do
+        resource(r.definition) # add associated resources immediately
+      end
     end
 
     def event_source_mapping(props={})
       r = Jets::Resource::Lambda::EventSourceMapping.new(props)
-      resource(r.definition, fresh_properties: true, multiple: true) # add associated resources immediately
+      with_resource_options(fresh_properties: true, multiple: true) do
+        resource(r.definition) # add associated resources immediately
+      end
     end
 
     def sqs_event(queue_name, options={})

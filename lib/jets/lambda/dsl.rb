@@ -136,21 +136,34 @@ module Jets::Lambda::Dsl
       #############################
       # Main method that registers resources associated with the Lambda function.
       # All resources methods lead here.
-      def associated_resources(*definitions, fresh_properties: false, multiple: false)
-        @associated_properties = nil if fresh_properties # dont use any current associated_properties
-
+      def associated_resources(*definitions)
         if definitions == [nil] # when associated_resources called with no arguments
           @associated_resources || []
         else
           @associated_resources ||= []
-          @associated_resources << Jets::Resource::Associated.new(definitions, multiple: multiple)
+          associated_resource = Jets::Resource::Associated.new(definitions)
+          associated_resource.multiple_resources = @multiple_resources
+          @associated_resources << associated_resource
           @associated_resources.flatten!
         end
-
-        @associated_properties = nil if fresh_properties # reset for next definition, since we're defining eagerly
       end
       # User-friendly short resource method. Users will use this.
       alias_method :resource, :associated_resources
+
+      # Using this odd way of setting these properties so we can keep the
+      # resource(*definitions) signature simple. Using keyword arguments at the end
+      # interfere with being able to pass in any keys for the properties hash at the end.
+      #
+      # TODO: If there's a cleaner way of doing this, let me know.
+      def with_resource_options(fresh_properties: false, multiple_resources: false)
+        @associated_properties = nil if fresh_properties # dont use any current associated_properties
+        @multiple_resources = multiple_resources
+
+        yield
+
+        @multiple_resources = false
+        @associated_properties = nil if fresh_properties # reset for next definition, since we're defining eagerly
+      end
 
       # Properties belonging to the associated resource
       def associated_properties(options={})
@@ -177,7 +190,7 @@ module Jets::Lambda::Dsl
       def add_logical_id_counter?
         return false unless @associated_resources
         # Only takes one associated resource with multiple set to true to return false of this check
-        return false if @associated_resources.detect { |associated| associated.multiple }
+        return false if @associated_resources.detect { |associated| associated.multiple_resources }
         # Otherwise check if there is more than 1 @associated_resources
         @associated_resources.size > 1
       end
