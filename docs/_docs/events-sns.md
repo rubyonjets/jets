@@ -27,10 +27,10 @@ end
 Ultimately, the `sns_event` declaration generates a [SNS::Subscription](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sns-subscription.html).  The properties of the subscription can be set with an additional Hash argument:
 
 ```ruby
-  sns_event("hello-topic", filter_policy: {store: example_corp})
+  sns_event("hello-topic", filter_policy: {store: "example_corp"})
 ```
 
-More information the filter_policy here on [SNS Message Filtering](https://docs.aws.amazon.com/sns/latest/dg/sns-message-filtering.html).
+There's more information on the filter_policy here on [SNS Message Filtering](https://docs.aws.amazon.com/sns/latest/dg/sns-message-filtering.html).
 
 ## Generated Function SNS Topic
 
@@ -46,7 +46,7 @@ class HardJob
 end
 ```
 
-In the case when Jets generates the a SNS topic, the `sns_event` declaration creates an [SNS::Topic](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html). The properties of the SNS Topic can be set with an additional Hash argument:.  Example:
+In the case when Jets generates the a SNS topic, the `sns_event` declaration creates an [SNS::Topic](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html) instead of a [SNS::Subscription](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sns-subscription.html). The properties of the SNS Topic can be set with an additional Hash argument:.  Example:
 
 ```ruby
   sns_event(:generate_topic, display_name: "My awesome topic")
