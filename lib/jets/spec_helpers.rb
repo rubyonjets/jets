@@ -32,6 +32,11 @@ module Jets
       request.headers.deep_merge!(params.delete(:headers) || {})
 
       request.params.body_params = params.delete(:params) || params || {}
+
+      request.params.query_params = params.delete(:query)
+      request.params.query_params ||= params if request.method == :get
+      request.params.query_params ||= {}
+
       request.params.path_params = params
 
       @response = request.dispatch!
