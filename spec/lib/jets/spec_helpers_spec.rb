@@ -13,7 +13,7 @@ class SimpleController < Jets::Controller::Base
     if params[:id] == '404'
       render json: {}, status: :not_found
     else
-      render json: { id: params[:id] }
+      render json: { id: params[:id], filter: params[:filter] }
     end
   end
 
@@ -54,6 +54,18 @@ describe Jets::SpecHelpers do
       get '/spec_helper_test/:id', id: 123
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['id']).to eq '123'
+    end
+
+    it "gets 200 with query params" do
+      get '/spec_helper_test/:id', id: 123, query: { filter: 'abc' }
+      expect(response.status).to eq 200
+      expect(JSON.parse(response.body)['filter']).to eq 'abc'
+    end
+
+    it "gets 200 with query params no query keyword" do
+      get '/spec_helper_test/:id', id: 123, filter: 'abc'
+      expect(response.status).to eq 200
+      expect(JSON.parse(response.body)['filter']).to eq 'abc'
     end
 
     it "gets 404 with id" do
