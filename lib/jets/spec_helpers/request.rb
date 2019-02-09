@@ -41,6 +41,12 @@ module Jets
           json['isBase64Encoded'] = true
         end
 
+        params.query_params.to_a.each do |e|
+          key, value = e
+          json['queryStringParameters'] ||= {}
+          json['queryStringParameters'][key.to_s] = value.to_s
+        end
+
         json
       end
 
