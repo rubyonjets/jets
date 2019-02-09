@@ -19,10 +19,12 @@ module Jets::Resource::Sns
       display_name = "{namespace} Topic"[0..99] # limit is 100 chars
       {
         display_name: display_name,
-        subscription: [
-          endpoint: "!GetAtt {namespace}LambdaFunction.Arn",
-          protocol: "lambda"
-        ]
+        # Not setting subscription this way but instead with a SNS::Subscription resource so the interface
+        # is consistent. Leaving comment in here to remind me and in case decide to change this.
+        # subscription: [
+        #   endpoint: "!GetAtt {namespace}LambdaFunction.Arn",
+        #   protocol: "lambda"
+        # ]
       }.deep_merge(@props)
     end
 

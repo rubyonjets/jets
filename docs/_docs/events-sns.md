@@ -46,10 +46,14 @@ class HardJob
 end
 ```
 
-In the case when Jets generates the a SNS topic, the `sns_event` declaration creates an [SNS::Topic](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html) instead of a [SNS::Subscription](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sns-subscription.html). The properties of the SNS Topic can be set with an additional Hash argument:.  Example:
+A special `:topic_properties` key will set the SNS topic properties. Other keys set the [SNS::Subscription](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sns-subscription.html) properties.  Example:
+
 
 ```ruby
-  sns_event(:generate_topic, display_name: "My awesome topic")
+  sns_event(:generate_topic,
+    batch_size: 10,
+    topic_properties: {display_name: "My awesome topic"}
+  )
 ```
 
 Note, SNS Topics managed by Jets are deleted when you delete the Jets application.
