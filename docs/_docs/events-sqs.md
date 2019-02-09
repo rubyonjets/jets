@@ -44,7 +44,7 @@ class HardJob
 end
 ```
 
-A special `:queue_properties` key will set the SQS queue properties. Other keys set the [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html) properties.  Example:
+A special `:queue_properties` key will set the [SQS::Queue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html) properties. Other keys set the [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html) properties.  Example:
 
 ```ruby
   sqs_event(:generate_queue,

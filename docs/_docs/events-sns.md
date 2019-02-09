@@ -46,7 +46,7 @@ class HardJob
 end
 ```
 
-A special `:topic_properties` key will set the SNS topic properties. Other keys set the [SNS::Subscription](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sns-subscription.html) properties.  Example:
+A special `:topic_properties` key will set the [SNS::Topic](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sns-topic.html) properties. Other keys set the [SNS::Subscription](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sns-subscription.html) properties.  Example:
 
 
 ```ruby
