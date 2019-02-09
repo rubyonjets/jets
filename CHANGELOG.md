@@ -3,8 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
-## [UNRELEASED]
-- spec\_helpers: `get` request now converts dangling params to query params. `query` keyword can be used to do the same thing explicitly.
+## [1.7.2]
+- #189: spec_helpers: `get` request now converts dangling params to query params. `query` keyword can be used to do the same thing explicitly.
+- #190 SNS Event Lambda Trigger Support
+- Start rack server on 127.0.0.1 for mega mode
 
 ## [1.7.1]
 - fix Turbines with no initializer blocks
