@@ -2,7 +2,7 @@
 title: SQS Events
 ---
 
-Jets supports [SQS Events](https://aws.amazon.com/blogs/aws/aws-lambda-adds-amazon-simple-queue-service-to-supported-event-sources/) as a Lambda trigger. So you can send a message to an SQS queue and it triggers a Lambda function to run.  The Lambda function has access to the message data. There are a few ways to connect an SQS queue to a Lambda function with Jets.
+Jets supports [SQS Events](https://aws.amazon.com/blogs/aws/aws-lambda-adds-amazon-simple-queue-service-to-supported-event-sources/) as a Lambda trigger. So you can send a message to an SQS queue and it triggers a Lambda function to run.  The Lambda function has access to the message data via `event`. There are a few ways to connect an SQS queue to a Lambda function with Jets.
 
 1. Existing SQS Queue
 2. Generated Function SQS Queue
@@ -12,7 +12,7 @@ We'll cover each of them:
 
 ## Existing SQS Queue
 
-Here are a few examples of connecting an existing SQS to the Lambda functions in a [Job]({% link _docs/jobs.md %})
+Here is an example connecting an existing SQS queue to the Lambda function in a [Job]({% link _docs/jobs.md %})
 
 ```ruby
 class HardJob
@@ -24,7 +24,7 @@ class HardJob
 end
 ```
 
-Ultimately, the `sqs_event` declaration generates a [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html).  The properties of the mapping can be set with an additional Hash options argument:
+Ultimately, the `sqs_event` declaration generates a [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html).  The properties of the mapping can be set with an additional Hash argument:
 
 ```ruby
   sqs_event("hello-queue", batch_size: 10)
@@ -44,7 +44,7 @@ class HardJob
 end
 ```
 
-A special `:queue_properties` key will set the SQS queue properties. Other keys set the [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html).  Example:
+A special `:queue_properties` key will set the [SQS::Queue](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-sqs-queues.html) properties. Other keys set the [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html) properties.  Example:
 
 ```ruby
   sqs_event(:generate_queue,
@@ -83,11 +83,9 @@ class HardJob
 end
 ```
 
-Underneath the hood, Jets provisions resources via CloudFormation.  The use of `depends_on` ensures that Jets will pass the shared resource `List` stack outputs to the `HardJob` stack as input parameters. This allows `HardJob` to reference resources from the separate child `List` stack. For those learning CloudFormation, these resources might help:
+Underneath the hood, Jets provisions resources via CloudFormation.  The use of `depends_on` ensures that Jets will pass the shared resource `List` stack outputs to the `HardJob` stack as input parameters. This allows `HardJob` to reference resources from the separate child `List` stack.
 
-* [AWS CloudFormation Declarative Infrastructure Code Tutorial](https://blog.boltops.com/2018/02/14/aws-cloudformation-declarative-infrastructure-code-tutorial)
-* [A Simple Introduction to AWS CloudFormation Part 1: EC2 Instance](https://blog.boltops.com/2017/03/06/a-simple-introduction-to-aws-cloudformation-part-1-ec2-instance)
-* [Working with Nested Stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html)
+{% include cloudformation_links.md %}
 
 ## IAM Policy
 
@@ -97,43 +95,6 @@ An IAM policy is generated for the Lambda function associated with the SQS event
 
 Note, AWS does not currently support Lambda function triggers with FIFO queues, so the queue must be a standard queue to use Lambda triggers.  If you are using a FIFO queue, a [possible way](https://stackoverflow.com/questions/53416890/cant-trigger-lambdas-on-sqs-fifo) to process the messages is with a Job that polls the queues and does the processing.
 
-## Event Source Mapping
-
-Underneath the hood, the `sqs_event` method sets up a  [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html).  So:
-
-```ruby
-class HardJob
-  class_timeout 30 # must be less than or equal to the SQS queue default timeout
-
-  sqs_event "hello-queue"
-  def dig
-    puts "dig event #{JSON.dump(event)}"
-  end
-end
-```
-
-Cloud also be written with something like this:
-
-```ruby
-class HardJob
-  class_timeout 30 # must be less than or equal to the SQS queue default timeout
-
-  event_source_mapping(
-    event_source_arn: "arn:aws:sqs:us-west-2:112233445566:hello-queue",
-  )
-  iam_policy(
-    action: ["sqs:ReceiveMessage",
-             "sqs:DeleteMessage",
-             "sqs:GetQueueAttributes"],
-    effect: "Allow",
-    resource: "arn:aws:sqs:us-west-2:112233445566:hello-queue",
-  )
-  def dig
-    puts "dig event #{JSON.dump(event)}"
-  end
-end
-```
-
 <a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorials.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/events-sns.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
