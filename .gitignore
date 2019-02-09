@@ -20,3 +20,4 @@ spec/fixtures/project/handlers
 demo*
 /html
 spec/fixtures/apps/franky/dynamodb/migrate
+Gemfile.lock 
