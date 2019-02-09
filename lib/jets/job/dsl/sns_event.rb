@@ -25,6 +25,14 @@ module Jets::Job::Dsl
       end
     end
 
+    def declare_sns_topic_policy(props={})
+      props ||= {} # options.delete(:topic_policy_properties) can be nil
+      r = Jets::Resource::Sns::TopicPolicy.new(props)
+      with_fresh_properties do
+        resource(r.definition) # add associated resource immediately
+      end
+    end
+
     def declare_sns_subscription(props={})
       r = Jets::Resource::Sns::Subscription.new(props)
       with_fresh_properties do

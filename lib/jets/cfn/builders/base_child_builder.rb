@@ -27,29 +27,17 @@ class Jets::Cfn::Builders
         add_parameter(k, Description: k)
       end
 
-      depends_on_params.each do |logical_id, desc|
-        add_parameter(logical_id, Description: desc)
+      depends_on_params.each do |output_key, output_value|
+        desc = output_value.gsub("!GetAtt ", "") # desc doesnt allow !GetAtt
+        add_parameter(output_key, Description: desc)
       end
     end
 
     def depends_on_params
       return {} unless @app_class.depends_on
 
-      params = {}
-      @app_class.depends_on.each do |shared_stack|
-        dependency = shared_stack.to_s.camelize # logical_id
-        dependency_outputs(dependency).each do |output|
-          dependency_class = dependency.to_s.classify
-          desc = "From #{dependency_class}.Outputs.#{output}"
-          # key: logical_id , value: description
-          params[output] = desc
-        end
-      end
-      params
-    end
-
-    def dependency_outputs(dependency)
-      dependency.to_s.classify.constantize.output_keys
+      depends = Jets::Stack::Depends.new(@app_class.depends_on)
+      depends.params
     end
 
     def add_functions

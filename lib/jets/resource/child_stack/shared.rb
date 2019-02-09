@@ -40,10 +40,12 @@ module Jets::Resource::ChildStack
     end
 
     def common_parameters
-      {
+      parameters = {
         IamRole: "!GetAtt IamRole.Arn",
         S3Bucket: "!Ref S3Bucket",
       }
+      parameters[:GemLayer] = "!Ref GemLayer" unless Jets.poly_only?
+      parameters
     end
 
     # Returns output keys associated with the stack.  They are the resource logical ids.

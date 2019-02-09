@@ -59,7 +59,15 @@ class Jets::Resource
       #   "AWS::ApiGateway::Method" => "apigateway.amazonaws.com"
       def principal_map(type)
         service = type.split('::')[1].downcase
+        service = special_principal_map(service)
         "#{service}.amazonaws.com"
+      end
+
+      def special_principal_map(service)
+        # special map
+        # s3_event actually uses sns topic events to trigger a Lambda function
+        map = { "s3" => "sns" }
+        map[service] || service
       end
 
       # From AWS docs: https://amzn.to/2N0QXQL

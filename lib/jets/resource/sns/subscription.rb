@@ -1,7 +1,7 @@
 # CloudFormation SNS Subscription docs: https://amzn.to/2SJtN3C
 module Jets::Resource::Sns
   class Subscription < Jets::Resource::Base
-    def initialize(props)
+    def initialize(props={})
       @props = props # associated_properties from dsl.rb
     end
 

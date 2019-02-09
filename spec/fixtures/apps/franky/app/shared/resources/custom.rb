@@ -21,4 +21,6 @@ class Custom < Jets::Stack
   ruby_function(:bob)
   python_function(:kevin)
   node_function(:stuart)
+
+  output("test")
 end

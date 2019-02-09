@@ -1,7 +1,7 @@
 # CloudFormation SNS Topic docs: https://amzn.to/2MYbUZc
 module Jets::Resource::Sns
   class Topic < Jets::Resource::Base
-    def initialize(props)
+    def initialize(props={})
       @props = props # associated_properties from dsl.rb
     end
 

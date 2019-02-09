@@ -17,7 +17,12 @@ class Jets::Stack
 
     def build_section(section)
       elements = build_elements(section)
-      @template[section] = elements if elements
+      return unless elements
+
+      if section == :parameters
+        elements["GemLayer"] = {"Type"=>"String"} unless Jets.poly_only?
+      end
+      @template[section] = elements
     end
 
     def build_elements(section)

@@ -29,24 +29,15 @@ module Jets::Resource::ChildStack
       klass = current_app_class.constantize
       return unless klass.depends_on
 
-      klass.depends_on.map do |shared_stack|
-        shared_stack.to_s.camelize # logical_id
-      end
+      depends = Jets::Stack::Depends.new(klass.depends_on)
+      depends.stack_list
     end
 
     def depends_on_params
-      params = {}
-      depends_on.each do |dependency|
-        dependency_outputs(dependency).each do |output|
-          dependency_class = dependency.to_s.classify
-          params[output] = "!GetAtt #{dependency_class}.Outputs.#{output}"
-        end
-      end
-      params
-    end
-
-    def dependency_outputs(dependency)
-      dependency.to_s.classify.constantize.output_keys
+      klass = current_app_class.constantize
+      return unless klass.depends_on
+      depends = Jets::Stack::Depends.new(klass.depends_on)
+      depends.params
     end
 
     def parameters

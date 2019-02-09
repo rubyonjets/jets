@@ -28,7 +28,7 @@ class Jets::Resource
 
     def permission_logical_id
       logical_id = "{namespace}_permission"
-      md = @associated_resource.logical_id.match(/(\d+)/)
+      md = @associated_resource.logical_id.match(/(\d+)$/)
       counter = md[1] if md
       [logical_id, counter].compact.join('').underscore
     end

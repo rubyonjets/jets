@@ -88,6 +88,6 @@ Underneath the hood, Jets provisions resources via CloudFormation.  The use of `
 
 {% include cloudformation_links.md %}
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/events-sqs.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/events-s3.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/database-support.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

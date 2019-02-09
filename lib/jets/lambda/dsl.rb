@@ -213,12 +213,22 @@ module Jets::Lambda::Dsl
         @associated_resources = numbered_resources
       end
 
+      # Examples:
+      #
+      #   depends_on :custom
+      #   depends_on :custom, :alert
+      #   depends_on :custom, class_prefix: true
+      #   depends_on :custom, :alert, class_prefix: true
+      #
       def depends_on(*stacks)
         if stacks == []
           @depends_on
         else
           @depends_on ||= []
-          @depends_on += stacks
+          options = stacks.last.is_a?(Hash) ? stacks.pop : {}
+          stacks.each do |stack|
+            @depends_on << Jets::Stack::Depends::Item.new(stack, options)
+          end
         end
       end
 

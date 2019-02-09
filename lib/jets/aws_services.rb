@@ -10,6 +10,8 @@ require "aws-sdk-sqs"
 
 module Jets::AwsServices
   autoload :StackStatus, 'jets/aws_services/stack_status'
+  autoload :S3Bucket, 'jets/aws_services/s3_bucket'
+
   include StackStatus
   extend Memoist
 

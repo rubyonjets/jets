@@ -14,10 +14,10 @@ describe Jets::Builders::ShimVars::Shared do
     end
     let(:fun) { functions.find { |fun| fun.source_file.include?('bob.rb') } }
 
-    it "deduces info for node shim" do
+    it "deduces info for shim" do
       expect(vars.functions.size).to eq 1
-      expect(vars.handler_for(:whatever)).to eq "handlers/shared/functions/bob.js"
-      expect(vars.dest_path).to eq "handlers/shared/functions/bob.js"
+      expect(vars.handler_for(:whatever)).to eq "handlers/shared/functions/bob.rb"
+      expect(vars.dest_path).to eq "handlers/shared/functions/bob.rb"
     end
   end
 end
