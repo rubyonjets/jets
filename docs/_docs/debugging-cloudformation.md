@@ -29,6 +29,12 @@ The parent stack is reporting that the main error is on the `JetsPreheatJob Embe
 
 You can see here that the error is because the user does not have the necessary IAM permission. In this case, giving the user the [Minimal Deploy IAM Policy]({% link _docs/minimal-deploy-iam.md %}) will resolve the issue.
 
+## New Child Stacks Deleted
+
+When a child stack is created for the very first time and happens to fail, CloudFormation will roll back the child stack and delete it. This makes it tricky for those who don't yet realize this because the error message is gone by the time they check. In this case, you have to refresh the CloudFormation console during a deploy to see it and capture that.
+
+You may want to try incrementally debugging it. First, create a simple class with just one method and get that deployed that successfully. And then add your full logic and deploy again. With this approach, the rolled back child stack remain intact and you can see the error message post deploy.
+
 <a id="prev" class="btn btn-basic" href="{% link _docs/debugging-help.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/debugging-payloads.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
