@@ -50,7 +50,7 @@ describe Jets::Job::Base do
       # uncomment to debug
       # puts JSON.pretty_generate(job.event)
       # puts JSON.pretty_generate(job.s3_event_message)
-      puts JSON.pretty_generate(job.s3_object)
+      # puts JSON.pretty_generate(job.s3_object)
 
       expect(job.s3_event_message.key?("Records")).to be true
 
