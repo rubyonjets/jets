@@ -106,16 +106,29 @@ class Jets::Builders
       CodeSize.check!
     end
 
-    # We copy the files into the project because we cannot require simple functions
-    # directly since they are wrapped by an anonymous class.
-    # TODO: Do this with the other files we required the same way.
+    # Materialized internal code into actually user Jets app as part of the deploy process.
+    # Examples of things that we might materialize:
+    #
+    #   Views
+    #   Simple Functions
+    #
+    # For functions,  We copy the files into the project because we cannot require
+    # simple functions directly since they are wrapped by an anonymous class.
     def copy_internal_jets_code
       files = []
+
+      mailers_controller = Jets::Router.has_controller?("Jets::MailersController")
+      if mailers_controller
+        files << "app/controllers/jets/mailers_controller.rb"
+        files << "app/views/jets/mailers"
+        files << "app/helpers/jets/mailers_helper.rb"
+      end
+
       files.each do |relative_path|
         src = File.expand_path("../internal/#{relative_path}", File.dirname(__FILE__))
         dest = "#{"#{stage_area}/code"}/#{relative_path}"
         FileUtils.mkdir_p(File.dirname(dest))
-        FileUtils.cp(src, dest)
+        FileUtils.cp_r(src, dest)
       end
     end
 
