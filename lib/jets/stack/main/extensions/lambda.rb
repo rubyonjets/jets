@@ -1,5 +1,6 @@
 module Jets::Stack::Main::Dsl
   module Lambda
+    MAX_FUNCTION_NAME_SIZE = 64
     # Example:
     #
     #   function(:hello,
@@ -20,39 +21,45 @@ module Jets::Stack::Main::Dsl
     #
     def function(id, props={})
       # Required: code, handler, role, runtime Docs: https://amzn.to/2pdot7S
-      meth = id.to_s.underscore
+      meth = sanitize_method_name(id)
       class_namespace = self.to_s.underscore.gsub('/','-') # IE: Jets::Domain => jets-domain
-      function_name = "#{Jets.config.project_namespace}-#{class_namespace}-#{id.to_s.underscore}"
+      description = "#{self.to_s} #{meth}" # not bother adding extension
       defaults = {
-        function_name: function_name,
         code: {
           s3_bucket: "!Ref S3Bucket",
           s3_key: code_s3_key
         },
         role: "!Ref IamRole",
-        handler: "#{meth}.handle", # default ruby convention
+        handler: "#{id}.lambda_handler", # default ruby convention
         runtime: :ruby,
         timeout: Jets.config.function.timeout,
         memory_size: Jets.config.function.memory_size,
+        description: description,
       }
+
+      function_name = "#{Jets.config.project_namespace}-#{class_namespace}-#{meth}"
+      function_name.size > MAX_FUNCTION_NAME_SIZE ? nil : function_name
+      defaults[:function_name] = function_name if function_name
+
       props = defaults.merge(props)
       props[:runtime] = "ruby2.5" if props[:runtime].to_s == "ruby"
       props[:handler] = handler(props[:handler])
 
-      resource(id, "AWS::Lambda::Function", props)
+      logical_id = id.to_s.gsub('/','_')
+      resource(logical_id, "AWS::Lambda::Function", props)
     end
     alias_method :ruby_function, :function
     alias_method :lambda_function, :function
 
     def python_function(id, props={})
-      meth = id.to_s.underscore
+      meth = sanitize_method_name(id)
       props[:handler] ||= "#{meth}.lambda_handler" # default python convention
       props[:runtime] = "python3.6"
       function(id, props)
     end
 
     def node_function(id, props={})
-      meth = id.to_s.underscore
+      meth = sanitize_method_name(id)
       props[:handler] ||= "#{meth}.handler" # default python convention
       props[:runtime] = "nodejs8.10"
       function(id, props)
@@ -66,6 +73,12 @@ module Jets::Stack::Main::Dsl
       defaults = { action: "lambda:InvokeFunction" }
       props = defaults.merge(props)
       resource(id, "AWS::Lambda::Permission", props)
+    end
+
+  private
+    # demo-dev-hard_job-dig_me
+    def sanitize_method_name(id)
+      id.to_s.gsub('/','-')
     end
   end
 end

@@ -53,7 +53,7 @@ class Jets::Builders
       Md5.compute! # populates Md5.checksums hash
     end
 
-    def generate_node_shims
+    def generate_shims
       headline "Generating shims in the handlers folder."
       # Crucial that the Dir.pwd is in the tmp_code because for
       # Jets::Builders::app_files because Jets.boot set ups
@@ -97,8 +97,8 @@ class Jets::Builders
 
       # Code prep and zipping
       check_code_size!
-      calculate_md5s # must be called before generate_node_shims and create_zip_files
-      generate_node_shims
+      calculate_md5s # must be called before generate_shims and create_zip_files
+      generate_shims
       create_zip_files
     end
 

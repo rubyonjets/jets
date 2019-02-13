@@ -1,0 +1,145 @@
+---
+title: S3 Events
+---
+
+Jets supports [S3 Events](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html) as a Lambda trigger. When objects are uploaded to s3, it triggers a Lambda function to run. You can access information about the uploaded object via `event`, `s3_event_message`, and `s3_object`.
+
+## Usage
+
+Here is an example connecting S3 events to a Lambda function in a [Job]({% link _docs/jobs.md %}).
+
+```ruby
+class S3Job < ApplicationJob
+  # Please read the Considerations section before using s3_event
+  s3_event "my-bucket" # new or existing bucket
+  def process
+    puts "event #{JSON.dump(event)}"
+    puts "s3_event_message #{JSON.dump(s3_event_message)}"
+    puts "s3_object #{JSON.dump(s3_object)}"
+  end
+end
+```
+
+You can use existing or new buckets. New buckets get created as part of the [jets deploy]({% link _reference/jets-deploy.md %}) process outside of CloudFormation.
+
+## How It Works
+
+The `s3_event` declaration does a few things. It configures the S3 bucket with a [S3 Event Notification](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html) and sets up an SNS topic to fire when s3 objects are uploaded to the bucket.  In turn, your Lambda functions are subscribed to the SNS topic.  This is by design.
+
+Though we could set up Bucket notifications to send the s3 event payload directly to a Lambda function, s3 bucket notifications only allow us connect to one Lambda function. So instead Jets publishes the event to an SNS topic. This gives use the flexility to fanout to multiple Lambda functions.
+
+![](/img/docs/s3-sns-fanout.png)
+
+This design allows Jets code to do this:
+
+```ruby
+class ExampleJob < ApplicationJob
+  s3_event "my-bucket" # new or existing bucket
+  def do_one_thing
+    # ...
+  end
+
+  s3_event "my-bucket" # new or existing bucket
+  def do_another_thing
+    # ...
+  end
+
+  s3_event "another-bucket" # new or existing bucket
+  def do_another_thing_on_another_bucket
+    # ...
+  end
+end
+```
+
+
+## Event Payloads
+
+The event payload contains information about the object uploaded to the s3 bucket. The `event` payload provides all the metadata. Within the payload the `Message` attribute contains the data relevant to the s3 upload as a JSON encoded string. The `s3_object` helper method unravels the data and provides the s3 object information. Here's an example to help:
+
+### event
+
+```json
+{
+  "Records": [
+    {
+      "EventSource": "aws:sns",
+      "EventVersion": "1.0",
+      "EventSubscriptionArn": "arn:aws:sns:us-west-2:112233445566:my-bucket:bdc903bb-a51e-4799-b472-bd7293ce245b",
+      "Sns": {
+        "Type": "Notification",
+        "MessageId": "434252ae-b80f-58ad-9c11-067761c040dd",
+        "TopicArn": "arn:aws:sns:us-west-2:112233445566:my-bucket",
+        "Subject": "Amazon S3 Notification",
+        "Message": "{\"Records\":[{\"eventVersion\":\"2.1\",\"eventSource\":\"aws:s3\",\"awsRegion\":\"us-west-2\",\"eventTime\":\"2019-02-10T07:49:35.265Z\",\"eventName\":\"ObjectCreated:Put\",\"userIdentity\":{\"principalId\":\"AWS:AROAJBZT6HZEMHALPTL4E:botocore-session-1549784243\"},\"requestParameters\":{\"sourceIPAddress\":\"11.22.33.44\"},\"responseElements\":{\"x-amz-request-id\":\"4F2A57016225F633\",\"x-amz-id-2\":\"ek4gBwsxZtNeiXV8xUfxocSy3cZLR8ws/HcI8qIyDx75ID7hekUMuMMsa4DYltRsX3v0zJ9kl1c=\"},\"s3\":{\"s3SchemaVersion\":\"1.0\",\"configurationId\":\"NzFkOWNiMzQtZDI1Ni00N2U2LTlmYzgtODdhNWJkOWVkNjNm\",\"bucket\":{\"name\":\"my-bucket\",\"ownerIdentity\":{\"principalId\":\"AYC6O1A20R123\"},\"arn\":\"arn:aws:s3:::my-bucket\"},\"object\":{\"key\":\"myfolder/subfolder/test.txt\",\"size\":0,\"eTag\":\"d41d8cd98f00b204e9800998ecf8427e\",\"sequencer\":\"005C5FD78F373E174B\"}}}]}",
+        "Timestamp": "2019-02-10T07:49:35.417Z",
+        "SignatureVersion": "1",
+        "Signature": "nCgvhLBccqWkbCnmDk5t0RfIUkVo0toGDu13zkGxz7wkqCyv+10n2HO+Xy+qegfX2yB/yC3Vxzu9Sg/RbwLuVzqRWxtJ8YUSFx3UnUZEjrWLGTWrjyfkgrlDm8ovhT9hs1tSsoHm07lsUsxF+uhnBitFS8fKbe/PNBiTQKwLr2nUZxGy1zMrA75cdh/Ft7yDHy0S9bfcK/gosyfdSb1ggBQTQRoL2gZ46TAtciZ2eiGTUYW+PjSfAE9uKQcInSi2qvCIUTcWmRLXPDgRj3i5dJdjgqor8uCS+93kTF1OVURKJ5oMMmKVAabBGgJulZYQfaONd2si+H5Y8aUz5AzZSg==",
+        "SigningCertUrl": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-ac565b8b1a6c5d002d285f9598aa1d9b.pem",
+        "UnsubscribeUrl": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:112233445566:my-bucket:bdc903bb-a51e-4799-b472-bd7293ce245b",
+        "MessageAttributes": {
+        }
+      }
+    }
+  ]
+}
+```
+
+### s3_object
+
+```json
+{
+  "key": "myfolder/subfolder/test.txt",
+  "size": 0,
+  "eTag": "d41d8cd98f00b204e9800998ecf8427e",
+  "sequencer": "005C5FD78F373E174B"
+}
+```
+
+## Considerations
+
+When using `s3_event` please consider:
+
+* Jets configures and updates the [s3 bucket event notification configuration](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/S3/Client.html#put_bucket_notification_configuration-instance_method) on existing buckets. Jets *wipes* out the current bucket event notification configuration in doing this. You can disable this behavior with `config.s3_event.configure_bucket = false`. If you disable it, then you will need to set up the bucket notification manually. Most setups do not have any bucket configurations, but some do so please check your s3 bucket. You can find this under S3 "Properties / Events" in the S3 Console.
+* Jets does not clean up the bucket notification configuration upon deleting the Jets application.  It will leave the s3 bucket notification configuration in place.
+* Jets does not delete the s3 bucket upon deleting a Jets application, even if Jets created the s3 bucket.
+* You may want to specific the s3 bucket name in [.env files]({% link _docs/env-files.md %}) for multiple environments so you can use different buckets.  If you use the same s3 bucket across multiple environments, each time you deploy it will change the s3 bucket notification to the SNS topic associated with the deployed environment.
+* Please be careful not to have your Lambda function write to the same bucket and cause an accidental infinite loop:: `s3 event -> lambda function -> s3 event -> lambda function ...`. Though you can apply bucket event filter rules to avoid an infinite loop, using a separate bucket to store processed results is probably a safer way to avoid the infinite loop possibility altogether.
+
+## S3 Event Configuration
+
+You are able to set some configuration options that affects to behavior of `s3_event`. These configurations apply application-wide on all buckets that `s3_event` uses. Here's an example of the configuration options:
+
+```ruby
+Jets.application.configure do
+  config.s3_event.configure_bucket = true # true by default
+  config.s3_event.notification_configuration = {
+    topic_configurations: [
+      {
+        events: ["s3:ObjectCreated:*"], # default: s3:ObjectCreated:*
+        topic_arn: "!Ref SnsTopic", # must use this logical id, dont change
+        # custom filter rule, by default there is no filter
+        filter: {
+          key: {
+            filter_rules: [
+              {
+                name: "prefix",
+                value: "images/",
+              },
+              {
+                name: "suffix",
+                value: ".png",
+              }
+            ] # filter_rules
+          } # key
+        } # filter
+      },
+    ],
+  }
+end
+```
+
+The `notification_configuration` setting maps to the [ruby aws-sdk put_bucket_notification_configuration method's options](https://amzn.to/2N7m5Lr). With it, you can apply event filter rules on which s3 objects fires off a notification event.
+
+<a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/events-sns.md %}">Next Step</a>
+<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

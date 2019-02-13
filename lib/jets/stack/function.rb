@@ -14,6 +14,8 @@ class Jets::Stack
     end
 
     def lang
+      return if internal?
+
       if source_file
         # Detect language from file extension
         ext = File.extname(source_file).sub(/^\./,'').to_sym
@@ -37,24 +39,31 @@ class Jets::Stack
     memoize :source_file
 
     def search_expression
+      base_search_expression.sub('handlers/shared/', "#{Jets.root}/app/shared/")
+    end
+
+    def internal_search_expression
+      internal = File.expand_path("../internal", File.dirname(__FILE__))
+      base_search_expression.sub('handlers/shared/', "#{internal}/app/shared/")
+    end
+
+    def base_search_expression
       attributes = @template.values.first
       handler = attributes['Properties']['Handler']
-      search_expression = handler.split('.')[0..-2].join('.') + '.*'
-      search_expression.sub('handlers/shared/', "#{Jets.root}/app/shared/")
+      handler.split('.')[0..-2].join('.') + '.*' # search_expression
+      # Example: handlers/shared/functions/jets/s3_bucket_config.*
+    end
+
+    # Internal flag is mainly used to disable WARN messages
+    def internal?
+      !!Dir.glob(internal_search_expression).first
     end
 
     # Relative path
     # app/shared/functions/kevin.py => handlers/shared/functions/kevin.py
     def handler_dest
       return unless source_file
-
-      dest = source_file.sub(%r{.*/app/}, "handlers/")
-      if lang == :ruby
-        filename = dest.split('.').first
-        filename + '.js' # change extension to .js because ruby uses a node shim
-      else
-        dest
-      end
+      source_file.sub(%r{.*/app/}, "handlers/")
     end
   end
 end

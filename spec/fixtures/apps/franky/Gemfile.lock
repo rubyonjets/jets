@@ -23,6 +23,7 @@ PATH
       aws-sdk-s3
       aws-sdk-sns
       aws-sdk-sqs
+      cfnresponse
       dotenv
       gems
       hashie
@@ -113,6 +114,7 @@ GEM
     aws-sigv4 (1.0.3)
     builder (3.2.3)
     byebug (10.0.2)
+    cfnresponse (0.3.0)
     concurrent-ruby (1.1.4)
     crass (1.0.4)
     diff-lcs (1.3)

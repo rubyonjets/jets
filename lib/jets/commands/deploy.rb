@@ -26,9 +26,19 @@ module Jets::Commands
 
       # Build code after the minimal stack because need s3 bucket for assets
       # on_aws? and s3_base_url logic
+      # TODO: possible deploy hook point: before_build
       build_code
 
+      # TODO: possible deploy hook point: before_ship
+      create_s3_event_buckets
       ship(stack_type: :full, s3_bucket: s3_bucket)
+    end
+
+    def create_s3_event_buckets
+      buckets = Jets::Job::Base.s3_events.keys
+      buckets.each do |bucket|
+        Jets::AwsServices::S3Bucket.ensure_exists(bucket)
+      end
     end
 
     def delete_minimal_stack

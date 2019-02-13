@@ -96,20 +96,31 @@ class Jets::Builders
 
     def internal_shims
       jets_base_path if Jets.custom_domain?
+      s3_bucket_config if Jets.s3_event?
     end
 
     def jets_base_path
-      path = "jets/base_path.rb"
+      copy_function_template("functions/jets/base_path.rb", stage_name: Jets::Resource::ApiGateway::Deployment.stage_name)
+    end
+
+    def s3_bucket_config
+      copy_function_template("shared/functions/jets/s3_bucket_config.rb")
+    end
+
+    # Copy code from internal folder to materialized app code
+    def copy_function_template(path, vars={})
       internal = File.expand_path("../internal", File.dirname(__FILE__))
-      src = "#{internal}/app/functions/#{path}"
-      result = Jets::Erb.result(src, stage_name: Jets::Resource::ApiGateway::Deployment.stage_name)
-      dest = "#{tmp_code}/handlers/functions/#{path}"
+      src = "#{internal}/app/#{path}"
+      result = Jets::Erb.result(src, vars)
+      dest = "#{tmp_code}/handlers/#{path}"
       FileUtils.mkdir_p(File.dirname(dest))
       IO.write(dest, result)
     end
 
     # app/shared/functions/kevin.py => /tmp/jets/demo/app_root/handlers/shared/functions/kevin.py
     def copy_source_as_handler(fun)
+      return if fun.internal?
+
       source_path = fun.source_file
       unless source_path
         attributes = fun.template.values.first
@@ -140,8 +151,11 @@ class Jets::Builders
     end
 
     def shared_ruby_shim(fun)
-      vars = Jets::Builders::ShimVars::Shared.new(fun)
-      generate_handler(vars)
+      # Cant use native_function because that requires task. Just re-implement
+      dest_path = fun.handler_dest
+      source_path = dest_path.sub(/^handlers/,'app')
+      FileUtils.mkdir_p(File.dirname(dest_path))
+      FileUtils.cp(source_path, dest_path)
     end
 
     def common_base_shim

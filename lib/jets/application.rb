@@ -27,6 +27,8 @@ class Jets::Application
   # creation. This allows us to reference IAM policies configs that depend on the
   # creation of the s3 bucket.
   def reload_configs!
+    # Tricky: reset only the things that depends on the minimal stack
+    @config.iam_policy = nil
     configs!
   end
 
@@ -116,7 +118,24 @@ class Jets::Application
     config.encoding = ActiveSupport::OrderedOptions.new
     config.encoding.default = "utf-8"
 
-    # Tried to define in jets/mailer.rb Turbine only but seems to mess up on a reload request
+    config.s3_event = ActiveSupport::OrderedOptions.new
+    # These notification_configuration properties correspond to the ruby aws-sdk
+    #   s3.put_bucket_notification_configuration
+    # in jets/s3_bucket_config.rb, not the CloudFormation Bucket properties. The CloudFormation
+    # bucket properties have a similiar structure but is slightly different so it can be confusing.
+    #
+    #   Ruby aws-sdk S3 Docs: https://amzn.to/2N7m5Lr
+    config.s3_event.configure_bucket = true
+    config.s3_event.notification_configuration = {
+      topic_configurations: [
+        {
+          events: ["s3:ObjectCreated:*"],
+          topic_arn: "!Ref SnsTopic", # must use this logical id
+        },
+      ],
+    }
+
+    # So tried to defined this in the jets/mailer.rb Turbine only but jets new requires it
     # config.action_mailer = ActiveSupport::OrderedOptions.new
 
     config

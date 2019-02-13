@@ -43,4 +43,20 @@ describe Jets::Job::Base do
     end
   end
 
+  context "s3 upload" do
+    it "s3_event" do
+      event = json_file("spec/fixtures/dumps/sns/s3_upload.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.s3_event_message)
+      puts JSON.pretty_generate(job.s3_object)
+
+      expect(job.s3_event_message.key?("Records")).to be true
+
+      expect(job.s3_object.key?("key")).to be true
+      expect(job.s3_object[:key]).to eq "myfolder/subfolder/test.txt"
+    end
+  end
+
 end

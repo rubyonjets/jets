@@ -9,12 +9,14 @@
 module Jets::Job::Dsl
   extend ActiveSupport::Concern
   autoload :EventSourceMapping, "jets/job/dsl/event_source_mapping" # base for sqs_event, etc
+  autoload :S3Event, "jets/job/dsl/s3_event"
   autoload :SnsEvent, "jets/job/dsl/sns_event"
   autoload :SqsEvent, "jets/job/dsl/sqs_event"
 
   included do
     class << self
       include EventSourceMapping
+      include S3Event
       include SnsEvent
       include SqsEvent
 

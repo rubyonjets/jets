@@ -1,5 +1,6 @@
 class FunctionExampleStack < Jets::Stack
   ruby_function(:hello)
+  ruby_function("admin/send_message")
   python_function(:kevin)
 end
 
@@ -13,7 +14,17 @@ describe "Stack builder" do
     end
 
     it "meth" do
-      expect(function.meth).to eq "handle"
+      expect(function.meth).to eq "lambda_handler"
+    end
+  end
+
+  context "function with namespace" do
+    let(:template) { FunctionExampleStack.new.resources.map(&:template)[1] }
+    it "lang is ruby" do
+      props = template["AdminSendMessage"]["Properties"]
+      expect(props["FunctionName"]).to eq "demo-test-function_example_stack-admin-send_message"
+      expect(props["Handler"]).to eq "handlers/shared/functions/admin/send_message.lambda_handler"
+      expect(function.lang).to eq :ruby
     end
   end
 
@@ -23,4 +34,5 @@ describe "Stack builder" do
       expect(function.lang).to eq :python
     end
   end
+
 end

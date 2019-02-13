@@ -1,6 +1,6 @@
 module Jets::Resource::Events
   class Rule < Jets::Resource::Base
-    def initialize(props)
+    def initialize(props={})
       @props = props # associated_properties from dsl.rb
     end
 
