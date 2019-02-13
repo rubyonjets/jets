@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.8.0]
+- #191 Email Support via ActionMailer
+- #192 S3 Event Support
+- Turbine after_initializer
+- Improve Jets.boot ordering
+
 ## [1.7.2]
 - #189: spec_helpers: `get` request now converts dangling params to query params. `query` keyword can be used to do the same thing explicitly.
 - #190 SNS Event Lambda Trigger Support
