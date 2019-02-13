@@ -2,7 +2,7 @@
 title: Email Configuration STMP
 ---
 
-You can configure it with [initializers]({% link _docs/initializers.md %}).  Example:
+You can configure email with [initializers]({% link _docs/initializers.md %}).  Example:
 
 config/environments/production.rb:
 
@@ -30,8 +30,8 @@ We can configure the variables with [env files]({% link _docs/env-files.md %}). 
 ```sh
 SMTP_ADDRESS=email-smtp.us-west-2.amazonaws.com
 SMTP_DOMAIN=mydomain.com
-SMTP_USER_NAME=ABCASD5MXAISCBV22XYX
-SMTP_PASSWORD=ABCunGBKLUdbPdAH/FSxAi8eId99EyAOJz+mmZTUzXYZ
+SMTP_USER_NAME=ABCASD5MXAIYXEXAMPLE
+SMTP_PASSWORD=ABCunGBKLUdbPdAH/FSxAi8eId99EyAOJz+mxEXAMPLE
 ```
 
 ## Testing SMTP
