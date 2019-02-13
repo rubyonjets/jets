@@ -4,7 +4,7 @@ title: Debugging CloudFormation
 
 Underneath the hood, CloudFormation is used to provision AWS resources. This is discussed in this [podcast](http://5by5.tv/rubyonrails/253) interview.  Jets actually creates several CloudFormation stacks. It creates a parent stack, and a bunch of nested child stacks.  Jets manages this all for you.
 
-So if a [jets deploy](http://rubyonjets.com/reference/jets-deploy/) fails, you likely want to check out the CloudFormation console for errors. Particularly, checking the child stack with the error is the most helpful.
+So if a [jets deploy](http://rubyonjets.com/reference/jets-deploy/) fails, you likely want to check out the CloudFormation console for errors. Particularly, usually checking the child stack with the error instead of the parent stack is the most helpful.
 
 ## Example
 
@@ -23,7 +23,7 @@ The `jets deploy` command itself logs the CloudFormation of the parent stack.  H
     Stack rolled back: UPDATE_ROLLBACK_COMPLETE
     ...
 
-The main error is on the `JetsPreheatJob Embedded stack`.  You can check on this error in CloudFormation console and will find something like this:
+The parent stack is reporting that the main error is on the `JetsPreheatJob Embedded stack` nested child stack.  You can check on this error in CloudFormation console by clicking on the child stack and will find something like this:
 
 ![](/img/docs/debug/cloudformation-child-stack-error.png)
 
