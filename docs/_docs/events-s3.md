@@ -26,7 +26,7 @@ You can use existing or new buckets. New buckets get created as part of the [jet
 
 The `s3_event` declaration does a few things. It configures the S3 bucket with a [S3 Event Notification](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html) and sets up an SNS topic to fire when s3 objects are uploaded to the bucket.  In turn, your Lambda functions are subscribed to the SNS topic.  This is by design.
 
-Though we could set up Bucket notifications to send the s3 event payload directly to a Lambda function, s3 bucket notifications only allow us connect to one Lambda function. So instead Jets publishes the event to an SNS topic. This gives use the flexility to fanout to multiple Lambda functions.
+Though we could set up Bucket notifications to send the s3 event payload directly to a Lambda function, s3 bucket notifications only allow us to connect one Lambda function. So instead Jets publishes the event to an SNS topic. This gives us the flexibility to fan out to multiple Lambda functions.
 
 ![](/img/docs/s3-sns-fanout.png)
 
@@ -102,8 +102,8 @@ When using `s3_event` please consider:
 * Jets configures and updates the [s3 bucket event notification configuration](https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/S3/Client.html#put_bucket_notification_configuration-instance_method) on existing buckets. Jets *wipes* out the current bucket event notification configuration in doing this. You can disable this behavior with `config.s3_event.configure_bucket = false`. If you disable it, then you will need to set up the bucket notification manually. Most setups do not have any bucket configurations, but some do so please check your s3 bucket. You can find this under S3 "Properties / Events" in the S3 Console.
 * Jets does not clean up the bucket notification configuration upon deleting the Jets application.  It will leave the s3 bucket notification configuration in place.
 * Jets does not delete the s3 bucket upon deleting a Jets application, even if Jets created the s3 bucket.
-* You may want to specific the s3 bucket name in [.env files]({% link _docs/env-files.md %}) for multiple environments so you can use different buckets.  If you use the same s3 bucket across multiple environments, each time you deploy it will change the s3 bucket notification to the SNS topic associated with the deployed environment.
-* Please be careful not to have your Lambda function write to the same bucket and cause an accidental infinite loop:: `s3 event -> lambda function -> s3 event -> lambda function ...`. Though you can apply bucket event filter rules to avoid an infinite loop, using a separate bucket to store processed results is probably a safer way to avoid the infinite loop possibility altogether.
+* You may want to specify the s3 bucket name in [.env files]({% link _docs/env-files.md %}) for multiple environments to use different buckets.  If you use the same s3 bucket across multiple environments, each time you deploy it will change the s3 bucket notification to the SNS topic associated with the deployed environment, which is likely not what you want.
+* Please be careful not to have your Lambda function write to the same bucket and cause an accidental infinite loop:: `s3 event -> lambda function -> s3 event -> lambda function ...`.  This is a quick way to exhaust the AWS Lambda free tier. Though you can apply bucket event filter rules to avoid an infinite loop, using a separate bucket to store processed results is probably a safer way to avoid the infinite loop possibility altogether.
 
 ## S3 Event Configuration
 
