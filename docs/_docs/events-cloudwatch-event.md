@@ -4,6 +4,8 @@ title: CloudWatch Events
 
 Jets supports [CloudWatch Event Rules](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/Create-CloudWatch-Events-Rule.html). This allows you to have a Lambda function run when there's a change to AWS resources.  Here's an extensive list of supported [Event Types](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html).
 
+## Example
+
 An example might be getting notified when an unwanted security group port gets opened.
 
 ```ruby
@@ -26,11 +28,21 @@ class SecurityJob < ApplicationJob
     }
   )
   def detect_security_group_changes
-    puts event # event is available
+    puts "event: #{JSON.dump(event)}" # event is available
     # your logic
   end
 end
 ```
+
+Here's what the event rule looks like in the CloudWatch console:
+
+![](/img/docs/cloudwatch-event-rule.png)
+
+Here's an example from the CloudWatch log when the Lambda function runs:
+
+![](/img/docs/cloudwatch-event-rule-log.png)
+
+## Simple Examples
 
 You can further simplify the code with `event_pattern`. Here's another example that detects when an instance goes into stopping state.
 
