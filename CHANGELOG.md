@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.8.1]
+- #194 fix jets eager load, order by path length
+- #193 jets new fails during jets webpacker:install
+
 ## [1.8.0]
 - #191 Email Support via ActionMailer
 - #192 S3 Event Support
