@@ -150,7 +150,12 @@ class Jets::Booter
     # Eager load jet's lib and classes
     def eager_load_jets
       lib_jets = File.expand_path(".", File.dirname(__FILE__))
-      Dir.glob("#{lib_jets}/**/*.rb").select do |path|
+
+      # Sort by path length because systems return Dir.glob in different order
+      # Sometimes it returns longer paths first which messed up eager loading.
+      paths = Dir.glob("#{lib_jets}/**/*.rb")
+      paths = paths.sort_by { |p| p.size }
+      paths.select do |path|
         next if !File.file?(path)
         next if skip_eager_load_paths?(path)
 
