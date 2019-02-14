@@ -103,7 +103,7 @@ When using `s3_event` please consider:
 * Jets does not clean up the bucket notification configuration upon deleting the Jets application.  It will leave the s3 bucket notification configuration in place.
 * Jets does not delete the s3 bucket upon deleting a Jets application, even if Jets created the s3 bucket.
 * You may want to specify the s3 bucket name in [.env files]({% link _docs/env-files.md %}) for multiple environments to use different buckets.  If you use the same s3 bucket across multiple environments, each time you deploy it will change the s3 bucket notification to the SNS topic associated with the deployed environment, which is likely not what you want.
-* Please be careful not to have your Lambda function write to the same bucket and cause an accidental infinite loop:: `s3 event -> lambda function -> s3 event -> lambda function ...`.  This is a quick way to exhaust the AWS Lambda free tier. Though you can apply bucket event filter rules to avoid an infinite loop, using a separate bucket to store processed results is probably a safer way to avoid the infinite loop possibility altogether.
+* Please be careful not to have your Lambda function write to the same bucket and cause an accidental infinite loop: `s3 event -> lambda function -> s3 event -> lambda function ...`.  This is a quick way to exhaust the AWS Lambda free tier. Though you can apply bucket event filter rules to avoid an infinite loop, using a separate bucket to store processed results is probably a safer way to avoid the infinite loop possibility altogether.
 
 ## S3 Event Configuration
 
@@ -140,6 +140,6 @@ end
 
 The `notification_configuration` setting maps to the [ruby aws-sdk put_bucket_notification_configuration method's options](https://amzn.to/2N7m5Lr). With it, you can apply event filter rules on which s3 objects fires off a notification event.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch-log.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/events-sns.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

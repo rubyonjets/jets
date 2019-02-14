@@ -9,6 +9,7 @@ class Jets::Resource
   autoload :Events, 'jets/resource/events'
   autoload :Iam, 'jets/resource/iam'
   autoload :Lambda, 'jets/resource/lambda'
+  autoload :Logs, 'jets/resource/logs'
   autoload :Permission, 'jets/resource/permission'
   autoload :Replacer, 'jets/resource/replacer'
   autoload :Route53, 'jets/resource/route53'
