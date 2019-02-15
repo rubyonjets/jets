@@ -59,4 +59,17 @@ describe Jets::Job::Base do
     end
   end
 
+  context "cloudwatch log event" do
+    it "log_event" do
+      event = json_file("spec/fixtures/dumps/logs/log_event.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.log_event)
+
+      data = job.log_event
+      expect(data["messageType"]).to eq "DATA_MESSAGE"
+      expect(data.key?("logEvents")).to be true
+    end
+  end
 end
