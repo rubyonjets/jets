@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.8.4]
+- rename s3_event_message to s3_event helper
+
 ## [1.8.3]
 - #196 CloudWatch Log Event support
 - #197 IoT Event Support
