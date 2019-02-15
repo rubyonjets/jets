@@ -2,7 +2,7 @@
 title: S3 Events
 ---
 
-Jets supports [S3 Events](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html) as a Lambda trigger. When objects are uploaded to s3, it triggers a Lambda function to run. You can access information about the uploaded object via `event`, `s3_event_message`, and `s3_object`.
+Jets supports [S3 Events](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html) as a Lambda trigger. When objects are uploaded to s3, it triggers a Lambda function to run. You can access information about the uploaded object via `event`, `s3_event`, and `s3_object`.
 
 ## Usage
 
@@ -14,7 +14,7 @@ class S3Job < ApplicationJob
   s3_event "my-bucket" # new or existing bucket
   def process
     puts "event #{JSON.dump(event)}"
-    puts "s3_event_message #{JSON.dump(s3_event_message)}"
+    puts "s3_event #{JSON.dump(s3_event)}"
     puts "s3_object #{JSON.dump(s3_object)}"
   end
 end
