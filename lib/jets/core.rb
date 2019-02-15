@@ -95,7 +95,12 @@ module Jets::Core
   end
 
   def on_exception(exception)
-    Jets::Booter.run_turbines(:on_exceptions)
+    Jets::Turbine.subclasses.each do |subclass|
+      reporters = subclass.on_exceptions || []
+      reporters.each do |label, block|
+        block.call(exception)
+      end
+    end
   end
 
   def custom_domain?
