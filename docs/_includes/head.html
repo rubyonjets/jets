@@ -5,7 +5,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    {% if page.title %}
     <title>{{ page.title }} - {{ site.title }}</title>
+    {% else %}
+    <title>{{ site.title }}</title>
+    {% endif %}
 
     <meta name="description" content="{{ site.description }}">
     <meta name="keywords" content="{{ site.keywords }}" />
