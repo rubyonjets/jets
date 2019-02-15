@@ -20,7 +20,7 @@ class S3Job < ApplicationJob
 end
 ```
 
-You can use existing or new buckets. New buckets get created as part of the [jets deploy]({% link _reference/jets-deploy.md %}) process outside of CloudFormation.
+You can use existing or new buckets. New buckets get created as part of the [jets deploy]({% link _reference/jets-deploy.md %}) process.
 
 ## How It Works
 
