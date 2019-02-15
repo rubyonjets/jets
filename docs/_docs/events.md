@@ -2,7 +2,7 @@
 title: Events
 ---
 
-Jets is also a powerful Glue Framework.
+Jets is also a powerful Glue Serverless Framework.
 
 AWS Lambda supports many event triggers.  With event triggers, you can use Lambda functions as glue. Here's a list of the events supported by Jets.
 
