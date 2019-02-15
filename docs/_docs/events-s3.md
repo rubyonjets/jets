@@ -1,5 +1,6 @@
 ---
 title: S3 Events
+categories: events
 ---
 
 Jets supports [S3 Events](https://docs.aws.amazon.com/AmazonS3/latest/dev/NotificationHowTo.html) as a Lambda trigger. When objects are uploaded to s3, it triggers a Lambda function to run. You can access information about the uploaded object via `event`, `s3_event`, and `s3_object`.
