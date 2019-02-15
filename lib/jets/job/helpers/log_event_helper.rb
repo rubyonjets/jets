@@ -3,7 +3,7 @@ require 'json'
 require 'stringio'
 require 'zlib'
 
-class Jets::Job
+module Jets::Job::Helpers
   module LogEventHelper
     def log_event
       encoded = event["awslogs"]["data"]

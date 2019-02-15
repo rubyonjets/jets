@@ -9,14 +9,28 @@ Here is an example connecting an existing DynamoDB table's stream to a Lambda fu
 
 ```ruby
 class ClerkJob < ApplicationJob
-  dynamodb_event "test-table"
+  dynamodb_event "test-table" # existing table
   def file
     puts "event #{JSON.dump(event)}"
   end
 end
 ```
 
+Here's the DynamoDB Lambda function trigger.
+
 ![](/img/docs/dynamodb-trigger.png)
+
+Note you must enable DynamoDB streaming for the table yourself first.  Refer to the "Enabling DynamoDB Streams" section on how to do this.
+
+## Enabling DynamoDB Streams
+
+Here's where you enable streams with the DynamoDB console.
+
+![](/img/docs/dynamodb-stream.png)
+
+Here's also an example of how to enable streams with the [aws dynamodb update-table](https://docs.aws.amazon.com/cli/latest/reference/dynamodb/update-table.html) cli.
+
+    aws dynamodb update-table --table-name test-table --stream-specification "StreamEnabled=true,StreamViewType=NEW_AND_OLD_IMAGES"
 
 ## Event Payload
 
@@ -68,16 +82,6 @@ Here's a screenshot of the event in the CloudWatch Log console.
 
 ![](/img/docs/dynamodb-event-log.png)
 
-
-## Enabling DynamoDB Streams
-
-Here's where you enable streams with the DynamoDB console.
-
-![](/img/docs/dynamodb-stream.png)
-
-Here's also an example of how to enable streams with the [aws dynamodb update-table](https://docs.aws.amazon.com/cli/latest/reference/dynamodb/update-table.html) cli.
-
-    aws dynamodb update-table --table-name test-table --stream-specification "StreamEnabled=true,StreamViewType=NEW_AND_OLD_IMAGES"
 
 ## IAM Policy
 

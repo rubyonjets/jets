@@ -72,4 +72,17 @@ describe Jets::Job::Base do
       expect(data.key?("logEvents")).to be true
     end
   end
+
+  context "kinesis log event" do
+    it "kinesis_data" do
+      event = json_file("spec/fixtures/dumps/kinesis/records.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.kinesis_data)
+
+      expect(job.event.key?("Records")).to be true
+      expect(job.kinesis_data).to eq(["hello world", "hello world", "hello world"])
+    end
+  end
 end
