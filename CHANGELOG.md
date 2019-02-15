@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
 
+## [1.8.2]
+- fix Jets.on_exception reporting
+
 ## [1.8.1]
 - #194 fix jets eager load, order by path length
 - #193 jets new fails during jets webpacker:install
