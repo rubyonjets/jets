@@ -140,6 +140,6 @@ end
 
 The `notification_configuration` setting maps to the [ruby aws-sdk put_bucket_notification_configuration method's options](https://amzn.to/2N7m5Lr). With it, you can apply event filter rules on which s3 objects fires off a notification event.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch-log.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/events-iot.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/events-sns.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

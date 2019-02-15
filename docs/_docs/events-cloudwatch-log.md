@@ -6,13 +6,17 @@ Jets supports [CloudWatch Log Events](https://docs.aws.amazon.com/AmazonCloudWat
 
 ```ruby
 class LogJob < ApplicationJob
-  log_event "my-log-group"
+  log_event "/aws/lambda/hello"
   def report
     puts "event #{JSON.dump(event)}"
     puts "log_event #{JSON.dump(log_event)}"
   end
 end
 ```
+
+Here's where the logs subscription filter is in the CloudWatch console:
+
+![](/img/docs/logs-subscription-filter.png)
 
 The `log_event` declaration creates a [AWS::Logs::SubscriptionFilter](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-subscriptionfilter.html).  So you can provide a filter pattern like so:
 
@@ -73,18 +77,10 @@ Jets provides the uncompressed data via `log_event`:
      "REPORT RequestId: 4c198403-1a94-427b-9d8e-45a20c20122a\tDuration: 173.73 ms\tBilled Duration: 200 ms \tMemory Size: 128 MB\tMax Memory Used: 55 MB\t\n"}]}
 ```
 
-The code is essentially:
+Here's a screenshot of CloudWatch logs to show an example of this data:
 
-```ruby
-encoded = event["awslogs"]["data"]
-compressed_string = Base64.decode64(encoded)
-gz = Zlib::GzipReader.new(StringIO.new(compressed_string))
-uncompressed_string = gz.read
-data = JSON.load(uncompressed_string)
-data = ActiveSupport::HashWithIndifferentAccess.new(data)
-```
-
+![](/img/docs/logs-subscription-filter-cloudwatch.png)
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch-event.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/events-s3.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/events-iot.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

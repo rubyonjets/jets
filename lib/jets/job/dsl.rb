@@ -10,6 +10,7 @@ module Jets::Job::Dsl
   extend ActiveSupport::Concern
   autoload :CloudwatchEvent, "jets/job/dsl/cloudwatch_event"
   autoload :EventSourceMapping, "jets/job/dsl/event_source_mapping" # base for sqs_event, etc
+  autoload :IotEvent, "jets/job/dsl/iot_event"
   autoload :LogEvent, "jets/job/dsl/log_event"
   autoload :S3Event, "jets/job/dsl/s3_event"
   autoload :SnsEvent, "jets/job/dsl/sns_event"
@@ -19,6 +20,7 @@ module Jets::Job::Dsl
     class << self
       include CloudwatchEvent
       include EventSourceMapping
+      include IotEvent
       include LogEvent
       include S3Event
       include SnsEvent

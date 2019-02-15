@@ -54,6 +54,6 @@ Read the documentation for [Function Properties]({% link _docs/function-properti
 * For more complex Rails apps, you might want to consider looking into [Jets Mega Mode](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda). Mega Mode allows you to selectively run parts of your app in Rails and parts in Jets.
 * Some apps might just make more sense to run as a Jets app. Jets was built and specifically designed for the serverless world.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/upgrading.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/rack.md %}">Next Step</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/events-sqs.md %}">Back</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/routing-overview.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

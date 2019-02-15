@@ -56,6 +56,10 @@ A special `:topic_properties` key will set the [SNS::Topic](https://docs.aws.ama
   )
 ```
 
+Here's an example screenshot of a generated SNS topic:
+
+![](/img/docs/sns-topic.png)
+
 Note, SNS Topics managed by Jets are deleted when you delete the Jets application.
 
 ## Generated Shared SNS Topic

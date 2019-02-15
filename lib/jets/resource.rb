@@ -8,6 +8,7 @@ class Jets::Resource
   autoload :Config, 'jets/resource/config'
   autoload :Events, 'jets/resource/events'
   autoload :Iam, 'jets/resource/iam'
+  autoload :Iot, 'jets/resource/iot'
   autoload :Lambda, 'jets/resource/lambda'
   autoload :Logs, 'jets/resource/logs'
   autoload :Permission, 'jets/resource/permission'
