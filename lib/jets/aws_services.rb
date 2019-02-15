@@ -1,6 +1,7 @@
 require "aws-sdk-apigateway"
 require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
+require "aws-sdk-dynamodb"
 require "aws-sdk-lambda"
 require "aws-sdk-s3"
 require "aws-sdk-sts"
@@ -24,6 +25,11 @@ module Jets::AwsServices
     Aws::CloudFormation::Client.new
   end
   memoize :cfn
+
+  def dynamodb
+    Aws::DynamoDB::Client.new
+  end
+  memoize :dynamodb
 
   def lambda
     Aws::Lambda::Client.new
