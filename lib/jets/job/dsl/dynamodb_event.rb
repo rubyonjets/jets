@@ -19,6 +19,7 @@ module Jets::Job::Dsl
       event_source_mapping(props)
     end
 
+
     # Expands table name to the full stream arn. Example:
     #
     #   test-table

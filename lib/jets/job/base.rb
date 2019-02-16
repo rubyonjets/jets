@@ -6,15 +6,15 @@ require 'json'
 # Both Jets::Job::Base and Jets::Lambda::Functions have Dsl modules included.
 # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
 class Jets::Job
-  autoload :LogEventHelper, "jets/job/log_event_helper"
-  autoload :S3EventHelper, "jets/job/s3_event_helper"
+  autoload :Helpers, "jets/job/helpers"
 
   class Base < Jets::Lambda::Functions
     include Dsl
 
     # non-DSL methods
-    include LogEventHelper
-    include S3EventHelper
+    include Helpers::KinesisEventHelper
+    include Helpers::LogEventHelper
+    include Helpers::S3EventHelper
 
     # Tracks bucket each time an s3_event is declared
     # Map of bucket_name => stack_name (nested part)

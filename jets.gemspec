@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-cloudwatchlogs"
   spec.add_dependency "aws-sdk-dynamodb"
+  spec.add_dependency "aws-sdk-kinesis"
   spec.add_dependency "aws-sdk-lambda"
   spec.add_dependency "aws-sdk-s3"
   spec.add_dependency "aws-sdk-sns"

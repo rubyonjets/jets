@@ -1,4 +1,4 @@
-class Jets::Job
+module Jets::Job::Helpers
   module S3EventHelper
     def s3_event
       message = event["Records"][0]["Sns"]["Message"]

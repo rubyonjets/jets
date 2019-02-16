@@ -62,5 +62,5 @@ You should see the data in the Lambda function's CloudWatch logs.
 ![](/img/docs/iot-cloudwatch-log.png)
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/events-dynamodb.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/events-s3.md %}">Next Step</a>
+<a id="next" class="btn btn-primary" href="{% link _docs/events-kinesis.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
