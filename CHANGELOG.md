@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.5]
+- #198 DynamoDB Stream Event Support
+- #199 Kinesis Event support
+
 ## [1.8.4]
 - rename s3_event_message to s3_event helper
 
