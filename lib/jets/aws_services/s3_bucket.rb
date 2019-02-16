@@ -12,6 +12,10 @@ module Jets::AwsServices
 
     def ensure_exists
       s3.create_bucket(bucket: @name) unless exists?
+    rescue Aws::S3::Errors::BucketAlreadyExists => e
+      puts "ERROR #{e.class}: #{e.message}".color(:red)
+      puts "Bucket name: #{@name}"
+      exit 1
     end
 
     def exists?
