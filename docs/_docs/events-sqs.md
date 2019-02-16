@@ -13,7 +13,7 @@ We'll cover each of them:
 
 ## Existing SQS Queue
 
-Here is an example connecting an existing SQS queue to the Lambda function in a [Job]({% link _docs/jobs.md %})
+Here is an example connecting an existing SQS queue to a Lambda function in a [Job]({% link _docs/jobs.md %})
 
 ```ruby
 class HardJob
