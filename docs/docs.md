@@ -23,7 +23,7 @@ For those who would like to learn some AWS essentials, you might like this intro
 For those that would like to jump into Jets more directly, you might like this:
 
 {% assign posts = site.data.tutorial_series %}
-{% for post in posts | limit: 4 %}
+{% for post in posts limit: 4 %}
 * [{{ post.title }}]({{ post.url }}){% endfor %}
 
 ## Videos
