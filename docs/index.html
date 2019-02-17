@@ -57,7 +57,7 @@ subnav: false
                         <div class="article-box">
                           <div class="row">
 
-                          {% assign home_articles = site.data.articles | concat: site.data.intro_series | concat: site.data.tutorial_series %}
+                          {% assign home_articles = site.data.intro_series | concat: site.data.tutorial_series | concat: site.data.articles %}
                           {% assign posts = home_articles %}
                           {% for post in posts limit: 99 %}
                           <div class="col-md-4">
