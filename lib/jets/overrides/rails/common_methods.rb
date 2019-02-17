@@ -14,7 +14,8 @@ module Jets::CommonMethods
   memoize :add_stage?
 
   def on_aws?
-    !request.headers['HTTP_X_AMZN_TRACE_ID'].nil?
+    on_cloud9 = !!(request.headers['HTTP_HOST'] =~ /cloud9\..*\.amazonaws\.com/)
+    !request.headers['HTTP_X_AMZN_TRACE_ID'].nil? && !on_cloud9
   end
   memoize :on_aws?
 end
