@@ -57,6 +57,7 @@ class SecurityJob < ApplicationJob
     }
   )
   def instance_stopping
+    puts "event #{JSON.dump(event)}" # event is available
     # logic goes here
   end
 end
@@ -87,6 +88,7 @@ class SecurityJob < ApplicationJob
   )
   rate "10 hours"
   def perform_some_logic
+    puts "event: #{JSON.dump(event)}" # event is available
     # logic goes here
   end
 end
