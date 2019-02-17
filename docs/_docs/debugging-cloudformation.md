@@ -35,6 +35,6 @@ When a child stack is created for the very first time and happens to fail, Cloud
 
 You may want to try incrementally debugging it. First, create a simple class with just one method and get that deployed successfully. And then add your full logic and deploy again. With this approach, the rolled back child stack remain intact and you can see the error message post deploy.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/debugging-help.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/debugging-tips.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/debugging-cloudwatch-log.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
