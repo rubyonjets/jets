@@ -71,7 +71,8 @@ module Jets::Controller::Middleware
 
     def on_aws?(env)
       return false if ENV['TEST'] # usually with test we're passing in full API Gateway fixtures with the HTTP_X_AMZN_TRACE_ID
-      !!env['HTTP_X_AMZN_TRACE_ID']
+      on_cloud9 = !!(env['HTTP_HOST'] =~ /cloud9\..*\.amazonaws\.com/)
+      !!env['HTTP_X_AMZN_TRACE_ID'] && !on_cloud9
     end
 
     def routes_error_message(env)
