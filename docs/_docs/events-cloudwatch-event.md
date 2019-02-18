@@ -35,7 +35,7 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-Here's what the event rule looks like in the CloudWatch console:
+Note, events for security group changes come from CloudTrail and currently take about 15 minutes to be delivered. Here's what the event rule looks like in the CloudWatch console:
 
 ![](/img/docs/cloudwatch-event-rule.png)
 
