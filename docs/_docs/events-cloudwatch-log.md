@@ -32,7 +32,8 @@ class LogJob < ApplicationJob
 end
 ```
 
-It is recommended that you use a `filter_pattern` because there can be a lot of CloudWatch Log event data.
+It is recommended that you use a `filter_pattern` because there can be a lot of CloudWatch Log event data.  Here are the docs on [Searching and Filtering Log Data
+](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/MonitoringLogData.html).  You can do regular text filter if your logs are plain text and JSON-path based filtering if your logs are JSON.
 
 ## Event Payloads
 
