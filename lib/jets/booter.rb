@@ -112,7 +112,7 @@ class Jets::Booter
       ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
 
       current_config = db_configs[Jets.env]
-      if current_config.empty?
+      if current_config.blank?
         abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
       end
       # Using ActiveRecord rake tasks outside of Rails, so we need to set up the
