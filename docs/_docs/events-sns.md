@@ -71,7 +71,7 @@ app/shared/resources/topic.rb:
 
 ```ruby
 class Topic < Jets::Stack
-  sqs_queue(:engineering)
+  sqs_topic(:engineering)
 end
 ```
 
