@@ -1,5 +1,5 @@
 ---
-title: CloudWatch Events
+title: CloudWatch Event Rules
 categories: events
 ---
 
@@ -11,21 +11,19 @@ An example might be getting notified when an unwanted security group port gets o
 
 ```ruby
 class SecurityJob < ApplicationJob
-  events_rule(
-    description: "Detects security group changes",
-    event_pattern: {
-      detail_type: ["AWS API Call via CloudTrail"],
-      detail: {
-        event_source: ["ec2.amazonaws.com"],
-        event_name: [
-          "AuthorizeSecurityGroupIngress",
-          "AuthorizeSecurityGroupEgress",
-          "RevokeSecurityGroupIngress",
-          "RevokeSecurityGroupEgress",
-          "CreateSecurityGroup",
-          "DeleteSecurityGroup"
-        ]
-      }
+  rule_event(
+    description: "Checks for security group changes",
+    detail_type: ["AWS API Call via CloudTrail"],
+    detail: {
+      event_source: ["ec2.amazonaws.com"],
+      event_name: [
+        "AuthorizeSecurityGroupIngress",
+        "AuthorizeSecurityGroupEgress",
+        "RevokeSecurityGroupIngress",
+        "RevokeSecurityGroupEgress",
+        "CreateSecurityGroup",
+        "DeleteSecurityGroup"
+      ]
     }
   )
   def detect_security_group_changes
@@ -35,6 +33,9 @@ class SecurityJob < ApplicationJob
 end
 ```
 
+The `rule_event` declaration creates an [AWS::Events::Rule
+](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) and sets the event_pattern attributes.  The `description` property is treated specially and is added as a property to the AWS::Events::Rule properties structure appropriately.
+
 Note, events for security group changes come from CloudTrail and currently take about 15 minutes to be delivered. Here's what the event rule looks like in the CloudWatch console:
 
 ![](/img/docs/cloudwatch-event-rule.png)
@@ -43,17 +44,21 @@ Here's an example from the CloudWatch log when the Lambda function runs:
 
 ![](/img/docs/cloudwatch-event-rule-log.png)
 
-## Simple Examples
+## Complete Form
 
-You can further simplify the code with `event_pattern`. Here's another example that detects when an instance goes into stopping state.
+If you need more control, and you can also set any properties of the [AWS::Events::Rule
+](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) by passing a hash. Here's another example that detects when an instance goes into stopping state.
 
 ```ruby
 class SecurityJob < ApplicationJob
-  event_pattern(
-    source: ["aws.ec2"],
-    detail_type: ["EC2 Instance State-change Notification"],
-    detail: {
-      state: ["stopping"],
+  rule_event(
+    description: "Detects when instance stops",
+    event_pattern: {
+      source: ["aws.ec2"],
+      detail_type: ["EC2 Instance State-change Notification"],
+      detail: {
+        state: ["stopping"],
+      }
     }
   )
   def instance_stopping
@@ -67,18 +72,18 @@ This pattern of watching CloudWatch events can be used for things like automatic
 
 ## Multiple Events Support
 
-Registering multiple events to the same Lambda function is supported. Add multiple event rules above the method definition. Example:
+Registering multiple events to the same Lambda function is supported. Add multiple `rule_event` declarations above the method definition. Example:
 
 ```ruby
 class SecurityJob < ApplicationJob
-  event_pattern(
+  rule_event(
     source: ["aws.ec2"],
     detail_type: ["EC2 Instance State-change Notification"],
     detail: {
       state: ["stopping"],
     }
   )
-  event_pattern(
+  rule_event(
     detail_type: ["AWS API Call via CloudTrail"],
     detail: {
       userIdentity: {
@@ -94,14 +99,13 @@ class SecurityJob < ApplicationJob
 end
 ```
 
-Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.  Underneath the hood `rate` delegates to the `events_rule` method.
+Notice in the above example that you can even mix in the `rate` declaration with the Lambda function.  Underneath the hood `rate` delegates to the `rule_event` method.
 
 ## Related links
 
 * [Invoke Lambda Function in Response to an Event](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html#w2ab1c21c10d697c13b4)
 * [Event Patterns in CloudWatch Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/CloudWatchEventsandEventPatterns.html)
 * [CloudWatch Events Event Examples From Each Supported Service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html) - Long list of supported events.
-
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/events.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/events-cloudwatch-log.md %}">Next Step</a>
