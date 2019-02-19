@@ -94,7 +94,7 @@ Underneath the hood, Jets provisions resources via CloudFormation.  The use of `
 
 ## Send Test Message
 
-Here's an example of sending a message to an SQS queue via the CLI:
+Here's an example of sending a message to an SQS queue via the [aws sqs send-message](https://docs.aws.amazon.com/cli/latest/reference/sqs/send-message.html) CLI:
 
     aws sqs send-message --queue-url https://sqs.us-west-2.amazonaws.com/112233445566/test-queue --message-body '{"test": "hello world"}'
 
