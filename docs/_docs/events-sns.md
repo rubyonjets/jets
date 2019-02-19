@@ -81,8 +81,8 @@ app/jobs/hard_job.rb:
 
 ```ruby
 class HardJob
-  depends_on :topic # makes Jets pass the Topic shared resource outputs to HardJob
-  sns_event "!Ref Engineering" # reference Engineering by camelized convention
+  depends_on :topic # so we can reference topic shared resources
+  sns_event ref(:engineering) # reference sns topic in shared resource
   def fix
     puts "fix #{JSON.dump(event)}"
   end
@@ -92,6 +92,41 @@ end
 Underneath the hood, Jets provisions resources via CloudFormation.  The use of `depends_on` ensures that Jets will pass the shared resource `Topic` stack outputs to the `HardJob` stack as input parameters. This allows `HardJob` to reference resources from the separate child `Topic` stack.
 
 {% include cloudformation_links.md %}
+
+## Publish Test Message
+
+Here's an example of publishing a test message to an SNS topic via the CLI:
+
+    aws sns publish --topic-arn arn:aws:sns:us-west-2:112233445566:my-topic --message '{"default": "test message"}'
+
+You can send a message via the SNS Console, sdk, etc also.
+
+## Event Payloads
+
+```json
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-west-2:112233445566:demo-dev-Topic-JSTMFREHSV9U-Engineering-1PS3HM70TS67H:ba5887af-fe4c-44c9-bbd7-f7f0e6d652de",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "e3d54a5f-fee2-51cc-abc7-1eb99d074475",
+                "TopicArn": "arn:aws:sns:us-west-2:112233445566:demo-dev-Topic-JSTMFREHSV9U-Engineering-1PS3HM70TS67H",
+                "Subject": null,
+                "Message": "{\"default\": \"test message\"}",
+                "Timestamp": "2019-02-19T20:05:57.063Z",
+                "SignatureVersion": "1",
+                "Signature": "XDv0YTmNgyfqTLiWDev6ZRMkl9PoWnlAYIM5jW9PmPRrYG+TdfDAxcxmD7gYsEk3Eol/EqtBlFHTjWVcH7F6JQDu6hNO1P4f/k0VLGX94AdMP51riGDAC/S4yuHPT1Muq1WLFuT/Ttol1cTW2UH5kVMG7eIOfNTt4Qe3Kf4q2pRNTh5Z2EGULgjkea//OsRIfz3vfLlNUTyn1JKp2Q427CpoSZ/4YSk/wdL7IEVzWbKssgkiITIzLxS/KUr30OF+WLCnvHbBLVXo8nyscRTHRho6cgC4QtjUL6XOeXh5EPg4NB0i5nzgBe+2xIgXne5yMUHIWwW6fQ8Ouq+UliO4ZA==",
+                "SigningCertUrl": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-ac565b8b1a6c5d002d285f9598aa1d9b.pem",
+                "UnsubscribeUrl": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:112233445566:demo-dev-Topic-JSTMFREHSV9U-Engineering-1PS3HM70TS67H:ba5887af-fe4c-44c9-bbd7-f7f0e6d652de",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}
+```
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/events-s3.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/events-sqs.md %}">Next Step</a>

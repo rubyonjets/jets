@@ -5,7 +5,7 @@ categories: events
 
 Jets supports [Kinesis Events](https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html) as a Lambda trigger. You can use Lambda to process the data from Kinesis. The Lambda function has access to the stream data via `event` and `kinesis_data`.
 
-Here is an example connecting an existing Kinesis stream to a Lambda function in a [Job]({% link _docs/jobs.md %})
+Here is an example connecting an existing Kinesis stream to a Lambda function in a [Job]({% link _docs/jobs.md %}).
 
 ```ruby
 class DataJob < ApplicationJob
@@ -91,6 +91,12 @@ Since there can be multiple records, kinesis_data is an Array that contains the 
 Here's a screenshot of the event in the CloudWatch Log console.
 
 ![](/img/docs/kinesis-log.png)
+
+## Create Stream Example
+
+Here's an example of creating a kinesis stream via the CLI:
+
+    aws kinesis create-stream --stream-name my-stream --shard-count 1
 
 ## IAM Policy
 
