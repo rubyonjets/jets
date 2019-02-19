@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.7]
+- #204 from CodingAnarchy/boot-missing-env
+- #205 rename to rule_event
+- add ref helper method
+- deprecate: events_rule and event_pattern
+
 ## [1.8.6]
 - #202 fix on_aws detection when using cloud9 hostname. Fixes #201
 - user friendly error message when s3 bucket name has already been taken
