@@ -15,7 +15,7 @@ The `jets deploy` command itself logs the CloudFormation of the parent stack.  H
     Deploying CloudFormation stack with jets app!
     03:20:27AM UPDATE_IN_PROGRESS AWS::CloudFormation::Stack demo-dev User Initiated
     ...
-    03:20:44AM UPDATE_FAILED AWS::CloudFormation::Stack JetsPreheatJob Embedded stack arn:aws:cloudformation:us-west-2:536766270177:stack/demo-dev-JetsPreheatJob-IXX3J912KGKS/f4fec860-1871-11e9-94d5-0a57e06cb5fc was not successfully updated. Currently in UPDATE_ROLLBACK_IN_PROGRESS with reason: The following resource(s) failed to update: [WarmLambdaFunction, TorchLambdaFunction].
+    03:20:44AM UPDATE_FAILED AWS::CloudFormation::Stack JetsPreheatJob Embedded stack arn:aws:cloudformation:us-west-2:112233445566:stack/demo-dev-JetsPreheatJob-IXX3J912KGKS/f4fec860-1871-11e9-94d5-0a57e06cb5fc was not successfully updated. Currently in UPDATE_ROLLBACK_IN_PROGRESS with reason: The following resource(s) failed to update: [WarmLambdaFunction, TorchLambdaFunction].
     03:20:45AM UPDATE_FAILED AWS::CloudFormation::Stack JetsPublicController Resource update cancelled
     03:20:45AM UPDATE_FAILED AWS::CloudFormation::Stack PostsController Resource update cancelled
     ...

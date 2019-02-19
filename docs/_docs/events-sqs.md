@@ -80,8 +80,8 @@ app/jobs/hard_job.rb:
 ```ruby
 class HardJob
   class_timeout 30 # must be less than or equal to the SQS queue default timeout
-  depends_on :list # makes Jets pass the List shared resource outputs to HardJob
-  sqs_event "!Ref Waitlist" # reference Waitlist by camelized convention
+  depends_on :list # so we can reference list shared resources
+  sqs_event ref(:waitlist) # reference sqs queue in shared resource
   def fix
     puts "fix #{JSON.dump(event)}"
   end
@@ -91,6 +91,41 @@ end
 Underneath the hood, Jets provisions resources via CloudFormation.  The use of `depends_on` ensures that Jets will pass the shared resource `List` stack outputs to the `HardJob` stack as input parameters. This allows `HardJob` to reference resources from the separate child `List` stack.
 
 {% include cloudformation_links.md %}
+
+## Send Test Message
+
+Here's an example of sending a message to an SQS queue via the CLI:
+
+    aws sqs send-message --queue-url https://sqs.us-west-2.amazonaws.com/112233445566/test-queue --message-body '{"test": "hello world"}'
+
+You can send a message via the SQS Console, sdk, etc also.
+
+## Event Payloads
+
+Here's an example of the event payload.
+
+```json
+{
+    "Records": [
+        {
+            "messageId": "1e0bfe01-f9df-46c0-8d86-2fd898e4dee9",
+            "receiptHandle": "AQEBgxVw0hjHeNKB1brir4hr0Fxvz4ERJIqd7bP/iHw82/+UUx/r4W0KG3FSiEA4A+Vk0oS8dT6W8be/Bn7eJjKspZfW2KzC0xzsCmS+BihySk1SX9FM5SW1rFd3bFWYtT6s7pOX2inaU/THtn7Envp5Rs+zehmNIspnLPZkf9h3RFSQk12xaVaOmCQnHtz9o8uKIXwMEwn5IhlJgC0DIuM1v8NZK8Hc65b4xpf09vf01LEA/XdXm24SjfJ0fl7ev2rBXtkMitAfNmKd8x0fcbG3O7H7wB+CIKR4+QvGcI6u9QuAdPU5MpIJ46niJmrtnIx70S5Go1paUYMa77ABBjFWoJkJHvHouuiohEQHdMrH1QSyabNBS2Nw2dikhBcXVtLQW4iH+xNXwLIVUxarAk9EHokh1iGWZsG91whmPaAl0t2Vdfo6Dcm0/6IgXhKcLFIw",
+            "body": "{\"test\": \"hello world\"}",
+            "attributes": {
+                "ApproximateReceiveCount": "1",
+                "SentTimestamp": "1550605918693",
+                "SenderId": "AIDAJTCD6O457Q7BMTLYM",
+                "ApproximateFirstReceiveTimestamp": "1550605918704"
+            },
+            "messageAttributes": {},
+            "md5OfBody": "3d635e69eb93fd184b47a31d460ca2b6",
+            "eventSource": "aws:sqs",
+            "eventSourceARN": "arn:aws:sqs:us-west-2:112233445566:demo-dev-List-3VJ13ADFT5VZ-Waitlist-X35N8JKWZTL3",
+            "awsRegion": "us-west-2"
+        }
+    ]
+}
+```
 
 ## IAM Policy
 

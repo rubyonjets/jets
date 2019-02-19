@@ -8,6 +8,7 @@ Service | Description
 --- | ---
 API Gateway | To create the API Gateway resources.
 CloudFormation | To create the CloudFormation stacks that then creates the most of the AWS resources that Jets creates.
+DynamoDB | To look up DynamoDB table stream arn if using [DynamoDB Events]({% link _docs/events-dynamodb.md %}).
 Events | To create the CloudWatch Event Rules for jobs.
 IAM | To create IAM roles to be associated with the Lambda functions.
 Lambda | To prewarm the application upon deployment completion.
@@ -33,6 +34,7 @@ Here's a summary of the commands:
                 "Action": [
                     "apigateway:*",
                     "cloudformation:*",
+                    "dynamodb:*",
                     "events:*",
                     "iam:*",
                     "lambda:*",

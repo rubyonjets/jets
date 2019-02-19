@@ -83,6 +83,6 @@ Here's a screenshot of CloudWatch logs to show an example of this data:
 
 ![](/img/docs/logs-subscription-filter-cloudwatch.png)
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch-event.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/events-cloudwatch-rule.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/events-dynamodb.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
