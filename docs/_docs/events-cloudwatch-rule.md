@@ -34,7 +34,7 @@ end
 ```
 
 The `rule_event` declaration creates an [AWS::Events::Rule
-](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) and sets the event_pattern attributes.  The `description` property is treated specially and is added as a property to the AWS::Events::Rule properties structure appropriately.
+](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) and sets the `event_pattern` attributes.  The `description` property is treated specially and is added as a property to the AWS::Events::Rule structure appropriately.
 
 Note, events for security group changes come from CloudTrail and currently take about 15 minutes to be delivered. Here's what the event rule looks like in the CloudWatch console:
 
