@@ -232,6 +232,10 @@ module Jets::Lambda::Dsl
         end
       end
 
+      def ref(name)
+        "!Ref #{name.to_s.camelize}"
+      end
+
       # meth is a Symbol
       def method_added(meth)
         return if %w[initialize method_missing].include?(meth.to_s)

@@ -39,10 +39,6 @@ module Jets::Job::Dsl
       class_attribute :rule_counter
       self.rule_counter = 0
 
-      def ref(name)
-        "!Ref #{name.to_s.camelize}"
-      end
-
       # TODO: Get rid of default_associated_resource_definition concept.
       # Also gets rid of the need to keep track of running @associated_properties too.
       def default_associated_resource_definition(meth)
