@@ -28,7 +28,7 @@ For those that would like to jump into Jets more directly, you might like this:
 
 ## Jets Events Series
 
-For those that would like are interested in connecting events with Jets and using it as a Glue Framework.
+For those interested in connecting events with Jets and using it as a Glue Framework.
 
 {% assign posts = site.data.events_series %}
 {% for post in posts limit: 4 %}
