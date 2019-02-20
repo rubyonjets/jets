@@ -26,6 +26,15 @@ For those that would like to jump into Jets more directly, you might like this:
 {% for post in posts limit: 4 %}
 * [{{ post.title }}]({{ post.url }}){% endfor %}
 
+## Jets Events Series
+
+For those that would like are interested in connect events with Jets and using it as a Glue Framework.
+
+{% assign posts = site.data.events_series %}
+{% for post in posts limit: 4 %}
+* [{{ post.title }}]({{ post.url }}){% endfor %}
+
+
 ## Videos
 
 Here are the video playlists for the tutorial series.
