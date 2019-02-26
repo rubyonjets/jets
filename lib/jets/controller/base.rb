@@ -4,6 +4,7 @@ require "rack/utils" # Rack::Utils.parse_nested_query
 # Controller public methods get turned into Lambda functions.
 class Jets::Controller
   class Base < Jets::Lambda::Functions
+    include ActiveSupport::Rescuable
     include Callbacks
     include Cookies
     include Layout
