@@ -21,3 +21,4 @@ demo*
 /html
 spec/fixtures/apps/franky/dynamodb/migrate
 Gemfile.lock 
+.byebug_history
