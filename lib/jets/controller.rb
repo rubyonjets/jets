@@ -13,5 +13,4 @@ class Jets::Controller
   autoload :Rendering, "jets/controller/rendering"
   autoload :Request, "jets/controller/request"
   autoload :Response, "jets/controller/response"
-  autoload :Rescue, "jets/controller/rescue"
 end
