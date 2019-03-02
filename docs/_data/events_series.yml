@@ -5,3 +5,11 @@
 - url: https://blog.boltops.com/2019/02/22/s3-events-and-aws-lambda-with-ruby-on-jets
   title: "S3 Events"
   thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_586/https://blog.boltops.com/img/posts/2019/02/events-s3-v1.png
+
+- url: https://blog.boltops.com/2019/02/25/sqs-events-and-aws-lambda-with-ruby-on-jets
+  title: "SQS Events"
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_393/https://blog.boltops.com/img/posts/2019/02/events-sqs-v1.png
+
+- url: https://blog.boltops.com/2019/02/27/sns-events-and-aws-lambda-with-ruby-on-jets
+  title: "SNS Events"
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_591/https://blog.boltops.com/img/posts/2019/02/events-sns-v1.png
