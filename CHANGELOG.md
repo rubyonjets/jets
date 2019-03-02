@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.8]
+- #206 cache aws service clients globally for lambda performance
+- #211 Jets controller rescue_from support http://rubyonjets.com/docs/rescue-from/
+- #212 fix s3 event function for long bucket names
+
 ## [1.8.7]
 - #204 from CodingAnarchy/boot-missing-env
 - #205 rename to rule_event
