@@ -209,6 +209,12 @@ class Jets::Booter
                       .sub(%r{app/shared/\w+/},'') # remove shared/resources or shared/extensions
                       .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
         class_name = class_name.classify
+
+        if ENV['JETS_DEBUG_EAGER_LOAD']
+          puts "path: #{path}"
+          puts "class_name: #{class_name}"
+        end
+
         class_name.constantize # use constantize instead of require so dont have to worry about order.
       end
     end
