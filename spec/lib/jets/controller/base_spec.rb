@@ -10,6 +10,12 @@ describe Jets::Controller::Base do
   let(:context) { nil }
   let(:meth) { "index" }
 
+  context "class methods" do
+    it "responds to rescue_from method" do
+      expect(Jets::Controller::Base.respond_to?(:rescue_from)).to be true
+    end
+  end
+
   context "general" do
     let(:event) { {} }
     it "lambda_functions returns public user-defined methods" do

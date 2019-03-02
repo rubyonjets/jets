@@ -4,10 +4,8 @@ class Jets::Controller
   module Callbacks
     extend ActiveSupport::Concern
     included do
-      class_attribute :before_actions
-      self.before_actions = []
-      class_attribute :after_actions
-      self.after_actions = []
+      class_attribute :before_actions, default: []
+      class_attribute :after_actions, default: []
 
       class << self
         def before_action(meth, options={})

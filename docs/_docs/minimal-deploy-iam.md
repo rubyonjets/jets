@@ -75,6 +75,6 @@ This page refers to your **user** IAM policy used when running `jets deploy`. Th
 * [IAM Policies]({% link _docs/iam-policies.md %})
 * [Managed IAM Policies]({% link _docs/managed-iam-policies.md %})
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/action-filters.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/rescue-from.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/custom-inflections.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

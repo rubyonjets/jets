@@ -9,6 +9,7 @@ class Jets::Controller
     include Layout
     include Params
     include Rendering
+    include ActiveSupport::Rescuable
 
     delegate :headers, to: :request
     delegate :set_header, to: :response
@@ -37,19 +38,24 @@ class Jets::Controller
       t1 = Time.now
       log_info_start
 
-      if run_before_actions(break_if: -> { @rendered })
-        send(@meth)
+      begin
+        if run_before_actions(break_if: -> { @rendered })
+          send(@meth)
+          action_completed = true
+        else
+          Jets.logger.info "Filter chain halted as #{@last_callback_name} rendered or redirected"
+        end
+        
         triplet = ensure_render
-        run_after_actions
-      else
-        Jets.logger.info "Filter chain halted as #{@last_callback_name} rendered or redirected"
+        run_after_actions if action_completed
+      rescue Exception => exception
+        rescue_with_handler(exception) || raise
         triplet = ensure_render
       end
 
       took = Time.now - t1
       status = triplet[0]
       Jets.logger.info "Completed Status Code #{status} in #{took}s"
-
       triplet # status, headers, body
     end
 
