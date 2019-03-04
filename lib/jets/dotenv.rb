@@ -11,7 +11,7 @@ class Jets::Dotenv
   end
 
   def load!
-    ::Dotenv.load(*dotenv_files)
+    ::Dotenv.overload(*dotenv_files)
   end
 
   # dotenv files with the following precedence:
