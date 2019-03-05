@@ -1,20 +1,11 @@
-# Piggy back off of Rails Generators.
-class Jets::Destroy
-  def self.invoke(generator, *args)
-    new(generator, *args).invoke
+module Jets::Invoker
+  def self.included(klass)
+    klass.extend(ClassMethods)
   end
 
   def initialize(generator, *args)
     @generator = generator
     @args = args
-  end
-
-  def invoke
-    # lazy require so Rails const is only defined when using generators
-    require "rails/generators"
-    require "rails/configuration"
-    Rails::Generators.configure!(config)
-    Rails::Generators.invoke(@generator, @args, behavior: :revoke, destination_root: Jets.root)
   end
 
   def config
@@ -37,5 +28,11 @@ class Jets::Destroy
   def template_paths
     templates_path = File.expand_path("../generator/templates", __FILE__)
     [templates_path]
+  end
+
+  module ClassMethods
+    def invoke(generator, *args)
+      new(generator, *args).invoke
+    end
   end
 end

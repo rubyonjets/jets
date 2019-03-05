@@ -12,7 +12,7 @@ title: CLI Reference
 * [jets dbconsole]({% link _reference/jets-dbconsole.md %})
 * [jets delete]({% link _reference/jets-delete.md %})
 * [jets deploy]({% link _reference/jets-deploy.md %})
-* [jets destroy]({% link _reference/jets-destroy.md %})
+* [jets degenerate]({% link _reference/jets-degenerate.md %})
 * [jets dynamodb:generate]({% link _reference/jets-dynamodb-generate.md %})
 * [jets dynamodb:migrate]({% link _reference/jets-dynamodb-migrate.md %})
 * [jets dynamodb:migrate:down]({% link _reference/jets-dynamodb-migrate-down.md %})

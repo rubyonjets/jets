@@ -1,5 +1,5 @@
 # Piggy back off of Rails Generators.
-class Jets::Generator
+class Jets::Degenerator
   include Jets::Invoker
 
   def invoke
@@ -7,6 +7,6 @@ class Jets::Generator
     require "rails/generators"
     require "rails/configuration"
     Rails::Generators.configure!(config)
-    Rails::Generators.invoke(@generator, @args, behavior: :invoke, destination_root: Jets.root)
+    Rails::Generators.invoke(@generator, @args, behavior: :revoke, destination_root: Jets.root)
   end
 end
