@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.9]
+- JETS\_DEBUG\_EAGER_LOAD flag
+- #216 fix webpacker v3.5 to v4 upgrade related issues
+
 ## [1.8.8]
 - #206 cache aws service clients globally for lambda performance
 - #211 Jets controller rescue_from support http://rubyonjets.com/docs/rescue-from/
