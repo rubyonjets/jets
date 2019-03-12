@@ -15,7 +15,7 @@ module Jets
           Hash[initializer]
         else
           value # do not transform values
-         end
+        end
       end
 
       def camelize_key(k, parent_keys=[])
@@ -34,8 +34,9 @@ module Jets
       end
 
       def passthrough?(k, parent_keys)
-        parent_keys.include?("Variables") || # do not transform keys anything under Variables
-        parent_keys.include?("ResponseParameters") || # do not transform keys anything under Variables
+        # do not transform keys anything under these special keys
+        parent_keys.include?("Variables") ||
+        parent_keys.include?("ResponseParameters") ||
         k.include?('-') || k.include?('/')
       end
 
