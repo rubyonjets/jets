@@ -30,7 +30,7 @@ Jets.application.configure do
   #   global_app_key2: "global_app_value2",
   # }
   # More examples:
-  # config.function.dead_letter_queue = { target_arn: "arn" }
+  # config.function.dead_letter_config = { target_arn: "arn" }
   # config.function.vpc_config = {
   #   security_group_ids: [ "sg-1", "sg-2" ],
   #   subnet_ids: [ "subnet-1", "subnet-2" ]
