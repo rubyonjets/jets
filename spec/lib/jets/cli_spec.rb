@@ -149,4 +149,17 @@ describe Jets::CLI do
     end
   end
 
+  context 'jets degenerate --help' do
+    let(:given_args) { ["degenerate", "help"] }
+
+    it "thor_args moves help command to the front" do
+      expect(command.thor_args).to eq(["help", "degenerate"]) # help in front
+    end
+
+    it "full_command, namespace, meth" do
+      expect(command.full_command).to eq "degenerate"
+      expect(command.namespace).to be nil
+      expect(command.meth).to  eq "degenerate"
+    end
+  end
 end
