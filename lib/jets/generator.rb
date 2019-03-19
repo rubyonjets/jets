@@ -1,11 +1,11 @@
 # Piggy back off of Rails Generators.
 class Jets::Generator
   def self.invoke(generator, *args)
-    new(generator, *args).invoke
+    new(generator, *args).run(:invoke)
   end
 
   def self.revoke(generator, *args)
-    new(generator, *args).revoke
+    new(generator, *args).run(:revoke)
   end
 
   def initialize(generator, *args)
@@ -15,9 +15,6 @@ class Jets::Generator
     require "rails/configuration"
     Rails::Generators.configure!(config)
   end
-
-  def invoke ; run(:invoke) ; end
-  def revoke ; run(:revoke) ; end
 
   def run(behavior=:invoke)
     Rails::Generators.invoke(@generator, @args, behavior: behavior, destination_root: Jets.root)
