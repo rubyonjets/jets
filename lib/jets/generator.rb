@@ -10,13 +10,13 @@ class Jets::Generator
 
   def initialize(generator, *args)
     @generator, @args = generator, args
+  end
+
+  def run(behavior=:invoke)
     # lazy require so Rails const is only defined when using generators
     require "rails/generators"
     require "rails/configuration"
     Rails::Generators.configure!(config)
-  end
-
-  def run(behavior=:invoke)
     Rails::Generators.invoke(@generator, @args, behavior: behavior, destination_root: Jets.root)
   end
 
