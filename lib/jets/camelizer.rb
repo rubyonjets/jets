@@ -61,6 +61,8 @@ module Jets
           "Ttl" => "TTL",
           "MaxReceiveCount" => "maxReceiveCount",
           "DeadLetterTargetArn" => "deadLetterTargetArn",
+          "DbSubnetGroupDescription" => "DBSubnetGroupDescription",
+          "DbSubnetGroupName" => "DBSubnetGroupName",
         }
       end
     end
