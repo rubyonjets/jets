@@ -16,12 +16,11 @@ class Jets::Generator
     Rails::Generators.configure!(config)
   end
 
-  def invoke
-    Rails::Generators.invoke(@generator, @args, behavior: :invoke, destination_root: Jets.root)
-  end
+  def invoke ; run(:invoke) ; end
+  def revoke ; run(:revoke) ; end
 
-  def revoke
-    Rails::Generators.invoke(@generator, @args, behavior: :revoke, destination_root: Jets.root)
+  def run(behavior=:invoke)
+    Rails::Generators.invoke(@generator, @args, behavior: behavior, destination_root: Jets.root)
   end
 
   def config
