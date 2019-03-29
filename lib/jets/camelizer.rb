@@ -6,7 +6,7 @@ module Jets
       def transform(value, parent_keys=[])
         case value
         when Array
-          value.map { |v| transform(v) }
+          value.map { |v| transform(v, parent_keys) }
         when Hash
           initializer = value.map do |k, v|
             new_key = camelize_key(k, parent_keys)
@@ -37,6 +37,7 @@ module Jets
         # do not transform keys anything under these special keys
         parent_keys.include?("Variables") ||
         parent_keys.include?("ResponseParameters") ||
+        parent_keys.include?("Fn::Sub") ||
         k.include?('-') || k.include?('/')
       end
 
