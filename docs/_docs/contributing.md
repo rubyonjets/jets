@@ -1,5 +1,6 @@
 ---
 title: Contributing to Jets
+nav_order: 81
 ---
 
 Hi there! Interested in contributing to Jets? We'd love your help. Jets is an open source project, built one contribution at a time by users like you.
@@ -99,6 +100,4 @@ For more thorough testing, you should create a jets demo app and run the integra
 
 Thanks! Hacking on Jets should be fun. If you find any of this hard to figure out, let us know so we can improve our process or documentation!
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/lambdagems.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link support.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

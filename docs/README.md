@@ -10,11 +10,16 @@ For minor changes like typos, you can click **Suggest an edit to this page**, lo
 
 For larger fixes, you can run the site locally with the following:
 
-```
-git clone https://github.com/tongueroo/jets.git
-cd jets/docs
-bundle
-bin/web
-```
+    git clone https://github.com/tongueroo/jets.git
+    cd jets/docs
+    bundle
+    bin/web
 
 You'll be able to view the site on [http://localhost:4000](http://localhost:4000).
+
+## Rordering Site Nav
+
+To reorder the `nav_order` for links on the sidenav run:
+
+    cd docs
+    jekyll-sort reorder

@@ -1,5 +1,6 @@
 ---
 title: Prewarming
+nav_order: 17
 ---
 
 Jets supports prewarming your application to remedy the Lambda cold start issue.  Prewarming is enabled by default.  Only [Controller]({% link _docs/controllers.md %}) functions are prewarmed. To adjust the prewarming settings, edit your `config/application.rb`. Example:
@@ -28,7 +29,7 @@ For example, with a rate of 2 hours and concurrent of 2, this results in the Lam
 
 The `prewarm.public_ratio` activates extra prewarming for the internal `jets/public_controller.rb`.  The `jets/public_controller.rb` handles serving static files out of the `public` folder. The `prewarm.public_ratio` tells Jets to prewarm the public_controller's lambda function a little bit extra. You can tune the extra prewarming ratio higher or lower according to your needs.
 
-Note: Even though you can serve assets out of the public folder directly, it is recommended to use the `asset_path` helper which will serve these files out of s3 instead when the app is running on API Gateway and Lambda.  For more info about [Asset Serving]({% link _docs/assets-serving.md %}) refer to the docs.
+Note: Even though you can serve assets out of the public folder directly, it is recommended to use the `asset_path` helper which will serve these files out of s3 instead when the app is running on API Gateway and Lambda.  For more info about [Asset Serving]({% link _docs/extras/assets-serving.md %}) refer to the docs.
 
 ## Rack Ratio
 
@@ -73,6 +74,4 @@ class PrewarmJob < ApplicationJob
 end
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/managed-iam-policies.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/env-files.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

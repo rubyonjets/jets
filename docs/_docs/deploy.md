@@ -1,5 +1,6 @@
 ---
 title: Deploy
+nav_order: 11
 ---
 
 Once you are ready to deploy your app to Lambda, it's one command to do so:
@@ -14,7 +15,7 @@ Lambda Functions:
 
 ## Minimal Deploy IAM Policy
 
-The IAM user you are using to run the `jets deploy` command needs a minimal set of IAM policies in order to deploy a Jets application. For more info, refer to the [Minimal Deploy IAM Policy]({% link _docs/minimal-deploy-iam.md %}) docs.
+The IAM user you are using to run the `jets deploy` command needs a minimal set of IAM policies in order to deploy a Jets application. For more info, refer to the [Minimal Deploy IAM Policy]({% link _docs/extras/minimal-deploy-iam.md %}) docs.
 
 ## Deploy to Different AWS Accounts
 
@@ -49,6 +50,4 @@ To deploy to different environments:
 
     jets deploy production
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/repl-console.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/jets-call.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

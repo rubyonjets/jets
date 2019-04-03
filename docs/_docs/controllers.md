@@ -1,5 +1,6 @@
 ---
 title: Controllers
+nav_order: 4
 ---
 
 A Jets controller handles a web request and renders a response. Here's an example:
@@ -28,6 +29,4 @@ For each public method in your controller, Jets creates a distinct Lambda functi
 
 ![](/img/docs/demo-lambda-functions-controller.png)
 
-<a id="prev" class="btn btn-basic" href="{% link docs.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/routing.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

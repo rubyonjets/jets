@@ -1,8 +1,9 @@
 ---
 title: Shared Resources
+nav_order: 57
 ---
 
-Shared resources are how you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/associated-resources.md %}), you can add custom AWS resources which are associated with Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as meant to be associated with a Lambda function. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
+Shared resources are how you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/function-resources.md %}), you can add custom AWS resources which are associated with Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as meant to be associated with a Lambda function. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
 
 ## SNS Topic Example
 
@@ -38,7 +39,7 @@ end
 
 The `lookup` method is available to the `Alert` class as a part of inheriting from the `Jets::Stack` class. Also note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb). For services not included, add the gem to your project's Gemfile and set up the client in the code.
 
-**Important:** You must use singularize names for your shared resource classes. So use `shared/resources/alert.rb` instead of `shared/resources/alerts.rb`. Jets relies on this naming convention to handle autoloading of shared resources. You can override this behavior by customizing inflections though with the [Inflections]({% link _docs/custom-inflections.md %}).
+**Important:** You must use singularize names for your shared resource classes. So use `shared/resources/alert.rb` instead of `shared/resources/alerts.rb`. Jets relies on this naming convention to handle autoloading of shared resources. You can override this behavior by customizing inflections though with the [Inflections]({% link _docs/extras/custom-inflections.md %}).
 
 ## General Resource Form
 
@@ -58,7 +59,7 @@ class Resource < Jets::Stack
 end
 ```
 
-The Jets::Stack `resource` method is similar to [Custom Associated Resources's]({% link _docs/associated-resources.md %}) `resource` method. It follows a similar expansion pattern.  With it, you can create any AWS resource in your Jets application. You can also create your own convenience wrapper methods and call `resource` and `output` as required: [Shared Resource Extensions]({% link _docs/shared-resources-extensions.md %}).
+The Jets::Stack `resource` method is similar to [Custom Associated Resources's]({% link _docs/function-resources.md %}) `resource` method. It follows a similar expansion pattern.  With it, you can create any AWS resource in your Jets application. You can also create your own convenience wrapper methods and call `resource` and `output` as required: [Shared Resource Extensions]({% link _docs/shared-resources/extensions.md %}).
 
 ## IAM Permission
 
@@ -66,6 +67,4 @@ The Jets::Stack `lookup` method uses a [CloudFormation Output](https://docs.aws.
 
 Understanding the general shared `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanations above help.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/associated-resources-extensions.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/shared-resources-dsl.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

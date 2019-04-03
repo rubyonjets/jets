@@ -1,5 +1,6 @@
 ---
 title: Jobs
+nav_order: 6
 ---
 
 A Jets job handles work which is better suited to run in the background - outside of the web request/response cycle. Here's an example:
@@ -68,6 +69,4 @@ end
 
 The cron expression is in the [AWS Cron format](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html).  The AWS Cron format has six required fields, separated by white space.  This is slightly different from the traditional Linux cron format which has 5 fields.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/routing.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/install.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

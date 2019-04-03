@@ -1,5 +1,6 @@
 ---
 title: Polymorphic Node
+nav_order: 75
 ---
 
 To write your Jets Lambda functions in node, it would look like this:
@@ -69,6 +70,4 @@ class PostsController < ApplicationController
 end
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/polymorphic-python.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/tutorials.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

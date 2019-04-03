@@ -4,5 +4,5 @@
 #   bin/web
 #   bin/web -P 8888
 
-jekyll clean
-exec jekyll serve --host 0.0.0.0 "$@"
+bundle exec jekyll clean
+exec bundle exec jekyll serve --host 0.0.0.0 "$@"

@@ -1,5 +1,6 @@
 ---
 title: Events
+nav_order: 20
 ---
 
 Jets is also a powerful Glue Serverless Framework.
@@ -15,6 +16,4 @@ AWS Lambda supports many event triggers.  With event triggers, you can use Lambd
 
 The next sections cover the event triggers.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/env-extra.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/events-cloudwatch-rule.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

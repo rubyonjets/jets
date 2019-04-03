@@ -1,5 +1,6 @@
 ---
 title: Env Files
+nav_order: 18
 ---
 
 Jets loads environment variables from `.env` files. The naming convention for these files is `.env.<environment>` .
@@ -33,6 +34,4 @@ To use the remote version within the `jets console`, you can use the `JETS_ENV_R
 
     JETS_ENV=development JETS_ENV_REMOTE=1 jets console
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/prewarming.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/env-extra.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}
