@@ -7,8 +7,9 @@ You can write and place simple Lambda functions in the `app/functions` folder. A
 app/functions/simple.rb:
 
 ```ruby
+require 'json'
 def lambda_handler(event:, context:)
-  pp event
+  puts "event: #{JSON.dump(event)}"
   puts "hello world"
   {foo: "bar"}
 end

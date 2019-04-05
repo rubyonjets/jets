@@ -1,0 +1,52 @@
+{
+    "Records": [
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "1",
+                "sequenceNumber": "49593016666855735301798073856083438124424404568371101698",
+                "data": "aGVsbG8gd29ybGQ=",
+                "approximateArrivalTimestamp": 1550289189.474
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000000:49593016666855735301798073856083438124424404568371101698",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::112233445566:role/demo-dev-DataJob-OUD26QSQSWKN-DataJobFileIamRole-CM2L7G0KZVY",
+            "awsRegion": "us-west-2",
+            "eventSourceARN": "arn:aws:kinesis:us-west-2:112233445566:stream/my-stream"
+        },
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "1",
+                "sequenceNumber": "49593016666855735301798073856084647050244019197545807874",
+                "data": "aGVsbG8gd29ybGQ=",
+                "approximateArrivalTimestamp": 1550289189.507
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000000:49593016666855735301798073856084647050244019197545807874",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::112233445566:role/demo-dev-DataJob-OUD26QSQSWKN-DataJobFileIamRole-CM2L7G0KZVY",
+            "awsRegion": "us-west-2",
+            "eventSourceARN": "arn:aws:kinesis:us-west-2:112233445566:stream/my-stream"
+        },
+        {
+            "kinesis": {
+                "kinesisSchemaVersion": "1.0",
+                "partitionKey": "1",
+                "sequenceNumber": "49593016666855735301798073856085855976063633895439990786",
+                "data": "aGVsbG8gd29ybGQ=",
+                "approximateArrivalTimestamp": 1550289189.621
+            },
+            "eventSource": "aws:kinesis",
+            "eventVersion": "1.0",
+            "eventID": "shardId-000000000000:49593016666855735301798073856085855976063633895439990786",
+            "eventName": "aws:kinesis:record",
+            "invokeIdentityArn": "arn:aws:iam::112233445566:role/demo-dev-DataJob-OUD26QSQSWKN-DataJobFileIamRole-CM2L7G0KZVY",
+            "awsRegion": "us-west-2",
+            "eventSourceARN": "arn:aws:kinesis:us-west-2:112233445566:stream/my-stream"
+        }
+    ]
+}

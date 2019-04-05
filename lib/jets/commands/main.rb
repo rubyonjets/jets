@@ -103,6 +103,12 @@ module Jets::Commands
       Jets::Generator.invoke(generator, *args)
     end
 
+    desc "degenerate [type] [args]", "Destroys things like scaffolds"
+    long_desc Help.text(:degenerate)
+    def degenerate(generator, *args)
+      Jets::Generator.revoke(generator, *args)
+    end
+
     desc "status", "Shows the current status of the Jets app"
     long_desc Help.text(:status)
     def status

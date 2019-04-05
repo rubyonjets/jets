@@ -1,6 +1,7 @@
 require "aws-sdk-apigateway"
 require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
+require "aws-sdk-dynamodb"
 require "aws-sdk-lambda"
 require "aws-sdk-s3"
 require "aws-sdk-sts"
@@ -9,52 +10,60 @@ require "aws-sdk-sns"
 require "aws-sdk-sqs"
 
 module Jets::AwsServices
+  autoload :GlobalMemoist, 'jets/aws_services/global_memoist'
+  autoload :S3Bucket, 'jets/aws_services/s3_bucket'
   autoload :StackStatus, 'jets/aws_services/stack_status'
+
+  include GlobalMemoist
   include StackStatus
-  extend Memoist
 
   def apigateway
     Aws::APIGateway::Client.new
   end
-  memoize :apigateway
+  global_memoize :apigateway
 
   def cfn
     Aws::CloudFormation::Client.new
   end
-  memoize :cfn
+  global_memoize :cfn
+
+  def dynamodb
+    Aws::DynamoDB::Client.new
+  end
+  global_memoize :dynamodb
 
   def lambda
     Aws::Lambda::Client.new
   end
-  memoize :lambda
+  global_memoize :lambda
 
   def logs
     Aws::CloudWatchLogs::Client.new
   end
-  memoize :logs
+  global_memoize :logs
 
   def s3
     Aws::S3::Client.new
   end
-  memoize :s3
+  global_memoize :s3
 
   def s3_resource
     Aws::S3::Resource.new
   end
-  memoize :s3_resource
+  global_memoize :s3_resource
 
   def sns
     Aws::SNS::Client.new
   end
-  memoize :sns
+  global_memoize :sns
 
   def sqs
     Aws::SQS::Client.new
   end
-  memoize :sqs
+  global_memoize :sqs
 
   def sts
     Aws::STS::Client.new
   end
-  memoize :sts
+  global_memoize :sts
 end

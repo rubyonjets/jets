@@ -47,7 +47,31 @@ With this design, Jets makes it is easy to create many nested stacks and use res
 
 ## App Classes: Controllers, Jobs, Etc
 
-The `depends_on` declaration also works in non-shared app classes.  When you add `depends_on` to an app class like a controller or a job, Jets will ensure that the resources are created in the dependent order and also pass the outputs of the independent stack to the dependent stack. This is useful in case you want to reference a resource from one stack to another.
+The `depends_on` declaration also works in non-shared app classes.  When you add `depends_on` to an app class like a controller or a job, Jets will ensure that the resources are created in the dependent order and also pass the outputs of the independent stack to the dependent stack. This is useful in case you want to reference a resource from one stack to another.  Example:
+
+app/shared/resources/list.rb:
+
+```ruby
+class List < Jets::Stack
+  sqs_queue(:waitlist)
+end
+```
+
+app/jobs/hard_job.rb:
+
+```ruby
+class HardJob < ApplicationJob
+  depends_on :list
+  class_timeout 30 # less than to equal to the default queue timeout
+
+  sqs_queue "!Ref Waitlist"
+  def dig
+    puts "done digging"
+  end
+end
+```
+
+Understanding of what is happening underneath the hood with Jets and CloudFormation helps to understand shared resources usage. Remember that each class gets translated into a nested child stack. The parameters are possibly passed between the stacks. The depends_on declaration tells Jets to pass all the outputs from the `List` stack as input parameters to the `HardJob` stack.  In this case, one of the outputs from the `sqs_queue(:waitlist)` resource declaration is `Waitlist`. The `Wailist` output contains the SQS arn.  `HardJob` references the input parameter. This is how it is possible for `HardJob` to refer to a resource created in another stack.
 
 <a id="prev" class="btn btn-basic" href="{% link _docs/shared-resources-extensions.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/shared-resources-functions.md %}">Next Step</a>

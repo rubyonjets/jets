@@ -12,13 +12,33 @@ class Jets::Application
   end
 
   def setup!
-    load_configs
+    load_default_config
+    setup_auto_load_paths
+  end
+
+  def configs!
+    load_environments_config
+    load_db_config
+    set_iam_policy # relies on dependent values, must be called afterwards
+    normalize_env_vars!
+  end
+
+  # After the mimimal template gets build, we need to reload it for the full stack
+  # creation. This allows us to reference IAM policies configs that depend on the
+  # creation of the s3 bucket.
+  def reload_configs!
+    # Tricky: reset only the things that depends on the minimal stack
+    @config.iam_policy = nil
+    configs!
   end
 
   def finish!
+    deprecated_configs_message
     load_inflections
-    setup_auto_load_paths
     load_routes
+    # Load libraries at the end to trigger onload so we can defined options in any order.
+    # Only action_mailer library have been used properly this way so far.
+    require 'action_mailer'
   end
 
   def load_inflections
@@ -98,6 +118,26 @@ class Jets::Application
     config.encoding = ActiveSupport::OrderedOptions.new
     config.encoding.default = "utf-8"
 
+    config.s3_event = ActiveSupport::OrderedOptions.new
+    # These notification_configuration properties correspond to the ruby aws-sdk
+    #   s3.put_bucket_notification_configuration
+    # in jets/s3_bucket_config.rb, not the CloudFormation Bucket properties. The CloudFormation
+    # bucket properties have a similiar structure but is slightly different so it can be confusing.
+    #
+    #   Ruby aws-sdk S3 Docs: https://amzn.to/2N7m5Lr
+    config.s3_event.configure_bucket = true
+    config.s3_event.notification_configuration = {
+      topic_configurations: [
+        {
+          events: ["s3:ObjectCreated:*"],
+          topic_arn: "!Ref SnsTopic", # must use this logical id
+        },
+      ],
+    }
+
+    # So tried to defined this in the jets/mailer.rb Turbine only but jets new requires it
+    # config.action_mailer = ActiveSupport::OrderedOptions.new
+
     config
   end
 
@@ -116,26 +156,16 @@ class Jets::Application
     project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') # project_name
   end
 
-  def load_app_config
+  def load_default_config
     @config = default_config
     set_dependent_configs! # things like project_namespace that need project_name
     eval_app_config # this overwrites Jets.config.project_name
     Jets.config.project_name = parse_project_name # Must set again because JETS_PROJECT_NAME is possible
-
-    set_iam_policy # relies on dependent values, must be called afterwards
-    normalize_env_vars!
   end
 
   def eval_app_config
     app_config = "#{Jets.root}/config/application.rb"
     load app_config # use load instead of require so reload_configs! works
-  end
-
-  # After the mimimal template gets build, we need to reload it for the full stack
-  # creation. This allows us to reference IAM policies configs that depend on the
-  # creation of the s3 bucket.
-  def reload_configs!
-    load_configs
   end
 
   def load_environments_config
@@ -144,13 +174,6 @@ class Jets::Application
       code = IO.read(env_file)
       instance_eval(code)
     end
-  end
-
-  def load_configs
-    load_app_config
-    load_db_config
-    load_environments_config
-    deprecated_configs_message
   end
 
   def deprecated_configs_message
@@ -195,8 +218,9 @@ class Jets::Application
     internal = File.expand_path("../internal", __FILE__)
     paths = %w[
       app/controllers
-      app/models
+      app/helpers
       app/jobs
+      app/models
     ]
     paths.map { |path| "#{internal}/#{path}" }
   end

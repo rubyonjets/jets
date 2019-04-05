@@ -10,7 +10,7 @@ subnav: false
                     <div class="header-content">
                         <div class="header-content-inner">
                             <h1>Jets: The Ruby Serverless Framework</h1>
-                            <h2>Jets allows you to create and deploy serverless microservices with ease, and to seamlessly glue AWS services together with the most beautiful dynamic language: Ruby. It includes everything you need to build an API and deploy it to AWS Lambda. Jets leverages the power of Ruby to make serverless joyful for everyone.</h2>
+                            <h2>Ruby on Jets allows you to create and deploy serverless microservices with ease, and to seamlessly glue AWS services together with the most beautiful dynamic language: Ruby. It includes everything you need to build an API and deploy it to AWS Lambda. Jets leverages the power of Ruby to make serverless joyful for everyone.</h2>
                             <a href="{% link docs.md %}" class="btn btn-outline btn-xl">Learn More!</a>
                         </div>
                     </div>
@@ -57,8 +57,9 @@ subnav: false
                         <div class="article-box">
                           <div class="row">
 
-                          {% assign posts = site.data.articles %}
-                          {% for post in posts limit: 30 %}
+                          {% assign home_articles = site.data.intro_series | concat: site.data.tutorial_series | concat: site.data.articles %}
+                          {% assign posts = home_articles %}
+                          {% for post in posts limit: 99 %}
                           <div class="col-md-4">
                             <div class="related-body">
                               <div class="related-thumbnail">

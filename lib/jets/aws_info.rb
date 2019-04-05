@@ -87,7 +87,7 @@ module Jets
     end
 
     def test?
-      ENV['TEST'] || ENV['CIRCLECI']
+      ENV['TEST']
     end
 
     private

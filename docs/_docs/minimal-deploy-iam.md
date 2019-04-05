@@ -8,6 +8,7 @@ Service | Description
 --- | ---
 API Gateway | To create the API Gateway resources.
 CloudFormation | To create the CloudFormation stacks that then creates the most of the AWS resources that Jets creates.
+DynamoDB | To look up DynamoDB table stream arn if using [DynamoDB Events]({% link _docs/events-dynamodb.md %}).
 Events | To create the CloudWatch Event Rules for jobs.
 IAM | To create IAM roles to be associated with the Lambda functions.
 Lambda | To prewarm the application upon deployment completion.
@@ -33,6 +34,7 @@ Here's a summary of the commands:
                 "Action": [
                     "apigateway:*",
                     "cloudformation:*",
+                    "dynamodb:*",
                     "events:*",
                     "iam:*",
                     "lambda:*",
@@ -73,6 +75,6 @@ This page refers to your **user** IAM policy used when running `jets deploy`. Th
 * [IAM Policies]({% link _docs/iam-policies.md %})
 * [Managed IAM Policies]({% link _docs/managed-iam-policies.md %})
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/action-filters.md %}">Back</a>
+<a id="prev" class="btn btn-basic" href="{% link _docs/rescue-from.md %}">Back</a>
 <a id="next" class="btn btn-primary" href="{% link _docs/custom-inflections.md %}">Next Step</a>
 <p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

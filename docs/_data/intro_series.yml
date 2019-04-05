@@ -1,0 +1,17 @@
+- url: https://blog.boltops.com/2019/02/04/aws-lambda-function-jets-introductory-series-part-1
+  title: "AWS Lambda Function: Jets Introduction Series Part 1"
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_535/https://blog.boltops.com/img/posts/2019/02/intro-series-lambda-function-v1.png
+
+- url: https://blog.boltops.com/2019/02/05/api-gateway-jets-introductory-series-part-2
+  title: "API Gateway: Jets Introduction Series Part 2"
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_520/https://blog.boltops.com/img/posts/2019/02/intro-series-api-gateway-v1.png
+
+- url: https://blog.boltops.com/2019/02/06/cloudwatch-event-rule-jets-introductory-series-part-3
+  title: "CloudWatch Event Rule: Jets Introduction Series Part 3"
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_468/https://blog.boltops.com/img/posts/2019/02/intro-series-cloudwatch-event-rule-v1.png
+
+- url: https://blog.boltops.com/2019/02/11/hello-world-examples-jets-introductory-series-part-4
+  title: "Hello World Examples: Jets Introduction Series Part 4"
+  thumbnail: https://res.cloudinary.com/boltops/image/fetch/c_limit,f_auto,q_auto,w_470/https://blog.boltops.com/img/posts/2019/02/intro-series-hello-world-v1.png
+
+

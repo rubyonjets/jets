@@ -28,7 +28,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v2-dependencies-{{ checksum "Gemfile.lock" }}
+          - v2-dependencies-{{ checksum "jets.gemspec" }}
           # fallback to using the latest cache if no exact match is found
           - v2-dependencies-
 
@@ -40,7 +40,7 @@ jobs:
       - save_cache:
           paths:
             - ./vendor/bundle
-          key: v2-dependencies-{{ checksum "Gemfile.lock" }}
+          key: v2-dependencies-{{ checksum "jets.gemspec" }}
 
       # Database setup
       # - run: bundle exec rake db:create

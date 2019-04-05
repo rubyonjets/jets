@@ -11,7 +11,7 @@ describe "Camelizer" do
     result.keys == ["FooBar"]
   end
 
-  it "do not pasalize anything under Variables" do
+  it "do not touch anything under Variables" do
     h = {foo_bar: 1, variables: {dont_touch: 2}}
     result = Jets::Camelizer.transform(h)
     # pp result

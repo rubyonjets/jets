@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-west-2:112233445566:my-bucket:bdc903bb-a51e-4799-b472-bd7293ce245b",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "434252ae-b80f-58ad-9c11-067761c040dd",
+                "TopicArn": "arn:aws:sns:us-west-2:112233445566:my-bucket",
+                "Subject": "Amazon S3 Notification",
+                "Message": "{\"Records\":[{\"eventVersion\":\"2.1\",\"eventSource\":\"aws:s3\",\"awsRegion\":\"us-west-2\",\"eventTime\":\"2019-02-10T07:49:35.265Z\",\"eventName\":\"ObjectCreated:Put\",\"userIdentity\":{\"principalId\":\"AWS:AROAJBZT6HZEMHALPTL4E:botocore-session-1549784243\"},\"requestParameters\":{\"sourceIPAddress\":\"11.22.33.44\"},\"responseElements\":{\"x-amz-request-id\":\"4F2A57016225F633\",\"x-amz-id-2\":\"ek4gBwsxZtNeiXV8xUfxocSy3cZLR8ws/HcI8qIyDx75ID7hekUMuMMsa4DYltRsX3v0zJ9kl1c=\"},\"s3\":{\"s3SchemaVersion\":\"1.0\",\"configurationId\":\"NzFkOWNiMzQtZDI1Ni00N2U2LTlmYzgtODdhNWJkOWVkNjNm\",\"bucket\":{\"name\":\"my-bucket\",\"ownerIdentity\":{\"principalId\":\"AYC6O1A20R123\"},\"arn\":\"arn:aws:s3:::my-bucket\"},\"object\":{\"key\":\"myfolder/subfolder/test.txt\",\"size\":0,\"eTag\":\"d41d8cd98f00b204e9800998ecf8427e\",\"sequencer\":\"005C5FD78F373E174B\"}}}]}",
+                "Timestamp": "2019-02-10T07:49:35.417Z",
+                "SignatureVersion": "1",
+                "Signature": "nCgvhLBccqWkbCnmDk5t0RfIUkVo0toGDu13zkGxz7wkqCyv+10n2HO+Xy+qegfX2yB/yC3Vxzu9Sg/RbwLuVzqRWxtJ8YUSFx3UnUZEjrWLGTWrjyfkgrlDm8ovhT9hs1tSsoHm07lsUsxF+uhnBitFS8fKbe/PNBiTQKwLr2nUZxGy1zMrA75cdh/Ft7yDHy0S9bfcK/gosyfdSb1ggBQTQRoL2gZ46TAtciZ2eiGTUYW+PjSfAE9uKQcInSi2qvCIUTcWmRLXPDgRj3i5dJdjgqor8uCS+93kTF1OVURKJ5oMMmKVAabBGgJulZYQfaONd2si+H5Y8aUz5AzZSg==",
+                "SigningCertUrl": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-ac565b8b1a6c5d002d285f9598aa1d9b.pem",
+                "UnsubscribeUrl": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:112233445566:my-bucket:bdc903bb-a51e-4799-b472-bd7293ce245b",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}

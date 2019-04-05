@@ -1,20 +1,23 @@
 # Piggy back off of Rails Generators.
 class Jets::Generator
   def self.invoke(generator, *args)
-    new(generator, *args).invoke
+    new(generator, *args).run(:invoke)
+  end
+
+  def self.revoke(generator, *args)
+    new(generator, *args).run(:revoke)
   end
 
   def initialize(generator, *args)
-    @generator = generator
-    @args = args
+    @generator, @args = generator, args
   end
 
-  def invoke
+  def run(behavior=:invoke)
     # lazy require so Rails const is only defined when using generators
     require "rails/generators"
     require "rails/configuration"
     Rails::Generators.configure!(config)
-    Rails::Generators.invoke(@generator, @args, behavior: :invoke, destination_root: Jets.root)
+    Rails::Generators.invoke(@generator, @args, behavior: behavior, destination_root: Jets.root)
   end
 
   def config

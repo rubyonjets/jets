@@ -9,6 +9,7 @@ class Jets::Controller
     include Layout
     include Params
     include Rendering
+    include ActiveSupport::Rescuable
 
     delegate :headers, to: :request
     delegate :set_header, to: :response
@@ -37,27 +38,31 @@ class Jets::Controller
       t1 = Time.now
       log_info_start
 
-      if run_before_actions(break_if: -> { @rendered })
-        send(@meth)
+      begin
+        if run_before_actions(break_if: -> { @rendered })
+          send(@meth)
+          action_completed = true
+        else
+          Jets.logger.info "Filter chain halted as #{@last_callback_name} rendered or redirected"
+        end
+        
         triplet = ensure_render
-        run_after_actions
-      else
-        Jets.logger.info "Filter chain halted as #{@last_callback_name} rendered or redirected"
+        run_after_actions if action_completed
+      rescue Exception => exception
+        rescue_with_handler(exception) || raise
         triplet = ensure_render
       end
 
       took = Time.now - t1
       status = triplet[0]
       Jets.logger.info "Completed Status Code #{status} in #{took}s"
-
       triplet # status, headers, body
     end
 
     def log_info_start
       display_event = @event.dup
       display_event['body'] = '[BASE64_ENCODED]' if @event['isBase64Encoded']
-      # Interesting, JSON.dump makes logging look like JSON.pretty_generate in
-      # CloudWatch but not locally. This is what we want.
+      # JSON.dump makes logging look pretty in CloudWatch logs because it keeps it on 1 line
       ip = request.ip
       Jets.logger.info "Started #{@event['httpMethod']} \"#{@event['path']}\" for #{ip} at #{Time.now}"
       Jets.logger.info "Processing #{self.class.name}##{@meth}"

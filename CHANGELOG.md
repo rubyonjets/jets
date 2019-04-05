@@ -1,7 +1,61 @@
 # Change Log
 
 All notable changes to this project will be documented in this file.
-This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/), even before v1.0.
+This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
+
+## [1.8.9]
+- JETS\_DEBUG\_EAGER_LOAD flag
+- #216 fix webpacker v3.5 to v4 upgrade related issues
+
+## [1.8.8]
+- #206 cache aws service clients globally for lambda performance
+- #211 Jets controller rescue_from support http://rubyonjets.com/docs/rescue-from/
+- #212 fix s3 event function for long bucket names
+
+## [1.8.7]
+- #204 from CodingAnarchy/boot-missing-env
+- #205 rename to rule_event
+- add ref helper method
+- deprecate: events_rule and event_pattern
+
+## [1.8.6]
+- #202 fix on_aws detection when using cloud9 hostname. Fixes #201
+- user friendly error message when s3 bucket name has already been taken
+
+## [1.8.5]
+- #198 DynamoDB Stream Event Support
+- #199 Kinesis Event support
+
+## [1.8.4]
+- rename s3_event_message to s3_event helper
+
+## [1.8.3]
+- #196 CloudWatch Log Event support
+- #197 IoT Event Support
+
+## [1.8.2]
+- fix Jets.on_exception reporting
+
+## [1.8.1]
+- #194 fix jets eager load, order by path length
+- #193 jets new fails during jets webpacker:install
+
+## [1.8.0]
+- #191 Email Support via ActionMailer
+- #192 S3 Event Support
+- Turbine after_initializer
+- Improve Jets.boot ordering
+
+## [1.7.2]
+- #189: spec_helpers: `get` request now converts dangling params to query params. `query` keyword can be used to do the same thing explicitly.
+- #190 SNS Event Lambda Trigger Support
+- Start rack server on 127.0.0.1 for mega mode
+
+## [1.7.1]
+- fix Turbines with no initializer blocks
+
+## [1.7.0]
+- #188 sqs event support
 
 ## [1.6.9]
 - #184 improve default cors options request access-control-allow-methods

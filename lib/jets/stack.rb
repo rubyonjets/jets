@@ -1,12 +1,14 @@
 module Jets
   class Stack
-    autoload :Definition, 'jets/stack/definition' # Registration and definitions
-    autoload :Main, 'jets/stack/main'
-    autoload :Parameter, 'jets/stack/parameter'
-    autoload :Output, 'jets/stack/output'
-    autoload :Resource, 'jets/stack/resource'
     autoload :Builder, 'jets/stack/builder'
+    autoload :Definition, 'jets/stack/definition' # Registration and definitions
+    autoload :Depends, 'jets/stack/depends'
     autoload :Function, 'jets/stack/function'
+    autoload :Main, 'jets/stack/main'
+    autoload :Output, 'jets/stack/output'
+    autoload :Parameter, 'jets/stack/parameter'
+    autoload :Resource, 'jets/stack/resource'
+    autoload :S3Event, 'jets/stack/s3_event'
 
     include Main::Dsl
     include Parameter::Dsl
@@ -24,6 +26,20 @@ module Jets
       def inherited(base)
         super
         self.subclasses << base if base.name
+      end
+
+      # klass = Jets::Stack.new_class("Bucket3")
+      def new_class(class_name, &block)
+        # https://stackoverflow.com/questions/4113479/dynamic-class-definition-with-a-class-name
+        # Defining the constant this way gets around: SyntaxError: dynamic constant assignment error
+        klass = Class.new(Jets::Stack) # First klass is an anonymous class. IE: class.name is nil
+        klass = Object.const_set(class_name, klass) # now klass is a named class
+        Jets::Stack.subclasses << klass # mimic inherited hook because
+
+        # Must run class_eval after adding to subclasses in order for the resource declarations in the
+        # so that the resources get registered to the right subclass.
+        klass.class_eval(&block)
+        klass # return klass
       end
 
       # Build it to figure out if we need to build the stack for the SharedBuilder

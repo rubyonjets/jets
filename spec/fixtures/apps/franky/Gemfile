@@ -3,7 +3,7 @@ source "https://rubygems.org"
 if File.exist?("dev.mode")
   gem "jets", path: "#{ENV['HOME']}/environment/jets"
 else
-  gem "jets", git: "https://github.com/tongueroo/jets.git", submodules: true
+  gem "jets", git: "https://github.com/tongueroo/jets.git", submodules: true, branch: "master"
 end
 
 gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"

@@ -43,4 +43,46 @@ describe Jets::Job::Base do
     end
   end
 
+  context "s3 upload" do
+    it "s3_event" do
+      event = json_file("spec/fixtures/dumps/sns/s3_upload.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.s3_event)
+      # puts JSON.pretty_generate(job.s3_object)
+
+      expect(job.s3_event.key?("Records")).to be true
+
+      expect(job.s3_object.key?("key")).to be true
+      expect(job.s3_object[:key]).to eq "myfolder/subfolder/test.txt"
+    end
+  end
+
+  context "cloudwatch log event" do
+    it "log_event" do
+      event = json_file("spec/fixtures/dumps/logs/log_event.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.log_event)
+
+      data = job.log_event
+      expect(data["messageType"]).to eq "DATA_MESSAGE"
+      expect(data.key?("logEvents")).to be true
+    end
+  end
+
+  context "kinesis log event" do
+    it "kinesis_data" do
+      event = json_file("spec/fixtures/dumps/kinesis/records.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.kinesis_data)
+
+      expect(job.event.key?("Records")).to be true
+      expect(job.kinesis_data).to eq(["hello world", "hello world", "hello world"])
+    end
+  end
 end

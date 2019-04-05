@@ -11,7 +11,7 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 
 **Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/upgrading/).
 
-## What is Jets?
+## What is Ruby on Jets?
 
 Jets is a Ruby Serverless Framework.  Jets allows you to create serverless applications with a beautiful language: Ruby.  It includes everything required to build an application and deploy it to AWS Lambda.
 
@@ -31,7 +31,7 @@ Jets supports writing AWS Lambda functions with Ruby. You define them in the `ap
 app/functions/simple.rb:
 
 ```ruby
-def handler_function(event:, context:)
+def lambda_handler(event:, context:)
   puts "hello world"
   {hello: "world"}
 end

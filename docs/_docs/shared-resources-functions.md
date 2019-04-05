@@ -75,7 +75,7 @@ The methods `ruby_function`, `python_function`, and `node_function` all delegate
 class Custom
   function(:kevin,
     handler: "kevin.lambda_handler",
-    runtime: "python3.6"
+    runtime: "ruby2.5"
   )
 end
 ```
@@ -90,7 +90,7 @@ class Custom
       s3_key: code_s3_key
     },
     handler: "kevin.lambda_handler",
-    runtime: "python3.6"
+    runtime: "ruby2.5"
   )
 end
 ```

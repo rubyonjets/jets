@@ -6,7 +6,7 @@ module Jets
       def transform(value, parent_keys=[])
         case value
         when Array
-          value.map { |v| transform(v) }
+          value.map { |v| transform(v, parent_keys) }
         when Hash
           initializer = value.map do |k, v|
             new_key = camelize_key(k, parent_keys)
@@ -15,7 +15,7 @@ module Jets
           Hash[initializer]
         else
           value # do not transform values
-         end
+        end
       end
 
       def camelize_key(k, parent_keys=[])
@@ -34,8 +34,10 @@ module Jets
       end
 
       def passthrough?(k, parent_keys)
-        parent_keys.include?("Variables") || # do not transform keys anything under Variables
-        parent_keys.include?("ResponseParameters") || # do not transform keys anything under Variables
+        # do not transform keys anything under these special keys
+        parent_keys.include?("Variables") ||
+        parent_keys.include?("ResponseParameters") ||
+        parent_keys.include?("Fn::Sub") ||
         k.include?('-') || k.include?('/')
       end
 
@@ -60,6 +62,8 @@ module Jets
           "Ttl" => "TTL",
           "MaxReceiveCount" => "maxReceiveCount",
           "DeadLetterTargetArn" => "deadLetterTargetArn",
+          "DbSubnetGroupDescription" => "DBSubnetGroupDescription",
+          "DbSubnetGroupName" => "DBSubnetGroupName",
         }
       end
     end
