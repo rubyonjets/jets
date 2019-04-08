@@ -1,5 +1,6 @@
 ---
 title: Overview
+nav_order: 2
 ---
 
 ## What is Ruby on Jets?
@@ -43,6 +44,4 @@ Here are the video playlists for the tutorial series.
 {% for post in posts %}
 * [{{ post.title }}]({{ post.url }}){% endfor %}
 
-<a id="prev" class="btn btn-basic" href="{% link quick-start.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/functions.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

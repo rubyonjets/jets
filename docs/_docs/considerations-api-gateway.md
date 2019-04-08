@@ -1,5 +1,6 @@
 ---
 title: API Gateway Routes
+nav_order: 77
 ---
 
 Jets translates `config/routes.rb` definitions to API Gateway Resources: [Routing Overview](http://rubyonjets.com/docs/routing-overview/). Essentially, API Gateway is the routing layer of a Jets application.  From the [AWS API Gateway](https://aws.amazon.com/api-gateway/) product page:
@@ -45,7 +46,7 @@ When you try to deploy this, it will fail with an error that looks something lik
     11:30:01PM UPDATE_FAILED AWS::CloudFormation::Stack ApiGateway Embedded stack arn:aws:cloudformation:us-west-2:112233445566:stack/demo-dev-ApiGateway-154WB3G5JW51D/9725de30-19e4-11e9-8459-0688a7bf983a was not successfully updated. Currently in UPDATE_ROLLBACK_IN_PROGRESS with reason: The following resource(s) ...
     $
 
-Going to the [CloudFormation console]({% link _docs/debugging-cloudformation.md %}) and clicking on the `ApiGateway Embedded stack` child stack allows you to see the error details:
+Going to the [CloudFormation console]({% link _docs/debugging/cloudformation.md %}) and clicking on the `ApiGateway Embedded stack` child stack allows you to see the error details:
 
 > A sibling ({id}) of this resource already has a variable path part -- only one is allowed
 
@@ -57,6 +58,4 @@ You can manually reproduce the error in the API Gateway console also.
 
 So currently, to fix this you must rename `:post_id` to `:id` and use the same sibling variables under the same parent paths.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/considerations.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/articles.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

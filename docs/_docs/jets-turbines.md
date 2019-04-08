@@ -1,5 +1,6 @@
 ---
 title: Jets Turbine
+nav_order: 47
 ---
 
 A `Jets::Turbine` provides hooks to extend Jets and or modify the initialization process.
@@ -34,6 +35,4 @@ module SentryJets
 end
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/faster-development.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/initializers.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

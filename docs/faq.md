@@ -1,5 +1,6 @@
 ---
 title: FAQ
+nav_order: 79
 ---
 
 **Q: How do I set cookies from Jets?**
@@ -38,6 +39,4 @@ or
     JETS_AGREE=yes jets deploy
     JETS_AGREE=no jets deploy
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/articles.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/lambdagems.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

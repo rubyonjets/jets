@@ -1,5 +1,6 @@
 ---
-title: "Rails Support: Afterburner Mode"
+title: 'Rails Support: Afterburner Mode'
+nav_order: 29
 ---
 
 Jets supports deploying Rails applications sometimes without any changes to your code.
@@ -50,10 +51,8 @@ Read the documentation for [Function Properties]({% link _docs/function-properti
 * Do not add jets to your Rails project's Gemfile. Adding it to the Gemfile might result in bundler being unable to resolve dependencies. Jets is used as a stand-alone tool in Afterburner mode.
 * Afterburner mode is pretty awesome but is not a panacea for all Rails applications. Each and every Rails application is different and likely makes assumptions that it's running on a traditional server not serverless.
 * For example, the app might upload files or images to the filesystem. This doesn't work on AWS Lambda because the app doesn't have access to a persistent filesystem. The application would have to be reworked to store files on a distributed store like S3 instead.
-* Also, AWS currently limits the total Lambda code size + [Gem Layer]({% link _docs/gem-layer.md %}) to 250MB. AWS Docs [Lambda Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). The baseline Rails gems add up to about 146MB, so you have about 104MB of space left for additional gems.
+* Also, AWS currently limits the total Lambda code size + [Gem Layer]({% link _docs/extras/gem-layer.md %}) to 250MB. AWS Docs [Lambda Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). The baseline Rails gems add up to about 146MB, so you have about 104MB of space left for additional gems.
 * For more complex Rails apps, you might want to consider looking into [Jets Mega Mode](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda). Mega Mode allows you to selectively run parts of your app in Rails and parts in Jets.
 * Some apps might just make more sense to run as a Jets app. Jets was built and specifically designed for the serverless world.
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/events-sqs.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/routing-overview.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

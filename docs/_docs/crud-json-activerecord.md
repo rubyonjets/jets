@@ -149,7 +149,3 @@ To delete the, here's the curl command:
 
     $ curl -X DELETE http://localhost:8888/posts/1
     {"deleted":true}
-
-<a id="prev" class="btn btn-basic" href="{% link _docs/crud-html-activerecord.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/considerations.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>

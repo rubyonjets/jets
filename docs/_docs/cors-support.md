@@ -1,5 +1,6 @@
 ---
 title: CORS Support
+nav_order: 33
 ---
 
 Enabling CORS is simple.  You just set `config.cors` in the `config/application.rb` file.  Here's an example:
@@ -65,8 +66,6 @@ Jets.application.configure do
 end
 ```
 
-More info: [Routes Authorization]({% link _docs/routing-authorization.md %})
+More info: [Routes Authorization]({% link _docs/routing/authorization.md %})
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/routing-custom-domain.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/rack.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}
