@@ -50,11 +50,12 @@ That's it! You'll be automatically subscribed to receive updates as others revie
 
 1. Fork the project by clicking "Fork" in the top right corner of [tongueroo/jets](https://github.com/tongueroo/jets).
 2. Clone the repository locally `git clone https://github.com/<you-username>/jets`.
-3. Create a new, descriptively named branch to contain your change ( `git checkout -b my-awesome-feature` ).
-4. Hack away, add tests. Not necessarily in that order.
-5. Make sure everything still passes by running `bundle exec rspec` (see [the tests section](#running-tests-locally) below)
-6. Push the branch up ( `git push origin my-awesome-feature` ).
-7. Create a pull request by visiting `https://github.com/<your-username>/jets` and following the instructions at the top of the screen.
+3. Fetch submodules `git submodule init && git submodule update`.
+4. Create a new, descriptively named branch to contain your change ( `git checkout -b my-awesome-feature` ).
+5. Hack away, add tests. Not necessarily in that order.
+6. Make sure everything still passes by running `bundle exec rspec` (see [the tests section](#running-tests-locally) below)
+7. Push the branch up ( `git push origin my-awesome-feature` ).
+8. Create a pull request by visiting `https://github.com/<your-username>/jets` and following the instructions at the top of the screen.
 
 ## Proposing updates to the documentation
 
