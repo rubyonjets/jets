@@ -9,7 +9,7 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
 [![Support](https://img.shields.io/badge/Support-Help-blue.svg)](http://rubyonjets.com/support/)
 
-**Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/upgrading/).
+**Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/extras/upgrading/).
 
 ## What is Ruby on Jets?
 
