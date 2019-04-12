@@ -1,7 +1,7 @@
 describe Jets::Commands::Call do
   let(:call) do
     call = Jets::Commands::Call.new(provided_function_name, event, mute: true)
-    allow(call).to receive(:lambda).and_return(null)
+    allow(call).to receive(:aws_lambda).and_return(null)
     call
   end
   let(:null) { double(:null).as_null_object }
