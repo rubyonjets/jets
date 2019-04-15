@@ -15,7 +15,7 @@ Here's a quick intro on how to effectively use CloudWatch logs to narrow down to
 
 ![](/img/docs/cloudwatch-log-group.png)
 
-2) Once you click on the **demo-dev-posts_controller-index** Log Group, you will see a lot of streams. The biggest piece of advice here is to reframe from clicking on any of the streams, but instead, click on the **Search Log Group** button immediately.  Doing this tells CloudWtach to search through all the streams instead of just one stream.
+2) Once you click on the **demo-dev-posts_controller-index** Log Group, you will see a lot of streams. The biggest piece of advice here is to reframe from clicking on any of the streams, but instead, click on the **Search Log Group** button immediately.  Doing this tells CloudWatch to search through all the streams instead of just one stream.
 
 ![](/img/docs/cloudwatch-log-streams.png)
 
