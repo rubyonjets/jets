@@ -1,5 +1,6 @@
 ---
 title: The Jets Community Conduct Guideline
+nav_order: 83
 ---
 
 We have picked the following conduct guideline based on Ruby's.  We wish for the Jets community to be safe, productive, and collaborative. Each Jets related community may pick their own Conduct Guideline or Code.
@@ -19,6 +20,4 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 
 This conduct guideline based on [The Ruby Community Conduct Guideline](https://www.ruby-lang.org/en/conduct/).
 
-<a id="prev" class="btn btn-basic" href="{% link support.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/next-steps.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

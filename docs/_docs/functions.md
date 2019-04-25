@@ -1,5 +1,6 @@
 ---
 title: Functions
+nav_order: 3
 ---
 
 You can write and place simple Lambda functions in the `app/functions` folder. A simple lambda function looks like this:
@@ -27,6 +28,4 @@ Here's an article that covers writing a simple lambda function with Jets: [Jets 
 
 Though manually creating simple Lambda functions is possible with Jets, the full power of Jets is in automatically generating the Lambda functions that your API requires. Your API's Lambda functions are defined for you behind the scenes when you use Jets [Controllers]({% link _docs/controllers.md %}) and [Jobs]({% link _docs/jobs.md %}). These classes give you many conveniences methods to make your life easier. We'll cover them next.
 
-<a id="prev" class="btn btn-basic" href="{% link docs.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/controllers.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

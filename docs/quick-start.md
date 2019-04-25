@@ -1,5 +1,6 @@
 ---
 title: Quick Start
+nav_order: 1
 ---
 
 In a hurry? No problem!  Here's a quick start to get going.
@@ -40,5 +41,4 @@ API Gateway:
 
 Congratulations!  You have successfully deployed your serverless ruby application. It's that simple. 😁
 
-<a id="next" class="btn btn-primary" href="{% link docs.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

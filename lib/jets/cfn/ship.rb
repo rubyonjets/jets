@@ -66,7 +66,7 @@ class Jets::Cfn
       begin
         cfn.update_stack(stack_options)
       rescue Aws::CloudFormation::Errors::ValidationError => e
-        puts "ERROR: #{e.message}".red
+        puts "ERROR: #{e.message}".color(:red)
         true # error
       end
     end

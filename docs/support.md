@@ -1,5 +1,6 @@
 ---
 title: Support
+nav_order: 82
 ---
 
 ## Getting Help
@@ -29,6 +30,4 @@ If you would like professional help, [BoltOps](https://www.boltops.com/) provide
 * Training: Mentorship, education, and understanding how to leverage and use AWS and serverless paradigms.
 * Consulting: Can help review, design, and architect your serverless application. Can evaluate trade-offs, limits, and benefits. Or just provide general guidance. 
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/contributing.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/conduct.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}

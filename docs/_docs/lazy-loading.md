@@ -2,7 +2,7 @@
 title: Lazy Loading
 ---
 
-**Update**: Thanks to the introduction of the [Gem Layer]({% link _docs/gem-layer.md %}), Lazy Loading is not longer needed. This doc no longer applies and is kept around only for posterity.
+**Update**: Thanks to the introduction of the [Gem Layer]({% link _docs/extras/gem-layer.md %}), Lazy Loading is not longer needed. This doc no longer applies and is kept around only for posterity.
 
 Jets supports lazy loading of dependency libraries like RubyGems and the Ruby interpreter.  The [AWS documentation](https://docs.aws.amazon.com/lambda/latest/dg/limits.html) recommends:
 

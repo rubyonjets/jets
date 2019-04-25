@@ -1,5 +1,6 @@
 ---
 title: Application Configuration
+nav_order: 13
 ---
 
 You can set application-wide configurations in the `config/application.rb` file. You can configure global things like project_name, extra_autoload_paths, function timeout, memory size, etc. Example:
@@ -60,6 +61,4 @@ Jets.application.configure do
 end
 ```
 
-<a id="prev" class="btn btn-basic" href="{% link _docs/jets-call.md %}">Back</a>
-<a id="next" class="btn btn-primary" href="{% link _docs/function-properties.md %}">Next Step</a>
-<p class="keyboard-tip">Pro tip: Use the <- and -> arrow keys to move back and forward.</p>
+{% include prev_next.md %}
