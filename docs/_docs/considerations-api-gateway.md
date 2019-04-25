@@ -3,7 +3,7 @@ title: API Gateway Routes
 nav_order: 77
 ---
 
-Jets translates `config/routes.rb` definitions to API Gateway Resources: [Routing Overview](http://rubyonjets.com/docs/routing-overview/). Essentially, API Gateway is the routing layer of a Jets application.  From the [AWS API Gateway](https://aws.amazon.com/api-gateway/) product page:
+Jets translates `config/routes.rb` definitions to API Gateway Resources: [Routing Overview](http://rubyonjets.com/docs/routing/). Essentially, API Gateway is the routing layer of a Jets application.  From the [AWS API Gateway](https://aws.amazon.com/api-gateway/) product page:
 
 >  You can create REST and WebSocket APIs that act as a “front door” for applications to access data, business logic, or functionality from your backend services, such as workloads running on Amazon Elastic Compute Cloud (Amazon EC2), code running on AWS Lambda, any web application, or real-time communication applications.
 
