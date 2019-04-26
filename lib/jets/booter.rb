@@ -206,6 +206,7 @@ class Jets::Booter
                       .sub(/\.rb$/,'') # remove .rb
                       .sub(%{^\./},'') # remove ./
                       .sub("#{Jets.root}/",'')
+                      .sub(%r{app\/\w+/concerns/},'')
                       .sub(%r{app/shared/\w+/},'') # remove shared/resources or shared/extensions
                       .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
         class_name = class_name.classify

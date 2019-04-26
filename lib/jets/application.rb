@@ -201,9 +201,18 @@ class Jets::Application
   #   app/models
   #   app/rules
   #   app/shared/resources
+  #
+  # Also include:
+  #   app/models/concerns
+  #   app/controllers/concerns
   def default_autoload_paths
     paths = []
     Dir.glob("#{Jets.root}/app/*").each do |p|
+      p.sub!('./','')
+      paths << p unless exclude_autoload_path?(p)
+    end
+    # Handle concerns folders
+    Dir.glob("#{Jets.root}/app/**/concerns").each do |p|
       p.sub!('./','')
       paths << p unless exclude_autoload_path?(p)
     end
