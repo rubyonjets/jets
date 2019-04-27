@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.10]
+- #208 add jets degenerate as opposite of generator
+- #219 fix circleci usage, remove CIRCLECI env
+- #222 fix config.function.dead_letter_config in starter application.rb
+- #223 add jets degenerate as opposite of generator cleanup
+- #224 add jets degenerate as opposite of generator cleanup
+- #228 organize docs better into subfolders
+- #230 Fix ValidationError branch of Cfn::Ship#update_stack
+- #231 Add git submodules to contributing documentation.
+- #234 Better API mode controller generator
+- #238 Fix routing link in considerations-api-gateway doc
+- #239 autoload concerns and allow them to work
+
 ## [1.8.9]
 - JETS\_DEBUG\_EAGER_LOAD flag
 - #216 fix webpacker v3.5 to v4 upgrade related issues
