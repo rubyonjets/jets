@@ -2,7 +2,7 @@ This piggy backs off of the [rails scaffold generator](https://guides.rubyonrail
 
 ## Example
 
-    $ jets generate scaffold Post title:string body:text published:boolean
+    $ jets generate scaffold post title:string body:text published:boolean
           invoke  active_record
           create    db/migrate/20180817052529_create_posts.rb
           create    app/models/post.rb

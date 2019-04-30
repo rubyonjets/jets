@@ -73,7 +73,7 @@
         To get started:
       </p>
       <div class="code"><pre><code>
-        $ jets generate scaffold Post title:string
+        $ jets generate scaffold post title:string
         $ jets db:create db:migrate
         $ jets server
         $ open http://localhost:8888/posts

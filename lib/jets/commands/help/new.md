@@ -16,7 +16,7 @@
       jets server # localhost:8888 should have the Jets welcome page
 
     Scaffold example:
-      jets generate scaffold Post title:string body:text published:boolean
+      jets generate scaffold post title:string body:text published:boolean
 
     To deploy to AWS Lambda:
       jets deploy

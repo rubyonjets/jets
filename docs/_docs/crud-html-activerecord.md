@@ -10,7 +10,7 @@ Here's a summary of the commands:
 
     jets new demo
     cd demo
-    jets generate scaffold Post title:string
+    jets generate scaffold post title:string
     edit .env.development # adjust to your local database creds
     jets db:create db:migrate
     jets server # Check out http://localhost:8888/posts
@@ -35,7 +35,7 @@ Let's go through the commands in a little more detail.
       jets server # localhost:8888 should have the Jets welcome page
 
     Scaffold example:
-      jets generate scaffold Post title:string body:text published:boolean
+      jets generate scaffold post title:string body:text published:boolean
 
     To deploy to AWS Lambda:
       jets deploy
@@ -44,7 +44,7 @@ Let's go through the commands in a little more detail.
 ## CRUD Scaffold
 
     $ cd demo
-    $ jets generate scaffold Post title:string
+    $ jets generate scaffold post title:string
           invoke  active_record
           create    db/migrate/20180810215214_create_posts.rb
           create    app/models/post.rb

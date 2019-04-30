@@ -10,7 +10,7 @@ In a hurry? No problem!  Here's a quick start to get going.
     gem install jets
     jets new demo
     cd demo
-    jets generate scaffold Post title:string
+    jets generate scaffold post title:string
     vim .env.development # edit with local db settings
     jets db:create db:migrate
     jets server
