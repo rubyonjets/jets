@@ -33,12 +33,37 @@ module Jets::Controller::Rack
       base64 = headers["x-jets-base64"] == 'yes'
       body = body.respond_to?(:read) ? body.read : body
       body = Base64.encode64(body) if base64
-      {
+
+      resp = {
         "statusCode" => status,
         "headers" => headers,
         "body" => body,
         "isBase64Encoded" => base64,
       }
+      adjust_for_elb(resp)
+      resp
+    end
+
+    # Note: ELB is not officially support. This is just in case users wish to manually
+    # connect ELBs to the functions created by Jets.
+    def adjust_for_elb(resp)
+      return resp unless from_elb?
+
+      # ELB requires statusCode to be an Integer whereas API Gateway requires statusCode to be a String
+      status = resp["statusCode"] = resp["statusCode"].to_i
+
+      # ELB also requires statusDescription attribute
+      status_desc = Rack::Utils::HTTP_STATUS_CODES[status]
+      status_desc = status_desc.nil? ? status.to_s : "#{status} #{status_desc}"
+      resp["statusDescription"] = status_desc
+
+      resp
+    end
+
+    def from_elb?
+      # NOTE: @event["requestContext"]["elb"] is set when the request is coming from an elb
+      # Can set JETS_ELB=1 for local testing
+      @event["requestContext"] && @event["requestContext"]["elb"] || ENV['JETS_ELB']
     end
 
     # Called from Jets::Controller::Base.process. Example:

@@ -35,8 +35,10 @@ class Jets::Processors::MainProcessor
       Jets.increase_call_count
 
       if result.is_a?(Hash) && result["headers"]
-        result["headers"]["x-jets-call-count"] = Jets.call_count
-        result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count
+        # API Gateway is okay with the header values as Integers but
+        # ELBs are more strict about this and require the header values to be Strings
+        result["headers"]["x-jets-call-count"] = Jets.call_count.to_s
+        result["headers"]["x-jets-prewarm-count"] = Jets.prewarm_count.to_s
       end
 
       result

@@ -165,7 +165,11 @@ module Jets::Controller::Rendering
                     else
                       code
                     end
-      (status_code || 200).to_s # API Gateway requires a string but rack is okay with either
+
+      # API Gateway requires status to be String but local rack is okay with either
+      # Note, ELB though requires status to be an Integer. We'll later in rack/adapter.rb
+      # adjust status to an Integer if request is coming from an ELB.
+      (status_code || 200).to_s
     end
 
     def set_content_type!(status, headers)
