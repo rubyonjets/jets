@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.11]
+- #242 adjust resp when request coming from elb
+- update jets generate scaffold post casing
+
 ## [1.8.10]
 - #208 add jets degenerate as opposite of generator
 - #219 fix circleci usage, remove CIRCLECI env
