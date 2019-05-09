@@ -48,16 +48,23 @@ What is it you expected to happen? This should be a description of how the funct
 
 ## Current Behavior
 
-<!--      
+<!--
 Describe the details of the bug.  Try to keep this to one-paragraph.
 -->
 
 ## Step-by-step reproduction instructions
 
-<!--      
+<!--
 Be sure to include any steps you took for the problem to exist. This is likely the longest part of the report.
 
-Please include any logs you think relevant here. If the logs are long (more than 50 lines) please make a gist of the logs and link to it. https://gist.github.com      
+Please include any logs you think relevant here. If the logs are long (more than 50 lines) please make a gist of the logs and link to it. https://gist.github.com
+
+With long logs, you can also use the <details> tag to keep the report readable. Example:
+
+<details>
+ <summary>Summary Goes Here</summary>
+ ...this is hidden, collapsable content...
+</details>
 -->
 
 ## Code Sample
