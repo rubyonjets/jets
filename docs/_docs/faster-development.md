@@ -1,6 +1,6 @@
 ---
 title: Faster Development
-nav_order: 46
+nav_order: 45
 ---
 
 Here are some suggestions to speed up development with Jets and AWS Lambda.

@@ -1,11 +1,15 @@
 ---
 title: 'Rails Support: Afterburner Mode'
-nav_order: 29
+nav_order: 75
 ---
 
 Jets supports deploying Rails applications sometimes without any changes to your code.
 
 <div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/P44Le1VF6us" frameborder="0" allowfullscreen=""></iframe></div></div>
+
+## How It Works
+
+Jets Afterburner mode works by starting a rack subprocess in the [Lambda Execution Context](https://docs.aws.amazon.com/lambda/latest/dg/running-lambda-code.html) and then a normal Jets application proxies to that server. This is accomplished via [Jets Mega Mode]({% link _docs/rails/megamode.md %}). All of this happens transparently, you just deploy from your rails application folder.
 
 ## Usage
 
@@ -49,10 +53,16 @@ Read the documentation for [Function Properties]({% link _docs/function-properti
 ## Notes and Considerations
 
 * Do not add jets to your Rails project's Gemfile. Adding it to the Gemfile might result in bundler being unable to resolve dependencies. Jets is used as a stand-alone tool in Afterburner mode.
-* Afterburner mode is pretty awesome but is not a panacea for all Rails applications. Each and every Rails application is different and likely makes assumptions that it's running on a traditional server not serverless.
+* Afterburner mode provides a way to run Rails on Serverless but is not a panacea for all Rails applications. Each and every Rails application is different and likely makes assumptions that it's running on a traditional server not serverless.
 * For example, the app might upload files or images to the filesystem. This doesn't work on AWS Lambda because the app doesn't have access to a persistent filesystem. The application would have to be reworked to store files on a distributed store like S3 instead.
 * Also, AWS currently limits the total Lambda code size + [Gem Layer]({% link _docs/extras/gem-layer.md %}) to 250MB. AWS Docs [Lambda Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). The baseline Rails gems add up to about 146MB, so you have about 104MB of space left for additional gems.
 * For more complex Rails apps, you might want to consider looking into [Jets Mega Mode](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda). Mega Mode allows you to selectively run parts of your app in Rails and parts in Jets.
-* Some apps might just make more sense to run as a Jets app. Jets was built and specifically designed for the serverless world.
+* Most apps just more sense to run as a Jets app. Jets was built and specifically designed for the serverless world.
+
+## Rails with Jets vs Straight Jets
+
+Generally, it is recommended you run Jets application directly instead of Afterburner mode. Though mostly hidden from a user perspective, there is overhead associated and extra obfuscation with Jets Afterburner. For more details, please read through the [Mega Mode Docs]({% link _docs/rails/megamode.md %}).
+
+When you run a Jets application natively, you also get access to the full power of Jets. Some examples are [Jobs]({% link _docs/jobs.md %}), [Events]({% link _docs/events.md %}), and [IAM Policies]({% link _docs/iam-policies.md %}).
 
 {% include prev_next.md %}
