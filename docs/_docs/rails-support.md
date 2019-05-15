@@ -3,13 +3,13 @@ title: 'Rails Support: Afterburner Mode'
 nav_order: 75
 ---
 
-Jets supports deploying Rails applications sometimes without any changes to your code.
+Jets supports deploying Rails applications sometimes without any changes to your code.  Note, this is an experimental feature.
 
 <div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/P44Le1VF6us" frameborder="0" allowfullscreen=""></iframe></div></div>
 
 ## How It Works
 
-Jets Afterburner mode works by starting a rack subprocess in the [Lambda Execution Context](https://docs.aws.amazon.com/lambda/latest/dg/running-lambda-code.html) and then a normal Jets application proxies to that server. This is accomplished via [Jets Mega Mode]({% link _docs/rails/megamode.md %}). All of this happens transparently, you just deploy from your rails application folder.
+Jets Afterburner mode works by starting a rack subprocess in the [Lambda Execution Context](https://docs.aws.amazon.com/lambda/latest/dg/running-lambda-code.html) and then a normal Jets application proxies to that server. This is accomplished via Jets Mega Mode. All of this happens transparently, you just deploy from your rails application folder.
 
 ## Usage
 
@@ -61,7 +61,7 @@ Read the documentation for [Function Properties]({% link _docs/function-properti
 
 ## Rails with Jets vs Straight Jets
 
-Generally, it is recommended you run Jets application directly instead of Afterburner mode. Though mostly hidden from a user perspective, there is overhead associated and extra obfuscation with Jets Afterburner. For more details, please read through the [Mega Mode Docs]({% link _docs/rails/megamode.md %}).
+Generally, it is recommended you run Jets application directly instead of Afterburner mode. Though mostly hidden from a user perspective, there is overhead associated and extra obfuscation with Jets Afterburner. This [Mega Mode Post](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda) may help.
 
 When you run a Jets application natively, you also get access to the full power of Jets. Some examples are [Jobs]({% link _docs/jobs.md %}), [Events]({% link _docs/events.md %}), and [IAM Policies]({% link _docs/iam-policies.md %}).
 
