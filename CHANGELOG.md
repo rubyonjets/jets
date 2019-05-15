@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.12]
+- #243 Update activerecord docs
+- #244 Make ENV['HOME'] an absolute path because some file operations will barf otherwise
+- #247 Fix Jets afterburner: fix wait_for_socket on aws lambda, rescue Errno::EAFNOSUPPORT
+
 ## [1.8.11]
 - #242 adjust resp when request coming from elb
 - update jets generate scaffold post casing
