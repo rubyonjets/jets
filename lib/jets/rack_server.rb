@@ -64,7 +64,7 @@ module Jets
       begin
         server = TCPSocket.new('localhost', 9292)
         server.close
-      rescue Errno::ECONNREFUSED
+      rescue Errno::ECONNREFUSED, Errno::EAFNOSUPPORT
         puts "Unable to connect to localhost:9292. Delay for #{delay} and will try to connect again."  if ENV['JETS_DEBUG']
         sleep(delay)
         retries += 1
