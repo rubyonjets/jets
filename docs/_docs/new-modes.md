@@ -3,7 +3,7 @@ title: Jets New Modes
 nav_order: 8
 ---
 
-The `jets new` command has 3 different modes: html, api, and job. You use the `--mode` option to specify one of them.  The modes allow you to can generate different starter Jets projects. 
+The `jets new` command has 3 different modes: html, api, and job. Use the `--mode` option to specify one of them.  The modes allow you to generate different starter Jets projects for different needsl
 
 ## Examples
 
