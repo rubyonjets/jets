@@ -1,6 +1,6 @@
 ---
 title: Gem Layer
-nav_order: 68
+nav_order: 69
 ---
 
 Jets bundles your project's gem dependencies in a Gem Layer which is a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). From the AWS Docs:

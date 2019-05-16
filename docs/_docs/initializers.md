@@ -1,6 +1,6 @@
 ---
 title: Initializers
-nav_order: 47
+nav_order: 48
 ---
 
 Jets supports custom initalization by running your app's `config/initalizers` files during the bootup process.

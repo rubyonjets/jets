@@ -1,6 +1,6 @@
 ---
 title: Managed IAM Policies
-nav_order: 16
+nav_order: 17
 ---
 
 Jets also supports [Managed IAM Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html). Managed IAM policies are managed by AWS. This is nice because when AWS releases new features with new API methds, AWS will update the IAM policy accordingly and we don't have to update the policy ourselves.  Managed polices are simple to use with Jets. Here are the ways you can set managed policies and their precedence:

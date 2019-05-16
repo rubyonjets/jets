@@ -1,6 +1,6 @@
 ---
 title: Structure
-nav_order: 8
+nav_order: 9
 ---
 
 The `jets new` command generates a new project with the following directory structure:

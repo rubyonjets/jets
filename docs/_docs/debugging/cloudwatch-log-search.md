@@ -1,6 +1,6 @@
 ---
 title: CloudWatch Logs Search
-nav_order: 43
+nav_order: 44
 ---
 
 CloudWatch search field might look like a simple plain text search box but it is not. The search filter supports some advanced Filter and Pattern matching syntax. More info here on the AWS Docs: [Filter and Pattern Sytnax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html).

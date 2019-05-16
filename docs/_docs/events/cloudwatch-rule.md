@@ -1,7 +1,7 @@
 ---
 title: CloudWatch Rule Events
 categories: events
-nav_order: 22
+nav_order: 23
 ---
 
 Jets supports [CloudWatch Event Rules](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/Create-CloudWatch-Events-Rule.html). This allows you to have a Lambda function run when there's a change to AWS resources.  Here's an extensive list of supported [Event Types](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html).

@@ -1,6 +1,6 @@
 ---
 title: Function Properties
-nav_order: 14
+nav_order: 15
 ---
 
 Jets ultimately translate Ruby code into Lambda functions. Each [Lambda function's properties](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) can be controlled with Jets. Here are the ways to set the function properties and their order of precedence:

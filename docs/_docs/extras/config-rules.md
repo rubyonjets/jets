@@ -1,6 +1,6 @@
 ---
 title: Config Rules
-nav_order: 67
+nav_order: 68
 ---
 
 Jets supports creating [AWS Config Rules](https://aws.amazon.com/config/) and associating them with lambda functions.  First, make sure you have a `app/rules/application_rule.rb`:

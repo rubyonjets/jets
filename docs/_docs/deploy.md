@@ -1,6 +1,6 @@
 ---
 title: Deploy
-nav_order: 11
+nav_order: 12
 ---
 
 Once you are ready to deploy your app to Lambda, it's one command to do so:

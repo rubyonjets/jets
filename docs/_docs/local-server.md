@@ -1,6 +1,6 @@
 ---
 title: Local Server
-nav_order: 9
+nav_order: 10
 ---
 
 To speed up development, you can run a local server which mimics API Gateway. Test your application code locally and then deploy to AWS when ready.

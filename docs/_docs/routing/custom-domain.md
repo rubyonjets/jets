@@ -1,6 +1,6 @@
 ---
 title: Custom Domain
-nav_order: 31
+nav_order: 32
 ---
 
 Jets can create and associate a route53 custom domain with the API Gateway endpoint.  Jets manages the vanity route53 endpoint that points to the API Gateway endpoint.  It adjusts the endpoint transparently without you having to update your endpoint if Jets determines that a new API Gateway Rest API needs to be created. The route53 record is also updated. Here's a table with some example values to explain:
