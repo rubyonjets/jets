@@ -57,7 +57,7 @@ Read the documentation for [Function Properties]({% link _docs/function-properti
 * For example, the app might upload files or images to the filesystem. This doesn't work on AWS Lambda because the app doesn't have access to a persistent filesystem. The application would have to be reworked to store files on a distributed store like S3 instead.
 * Also, AWS currently limits the total Lambda code size + [Gem Layer]({% link _docs/extras/gem-layer.md %}) to 250MB. AWS Docs [Lambda Limits](https://docs.aws.amazon.com/lambda/latest/dg/limits.html). The baseline Rails gems add up to about 146MB, so you have about 104MB of space left for additional gems.
 * For more complex Rails apps, you might want to consider looking into [Jets Mega Mode](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda). Mega Mode allows you to selectively run parts of your app in Rails and parts in Jets.
-* Most apps just more sense to run as a Jets app. Jets was built and specifically designed for the serverless world.
+* Most apps just make more sense to run as a Jets app. Jets was built and specifically designed for the serverless world.
 
 ## Rails with Jets vs Straight Jets
 
