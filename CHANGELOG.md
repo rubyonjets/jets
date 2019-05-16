@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.8.13]
+- s3_event: fix s3 bucket ensure_exists check
+
 ## [1.8.12]
 - #243 Update activerecord docs
 - #244 Make ENV['HOME'] an absolute path because some file operations will barf otherwise
