@@ -1,0 +1,1 @@
+http://rubyonjets.com/docs/contributing/
