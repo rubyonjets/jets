@@ -103,6 +103,6 @@ Here's an example of creating a kinesis stream via the CLI:
 
 ## IAM Policy
 
-Jets generates an IAM policy for the Lambda function associated with the Kinesis event that allows the permissions needed.  You can control and override the IAM policy with normal [IAM Policies]({% link _docs/iam-policies.md %}) if required though.
+Jets generates an IAM policy for the Lambda function associated with the Kinesis event that allows the permissions needed.  You can control and override the IAM policy with normal [IAM Policies]({% link _docs/iam-policies.md %}) if required, though.
 
 {% include prev_next.md %}

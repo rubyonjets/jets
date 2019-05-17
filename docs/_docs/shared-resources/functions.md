@@ -27,7 +27,7 @@ end
 
 By default, the `function` method creates Ruby lambda functions.  The default Ruby handler is `handler_function`.
 
-There is also an `ruby_function` alias to the `function` method. They do the same thing.
+There is also a `ruby_function` alias to the `function` method. They do the same thing.
 
 ## Python Example
 

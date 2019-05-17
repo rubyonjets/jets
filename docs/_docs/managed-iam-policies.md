@@ -3,7 +3,7 @@ title: Managed IAM Policies
 nav_order: 17
 ---
 
-Jets also supports [Managed IAM Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html). Managed IAM policies are managed by AWS. This is nice because when AWS releases new features with new API methds, AWS will update the IAM policy accordingly and we don't have to update the policy ourselves.  Managed polices are simple to use with Jets. Here are the ways you can set managed policies and their precedence:
+Jets also supports [Managed IAM Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html). Managed IAM policies are managed by AWS. This is nice because when AWS releases new features with new API methods, AWS will update the IAM policy accordingly and we don't have to update the policy ourselves.  Managed polices are simple to use with Jets. Here are the ways you can set managed policies and their precedence:
 
 1. Function specific Managed IAM policy: highest precedence
 2. Class-wide Managed IAM policy
@@ -90,7 +90,7 @@ IamRole:
     - arn:aws:iam::aws:policy/IAMReadOnlyAccess
 ```
 
-More details on what an raw IAM Policies can be found at:
+More details on what a raw IAM Policies can be found at:
 
 * [AWS Managed Policies for Job Functions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html)
 * [AWS IAM Policies and Permissions docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#access_policies-json)

@@ -26,7 +26,7 @@ Jets.application.configure do
   config.domain.hosted_zone_name = "coolapp.com" # String
   # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is the example convention
   # config.domain.route53 = true # false to disable route53 from being managed by jets.
-      # The domain.route53 seetting defaults to true if if a hosted_zone_name is set.
+      # The domain.route53 setting defaults to true if if a hosted_zone_name is set.
       # It might be useful to turn of route53 if you are managing the DNS yourself.
 
   # NOTE: Changing the endpoint_configuration can result 10 minutes of downtime if going from REGIONAL to EDGE

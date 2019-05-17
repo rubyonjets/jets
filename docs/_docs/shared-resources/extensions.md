@@ -28,7 +28,7 @@ class List < Jets::Stack
 end
 ```
 
-The code above creates an SQS Queue with a `message_retention_period` of 120 seconds and a `receive_message_wait_time_seconds` of 20 seconds.  By creating your own resource extensions you can shorten your code and remove duplication.
+The code above creates an SQS Queue with a `message_retention_period` of 120 seconds and a `receive_message_wait_time_seconds` of 20 seconds.  By creating your own resource extensions, you can shorten your code and remove duplication.
 
 Note: The `sqs_queue` is an example and is actually already implemented by Jets. We're using it for demonstrative purposes.
 

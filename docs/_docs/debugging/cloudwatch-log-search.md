@@ -3,7 +3,7 @@ title: CloudWatch Logs Search
 nav_order: 44
 ---
 
-CloudWatch search field might look like a simple plain text search box but it is not. The search filter supports some advanced Filter and Pattern matching syntax. More info here on the AWS Docs: [Filter and Pattern Sytnax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html).
+CloudWatch search field might look like a simple plain text search box but it is not. The search filter supports some advanced Filter and Pattern matching syntax. More info here on the AWS Docs: [Filter and Pattern Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html).
 
 This might be confusing behavior for new users thinking it's a plain text search box. If you want to search for a specific string, surround it by double quotes.
 

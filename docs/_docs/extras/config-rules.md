@@ -55,7 +55,7 @@ end
 
 ## Polymorphic Rules
 
-AWS has provided many starter config rules at [awslabs/aws-config-rules](https://github.com/awslabs/aws-config-rules).  Most of them are written in [python](https://github.com/awslabs/aws-config-rules/tree/master/python). Jets allows you take these python methods and use them as-is.  For example, you could save these python lambda functions in the `app/workers/rules/protect_rule` folder like so:
+AWS has provided many starter config rules at [awslabs/aws-config-rules](https://github.com/awslabs/aws-config-rules).  Most of them are written in [python](https://github.com/awslabs/aws-config-rules/tree/master/python). Jets allows you to take these python methods and use them as-is.  For example, you could save these python lambda functions in the `app/workers/rules/protect_rule` folder like so:
 
 ```
 app/rules/protect_rule/python/ec2_exposed_instance.py
@@ -88,7 +88,7 @@ class CheckRule < ApplicationRule
 end
 ```
 
-Here's a screenshot example of the both types of rules mixed together:
+Here's a screenshot example of both types of rules mixed together:
 
 ![](/img/docs/aws-config-rules.png)
 
