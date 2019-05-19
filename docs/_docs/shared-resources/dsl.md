@@ -9,7 +9,7 @@ DSL Method | Description
 --- | ---
 parameter | Adds a parameter to the template.
 resource | Adds a resource to the template.
-output | Adds a output to the template.
+output | Adds an output to the template.
 
 The main methods correspond to sections of the [CloudFormation anatomy sections](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html).
 

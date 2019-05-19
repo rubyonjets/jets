@@ -206,7 +206,7 @@ PolicyDocument:
     Resource: "*"
 ```
 
-The expanded IAM Policy documents gets included into the CloudFormation template and get associated with the desired Lambda functions. More details on what an raw IAM Policy document looks like can be found at:
+The expanded IAM Policy documents gets included into the CloudFormation template and get associated with the desired Lambda functions. More details on what a raw IAM Policy document looks like can be found at:
 
 * [AWS IAM Policies and Permissions docs](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html#access_policies-json)
 * [CloudFormation IAM Policy reference docs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-policy.html)

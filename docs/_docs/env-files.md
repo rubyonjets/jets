@@ -3,7 +3,7 @@ title: Env Files
 nav_order: 19
 ---
 
-Jets loads environment variables from `.env` files. The naming convention for these files is `.env.<environment>` .
+Jets loads environment variables from `.env` files. The naming convention for these files is `.env.<environment>`.
 
 Let's say you have a Jets project that has the following dotenv files:
 
@@ -28,7 +28,7 @@ You can set `JETS_ENV` to any value, depending on whatever you want to name your
 
 ## Remote Only Variables
 
-If you add ".remote" to the end of the filename, Jets will only load the values to the deployed Lambda environment. This can be useful if you need a local and remote version of the same environment. For example, you may want both a local and remote dev environment, and have the remote version use AWS RDS.
+If you add ".remote" to the end of the filename, Jets will only load the values to the deployed Lambda environment. This can be useful if you need a local and remote version of the same environment. For example, you may want both a local and remote dev environment, and have the remote version using AWS RDS.
 
 To use the remote version within the `jets console`, you can use the `JETS_ENV_REMOTE=1` env variable. Example:
 

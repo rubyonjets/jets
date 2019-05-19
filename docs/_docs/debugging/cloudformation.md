@@ -3,7 +3,7 @@ title: Debugging CloudFormation
 nav_order: 42
 ---
 
-Underneath the hood, CloudFormation is used to provision AWS resources. This is discussed in this [podcast](http://5by5.tv/rubyonrails/253) interview.  Jets actually creates several CloudFormation stacks. It creates a parent stack, and a bunch of nested child stacks.  Jets manages this all for you.
+Underneath the hood, CloudFormation is used to provision AWS resources. This is discussed in this [podcast](http://5by5.tv/rubyonrails/253) interview.  Jets actually creates several CloudFormation stacks. It creates a parent stack and a bunch of nested child stacks.  Jets manages this all for you.
 
 So if a [jets deploy](http://rubyonjets.com/reference/jets-deploy/) fails, you likely want to check out the CloudFormation console for errors. Particularly, usually checking the child stack with the error instead of the parent stack is the most helpful.
 

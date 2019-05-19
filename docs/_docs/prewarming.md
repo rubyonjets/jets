@@ -43,7 +43,7 @@ After a deployment finishes, Jets automatically prewarms the app immediately.  T
 
 ## Prewarm Custom Headers
 
-Jets appends a `x-jets-prewarm-count` header to the response to help you see if the lambda function was prewarmed. The header looks like this:
+Jets appends an `x-jets-prewarm-count` header to the response to help you see if the lambda function was prewarmed. The header looks like this:
 
 ![](/img/docs/prewarm-header.png)
 

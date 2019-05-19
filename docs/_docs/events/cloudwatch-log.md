@@ -20,7 +20,7 @@ Here's where the logs subscription filter is in the CloudWatch console:
 
 ![](/img/docs/logs-subscription-filter.png)
 
-The `log_event` declaration creates a [AWS::Logs::SubscriptionFilter](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-subscriptionfilter.html).  So you can provide a filter pattern like so:
+The `log_event` declaration creates an [AWS::Logs::SubscriptionFilter](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-logs-subscriptionfilter.html).  So you can provide a filter pattern like so:
 
 ```ruby
 class LogJob < ApplicationJob
@@ -33,8 +33,7 @@ class LogJob < ApplicationJob
 end
 ```
 
-It is recommended that you use a `filter_pattern` because there can be a lot of CloudWatch Log event data.  Here are the docs on [Searching and Filtering Log Data
-](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/MonitoringLogData.html).  You can do regular text filter if your logs are plain text and JSON-path based filtering if your logs are JSON.
+It is recommended that you use a `filter_pattern` because there can be a lot of CloudWatch Log event data.  Here are the docs on [Searching and Filtering Log Data](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/MonitoringLogData.html).  You can do regular text filter if your logs are plain text and JSON-path based filtering if your logs are JSON.
 
 ## Event Payloads
 

@@ -5,7 +5,7 @@ nav_order: 71
 
 ## Background
 
-Underneath the hood, Jets uses CloudFormation to deploy Lambda functions and API Gateway resources. During an update operation, CloudFormation creates new resources, makes sure they are first created successfully, and then deletes any old resources. CloudFormation does this so to avoid deleting the existing resource and putting us stuck in terrible state. It is completely logically.
+Underneath the hood, Jets uses CloudFormation to deploy Lambda functions and API Gateway resources. During an update operation, CloudFormation creates new resources, makes sure they are first created successfully, and then deletes any old resources. CloudFormation does this so to avoid deleting the existing resource and putting us stuck in a terrible state. It is completely logical.
 
 ## Automated Blue-Green Deployment
 
@@ -15,7 +15,7 @@ If you have configured a [Custom Domain]({% link _docs/routing/custom-domain.md 
 
 ## Manual Blue-Green Deployment
 
-For the most part, Jets auto blue-green deployments suffice.  Manual blue-green deployments are sometimes required though.  For example, [upgrading]({% link _docs/extras/upgrading.md %}) between different versions of Jets can required a blue-green deployment.
+For the most part, Jets auto blue-green deployments suffice.  Manual blue-green deployments are sometimes required though.  For example, [upgrading]({% link _docs/extras/upgrading.md %}) between different versions of Jets can require a blue-green deployment.
 
 This is where Jets and AWS Lambda power shines. We simply create another [extra environment]({% link _docs/env-extra.md %}) and switch to it to do a manual blue-green deployment.  Here are the steps:
 

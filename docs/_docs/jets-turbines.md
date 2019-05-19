@@ -10,7 +10,7 @@ The interface is currently being developed and will be refined. Here's a table o
 Method | Description
 --- | ---
 initalizer | Runs after Jets has been initialized with mainly Jets libraries loaded.
-after_initalizer | Runs after Jets has been initialized and has loaded your application specific code.
+after_initalizer | Runs after Jets has been initialized and has loaded your application-specific code.
 on_exception | Fires whenever there is an application-wide exception, the registered block of code will be run. This is useful to report errors to error reporting services. Note, this hook only fires on Lambda. Locally, to reproduce you can run code with `Jets.process(event, context, handler)`.  Example: `Jets.process({},{}, "handlers/jobs/hard_job.dig")`.
 
 ## Turbine Form

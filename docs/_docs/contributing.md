@@ -17,7 +17,7 @@ Whether you're a developer, an infrastructure engineer, or just an enthusiast, t
 * Comment on some of the project's [open issues](https://github.com/tongueroo/jets/issues). Have you experienced the same problem? Know a workaround? Do you have a suggestion for how the feature could be better?
 * Read through [the documentation](https://rubyonjets.com/docs/), and click the "improve this page" button, any time you see something confusing or have a suggestion for something that could be improved.
 * Browse through the [Jets Community forum](https://community.rubyonjets.com), and lend a hand answering questions. There's a good chance you've already experienced what another user is experiencing.
-* Find [an open issue](https://github.com/tongueroo/jets/issues) (especially [those labeled `help wanted`](https://github.com/tongueroo/jets/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)), and submit a proposed fix. If it's your first pull request, we promise we won't bite, and are glad to answer any questions.
+* Find [an open issue](https://github.com/tongueroo/jets/issues) (especially [those labeled `help wanted`](https://github.com/tongueroo/jets/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)), and submit a proposed fix. If it's your first pull request, we promise we won't bite and are glad to answer any questions.
 * Help evaluate [open pull requests](https://github.com/tongueroo/jets/pulls), by testing the changes locally and reviewing what's proposed.
 
 ## Submitting a pull request
@@ -49,7 +49,7 @@ That's it! You'll be automatically subscribed to receive updates as others revie
 ### Submitting a pull request via Git command line
 
 1. Fork the project by clicking "Fork" in the top right corner of [tongueroo/jets](https://github.com/tongueroo/jets).
-2. Clone the repository locally `git clone https://github.com/<you-username>/jets`.
+2. Clone the repository locally `git clone https://github.com/<your-username>/jets`.
 3. Fetch submodules `git submodule init && git submodule update`.
 4. Create a new, descriptively named branch to contain your change ( `git checkout -b my-awesome-feature` ).
 5. Hack away, add tests. Not necessarily in that order.
