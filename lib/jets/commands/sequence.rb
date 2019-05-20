@@ -26,7 +26,7 @@ private
   def confirm_jets_project
     jets_project = File.exist?("#{project_folder}/config/application.rb")
     unless jets_project
-      puts "It does not look like the repo #{options[:repo]} is a Jets project. Maybe double check that it is? Exited.".color(:red)
+      puts "#{options[:repo]} does not look like a Jets project. Double check your repo!".color(:red)
       exit 1
     end
   end
