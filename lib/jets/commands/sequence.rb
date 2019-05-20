@@ -65,9 +65,9 @@ private
     end
 
     unless @database
-      # Do not even generated the config/database.yml because
-      # jets webpacker:install bombs and tries to load the db since it sees a
-      # config/database.yml but has there's no database pg gem configured.
+      # Do not even generate the config/database.yml because
+      # Jets webpacker:install bombs and tries to load the db since it sees a
+      # config/database.yml but there's no database pg gem configured.
       excludes += %w[
         database.yml
         models/application_record
