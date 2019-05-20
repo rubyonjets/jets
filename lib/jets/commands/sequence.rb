@@ -12,7 +12,7 @@ class Jets::Commands::Sequence < Thor::Group
 private
   def clone_project
     unless git_installed?
-      abort "Unable to detect git installation on your system.  Git needs to be installed in order to use the --repo option."
+      abort "Unable to detect git installation on your system. Git needs to be installed in order to use the --repo option."
     end
 
     if File.exist?(project_folder)
