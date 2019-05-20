@@ -56,7 +56,7 @@ With **API** mode, a lighter structure is generated.
 └── spec
 ```
 
-With **Job** mode, a super lightweight structure is generated.
+With **Job** mode, a super lightweight structure is generated.  Job mode also defaults to no database.
 
 
 ```
