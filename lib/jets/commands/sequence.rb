@@ -32,7 +32,7 @@ private
   end
 
   def copy_project
-    puts "Creating new project called #{@project_name}."
+    puts "Creating a new Jets project called #{@project_name}."
     directory ".", project_folder, copy_options
   end
 
