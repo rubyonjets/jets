@@ -12,7 +12,7 @@ class Jets::Commands::Sequence < Thor::Group
 private
   def clone_project
     unless git_installed?
-      abort "Unable to detect git installation on your system.  Git needs to be installed in order to use the --repo option."
+      abort "Unable to detect git installation on your system. Git needs to be installed in order to use the --repo option."
     end
 
     if File.exist?(project_folder)
@@ -26,13 +26,13 @@ private
   def confirm_jets_project
     jets_project = File.exist?("#{project_folder}/config/application.rb")
     unless jets_project
-      puts "It does not look like the repo #{options[:repo]} is a jets project. Maybe double check that it is?  Exited.".color(:red)
+      puts "#{options[:repo]} does not look like a Jets project. Double check your repo!".color(:red)
       exit 1
     end
   end
 
   def copy_project
-    puts "Creating new project called #{@project_name}."
+    puts "Creating a new Jets project called #{@project_name}."
     directory ".", project_folder, copy_options
   end
 
@@ -65,9 +65,9 @@ private
     end
 
     unless @database
-      # Do not even generated the config/database.yml because
-      # jets webpacker:install bombs and tries to load the db since it sees a
-      # config/database.yml but has there's no database pg gem configured.
+      # Do not even generate the config/database.yml because
+      # Jets webpacker:install bombs and tries to load the db since it sees a
+      # config/database.yml but there's no database pg gem configured.
       excludes += %w[
         database.yml
         models/application_record

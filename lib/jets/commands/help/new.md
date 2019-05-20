@@ -1,7 +1,7 @@
 ## Examples
 
     $ jets new demo
-    Creating new project called demo.
+    Creating a new Jets project called demo.
           create  demo/app/controllers/application_controller.rb
           create  demo/app/helpers/application_helper.rb
           create  demo/app/jobs/application_job.rb
