@@ -56,6 +56,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "recursive-open-struct"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"
+  spec.add_dependency "zeitwerk"
 
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"

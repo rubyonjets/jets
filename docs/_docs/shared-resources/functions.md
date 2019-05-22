@@ -10,7 +10,7 @@ For some Shared Resources you might need to create Lambda functions themselves. 
 app/shared/resources/custom.rb:
 
 ```ruby
-class Custom
+class Custom < Jets::Stack
   function(:bob)
 end
 ```
@@ -36,7 +36,7 @@ For Shared Resource Functions, you can use Python just as easily.  Here's an exa
 app/shared/resources/custom.rb:
 
 ```ruby
-class Custom
+class Custom < Jets::Stack
   python_function(:kevin)
 end
 ```
@@ -56,7 +56,7 @@ Here's also a node example:
 app/shared/resources/custom.rb:
 
 ```ruby
-class Custom
+class Custom < Jets::Stack
   node_function(:stuart)
 end
 ```
@@ -73,7 +73,7 @@ exports.handler = function(event, context, callback) {
 The methods `ruby_function`, `python_function`, and `node_function` all delegate to the `function` method.  Here's what the general `function` method looks like:
 
 ```ruby
-class Custom
+class Custom < Jets::Stack
   function(:kevin,
     handler: "kevin.lambda_handler",
     runtime: "ruby2.5"
@@ -84,7 +84,7 @@ end
 And the `function` method calls the general Jets::Stack `resource` method.  So the above can also be written like so:
 
 ```ruby
-class Custom
+class Custom < Jets::Stack
   resource(:kevin,
     code: {
       s3_bucket: "!Ref S3Bucket",

@@ -10,6 +10,7 @@ require "jets/camelizer"
 require "jets/version"
 require "memoist"
 require "rainbow/ext/string"
+require "zeitwerk"
 
 module Jets
   RUBY_VERSION = "2.5.3"

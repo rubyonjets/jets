@@ -189,9 +189,13 @@ class Jets::Application
 
   def setup_auto_load_paths
     autoload_paths = config.autoload_paths + config.extra_autoload_paths
-    # internal_autoload_paths are last
-    autoload_paths += internal_autoload_paths
-    ActiveSupport::Dependencies.autoload_paths += autoload_paths
+    autoload_paths += internal_autoload_paths # internal_autoload_paths are last
+    autoload_paths.each do |path|
+      next unless File.exist?(path)
+      Jets.loader.push_dir(path)
+    end
+    Jets.loader.enable_reloading if Jets.env.development?
+    Jets.loader.setup
   end
 
   # Essentially folders under app folder will be the default_autoload_paths. Example:
@@ -216,6 +220,10 @@ class Jets::Application
       p.sub!('./','')
       paths << p unless exclude_autoload_path?(p)
     end
+
+    paths << "#{Jets.root}/app/shared/resources"
+    paths << "#{Jets.root}/app/shared/extensions"
+
     paths
   end
 
