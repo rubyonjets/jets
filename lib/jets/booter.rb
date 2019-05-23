@@ -133,7 +133,7 @@ class Jets::Booter
     end
 
     def message
-      "Jets booting up in #{Jets.env.color(:green)} mode!"
+      "Igniting Jets: #{Jets.env.color(:green)} mode!"
     end
 
     def check_config_ru!
