@@ -113,6 +113,7 @@ module Jets::Commands
       Dir.glob(expression).each do |path|
         return false unless File.file?(path)
         next unless app_file?(path)
+        next if concerns?(path)
 
         relative_path = path.sub("#{Jets.root}/", '')
         # Rids of the Jets.root at beginning
@@ -213,6 +214,10 @@ module Jets::Commands
       return true if includes.detect { |p| path.include?(p) }
 
       false
+    end
+
+    def self.concerns?(path)
+      path =~ %r{app/\w+/concerns/}
     end
 
     def self.tmp_code(full_build_path=false)
