@@ -11,7 +11,9 @@ assignees: ''
 Hi! Thanks for considering to file a bug with Jets. Please take the time to
 answer the basic questions. Please try to be as detailed as possible.
 To be sensitive to everyone's time, if not enough details are provided, the
-issue may be closed without comment. Please use your best judgment. 👌
+issue may be closed without comment. If you repeatedly fail to provide enough
+details, you may be block from ever submitting issues to Jets again.
+Please use your best judgment. 👌
 
 If you are unsure this is a bug in Jets, please consider asking your question at https://community.rubyonjets.com
 
