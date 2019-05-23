@@ -106,7 +106,11 @@ class BasePathMapping
       domain_name: @domain_name, # required
       base_path: '(none)',
     )
-  rescue Aws::APIGateway::Errors::NotFoundException => e
+  # https://github.com/tongueroo/jets/issues/255
+  # Used to return: Aws::APIGateway::Errors::NotFoundException
+  # Now returns: Aws::APIGateway::Errors::InternalFailure
+  # So we'll use a more generic error
+  rescue Aws::APIGateway::Errors::ServiceError => e
     raise(e) unless fail_silently
   end
 
