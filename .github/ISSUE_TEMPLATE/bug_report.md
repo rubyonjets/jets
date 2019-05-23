@@ -15,7 +15,8 @@ issue may be closed without comment. If you repeatedly fail to provide enough
 details, you may be block from ever submitting issues to Jets again.
 Please use your best judgment. 👌
 
-If you are unsure this is a bug in Jets, please consider asking your question at https://community.rubyonjets.com
+If you are unsure this is a bug in Jets, please consider asking your question at:
+https://community.rubyonjets.com
 
 Thanks!
 -->
