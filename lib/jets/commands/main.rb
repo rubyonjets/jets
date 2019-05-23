@@ -36,12 +36,9 @@ module Jets::Commands
     long_desc Help.text(:server)
     option :port, default: "8888", desc: "use PORT"
     option :host, default: "127.0.0.1", desc: "listen on HOST"
-    option :reload, type: :boolean, default: true, desc: "Enables hot-reloading for development"
     def server
-      # shell out to shotgun for automatic reloading
       o = options
-      server_command = o[:reload] ? "shotgun" : "rackup"
-      command = "bundle exec #{server_command} --port #{o[:port]} --host #{o[:host]}"
+      command = "bundle exec rackup --port #{o[:port]} --host #{o[:host]}"
       puts "=> #{command}".color(:green)
       puts Jets::Booter.message
       Jets::Booter.check_config_ru!

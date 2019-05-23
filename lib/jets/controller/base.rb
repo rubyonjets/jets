@@ -35,6 +35,8 @@ class Jets::Controller
     end
 
     def dispatch!
+      Jets.loader.reload if Jets.env.development?
+
       t1 = Time.now
       log_info_start
 
@@ -45,7 +47,7 @@ class Jets::Controller
         else
           Jets.logger.info "Filter chain halted as #{@last_callback_name} rendered or redirected"
         end
-        
+
         triplet = ensure_render
         run_after_actions if action_completed
       rescue Exception => exception

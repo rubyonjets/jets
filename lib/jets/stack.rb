@@ -88,7 +88,6 @@ module Jets
       end
 
       def eager_load_shared_resources!
-        ActiveSupport::Dependencies.autoload_paths += ["#{Jets.root}/app/shared/resources"]
         Dir.glob("#{Jets.root}/app/shared/resources/**/*.rb").select do |path|
           next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
 
