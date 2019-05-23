@@ -127,7 +127,7 @@ class Jets::Booter
     # Cannot call this for the jets new
     def confirm_jets_project!
       unless File.exist?("#{Jets.root}/config/application.rb")
-        puts "It does not look like you are running this command within a jets project.  Please confirm that you are in a jets project and try again.".color(:red)
+        puts "It does not look like you are running this command within a Jets project.  Please confirm that you are in a Jets project and try again.".color(:red)
         exit 1
       end
     end
