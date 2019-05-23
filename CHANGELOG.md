@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.1]
+- #257 dont generate handlers for concerns
+- #258 from Fix custom domain base mapping
+
 ## [1.9.0]
 - #249 docs grammar improvements
 - #252 docs cli improvements
