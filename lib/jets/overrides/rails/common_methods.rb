@@ -9,13 +9,18 @@ module Jets::CommonMethods
   end
 
   def add_stage?(url)
+    return false if on_cloud9?
     request.host.include?("amazonaws.com") && url.starts_with?('/')
   end
   memoize :add_stage?
 
   def on_aws?
-    on_cloud9 = !!(request.headers['HTTP_HOST'] =~ /cloud9\..*\.amazonaws\.com/)
-    !request.headers['HTTP_X_AMZN_TRACE_ID'].nil? && !on_cloud9
+    !request.headers['HTTP_X_AMZN_TRACE_ID'].nil? && !on_cloud9?
   end
   memoize :on_aws?
+
+  def on_cloud9?
+    !!(request.headers['HTTP_HOST'] =~ /cloud9\..*\.amazonaws\.com/)
+  end
+  memoize :on_cloud9?
 end
