@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.0]
+- #249 docs grammar improvements
+- #252 docs cli improvements
+- #254 speed up development auto reloading
+- #256 dont add /dev prefix if on_cloud9
+
 ## [1.8.14]
 - update jets-gems
 
