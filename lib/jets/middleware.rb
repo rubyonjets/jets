@@ -2,11 +2,6 @@ module Jets
   module Middleware
     extend Memoist
 
-    autoload :Configurator, 'jets/middleware/configurator'
-    autoload :DefaultStack, 'jets/middleware/default_stack'
-    autoload :Layer, 'jets/middleware/layer'
-    autoload :Stack, 'jets/middleware/stack'
-
     def call(env)
       stack = middlewares.build(endpoint)
       stack.call(env)

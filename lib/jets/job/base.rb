@@ -6,8 +6,6 @@ require 'json'
 # Both Jets::Job::Base and Jets::Lambda::Functions have Dsl modules included.
 # So the Jets::Job::Dsl overrides some of the Jets::Lambda::Functions behavior.
 class Jets::Job
-  autoload :Helpers, "jets/job/helpers"
-
   class Base < Jets::Lambda::Functions
     include Dsl
 

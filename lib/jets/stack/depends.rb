@@ -1,7 +1,5 @@
 class Jets::Stack
   class Depends
-    autoload :Item, "jets/stack/depends/item"
-
     def initialize(items)
       @items = items
     end

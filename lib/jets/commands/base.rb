@@ -54,6 +54,13 @@ class Jets::Commands::Base < Thor
     # Useful for help menu when we need to have all the definitions loaded.
     # Using constantize instead of require so we dont care about
     # order. The eager load actually uses autoloading.
+    #
+    # Note: Tried using `Jets::Autoloaders.once.eager_load` here and though that loads the
+    # full `jets --help` menu correctly it screws Jets.boot!  This is because we
+    # do not want to trigger eager load via zietwerk until the Jets.application
+    # has been setup
+    #
+    # Keeping this hacky and ugly eager_load! until figure out a better solution.
     def eager_load!
       base_path = File.expand_path("../../", __FILE__)
       Dir.glob("#{base_path}/commands/**/*.rb").select do |path|

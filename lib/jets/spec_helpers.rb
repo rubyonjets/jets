@@ -4,10 +4,6 @@ require 'base64'
 
 module Jets
   module SpecHelpers
-    autoload :Params, 'jets/spec_helpers/params'
-    autoload :Request, 'jets/spec_helpers/request'
-    autoload :Response, 'jets/spec_helpers/response'
-
     attr_reader :request, :response
     def initialize(*)
       super
@@ -52,6 +48,7 @@ module Jets
   end
 end
 
+require "rspec"
 RSpec.configure do |c|
   c.include Jets::SpecHelpers
 end

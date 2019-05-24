@@ -2,9 +2,6 @@ require 'fileutils'
 
 module Jets
   class Turbo
-    autoload :DatabaseYaml, 'jets/turbo/database_yaml'
-    autoload :Rail, 'jets/turbo/rail'
-
     # Turbo charge mode
     def charge
       framework = detect

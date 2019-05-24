@@ -2,11 +2,6 @@ require "base64"
 require "json"
 
 class Jets::Commands::Call
-  autoload :BaseGuesser, "jets/commands/call/base_guesser"
-  autoload :AutoloadGuesser, "jets/commands/call/autoload_guesser"
-  autoload :AnonymousGuesser, "jets/commands/call/anonymous_guesser"
-  autoload :Guesser, "jets/commands/call/guesser"
-
   include Jets::AwsServices
 
   def initialize(provided_function_name, event, options={})

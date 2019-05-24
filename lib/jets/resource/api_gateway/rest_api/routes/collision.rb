@@ -1,8 +1,6 @@
 # Detects path variable collisions
 class Jets::Resource::ApiGateway::RestApi::Routes
   class Collision
-    autoload :VariableException, 'jets/resource/api_gateway/rest_api/routes/collision/variable_exception'
-
     attr_reader :collisions
     def initialize
       @collisions = []

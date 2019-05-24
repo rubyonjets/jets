@@ -4,7 +4,6 @@ require "rack"
 class Jets::Application
   include Singleton
   extend Memoist
-  autoload :Middleware, "jets/middleware"
   include Jets::Middleware
 
   def configure(&block)
@@ -36,6 +35,8 @@ class Jets::Application
     deprecated_configs_message
     load_inflections
     load_routes
+
+    Jets::Controller::Rendering::RackRenderer.setup! # Sets up ActionView etc
     # Load libraries at the end to trigger onload so we can defined options in any order.
     # Only action_mailer library have been used properly this way so far.
     require 'action_mailer'
@@ -172,7 +173,7 @@ class Jets::Application
     env_file = "#{Jets.root}/config/environments/#{Jets.env}.rb"
     if File.exist?(env_file)
       code = IO.read(env_file)
-      instance_eval(code)
+      instance_eval(code, env_file)
     end
   end
 
@@ -188,14 +189,14 @@ class Jets::Application
   end
 
   def setup_auto_load_paths
+    loader = Jets::Autoloaders.main
     autoload_paths = config.autoload_paths + config.extra_autoload_paths
-    autoload_paths += internal_autoload_paths # internal_autoload_paths are last
     autoload_paths.each do |path|
       next unless File.exist?(path)
-      Jets.loader.push_dir(path)
+      loader.push_dir(path)
     end
-    Jets.loader.enable_reloading if Jets.env.development?
-    Jets.loader.setup
+    loader.enable_reloading if Jets.env.development?
+    loader.setup
   end
 
   # Essentially folders under app folder will be the default_autoload_paths. Example:
@@ -211,14 +212,12 @@ class Jets::Application
   #   app/controllers/concerns
   def default_autoload_paths
     paths = []
-    Dir.glob("#{Jets.root}/app/*").each do |p|
-      p.sub!('./','')
-      paths << p unless exclude_autoload_path?(p)
+    each_app_autoload_path("#{Jets.root}/app/*") do |path|
+      paths << path
     end
     # Handle concerns folders
-    Dir.glob("#{Jets.root}/app/**/concerns").each do |p|
-      p.sub!('./','')
-      paths << p unless exclude_autoload_path?(p)
+    each_app_autoload_path("#{Jets.root}/app/**/concerns") do |path|
+      paths << path
     end
 
     paths << "#{Jets.root}/app/shared/resources"
@@ -227,8 +226,17 @@ class Jets::Application
     paths
   end
 
+  def each_app_autoload_path(expression)
+    Dir.glob(expression).each do |p|
+      p.sub!('./','')
+      yield(p) unless exclude_autoload_path?(p)
+    end
+  end
+
   def exclude_autoload_path?(path)
-    path =~ %r{app/javascript} || path =~ %r{app/views}
+    path =~ %r{app/javascript} ||
+    path =~ %r{app/views} ||
+    path =~ %r{/functions} # app and shared
   end
 
   def internal_autoload_paths
