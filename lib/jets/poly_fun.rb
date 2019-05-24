@@ -1,14 +1,5 @@
 module Jets
   class PolyFun
-    autoload :LambdaExecutor, 'jets/poly_fun/lambda_executor' # main class delegates to other classes
-
-    autoload :BaseExecutor, 'jets/poly_fun/base_executor'
-    autoload :PythonExecutor, 'jets/poly_fun/python_executor'
-    autoload :NodeExecutor, 'jets/poly_fun/node_executor'
-
-    autoload :PythonError, 'jets/poly_fun/python_error'
-    autoload :NodeError, 'jets/poly_fun/node_error'
-
     extend Memoist
 
     def initialize(app_class, app_meth)

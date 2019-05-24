@@ -2,7 +2,7 @@
 #
 #   * compose
 #   * template_path
-class Jets::Cfn::Builders
+module Jets::Cfn::Builders
   module Interface
     extend Memoist
 

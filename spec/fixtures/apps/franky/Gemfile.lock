@@ -1,10 +1,10 @@
 GIT
   remote: https://github.com/tongueroo/jets.git
-  revision: d78b7938f3b038db1239e932f8c23de0bfc5dd44
+  revision: fbd6007b047227a10a4aad3246c32afd8d47947a
   branch: master
   submodules: true
   specs:
-    jets (1.9.5)
+    jets (1.9.6)
       actionmailer (~> 5.2.1)
       activerecord (~> 5.2.1)
       activesupport (~> 5.2.1)

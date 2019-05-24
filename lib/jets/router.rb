@@ -2,8 +2,6 @@ require 'text-table'
 
 module Jets
   class Router
-    autoload :Scope, 'jets/router/scope'
-
     attr_reader :routes
     def initialize
       @routes = []

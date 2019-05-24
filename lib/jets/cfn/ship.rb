@@ -1,4 +1,4 @@
-class Jets::Cfn
+module Jets::Cfn
   class Ship
     extend Memoist
     include Jets::AwsServices

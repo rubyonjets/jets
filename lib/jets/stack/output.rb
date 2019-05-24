@@ -4,9 +4,6 @@
 #
 class Jets::Stack
   class Output
-    autoload :Dsl, "jets/stack/output/dsl"
-    autoload :Lookup, "jets/stack/output/lookup"
-
     include Definition
 
     def template

@@ -25,11 +25,6 @@ module Jets::Core
     Pathname.new(root)
   end
 
-  def loader
-    Zeitwerk::Loader.new
-  end
-  memoize :loader
-
   def env
     env = ENV['JETS_ENV'] || 'development'
     ENV['RAILS_ENV'] = ENV['RACK_ENV'] = env

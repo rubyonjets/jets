@@ -1,9 +1,5 @@
 module Jets::Resource::ApiGateway
   class RestApi < Jets::Resource::Base
-    autoload :ChangeDetection, 'jets/resource/api_gateway/rest_api/change_detection'
-    autoload :LogicalId, 'jets/resource/api_gateway/rest_api/logical_id'
-    autoload :Routes, 'jets/resource/api_gateway/rest_api/routes'
-
     def definition
       properties = {
         name: Jets::Naming.gateway_api_name,

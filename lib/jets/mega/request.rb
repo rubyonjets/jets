@@ -3,7 +3,6 @@ require 'rack'
 
 module Jets::Mega
   class Request
-    autoload :Source, 'jets/mega/request/source'
     JETS_OUTPUT = "/tmp/jets-output.log"
 
     extend Memoist
