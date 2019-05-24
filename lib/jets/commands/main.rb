@@ -43,7 +43,9 @@ module Jets::Commands
       puts Jets::Booter.message
       Jets::Booter.check_config_ru!
       Jets::RackServer.start(options) unless ENV['JETS_RACK'] == '0' # rack server runs in background by default
-      system(command)
+      Bundler.with_clean_env do
+        system(command)
+      end
     end
 
     desc "routes", "Print out your application routes"

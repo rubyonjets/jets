@@ -1,7 +1,7 @@
 require 'action_view'
 require 'digest'
 
-class Jets::Cfn
+module Jets::Cfn
   class Upload
     include Jets::AwsServices
     include ActionView::Helpers::NumberHelper # number_to_human_size

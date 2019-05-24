@@ -16,14 +16,15 @@ module IotExtension
   def thermostat_rule(logical_id, props={})
     defaults = {
       topic_rule_payload: {
-        sql: "select * from TemperatureTopic where temperature > 60"
+        sql: "SELECT * FROM 'TemperatureTopic' WHERE temperature > 60",
+        actions: [
+          lambda: { function_arn: "!Ref {namespace}LambdaFunction" }
+        ],
+        rule_disabled: true,
       },
-      actions: [
-        lambda: { function_arn: "!Ref {namespace}LambdaFunction" }
-      ]
     }
     props = defaults.deep_merge(props)
-    resource(logical_id, "AWS::Iot::TopicRule", props)
+    resource(logical_id, "AWS::IoT::TopicRule", props)
   end
 end
 ```
@@ -39,7 +40,7 @@ class TemperatureJob < ApplicationJob
 end
 ```
 
-The code above creates an `AWS::Iot::TopicRule` and runs the `record` Lambda function for incoming IoT thermostat data.  You can add your own custom business logic to handle the received data accordingly.
+The code above creates an `AWS::IoT::TopicRule` and runs the `record` Lambda function for incoming IoT thermostat data.  You can add your own custom business logic to handle the received data accordingly.
 
 ## Three Resource Forms
 
@@ -52,7 +53,7 @@ def thermostat_rule(logical_id, props={})
   # ...
   resource(
     logical_id : {
-      type: "AWS::Iot::TopicRule",
+      type: "AWS::IoT::TopicRule",
       properties: props
     }
   )
@@ -65,7 +66,7 @@ end
 def thermostat_rule(logical_id, props={})
   # ...
   resource(logical_id,
-    type: "AWS::Iot::TopicRule",
+    type: "AWS::IoT::TopicRule",
     properties: props
   )
 end
@@ -76,7 +77,7 @@ end
 ```ruby
 def thermostat_rule(logical_id, props={})
   # ...
-  resource(logical_id, "AWS::Iot::TopicRule", props)
+  resource(logical_id, "AWS::IoT::TopicRule", props)
 end
 ```
 

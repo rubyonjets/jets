@@ -1,4 +1,4 @@
-class Jets::Cfn
+module Jets::Cfn
   class Status
     include Jets::AwsServices
 

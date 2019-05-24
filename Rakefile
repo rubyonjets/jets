@@ -8,6 +8,7 @@ RSpec::Core::RakeTask.new
 require_relative "lib/jets"
 desc "Generates cli reference docs as markdown"
 task :docs do
+  Jets::Autoloaders.once.eager_load
   Jets::Commands::Markdown::Creator.create_all
 end
 

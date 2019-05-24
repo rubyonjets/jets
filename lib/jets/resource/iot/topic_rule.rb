@@ -22,7 +22,7 @@ module Jets::Resource::Iot
           actions: [{
             lambda: { function_arn: "!GetAtt {namespace}LambdaFunction.Arn" }
           }],
-          rule_disabled: 'false',
+          rule_disabled: 'true',
         }
       }.deep_merge(@props)
     end

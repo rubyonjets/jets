@@ -3,7 +3,7 @@
 #   compose
 #   template_path
 #
-class Jets::Cfn::Builders
+module Jets::Cfn::Builders
   class RuleBuilder < BaseChildBuilder
     def compose
       add_common_parameters

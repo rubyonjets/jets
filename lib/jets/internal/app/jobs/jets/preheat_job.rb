@@ -48,6 +48,14 @@ class Jets::PreheatJob < ApplicationJob
     "Finished prewarming your application."
   end
 
+  class << self
+    # Can use this to prewarm post deploy
+    def prewarm!
+      meth = CONCURRENCY > 1 ? :torch : :warm
+      perform_now(meth, quiet: true)
+    end
+  end
+
 private
   def call_options(quiet)
     options = {}

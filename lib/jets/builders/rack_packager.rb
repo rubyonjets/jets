@@ -1,4 +1,4 @@
-class Jets::Builders
+module Jets::Builders
   class RackPackager < RubyPackager
     def finish
       return unless gemfile_exist?

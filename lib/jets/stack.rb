@@ -1,15 +1,5 @@
 module Jets
   class Stack
-    autoload :Builder, 'jets/stack/builder'
-    autoload :Definition, 'jets/stack/definition' # Registration and definitions
-    autoload :Depends, 'jets/stack/depends'
-    autoload :Function, 'jets/stack/function'
-    autoload :Main, 'jets/stack/main'
-    autoload :Output, 'jets/stack/output'
-    autoload :Parameter, 'jets/stack/parameter'
-    autoload :Resource, 'jets/stack/resource'
-    autoload :S3Event, 'jets/stack/s3_event'
-
     include Main::Dsl
     include Parameter::Dsl
     include Output::Dsl
@@ -71,10 +61,6 @@ module Jets
       end
       memoize :template
 
-      def has_resources?
-        !subclasses.empty?
-      end
-
       # Usage:
       #
       #   Jets::Stack.has_resources?
@@ -87,17 +73,12 @@ module Jets
         end
       end
 
+      # Note: Tried using `Jets::Autoloaders.once.eager_load` here but it throws a
+      # NameError.
+      #
+      # Keeping this hacky and ugly eager_load! until figure out a better solution.
       def eager_load_shared_resources!
-        Dir.glob("#{Jets.root}/app/shared/resources/**/*.rb").select do |path|
-          next if !File.file?(path) or path =~ %r{/javascript/} or path =~ %r{/views/}
-
-          class_name = path
-                        .sub(/\.rb$/,'') # remove .rb
-                        .sub("#{Jets.root}/",'') # remove ./
-                        .sub(%r{app/shared/resources/},'') # remove app/shared/resources/
-                        .camelize
-          class_name.constantize # use constantize instead of require so dont have to worry about order.
-        end
+        Jets::Autoloaders.main.eager_load
       end
 
       def lookup(logical_id)

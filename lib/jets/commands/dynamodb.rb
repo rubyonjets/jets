@@ -1,8 +1,5 @@
 module Jets::Commands
   class Dynamodb < Jets::Commands::Base
-    autoload :Migrator, 'jets/commands/dynamodb/migrator'
-    autoload :Migrate, 'jets/commands/dynamodb/migrate'
-
     desc "migrate [path]", "Runs migrations"
     long_desc Help.text('dynamodb:migrate')
     def migrate(path)
