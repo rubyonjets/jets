@@ -1,4 +1,4 @@
-class Jets::Cfn
+module Jets::Cfn
   class Ship
     extend Memoist
     include Jets::AwsServices
@@ -96,11 +96,7 @@ class Jets::Cfn
       return if Jets.poly_only?
 
       puts "Prewarming application."
-      if Jets::PreheatJob::CONCURRENCY > 1
-        Jets::PreheatJob.perform_now(:torch, {quiet: true})
-      else
-        Jets::PreheatJob.perform_now(:warm, {quiet: true})
-      end
+      Jets::PreheatJob.prewarm!
     end
 
     def clean_deploy_logs

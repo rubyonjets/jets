@@ -20,12 +20,12 @@ You then define the function in the `app/shared/functions` folder:
 app/shared/functions/bob.rb:
 
 ```ruby
-def handler_function(event, context)
+def lambda_handler(event:, context:)
   puts("hello bob")
 end
 ```
 
-By default, the `function` method creates Ruby lambda functions.  The default Ruby handler is `handler_function`.
+By default, the `function` method creates Ruby lambda functions.  The default Ruby handler is `lambda_handler`.
 
 There is also a `ruby_function` alias to the `function` method. They do the same thing.
 

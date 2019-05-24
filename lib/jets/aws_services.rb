@@ -10,10 +10,6 @@ require "aws-sdk-sns"
 require "aws-sdk-sqs"
 
 module Jets::AwsServices
-  autoload :GlobalMemoist, 'jets/aws_services/global_memoist'
-  autoload :S3Bucket, 'jets/aws_services/s3_bucket'
-  autoload :StackStatus, 'jets/aws_services/stack_status'
-
   include GlobalMemoist
   include StackStatus
 

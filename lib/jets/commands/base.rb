@@ -51,27 +51,6 @@ class Jets::Commands::Base < Thor
       end
     end
 
-    # Useful for help menu when we need to have all the definitions loaded.
-    # Using constantize instead of require so we dont care about
-    # order. The eager load actually uses autoloading.
-    def eager_load!
-      base_path = File.expand_path("../../", __FILE__)
-      Dir.glob("#{base_path}/commands/**/*.rb").select do |path|
-        next if !File.file?(path) or path =~ /templates/ or path =~ %r{/markdown/}
-
-        class_name = path
-                      .sub(/\.rb$/,'')
-                      .sub(%r{.*/jets/commands}, 'jets/commands')
-                      .camelize
-        class_name = special_class_map(class_name)
-        # NOTE: Weird thing where Jets::Commands::Db::Task => Thor::Command
-        # because Task is a class available to Thor I believe.
-        # puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
-        class_name.constantize # dont have to worry about order.
-      end
-    end
-    memoize :eager_load!
-
     # Fully qualifed task names. Examples:
     #   build
     #   process:controller
@@ -160,5 +139,17 @@ class Jets::Commands::Base < Thor
         full_command # return original full_command
       end
     end
+
+    # For help menu to list all commands, we must eager load the command classes.
+    #
+    # There is special eager_load logic here because this is called super early as part of the CLI start.
+    # We cannot assume we have full access to to the project yet.
+    def eager_load!
+      return if Jets::Turbo.afterburner?
+
+      Jets.application.setup_auto_load_paths # in case an app/extension is defined
+      Jets::Autoloaders.once.eager_load
+    end
+    memoize :eager_load!
   end
 end

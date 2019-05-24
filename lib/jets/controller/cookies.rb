@@ -31,8 +31,6 @@ class Jets::Controller
   #   end
   #
   module Cookies
-    autoload :Jar, "jets/controller/cookies/jar"
-
     def cookies
       @cookies ||= Jar.new(self)
     end

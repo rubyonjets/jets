@@ -1,4 +1,4 @@
-class Jets::Cfn::Builders
+module Jets::Cfn::Builders
   class SharedBuilder < BaseChildBuilder
     def compose
       stack = @app_class.new # @app_class is subclass. IE: Alarm < Jets::Stack

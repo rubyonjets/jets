@@ -224,6 +224,7 @@ module Jets::Controller::Rendering
         Dir.glob(expression).each do |path|
           next unless File.file?(path)
           class_name = path.sub("#{project_root}/app/helpers/","").sub(/\.rb/,'')
+
           unless class_name == "application_helper"
             klasses << class_name.camelize.constantize # autoload
           end
@@ -246,5 +247,3 @@ module Jets::Controller::Rendering
     end
   end
 end
-
-Jets::Controller::Rendering::RackRenderer.setup!

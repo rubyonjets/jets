@@ -41,15 +41,15 @@ For [jobs](http://rubyonjets.com/docs/jobs/), the event is passed through untouc
     jets call hard_job-drive '{"test":1}' | jq .
     jets call hard_job-drive file://event.json | jq . # load event with a file
     jets call posts_controller-index # event payload is optional
-    jets call posts_controller-index '{"test":1}' --show-log | jq .
+    jets call posts_controller-index '{"path":"/posts"}' --show-log | jq .
     jets call posts_controller-index 'file://event.json' --show-log | jq .
 
 The equivalent AWS Lambda CLI command:
 
-    aws lambda invoke --function-name demo-dev-hard_job-dig --payload '{"test":1}' outfile.txt
+    aws lambda invoke --function-name demo-dev-hard_job-dig --payload '{"path":"/posts","test":1}' outfile.txt
     cat outfile.txt | jq '.'
 
-    aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"test":1}}' outfile.txt
+    aws lambda invoke --function-name demo-dev-posts_controller-index --payload '{"queryStringParameters":{"path":"/posts",test":1}}' outfile.txt
     cat outfile.txt | jq '.'
 
 For convenience, you can also provide the function name with only dashes and `jets call` figures out what function you intend to call. Examples:

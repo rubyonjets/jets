@@ -11,7 +11,8 @@ class Jets::Commands::RakeTasks
     @@loaded = false
     def load!
       return if @@loaded # prevent loading twice
-      Jets::Booter.require_bundle_gems # use bundler when in project folder
+      # Run Bundler.setup so all project rake tasks also show up in `jets help`
+      Jets::Bundle.setup
 
       Jets::Commands::Db::Tasks.load!
       load_webpacker_tasks

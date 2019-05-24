@@ -15,14 +15,35 @@ class Jets::CLI
   end
 
   def start
+    # Needs to be at the beginning to avoid boot_jets which causes some load errors
+    if version_requested?
+      puts Jets.version
+      return
+    end
+
+    # Need to boot jets at this point for commands like: jets routes, deploy, console, etc to work
+    boot_jets
     command_class = lookup(full_command)
     if command_class
-      boot_jets
       command_class.perform(full_command, thor_args)
-    elsif version_requested?
-      puts Jets.version
     else
       main_help
+    end
+  end
+
+  # The commands new and help do not call Jets.boot. Main reason is that Jets.boot should be run in a Jets project.
+  #
+  #   * jets new - need to generate a project outside a project folder.
+  #   * jets help - don't need to be in a project folder general help.
+  #
+  # When you are inside a project folder though, more help commands are available and displayed.
+  #
+  def boot_jets
+    set_jets_env_from_cli_arg!
+    command = thor_args.first
+    unless %w[new help].include?(command)
+      Jets::Turbo.new.charge # handles Afterburner mode
+      Jets.boot
     end
   end
 
@@ -33,31 +54,15 @@ class Jets::CLI
     @given_args.length == 1 && !(@given_args & version_flags).empty?
   end
 
-  # The commands new and help do not call Jets.boot. Main reason is that
-  # Jets.boot are ran inside a Jets project folder.
-  #
-  # * jets new - need to generate a project outside a project folder.
-  # * jets help - don't need to be in a project folder general help.
-  #   When you are inside a project folder though, more help commands
-  #   are available and displayed.
-  #
-  def boot_jets
-    command = thor_args.first
-    if !%w[new help].include?(command)
-      set_jets_env_from_cli_arg!
-      Jets.boot
-    end
-  end
-
-  # Adjust JETS_ENV before boot_jets is called for the jets deploy
-  # command.  Must do this early in the process before Jets.boot because
-  # Jets.boot calls Jets.env as part of the bootup process in
-  # require_bundle_gems and sets the Jets.env to whatever the JETS_ENV is
-  # at the time.
+  # Adjust JETS_ENV before boot_jets is called for the `jets deploy` command.  Must do this early in the process
+  # before Jets.boot because because `bundler_require` is called as part of the bootup process. It sets the Jets.env
+  # to whatever the JETS_ENV is at the time to require the right bundler group.
   #
   # Defaults to development when not set.
   def set_jets_env_from_cli_arg!
-    command, env = thor_args[0..1]
+    # Pretty tricky, we need to use the raw @given_args as thor_args eventually calls Commands::Base#eager_load!
+    # which uses Jets.env before we get a chance to override ENV['JETS_ENV']
+    command, env = @given_args[0..1]
     return unless %w[deploy delete].include?(command)
     env = nil if env&.starts_with?('-')
     return unless env
@@ -85,6 +90,16 @@ class Jets::CLI
     # reassigns the command without the namespace if reached here
     args[0] = meth
     args.compact
+  end
+
+  def meth
+    return nil unless full_command
+
+    if full_command.include?(':')
+      full_command.split(':').pop
+    else
+      full_command
+    end
   end
 
   ALIASES = {
@@ -129,16 +144,6 @@ class Jets::CLI
       words = full_command.split(':')
       words.pop
       words.join(':')
-    end
-  end
-
-  def meth
-    return nil unless full_command
-
-    if full_command.include?(':')
-      full_command.split(':').pop
-    else
-      full_command
     end
   end
 
