@@ -51,7 +51,7 @@ module Jets::Mega
       status = response.code.to_i
       headers = response.each_header.to_h
       encoding = get_encoding(headers['content-type'])
-      body = response.body.force_encoding(encoding)
+      body = response.body&.force_encoding(encoding)
       {
         status: status,
         headers: headers,

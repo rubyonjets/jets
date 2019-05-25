@@ -28,6 +28,25 @@ describe Jets::Mega::Request do
         # pp resp # uncomment to see and debug
         expect(resp).to eq({:status=>200, :headers=>{}, :body=>"test body"})
       end
+
+      # Typical 304 Not Modified response
+      it "handles nil body" do
+        # Uncomment this stubbing to test live req
+        # Will need a rack server up and running
+        http = double(:http)
+        allow(http).to receive(:open_timeout=)
+        allow(http).to receive(:read_timeout=)
+        resp = double(:resp).as_null_object
+        allow(resp).to receive(:code).and_return("304")
+        allow(resp).to receive(:each_header).and_return({})
+        allow(resp).to receive(:body).and_return(nil)
+        allow(http).to receive(:request).and_return(resp)
+        allow(Net::HTTP).to receive(:new).and_return(http)
+
+        resp = req.proxy
+        # pp resp # uncomment to see and debug
+        expect(resp).to eq({:status=>304, :headers=>{}, :body=> nil})
+      end
     end
   end
 end
