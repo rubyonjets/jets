@@ -8,6 +8,7 @@ module Jets::Middleware
 
     def build_stack
       Stack.new do |middleware|
+        middleware.use Shotgun::Static if Jets.env.development?
         middleware.use Rack::Runtime
         middleware.use Jets::Controller::Middleware::Cors if cors_enabled?
         middleware.use Rack::MethodOverride # must come before Middleware::Local for multipart post forms to work
