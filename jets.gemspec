@@ -54,6 +54,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "railties", "~> 5.2.1" # ActiveRecord database_tasks.rb require this
   spec.add_dependency "rainbow"
   spec.add_dependency "recursive-open-struct"
+  spec.add_dependency "shotgun"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"
   spec.add_dependency "zeitwerk"
