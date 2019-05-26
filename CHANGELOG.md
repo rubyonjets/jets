@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
 ## [1.9.2]
+- #232 Rename lambda method to aws_lambda to avoid ruby keyword collision
 - #259 fix stage name in dev mode for redirect also
+- #262 Handle nil body on mega request proxy
+- #263 fix for static files now that not using shotgun
 
 ## [1.9.1]
 - #257 dont generate handlers for concerns
