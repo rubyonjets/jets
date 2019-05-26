@@ -75,7 +75,7 @@ module Jets::Commands
     # path: app/jobs/easy_job.rb
     def build_child_template(path)
       md = path.match(%r{app/(.*?)/}) # extract: controller, job or function
-      process_class = md[1].camelize
+      process_class = md[1].classify
       builder_class = "Jets::Cfn::Builders::#{process_class}Builder".constantize
 
       # Examples:
