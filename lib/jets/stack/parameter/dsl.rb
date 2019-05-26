@@ -27,7 +27,7 @@ class Jets::Stack
 
       # Returns output keys associated with the stack.  They are the resource logical ids.
       def dependency_outputs(dependency)
-        dependency.to_s.classify.constantize.output_keys
+        dependency.to_s.camelize.constantize.output_keys
       end
 
       class_methods do

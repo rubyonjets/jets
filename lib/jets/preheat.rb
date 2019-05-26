@@ -108,7 +108,7 @@ module Jets
         next unless path =~ %r{app/controllers} # only prewarm controllers
 
         class_path = path.sub(%r{.*app/\w+/},'').sub(/\.rb$/,'')
-        class_name = class_path.classify
+        class_name = class_path.camelize
         # IE: PostsController
         class_name.constantize # load app/**/* class definition
       end.compact

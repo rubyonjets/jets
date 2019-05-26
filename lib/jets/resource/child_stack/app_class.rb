@@ -84,7 +84,7 @@ module Jets::Resource::ChildStack
       @path.sub(templates_prefix, '')
         .sub(/\.yml$/,'')
         .gsub('-','/')
-        .classify
+        .camelize
     end
 
     # map the path to a camelized logical_id. Example:

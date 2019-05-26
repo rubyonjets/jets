@@ -56,7 +56,7 @@ class Jets::Processors::Deducer
     #   hello
     #   hello_function
 
-    class_name.classify
+    class_name.camelize
   end
 
   def load_class

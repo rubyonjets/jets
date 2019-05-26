@@ -62,7 +62,7 @@ class Jets::Commands::Base < Thor
         class_name = path
                       .sub(/\.rb$/,'')
                       .sub(%r{.*/jets/commands}, 'jets/commands')
-                      .classify
+                      .camelize
         class_name = special_class_map(class_name)
         # NOTE: Weird thing where Jets::Commands::Db::Task => Thor::Command
         # because Task is a class available to Thor I believe.
@@ -124,7 +124,7 @@ class Jets::Commands::Base < Thor
         Jets::Commands::Main
       else
         class_name = namespace.gsub(':','/')
-        class_name = "Jets::Commands::#{class_name.classify}"
+        class_name = "Jets::Commands::#{class_name.camelize}"
         class_name = special_class_map(class_name)
         class_name.constantize
       end

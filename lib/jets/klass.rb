@@ -39,9 +39,9 @@ class Jets::Klass
     # app/controllers/posts_controller.rb => PostsController
     def class_name(path)
       if path.include?("/shared/")
-        path.sub(%r{.*app/shared/(.*?)/},'').sub(/\.rb$/,'').classify
+        path.sub(%r{.*app/shared/(.*?)/},'').sub(/\.rb$/,'').camelize
       else
-        path.sub(%r{.*app/(.*?)/},'').sub(/\.rb$/,'').classify
+        path.sub(%r{.*app/(.*?)/},'').sub(/\.rb$/,'').camelize
       end
     end
 

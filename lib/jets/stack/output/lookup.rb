@@ -7,7 +7,7 @@ class Jets::Stack::Output
     end
 
     def output(logical_id)
-      child_stack_id = @stack_subclass.to_s.classify
+      child_stack_id = @stack_subclass.to_s.camelize
 
       stack_arn = shared_stack_arn(child_stack_id)
       resp = cfn.describe_stacks(stack_name: stack_arn)
