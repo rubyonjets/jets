@@ -337,8 +337,15 @@ class Jets::Application
   end
 
   def load_routes
+    reload = Jets.env.development?
+    @router = nil if reload # clear_routes
+
     routes_file = "#{Jets.root}/config/routes.rb"
-    require routes_file if File.exist?(routes_file)
+    if reload
+      load routes_file # always evaluate
+    else
+      require routes_file # evaluate once
+    end
   end
 
   def aws

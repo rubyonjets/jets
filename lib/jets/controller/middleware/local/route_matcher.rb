@@ -5,6 +5,7 @@ class Jets::Controller::Middleware::Local
     end
 
     def find_route
+      reset_routes!
       # Precedence:
       # 1. Routes with no captures get highest precedence: posts/new
       # 2. Then we consider the routes with captures: post/:id
@@ -16,6 +17,14 @@ class Jets::Controller::Middleware::Local
         route_found?(r)
       end
       route
+    end
+
+    # "hot reload" for development
+    def reset_routes!
+      return unless Jets.env.development?
+
+      Jets::Router.clear!
+      Jets.application.load_routes
     end
 
     def route_found?(route)

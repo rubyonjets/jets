@@ -141,6 +141,10 @@ module Jets
       @@drawn_router = router
     end
 
+    def self.clear!
+      @@drawn_router = nil
+    end
+
     def self.routes
       drawn_router.routes
     end
