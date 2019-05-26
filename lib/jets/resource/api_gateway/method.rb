@@ -73,7 +73,7 @@ module Jets::Resource::ApiGateway
 
     def controller_auth_type
       controller_name = @route.to.split('#').first
-      controller = "#{controller_name}_controller".classify.constantize
+      controller = "#{controller_name}_controller".camelize.constantize
       # Already handles inheritance via class_attribute
       controller.authorization_type
     end

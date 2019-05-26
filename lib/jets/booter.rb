@@ -209,7 +209,7 @@ class Jets::Booter
                       .sub(%r{app\/\w+/concerns/},'')
                       .sub(%r{app/shared/\w+/},'') # remove shared/resources or shared/extensions
                       .sub(%r{app/\w+/},'') # remove app/controllers or app/jobs etc
-        class_name = class_name.classify
+        class_name = class_name.camelize
 
         if ENV['JETS_DEBUG_EAGER_LOAD']
           puts "path: #{path}"

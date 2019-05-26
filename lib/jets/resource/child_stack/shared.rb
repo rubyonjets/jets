@@ -31,7 +31,7 @@ module Jets::Resource::ChildStack
       # add depends on parameters
       depends_on.each do |dependency|
         dependency_outputs(dependency).each do |output|
-          dependency_class = dependency.to_s.classify
+          dependency_class = dependency.to_s.camelize
           props[:parameters][output] = "!GetAtt #{dependency_class}.Outputs.#{output}"
         end
       end if depends_on
@@ -50,7 +50,7 @@ module Jets::Resource::ChildStack
 
     # Returns output keys associated with the stack.  They are the resource logical ids.
     def dependency_outputs(dependency)
-      dependency.to_s.classify.constantize.output_keys
+      dependency.to_s.camelize.constantize.output_keys
     end
 
     def depends_on
@@ -74,7 +74,7 @@ module Jets::Resource::ChildStack
       @path.sub(templates_prefix, '')
         .sub(/\.yml$/,'')
         .gsub('-','/')
-        .classify
+        .camelize
         .constantize # returns actual class
     end
 

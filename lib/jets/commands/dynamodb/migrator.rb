@@ -31,6 +31,6 @@ class Jets::Commands::Dynamodb::Migrator
   def get_migration_class
     filename = File.basename(@path, '.rb')
     filename = filename.sub(/\d+[-_]/, '') # strip leading timestsamp
-    filename.classify.constantize
+    filename.camelize.constantize
   end
 end

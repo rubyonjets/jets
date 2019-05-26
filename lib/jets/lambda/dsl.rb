@@ -407,7 +407,7 @@ module Jets::Lambda::Dsl
     Dir.glob("#{base_path}/**/*.rb").each do |path|
       next unless File.file?(path)
 
-      class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').classify
+      class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').camelize
       klass = class_name.constantize # autoload
       base.extend(klass)
     end

@@ -44,7 +44,7 @@ module Jets::Lambda
     # for the class name.  We adjust it here.
     def adjust_tasks(klass)
       class_name = @code_path.to_s.sub(/.*\/functions\//,'').sub(/\.rb$/, '')
-      class_name = class_name.classify
+      class_name = class_name.camelize
       klass.tasks.each do |task|
         task.class_name = class_name
         task.type = "function"

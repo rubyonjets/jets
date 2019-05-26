@@ -95,7 +95,7 @@ module Jets
                         .sub(/\.rb$/,'') # remove .rb
                         .sub("#{Jets.root}/",'') # remove ./
                         .sub(%r{app/shared/resources/},'') # remove app/shared/resources/
-                        .classify
+                        .camelize
           class_name.constantize # use constantize instead of require so dont have to worry about order.
         end
       end

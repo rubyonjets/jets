@@ -58,7 +58,7 @@ module Jets
       end
 
       # IE: Jets::PolyFun::PythonError
-      error_class = "Jets::PolyFun::#{task.lang.to_s.classify}Error".constantize
+      error_class = "Jets::PolyFun::#{task.lang.to_s.camelize}Error".constantize
       raise error_class.new(resp["errorMessage"], backtrace)
     end
 
