@@ -336,12 +336,11 @@ class Jets::Application
     @router ||= Jets::Router.new
   end
 
-  def load_routes
-    reload = Jets.env.development?
-    @router = nil if reload # clear_routes
+  def load_routes(refresh: false)
+    @router = nil if refresh # clear_routes
 
     routes_file = "#{Jets.root}/config/routes.rb"
-    if reload
+    if refresh
       load routes_file # always evaluate
     else
       require routes_file # evaluate once

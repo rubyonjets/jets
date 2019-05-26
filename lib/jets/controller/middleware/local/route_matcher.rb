@@ -24,7 +24,7 @@ class Jets::Controller::Middleware::Local
       return unless Jets.env.development?
 
       Jets::Router.clear!
-      Jets.application.load_routes
+      Jets.application.load_routes(refresh: true)
     end
 
     def route_found?(route)
