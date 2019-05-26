@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.3]
+- #264 auto reload routes for development
+
 ## [1.9.2]
 - #232 Rename lambda method to aws_lambda to avoid ruby keyword collision
 - #259 fix stage name in dev mode for redirect also
