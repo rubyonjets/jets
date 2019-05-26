@@ -65,7 +65,7 @@ class Jets::Commands::Call
       qualifier: @qualifier, # "1",
     }
     begin
-      resp = lambda.invoke(options)
+      resp = aws_lambda.invoke(options)
     rescue Aws::Lambda::Errors::ResourceNotFoundException
       puts "The function #{function_name} was not found.  Maybe check the spelling or the AWS_PROFILE?".color(:red)
       return

@@ -32,10 +32,10 @@ module Jets::AwsServices
   end
   global_memoize :dynamodb
 
-  def lambda
+  def aws_lambda
     Aws::Lambda::Client.new
   end
-  global_memoize :lambda
+  global_memoize :aws_lambda
 
   def logs
     Aws::CloudWatchLogs::Client.new
