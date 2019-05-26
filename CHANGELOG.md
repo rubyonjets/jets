@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.4]
+- #265 bug fix: show jets url at the end of a jets deploy
+
 ## [1.9.3]
 - #264 auto reload routes for development
 
