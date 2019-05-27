@@ -4,7 +4,7 @@ class Jets::Booter
     def boot!(options={})
       return if @booted
 
-      turbo_charge
+      turbo.charge
       confirm_jets_project!
       require_bundle_gems unless bypass_bundler_setup?
       Jets::Dotenv.load!
@@ -34,13 +34,11 @@ class Jets::Booter
     end
 
     def bypass_bundler_setup?
-      command = ARGV.first
-      %w[build delete deploy url].include?(command)
+      turbo.rails?
     end
 
-    def turbo_charge
-      turbo = Jets::Turbo.new
-      turbo.charge
+    def turbo
+      @turbo ||= Jets::Turbo.new
     end
 
     # Builds and memoize stack so it only gets built on bootup
