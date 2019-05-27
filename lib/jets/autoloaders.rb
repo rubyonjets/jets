@@ -56,6 +56,7 @@ module Jets
           internal/app/controllers
           internal/app/helpers
           internal/app/jobs
+          internal/turbines
         ]
       end
 

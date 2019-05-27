@@ -15,9 +15,10 @@ class Jets::CLI
   end
 
   def start
+    Jets::Autoloaders.once.eager_load
     command_class = lookup(full_command)
     if command_class
-      boot_jets
+      # boot_jets
       command_class.perform(full_command, thor_args)
     elsif version_requested?
       puts Jets.version

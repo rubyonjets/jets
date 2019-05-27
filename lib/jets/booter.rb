@@ -11,9 +11,9 @@ class Jets::Booter
 
       Jets.application.setup!
 
-      # We eager load Jets classes to ensure that internal Turbines are loaded. This happens after setup_auto_load_paths
-      # in Jets.application.setup! since some Turbine default values can be defined in the project.
-      Jets::Autoloaders.once.eager_load # TODO: Maybe only eager load Turbines
+      # Turbines are loaded after setup_auto_load_paths in Jets.application.setup!  Some Turbine options are defined
+      # in the project so setup must happen before internal Turbines are loaded.
+      load_internal_turbines
 
       run_turbines(:initializers)
       # Load configs after Turbine initializers so Turbines can defined some config options and they are available in
@@ -33,19 +33,13 @@ class Jets::Booter
       @booted = true
     end
 
-    def bypass_bundler_setup?
-      turbo.rails?
+    def load_internal_turbines
+      Dir.glob("#{__dir__}/internal/turbines/**/*.rb").each do |path|
+        Jets::Autoloaders.once.preload(path)
+      end
     end
 
-    def turbo
-      @turbo ||= Jets::Turbo.new
-    end
-
-    # Builds and memoize stack so it only gets built on bootup
-    def build_middleware_stack
-      Jets.application.build_stack
-    end
-
+    # All Turbines
     def turbine_initializers
       Jets::Turbine.subclasses.each do |subclass|
         initializers = subclass.initializers || []
@@ -55,6 +49,7 @@ class Jets::Booter
       end
     end
 
+    # All Turbines
     def app_initializers
       Dir.glob("#{Jets.root}/config/initializers/**/*").each do |path|
         load path
@@ -70,6 +65,19 @@ class Jets::Booter
           block.call(Jets.application)
         end
       end
+    end
+
+    def bypass_bundler_setup?
+      turbo.rails?
+    end
+
+    def turbo
+      @turbo ||= Jets::Turbo.new
+    end
+
+    # Builds and memoize stack so it only gets built on bootup
+    def build_middleware_stack
+      Jets.application.build_stack
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It
