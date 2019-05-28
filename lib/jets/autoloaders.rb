@@ -8,9 +8,17 @@
 #
 # Reference on what bundle exec does: https://www.justinweiss.com/articles/what-are-the-differences-between-irb/
 # It essentially, does a Bundle.setup within the Ruby code.
-module Jets; end
-require "bundler/setup"
-Bundler.setup # Same as Bundler.setup(:default)
+#
+# Do not force bundler setup unless in Jets project.
+# For example, in Jets Afterburner mode, we don't want to force bundler setup.
+#
+# We use the same Jets::Turbo class in Jets::Booter.boot! to decide to call Bundler.setup later.
+#
+require "jets/turbo"
+if Jets::Turbo.new.jets?
+  require "bundler/setup"
+  Bundler.setup # Same as Bundler.setup(:default)
+end
 require "zeitwerk"
 
 module Jets
