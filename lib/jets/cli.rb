@@ -15,12 +15,10 @@ class Jets::CLI
   end
 
   def start
-    # Dont need the full Jets.boot at this point but need autoloading setup to be able to lookup commands.
-    # Jets.boot won't work yet because it will run other setup logic.
-    Jets::Autoloaders.once.eager_load
+    # Need to boot jets this point for commands like: jets routes, deploy, console, etc
+    boot_jets
     command_class = lookup(full_command)
     if command_class
-      boot_jets # need full Jets.boot at this point for commands like: jets routes, deploy, console, etc
       command_class.perform(full_command, thor_args)
     elsif version_requested?
       puts Jets.version
