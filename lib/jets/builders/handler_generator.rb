@@ -7,7 +7,7 @@ require "erb"
 #   "PostsController",
 #   :create, :update
 # )
-class Jets::Builders
+module Jets::Builders
   class HandlerGenerator
     def self.build!
       new.build

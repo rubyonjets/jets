@@ -3,7 +3,7 @@
 #   compose
 #   template_path
 #
-class Jets::Cfn::Builders
+module Jets::Cfn::Builders
   class ControllerBuilder < BaseChildBuilder
     # compose is an interface method for Interface module
     def compose

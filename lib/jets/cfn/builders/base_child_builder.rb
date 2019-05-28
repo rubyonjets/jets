@@ -5,7 +5,7 @@
 # FYI
 #
 #   * compose implemented by the classes that include this
-class Jets::Cfn::Builders
+module Jets::Cfn::Builders
   class BaseChildBuilder
     include Interface
 

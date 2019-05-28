@@ -1,5 +1,5 @@
 # TODO: Move logic into plugin instead
-class Jets::Builders
+module Jets::Builders
   class ReconfigureRails
     def initialize(full_app_root)
       # IE: @app_root: /tmp/jets/demo/stage/code/rack

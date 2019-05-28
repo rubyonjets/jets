@@ -1,6 +1,6 @@
 require "bundler" # for clean_old_submodules only
 
-class Jets::Builders
+module Jets::Builders
   class RubyPackager
     include Util
 

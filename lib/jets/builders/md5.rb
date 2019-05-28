@@ -7,7 +7,7 @@ require 'digest'
 #   jets/code/opt-checksum.zip
 #
 # We compute the checksums before we generate the node shim handlers.
-class Jets::Builders
+module Jets::Builders
   class Md5
     class << self
       @@checksums = {}

@@ -1,4 +1,4 @@
-class Jets::Builders
+module Jets::Builders
   class CodeSize
     LAMBDA_SIZE_LIMIT = 250 # Total lambda limit is 250MB
     include Util

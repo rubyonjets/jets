@@ -1,4 +1,4 @@
-class Jets::Builders
+module Jets::Builders
   class GemReplacer
     extend Memoist
     def initialize(options)

@@ -1,4 +1,4 @@
-class Jets::Cfn::Builders
+module Jets::Cfn::Builders
   class ApiGatewayBuilder
     include Interface
     include Jets::AwsServices
