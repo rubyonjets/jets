@@ -10,6 +10,17 @@ require "jets/camelizer"
 require "jets/version"
 require "memoist"
 require "rainbow/ext/string"
+
+# Looks like for zeitwerk module autovivification to work `bundle exec` must be called.
+# We run Bundle.setup initially which is what `bundle exec does.
+# This allows zeitwork module autovivification to work even if the user has not called jets with `bundle exec jets`.
+# We check for Afterburner mode since in that mode jets is a standalone tool.
+#
+require "jets/turbo"
+if Jets::Turbo.new.jets?
+  require "bundler/setup"
+  Bundler.setup # Same as Bundler.setup(:default)
+end
 require "zeitwerk"
 
 module Jets

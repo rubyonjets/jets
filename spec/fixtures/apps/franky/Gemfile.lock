@@ -1,17 +1,10 @@
 GIT
-  remote: https://github.com/tongueroo/webpacker.git
-  revision: 3651cc317358018ebd16de75df3b8184adf1b818
-  branch: jets
+  remote: https://github.com/tongueroo/jets.git
+  revision: d78b7938f3b038db1239e932f8c23de0bfc5dd44
+  branch: master
+  submodules: true
   specs:
-    webpacker (3.2.0)
-      activesupport (>= 4.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 4.2)
-
-PATH
-  remote: /home/ec2-user/environment/jets
-  specs:
-    jets (1.7.2)
+    jets (1.9.5)
       actionmailer (~> 5.2.1)
       activerecord (~> 5.2.1)
       activesupport (~> 5.2.1)
@@ -19,6 +12,7 @@ PATH
       aws-sdk-cloudformation
       aws-sdk-cloudwatchlogs
       aws-sdk-dynamodb
+      aws-sdk-kinesis
       aws-sdk-lambda
       aws-sdk-s3
       aws-sdk-sns
@@ -36,89 +30,105 @@ PATH
       railties (~> 5.2.1)
       rainbow
       recursive-open-struct
+      shotgun
       text-table
       thor
+      zeitwerk
+
+GIT
+  remote: https://github.com/tongueroo/webpacker.git
+  revision: 1a012c92ef7b9429759aa8c28293468e19c5a18b
+  branch: jets
+  specs:
+    webpacker (3.2.0)
+      activesupport (>= 4.2)
+      rack-proxy (>= 0.6.1)
+      railties (>= 4.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    actionmailer (5.2.2)
-      actionpack (= 5.2.2)
-      actionview (= 5.2.2)
-      activejob (= 5.2.2)
+    actionmailer (5.2.3)
+      actionpack (= 5.2.3)
+      actionview (= 5.2.3)
+      activejob (= 5.2.3)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (5.2.2)
-      actionview (= 5.2.2)
-      activesupport (= 5.2.2)
+    actionpack (5.2.3)
+      actionview (= 5.2.3)
+      activesupport (= 5.2.3)
       rack (~> 2.0)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (5.2.2)
-      activesupport (= 5.2.2)
+    actionview (5.2.3)
+      activesupport (= 5.2.3)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    activejob (5.2.2)
-      activesupport (= 5.2.2)
+    activejob (5.2.3)
+      activesupport (= 5.2.3)
       globalid (>= 0.3.6)
-    activemodel (5.2.2)
-      activesupport (= 5.2.2)
-    activerecord (5.2.2)
-      activemodel (= 5.2.2)
-      activesupport (= 5.2.2)
+    activemodel (5.2.3)
+      activesupport (= 5.2.3)
+    activerecord (5.2.3)
+      activemodel (= 5.2.3)
+      activesupport (= 5.2.3)
       arel (>= 9.0)
-    activesupport (5.2.2)
+    activesupport (5.2.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (9.0.0)
-    aws-eventstream (1.0.1)
-    aws-partitions (1.136.0)
-    aws-sdk-apigateway (1.23.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-cloudformation (1.14.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-cloudwatchlogs (1.13.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-core (3.46.0)
-      aws-eventstream (~> 1.0)
+    aws-eventstream (1.0.3)
+    aws-partitions (1.167.0)
+    aws-sdk-apigateway (1.30.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-cloudformation (1.22.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-cloudwatchlogs (1.20.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-core (3.53.1)
+      aws-eventstream (~> 1.0, >= 1.0.2)
       aws-partitions (~> 1.0)
-      aws-sigv4 (~> 1.0)
+      aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-dynamodb (1.20.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-kms (1.13.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-lambda (1.17.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-s3 (1.30.1)
-      aws-sdk-core (~> 3, >= 3.39.0)
+    aws-sdk-dynamodb (1.29.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-kinesis (1.16.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-kms (1.21.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-lambda (1.26.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.40.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
-    aws-sdk-sns (1.9.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sdk-sqs (1.10.0)
-      aws-sdk-core (~> 3, >= 3.39.0)
-      aws-sigv4 (~> 1.0)
-    aws-sigv4 (1.0.3)
+    aws-sdk-sns (1.16.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-sqs (1.16.0)
+      aws-sdk-core (~> 3, >= 3.53.0)
+      aws-sigv4 (~> 1.1)
+    aws-sigv4 (1.1.0)
+      aws-eventstream (~> 1.0, >= 1.0.2)
     builder (3.2.3)
-    byebug (10.0.2)
-    cfnresponse (0.3.0)
-    concurrent-ruby (1.1.4)
+    byebug (11.0.1)
+    cfnresponse (0.4.0)
+    concurrent-ruby (1.1.5)
     crass (1.0.4)
     diff-lcs (1.3)
-    dotenv (2.6.0)
+    dotenv (2.7.2)
     dynomite (1.2.2)
       activesupport
       aws-sdk-dynamodb
@@ -128,12 +138,12 @@ GEM
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashie (3.6.0)
-    i18n (1.5.3)
+    i18n (1.6.0)
       concurrent-ruby (~> 1.0)
     jets-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
     jmespath (1.4.0)
-    json (2.1.0)
+    json (2.2.0)
     kramdown (2.1.0)
     loofah (2.2.3)
       crass (~> 1.0.2)
@@ -147,9 +157,9 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     mysql2 (0.5.2)
-    nokogiri (1.10.1)
+    nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
-    rack (2.0.6)
+    rack (2.0.7)
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -159,9 +169,9 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
-    railties (5.2.2)
-      actionpack (= 5.2.2)
-      activesupport (= 5.2.2)
+    railties (5.2.3)
+      actionpack (= 5.2.3)
+      activesupport (= 5.2.3)
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
@@ -174,7 +184,7 @@ GEM
       rspec-mocks (~> 3.8.0)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
-    rspec-expectations (3.8.2)
+    rspec-expectations (3.8.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-mocks (3.8.0)
@@ -188,6 +198,7 @@ GEM
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    zeitwerk (2.1.6)
 
 PLATFORMS
   ruby
