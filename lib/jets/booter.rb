@@ -6,7 +6,7 @@ class Jets::Booter
 
       turbo.charge
       confirm_jets_project!
-      require_bundle_gems unless bypass_bundler_setup?
+      require_bundle_gems
       Jets::Dotenv.load!
 
       Jets.application.setup!
@@ -67,17 +67,17 @@ class Jets::Booter
       end
     end
 
-    def bypass_bundler_setup?
-      turbo.rails?
+    # Builds and memoize stack so it only gets built on bootup
+    def build_middleware_stack
+      Jets.application.build_stack
     end
 
     def turbo
       @turbo ||= Jets::Turbo.new
     end
 
-    # Builds and memoize stack so it only gets built on bootup
-    def build_middleware_stack
-      Jets.application.build_stack
+    def bypass_bundler_setup?
+      turbo.rails?
     end
 
     # require_bundle_gems called when environment boots up via Jets.boot.  It
@@ -101,6 +101,8 @@ class Jets::Booter
     # Jets::Commands::RakeTasks.load!  In the case when there are in another
     # project with another Gemfile, the load errors will still be rescued.
     def require_bundle_gems
+      return if bypass_bundler_setup?
+
       # NOTE: Dont think ENV['BUNDLE_GEMFILE'] is quite working right.  We still need
       # to be in the project directory.  Leaving logic in here for when it gets fix.
       if ENV['BUNDLE_GEMFILE'] || File.exist?("Gemfile")

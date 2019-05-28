@@ -8,8 +8,6 @@ require "active_support/ordered_options"
 require "fileutils"
 require "memoist"
 require "rainbow/ext/string"
-require "zeitwerk"
-
 require "jets/autoloaders"
 Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]
 Jets::Autoloaders.once.setup
