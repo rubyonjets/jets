@@ -30,4 +30,4 @@ $:.unshift("#{root}/vendor/rails/actionpack/lib")
 $:.unshift("#{root}/vendor/rails/actionview/lib")
 # will require action_controller, action_pack, etc later when needed
 
-Jets::Autoloaders.once.preload("#{__dir__}/jets/db.rb") # required for booter.rb:112: setup_db
+Jets::Autoloaders.once.preload("#{__dir__}/jets/db.rb") # required for booter.rb: setup_db

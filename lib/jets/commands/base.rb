@@ -51,30 +51,16 @@ class Jets::Commands::Base < Thor
       end
     end
 
-    # Useful for help menu when we need to have all the definitions loaded.
-    # Using constantize instead of require so we dont care about
-    # order. The eager load actually uses autoloading.
-    #
-    # Note: Tried using `Jets::Autoloaders.once.eager_load` here and though that loads the
-    # full `jets --help` menu correctly it screws Jets.boot!  This is because we
-    # do not want to trigger eager load via zietwerk until the Jets.application
-    # has been setup
-    #
-    # Keeping this hacky and ugly eager_load! until figure out a better solution.
+    # For help menu to list all commands, we must eager load the command classes.
     def eager_load!
-      base_path = File.expand_path("../../", __FILE__)
-      Dir.glob("#{base_path}/commands/**/*.rb").select do |path|
-        next if !File.file?(path) or path =~ /templates/ or path =~ %r{/markdown/}
-
-        class_name = path
-                      .sub(/\.rb$/,'')
-                      .sub(%r{.*/jets/commands}, 'jets/commands')
-                      .camelize
-        class_name = special_class_map(class_name)
-        # NOTE: Weird thing where Jets::Commands::Db::Task => Thor::Command
-        # because Task is a class available to Thor I believe.
-        # puts "eager_load! loading path: #{path} class_name: #{class_name}" if ENV['JETS_DEBUG']
-        class_name.constantize # dont have to worry about order.
+      # Explicitly only preload the cli commands because preloading everything with Jets::Autoloaders.once.eager_load
+      # causes an error since some commands might not have the app fully setup. Example: If there's an
+      # app/shared/extensions/iot_extension.rb, it won't be able to load because the autoload_paths are set until
+      # Jets.boot is called.
+      # At the same time we cannot call Jets.boot because it assumes that we're within a Jets project. So calling
+      # Jets.boot would break commands like jets new.
+      Dir.glob("#{__dir__}/commands/**/*.rb").each do |path|
+        Jets::Autoloaders.once.preload(path)
       end
     end
     memoize :eager_load!

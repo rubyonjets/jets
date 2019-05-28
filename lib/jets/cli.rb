@@ -15,7 +15,7 @@ class Jets::CLI
   end
 
   def start
-    # Need to boot jets this point for commands like: jets routes, deploy, console, etc
+    # Need to boot jets at this point for commands like: jets routes, deploy, console, etc to work
     boot_jets
     command_class = lookup(full_command)
     if command_class
@@ -27,20 +27,12 @@ class Jets::CLI
     end
   end
 
-  def version_requested?
-    #   jets --version
-    #   jets -v
-    version_flags = ["--version", "-v"]
-    @given_args.length == 1 && !(@given_args & version_flags).empty?
-  end
-
-  # The commands new and help do not call Jets.boot. Main reason is that
-  # Jets.boot are ran inside a Jets project folder.
+  # The commands new and help do not call Jets.boot. Main reason is that Jets.boot should be run in a Jets project.
   #
-  # * jets new - need to generate a project outside a project folder.
-  # * jets help - don't need to be in a project folder general help.
-  #   When you are inside a project folder though, more help commands
-  #   are available and displayed.
+  #   * jets new - need to generate a project outside a project folder.
+  #   * jets help - don't need to be in a project folder general help.
+  #
+  # When you are inside a project folder though, more help commands are available and displayed.
   #
   def boot_jets
     command = thor_args.first
@@ -48,6 +40,13 @@ class Jets::CLI
       set_jets_env_from_cli_arg!
       Jets.boot
     end
+  end
+
+  def version_requested?
+    #   jets --version
+    #   jets -v
+    version_flags = ["--version", "-v"]
+    @given_args.length == 1 && !(@given_args & version_flags).empty?
   end
 
   # Adjust JETS_ENV before boot_jets is called for the jets deploy

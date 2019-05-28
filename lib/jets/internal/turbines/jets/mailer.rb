@@ -8,7 +8,7 @@ module Jets
     end
 
     initializer "action_mailer.set_configs" do |app|
-      options = app.config.action_mailer || ActiveSupport::OrderedOptions.new
+      options = app.config.action_mailer
       options.default_url_options ||= {}
       options.default_url_options[:protocol] ||= "https"
       options.show_previews = false if options.show_previews.nil?
