@@ -37,7 +37,8 @@ module Jets
     end
 
     def config_ru_contains?(value)
-      config_ru = "#{Dir.pwd}/config.ru"
+      root = ENV["JETS_ROOT"] || Dir.pwd # Jets.root is not yet available
+      config_ru = "#{root}/config.ru"
       return false unless File.exist?(config_ru)
 
       lines = ::IO.readlines(config_ru)
