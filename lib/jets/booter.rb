@@ -23,7 +23,7 @@ class Jets::Booter
       run_turbines(:after_initializers)
       Jets.application.finish!
 
-      # Eager load project code. Rather have user find out early than late.
+      # Eager load project code. Rather have user find out early than later on AWS Lambda.
       Jets::Autoloaders.main.eager_load
 
       setup_db

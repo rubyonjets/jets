@@ -1,2 +1,0 @@
-class Jets::Cfn
-end

@@ -1,2 +1,0 @@
-class Jets::Job
-end
