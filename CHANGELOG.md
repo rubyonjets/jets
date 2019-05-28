@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.6]
+- #268 Fix starter crud.js due to core-js module
+- #269 Bundler.setup to fix namespace autovivification
+
 ## [1.9.5]
 - #266 replace classify with camelize
 
