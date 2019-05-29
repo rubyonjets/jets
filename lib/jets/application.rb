@@ -340,6 +340,7 @@ class Jets::Application
     @router = nil if refresh # clear_routes
 
     routes_file = "#{Jets.root}/config/routes.rb"
+    return unless File.exist?(routes_file)
     if refresh
       load routes_file # always evaluate
     else
