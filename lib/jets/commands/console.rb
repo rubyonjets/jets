@@ -1,7 +1,6 @@
 class Jets::Commands::Console
   def self.run
     puts Jets::Booter.message
-    Jets.boot
 
     # Thanks: https://mutelight.org/bin-console
     require "irb"

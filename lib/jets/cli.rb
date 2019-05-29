@@ -38,6 +38,7 @@ class Jets::CLI
     command = thor_args.first
     if !%w[new help].include?(command)
       set_jets_env_from_cli_arg!
+      Jets::Turbo.new.charge # handles Afterburner mode
       Jets.boot
     end
   end

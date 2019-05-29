@@ -52,16 +52,13 @@ class Jets::Commands::Base < Thor
     end
 
     # For help menu to list all commands, we must eager load the command classes.
+    #
+    # There is special eager_load logic here because this is called super early as part of the CLI start.
+    # We cannot assume we have full access to to the project yet.
     def eager_load!
-      # Explicitly only preload the cli commands because preloading everything with Jets::Autoloaders.once.eager_load
-      # causes an error since some commands might not have the app fully setup. Example: If there's an
-      # app/shared/extensions/iot_extension.rb, it won't be able to load because the autoload_paths are set until
-      # Jets.boot is called.
-      # At the same time we cannot call Jets.boot because it assumes that we're within a Jets project. So calling
-      # Jets.boot would break commands like jets new.
-      Dir.glob("#{__dir__}/commands/**/*.rb").each do |path|
-        Jets::Autoloaders.once.preload(path)
-      end
+      return if Jets.afterburner?
+      Jets.application.setup_auto_load_paths # in case an app/extension is defined
+      Jets::Autoloaders.once.eager_load
     end
     memoize :eager_load!
 

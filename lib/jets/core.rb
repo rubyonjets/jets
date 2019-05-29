@@ -14,8 +14,8 @@ module Jets::Core
   end
 
   # Load all application base classes and project classes
-  def boot(options={})
-    Jets::Booter.boot!(options)
+  def boot
+    Jets::Booter.boot!
   end
 
   def root
@@ -46,6 +46,10 @@ module Jets::Core
     Gem.loaded_specs.keys.include?("webpacker")
   end
   memoize :webpacker?
+
+  def afterburner?
+    Jets::Turbo.new.rails?
+  end
 
   def load_tasks
     Jets::Commands::RakeTasks.load!

@@ -11,12 +11,20 @@ class Jets::Commands::RakeTasks
     @@loaded = false
     def load!
       return if @@loaded # prevent loading twice
-      Jets::Booter.require_bundle_gems # use bundler when in project folder
+      bundler_setup
 
       Jets::Commands::Db::Tasks.load!
       load_webpacker_tasks
 
       @@loaded = true
+    end
+
+    # Run Bundler.setup so all project rake tasks also show up in `jets help`
+    def bundler_setup
+      if ENV['BUNDLE_GEMFILE'] || File.exist?("Gemfile")
+        require "bundler/setup"
+        Bundler.setup
+      end
     end
 
     # Handles load errors gracefuly per Booter.required_bundle_gems comments.

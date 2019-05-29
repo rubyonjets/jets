@@ -1,21 +1,3 @@
-# Looks like for zeitwerk module autovivification to work `bundle exec` must be called.
-# We run Bundle.setup initially which is what `bundle exec does.
-# This allows zeitwork module autovivification to work even if the user has not called jets with `bundle exec jets`.
-# We check for Afterburner mode since in that mode jets is a standalone tool.
-#
-# Note, this will not include the Jets.env group yet. Later we will call Bundle.require(:default, Jets.env)
-# in Jets::Booter.require_bundle_gems to include the Jets.env group.
-#
-# Reference on what bundle exec does: https://www.justinweiss.com/articles/what-are-the-differences-between-irb/
-# It essentially, does a Bundle.setup within the Ruby code.
-#
-# We use the same Jets::Turbo class in Jets::Booter.boot! to decide to call Bundler.setup later.
-#
-require "jets/turbo"
-if Jets::Turbo.new.jets?
-  require "bundler/setup"
-  Bundler.setup # Same as Bundler.setup(:default)
-end
 require "zeitwerk"
 
 module Jets
