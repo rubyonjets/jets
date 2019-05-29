@@ -1,5 +1,5 @@
 class Jets::Commands::Import
-  class Rail < Base
+  class Rails < Base
     # We add jets-rails gem even though it's only activated within the megamode
     # rackup wrapper script so user can check run bundle install and determine early
     # if dependencies are met. The jets-rails gem is also added as part of the deploy

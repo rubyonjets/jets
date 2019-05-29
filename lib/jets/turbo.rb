@@ -9,7 +9,7 @@ module Jets
       when :jets
         # do nothing
       when :rails
-        Rail.new.setup
+        Rails.new.setup
       else
         # should never get here
       end

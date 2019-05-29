@@ -4,7 +4,7 @@ module Jets::Commands
       class_option(*args)
     end
     long_desc Help.text('import:rails')
-    register(Jets::Commands::Import::Rail, "rails", "rails", "Imports rails project in the rack subfolder")
+    register(Jets::Commands::Import::Rails, "rails", "rails", "Imports rails project in the rack subfolder")
 
     long_desc Help.text('import:rack')
     register(Jets::Commands::Import::Rack, "rack", "rack", "Imports rack project in the rack subfolder")
