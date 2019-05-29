@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "jets", ">= 1.9.7.pre.2"
+gem "jets", ">= 1.9.7.pre.3"
 
 <% if @webpacker -%>
 # Include webpacker if you are you are building html pages
