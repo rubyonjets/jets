@@ -5,10 +5,6 @@ module Jets::Controller::Middleware
   class Local
     extend Memoist
 
-    autoload :ApiGateway, 'jets/controller/middleware/local/api_gateway'
-    autoload :MimicAwsCall, 'jets/controller/middleware/local/mimic_aws_call'
-    autoload :RouteMatcher, 'jets/controller/middleware/local/route_matcher'
-
     def initialize(app)
       @app = app
     end

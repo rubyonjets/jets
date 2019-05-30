@@ -1,4 +1,4 @@
-class Jets::Builders
+module Jets::Builders
   module Util
   private
     def sh(command)

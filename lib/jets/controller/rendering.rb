@@ -1,6 +1,5 @@
 class Jets::Controller
   module Rendering
-    autoload :RackRenderer, "jets/controller/rendering/rack_renderer"
     include Redirection
 
     def ensure_render

@@ -1,5 +1,5 @@
 # When upgrading jets, automatically rm -rf /tmp/jets/project in case the structure has changed.
-class Jets::Builders
+module Jets::Builders
   class Purger
     def initialize
       @project_name = Jets.config.project_name

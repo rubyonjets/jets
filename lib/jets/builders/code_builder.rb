@@ -11,7 +11,7 @@ require "socket"
 #
 # The rest of the folders are subfolders under /tmp/jets/project.
 #
-class Jets::Builders
+module Jets::Builders
   class CodeBuilder
     include Jets::AwsServices
     include Util

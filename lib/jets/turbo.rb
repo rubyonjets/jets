@@ -2,8 +2,15 @@ require 'fileutils'
 
 module Jets
   class Turbo
-    autoload :DatabaseYaml, 'jets/turbo/database_yaml'
-    autoload :Rail, 'jets/turbo/rail'
+    class << self
+      extend Memoist
+
+      # Relies on the cached side-effect since Jets afterburner will switch Jets.root and the result will be different
+      def afterburner?
+        new.rails?
+      end
+      memoize :afterburner?
+    end
 
     # Turbo charge mode
     def charge
@@ -12,7 +19,7 @@ module Jets
       when :jets
         # do nothing
       when :rails
-        Rail.new.setup
+        Rails.new.setup
       else
         # should never get here
       end
@@ -42,7 +49,7 @@ module Jets
       return false unless File.exist?(config_ru)
 
       lines = ::IO.readlines(config_ru)
-      lines.detect { |l| l.include?(value) }
+      !!lines.detect { |l| l.include?(value) }
     end
   end
 end

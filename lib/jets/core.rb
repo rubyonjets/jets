@@ -14,8 +14,8 @@ module Jets::Core
   end
 
   # Load all application base classes and project classes
-  def boot(options={})
-    Jets::Booter.boot!(options)
+  def boot
+    Jets::Booter.boot!
   end
 
   def root
@@ -24,11 +24,6 @@ module Jets::Core
     root = Dir.pwd if root == ''
     Pathname.new(root)
   end
-
-  def loader
-    Zeitwerk::Loader.new
-  end
-  memoize :loader
 
   def env
     env = ENV['JETS_ENV'] || 'development'

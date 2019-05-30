@@ -2,13 +2,6 @@ class Jets::Stack
   class Main
     module Dsl
       extend ActiveSupport::Concern
-      autoload :Base, 'jets/stack/main/extensions/base'
-      autoload :Cloudwatch, 'jets/stack/main/extensions/cloudwatch'
-      autoload :Iam, 'jets/stack/main/extensions/iam'
-      autoload :Lambda, 'jets/stack/main/extensions/lambda'
-      autoload :S3, 'jets/stack/main/extensions/s3'
-      autoload :Sns, 'jets/stack/main/extensions/sns'
-      autoload :Sqs, 'jets/stack/main/extensions/sqs'
 
       class_methods do
         include Base

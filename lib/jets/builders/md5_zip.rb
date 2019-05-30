@@ -8,7 +8,7 @@ require 'action_view'
 #   zip = Jets::Builders::Md5Zip.new("/tmp/jets/demo/stage/bundled")
 #   zip.create
 #
-class Jets::Builders
+module Jets::Builders
   class Md5Zip
     include ActionView::Helpers::NumberHelper # number_to_human_size
     include Util

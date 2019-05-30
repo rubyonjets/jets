@@ -4,7 +4,6 @@
 #
 class Jets::Stack
   class Resource
-    autoload :Dsl, "jets/stack/resource/dsl"
     include Definition
 
     def template

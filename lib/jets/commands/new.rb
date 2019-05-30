@@ -83,7 +83,7 @@ module Jets::Commands
         exit 1
       end
 
-      command = "jets webpacker:install"
+      command = "bundle exec jets webpacker:install"
       command += " FORCE=1" if options[:force]
       run(command)
     end

@@ -1,5 +1,5 @@
 class Jets::Turbo
-  class Rail
+  class Rails
     attr_reader :build_area
     def initialize
       @build_area = "/tmp/jets"
