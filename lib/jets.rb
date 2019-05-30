@@ -8,6 +8,7 @@ require "active_support/ordered_options"
 require "fileutils"
 require "memoist"
 require "rainbow/ext/string"
+require "jets/gems"
 
 require "jets/autoloaders"
 Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]
@@ -18,10 +19,5 @@ module Jets
   class Error < StandardError; end
   extend Core # root, logger, etc
 end
-
-root = File.expand_path("..", __dir__)
-
-$:.unshift("#{root}/vendor/jets-gems/lib")
-require "jets-gems"
 
 Jets::Autoloaders.once.preload("#{__dir__}/jets/db.rb") # required for booter.rb: setup_db
