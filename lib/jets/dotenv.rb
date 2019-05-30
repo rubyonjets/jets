@@ -2,7 +2,7 @@ require 'dotenv'
 require 'aws-sdk-ssm'
 
 class Jets::Dotenv
-  SSM_VARIABLE_REGEXP = /\$\{ssm:([a-zA-Z0-9_.\-\/]+)}/
+  SSM_VARIABLE_REGEXP = /^ssm:(.*)/
 
   def self.load!(remote=false)
     new(remote).load!
@@ -45,10 +45,11 @@ class Jets::Dotenv
 
   def interpolate_ssm_variables(variables)
     interpolated_variables = variables.map do |key, value|
-      interpolated_value = value.gsub(SSM_VARIABLE_REGEXP) do |match|
-        fetch_ssm_value($1)
+      if value[SSM_VARIABLE_REGEXP]
+        value = fetch_ssm_value($1)
       end
-      [key, interpolated_value]
+
+      [key, value]
     end
 
     interpolated_variables.each do |key, value|

@@ -1,55 +1,53 @@
 describe Jets::Dotenv do
   describe "#load!" do
-    it "replaces ${ssm:<relative-path>} with SSM parameters prefixed with /<app-name>/<jets-env>/" do
+    it "replaces ssm:<relative-path> with SSM parameters prefixed with /<app-name>/<jets-env>/" do
+      relative_path = "authenticated-url"
+      value = "https://foo:bar@example.com"
+
       expect(::Dotenv).to receive(:load).and_return(
-        "AUTENTICATED_URL" => "https://${ssm:username}:${ssm:password}@host.com",
+        "AUTENTICATED_URL" => "ssm:#{relative_path}",
       )
 
       username_response_double = double(
         Aws::SSM::Types::GetParameterResult,
-        parameter: Aws::SSM::Types::Parameter.new(value: "my-user"),
+        parameter: Aws::SSM::Types::Parameter.new(value: value),
       )
       expect_any_instance_of(Aws::SSM::Client).to receive(:get_parameter)
-        .with(name: "/demo/test/username", with_decryption: true)
+        .with(name: "/demo/test/#{relative_path}", with_decryption: true)
         .and_return(username_response_double)
-
-      password_response_double = double(
-        Aws::SSM::Types::GetParameterResult,
-        parameter: Aws::SSM::Types::Parameter.new(value: "my-password"),
-      )
-      expect_any_instance_of(Aws::SSM::Client).to receive(:get_parameter)
-        .with(name: "/demo/test/password", with_decryption: true)
-        .and_return(password_response_double)
 
       env = Jets::Dotenv.new.load!
 
-      expect(env.fetch("AUTENTICATED_URL")).to eq "https://my-user:my-password@host.com"
-      expect(ENV.fetch("AUTENTICATED_URL")).to eq "https://my-user:my-password@host.com"
+      expect(env.fetch("AUTENTICATED_URL")).to eq value
+      expect(ENV.fetch("AUTENTICATED_URL")).to eq value
     end
 
-    it "replaces ${ssm:/<absolute-path>} with SSM parameters from the provided path" do
+    it "replaces ssm:/<absolute-path> with SSM parameters from the provided path" do
+      absolute_path = "/absolute/path"
+      value = "foo-bar"
+
       expect(::Dotenv).to receive(:load).and_return(
-        "ABSOLUTE_VARIABLE" => "${ssm:/absolute/path}",
+        "ABSOLUTE_VARIABLE" => "ssm:#{absolute_path}",
       )
 
       absolute_response_double = double(
         Aws::SSM::Types::GetParameterResult,
-        parameter: Aws::SSM::Types::Parameter.new(value: "my-absolute-value"),
+        parameter: Aws::SSM::Types::Parameter.new(value: value),
       )
       expect_any_instance_of(Aws::SSM::Client).to receive(:get_parameter)
-        .with(name: "/absolute/path", with_decryption: true)
+        .with(name: absolute_path, with_decryption: true)
         .and_return(absolute_response_double)
 
 
       env = Jets::Dotenv.new.load!
 
-      expect(env.fetch("ABSOLUTE_VARIABLE")).to eq "my-absolute-value"
-      expect(ENV.fetch("ABSOLUTE_VARIABLE")).to eq "my-absolute-value"
+      expect(env.fetch("ABSOLUTE_VARIABLE")).to eq value
+      expect(ENV.fetch("ABSOLUTE_VARIABLE")).to eq value
     end
 
     it "aborts the process with a helpful error if an SSM parameter is not found at AWS" do
       expect(::Dotenv).to receive(:load).and_return(
-        "ABSOLUTE_VARIABLE" => "${ssm:/absolute/path}",
+        "ABSOLUTE_VARIABLE" => "ssm:/absolute/path",
       )
 
       expect_any_instance_of(Aws::SSM::Client).to receive(:get_parameter)
