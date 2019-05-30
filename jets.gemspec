@@ -27,9 +27,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "actionmailer", "~> 5.2.1"
   spec.add_dependency "actionpack", "~> 5.2.1"
   spec.add_dependency "actionview", "~> 5.2.1"
-  spec.add_dependency "actionmailer", "~> 5.2.1"
   spec.add_dependency "activerecord", "~> 5.2.1"
   spec.add_dependency "activesupport", "~> 5.2.1"
   spec.add_dependency "aws-sdk-apigateway"
@@ -45,6 +45,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency
   spec.add_dependency "hashie"
+  spec.add_dependency "jets-gems"
   spec.add_dependency "jets-html-sanitizer"
   spec.add_dependency "json"
   spec.add_dependency "kramdown"
