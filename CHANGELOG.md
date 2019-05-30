@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.8]
+- #272 Jets Autoloaders with zeitwerk
+- #273 remove need for forked rails
+- #274 remove jets-gems as vendor dependency
+
 ## [1.9.7]
 - #271 fix deploy for job mode with no config/routes.rb file
 
