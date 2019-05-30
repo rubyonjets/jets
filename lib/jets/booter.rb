@@ -1,3 +1,5 @@
+require "jets/core_ext/kernel" # Hack prevents Rails const from being defined
+
 class Jets::Booter
   class << self
     @booted = false
