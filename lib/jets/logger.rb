@@ -14,9 +14,6 @@ module Jets
           progname = @progname
         end
       end
-      # Put the message in the Jets::IO.buffer which will get flushed to CloudWatch.
-      # No need to include timestamp as CloudWatch already has a timestamp.
-      IO.buffer << message
 
       super # original logical
     end

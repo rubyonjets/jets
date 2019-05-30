@@ -19,15 +19,9 @@ module Jets
   extend Core # root, logger, etc
 end
 
-require "jets/core_ext/kernel"
-
 root = File.expand_path("..", __dir__)
 
 $:.unshift("#{root}/vendor/jets-gems/lib")
 require "jets-gems"
-
-$:.unshift("#{root}/vendor/rails/actionpack/lib")
-$:.unshift("#{root}/vendor/rails/actionview/lib")
-# will require action_controller, action_pack, etc later when needed
 
 Jets::Autoloaders.once.preload("#{__dir__}/jets/db.rb") # required for booter.rb: setup_db
