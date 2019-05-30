@@ -104,17 +104,8 @@ class Jets::Commands::Base < Thor
       else
         class_name = namespace.gsub(':','/')
         class_name = "Jets::Commands::#{class_name.camelize}"
-        class_name = special_class_map(class_name)
         class_name.constantize
       end
-    end
-
-    def special_class_map(class_name)
-      map = {
-        'Jets::Commands::RakeTask' => 'Jets::Commands::RakeTasks',
-        'Jets::Commands::Gem' => 'Jets::Commands::Gems',
-      }
-      map[class_name] || class_name
     end
 
     # If this fails to find a match then return the original full command
