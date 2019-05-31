@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.9]
+- #275 warn about bundler/setup failure
+
 ## [1.9.8]
 - #272 Jets Autoloaders with zeitwerk
 - #273 remove need for forked rails
