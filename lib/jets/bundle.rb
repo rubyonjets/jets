@@ -18,6 +18,8 @@ module Jets
       return unless bundler_enabled?
       Kernel.require "bundler/setup"
       Bundler.setup # Same as Bundler.setup(:default)
+    rescue LoadError => e
+      handle_error(e)
     end
 
     # Bundler.require called when environment boots up via Jets.boot.  This will eagerly require all gems in the
@@ -39,6 +41,27 @@ module Jets
       return unless bundler_enabled?
       Kernel.require "bundler/setup"
       Bundler.require(*bundler_groups)
+    rescue LoadError => e
+      handle_error(e)
+    end
+
+    def handle_error(e)
+      puts e.message
+      puts <<~EOL.color(:yellow)
+        WARNING: Unable to require "bundler/setup"
+        There may be something funny with your ruby and bundler setup.
+        You can try upgrading bundler and rubygems:
+
+            gem update --system
+            gem install bundler
+
+        Here are some links that may be helpful:
+
+        * https://bundler.io/blog/2019/01/03/announcing-bundler-2.html
+        * https://community.rubyonjets.com/t/jets-1-9-8-install-issue-bundler-setup-missing/185/2
+
+        Also, running bundle exec in front of your command may remove this message.
+      EOL
     end
 
     # Also check for Afterburner mode since in that mode jets is a standalone tool.
