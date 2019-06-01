@@ -206,6 +206,7 @@ module Jets::Controller::Rendering
         end
 
         ActionController::Base.append_view_path("#{Jets.root}/app/views")
+        ActionView::Resolver.caching = !Jets.env.development?
 
         setup_webpacker if Jets.webpacker?
       end
