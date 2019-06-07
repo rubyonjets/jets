@@ -35,8 +35,6 @@ class Jets::Controller
     end
 
     def dispatch!
-      Jets::Autoloaders.main.reload if Jets.env.development?
-
       t1 = Time.now
       log_info_start
 
