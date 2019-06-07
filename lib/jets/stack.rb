@@ -74,7 +74,9 @@ module Jets
       end
 
       def eager_load_shared_resources!
-        Jets::Autoloaders.main.eager_load
+        Dir.glob("#{Jets.root}/app/shared/**").each do |path|
+          Jets::Autoloaders.main.preload(path)
+        end
       end
 
       def lookup(logical_id)
