@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.12]
+- #284 use `@@reload_lock` class variable instead of global variable
+
 ## [1.9.11]
 - #283 use mutex during reloading
 
