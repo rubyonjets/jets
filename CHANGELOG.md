@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.14]
+- #288 fix shared eager loading so only shared classes are loaded
+
 ## [1.9.13]
 - #285 optimize by moving reloader middleware after shotgun static middleware
 
