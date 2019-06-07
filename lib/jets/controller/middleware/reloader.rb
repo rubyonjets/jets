@@ -2,13 +2,12 @@ module Jets::Controller::Middleware
   class Reloader
     def initialize(app)
       @app = app
-      @loader = Jets::Autoloaders.main
-      $mutex ||= Mutex.new
     end
 
+    @@reload_lock = Mutex.new
     def call(env)
-      $mutex.synchronize do
-        @loader.reload
+      @@reload_lock.synchronize do
+        Jets::Autoloaders.main.reload
         @app.call(env)
       end
     end
