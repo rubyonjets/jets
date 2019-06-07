@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.11]
+- #283 use mutex during reloading
+
 ## [1.9.10]
 - #276 Correct CloudFormation debugging url
 - #277 hot reload views for development mode
