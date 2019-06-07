@@ -5,6 +5,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 
 ## [1.9.14]
 - #288 fix shared eager loading so only shared classes are loaded
+- #287 fix lambda url on the jets call command
 
 ## [1.9.13]
 - #285 optimize by moving reloader middleware after shotgun static middleware
