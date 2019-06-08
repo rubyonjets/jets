@@ -21,7 +21,7 @@ We'll cover each of them:
 Here is an example connecting an existing SQS queue to a Lambda function in a [Job]({% link _docs/jobs.md %})
 
 ```ruby
-class HardJob
+class HardJob < ApplicationJob
   class_timeout 30 # must be less than or equal to the SQS queue default timeout
   sqs_event "hello-queue"
   def dig
@@ -41,7 +41,7 @@ Ultimately, the `sqs_event` declaration generates a [Lambda::EventSourceMapping]
 Jets can create and manage an SQS queue for a specific function. This is done with a special `:generate_queue` argument.
 
 ```ruby
-class HardJob
+class HardJob < ApplicationJob
   class_timeout 30 # must be less than or equal to the SQS queue default timeout
   sqs_event :generate_queue
   def lift
@@ -83,12 +83,14 @@ You can reference the Shared Queue like so:
 app/jobs/hard_job.rb:
 
 ```ruby
-class HardJob
+class HardJob < ApplicationJob
   class_timeout 30 # must be less than or equal to the SQS queue default timeout
   depends_on :list # so we can reference list shared resources
   sqs_event ref(:waitlist) # reference sqs queue in shared resource
   def fix
     puts "fix #{JSON.dump(event)}"
+    puts "sqs arn: #{List.lookup(:waitlist)}"
+    puts "sqs url: #{List.lookup(:waitlist_url)}"
   end
 end
 ```

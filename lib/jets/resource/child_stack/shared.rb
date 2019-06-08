@@ -55,7 +55,7 @@ module Jets::Resource::ChildStack
 
     def depends_on
       return unless current_shared_class.depends_on
-      current_shared_class.depends_on.map { |x| x.to_s.singularize.camelize }
+      current_shared_class.depends_on.map { |x| x.to_s.camelize }
     end
 
     # map the path to a camelized logical_id. Example:

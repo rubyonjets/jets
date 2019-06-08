@@ -22,7 +22,7 @@ We'll cover each of them:
 Here is an example connecting an existing SNS topic to a Lambda function in a [Job]({% link _docs/jobs.md %})
 
 ```ruby
-class HardJob
+class HardJob < ApplicationJob
   class_timeout 30 # must be less than or equal to the SNS Topic default timeout
   sns_event "hello-topic"
   def dig
@@ -44,7 +44,7 @@ There's more information on the filter_policy here on [SNS Message Filtering](ht
 Jets can create and manage an SNS Topic for a specific function. This is done with a special `:generate_topic` argument.
 
 ```ruby
-class HardJob
+class HardJob < ApplicationJob
   class_timeout 30 # must be less than or equal to the SNS Topic default timeout
   sns_event :generate_topic
   def lift
@@ -86,7 +86,7 @@ You can reference the Shared Topic like so:
 app/jobs/hard_job.rb:
 
 ```ruby
-class HardJob
+class HardJob < ApplicationJob
   depends_on :topic # so we can reference topic shared resources
   sns_event ref(:engineering) # reference sns topic in shared resource
   def fix
