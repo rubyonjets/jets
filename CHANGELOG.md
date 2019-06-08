@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.15]
+- #289 add sqs url to shared sqs queue resource
+- #290 allow adjustment for preheat job iam policy
+
 ## [1.9.14]
 - #288 fix shared eager loading so only shared classes are loaded
 - #287 fix lambda url on the jets call command
