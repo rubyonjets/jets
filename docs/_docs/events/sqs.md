@@ -89,8 +89,6 @@ class HardJob < ApplicationJob
   sqs_event ref(:waitlist) # reference sqs queue in shared resource
   def fix
     puts "fix #{JSON.dump(event)}"
-    puts "sqs arn: #{List.lookup(:waitlist)}"
-    puts "sqs url: #{List.lookup(:waitlist_url)}"
   end
 end
 ```
@@ -98,6 +96,30 @@ end
 Underneath the hood, Jets provisions resources via CloudFormation.  The use of `depends_on` ensures that Jets will pass the shared resource `List` stack outputs to the `HardJob` stack as input parameters. This allows `HardJob` to reference resources from the separate child `List` stack.
 
 {% include cloudformation_links.md %}
+
+## Accessing the SQS Url
+
+You can access the SQS url with the `lookup` method. The method is available to `Jets::Stack` subclasses like the `List` class here. Here's an example:
+
+app/jobs/postman_job.rb:
+
+```ruby
+class PostmanJob < ApplicationJob
+  include Jets::AwsServices
+
+  iam_policy "sqs"
+  def deliver
+    puts "queue arn: #{List.lookup(:waitlist)}"
+    puts "queue url: #{List.lookup(:waitlist_url)}"
+    queue_url = List.lookup(:waitlist_url)
+    message_body = JSON.dump({"test": "hello world"})
+    sqs.send_message(
+      queue_url: queue_url,
+      message_body: message_body,
+    )
+  end
+end
+```
 
 ## Send Test Message
 
