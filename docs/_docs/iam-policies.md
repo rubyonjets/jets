@@ -115,6 +115,7 @@ Jets.application.configure do |config|
     Jets::Application.default_prewarm_job_iam_policy,
     "ec2"
   ]
+end
 ```
 
 ## IAM Policy Definition Styles
