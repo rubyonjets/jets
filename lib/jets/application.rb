@@ -187,6 +187,7 @@ class Jets::Application
   def set_iam_policy
     config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
+    config.prewarm_job_iam_policy ||= self.class.default_prewarm_job_iam_policy
   end
 
   def self.default_iam_policy
@@ -218,6 +219,23 @@ class Jets::Application
       policies << cloudformation
     end
     policies
+  end
+
+  def self.default_prewarm_job_iam_policy
+    [
+      {
+        sid: "Statement1",
+        action: ["logs:*"],
+        effect: "Allow",
+        resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{Jets.config.project_namespace}-*",
+      },
+      {
+        sid: "Statement2",
+        action: ["lambda:InvokeFunction", "lambda:InvokeAsync"],
+        effect: "Allow",
+        resource: "arn:aws:lambda:#{Jets.aws.region}:#{Jets.aws.account}:function:#{Jets.config.project_namespace}-*",
+      }
+    ]
   end
 
   # It is pretty easy to attempt to set environment variables without
