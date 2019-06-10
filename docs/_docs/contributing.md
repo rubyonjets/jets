@@ -7,7 +7,7 @@ Hi there! Interested in contributing to Jets? We'd love your help. Jets is an op
 
 ## Where to get help or report a problem
 
-See [the support guidelines](https://rubyonjets.com/docs/support/)
+See [the support guidelines]({% link support.md %})
 
 ## Ways to contribute
 
