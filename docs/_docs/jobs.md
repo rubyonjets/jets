@@ -46,7 +46,7 @@ HardJob.perform_later(:lift, event)
 
 In the example above, the `perform_now` method executes the job in the **current process**. The `perform_later` function runs the job by invoking the AWS Lambda function associated with it in a **new process**.  It usually runs a few seconds later.
 
-Note, remotely on AWS Lambda, the functions executing the `perform_*` methods need to have the IAM permission to call lambda. A simple `iam_policy "lambda"` should do it. See [IAM Policies]({% link _docs/managed-iam-policies.md %}) for more info.
+Note, remotely on AWS Lambda, the functions calling the `perform_*` methods need to have the IAM permission to call Lambda. For example, a simple `iam_policy "lambda"` should do it. See [IAM Policies]({% link _docs/managed-iam-policies.md %}) for more info.
 
 ## Additional Arguments
 
