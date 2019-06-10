@@ -5,7 +5,7 @@ nav_order: 16
 
 Jets provides several ways to finely control the IAM policies associated with your Lambda functions. Here are the ways and their precedence:
 
-1. Function specific IAM policy: highest precedence
+1. Function-specific IAM policy: highest precedence
 2. Class-wide IAM policy
 3. Application-wide IAM policy: lowest precedence
 
@@ -46,7 +46,7 @@ end
 
 ## IAM Policies Inheritance
 
-IAM policies defined at lower levels of precedence **inherit** and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add a simple additional permission. For example, the default application-wide IAM policy looks something like this:
+IAM policies defined at lower levels of precedence **inherit** and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add simple additional permissions. For example, the default application-wide IAM policy looks something like this:
 
 ```ruby
 [{
