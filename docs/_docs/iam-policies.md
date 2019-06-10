@@ -5,7 +5,7 @@ nav_order: 16
 
 Jets provides several ways to finely control the IAM policies associated with your Lambda functions. Here are the ways and their precedence:
 
-1. Function-specific IAM policy: highest precedence
+1. Function specific IAM policy: highest precedence
 2. Class-wide IAM policy
 3. Application-wide IAM policy: lowest precedence
 
@@ -46,7 +46,7 @@ end
 
 ## IAM Policies Inheritance
 
-IAM policies defined at lower levels of precedence **inherit** and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add simple additional permissions. For example, the default application-wide IAM policy looks something like this:
+IAM policies defined at lower levels of precedence **inherit** and include the policies from the higher levels of precedence. This is done so you do not have to duplicate your IAM policies when you only need to add a simple additional permission. For example, the default application-wide IAM policy looks something like this:
 
 ```ruby
 [{
@@ -90,7 +90,6 @@ If you would like to override the default Application-wide IAM policy in `config
 
 ```ruby
 Jets.application.configure do |config|
-  # ...
   config.iam_policy = [
     Jets::Application.default_iam_policy,
     {
@@ -103,20 +102,6 @@ end
 ```
 
 This is useful because the Jets default application IAM policy is dynamically calculated depending on what the resources are being provisioned.  For example, using [Shared Resources]({% link _docs/shared-resources.md %}) will add CloudFormation read permissions.
-
-## Prewarm Job IAM Policy
-
-Jets supports [Prewarming]({% link _docs/prewarming.md %}) by creating an internal [Jets::PreheatJob](https://github.com/tongueroo/jets/blob/master/lib/jets/internal/app/jobs/jets/preheat_job.rb) class.  The PreheatJob has it's own IAM policy that allows it to call Lambda functions. It may be useful to adjust the policy if you are using Lambda with vpc_config. Here's an example:
-
-```ruby
-Jets.application.configure do |config|
-  # ...
-  config.prewarm_job_iam_policy = [
-    Jets::Application.default_prewarm_job_iam_policy,
-    "ec2"
-  ]
-end
-```
 
 ## IAM Policy Definition Styles
 
