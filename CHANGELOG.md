@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.16]
+- Removed #290, can use the application-wide IAM policy instead
+
 ## [1.9.15]
 - #289 add sqs url to shared sqs queue resource
 - #290 allow adjustment for preheat job iam policy
