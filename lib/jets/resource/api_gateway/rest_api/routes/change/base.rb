@@ -103,7 +103,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     end
 
     def lambda_function_description(function_arn)
-      resp = lambda.get_function(function_name: function_arn)
+      resp = aws_lambda.get_function(function_name: function_arn)
       resp.configuration.description # contains full info: PostsController#index
     end
 
