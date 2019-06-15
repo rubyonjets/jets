@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.17]
+- #292 fix routes change detection, aws_lambda client
+
 ## [1.9.16]
 - Removed #290, can use the application-wide IAM policy instead
 
