@@ -1,5 +1,40 @@
 class Jets::Application
-  module DefaultConfig
+  module Defaults
+    extend ActiveSupport::Concern
+
+    included do
+      def self.default_iam_policy
+        project_namespace = Jets.project_namespace
+        logs = {
+          action: ["logs:*"],
+          effect: "Allow",
+          resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
+        }
+        s3_bucket = Jets.aws.s3_bucket
+        s3_readonly = {
+          action: ["s3:Get*", "s3:List*"],
+          effect: "Allow",
+          resource: "arn:aws:s3:::#{s3_bucket}*",
+        }
+        s3_bucket = {
+          action: ["s3:ListAllMyBuckets", "s3:HeadBucket"],
+          effect: "Allow",
+          resource: "arn:aws:s3:::*", # scoped to all buckets
+        }
+        policies = [logs, s3_readonly, s3_bucket]
+
+        if Jets::Stack.has_resources?
+          cloudformation = {
+            action: ["cloudformation:DescribeStacks"],
+            effect: "Allow",
+            resource: "arn:aws:cloudformation:#{Jets.aws.region}:#{Jets.aws.account}:stack/#{project_namespace}*",
+          }
+          policies << cloudformation
+        end
+        policies
+      end
+    end
+
     def default_config
       config = ActiveSupport::OrderedOptions.new
       config.project_name = parse_project_name # must set early because other configs requires this
@@ -90,6 +125,33 @@ class Jets::Application
       # config.action_mailer = ActiveSupport::OrderedOptions.new
 
       config
+    end
+
+    # Essentially folders under app folder will be the default_autoload_paths. Example:
+    #   app/controllers
+    #   app/helpers
+    #   app/jobs
+    #   app/models
+    #   app/rules
+    #   app/shared/resources
+    #
+    # Also include:
+    #   app/models/concerns
+    #   app/controllers/concerns
+    def default_autoload_paths
+      paths = []
+      each_app_autoload_path("#{Jets.root}/app/*") do |path|
+        paths << path
+      end
+      # Handle concerns folders
+      each_app_autoload_path("#{Jets.root}/app/**/concerns") do |path|
+        paths << path
+      end
+
+      paths << "#{Jets.root}/app/shared/resources"
+      paths << "#{Jets.root}/app/shared/extensions"
+
+      paths
     end
   end
 end
