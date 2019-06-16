@@ -5,7 +5,7 @@ class Jets::Application
   include Singleton
   extend Memoist
   include Jets::Middleware
-  include DefaultConfig
+  include Defaults
 
   def configure(&block)
     instance_eval(&block) if block
@@ -108,33 +108,6 @@ class Jets::Application
     loader.setup
   end
 
-  # Essentially folders under app folder will be the default_autoload_paths. Example:
-  #   app/controllers
-  #   app/helpers
-  #   app/jobs
-  #   app/models
-  #   app/rules
-  #   app/shared/resources
-  #
-  # Also include:
-  #   app/models/concerns
-  #   app/controllers/concerns
-  def default_autoload_paths
-    paths = []
-    each_app_autoload_path("#{Jets.root}/app/*") do |path|
-      paths << path
-    end
-    # Handle concerns folders
-    each_app_autoload_path("#{Jets.root}/app/**/concerns") do |path|
-      paths << path
-    end
-
-    paths << "#{Jets.root}/app/shared/resources"
-    paths << "#{Jets.root}/app/shared/extensions"
-
-    paths
-  end
-
   def each_app_autoload_path(expression)
     Dir.glob(expression).each do |p|
       p.sub!('./','')
@@ -187,37 +160,6 @@ class Jets::Application
   def set_iam_policy
     config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
-  end
-
-  def self.default_iam_policy
-    project_namespace = Jets.project_namespace
-    logs = {
-      action: ["logs:*"],
-      effect: "Allow",
-      resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
-    }
-    s3_bucket = Jets.aws.s3_bucket
-    s3_readonly = {
-      action: ["s3:Get*", "s3:List*"],
-      effect: "Allow",
-      resource: "arn:aws:s3:::#{s3_bucket}*",
-    }
-    s3_bucket = {
-      action: ["s3:ListAllMyBuckets", "s3:HeadBucket"],
-      effect: "Allow",
-      resource: "arn:aws:s3:::*", # scoped to all buckets
-    }
-    policies = [logs, s3_readonly, s3_bucket]
-
-    if Jets::Stack.has_resources?
-      cloudformation = {
-        action: ["cloudformation:DescribeStacks"],
-        effect: "Allow",
-        resource: "arn:aws:cloudformation:#{Jets.aws.region}:#{Jets.aws.account}:stack/#{project_namespace}*",
-      }
-      policies << cloudformation
-    end
-    policies
   end
 
   # It is pretty easy to attempt to set environment variables without

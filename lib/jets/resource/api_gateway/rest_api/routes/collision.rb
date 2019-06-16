@@ -33,7 +33,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes
         Example: /posts/:id and /posts/:post_id/reveal should both be /posts/:id and /posts/:id/reveal.
 
         Please check your `config/routes.rb` and remove the colliding routes.
-        More info: http://rubyonjets.com/docs/considerations-api-gateway/
+        More info: http://rubyonjets.com/docs/considerations/api-gateway/
       EOL
     end
 
