@@ -25,7 +25,7 @@ class Jets::Dotenv
     end
 
     def fetch_ssm_value(name)
-      name = "/#{Jets.application.config.project_name}/#{Jets.env}/#{name}" unless name.start_with?("/")
+      name = "/#{Jets.config.project_name}/#{Jets.env}/#{name}" unless name.start_with?("/")
       response = ssm.get_parameter(name: name, with_decryption: true)
       response.parameter.value
     rescue Aws::SSM::Errors::ParameterNotFound
