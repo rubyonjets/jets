@@ -31,6 +31,19 @@ class Jets::Application
           }
           policies << cloudformation
         end
+
+        if Jets.config.function.vpc_config
+          vpc = %w[
+            ec2:CreateNetworkInterface
+            ec2:DeleteNetworkInterface
+            ec2:DescribeNetworkInterfaces
+            ec2:DescribeVpcs
+            ec2:DescribeSubnets
+            ec2:DescribeSecurityGroups
+          ]
+          policies += vpc
+        end
+
         policies
       end
     end
