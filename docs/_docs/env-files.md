@@ -36,9 +36,9 @@ To use the remote version within the `jets console`, you can use the `JETS_ENV_R
 
 {% include prev_next.md %}
 
-## Referencing the AWS Systems Manager (SSM) Parameter Store
+## SSM Parameter Store Support
 
-A common practice when using AWS is to store configuration and credentials in the SSM parameter store. You can reference SSM Parameters as the source of your variables with the `ssm:param-name` syntax. `param-name` can be either a relative or absolute path. Absolute paths are prefixed with a leading `/`. Relative parameters will automatically be prefixed with the conventional `/<app-name>/<jets-env>/`. For example:
+AWS Systems Manager Parameter Store is supported.  Storing secrets as SSM Parameters and referencing them your `.env` files allows you to commit your `.env` into source control. When you reference a parameter name with it will prefix the conventional `/<app-name>/<jets-env>/`. If you reference the parameter name with a leading / then the conventional is not added. For example:
 
     RELATIVE_DATABASE_URL=ssm:database-url # references /<app-name>/<jets-env>/database-url
     ABSOLUTE_DATABASE_URL=ssm:/path/to/database-url # references /path/to/database-url

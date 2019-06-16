@@ -55,7 +55,7 @@ describe Jets::Dotenv do
 
       expect { Jets::Dotenv.new.load! }
         .to raise_error(SystemExit)
-        .and output(/No parameter matching \/absolute\/path found/).to_stderr
+        .and output(/Error loading/).to_stderr
     end
   end
 end
