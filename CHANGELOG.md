@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.19]
+- #295 dotenv env extra support, fix precedence again
+- #296 automatically add vpc permissions when using vpc_config at the application-wide iam level
+
 ## [1.9.18]
 - #233 SSM Parameter Store support for dotenv files
 - #293 Improvements to SSM Parameter Store support
