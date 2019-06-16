@@ -32,7 +32,26 @@ If you add ".remote" to the end of the filename, Jets will only load the values 
 
 To use the remote version within the `jets console`, you can use the `JETS_ENV_REMOTE=1` env variable. Example:
 
-    JETS_ENV=development JETS_ENV_REMOTE=1 jets console
+    JETS_ENV_REMOTE=1 jets console
+
+## Jets Env Extra
+
+The [JETS_ENV_EXTRA]({% link _docs/env-extra.md %}) concept supports its own dotenv file.  Example:
+
+    JETS_ENV_EXTRA=2 jets console
+
+Loads `.env.development.2`. This takes the highest precedence and will override values in other dotenv files.
+
+## Dotenv File Precedence
+
+Here's an example with `JETS_ENV=development` to explain the dotenv files precedence, from highest to lowest.
+
+1. .env.development.2 (highest) - Loaded when `JETS_ENV_EXTRA=2` is set
+2. .env.development.remote - Loaded when `JETS_ENV_REMOTE=1` is set
+3. .env.development.local
+4. .env.development
+5. .env.local - Loaded for all environments _except_ `test`.
+6. .env - (lowest) - Always loaded
 
 ## SSM Parameter Store Support
 

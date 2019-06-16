@@ -6,23 +6,22 @@ class Jets::Dotenv
   end
 
   def initialize(remote=false)
-    @remote = remote
-    @remote = ENV['JETS_ENV_REMOTE'] if ENV['JETS_ENV_REMOTE']
+    @remote = ENV['JETS_ENV_REMOTE'] || remote
   end
 
   def load!
     vars = ::Dotenv.load(*dotenv_files)
-    ssm = Ssm.new(vars)
-    ssm.interpolate!
+    Ssm.new(vars).interpolate!
   end
 
   # dotenv files with the following precedence:
   #
-  # - .env.development.remote (highest)
+  # - .env.development.jets_env_extra (highest)
+  # - .env.development.remote (2nd highest)
   # - .env.development.local
   # - .env.development
   # - .env.local - This file is loaded for all environments _except_ `test`.
-  # - .env` - The original (lowest)
+  # - .env - The original (lowest)
   #
   def dotenv_files
     files = [
@@ -32,7 +31,10 @@ class Jets::Dotenv
       root.join(".env.#{Jets.env}.local"),
     ]
     files << root.join(".env.#{Jets.env}.remote") if @remote
-    files.reverse.compact # reverse so the precedence is right
+    if ENV["JETS_ENV_EXTRA"]
+      files << root.join(".env.#{Jets.env}.#{ENV["JETS_ENV_EXTRA"]}")
+    end
+    files.compact
   end
 
   def root
