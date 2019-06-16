@@ -6,12 +6,13 @@ class Jets::Dotenv
 
     def initialize(variables={})
       @variables = variables
+      @missing = []
     end
 
     def interpolate!
       interpolated_variables = @variables.map do |key, value|
         if value[SSM_VARIABLE_REGEXP]
-          value = fetch_ssm_value($1)
+          value = fetch_ssm_value(key, $1)
         end
 
         [key, value]
@@ -21,15 +22,23 @@ class Jets::Dotenv
         ENV[key] = value
       end
 
-      interpolated_variables.to_h
+      if @missing.empty?
+        interpolated_variables.to_h # success
+      else
+        message = "Error loading .env variables. No matching SSM parameters found for:\n".color(:red)
+        message += @missing.map { |k,v,n| "  #{k}=ssm:#{v} # ssm name: #{n}"}.join("\n")
+        abort message
+      end
     end
 
-    def fetch_ssm_value(name)
-      name = "/#{Jets.config.project_name}/#{Jets.env}/#{name}" unless name.start_with?("/")
+    def fetch_ssm_value(key, value)
+      name = value.start_with?("/") ? value :
+        "/#{Jets.config.project_name}/#{Jets.env}/#{value}"
       response = ssm.get_parameter(name: name, with_decryption: true)
       response.parameter.value
     rescue Aws::SSM::Errors::ParameterNotFound
-      abort "Error loading .env variables. No parameter matching #{name} found on AWS SSM.".color(:red)
+      @missing << [key, value, name]
+      ''
     end
 
     def ssm

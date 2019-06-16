@@ -12,7 +12,8 @@ class Jets::Dotenv
 
   def load!
     vars = ::Dotenv.load(*dotenv_files)
-    Ssm.new(vars).interpolate!
+    ssm = Ssm.new(vars)
+    ssm.interpolate!
   end
 
   # dotenv files with the following precedence:
