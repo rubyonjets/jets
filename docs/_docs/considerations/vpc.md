@@ -37,7 +37,7 @@ If `vpc_config` is configured at the application-wide level, Jets will automatic
 
 ## NAT Gateway Required
 
-The Lambda functions `vpc_config` need to contain private subnets that have a NAT Gateway. Public subnets with an Internet Gateway did not work when I tested and would the Lambda function would time out.  The AWS Lambda console even has a message stating the requirement of a NAT Gateway:
+The Lambda functions `vpc_config` need to contain private subnets that have a NAT Gateway. Public subnets with an Internet Gateway did not work when I tested. The Lambda function would time out.  The AWS Lambda console even has a message stating the requirement of a NAT Gateway:
 
 ![](/img/docs/considerations/vpc-config-nat-gateway.png)
 
