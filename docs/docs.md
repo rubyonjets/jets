@@ -9,7 +9,7 @@ Jets is a Ruby serverless Framework that allows you to create and deploy service
 
 ## How It Works
 
-You write code and Jets turns your code into Lambda functions and other AWS resources. Jets orchestrates provisioning and deployment so you can focus on writing code, which is what serverless is all about!
+You write code and Jets turns your code into Lambda functions and other AWS resources. Jets orchestrates provisioning and deployment so you can focus on writing code, which is what serverless is all about! Here's a presentation that introduces Jets:
 
 <div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/a0VKbrgzKso" frameborder="0" allowfullscreen=""></iframe></div></div>
 
