@@ -6,6 +6,8 @@ nav_order: 23
 
 Jets supports [CloudWatch Event Rules](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/Create-CloudWatch-Events-Rule.html). This allows you to have a Lambda function run when there's a change to AWS resources.  Here's an extensive list of supported [Event Types](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html).
 
+<div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/0B2MqfZH-NE" frameborder="0" allowfullscreen=""></iframe></div></div>
+
 ## Example
 
 An example might be getting notified when an unwanted security group port gets opened.

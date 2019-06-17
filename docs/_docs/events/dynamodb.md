@@ -6,6 +6,10 @@ nav_order: 24
 
 Jets supports [DynamoDB Stream Events](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html) as a Lambda trigger. When items in your DynamoDB tables are modified, it will trigger a Lambda function to run.  The Lambda function has access to the record data via `event`.
 
+<div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/KciTGXq3msM" frameborder="0" allowfullscreen=""></iframe></div></div>
+
+## Example
+
 Here is an example connecting an existing DynamoDB table's stream to a Lambda function in a [Job]({% link _docs/jobs.md %})
 
 ```ruby
