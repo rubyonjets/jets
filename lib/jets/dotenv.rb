@@ -10,8 +10,13 @@ class Jets::Dotenv
   end
 
   def load!
+    return if on_aws? # this prevents ssm calls if used in dotenv files
     vars = ::Dotenv.load(*dotenv_files)
     Ssm.new(vars).interpolate!
+  end
+
+  def on_aws?
+    !!ENV['_HANDLER'] # https://docs.aws.amazon.com/lambda/latest/dg/lambda-environment-variables.html
   end
 
   # dotenv files with the following precedence:
