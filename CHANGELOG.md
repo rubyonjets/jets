@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.20]
+- #298 remove network calls on jets bootup process
+- set AWS_ACCOUNT env var on function to prevent the sts call on Jets.boot on AWS Lambda
+- dont load dotenv on aws lambda, already defined
+
 ## [1.9.19]
 - #295 dotenv env extra support, fix precedence again
 - #296 automatically add vpc permissions when using vpc_config at the application-wide iam level
