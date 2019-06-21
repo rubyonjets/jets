@@ -19,6 +19,7 @@ class Jets::Resource::Lambda::Function
       env[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
       env[:JETS_PROJECT_NAME] = ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME']
       env[:JETS_STAGE] = Jets::Resource::ApiGateway::Deployment.stage_name
+      env[:JETS_AWS_ACCOUNT] = Jets.aws.account
       env
     end
 

@@ -49,6 +49,8 @@ module Jets
     # aws sts get-caller-identity
     def account
       return '123456789' if test?
+      return ENV['JETS_AWS_ACCOUNT'] if ENV['JETS_AWS_ACCOUNT']
+
       # ensure region set, required for sts.get_caller_identity.account to work
       ENV['AWS_REGION'] ||= region
       begin
