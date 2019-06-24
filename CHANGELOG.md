@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.21]
+- #299 shorten auto-generated iam policy for vpc
+
 ## [1.9.20]
 - #298 remove network calls on jets bootup process
 - set AWS_ACCOUNT env var on function to prevent the sts call on Jets.boot on AWS Lambda
