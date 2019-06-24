@@ -66,7 +66,8 @@ With long logs, you can also use the <details> tag to keep the report readable. 
 
 <details>
  <summary>Summary Goes Here</summary>
- ...this is hidden, collapsable content...
+
+ ...this is hidden, collapsable content. start with a blank to get terminal output to format right...
 </details>
 -->
 
