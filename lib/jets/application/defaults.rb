@@ -33,15 +33,19 @@ class Jets::Application
         end
 
         if Jets.config.function.vpc_config
-          vpc = %w[
-            ec2:CreateNetworkInterface
-            ec2:DeleteNetworkInterface
-            ec2:DescribeNetworkInterfaces
-            ec2:DescribeVpcs
-            ec2:DescribeSubnets
-            ec2:DescribeSecurityGroups
-          ]
-          policies += vpc
+          vpc = {
+            action: %w[
+              ec2:CreateNetworkInterface
+              ec2:DeleteNetworkInterface
+              ec2:DescribeNetworkInterfaces
+              ec2:DescribeVpcs
+              ec2:DescribeSubnets
+              ec2:DescribeSecurityGroups
+            ],
+            effect: "Allow",
+            resource: "*",
+          }
+          policies << vpc
         end
 
         policies
