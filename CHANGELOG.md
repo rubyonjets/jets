@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.22]
+- allow usage of env vars in class methods
+
 ## [1.9.21]
 - #299 shorten auto-generated iam policy for vpc
 
