@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.23]
+- #300 use .jets/project folder for afterburner instead of .jets/app
+
 ## [1.9.22]
 - allow usage of env vars in class methods
 
