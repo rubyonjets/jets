@@ -13,11 +13,11 @@ Jets Afterburner mode works by starting a rack subprocess in the [Lambda Executi
 
 ## Usage
 
-If your Rails application uses environment variables such as `DATABASE_URL` or `DATABASE_PASSWORD`, Jets needs to know about them prior to deployment in order to make them available to the generated Lambda functions. You should set the variables in `.env` files which should be placed in your Rails project's `.jets/app/` directory. Be sure to read the `.env` file [documentation]({% link _docs/env-files.md %}) so that you know how to name your `.env` files.
+If your Rails application uses environment variables such as `DATABASE_URL` or `DATABASE_PASSWORD`, Jets needs to know about them prior to deployment in order to make them available to the generated Lambda functions. You should set the variables in `.env` files which should be placed in your Rails project's `.jets/project/` directory. Be sure to read the `.env` file [documentation]({% link _docs/env-files.md %}) so that you know how to name your `.env` files.
 
     $ cd <your Rails project directory>
-    $ mkdir -p .jets/app
-    $ touch .jets/app/.env # you should add your environment variables here
+    $ mkdir -p .jets/project
+    $ touch .jets/project/.env # you should add your environment variables here
 
 Once your `.env` files are configured, just do the following to deploy your Rails app:
 
@@ -37,11 +37,11 @@ Once your `.env` files are configured, just do the following to deploy your Rail
 
 ## Setting the Project Name
 
-By default, Jets will infer the project name from the folder you are in.  You can override this with a special `.jets/app/project_name` file.  The first line in `.jets/app/project_name` will be used as the project name if the file exists.
+By default, Jets will infer the project name from the folder you are in.  You can override this with a special `.jets/project/project_name` file.  The first line in `.jets/project/project_name` will be used as the project name if the file exists.
 
 ## Advanced customizations
 
-If you want to make Lambda-specific application-wide configurations, you can add config files in the `.jets/app` directory.  For example, you can set the Lamba function memory size for the production environment inside of `.jets/app/config/environments/production.rb`:
+If you want to make Lambda-specific application-wide configurations, you can add config files in the `.jets/project` directory.  For example, you can set the Lamba function memory size for the production environment inside of `.jets/project/config/environments/production.rb`:
 
 ```ruby
 Jets.application.configure do

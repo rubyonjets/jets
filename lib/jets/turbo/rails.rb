@@ -13,7 +13,7 @@ class Jets::Turbo
       wrapper_jets_project
       copy_rack_project
       reconfigure_database_yml
-      apply_dot_jets_app
+      apply_dot_jets_project
       set_project_name
     end
 
@@ -67,16 +67,16 @@ class Jets::Turbo
       name.gsub('_','-') # project_name
     end
 
-    # Anything in rails_project/.jets/app will override the generic wrapper project.
+    # Anything in rails_project/.jets/project will override the generic wrapper project.
     #
-    #   rails_project/.jets/app/.env => jets_project/.env
-    #   rails_project/.jets/app/config/database.yml => jets_project/config/database.yml
+    #   rails_project/.jets/project/.env => jets_project/.env
+    #   rails_project/.jets/project/config/database.yml => jets_project/config/database.yml
     #
     # This useful for DATABASE_URL and other env vars.
-    def apply_dot_jets_app
+    def apply_dot_jets_project
       # Dir.pwd: /home/ec2-user/environment/demo-rails
       # Jets.root: /tmp/jets/turbo-wrapper-project/
-      dot_jets_app = "#{Dir.pwd}/.jets/app"
+      dot_jets_app = "#{Dir.pwd}/.jets/project"
 
       return unless File.exist?(dot_jets_app)
       # Trailing slashes are required for both folders. Jets.root already has the trailing slash
