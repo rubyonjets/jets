@@ -8,6 +8,7 @@ class Jets::Turbo
 
     def setup
       afterburners_message
+      check_old_dot_jets_app_folder!
       clean
       override_env_vars
       wrapper_jets_project
@@ -24,6 +25,19 @@ class Jets::Turbo
       else
         puts "=> Rails app detected: Enabling Jets Afterburner.".color(:green)
       end
+    end
+
+    def check_old_dot_jets_app_folder!
+      return unless File.exist?(".jets/app")
+
+      puts <<~EOL.color(:red)
+        ERROR: .jets/app folder exists. Starting in version jets v1.9.23 this folder should be renamed to .jets/project.
+        Please run:
+
+            mv .jets/app .jets/project
+
+      EOL
+      exit 1
     end
 
     # Hack env vars to support Jets Turbo mode
