@@ -83,7 +83,7 @@ Instead of calling AWS lambda remote, you can also have `jets call` use the code
 [--show-log], [--no-show-log]          # Shows last 4KB of log in the x-amz-log-result header
 [--lambda-proxy], [--no-lambda-proxy]  # Enables automatic Lambda proxy transformation of the event payload
                                        # Default: true
-[--guess], [--no-guess]                # Enables guess mode. Uses inference to allows use of all dashes to specify functions. Smart mode verifies that the function exists in the code base.
+[--guess], [--no-guess]                # Enables guess mode. Uses inference to allows use of all dashes to specify functions. Guess mode verifies that the function exists in the code base.
                                        # Default: true
 [--local], [--no-local]                # Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode guess mode is always used.
 [--noop], [--no-noop]                  
