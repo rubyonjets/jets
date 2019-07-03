@@ -184,7 +184,6 @@ module Jets::Resource::Lambda
       "jets/code/code-#{checksum}.zip" # s3_key
     end
 
-    MAX_FUNCTION_NAME_SIZE = 64
     # Examples:
     #   "#{Jets.config.project_namespace}-sleep_job-perform"
     #   "demo-dev-sleep_job-perform"
@@ -200,7 +199,7 @@ module Jets::Resource::Lambda
       # Returns nil if function name is too long.
       # CloudFormation will managed the the function name in this case.
       # A pretty function name won't be generated but the deploy will be successful.
-      function_name.size > MAX_FUNCTION_NAME_SIZE ? nil : function_name
+      function_name.size > Jets::MAX_FUNCTION_NAME_SIZE ? nil : function_name
     end
 
     def description

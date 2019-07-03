@@ -16,6 +16,8 @@ Jets::Autoloaders.once.setup
 
 module Jets
   RUBY_VERSION = "2.5.3"
+  MAX_FUNCTION_NAME_SIZE = 64
+
   class Error < StandardError; end
   extend Core # root, logger, etc
 end
