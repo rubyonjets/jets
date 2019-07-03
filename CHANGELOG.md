@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.24]
+- #301 Fix jets call for long function names. Lookup actual function names for long functions
+
 ## [1.9.23]
 - #300 use .jets/project folder for afterburner instead of .jets/app
 
