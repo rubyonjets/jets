@@ -48,6 +48,7 @@ class Jets::Commands::Call
   end
 
   def remote_run
+    puts "function_name.size #{function_name.size}".color(:yellow)
     puts "Calling lambda function #{function_name} on AWS" unless @options[:mute]
     return if @options[:noop]
 
