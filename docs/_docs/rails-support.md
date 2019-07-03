@@ -71,9 +71,7 @@ If the Rails rack process fails to start up and you see this error in the CloudW
 
     /opt/ruby/gems/2.5.0/gems/execjs-2.7.0/lib/execjs/runtimes.rb:58:in `autodetect': Could not find a JavaScript runtime. See https://github.com/rails/execjs for a list of available runtimes. (ExecJS::RuntimeUnavailable)
 
-This is because Rails includes the `uglifier` and `coffee-rails` gems, which depend on a javascript runtime.
-
-The error means a javascript runtime like node was not found. In recent versions of the AWS Lambda Ruby Runtime, it looks like node is no longer installed. To fix this, uncomment `therubyracer` in your Gemfile. Uglifier will detect that `therubyracer` javascript runtime is available and use that instead.
+This is because Rails includes the `uglifier` and `coffee-rails` gems, which depend on a javascript runtime. The error means a javascript runtime like node was not found. In recent versions of the AWS Lambda Ruby Runtime, it looks like node is no longer installed. To fix this, uncomment `therubyracer` in your Gemfile. Uglifier will detect that `therubyracer` javascript runtime is available and use that instead.
 
 Another approach that seems to work is to move the `uglifier` and `coffee-rails` gems in the Gemfile `development` group. Jets does not bundle gems in the development group as a part of deployment to Lambda.
 
