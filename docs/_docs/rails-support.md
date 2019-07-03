@@ -65,4 +65,16 @@ Generally, it is recommended you run Jets application directly instead of Afterb
 
 When you run a Jets application natively, you also get access to the full power of Jets. Some examples are [Jobs]({% link _docs/jobs.md %}), [Events]({% link _docs/events.md %}), and [IAM Policies]({% link _docs/iam-policies.md %}).
 
+## JavaScript Runtime Error
+
+If the Rails rack process fails to start up and you see this error in the CloudWatch logs:
+
+    /opt/ruby/gems/2.5.0/gems/execjs-2.7.0/lib/execjs/runtimes.rb:58:in `autodetect': Could not find a JavaScript runtime. See https://github.com/rails/execjs for a list of available runtimes. (ExecJS::RuntimeUnavailable)
+
+This is because Rails includes the `uglifier` and `coffee-rails` gems, which depend on a javascript runtime.
+
+The error means a javascript runtime like node was not found. In recent versions of the AWS Lambda Ruby Runtime, it looks like node is no longer installed. To fix this, uncomment `therubyracer` in your Gemfile. Uglifier will detect that `therubyracer` javascript runtime is available and use that instead.
+
+Another approach that seems to work is to move the `uglifier` and `coffee-rails` gems in the Gemfile `development` group. Jets does not bundle gems in the development group as a part of deployment to Lambda.
+
 {% include prev_next.md %}
