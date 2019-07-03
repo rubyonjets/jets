@@ -23,6 +23,7 @@ group :development, :test do
 <% unless options[:mode] == 'job' -%>
   gem 'shotgun'
   gem 'rack'
+  gem 'puma'
 <% end -%>
 end
 

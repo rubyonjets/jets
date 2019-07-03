@@ -61,20 +61,11 @@ module Jets
       end
       memoize :template
 
-      # Usage:
-      #
-      #   Jets::Stack.has_resources?
-      #
-      def has_resources?
-        # need to eager load the app/shared resources in order to check if shared resources have been registered
-        eager_load_shared_resources!
-        !!subclasses.detect do |subclass|
-          subclass.build?
-        end
-      end
-
+      # Eager loading the app/shared resources to ensure shared resources have been registered.
+      # Not being used anymore but keeping around just in case for now.
       def eager_load_shared_resources!
         Dir.glob("#{Jets.root}/app/shared/**").each do |path|
+          next if path.include?("app/shared/functions")
           Jets::Autoloaders.main.preload(path)
         end
       end

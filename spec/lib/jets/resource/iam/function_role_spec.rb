@@ -25,7 +25,9 @@ describe Jets::Resource::Iam::FunctionRole do
            {"Action"=>["s3:ListAllMyBuckets", "s3:HeadBucket"],
             "Effect"=>"Allow",
             "Resource"=>"arn:aws:s3:::*"},
-           {"Action"=>["cloudformation:DescribeStacks"],
+           {"Action"=>
+             ["cloudformation:DescribeStacks",
+              "cloudformation:DescribeStackResources"],
             "Effect"=>"Allow",
             "Resource"=>
              "arn:aws:cloudformation:us-east-1:123456789:stack/demo-test*"}]}

@@ -1,6 +1,5 @@
 module Jets::Stack::Main::Dsl
   module Lambda
-    MAX_FUNCTION_NAME_SIZE = 64
     # Example:
     #
     #   function(:hello,
@@ -38,7 +37,7 @@ module Jets::Stack::Main::Dsl
       }
 
       function_name = "#{Jets.config.project_namespace}-#{class_namespace}-#{meth}"
-      function_name = function_name.size > MAX_FUNCTION_NAME_SIZE ? nil : function_name
+      function_name = function_name.size > Jets::MAX_FUNCTION_NAME_SIZE ? nil : function_name
       defaults[:function_name] = function_name if function_name
 
       props = defaults.merge(props)

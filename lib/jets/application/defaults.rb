@@ -23,14 +23,12 @@ class Jets::Application
         }
         policies = [logs, s3_readonly, s3_bucket]
 
-        if Jets::Stack.has_resources?
-          cloudformation = {
-            action: ["cloudformation:DescribeStacks"],
-            effect: "Allow",
-            resource: "arn:aws:cloudformation:#{Jets.aws.region}:#{Jets.aws.account}:stack/#{project_namespace}*",
-          }
-          policies << cloudformation
-        end
+        cloudformation = {
+          action: ["cloudformation:DescribeStacks", "cloudformation:DescribeStackResources"],
+          effect: "Allow",
+          resource: "arn:aws:cloudformation:#{Jets.aws.region}:#{Jets.aws.account}:stack/#{project_namespace}*",
+        }
+        policies << cloudformation
 
         if Jets.config.function.vpc_config
           vpc = {
