@@ -47,7 +47,7 @@ Loads `.env.development.2`. This takes the highest precedence and will override 
 Here's an example with `JETS_ENV=development` to explain the dotenv files precedence, from highest to lowest.
 
 1. .env.development.2 (highest) - Loaded when `JETS_ENV_EXTRA=2` is set
-2. .env.development.remote - Loaded when `JETS_ENV_REMOTE=1` is set
+2. .env.development.remote - Loaded when `JETS_ENV_REMOTE=1` is set locally or when on running on Lambda
 3. .env.development.local
 4. .env.development
 5. .env.local - Loaded for all environments _except_ `test`.
