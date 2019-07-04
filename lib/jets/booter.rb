@@ -9,8 +9,8 @@ class Jets::Booter
       confirm_jets_project!
       Jets::Bundle.require
 
-      Jets.application.setup!
       Jets::Dotenv.load! # needs Jets.config.project_name when using ssm in dotenv files
+      Jets.application.setup!
 
       # Turbines are loaded after setup_auto_load_paths in Jets.application.setup!  Some Turbine options are defined
       # in the project so setup must happen before internal Turbines are loaded.
