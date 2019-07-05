@@ -11,6 +11,8 @@ Install jets via RubyGems.
 
 ## Prerequisites and Dependencies
 
+Jets works on macosx and linux variants. Jets does not work on windows.  For windows, recommend considering [Cloud9 IDE](https://aws.amazon.com/cloud9/). There are some nice advantages like [Faster Development](https://rubyonjets.com/docs/faster-development/).
+
 ### Ruby
 
 Jets uses Ruby 2.5, and code written with patch variants of it should also work.
