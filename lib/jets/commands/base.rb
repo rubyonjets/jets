@@ -138,8 +138,6 @@ class Jets::Commands::Base < Thor
     def eager_load!
       return if Jets::Turbo.afterburner?
 
-      # Jets::Dotenv.load! - so ENV vars can be used in class definitions.
-      Jets::Dotenv.load!
       Jets.application.setup_auto_load_paths # in case an app/extension is defined
       Jets::Autoloaders.once.eager_load
     end

@@ -68,10 +68,11 @@ class Jets::Application
   end
 
   def load_default_config
-    @config = default_config
+    @config = default_config # sets Jets.config.project_name by calling parse_project_name
     set_computed_configs! # things like project_namespace that need project_name
-    load_config_application # this overwrites Jets.config.project_name
+    Jets::Dotenv.load! # needs Jets.config.project_name when using ssm in dotenv files
     Jets.config.project_name = parse_project_name # Must set again because JETS_PROJECT_NAME is possible
+    load_config_application # this overwrites Jets.config.project_name
   end
 
   def load_config_application
