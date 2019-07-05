@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.26]
+- fix ssm dotenv support: ensure Jets.config.project_name is set
+
 ## [1.9.25]
 - load dotenv earlier so can use in config/application.rb
 
