@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.28]
+- #302 improve jets call guesser, do a simple detection at the start
+
 ## [1.9.27]
 - sync stdout by default
 
