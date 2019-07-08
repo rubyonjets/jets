@@ -1,6 +1,10 @@
 class Jets::Commands::Call
   class AutoloadGuesser < BaseGuesser
     def detect_class_name
+      # First guess the class name assuming simple
+      class_name = simple_detect_class_name
+      return class_name if class_name
+
       guess_classes.each do |class_name_guess|
         begin
           class_name_guess.constantize
@@ -18,6 +22,26 @@ class Jets::Commands::Call
       end
 
       nil
+    end
+
+    # Can guess name by looking at underscore and dashes.
+    #
+    # Example:
+    #
+    #   @provided_function_name: first_module-lost_controller-index
+    #   return: FirstModule::LostController
+    #
+    def simple_detect_class_name
+      parts = @provided_function_name.split('-')
+      namespace = parts[0..-3].join('/')
+      controller = parts[-2..-2] # dont include the action
+      class_name = [namespace, controller].reject {|s| s.empty?}.compact.join('/').camelize
+      begin
+        class_name.constantize
+        return class_name
+      rescue NameError
+        nil
+      end
     end
 
     def method_name
