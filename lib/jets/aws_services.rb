@@ -57,7 +57,7 @@ module Jets::AwsServices
   end
 
   def apigateway
-    Aws::APIGateway::Client.new(options)
+    Aws::APIGateway::Client.new(session_options)
   end
   global_memoize :apigateway
 
