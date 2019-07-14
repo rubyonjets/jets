@@ -1,6 +1,6 @@
 describe "Route" do
   it "evaluates route info" do
-    route = Jets::Route.new(path: "posts", method: :get, to: "posts#index")
+    route = Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index")
     expect(route.path).to eq "posts"
     expect(route.to).to eq "posts#index"
     expect(route.method).to eq "GET"
@@ -9,7 +9,7 @@ describe "Route" do
 
   context "route with namespace" do
     it "evaluates route info" do
-      route = Jets::Route.new(path: "admin/pages", method: :get, to: "admin/pages#index")
+      route = Jets::Router::Route.new(path: "admin/pages", method: :get, to: "admin/pages#index")
       expect(route.path).to eq "admin/pages"
       expect(route.to).to eq "admin/pages#index"
       expect(route.method).to eq "GET"
@@ -19,7 +19,7 @@ describe "Route" do
 
   context "route with captures" do
     let(:route) do
-      Jets::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit")
+      Jets::Router::Route.new(path: "posts/:id/edit", method: :get, to: "posts#edit")
     end
     it "extract_parameters" do
       parameters = route.extract_parameters("posts/tung/edit")
@@ -39,7 +39,7 @@ describe "Route" do
 
   context "route with multiple captures" do
     let(:route) do
-      Jets::Route.new(path: "posts/:type/:id", method: :get, to: "posts#edit")
+      Jets::Router::Route.new(path: "posts/:type/:id", method: :get, to: "posts#edit")
     end
     it "extract_parameters" do
       parameters = route.extract_parameters("posts/sometype/someid")
@@ -57,7 +57,7 @@ describe "Route" do
 
   context "route with captures and extension" do
     let(:route) do
-      Jets::Route.new(path: "posts/:id", method: :get, to: "posts#show")
+      Jets::Router::Route.new(path: "posts/:id", method: :get, to: "posts#show")
     end
 
     it "extract_parameters" do
@@ -68,7 +68,7 @@ describe "Route" do
 
   context "route with catchall/globbing/wildcard" do
     let(:route) do
-      Jets::Route.new(path: "others/*proxy", method: :any, to: "others#all")
+      Jets::Router::Route.new(path: "others/*proxy", method: :any, to: "others#all")
     end
 
     it "api_gateway_format" do
@@ -84,7 +84,7 @@ describe "Route" do
 
   context "route with toplevel catchall/globbing/wildcard" do
     let(:route) do
-      Jets::Route.new(path: "*catchall", method: :any, to: "catch#all")
+      Jets::Router::Route.new(path: "*catchall", method: :any, to: "catch#all")
     end
 
     it "api_gateway_format" do
@@ -105,7 +105,7 @@ describe "Route" do
 
   context "route with nested catchall/globbing/wildcard" do
     let(:route) do
-      Jets::Route.new(path: "nested/others/*proxy", method: :any, to: "others#all")
+      Jets::Router::Route.new(path: "nested/others/*proxy", method: :any, to: "others#all")
     end
 
     it "api_gateway_format" do
@@ -121,7 +121,7 @@ describe "Route" do
 
   context "route provided in aws api gateway format" do
     let(:route) do
-      Jets::Route.new(path: "posts/{id}/edit", method: :any, to: "posts#edit")
+      Jets::Router::Route.new(path: "posts/{id}/edit", method: :any, to: "posts#edit")
     end
 
     it "extract_parameters" do
@@ -150,7 +150,7 @@ describe "Route" do
 
   context "route with authorization controls" do
     let(:route) do
-      Jets::Route.new(path: "posts", method: :get, to: "posts#index", authorization_type: 'AWS_IAM')
+      Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index", authorization_type: 'AWS_IAM')
     end
 
     it 'authorization can be specified' do
@@ -158,7 +158,7 @@ describe "Route" do
     end
 
     it 'authorization can be nil' do
-      expect(Jets::Route.new(path: "posts", method: :get, to: "posts#index").authorization_type).to be_nil
+      expect(Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index").authorization_type).to be_nil
     end
   end
 end

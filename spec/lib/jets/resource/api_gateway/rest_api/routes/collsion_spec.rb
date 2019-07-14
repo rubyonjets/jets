@@ -70,6 +70,13 @@ describe Jets::Resource::ApiGateway::RestApi do
       collide = collision.variable_collision_exists?(parent_path, paths)
       expect(collide).to be false
     end
+
+    it "posts comments nested resources" do
+      parent_path = "posts/:post_id/comments"
+      paths = ["posts/:post_id/comments/:id", "posts/:post_id/comments/new"]
+      collide = collision.variable_collision_exists?(parent_path, paths)
+      expect(collide).to be false
+    end
   end
 
   context "general" do

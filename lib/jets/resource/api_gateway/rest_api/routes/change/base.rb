@@ -33,7 +33,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
           path = recreate_path(resource.path)
           method = http_verb.downcase.to_sym
           to = to(resource.id, http_verb)
-          route = Jets::Route.new(path: path, method: method, to: to)
+          route = Jets::Router::Route.new(path: path, method: method, to: to)
           routes << route
         end
       end

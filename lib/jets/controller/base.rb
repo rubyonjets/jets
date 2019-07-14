@@ -10,6 +10,8 @@ class Jets::Controller
     include Params
     include Rendering
     include ActiveSupport::Rescuable
+    include Jets::Router::Helpers
+    include ForgeryProtection
 
     delegate :headers, to: :request
     delegate :set_header, to: :response
@@ -76,6 +78,20 @@ class Jets::Controller
     rescue Encoding::UndefinedConversionError
       data['body'] = '[BINARY]'
       JSON.dump(data)
+    end
+
+    def controller_paths
+      paths = []
+      klass = self.class
+      while klass != Jets::Controller::Base
+        paths << klass.controller_path
+        klass = klass.superclass
+      end
+      paths
+    end
+
+    def self.controller_path
+      name.sub(/Controller$/, "".freeze).underscore
     end
 
     def self.process(event, context={}, meth)

@@ -3,7 +3,7 @@ describe Jets::Resource::ApiGateway::Cors do
 
   context "cors" do
     let(:route) do
-      Jets::Route.new(path: "posts", method: :get, to: "posts#index")
+      Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index")
     end
     it "resource" do
       expect(resource.logical_id).to eq "PostsCorsApiMethod"
@@ -47,7 +47,7 @@ describe Jets::Resource::ApiGateway::Cors do
 
   context "authorization" do
     let(:route) do
-      Jets::Route.new(path: "posts/:id", method: :get, to: "posts#show", authorization_type: 'AWS_IAM')
+      Jets::Router::Route.new(path: "posts/:id", method: :get, to: "posts#show", authorization_type: 'AWS_IAM')
     end
     it "can specify an authorization type" do
       expect(resource.properties["AuthorizationType"]).to eq 'AWS_IAM'

@@ -1,6 +1,6 @@
 require 'kramdown'
 
-# Handles mimicking of API Gateway to Lambda function call locally
+# Handles mimicing of API Gateway to Lambda function call locally
 module Jets::Controller::Middleware
   class Local
     extend Memoist
@@ -35,7 +35,7 @@ module Jets::Controller::Middleware
         # This can only really get called with the local server.
         run_polymophic_function
       else # Normal Jets request
-        mimick_aws_lambda!(env, mimic.vars) unless on_aws?(env)
+        mimic_aws_lambda!(env, mimic.vars) unless on_aws?(env)
         @app.call(env)
       end
     end
@@ -60,7 +60,7 @@ module Jets::Controller::Middleware
     end
 
     # Modifies env the in the same way real call from AWS lambda would modify env
-    def mimick_aws_lambda!(env, vars)
+    def mimic_aws_lambda!(env, vars)
       env.merge!(vars)
       env
     end

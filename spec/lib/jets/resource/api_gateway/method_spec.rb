@@ -3,7 +3,7 @@ describe Jets::Resource::ApiGateway::Method do
 
   context "post#index" do
     let(:route) do
-      Jets::Route.new(path: "posts", method: :get, to: "posts#index")
+      Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index")
     end
 
     it "resource" do
@@ -22,7 +22,7 @@ describe Jets::Resource::ApiGateway::Method do
 
   context "long route" do
     let(:route) do
-      Jets::Route.new(path: "posts/:post_id/comments/:comment_id/images/:images/source_urls/:source_urls", method: :get, to: "posts#index")
+      Jets::Router::Route.new(path: "posts/:post_id/comments/:comment_id/images/:images/source_urls/:source_urls", method: :get, to: "posts#index")
     end
 
     it "long route" do
@@ -42,7 +42,7 @@ describe Jets::Resource::ApiGateway::Method do
 
   context "authorization" do
     let(:route) do
-      Jets::Route.new(path: "posts", method: :get, to: "posts#index", authorization_type: 'AWS_IAM')
+      Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index", authorization_type: 'AWS_IAM')
     end
     it "can specify an authorization type" do
       expect(resource.properties["AuthorizationType"]).to eq 'AWS_IAM'

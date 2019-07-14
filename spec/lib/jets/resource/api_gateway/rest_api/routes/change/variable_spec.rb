@@ -23,8 +23,8 @@ describe Jets::Resource::ApiGateway::RestApi::Routes::Change::Variable do
 
   context "yes changes detected" do
     it "changed" do
-      new_routes = [Jets::Route.new(path: "posts/:id", to: "posts#show", method: :get)]
-      deployed_routes = [Jets::Route.new(path: "posts/:post_id", to: "posts#show", method: :get)]
+      new_routes = [Jets::Router::Route.new(path: "posts/:id", to: "posts#show", method: :get)]
+      deployed_routes = [Jets::Router::Route.new(path: "posts/:post_id", to: "posts#show", method: :get)]
 
       allow(variable).to receive(:deployed_routes).and_return(deployed_routes)
       allow(variable).to receive(:new_routes).and_return(new_routes)

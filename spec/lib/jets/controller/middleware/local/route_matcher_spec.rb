@@ -6,7 +6,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "/", "REQUEST_METHOD" => "GET" }
     end
     it "find_route finds root route" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "/",
         method: :get,
         to: "posts#new",
@@ -23,7 +23,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
     it "find_route finds highest precedence route" do
       # In this case the catchall and the capture route matches
       # But the matcher finds the route with the highest precedence
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "*catchall",
         method: :get,
         to: "public_files#show",
@@ -31,7 +31,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       found = matcher.route_found?(route)
       expect(found).to be true
 
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "posts/:id/edit",
         method: :get,
         to: "posts#edit",
@@ -116,7 +116,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
     end
 
     it "route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "*catchall",
         method: :get,
         to: "public_files#catchall",
@@ -137,7 +137,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "/posts/tung/edit", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "posts/:id/edit",
         method: :get,
         to: "posts#edit",
@@ -152,7 +152,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "/comments/hot", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "comments/hot",
         method: :any,
         to: "comments#hot",
@@ -167,7 +167,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "/comments/hot", "REQUEST_METHOD" => "POST" }
     end
     it "route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "comments/hot",
         method: :any,
         to: "comments#hot",
@@ -182,7 +182,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "/some/other/path", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "comments/hot",
         method: :any,
         to: "comments#hot",
@@ -197,7 +197,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "/admin/pages", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "admin/pages",
         method: :get,
         to: "admin/pages#index",
@@ -212,7 +212,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "others/my/long/path", "REQUEST_METHOD" => "GET" }
     end
     it "route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "others/*proxy",
         method: :get,
         to: "others#all",
@@ -227,7 +227,7 @@ describe Jets::Controller::Middleware::Local::RouteMatcher do
       { "PATH_INFO" => "others2/my/long/path", "REQUEST_METHOD" => "GET" }
     end
     it "not route_found?" do
-      route = Jets::Route.new(
+      route = Jets::Router::Route.new(
         path: "others/*proxy",
         method: :get,
         to: "others#all",

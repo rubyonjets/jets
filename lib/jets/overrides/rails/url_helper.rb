@@ -11,15 +11,76 @@ module Jets::UrlHelper
             options
           when :back
             _back_url
-          # TODO: hook this up to Jets implmentation of config/routes.rb
-          # when ActiveRecord::Base
-          #   record = options
-          #   record.id
+          when ActiveRecord::Base
+            _handle_model(options)
+          when Array
+            _handle_array(options)
           else
-            raise ArgumentError, "Please provided a String to link_to as the the second argument. The Jets link_to helper takes as the second argument."
+            raise ArgumentError, "Please provided a String or ActiveRecord model to link_to as the the second argument. The Jets link_to helper takes as the second argument."
           end
 
     add_stage_name(url)
   end
+
+  def _handle_model(record)
+    model = record.to_model
+    if model.persisted?
+      meth = model.model_name.singular_route_key + "_path"
+      send(meth, record) # Example: post_path(record)
+    else
+      meth = model.model_name.route_key + "_path"
+      send(meth) # Example: posts_path
+    end
+  end
+
+  # Convention is that the model class name is the method name. Doesnt work if user is using as.
+  def _handle_array(array)
+    contains_nil = !array.select(&:nil?).empty?
+    if contains_nil
+      raise "ERROR: You passed a nil value in the Array. #{array.inspect}."
+    end
+
+    last_persisted = nil
+    items = array.map do |x|
+      if x.is_a?(ActiveRecord::Base)
+        last_persisted = x.persisted?
+        x.persisted? ? x.model_name.singular_route_key : x.model_name.route_key
+      else
+        x
+      end
+    end
+    meth = items.join('_') + "_path"
+
+    args = array.clone
+    args.shift if args.first.is_a?(Symbol) # drop the first element if its a symbol
+    args = last_persisted ? args : args[0..-2]
+
+    # post_comment_path(post_id) - keep all args - for update
+    # post_comments_path - drop last arg - for create
+    send(meth, *args)
+  end
+
+  # for forgery protection
+  def token_tag(token = nil, form_options: {})
+    return '' unless protect_against_forgery?
+
+    hidden_field_tag 'authenticity_token', masked_authenticity_token
+  end
+
+  def masked_authenticity_token
+    @masked_authenticity_token ||= SecureRandom.hex(32)
+    session[:authenticity_token] = @masked_authenticity_token
+  end
+
+  def protect_against_forgery?
+    @_jets[:controller].class.forgery_protection_enabled?
+  end
+
+  def csrf_meta_tags
+    if protect_against_forgery?
+      tag("meta", name: "csrf-token", content: masked_authenticity_token).html_safe
+    end
+  end
 end # UrlHelper
+
 ActionView::Helpers.send(:include, Jets::UrlHelper)

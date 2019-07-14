@@ -1,6 +1,6 @@
 ---
 title: Debugging Event Payloads
-nav_order: 45
+nav_order: 47
 ---
 
 Here are examples of event payloads for a typical CRUD controller.  You must always specify the `path` key.

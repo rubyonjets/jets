@@ -62,7 +62,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes
       end
       paths.map do |path|
         path.sub("#{parent}/",'').gsub(%r{/.*},'')
-      end.uniq.sort
+      end.select { |x| x =~ /^:/ }.uniq.sort
     end
 
     def parent?(parent, path)
