@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+- Add skip_before_action and skip_after_action callback methods
+
 ## [1.9.28]
 - #302 improve jets call guesser, do a simple detection at the start
 

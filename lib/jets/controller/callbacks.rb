@@ -16,6 +16,10 @@ class Jets::Controller
           self.before_actions = [[meth, options]] + self.before_actions
         end
 
+        def skip_before_action(meth)
+          self.before_actions = self.before_actions.reject { |el| el.first.to_s == meth.to_s }
+        end
+
         alias_method :append_before_action, :before_action
 
         def after_action(meth, options={})
@@ -24,6 +28,10 @@ class Jets::Controller
 
         def prepend_after_action(meth, options={})
           self.after_actions = [[meth, options]] + self.after_actions
+        end
+
+        def skip_after_action(meth)
+          self.after_actions = self.after_actions.reject { |el| el.first.to_s == meth.to_s }
         end
 
         alias_method :append_after_action, :after_action
