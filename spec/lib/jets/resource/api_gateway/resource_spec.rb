@@ -61,5 +61,17 @@ describe Jets::Resource::ApiGateway::Resource do
       # puts "properties["ParentId" #{properties["ParentId".inspect}"
     end
   end
+
+  context("url with dash") do
+    let(:path) { "url-with-dash" }
+    it "contains info for CloudFormation API Gateway Resources" do
+      expect(resource.logical_id).to eq "UrlWithDashApiResource"
+      properties = resource.properties
+      pp properties
+      expect(properties["PathPart"]).to eq "url-with-dash"
+      expect(properties["ParentId"]).to eq "!GetAtt RestApi.RootResourceId"
+    end
+  end
+
 end
 
