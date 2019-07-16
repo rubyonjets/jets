@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.30]
+- #305 allow url paths that contain dashes
+
 ## [1.9.29]
 - #303 API Gateway: Do not generate resource names longer than 62 characters
 - #304 Add skip\_before\_action and skip\_after\_action method callbacks
