@@ -27,11 +27,11 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "actionmailer", "~> 6.0.0.rc1"
-  spec.add_dependency "actionpack", "~> 6.0.0.rc1"
-  spec.add_dependency "actionview", "~> 6.0.0.rc1"
-  spec.add_dependency "activerecord", "~> 6.0.0.rc1"
-  spec.add_dependency "activesupport", "~> 6.0.0.rc1"
+  spec.add_dependency "actionmailer", "~> 6.0.0.rc2"
+  spec.add_dependency "actionpack", "~> 6.0.0.rc2"
+  spec.add_dependency "actionview", "~> 6.0.0.rc2"
+  spec.add_dependency "activerecord", "~> 6.0.0.rc2"
+  spec.add_dependency "activesupport", "~> 6.0.0.rc2"
   spec.add_dependency "aws-sdk-apigateway"
   spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-cloudwatchlogs"
@@ -53,7 +53,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "memoist"
   spec.add_dependency "mimemagic"
   spec.add_dependency "rack"
-  spec.add_dependency "railties", "~> 6.0.0.rc1" # ActiveRecord database_tasks.rb require this
+  spec.add_dependency "railties", "~> 6.0.0.rc2" # ActiveRecord database_tasks.rb require this
   spec.add_dependency "rainbow"
   spec.add_dependency "recursive-open-struct"
   spec.add_dependency "shotgun"
