@@ -23,10 +23,11 @@ class Jets::Booter
       run_turbines(:after_initializers)
       Jets.application.finish!
 
+      setup_db
+
       # Eager load project code. Rather have user find out early than later on AWS Lambda.
       Jets::Autoloaders.main.eager_load
 
-      setup_db
       # TODO: Figure out how to build middleware during Jets.boot without breaking jets new and webpacker:install
       # build_middleware_stack
 
@@ -90,7 +91,8 @@ class Jets::Booter
       end
       # Using ActiveRecord rake tasks outside of Rails, so we need to set up the
       # db connection ourselves
-      ActiveRecord::Base.establish_connection(current_config)
+      ActiveRecord::Base.configurations = current_config
+      # ActiveRecord::Base.establish_connection(current_config)
     end
 
     # Cannot call this for the jets new
