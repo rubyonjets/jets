@@ -92,7 +92,6 @@ class Jets::Booter
       # Using ActiveRecord rake tasks outside of Rails, so we need to set up the
       # db connection ourselves
       ActiveRecord::Base.configurations = current_config
-      # ActiveRecord::Base.establish_connection(current_config)
     end
 
     # Cannot call this for the jets new
