@@ -27,6 +27,7 @@ module Jets::Builders
 
     def build
       check_ruby_version
+      copy_ruby_version_file
       @version_purger.purge
       cache_check_message
 
@@ -368,6 +369,12 @@ module Jets::Builders
         ruby_variant = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.x'
         abort("Jets uses Ruby #{Jets::RUBY_VERSION}.  You should use a variant of Ruby #{ruby_variant}".color(:red))
       end
+    end
+
+    def copy_ruby_version_file
+      return unless File.exists?(".ruby-version")
+
+      FileUtils.cp_r(Jets.root.join(".ruby-version"), build_area)
     end
 
     def ruby_version_supported?
