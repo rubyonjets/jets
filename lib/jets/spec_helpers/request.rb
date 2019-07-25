@@ -29,52 +29,26 @@ module Jets
         json['headers'] = (headers || {}).stringify_keys
 
         if method != :get
-          json['headers']['Content-Type'] = "multipart/form-data; boundary=#{multipart_boundary}"
-          body = +''
-          params.body_params.to_a.each do |e|
-            key, value = e
-            body << multipart_item(name: key, value: value)
-          end
-          body << multipart_end
+          json['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+          body = Rack::Multipart.build_multipart(params.body_params)
 
-          json['body'] = Base64.encode64 body
+          if body
+            json['headers']['Content-Length'] ||= body.length.to_s
+            json['headers']['Content-Type'] = "multipart/form-data; boundary=#{Rack::Multipart::MULTIPART_BOUNDARY}"
+          else
+            body = Rack::Utils.build_nested_query(params.body_params)
+          end
+
+          json['body'] = Base64.encode64(body)
           json['isBase64Encoded'] = true
         end
 
-        params.query_params.to_a.each do |e|
-          key, value = e
+        params.query_params.each do |key, value|
           json['queryStringParameters'] ||= {}
           json['queryStringParameters'][key.to_s] = value.to_s
         end
 
         json
-      end
-
-      def multipart_boundary
-        @boundary ||= '-' * 16 + SecureRandom.hex(32)
-      end
-
-      def multipart_item(name:, value:)
-        if value.is_a? File
-          multipart_file(name: name, filename: File.basename(value.path),
-                         data: ::IO.read(value.path))
-        else
-          multipart_text(name: name, text: value)
-        end
-      end
-
-      def multipart_text(name:, text:)
-        "--#{multipart_boundary}\r\nContent-Disposition: form-data; name=\"#{name}\"\r\n"\
-        "Content-Type: text/plain\r\n\r\n#{text}\r\n"
-      end
-
-      def multipart_file(name:, filename:, data:)
-        "--#{multipart_boundary}\r\nContent-Disposition: form-data; name=\"#{name}\"; "\
-        "filename=\"#{filename}\"\r\n\r\n#{data}\r\n"
-      end
-
-      def multipart_end
-        "--#{multipart_boundary}--"
       end
 
       def find_route!
