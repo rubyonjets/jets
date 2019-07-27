@@ -27,7 +27,6 @@ module Jets::Builders
 
     def build
       check_ruby_version
-      copy_ruby_version_file
       @version_purger.purge
       cache_check_message
 
@@ -35,6 +34,7 @@ module Jets::Builders
       compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
       compile_rails_assets
       copy_project
+      copy_ruby_version_file
       Dir.chdir("#{stage_area}/code") do
         # These commands run from project root
         code_setup
