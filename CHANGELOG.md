@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.32]
+- #317 fix jets deploy when no /tmp/jets exists yet
+
 ## [1.9.31]
 - #307 Update comment in Gemfile template
 - #315 Improve spec_helpers: Use Rack::Multipart utils to properly build body params (especially with files and nested hashes)from galetahub/master
