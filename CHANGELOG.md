@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [1.9.31]
+- #307 Update comment in Gemfile template
+- #315 Improve spec_helpers: Use Rack::Multipart utils to properly build body params (especially with files and nested hashes)from galetahub/master
+- #316 Copy .ruby-version file to build directory
+
 ## [1.9.30]
 - #305 allow url paths that contain dashes
 
