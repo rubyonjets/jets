@@ -17,6 +17,9 @@ class Jets::Commands::RakeTasks
       Jets::Commands::Db::Tasks.load!
       load_webpacker_tasks
 
+      # custom project rake tasks
+      Dir.glob("#{Jets.root}/lib/tasks/*.rake").each { |r| load r }
+
       @@loaded = true
     end
 

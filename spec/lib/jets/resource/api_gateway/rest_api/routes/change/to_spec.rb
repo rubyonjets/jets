@@ -22,7 +22,7 @@ describe Jets::Resource::ApiGateway::RestApi::Routes::Change::To do
       new_routes = Jets::Router.routes
       deployed_routes = new_routes.clone
       # current to value is posts#index , change it to trigger a change
-      new_routes[0] = Jets::Route.new(:path=>"", :to=>"toys#index", :method=>:get, :root=>true)
+      new_routes[0] = Jets::Router::Route.new(:path=>"", :to=>"toys#index", :method=>:get, :root=>true)
 
       allow(to).to receive(:deployed_routes).and_return(deployed_routes)
       allow(to).to receive(:new_routes).and_return(new_routes)

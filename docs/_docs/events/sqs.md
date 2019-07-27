@@ -1,7 +1,7 @@
 ---
 title: SQS Events
 categories: events
-nav_order: 29
+nav_order: 30
 ---
 
 Jets supports [SQS Events](https://aws.amazon.com/blogs/aws/aws-lambda-adds-amazon-simple-queue-service-to-supported-event-sources/) as a Lambda trigger. So you can send a message to an SQS queue and it triggers a Lambda function to run.  The Lambda function has access to the message data via `event`.

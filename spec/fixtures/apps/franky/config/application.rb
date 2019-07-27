@@ -27,4 +27,6 @@ Jets.application.configure do
   # The config.function settings to the CloudFormation Lambda Function properties.
   # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
   # Underscored format can be used for keys to make it look more ruby-ish.
+
+  config.controllers.default_protect_from_forgery = false
 end

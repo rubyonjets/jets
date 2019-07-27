@@ -1,7 +1,7 @@
 ---
 title: Kinesis Events
 categories: events
-nav_order: 26
+nav_order: 27
 ---
 
 Jets supports [Kinesis Events](https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html) as a Lambda trigger. You can use Lambda to process the data from Kinesis. The Lambda function has access to the stream data via `event` and `kinesis_data`.

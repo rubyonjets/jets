@@ -1,7 +1,7 @@
 ---
 title: DynamoDB Events
 categories: events
-nav_order: 24
+nav_order: 25
 ---
 
 Jets supports [DynamoDB Stream Events](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html) as a Lambda trigger. When items in your DynamoDB tables are modified, it will trigger a Lambda function to run.  The Lambda function has access to the record data via `event`.

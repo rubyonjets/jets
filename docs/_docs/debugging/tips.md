@@ -1,6 +1,6 @@
 ---
 title: Debugging Tips
-nav_order: 41
+nav_order: 43
 ---
 
 The next sections provide some debugging help tips for common issues. Hopefully, they are helpful.

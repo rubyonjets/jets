@@ -8,7 +8,8 @@ class Jets::Controller
       return @url unless add_stage?
 
       stage_name = Jets::Resource::ApiGateway::Deployment.stage_name
-      "/#{stage_name}#{@url}"
+      stage_name_with_slashes = "/#{stage_name}/" # use to prevent stage name being added twice if url_for is called twice on the same string
+      @url.include?(stage_name_with_slashes) ? @url : "/#{stage_name}#{@url}"
     end
 
     def add_stage?

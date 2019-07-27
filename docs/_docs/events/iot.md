@@ -1,7 +1,7 @@
 ---
 title: IoT Events
 categories: events
-nav_order: 25
+nav_order: 26
 ---
 
 Jets supports [IoT Events](https://aws.amazon.com/iot-events/). This allows you to have a Lambda function run when IoT data is received.  You provide a SQL statement to define an [IoT Topic Rule](https://docs.aws.amazon.com/iot/latest/developerguide/iot-rules.html).  You can access the data via `event`.

@@ -18,6 +18,7 @@ module Jets::Controller::Middleware
     end
 
     def call
+      ENV['JETS_HOST'] = jets_host # Dirty to use what's essentially a global variable but unsure how else to achieve
       dup.call!
     end
 
@@ -29,13 +30,18 @@ module Jets::Controller::Middleware
     # Common setup logical at this point of middleware processing right before
     # calling any controller actions.
     def setup
-      # We already recreated a mimicke rack env earlier as part of the very first
+      # We already recreated a mimic rack env earlier as part of the very first
       # middleware layer. However, by the time the rack env reaches the main middleware
       # it could had been updated by other middlewares. We update the env here again.
       @controller.request.set_env!(@env)
       # This allows sesison helpers to work. Sessions are managed by
       # the Rack::Session::Cookie middleware by default.
       @controller.session = @env['rack.session'] || {}
+    end
+
+    def jets_host
+      default = "#{@env['rack.url_scheme']}://#{@env['HTTP_HOST']}"
+      Jets.config.helpers.host || default
     end
 
     def self.call(env)

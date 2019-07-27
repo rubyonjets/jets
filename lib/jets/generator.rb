@@ -1,21 +1,85 @@
 # Piggy back off of Rails Generators.
 class Jets::Generator
-  def self.invoke(generator, *args)
-    new(generator, *args).run(:invoke)
-  end
+  class << self
+    def invoke(generator, *args)
+      new(generator, *args).run(:invoke)
+    end
 
-  def self.revoke(generator, *args)
-    new(generator, *args).run(:revoke)
+    def revoke(generator, *args)
+      new(generator, *args).run(:revoke)
+    end
+
+    def help(args=ARGV)
+      require_generators
+
+      # `jets generate -h` results in:
+      #
+      #     args = ["generate", "-h"]
+      #
+      args = args[1..-1] || []
+      help_flags = Thor::HELP_MAPPINGS + ["help"]
+      args.pop if help_flags.include?(args.last)
+      subcommand = args[0]
+
+      out = capture_stdout do
+        if subcommand
+          # Using invoke because it ensure the generator is configured properly
+          invoke(subcommand) # sub-level: jets generate scaffold -h
+        else
+          puts Jets::Commands::Help.text(:generate) # to trigger the regular Thor help
+          # Note: How to call the original top-level help menu from Rails. Keeping around in case its useful later:
+          # Rails::Generators.help # top-level: jets generate -h
+        end
+      end
+      out.gsub('rails','jets').gsub('Rails','Jets')
+    end
+
+    def capture_stdout
+      stdout_old = $stdout
+      io = StringIO.new
+      $stdout = io
+      yield
+      $stdout = stdout_old
+      io.string
+    end
+
+    def require_generators
+      # lazy require so Rails const is only defined when using generators
+      require "rails/generators"
+      require "rails/configuration"
+      require_active_job_generator
+    end
+
+    def require_active_job_generator
+      require "active_job"
+      require "rails/generators/job/job_generator"
+      # Override the source_root
+      Rails::Generators::JobGenerator.class_eval do
+        def self.source_root
+          File.expand_path("../generator/templates/active_job/job/templates", __FILE__)
+        end
+      end
+    end
   end
 
   def initialize(generator, *args)
     @generator, @args = generator, args
+    @args << '--pretend' if noop?
+  end
+
+  # Used to delegate noop option to Rails generator pretend option.  Both work:
+  #
+  #     jets generate scaffold user title:string --noop
+  #     jets generate scaffold user title:string --pretend
+  #
+  # Grabbing directly from the ARGV because think its cleaner than passing options from
+  # Thor all the way down.
+  def noop?
+    ARGV.include?('--noop')
   end
 
   def run(behavior=:invoke)
-    # lazy require so Rails const is only defined when using generators
-    require "rails/generators"
-    require "rails/configuration"
+    self.class.require_generators
     Rails::Generators.configure!(config)
     Rails::Generators.invoke(@generator, @args, behavior: behavior, destination_root: Jets.root)
   end

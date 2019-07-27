@@ -89,7 +89,7 @@ class Jets::Controller::Middleware::Local
       # posts/:id/edit => posts\/(.*)\/edit
 
       regexp_string = route_path.split('/').map do |s|
-                        s.include?(':') ? Jets::Route::CAPTURE_REGEX : s
+                        s.include?(':') ? Jets::Router::Route::CAPTURE_REGEX : s
                       end.join('\/')
       # make sure beginning and end of the string matches
       regexp_string = "^#{regexp_string}$"
