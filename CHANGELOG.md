@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.0.0]
+- #318 Major Routing upgrade
+- Routing Upgrades: nested resources, namespace, scope, singular resource
+- Name routes helpers
+- Forgery protection
+- Generators upgrades: scaffold, controller, model, job, etc
+- Autoload Rake tasks in lib/tasks.
+- Update upgrading docs
+
 ## [1.9.32]
 - #317 fix jets deploy when no /tmp/jets exists yet
 
