@@ -15,7 +15,7 @@ The Jets Examples uses the [codebuild.cloud](https://codebuild.cloud/) tool to s
 
 The [Jets Example](https://codebuild.cloud/docs/examples/jets/) shows how to set up 1 simple CodeBuild project that will run specs and then deploy the Jets application.
 
-There's also an additional example in the [separate-unit-and-deploy](https://github.com/tongueroo/jets-codebuild/tree/separate-unit-and-deploy) in the GitHub repo that shows how to create 2 separate CodeBuild projects for unit tests and deployment. Some advantages:
+There's also an additional example in the [separate-unit-and-deploy](https://github.com/tongueroo/jets-codebuild/tree/separate-unit-and-deploy) branch in the GitHub repo that shows how to create 2 separate CodeBuild projects for unit tests and deployment. Some advantages:
 
 * The projects are decoupled and you can run them separately.
 * Only the deploy project requires IAM access to create the AWS resources.
