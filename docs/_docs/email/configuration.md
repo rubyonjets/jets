@@ -1,6 +1,6 @@
 ---
 title: Email Configuration STMP
-nav_order: 52
+nav_order: 53
 ---
 
 You can configure email with [initializers]({% link _docs/initializers.md %}).  Example:

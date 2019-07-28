@@ -1,6 +1,6 @@
 ---
 title: Email Configuration Mailgun
-nav_order: 53
+nav_order: 54
 ---
 
 Here's an example on how to set up email with Mailgun.

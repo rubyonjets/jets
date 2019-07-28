@@ -1,6 +1,6 @@
 ---
 title: Routing Guide
-nav_order: 32
+nav_order: 31
 ---
 
 {:.toc}
@@ -202,7 +202,7 @@ Results in:
 +-----------+--------+----------------+-------------------+
 ```
 
-The options can be provided directly to `resources` method. You may also want to look at using the `scope`, `prefix` which can provide similar results with less duplication by making use of blocks.  The `scope` and `prefix` docs are below.
+The options can be provided directly to `resources` method. You may also want to look at using the `scope`, `prefix` which can provide similar results with less duplication by making use of blocks.  The [scope](#9-scope) and [prefix](#8-prefix) docs are below.
 
 ### 2.3 param identifier
 
@@ -276,11 +276,11 @@ view | view_path(id)
 
 ### 3.2 member and collection options
 
-Named routes helper methods are also generated when you use the `member` or `collection` keywords with your route.  Refer to the members and collections docs below for examples.
+Named routes helper methods are also generated when you use the `member` or `collection` keywords with your route.  Refer to the [members and collections docs](#6-resource-members-and-collections) below for examples.
 
 ### 3.3 Named routes path and url helper
 
-For each `_path` method there is a corresponding `_url` method.  The `_url` method includes the host. Here's an table with examples:
+For each `_path` method there is a corresponding `_url` method.  The `_url` method includes the host. Here's a table with examples:
 
 As / Prefix | Path Helper | Url Helper
 --- | --- | ---
@@ -291,7 +291,7 @@ edit_post | edit_post_path(1) => /posts/1/edit | edit_post_url(1) => localhost:8
 
 ## 4. Singular Resource
 
-There are sometimes resource that always look up the same id. A good example of this is a `profile` resource. The profile resource always looks up the currently logged-in user. We do not need to have the user id as a part of the url path. The singular `resource` is useful here. Example:
+There are sometimes resources that always look up the same id. A good example of this is a `profile` resource. The profile resource always looks up the currently logged-in user. We do not need to have the user id as a part of the url path. The singular `resource` method is useful here. Example:
 
 ```ruby
 resource :profile
@@ -517,7 +517,7 @@ Results in:
 +-------+------+-------------+-------------------+
 ```
 
-Notice, only the path is affected.  You can also set the scope prefix a string or symbol option. IE: `scope :admin`
+Notice, only the path is affected.  You can also set the scope prefix with a string or symbol option. IE: `scope :admin`
 
 ### 9.2 as example
 

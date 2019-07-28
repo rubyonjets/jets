@@ -1,6 +1,6 @@
 ---
 title: VPC
-nav_order: 83
+nav_order: 84
 ---
 
 Though running your AWS Lambda functions within a VPC is supported, unless completely necessary, it is generally not recommended.  The reasons are:

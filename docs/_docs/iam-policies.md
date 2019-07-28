@@ -1,6 +1,6 @@
 ---
 title: IAM Policies
-nav_order: 16
+nav_order: 15
 ---
 
 Jets provides several ways to finely control the IAM policies associated with your Lambda functions. Here are the ways and their precedence:

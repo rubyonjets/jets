@@ -48,3 +48,7 @@ Run the `jets routes` cli command to get a list of your routes.
     | ANY    | *catchall      | jets/public#show   |
     +--------+----------------+--------------------+
     $
+
+## Routing Guide
+
+There is more information about the Jets Router in the [Routing Guide docs]({% link _docs/routing/guide.md %}).

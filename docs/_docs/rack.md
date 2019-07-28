@@ -1,6 +1,6 @@
 ---
 title: Rack Compatible
-nav_order: 36
+nav_order: 37
 ---
 
 Jets is Rack compatible, both locally and remotely on AWS Lambda.
