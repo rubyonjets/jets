@@ -3,7 +3,7 @@ title: 'Continuous Integration: Jets and CodeBuild'
 nav_order: 75
 ---
 
-This page discusses why you might be interested in setting up Continuous Integration.  We'll use [CodeBuild](https://aws.amazon.com/codebuild/), a fully managed build service from AWS.  It is similar to other services like: [circleci](https://circleci.com/), [travis-ci](https://travis-ci.org/), [semaphoreci](https://semaphoreci.com/), etc.
+This page discusses setting up Continuous Integration.  We'll use [CodeBuild](https://aws.amazon.com/codebuild/), a fully managed build service from AWS.  It is similar to other services like: [circleci](https://circleci.com/), [travis-ci](https://travis-ci.org/), [semaphoreci](https://semaphoreci.com/), etc.
 
 An advantage of using CodeBuild is that you can use IAM roles.  The IAM role associated with the CodeBuild machine is the only thing that requires IAM permission to deploy and create AWS resources.
 
