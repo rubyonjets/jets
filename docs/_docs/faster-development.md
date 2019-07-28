@@ -45,6 +45,6 @@ An additional benefit of the Gem Layer is that it keeps your application code si
 
 ## CI/CD Pipeline
 
-Another approach for a team is to set up a CI/CD pipeline that will deploy when git commits are pushed.
+Another approach for a team is to set up a CI/CD pipeline that will deploy when git commits are pushed.  You may be interested in the [Continuous Integration with CodeBuild docs]({% link _docs/extras/codebuild.md %}).
 
 {% include prev_next.md %}
