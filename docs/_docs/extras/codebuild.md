@@ -7,7 +7,7 @@ This page discusses why you might be interested in setting up Continuous Integra
 
 An advantage of using CodeBuild is that you can use IAM roles.  The IAM role associated with the CodeBuild machine is the only thing that requires IAM permission to deploy and create AWS resources.
 
-Usually, this security posture is considered better than deploying from a development machine. The only IAM permission required on a development machine is access to start a build.  This reduces the potential blast radius. Additionally, it helps scale the deployment process so additional team members can deploy without setting everything up.
+This security posture is considered better than deploying from a development machine. The only IAM permission required on a development machine is access to start a build.  This reduces the potential blast radius. Additionally, it helps scale the deployment process so additional team members can deploy without setting everything up.
 
 ## Examples
 
