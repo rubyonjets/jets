@@ -404,7 +404,7 @@ And their corresponding named routes helper methods.
 As / Prefix | Helper
 --- | ---
 preview_post | preview_post_path(post_id)
-list | list_path
+list_posts | list_posts_path
 
 If you have multiple routes to add, you can also use the block form of `member` or `resources`:
 
