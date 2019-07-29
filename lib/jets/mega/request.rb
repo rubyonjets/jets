@@ -43,7 +43,7 @@ module Jets::Mega
       request = set_headers!(request)
 
       # Make request
-      response = http.request(request)
+      response = send_request(http, request)
 
       puts_rack_output
 
@@ -56,6 +56,30 @@ module Jets::Mega
         headers: headers,
         body: body,
       }
+    end
+
+    # Adds error handling in case the rack server has gone down. Will try to start the server back up if needed.
+    # Search CloudWatch logs for 'Unable to send request' to find for indication of this.
+    def send_request(http, request)
+      retries = 0
+      max_retries = 30 # 15 seconds at a delay of 0.5s
+      delay = 0.5
+
+      begin
+        http.request(request) # response
+      rescue Errno::ECONNREFUSED, Errno::EAFNOSUPPORT
+        puts "Unable to send request to localhost:9292. Will try to start the server with a delay of #{delay} and try again."
+        Jets.start_rack_server
+
+        sleep(delay)
+        retries += 1
+        if retries < max_retries
+          retry
+        else
+          puts "Giving up on trying to send request to localhost:9292"
+          raise # re-raise error
+        end
+      end
     end
 
     def get_encoding(content_type)
