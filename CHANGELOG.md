@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.0.1]
+- #319 improve mega mode or afterburner, start back up rack process if it dies for any reason
+
 ## [2.0.0]
 - #318 Major Routing upgrade
 - Routing Upgrades: nested resources, namespace, scope, singular resource
