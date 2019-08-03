@@ -19,7 +19,7 @@ The `jets server` command starts a server that mimics API Gateway so you can tes
 
 Create some posts records. The posts page should look something like this:
 
-![](/img/quick-start/posts-index.png)
+![Screenshot of the posts UI in a web browser](/img/quick-start/posts-index.png)
 
 ## Deploy to AWS Lambda
 
@@ -33,11 +33,11 @@ Jets deploy creates the corresponding AWS Lambda Functions and API Gateway resou
 
 Lambda Functions:
 
-![](/img/quick-start/demo-lambda-functions.png)
+![Screenshot of the newly created Lambda functions in the AWS Console](/img/quick-start/demo-lambda-functions.png)
 
 API Gateway:
 
-![](/img/quick-start/demo-api-gateway.png)
+![Screenshot of the new created API Gateway resources in the AWS Console](/img/quick-start/demo-api-gateway.png)
 
 Congratulations!  You have successfully deployed your serverless ruby application. It's that simple. 😁
 

@@ -18,11 +18,11 @@ end
 
 The default handler is named `lambda_handler`.  Once deployed, the lambda function shows up in the Lambda console like this:
 
-![](/img/docs/jets-simple-lambda-function-console.png)
+![Screenshot of the newly generated Lambda function UI in AWS Console](/img/docs/jets-simple-lambda-function-console.png)
 
 You can run the function in the AWS Lambda console and see the results:
 
-![](/img/docs/jets-simple-lambda-function-result.png)
+![Report of successful execution of the Lambda function](/img/docs/jets-simple-lambda-function-result.png)
 
 Here's an article that covers writing a simple lambda function with Jets: [Jets Simple AWS Lambda Ruby Function](https://blog.boltops.com/2018/10/26/jets-simple-aws-lambda-ruby-function).
 

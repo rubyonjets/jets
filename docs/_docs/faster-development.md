@@ -41,7 +41,7 @@ Thanks to the use of Lambda Layers, the `jets deploy` process optimizes things a
 
 An additional benefit of the Gem Layer is that it keeps your application code size small. Your app code is usually under the 3MB limit, which is the current maximum package size for the AWS Lambda Console Editor.  This means you can live edit your code, develop, and test without a full deploy.  This is even faster than being able to ssh into the server. Here's a screenshot:
 
-![](/img/docs/faster-development-live-edit.png)
+![Screenshot of AWS UI allowing editing of function code](/img/docs/faster-development-live-edit.png)
 
 ## CI/CD Pipeline
 
