@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $stdout.sync = true unless ENV["JETS_STDOUT_SYNC"] == "0"
 
 $:.unshift(File.expand_path("../", __FILE__))
@@ -23,6 +25,11 @@ module Jets
 
   class Error < StandardError; end
   extend Core # root, logger, etc
+end
+
+ActiveSupport.on_load(:i18n) do
+  I18n.load_path << File.expand_path("jets/locale/en.yml", __dir__)
+  I18n.default_locale = :en
 end
 
 Jets::Autoloaders.once.preload("#{__dir__}/jets/db.rb") # required for booter.rb: setup_db
