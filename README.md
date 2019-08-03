@@ -40,7 +40,7 @@ end
 
 Here's the function in the Lambda console:
 
-![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/jets-simple-lambda-function-console.png)
+![Code Example in AWS Lambda console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/jets-simple-lambda-function-console.png)
 
 
 Though simple functions are supported by Jets, they do not add much value as other ways to write Ruby code with Jets. Classes like [Controllers](http://rubyonjets.com/docs/controllers/) and [Jobs](http://rubyonjets.com/docs/jobs/) add many conveniences and are more powerful to use. We’ll cover them next.
@@ -71,7 +71,7 @@ Helper methods like `params` provide the parameters from the API Gateway event. 
 
 Jets creates Lambda functions for each public method in your controller. Here they are in the Lambda console:
 
-![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-lambda-functions-controller.png)
+![Lambda Functions for each public method in AWS Console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-lambda-functions-controller.png)
 
 ### Jets Routing
 
@@ -97,7 +97,7 @@ end
 
 The `routes.rb` gets translated to API Gateway resources:
 
-![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/quick-start/demo-api-gateway.png)
+![API Gateway Resources generated from routes in AWS console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/quick-start/demo-api-gateway.png)
 
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
@@ -129,7 +129,7 @@ end
 
 `HardJob#dig` runs every 10 hours and `HardJob#lift` runs every 12 hours.  The `rate` and `cron` methods created CloudWatch Event Rules. Example:
 
-![](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-job-cloudwatch-rule.png)
+![CloudWatch Event Rules in AWS Console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-job-cloudwatch-rule.png)
 
 ### Jets Deployment
 
