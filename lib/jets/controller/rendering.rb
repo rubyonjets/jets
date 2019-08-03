@@ -19,7 +19,7 @@ class Jets::Controller
     def render(options={}, rest={})
       raise "DoubleRenderError" if @rendered
 
-      if options.is_a?(Symbol) or options.is_a?(String)
+      if options.is_a?(Symbol) || options.is_a?(String)
         options = normalize_options(options, rest)
       end
 
