@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Router::MethodCreator
   class New < Code
     def meth_name

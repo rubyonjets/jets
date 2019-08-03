@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 begin
   require "dynomite"
 rescue LoadError # Commands::Base.eager_load

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Lambda::Task do
   context "PostsController" do
     let(:task) do

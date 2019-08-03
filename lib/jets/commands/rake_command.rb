@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::RakeCommand
   class << self
     # Same signature as Jets::Commands::Base.perform.

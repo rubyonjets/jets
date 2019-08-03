@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Job::Dsl
   module SnsEvent
     def sns_event(topic_name, props={})

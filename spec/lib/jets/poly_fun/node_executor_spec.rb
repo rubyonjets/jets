@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::PolyFun::NodeExecutor do
   let(:fun) { Jets::PolyFun::NodeExecutor.new(task) }
   let(:task) { BooksController.all_public_tasks[:list] }

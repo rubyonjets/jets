@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Example:
 # describe PostsController, type: :controller do
 #   it "index returns a success response" do

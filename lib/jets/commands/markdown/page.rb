@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands::Markdown
   class Page
     attr_reader :cli_name

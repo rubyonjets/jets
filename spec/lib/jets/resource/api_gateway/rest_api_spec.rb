@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::RestApi do
 
   context 'endpoint configuration' do

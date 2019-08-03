@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::RestApi::Routes::Change::Base do
   let(:base) do
     Jets::Resource::ApiGateway::RestApi::Routes::Change::Base.new

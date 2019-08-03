@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameRule < Jets::Rule::Base
   # "ConfigRuleName" : String,
   # "Description" : String,

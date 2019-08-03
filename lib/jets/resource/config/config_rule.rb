@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::Config
   class ConfigRule < Jets::Resource::Base
     def initialize(app_class, meth, props={})

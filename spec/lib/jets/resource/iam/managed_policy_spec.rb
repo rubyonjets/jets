@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Iam::ManagedPolicy do
   let(:managed_policy) do
     Jets::Resource::Iam::ManagedPolicy.new(definitions)

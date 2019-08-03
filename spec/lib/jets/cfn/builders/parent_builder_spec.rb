@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Cfn::Builders::ParentBuilder do
   context "first run" do
     let(:builder) do

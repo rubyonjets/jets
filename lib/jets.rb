@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $stdout.sync = true unless ENV["JETS_STDOUT_SYNC"] == "0"
 
 $:.unshift(File.expand_path("../", __FILE__))

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PostsController < ApplicationController
   class_timeout 22
   class_iam_policy("lambda:*", "logs:*")

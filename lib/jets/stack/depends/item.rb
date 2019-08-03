@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Stack::Depends
   class Item
     attr_reader :stack, :options

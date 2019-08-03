@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::ApiGateway
   class Deployment < Jets::Resource::Base
     def definition

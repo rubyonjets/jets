@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Job::Dsl
   module S3Event
     def s3_event(bucket_name, props={})

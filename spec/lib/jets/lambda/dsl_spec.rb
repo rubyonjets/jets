@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestPropertiesController < ApplicationController
   properties(
     dead_letter_config: "arn", timeout: 20, role: "myrole", memory_size: 1000

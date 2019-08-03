@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Application
   module Defaults
     extend ActiveSupport::Concern

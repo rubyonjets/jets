@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Clean
   class Base
     def initialize(options={})

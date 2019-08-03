@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Controller
   module ForgeryProtection
     extend ActiveSupport::Concern

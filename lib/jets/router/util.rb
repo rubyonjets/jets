@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Router
   module Util
     # used in MethodCreator logic

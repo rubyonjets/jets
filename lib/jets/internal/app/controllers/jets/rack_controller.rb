@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::RackController < Jets::Controller::Base
   layout false
   internal true

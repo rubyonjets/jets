@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Cookies::Jar do
   let(:jar) { Jets::Controller::Cookies::Jar.new(controller) }
   let(:controller) { PostsController.new(event, context, meth) }

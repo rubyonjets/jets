@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::Cors do
   let(:resource) { Jets::Resource::ApiGateway::Cors.new(route) }
 

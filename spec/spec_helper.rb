@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV["TEST"] = "1"
 ENV["JETS_ENV"] = "test"
 ENV["JETS_ROOT"] = "./spec/fixtures/apps/franky"

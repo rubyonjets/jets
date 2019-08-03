@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "jets generate" do
   describe "migration" do
     it "creates a migration file" do

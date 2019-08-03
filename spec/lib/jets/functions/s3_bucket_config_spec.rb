@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['CFNRESPONSE_TEST'] = '1'
 require "ostruct"
 

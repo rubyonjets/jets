@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # Hack script to sync files from local machine to an Lambda EC2 instance
 # Usage:

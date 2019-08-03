@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # CloudFormation Log Subscription docs: https://amzn.to/2SNiSpr
 module Jets::Resource::Logs
   class SubscriptionFilter < Jets::Resource::Base

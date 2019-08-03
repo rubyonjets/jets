@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::RakeCommand do
   context Jets::Commands::RakeCommand do
 

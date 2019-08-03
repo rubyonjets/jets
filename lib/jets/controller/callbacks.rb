@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Simpified version of callbacks
 # Does not support if
 class Jets::Controller

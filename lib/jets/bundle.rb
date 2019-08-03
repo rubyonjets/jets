@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "jets/turbo"
 
 module Jets

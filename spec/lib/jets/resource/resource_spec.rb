@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource do
   let(:resource) { Jets::Resource.new(definition, replacements) }
 

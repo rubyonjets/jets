@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The thing that limits this implementation is that there needs to be at least
 # one lambda function created from an internal jets function. Example:
 #

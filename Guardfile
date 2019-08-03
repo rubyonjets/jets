@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 guard "bundler", cmd: "bundle" do
   watch("Gemfile")
   watch(/^.+\.gemspec/)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Jets.application.configure do
   config.project_name = "project"
   config.mode = "api"

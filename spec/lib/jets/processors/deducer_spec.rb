@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Deducer" do
   context "controller" do
     let(:deducer) do

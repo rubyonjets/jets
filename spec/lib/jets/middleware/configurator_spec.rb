@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Middleware::Configurator do
   context "configurator" do
     it "middlewares operations" do

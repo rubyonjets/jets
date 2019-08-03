@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands
   class Gems < Jets::Commands::Base
     desc "check", "Check if pre-built Lambda gems are available from the sources"

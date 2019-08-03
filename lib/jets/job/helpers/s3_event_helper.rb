@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Job::Helpers
   module S3EventHelper
     def s3_event

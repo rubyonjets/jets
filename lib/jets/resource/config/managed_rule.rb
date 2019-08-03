@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ManagedRule is just different enough to be a separate class vs being part of the
 # ConfigRule class itself.
 module Jets::Resource::Config

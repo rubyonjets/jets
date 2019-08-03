@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Converts a Jets::Route to a CloudFormation Jets::Resource::ApiGateway::Method resource
 module Jets::Resource::ApiGateway
   class Method < Jets::Resource::Base

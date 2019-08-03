@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ChildStack::ApiDeployment do
   let(:resource) do
     Jets::Resource::ChildStack::ApiDeployment.new("s3-bucket")

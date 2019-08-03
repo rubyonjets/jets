@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Controller::Middleware::Local
   class MimicAwsCall
     extend Memoist

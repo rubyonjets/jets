@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 # Base public methods get turned into Lambda functions.

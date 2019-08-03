@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Middleware
   class Stack
     include Enumerable

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Thanks: Rails dbconsole_command.rb
 module Jets::Commands
   class Dbconsole

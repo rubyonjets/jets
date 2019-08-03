@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Controller
   class Stage
     def initialize(host, url)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # CloudFormation SQS Queue docs: https://amzn.to/2MVWk0j
 module Jets::Resource::Sqs
   class Queue < Jets::Resource::Base

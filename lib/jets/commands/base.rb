@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "thor"
 
 # Override thor's long_desc identation behavior

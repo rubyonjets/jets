@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Cfn::Builders::BaseChildBuilder do
   let(:builder) do
     Jets::Cfn::Builders::BaseChildBuilder.new(app_class)

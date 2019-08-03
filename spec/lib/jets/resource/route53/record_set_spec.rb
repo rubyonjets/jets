@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Route53::RecordSet do
 
   context 'default' do

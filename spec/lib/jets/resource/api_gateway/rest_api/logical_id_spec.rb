@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::RestApi do
   let(:logical_id) do
     logical_id = Jets::Resource::ApiGateway::RestApi::LogicalId.new

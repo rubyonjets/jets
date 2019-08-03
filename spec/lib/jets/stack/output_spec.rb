@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Stack output" do
   let(:output) { Jets::Stack::Output.new("ExampleStack", definition) }
 

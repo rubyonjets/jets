@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Controller
   module Redirection
     # redirect_to "/posts", :status => 301

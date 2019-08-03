@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::PolyFun
   class PythonExecutor < BaseExecutor
     # Code for wrapper script that mimics lambda execution. Wrapper script usage:

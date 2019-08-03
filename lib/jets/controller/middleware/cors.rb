@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The rack cors middleware handles all types of requests locally, this includes the OPTIONS request.
 # Remotely on lambda, the rack cors middleware handles all requests except the OPTIONS request.
 # The options request is handled by a OPTIONS API Gateway Method Mock. This is to allow it to bypass

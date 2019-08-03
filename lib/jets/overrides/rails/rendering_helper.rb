@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::RenderingHelper
   # ensure that we always add the controller view name. So when rendering
   # a partial:

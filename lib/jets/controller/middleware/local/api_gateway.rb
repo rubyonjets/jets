@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Takes a Rack env and converts to ApiGateway event
 class Jets::Controller::Middleware::Local
   class ApiGateway

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Import
   class Rack < Base
     def install

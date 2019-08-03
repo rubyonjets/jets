@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Cfn::Builders
   class ApiGatewayBuilder
     include Interface

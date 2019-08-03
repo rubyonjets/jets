@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Import
   class Cheatsheet
     def self.create(rack_repo_url)

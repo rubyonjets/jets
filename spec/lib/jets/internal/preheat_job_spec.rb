@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::PreheatJob do
   let(:job) do
     Jets::PreheatJob.new({},{},nil)

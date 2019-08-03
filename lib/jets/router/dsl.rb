@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Router
   module Dsl
     # Methods supported by API Gateway

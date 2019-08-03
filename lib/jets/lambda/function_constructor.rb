@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Builds an anonymous class that represents a single Lambda function from code
 # in app/functions.
 #

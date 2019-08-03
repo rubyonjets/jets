@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Cfn::Builders::ControllerBuilder do
   let(:builder) do
     Jets::Cfn::Builders::ControllerBuilder.new(app_class)

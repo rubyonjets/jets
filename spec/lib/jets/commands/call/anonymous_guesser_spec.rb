@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::Call::AnonymousGuesser do
   let(:guesser) { Jets::Commands::Call::AnonymousGuesser.new(function_name) }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Response do
   let(:resp) { Jets::Controller::Response.new }
 

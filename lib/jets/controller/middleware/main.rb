@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # All roads lead here
 #
 # 1. AWS Lambda: PostsController - Rack::Adapter - Jets.application.call

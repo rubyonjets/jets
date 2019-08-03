@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HardJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def dig

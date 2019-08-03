@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands
   class Dynamodb < Jets::Commands::Base
     desc "migrate [path]", "Runs migrations"

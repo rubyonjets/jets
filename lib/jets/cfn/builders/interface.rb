@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The class including this module should implement these methods:
 #
 #   * compose

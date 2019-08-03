@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Lambda::Task
   attr_accessor :class_name, :type
   attr_reader :meth, :properties, :iam_policy, :managed_iam_policy, :lang, :associated_resources

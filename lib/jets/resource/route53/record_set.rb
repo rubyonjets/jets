@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # CloudFormation Docs AWS::Route53::RecordSet: https://amzn.to/2BtP9s5
 #
 # Example:

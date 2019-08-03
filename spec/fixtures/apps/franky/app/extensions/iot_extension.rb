@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IotExtension
   def thermostat_rule(logical_id, props={})
     logical_id = "#{logical_id}_topic_rule"

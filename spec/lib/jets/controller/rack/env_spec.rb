@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Rack::Env do
   let(:rack_env) { Jets::Controller::Rack::Env.new(event, context) }
   let(:context) { nil }

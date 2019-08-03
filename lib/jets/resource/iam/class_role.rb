@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::Iam
   class ClassRole < Jets::Resource::Base
     include BaseRoleDefinition

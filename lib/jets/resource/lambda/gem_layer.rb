@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::Lambda
   class GemLayer < LayerVersion
     def description

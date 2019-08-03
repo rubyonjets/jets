@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Job::Dsl
   module IotEvent
     # The user must at least pass in an SQL statement

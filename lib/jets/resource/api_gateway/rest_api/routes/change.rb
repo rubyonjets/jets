@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Detects route changes
 class Jets::Resource::ApiGateway::RestApi::Routes
   class Change

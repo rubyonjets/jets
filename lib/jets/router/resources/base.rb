@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Router::Resources
   class Base
     def initialize(name, options)

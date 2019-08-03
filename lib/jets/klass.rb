@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Loading a class can usually be loaded via .constantize.
 # But app/functions files are anonymous ruby classes created with
 # Class.new.  Anonymous classes cannot be loaded via .constantize and

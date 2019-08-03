@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # to run specs with what"s remembered from vcr
 #   $ rake
 #

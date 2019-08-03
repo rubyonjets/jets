@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::ApiGateway
   class Resource < Jets::Resource::Base
     def initialize(path, internal: false)

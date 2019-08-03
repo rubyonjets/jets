@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Router::Scope do
   context "root level" do
     let(:scope) do

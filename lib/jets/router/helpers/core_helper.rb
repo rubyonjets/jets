@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Router::Helpers
   module CoreHelper
     # Used for form_for helper

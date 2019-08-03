@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "bundler" # for clean_old_submodules only
 
 module Jets::Builders

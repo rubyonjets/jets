@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # route = Jets::Router::Route.new(
 #   path: "posts",
 #   method: :get,

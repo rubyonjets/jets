@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::Deploy do
   let(:build) do
     Jets::Commands::Deploy.new(noop: true)

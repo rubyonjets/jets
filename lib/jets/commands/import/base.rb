@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Import
   class Base < Sequence
     # Ugly, but when the class_option is only defined in the Thor::Group class

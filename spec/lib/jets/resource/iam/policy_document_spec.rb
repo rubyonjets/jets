@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Iam::PolicyDocument do
   let(:document) do
     Jets::Resource::Iam::PolicyDocument.new(definitions)

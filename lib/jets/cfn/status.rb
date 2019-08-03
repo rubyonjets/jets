@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Cfn
   class Status
     include Jets::AwsServices

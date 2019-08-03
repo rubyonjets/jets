@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AllInOne < Jets::Stack
   cloudwatch_alarm(:billing_alarm,
     depends_on: logical_id(:billing_notification),

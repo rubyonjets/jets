@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Turbo
   class Rails
     attr_reader :build_area

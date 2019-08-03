@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ChildStack::Shared do
   let(:resource) do
     path = "/tmp/jets/demo/templates/demo-test-shared-custom.yml"

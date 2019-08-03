@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Detects route to changes
 class Jets::Resource::ApiGateway::RestApi::Routes::Change
   class To < Base

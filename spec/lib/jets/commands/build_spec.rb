@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::Build do
   before(:each) do
     # hack to reset subclasses, Stack classes from other specs pollutes it.

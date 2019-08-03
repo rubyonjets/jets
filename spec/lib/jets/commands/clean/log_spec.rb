@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::Clean::Log do
   let(:log) do
     log = Jets::Commands::Clean::Log.new

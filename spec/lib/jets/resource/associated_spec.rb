@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Associated do
   let(:associated) { Jets::Resource::Associated.new(definition) }
   let(:definition) do

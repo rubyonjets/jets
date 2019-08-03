@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Mega::Request
   class Source
     def initialize(event)

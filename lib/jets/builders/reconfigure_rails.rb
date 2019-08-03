@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Move logic into plugin instead
 module Jets::Builders
   class ReconfigureRails

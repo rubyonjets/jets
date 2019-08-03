@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RouterTestApp
   include Jets::Router::Helpers::NamedRoutesHelper
 end

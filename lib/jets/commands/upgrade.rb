@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 
 # This class tries to be idempotent, so users should be able to run it multiple times safely.

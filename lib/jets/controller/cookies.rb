@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Based on sinatra/cookies.rb
 # https://github.com/sinatra/sinatra/blob/master/sinatra-contrib/lib/sinatra/cookies.rb
 class Jets::Controller

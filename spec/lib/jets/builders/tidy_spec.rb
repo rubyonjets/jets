@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Builders::Tidy do
   context "general" do
     let(:tidy) do

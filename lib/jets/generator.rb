@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Piggy back off of Rails Generators.
 class Jets::Generator
   class << self

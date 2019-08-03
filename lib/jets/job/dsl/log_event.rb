@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Job::Dsl
   module LogEvent
     def log_event(log_group_name, props={})

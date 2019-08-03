@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::RestApi do
   let(:collision) do
     Jets::Resource::ApiGateway::RestApi::Routes::Collision.new

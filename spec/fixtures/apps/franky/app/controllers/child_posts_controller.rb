@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChildPostsController < PostsController
   def index
     render json: "test"

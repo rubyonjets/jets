@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands
   class Clean < Jets::Commands::Base
     class_option :noop, type: :boolean, desc: "noop or dry-run mode"

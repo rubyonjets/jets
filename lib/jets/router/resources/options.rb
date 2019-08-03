@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Router::Resources
   class Options < Base
     def build(action)

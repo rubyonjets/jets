@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Does not do full expansion, mainly a container that holds the definition and
 # standardizes it without camelizing it.
 class Jets::Resource

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::S3
   class Bucket < Jets::Resource::Base
     attr_reader :bucket_logical_id

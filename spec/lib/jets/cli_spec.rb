@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::CLI do
   let(:command) { Jets::CLI.new(given_args) }
 

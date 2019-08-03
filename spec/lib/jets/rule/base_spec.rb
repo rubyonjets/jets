@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Rule::Base do
   let(:null) { double(:null).as_null_object }
 

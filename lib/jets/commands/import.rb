@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands
   class Import < Jets::Commands::Base
     Jets::Commands::Import::Base.cli_options.each do |args|

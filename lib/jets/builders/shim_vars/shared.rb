@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Jets::Builders::ShimVars::Shared.new(fun)
 #
 #   @deducer.functions.each do |function_name|

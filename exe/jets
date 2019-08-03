@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # traps: INT - ^C
 ['INT', 'TERM', 'QUIT'].each do |signal|

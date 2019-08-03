@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::RestApi::Routes::Change::Variable do
   let(:variable) do
     Jets::Resource::ApiGateway::RestApi::Routes::Change::Variable.new

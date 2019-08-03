@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Custom < Jets::Stack
   resource(:howdy,
     type: "AWS::Lambda::Function",

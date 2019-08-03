@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Processors::MainProcessor do
   let(:main) do
     Jets::Processors::MainProcessor.new(

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Iam::FunctionRole do
   let(:role) do
     Jets::Resource::Iam::FunctionRole.new(task)

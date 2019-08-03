@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::Call::AutoloadGuesser do
   let(:guesser) { Jets::Commands::Call::AutoloadGuesser.new(function_name) }
 

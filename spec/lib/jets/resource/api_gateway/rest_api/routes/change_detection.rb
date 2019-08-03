@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::RestApi do
   let(:detection) { Jets::Resource::ApiGateway::RestApi::ChangeDetection.new }
 

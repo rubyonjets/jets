@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::PreheatJob < ApplicationJob
   ENABLED = Jets.config.prewarm.enable
   CONCURRENCY = Jets.config.prewarm.concurrency

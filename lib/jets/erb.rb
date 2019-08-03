@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'erb'
 
 # Renders Erb and provide better backtrace where there's an error

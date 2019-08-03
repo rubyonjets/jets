@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 event:
 {"version"=>"0",
  "id"=>"baa6a51d-ef92-18fc-cd0f-2d72bcffebbf",

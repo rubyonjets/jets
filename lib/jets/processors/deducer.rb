@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Jets::Processors::Deducer class figures out information that allows the
 # controller or job to be called. Sme key methods for deducer:
 #

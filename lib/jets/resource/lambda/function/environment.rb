@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Resource::Lambda::Function
   module Environment
     def env_properties

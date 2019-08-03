@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Builders
   class LambdaLayer
     include Util

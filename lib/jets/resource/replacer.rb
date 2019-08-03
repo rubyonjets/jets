@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Resource
   class Replacer
     extend Memoist

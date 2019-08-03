@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets
   # Reference: https://github.com/rails/rails/blob/master/actionmailer/lib/action_mailer/railtie.rb
   class Mailer < ::Jets::Turbine

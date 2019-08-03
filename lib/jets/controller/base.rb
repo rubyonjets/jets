@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "json"
 require "rack/utils" # Rack::Utils.parse_nested_query
 

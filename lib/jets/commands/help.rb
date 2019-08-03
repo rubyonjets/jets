@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands::Help
   class << self
     def text(namespaced_command)

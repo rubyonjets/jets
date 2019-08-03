@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Classes that inherit from this method should NOT define and override:
 #
 #   logical_id

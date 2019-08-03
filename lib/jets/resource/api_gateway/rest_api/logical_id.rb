@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Resource::ApiGateway::RestApi
   class LogicalId
     extend Memoist

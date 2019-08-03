@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Controller::Middleware
   class Reloader
     def initialize(app)

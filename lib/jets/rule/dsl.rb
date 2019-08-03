@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Jets::Rule::Base < Jets::Lambda::Functions
 # Both Jets::Rule::Base and Jets::Lambda::Functions have Dsl modules included.
 # So the Jets::Rule::Dsl overrides some of the Jets::Lambda::Functions behavior.

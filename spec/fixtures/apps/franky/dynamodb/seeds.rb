@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Example seed data for demo
 
 def create_request(title)

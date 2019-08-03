@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RescuableController < Jets::Controller::Base
   rescue_from StandardError, with: :error_handler
 

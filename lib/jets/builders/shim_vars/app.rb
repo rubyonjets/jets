@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Jets::Builders::ShimVars::Shared.new(path)
 #
 #   @vars.functions.each do |function_name|

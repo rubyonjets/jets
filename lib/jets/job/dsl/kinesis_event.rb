@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Job::Dsl
   module KinesisEvent
     def kinesis_event(stream_name, options={})

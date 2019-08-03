@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Route" do
   it "evaluates route info" do
     route = Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index")

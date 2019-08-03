@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Rendering::RackRenderer do
   let(:renderer) do
     controller = double(:null).as_null_object

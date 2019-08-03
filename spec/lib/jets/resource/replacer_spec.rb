@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Replacer do
   let(:replacer) { Jets::Resource::Replacer.new(replacements) }
   let(:attributes) do

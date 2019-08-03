@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Middleware::DefaultStack do
   let(:default_stack) { Jets::Middleware::DefaultStack.new(Jets.application, Jets.config) }
   context "default_stack" do

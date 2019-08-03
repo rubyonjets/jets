@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Stack::Main::Dsl
   module Lambda
     # Example:

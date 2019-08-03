@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This class groups the naming in one place.
 # Some naming is for CloudFormation
 # Some are for the Build process

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Db::Tasks
   # Ugly but it loads ActiveRecord database tasks
   def self.load!

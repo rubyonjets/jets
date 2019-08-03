@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Namespace" do
   it "autovivification" do
     Dir.chdir("spec/fixtures/apps/franky") do

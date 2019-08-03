@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Resource::ApiGateway::RestApi::Routes::Collision
   class VariableException < RuntimeError
     def initialize(message="Route variable collisions")

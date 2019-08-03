@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ToysController < ApplicationController
   before_action :set_toy, only: [:show, :edit, :update, :delete]
 

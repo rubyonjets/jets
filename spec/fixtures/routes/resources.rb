@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Example routes.rb of resources
 resources :posts
 

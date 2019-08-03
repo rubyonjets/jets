@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # When upgrading jets, automatically rm -rf /tmp/jets/project in case the structure has changed.
 module Jets::Builders
   class Purger

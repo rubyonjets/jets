@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Middleware::Layer do
   context "layer" do
     it "build" do

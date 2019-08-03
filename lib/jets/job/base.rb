@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 # Job public methods get turned into Lambda functions.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # We cache the clients globally to avoid re-instantiating them again after the initial Lambda cold start.
 #
 # Based on: https://hashrocket.com/blog/posts/implementing-a-macro-in-ruby-for-memoization

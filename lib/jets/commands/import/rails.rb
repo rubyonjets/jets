@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Import
   class Rails < Base
     # We add jets-rails gem even though it's only activated within the megamode

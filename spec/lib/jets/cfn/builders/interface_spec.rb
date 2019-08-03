@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InterfaceTest
   include Jets::Cfn::Builders::Interface
 end

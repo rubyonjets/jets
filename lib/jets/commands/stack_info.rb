@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The important methods in this class are stack_type, s3_bucket and first_run?
 # We use stack_type and s3_bucket to get info for both the build and deploy CLI
 # commands.

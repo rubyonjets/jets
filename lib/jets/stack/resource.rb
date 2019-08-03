@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Implements:
 #
 #   template - uses @definition to build a CloudFormation template section

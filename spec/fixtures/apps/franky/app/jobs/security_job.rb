@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SecurityJob < ApplicationJob
   rule_event(
     source: ["aws.ec2"],

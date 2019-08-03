@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Class that include Definition should implement:
 #
 #   template - method should use @definition to build a CloudFormation template section

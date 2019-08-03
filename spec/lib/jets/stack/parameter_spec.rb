@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Stack parameter" do
   let(:parameter) { Jets::Stack::Parameter.new("ExampleStack", definition) }
 

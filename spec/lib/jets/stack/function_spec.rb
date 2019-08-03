@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FunctionExampleStack < Jets::Stack
   ruby_function(:hello)
   ruby_function("admin/send_message")

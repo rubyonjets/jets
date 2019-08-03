@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::PolyFun::PythonExecutor do
   let(:executor) { Jets::PolyFun::PythonExecutor.new(task) }
   let(:task) { double(:null).as_null_object }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Guesser transforms the user provided function name to the actual lambda
 # function name.
 #

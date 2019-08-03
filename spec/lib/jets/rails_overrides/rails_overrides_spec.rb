@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "jets/overrides/rails"
 
 class FakeView

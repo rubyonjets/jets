@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Admin::RelatedPagesController < ApplicationController
   def index
     render json: {"action": "index"}

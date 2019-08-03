@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # CloudFormation SNS Subscription docs: https://amzn.to/2SJtN3C
 module Jets::Resource::Sns
   class Subscription < Jets::Resource::Base

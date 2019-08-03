@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TemperatureJob < ApplicationJob
   thermostat_rule(:room)
   def record

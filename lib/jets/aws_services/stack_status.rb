@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::AwsServices
   module StackStatus
     def stack_exists?(stack_name)

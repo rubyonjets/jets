@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # CloudFormation Docs AWS::ApiGateway::DomainName: https://amzn.to/2BsrSqo
 #
 # Example:

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Params do
   let(:controller) { PostsController.new(event, nil, "update") }
 

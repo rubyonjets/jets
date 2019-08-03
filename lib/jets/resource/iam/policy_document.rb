@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::Iam
   class PolicyDocument
     extend Memoist

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Iam::ClassRole do
   let(:role) do
     Jets::Resource::Iam::ClassRole.new(PostsController)

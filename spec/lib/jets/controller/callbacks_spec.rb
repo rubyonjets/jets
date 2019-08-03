@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # There was a bug that prepending action modified the global callbacks array throwing a lot of
 # errors in this spec and others
 #

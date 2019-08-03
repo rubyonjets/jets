@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Breaking all the rules to get the beautiful webpacker middleware working
 
 require "webpacker"

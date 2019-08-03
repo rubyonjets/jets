@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 # Hack AwsLambda Ruby Runtime to fix .to_json issue collision with ActiveSupport.

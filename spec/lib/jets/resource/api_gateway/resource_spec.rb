@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::ApiGateway::Resource do
   let(:resource) { Jets::Resource::ApiGateway::Resource.new(path) }
 

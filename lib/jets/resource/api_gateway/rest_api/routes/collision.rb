@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Detects path variable collisions
 class Jets::Resource::ApiGateway::RestApi::Routes
   class Collision

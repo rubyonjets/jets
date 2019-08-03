@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Turbo
   class DatabaseYaml
     def reconfigure

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Cfn::Ship do
   let(:ship) do
     Jets::Cfn::Ship.new(noop: true)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Middleware::Local::RouteMatcher do
   let(:matcher) { Jets::Controller::Middleware::Local::RouteMatcher.new(env) }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::Iam
   module BaseRoleDefinition
     attr_reader :policy_definitions, :managed_policy_definitions

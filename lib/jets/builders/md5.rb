@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'digest'
 
 # Resolves the chicken-and-egg problem with md5 checksums. The handlers need

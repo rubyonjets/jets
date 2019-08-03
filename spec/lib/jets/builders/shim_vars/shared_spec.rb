@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Builders::ShimVars::Shared do
   context "controller without namespace" do
     let(:vars) do

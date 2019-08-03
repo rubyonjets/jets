@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Inheriting classes should implement:
 #
 #   definition

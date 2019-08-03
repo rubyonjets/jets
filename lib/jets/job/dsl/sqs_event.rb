@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Event Source Mapping
 #
 # Underneath the hood, the `sqs_event` method sets up a  [Lambda::EventSourceMapping](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html).  So:

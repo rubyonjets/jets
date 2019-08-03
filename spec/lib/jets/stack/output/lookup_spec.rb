@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'recursive-open-struct'
 
 class Alert2 < Jets::Stack

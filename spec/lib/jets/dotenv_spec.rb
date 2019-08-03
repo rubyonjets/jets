@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Dotenv do
   describe "#load!" do
     it "replaces ssm:<relative-path> with SSM parameters prefixed with /<app-name>/<jets-env>/" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Cfn::Builders::ApiDeploymentBuilder do
   let(:builder) do
     Jets::Cfn::Builders::ApiDeploymentBuilder.new

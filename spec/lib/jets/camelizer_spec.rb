@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Camelizer" do
   it "simple string" do
     s = "foo_bar"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # CloudFormation SNS TopicPolicy docs: https://amzn.to/2SBMq9v
 module Jets::Resource::Sns
   class TopicPolicy < Jets::Resource::Base

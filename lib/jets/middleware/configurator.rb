@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Based on Rails MiddlewareStackProxy
 #
 # Configurator is a recorder for the Jets middleware stack that allows

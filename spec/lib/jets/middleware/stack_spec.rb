@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Middleware::Stack do
   context "stack" do
     it "build" do

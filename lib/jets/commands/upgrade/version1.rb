@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Upgrade
   class Version1
     def run

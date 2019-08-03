@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 JetsRails.stage = ENV['JETS_STAGE'] || 'dev' # for jets-rails StageMiddleware
 
 # config/s3_base_url.txt is generated as part of jets build process

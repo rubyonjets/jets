@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TestSimpleController < Jets::Controller::Base
   layout :application
 

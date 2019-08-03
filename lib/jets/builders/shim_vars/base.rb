@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Builders::ShimVars
   class Base
     include Jets::AwsServices

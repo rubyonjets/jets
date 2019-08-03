@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EasyJob < ApplicationJob
   rate "1 day"
   def sleep

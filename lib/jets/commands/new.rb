@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands
   class New < Sequence
     VALID_MODES = %w[html api job]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands::Markdown
   class Index
     def path

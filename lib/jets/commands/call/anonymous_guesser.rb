@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Call
   class AnonymousGuesser < BaseGuesser
     def detect_class_name

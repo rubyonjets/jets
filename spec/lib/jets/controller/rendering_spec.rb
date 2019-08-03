@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Base do
   let(:controller) {
     controller = StoresController.new({}, nil, "new")

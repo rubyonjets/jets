@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::PolyFun do
   let(:fun) { Jets::PolyFun.new(BooksController, action) }
 

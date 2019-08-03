@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Custom Camelizer with CloudFormation specific handling.
 # Based on: https://stackoverflow.com/questions/8706930/converting-nested-hash-keys-from-camelcase-to-snake-case-in-ruby
 module Jets

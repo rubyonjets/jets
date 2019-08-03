@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "jets/core_ext/kernel" # Hack prevents Rails const from being defined
 
 class Jets::Booter

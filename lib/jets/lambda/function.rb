@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Lambda
   class Function < Functions
     # Override and change the signature so we do not have to provide info at

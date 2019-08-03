@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::Events
   class Rule < Jets::Resource::Base
     def initialize(props={})

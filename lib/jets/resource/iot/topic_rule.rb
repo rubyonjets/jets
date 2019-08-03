@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # CloudFormation AWS::IoT::TopicRule docs: https://amzn.to/2SMBOVm
 module Jets::Resource::Iot
   class TopicRule < Jets::Resource::Base

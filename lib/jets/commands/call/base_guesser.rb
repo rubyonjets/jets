@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Subclasses of BaseGuessor must implement interface:
 #   detect_class_name
 #   method_name

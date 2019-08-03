@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::ApiGateway
   # Might be weird inheriting from Method because Method has Method#cors also
   # but Cors is essentially a Method class.

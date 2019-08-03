@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'thor'
 
 # These commands are ran after rake webpacker:install to enhance the generated

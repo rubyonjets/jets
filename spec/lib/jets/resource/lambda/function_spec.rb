@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Lambda::Function do
   let(:resource) { Jets::Resource::Lambda::Function.new(task) }
 

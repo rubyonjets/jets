@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Job::Dsl
   module RuleEvent
     # Public: Creates CloudWatch Event Rule

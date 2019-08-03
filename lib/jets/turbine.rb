@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets
   class Turbine
     class_attribute :after_initializers

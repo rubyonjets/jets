@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Dynamodb::Migrate < Jets::Commands::Base
   desc "down", "Runs migrations down"
   # desc "migrate:down [path]", "Runs migrations down"

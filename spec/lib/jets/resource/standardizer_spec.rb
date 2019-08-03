@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Standardizer do
   let(:standardizer) { Jets::Resource::Standardizer.new(definition) }
 

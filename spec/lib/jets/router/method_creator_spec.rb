@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MethodCreaterView
   include Jets::Router::Helpers::NamedRoutesHelper
 end

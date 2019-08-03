@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Resource
   class Permission < Jets::Resource::Base
     def initialize(replacements, associated_resource)

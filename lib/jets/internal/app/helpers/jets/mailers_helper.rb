@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::MailersHelper
   def part_query(mime_type)
     mime_type

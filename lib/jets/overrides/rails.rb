@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "jets/overrides/rails/common_methods"
 require "jets/overrides/rails/url_helper"
 require "jets/overrides/rails/rendering_helper"

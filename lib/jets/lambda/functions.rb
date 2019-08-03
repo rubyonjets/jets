@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'json'
 
 # Jets::Lambda::Functions represents a collection of Lambda functions.

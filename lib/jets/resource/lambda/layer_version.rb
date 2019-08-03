@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Type: "AWS::Lambda::LayerVersion"
 # Properties:
 #   CompatibleRuntimes:

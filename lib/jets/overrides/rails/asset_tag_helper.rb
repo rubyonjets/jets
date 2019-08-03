@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Override to prepend stage name when on AWS.
 module Jets::AssetTagHelper
   extend Memoist

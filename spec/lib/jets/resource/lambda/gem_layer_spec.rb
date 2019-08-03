@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Lambda::GemLayer do
   let(:resource) { Jets::Resource::Lambda::GemLayer.new }
 

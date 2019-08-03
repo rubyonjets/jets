@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # SqsEvent uses this module
 module Jets::Job::Dsl
   module EventSourceMapping

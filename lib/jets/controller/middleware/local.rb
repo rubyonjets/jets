@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'kramdown'
 
 # Handles mimicing of API Gateway to Lambda function call locally

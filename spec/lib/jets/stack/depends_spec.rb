@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Stack Depends" do
   before(:each) { Alert ; Custom }
   let(:depends) { Jets::Stack::Depends.new(depends_on) }

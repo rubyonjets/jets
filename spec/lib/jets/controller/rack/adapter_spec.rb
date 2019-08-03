@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Rack::Adapter do
   let(:adapter) { Jets::Controller::Rack::Adapter.new(event, context, meth) }
   let(:context) { nil }

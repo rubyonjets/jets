@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Middleware::Main do
   let(:main) { Jets::Controller::Middleware::Main.new(rack_env) }
   let(:rack_env) do

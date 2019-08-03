@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::Call do
   let(:call) do
     call = Jets::Commands::Call.new(provided_function_name, event, mute: true)

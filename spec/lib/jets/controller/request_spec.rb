@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Request do
   let(:req) { Jets::Controller::Request.new(event, context=nil) }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Controller::Middleware::Local::ApiGateway do
   let(:route) do
     Jets::Controller::Middleware::Local::RouteMatcher.new(env).find_route

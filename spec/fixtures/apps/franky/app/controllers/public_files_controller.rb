@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PublicFilesController < ApplicationController
   def show
     path = Jets.root + "public" + params[:catchall]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Lambda::FunctionConstructor do
   let(:constructor) { Jets::Lambda::FunctionConstructor.new(code_path) }
 

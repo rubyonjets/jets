@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Controller::Middleware::Local
   class RouteMatcher
     def initialize(env)

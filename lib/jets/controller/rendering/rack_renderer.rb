@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rack/utils"
 
 # Special renderer.  All the other renderers lead here

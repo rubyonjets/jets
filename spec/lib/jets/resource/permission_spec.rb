@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Resource::Permission do
   let(:permission) { Jets::Resource::Permission.new(replacements, associated_resource) }
   let(:associated_resource) do

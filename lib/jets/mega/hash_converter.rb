@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Thanks https://mensfeld.pl/2012/01/converting-nested-hash-into-http-url-params-hash-version-in-ruby/
 module Jets::Mega
   module HashConverter

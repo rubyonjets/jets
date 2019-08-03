@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Other dsl that rely on this must implement
 #
 #   default_associated_resource_definition

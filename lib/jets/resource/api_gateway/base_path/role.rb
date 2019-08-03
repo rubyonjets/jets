@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::ApiGateway::BasePath
   class Role < Jets::Resource::Base
     extend Memoist

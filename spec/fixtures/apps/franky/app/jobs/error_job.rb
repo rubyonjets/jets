@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ErrorJob < ApplicationJob
   rate "10 hours" # every 10 hours
   def break

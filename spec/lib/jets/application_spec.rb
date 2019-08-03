@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Application do
   context "Jets::Application.instance" do
     let(:app) do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets
   module Rdoc
     # Use for both jets.gemspec and rake rdoc task

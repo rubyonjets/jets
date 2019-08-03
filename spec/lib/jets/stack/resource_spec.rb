@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe "Stack resource" do
   let(:resource) { Jets::Stack::Resource.new("ExampleStack", definition) }
 

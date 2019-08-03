@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::PolyFun
   class PythonError < StandardError
     def initialize(message, backtrace)

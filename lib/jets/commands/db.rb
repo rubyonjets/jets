@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Commands
   class Db < Jets::Commands::Base
     desc "generate", "Creates a migration to change a db table"

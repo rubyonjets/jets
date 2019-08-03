@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Jets::Commands::Runner
   def self.run(code)
     if code =~ %r{^file://}

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jets::Resource::ApiGateway::BasePath
   class Function < Jets::Resource::Base
     include Jets::Resource::Lambda::Function::Environment

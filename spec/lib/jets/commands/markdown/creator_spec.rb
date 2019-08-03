@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Jets::Commands::Markdown::Creator do
   let(:creator) do
     Jets::Commands::Markdown::Creator.new
