@@ -91,8 +91,7 @@ class Jets::Router::MethodCreator
 
   private
     def singularize(s)
-      return unless s # nil
-      s.singularize
+      s&.singularize
     end
   end
 end
