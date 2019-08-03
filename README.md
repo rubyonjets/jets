@@ -8,6 +8,7 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 [![CircleCI](https://circleci.com/gh/tongueroo/jets.svg?style=svg)](https://circleci.com/gh/tongueroo/jets)
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
 [![Support](https://img.shields.io/badge/Support-Help-blue.svg)](http://rubyonjets.com/support/)
+[![Gitter Chat](https://badges.gitter.im/tongueroo/jets.png)](https://gitter.im/tongueroo/jets)
 
 **Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/extras/upgrading/).
 
