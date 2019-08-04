@@ -97,13 +97,13 @@ module Jets::Commands
     end
 
     desc "generate [type] [args]", "Generates things like scaffolds"
-    long_desc Jets::Generator.help
+    # no long_desc because its handled higher up in cli.rb by thor_args override
     def generate(generator, *args)
       Jets::Generator.invoke(generator, *args)
     end
 
     desc "degenerate [type] [args]", "Destroys things like scaffolds"
-    long_desc Jets::Generator.help
+    # no long_desc because its handled higher up in cli.rb by thor_args override
     def degenerate(generator, *args)
       Jets::Generator.revoke(generator, *args)
     end

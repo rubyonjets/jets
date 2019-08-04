@@ -10,8 +10,6 @@ class Jets::Generator
     end
 
     def help(args=ARGV)
-      require_generators
-
       # `jets generate -h` results in:
       #
       #     args = ["generate", "-h"]
