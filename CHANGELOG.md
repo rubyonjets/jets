@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.0.2]
+- #322, #325, #326, #329 update docs
+- #330 fix remove Rails const
+
 ## [2.0.1]
 - #319 improve mega mode or afterburner, start back up rack process if it dies for any reason
 
