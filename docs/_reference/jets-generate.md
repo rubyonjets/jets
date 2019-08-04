@@ -11,7 +11,7 @@ reference: true
 
 Generates things like scaffolds.
 
-This piggy backs off of the [jets scaffold generator](https://guides.rubyonjets.org/command_line.html#jets-generate).
+This piggy backs off of the [rails scaffold generator](https://guides.rubyonrails.org/command_line.html#rails-generate).
 
 ## General options
 
