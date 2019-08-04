@@ -45,7 +45,7 @@ After a deployment finishes, Jets automatically prewarms the app immediately.  T
 
 Jets appends an `x-jets-prewarm-count` header to the response to help you see if the lambda function was prewarmed. The header looks like this:
 
-![](/img/docs/prewarm-header.png)
+![Screenshot emphasizing the x-jets-prewarm-count header](/img/docs/prewarm-header.png)
 
 We can see that the lambda function had been prewarmed once and called 4 times since the last time AWS Lambda recycled the Lambda function.
 
