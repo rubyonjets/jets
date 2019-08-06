@@ -1,6 +1,6 @@
 ---
 title: Email Previews
-nav_order: 55
+nav_order: 58
 ---
 
 Jets supports previewing emails from [localhost:8888/jets/mailers](localhost:8888/jets/mailers). This can be enabled with:

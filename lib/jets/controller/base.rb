@@ -23,6 +23,13 @@ class Jets::Controller
       @response = Response.new
     end
 
+    # One key difference between process! vs dispatch!
+    #
+    #    process! - takes the request through the middleware stack
+    #    dispatch! - does not
+    #
+    # Most of the time, you want process! instead of dispatch!
+    #
     def process!
       adapter = Jets::Controller::Rack::Adapter.new(event, context, meth)
       adapter.rack_vars(
