@@ -64,14 +64,15 @@ module Jets
 
       def dispatch!
         route = find_route!
-        controller = Object.const_get(route.controller_name).new(event, {}, route.action_name)
+        klass = Object.const_get(route.controller_name)
+        controller = klass.new(event, {}, route.action_name)
         response = controller.process!
 
         unless response['statusCode'] && response['body']
           raise "Expected response to an API Gateway Hash Structure. Are you rendering correctly?"
         end
 
-        Response.new(response['statusCode'].to_i, response['body'])
+        Response.new(response)
       end
     end
   end
