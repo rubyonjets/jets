@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.0.3]
+- #331 spec_helpers fixes: response.headers support, fix session, run spec controller through middleware
+
 ## [2.0.2]
 - #322, #325, #326, #329 update docs
 - #330 fix remove Rails const
