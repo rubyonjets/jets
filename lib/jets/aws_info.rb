@@ -89,7 +89,7 @@ module Jets
     end
 
     def test?
-      ENV['TEST']
+      ENV['TEST'] || Jets.env.test?
     end
 
     private

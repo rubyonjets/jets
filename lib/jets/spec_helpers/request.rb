@@ -65,13 +65,13 @@ module Jets
       def dispatch!
         route = find_route!
         controller = Object.const_get(route.controller_name).new(event, {}, route.action_name)
-        response = controller.dispatch!
+        response = controller.process!
 
-        if !response.is_a?(Array) || response.size != 3
-          raise "Expected response to be an array of size 3. Are you rendering correctly?"
+        unless response['statusCode'] && response['body']
+          raise "Expected response to an API Gateway Hash Structure. Are you rendering correctly?"
         end
 
-        Response.new(response[0].to_i, response[2].read)
+        Response.new(response['statusCode'].to_i, response['body'])
       end
     end
   end
