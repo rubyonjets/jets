@@ -1,6 +1,6 @@
 ---
 title: Jets Turbine
-nav_order: 50
+nav_order: 53
 ---
 
 A `Jets::Turbine` provides hooks to extend Jets and or modify the initialization process.
