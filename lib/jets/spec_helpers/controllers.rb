@@ -1,5 +1,7 @@
 module Jets::SpecHelpers
   module Controllers
+    include Jets::Router::Helpers # must be at the top because response is overridden later
+
     attr_reader :request, :response
 
     def initialize(*)
