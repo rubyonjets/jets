@@ -97,6 +97,10 @@ class Jets::Controller
       paths
     end
 
+    def action_name
+      @meth
+    end 
+
     def self.controller_path
       name.sub(/Controller$/, "".freeze).underscore
     end
