@@ -1,3 +1,5 @@
+require 'shellwords'
+
 class Jets::Util
   class << self
     # Make sure that the result is a text.
@@ -14,7 +16,7 @@ class Jets::Util
       src.chop! if src.ends_with?('/')
       dest.chop! if dest.ends_with?('/')
       check_rsync_installed!
-      sh "rsync -a --links --no-specials --no-devices #{src}/ #{dest}/", quiet: true
+      sh "rsync -a --links --no-specials --no-devices #{Shellwords.escape(src)}/ #{Shellwords.escape(dest)}/", quiet: true
     end
 
     @@rsync_installed = false
