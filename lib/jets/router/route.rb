@@ -187,6 +187,10 @@ class Jets::Router
       @options[:authorization_type]
     end
 
+    def api_key_required
+      @options[:api_key_required]
+    end
+
   private
     def ensure_jets_format(path)
       path.split('/').map do |s|
