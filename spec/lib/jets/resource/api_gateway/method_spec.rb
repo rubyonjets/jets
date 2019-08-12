@@ -20,7 +20,7 @@ describe Jets::Resource::ApiGateway::Method do
     end
 
     it 'defaults to no api_key_required' do
-      expect(resource.properties["ApiKeyRequired"]).to eq ''
+      expect(resource.properties["ApiKeyRequired"]).to eq 'false'
     end
   end
 
@@ -63,4 +63,3 @@ describe Jets::Resource::ApiGateway::Method do
     end
   end
 end
-

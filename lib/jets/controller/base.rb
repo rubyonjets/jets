@@ -99,7 +99,7 @@ class Jets::Controller
 
     def action_name
       @meth
-    end 
+    end
 
     def self.controller_path
       name.sub(/Controller$/, "".freeze).underscore
@@ -129,6 +129,15 @@ class Jets::Controller
         self.auth_type = value
       else
         self.auth_type
+      end
+    end
+
+    class_attribute :api_key_needed
+    def self.api_key_required(value=nil)
+      if !value.nil?
+        self.api_key_needed = value
+      else
+        self.api_key_needed
       end
     end
   end
