@@ -6,6 +6,7 @@ module Jets::Resource::ApiGateway
         endpoint_configuration: { types: endpoint_types }
       }
       properties[:binary_media_types] = binary_media_types if binary_media_types
+      properties[:policy] = endpoint_policy if endpoint_policy
 
       {
         internal_logical_id => {
@@ -51,6 +52,13 @@ module Jets::Resource::ApiGateway
       return nil if types.nil? || types.empty?
 
       [types].flatten
+    end
+
+    def endpoint_policy
+      endpoint_policy = Jets.config.api.endpoint_policy
+      return nil if endpoint_policy.nil? || endpoint_policy.empty?
+
+      endpoint_policy
     end
   end
 end

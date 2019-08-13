@@ -99,6 +99,7 @@ class Jets::Application
       config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
       config.api.binary_media_types = ['multipart/form-data']
       config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
+      config.api.endpoint_policy = nil
 
       config.domain = ActiveSupport::OrderedOptions.new
       # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is nil
