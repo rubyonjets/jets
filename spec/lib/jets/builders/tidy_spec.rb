@@ -11,7 +11,7 @@ describe Jets::Builders::Tidy do
       end
 
       it "excludes should not include jetskeep" do
-        expect(tidy.jetskeep).to eq [".bundle", "packs", "pack"]
+        expect(tidy.jetskeep).to eq [".bundle", "packs", "vendor", "pack"]
       end
     end
   end
