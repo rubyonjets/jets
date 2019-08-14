@@ -40,7 +40,7 @@ module Jets::Cfn
           The specific child stack usually shows more detailed information and can be used to resolve the issue.
           Example of checking the CloudFormation console: https://rubyonjets.com/docs/debugging/cloudformation/
         EOL
-        return
+        exit 1
       end
 
       prewarm
