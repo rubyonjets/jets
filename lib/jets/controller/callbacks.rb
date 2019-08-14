@@ -8,11 +8,11 @@ class Jets::Controller
       class_attribute :after_actions, default: []
 
       class << self
-        def before_action(meth, options={})
+        def before_action(meth, options = {})
           self.before_actions += [[meth, options]]
         end
 
-        def prepend_before_action(meth, options={})
+        def prepend_before_action(meth, options = {})
           self.before_actions = [[meth, options]] + self.before_actions
         end
 
@@ -22,11 +22,11 @@ class Jets::Controller
 
         alias_method :append_before_action, :before_action
 
-        def after_action(meth, options={})
+        def after_action(meth, options = {})
           self.after_actions += [[meth, options]]
         end
 
-        def prepend_after_action(meth, options={})
+        def prepend_after_action(meth, options = {})
           self.after_actions = [[meth, options]] + self.after_actions
         end
 
