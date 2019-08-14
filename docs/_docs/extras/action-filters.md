@@ -36,4 +36,26 @@ private
 end
 ```
 
+## Example skip_before_action
+
+```ruby
+class ApplicationController < Jets::Controller::Base
+  before_action :authenticate_user_session
+
+  # ...
+
+
+class PublicDocumentsController < ApplicationController
+  # skip the authenticate_user_session for all the methods in the controller
+  skip_before_action :authenticate_user_session
+
+  # ...
+
+class PostsController < ApplicationController
+  # skip the authenticate_user_session only for the index method in the controller
+  skip_before_action :authenticate_user_session, only: [:index]
+
+
+```
+
 {% include prev_next.md %}
