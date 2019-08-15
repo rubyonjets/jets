@@ -65,12 +65,12 @@ class SkippedBeforeController < Jets::Controller::Base
   def second; end
 end
 
-class SkippedBeforeControllerWithOnly < Jets::Controller::Base
+class SkippedBeforeWithOnlyController < Jets::Controller::Base
   before_action :first
-  skip_before_action :first, only: %i[second]
+  skip_before_action :first, only: %i[index]
 
   def first; end
-  def second; end
+  def index; end
 end
 
 
@@ -131,10 +131,10 @@ describe Jets::Controller::Base do
     end
   end
 
-  context SkippedBeforeControllerWithOnly do
-    subject { SkippedBeforeControllerWithOnly.new({}, nil, :index) }
+  context SkippedBeforeWithOnlyController do
+    subject { SkippedBeforeWithOnlyController.new({}, nil, :index) }
     it "adds the method to the except of the callback" do
-      expect(subject.class.before_actions).to eq [[:first, {except: [:second]}]]
+      expect(subject.class.before_actions).to eq [[:first, {except: [:index]}]]
     end
   end
 
