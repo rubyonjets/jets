@@ -2,12 +2,11 @@ module Jets::SpecHelpers
   module Controllers
     include Jets::Router::Helpers # must be at the top because response is overridden later
 
-    attr_reader :request, :response
-
-    def initialize(*)
-      super
-      @request = Request.new(:get, '/', {}, Params.new)
-      @response = nil # will be set after http_call
+    attr_reader :response
+    # Note: caching it like this instead of within the initialize results in the headers not being cached
+    # See: https://community.rubyonjets.com/t/is-jets-spechelpers-controllers-request-being-cached/244/2
+    def request
+      @request ||= Request.new(:get, '/', {}, Params.new)
     end
 
     rest_methods = %w[get post put patch delete]
