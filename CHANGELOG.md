@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.0.5]
+- #333 Always keep vendor directory
+- #335 Controller action_name method
+- #336 Escape paths passed to rsync
+- #338 Support for "apiKeyRequired" option for API method
+- #339 Implement endpoint_policy configuration
+- #340 Fix tidy_spec from #333
+- #341 Return exist status 1 if deployment fails
+- #342 Adding support for `:only` option, to the skip\_before_action method
+- #343 spec helpers: dont cache request headers between specs
+
 ## [2.0.4]
 - #332 spec helpers: include routes helper
 
