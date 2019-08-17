@@ -84,21 +84,6 @@ jobs:
 
             bundle exec rspec
 
-      - run:
-          name: install awscli
-          command: sudo apt-get update && sudo apt-get install -y awscli groff
-
-      - run:
-          name: configure awscli
-          command: |
-            mkdir ~/.aws
-
-            cat >~/.aws/config <<EOL
-            [default]
-            region = ${AWS_REGION}
-            output = json
-            EOL
-
       # collect reports
       - store_test_results:
           path: /tmp/test-results
