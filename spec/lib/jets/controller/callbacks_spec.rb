@@ -65,6 +65,15 @@ class SkippedBeforeController < Jets::Controller::Base
   def second; end
 end
 
+class SkippedBeforeWithOnlyController < Jets::Controller::Base
+  before_action :first
+  skip_before_action :first, only: %i[index]
+
+  def first; end
+  def index; end
+end
+
+
 class SkippedAfterController < Jets::Controller::Base
   after_action :first
   after_action :second
@@ -119,6 +128,13 @@ describe Jets::Controller::Base do
     subject { SkippedBeforeController.new({}, nil, :index) }
     it "skips method" do
       expect(subject.class.before_actions).to eq [[:second, {}]]
+    end
+  end
+
+  context SkippedBeforeWithOnlyController do
+    subject { SkippedBeforeWithOnlyController.new({}, nil, :index) }
+    it "adds the method to the except of the callback" do
+      expect(subject.class.before_actions).to eq [[:first, {except: [:index]}]]
     end
   end
 

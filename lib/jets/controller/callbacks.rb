@@ -8,25 +8,28 @@ class Jets::Controller
       class_attribute :after_actions, default: []
 
       class << self
-        def before_action(meth, options={})
+        def before_action(meth, options = {})
           self.before_actions += [[meth, options]]
         end
 
-        def prepend_before_action(meth, options={})
+        def prepend_before_action(meth, options = {})
           self.before_actions = [[meth, options]] + self.before_actions
         end
 
-        def skip_before_action(meth)
-          self.before_actions = self.before_actions.reject { |el| el.first.to_s == meth.to_s }
+        def skip_before_action(meth, options = {})
+          # adds the methods in the only to the exception list for the callback
+          return append_except_to_callbacks(self.before_actions, meth, options[:only]) if options[:only].present?
+            
+          self.before_actions.reject! { |el| el.first.to_s == meth.to_s }
         end
 
         alias_method :append_before_action, :before_action
 
-        def after_action(meth, options={})
+        def after_action(meth, options = {})
           self.after_actions += [[meth, options]]
         end
 
-        def prepend_after_action(meth, options={})
+        def prepend_after_action(meth, options = {})
           self.after_actions = [[meth, options]] + self.after_actions
         end
 
@@ -35,6 +38,20 @@ class Jets::Controller
         end
 
         alias_method :append_after_action, :after_action
+
+        private
+
+        def append_except_to_callbacks(callback_methods, meth, excepted_methods)
+          callback_methods.map! do |callback_method|
+            if callback_method.first.to_s == meth.to_s
+              exceptions = callback_method.second[:except] || []
+              exceptions.concat(Array.wrap(excepted_methods))
+              callback_method.second[:except] = exceptions
+            end
+
+            callback_method
+          end
+        end
       end
     end # included
 
