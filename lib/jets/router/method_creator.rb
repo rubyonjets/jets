@@ -33,10 +33,6 @@ class Jets::Router
       klass = class_name.constantize # Index, Show, Edit, New
       code = klass.new(@options, @scope, @controller)
 
-      # puts "define_#{action}_methods:".color(:yellow) if code.path_method
-      # puts code.path_method.color(:blue) if code.path_method
-      # puts code.url_method.color(:blue) if code.url_method
-
       def_meth(code.path_method) if code.path_method
       def_meth(code.url_method) if code.url_method
     end

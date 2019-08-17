@@ -20,6 +20,7 @@ module Jets::Resource::ApiGateway
             http_method: @route.method,
             request_parameters: {},
             authorization_type: authorization_type,
+            api_key_required: api_key_required?,
             integration: {
               integration_http_method: "POST",
               type: "AWS_PROXY",
@@ -72,10 +73,26 @@ module Jets::Resource::ApiGateway
     end
 
     def controller_auth_type
-      controller_name = @route.to.split('#').first
-      controller = "#{controller_name}_controller".camelize.constantize
       # Already handles inheritance via class_attribute
-      controller.authorization_type
+      controller_klass.authorization_type
+    end
+
+    def api_key_required?
+      api_key_required == true
+    end
+
+    def api_key_required
+      @route.api_key_required ||
+        controller_klass.api_key_required ||
+        Jets.config.api.api_key_required
+    end
+
+    def controller_klass
+      @controller_klass ||= "#{controller_name}_controller".camelize.constantize
+    end
+
+    def controller_name
+      @controller_name ||= @route.to.split('#').first
     end
 
     def resource_id
