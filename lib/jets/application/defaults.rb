@@ -99,6 +99,7 @@ class Jets::Application
       config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
       config.api.binary_media_types = ['multipart/form-data']
       config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
+      config.api.endpoint_policy = nil # required when endpoint_type is EDGE
       config.api.api_key_required = false # Turn off API key required
 
       config.domain = ActiveSupport::OrderedOptions.new
