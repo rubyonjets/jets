@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.0.6]
+- #344 controller `helper_method` macro
+
 ## [2.0.5]
 - #333 Always keep vendor directory
 - #335 Controller action_name method
