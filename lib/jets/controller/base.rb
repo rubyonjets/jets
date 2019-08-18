@@ -140,5 +140,11 @@ class Jets::Controller
         self.api_key_needed
       end
     end
+
+    def self.helper_method(*meths)
+      meths.each do |meth|
+        Jets::Router::Helpers.define_helper_method(meth)
+      end
+    end
   end
 end

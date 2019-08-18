@@ -1,5 +1,7 @@
 module Jets::Router::Helpers
   module CoreHelper
+    extend ActiveSupport::Concern
+
     # Used for form_for helper
     def polymorphic_path(record, _)
       url_for(record)
@@ -11,6 +13,14 @@ module Jets::Router::Helpers
     CONTROLLER_DELEGATES.each do |meth|
       define_method meth do
         @_jets[:controller].send(meth)
+      end
+    end
+
+    class_methods do
+      def define_helper_method(name)
+        define_method(name) do
+          @_jets[:controller].send(name)
+        end
       end
     end
   end
