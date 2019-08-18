@@ -175,15 +175,16 @@ class Jets::Application
     end
   end
 
-  def load_db_config
+  def load_db_config(database_yml="#{Jets.root}/config/database.yml")
     config.database = {}
 
     Jets::Dotenv.load!
-    database_yml = "#{Jets.root}/config/database.yml"
     if File.exist?(database_yml)
+      require "active_record/database_configurations" # lazy require
       text = Jets::Erb.result(database_yml)
-      db_config = YAML.load(text)
-      config.database = db_config
+      db_configs = YAML.load(text)
+      configurations = ActiveRecord::DatabaseConfigurations.new(db_configs)
+      config.database = configurations
     end
   end
 

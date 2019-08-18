@@ -1,0 +1,26 @@
+default: &default
+  adapter: mysql2
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  encoding: utf8mb4
+
+test:
+  primary:
+    <<: *default
+    database: my_primary_database
+    user: root
+  primary_replica:
+    <<: *default
+    database: my_primary_database
+    user: root # user: root_readonly
+    replica: true
+  animals:
+    <<: *default
+    database: my_animals_database
+    user: root # user: animals_root
+    migrations_paths: db/animals_migrate
+  animals_replica:
+    <<: *default
+    database: my_animals_database
+    user: root # user: animals_readonly
+    replica: true
