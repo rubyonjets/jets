@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.0]
+- #345 upgrade to use rails 6 components
+
 ## [2.0.6]
 - #344 controller `helper_method` macro
 
