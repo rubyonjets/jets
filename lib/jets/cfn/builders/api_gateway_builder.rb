@@ -14,7 +14,7 @@ module Jets::Cfn::Builders
 
       add_gateway_rest_api
       add_custom_domain
-      add_gateway_routes
+      # add_gateway_routes
     end
 
     # template_path is an interface method
