@@ -14,7 +14,7 @@ Here's an example of creating migrations:
 
 Both DynamoDB and ActiveRecord can coexist in the same application.
 
-## Lambda Execution Context and Database Connection
+## Lambda Execution Context and Database Connections
 
 On traditional long-running servers, usually, when a web server starts up a pool of DB connections are created. The connection pool is kept in shared memory or “class” memory. Web requests share this connection pool. This strategy prevents the number of DB connections from endlessly increasing and exhausting the connection limit for the DB server.
 
