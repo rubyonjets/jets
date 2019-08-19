@@ -11,6 +11,11 @@ abort("The Jets environment is running in production mode!") if Jets.env == "pro
 Jets.boot
 
 require "jets/spec_helpers"
+require_relative '../lib/core_extensions/active_record/migration_checker'
+
+ActiveRecord::Migration.extend CoreExtensions::ActiveRecord::MigrationChecker
+ActiveRecord::Migration.prepare_test_db
+
 
 <% if @webpacker -%>
 require 'capybara/rspec'
