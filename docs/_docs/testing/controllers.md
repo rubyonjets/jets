@@ -40,10 +40,9 @@ describe PostsController, type: :controller do
 end
 ```
 
-When you run controller specs, you may need to migrate and compile assets. Here are the commands:
+When you run specs, you may need to migrate first. Here are the commands:
 
     JETS_ENV=test jets db:create db:migrate
-    JETS_ENV=test jets webpacker:compile
     bundle exec rspec
 
 {% include prev_next.md %}
