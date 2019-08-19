@@ -16,6 +16,11 @@ module Jets::Cfn::Builders
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
+    # template is an interface method
+    def template 
+      @template
+    end
+   
     # template_path is an interface method for Interface module
     def template_path
       Jets::Naming.app_template_path(@app_class)

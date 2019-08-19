@@ -2,6 +2,7 @@
 #
 #   * compose
 #   * template_path
+#   * template
 module Jets::Cfn::Builders
   module Interface
     extend Memoist
@@ -15,18 +16,26 @@ module Jets::Cfn::Builders
     end
 
     def write
-      FileUtils.mkdir_p(File.dirname(template_path))
-      IO.write(template_path, text)
+      if  self.is_a? Paged
+        range.each do |page_num|
+          turn_to_page(page_num)
+          FileUtils.mkdir_p(File.dirname(template_path))
+          IO.write(template_path, text)    
+        end
+      else
+        FileUtils.mkdir_p(File.dirname(template_path))
+        IO.write(template_path, text)          
+      end
     end
 
-    def template
+    def cook_template
       # need the to_hash or the YAML dump has
       #  !ruby/hash:ActiveSupport::HashWithIndifferentAccess
-      @template.to_hash
+      template.to_hash
     end
 
     def text
-      text = YAML.dump(template)
+      text = YAML.dump(cook_template)
       post_process_template(text)
     end
 
@@ -57,8 +66,8 @@ module Jets::Cfn::Builders
     def add_parameter(name, options={})
       defaults = { Type: "String" }
       options = defaults.merge(options)
-      @template[:Parameters] ||= {}
-      @template[:Parameters][name.to_s.camelize] = options
+      template[:Parameters] ||= {}
+      template[:Parameters][name.to_s.camelize] = options
     end
 
     def add_outputs(attributes)
@@ -68,8 +77,8 @@ module Jets::Cfn::Builders
     end
 
     def add_output(name, options={})
-      @template[:Outputs] ||= {}
-      @template[:Outputs][name.camelize] = options
+      template[:Outputs] ||= {}
+      template[:Outputs][name.camelize] = options
     end
 
     def add_resources
@@ -121,7 +130,7 @@ module Jets::Cfn::Builders
                      }
                    end
 
-      @template['Resources'][logical_id] = attributes
+      template['Resources'][logical_id] = attributes
     end
   end
 end

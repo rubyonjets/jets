@@ -8,6 +8,11 @@ module Jets::Cfn::Builders
       @template = ActiveSupport::HashWithIndifferentAccess.new(Resources: {})
     end
 
+    # template is an interface method
+    def template 
+      @template
+    end
+        
     # compose is an interface method
     def compose
       return unless @options[:templates] || @options[:stack_type] != :minimal
