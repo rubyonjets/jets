@@ -4,6 +4,8 @@ module Jets::Cfn::Builders
     include Paged
     include Jets::AwsServices
 
+    AWS_OUTPUT_LIMIT = 20
+
     def initialize(options={})
       @options = options
       push(ActiveSupport::HashWithIndifferentAccess.new(Resources: {}))
@@ -85,30 +87,51 @@ module Jets::Cfn::Builders
       # Output name: Maximum size of an output name. 255 characters.
       #
       # Note we must use .all_paths, not .routes here because we need to
-      # build the parent ApiGateway::Resource nodes also
-      new_template
+      # build the parent ApiGateway::Resource nodes also   
       add_gateway_routes_parameters
-      Jets::Router.all_paths.each do |path|
-        homepage = path == ''
-        next if homepage # handled by RootResourceId output already
-
-        resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true)
-        add_resource(resource)
-        add_outputs_across_templates(resource.outputs)
+      indexed_paths.each do |index|
+        new_template
+        index.each do |path|
+          homepage = path == ''
+          next if homepage # handled by RootResourceId output already
+  
+          resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true)
+          add_resource(resource)
+          add_outputs_and_exports(resource.outputs)
+        end
       end
+    end
+
+    def add_outputs_and_exports(attributes) 
+      attributes.each do |name,value|
+        camelized_name = name.to_s.camelize
+        add_output(camelized_name, value)
+      end
+    end
+    
+    # Gateway routes are split across multiple CloudFormation templates because of a 60 Output limit by AWS.
+    # Having a resource and its corresponding parent resource ( :ParentId ) in the same template is not guaranteed
+    # so routes are indexed up front to allow us to determine how to find :ParentId ( !Ref vs !ImportValue )
+    def indexed_paths
+      # indexed_paths is an Array of Array.  Each inner array represents a separate template for the routes contained in it.
+      # NOTE: that we are trying to keep Outputs to 60 and below, however, we are indexing "paths" here.  Currently there 
+      # is a one to one relationship to paths and outputs for Jets::Resource::ApiGateway::Resource.  If that one to one changes
+      # this solution will not work
+      indexed_paths = []
+      starting_index = 0
+      loop do
+        indexed_paths.push(Jets::Router.all_paths[starting_index, AWS_OUTPUT_LIMIT])
+        starting_index += AWS_OUTPUT_LIMIT
+        break if starting_index >= Jets::Router.all_paths.length
+      end
+
+      indexed_paths
     end
 
     def add_gateway_routes_parameters
       add_parameters({
         "RestApi" => "RestApi"
       })
-    end
-
-    def add_outputs_across_templates(attributes)
-      attributes.each do |name,value|
-        add_output(name.to_s.camelize, Value: value)
-        new_template if template[:Outputs].length >= 60
-      end
     end
 
     def new_template

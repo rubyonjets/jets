@@ -20,7 +20,12 @@ module Jets::Resource::ApiGateway
 
     def outputs
       {
-        logical_id => "!Ref #{logical_id}",
+        logical_id => {
+          Value: "!Ref #{logical_id}", 
+          Export: {
+            Name: "#{logical_id}-#{ENV['JETS_ENV'] || 'dev'}"
+          }
+        }
       }
     end
 
