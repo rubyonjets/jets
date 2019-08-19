@@ -87,6 +87,7 @@ module Jets::Cfn::Builders
       # Note we must use .all_paths, not .routes here because we need to
       # build the parent ApiGateway::Resource nodes also
       new_template
+      add_gateway_routes_parameters
       Jets::Router.all_paths.each do |path|
         homepage = path == ''
         next if homepage # handled by RootResourceId output already
@@ -95,6 +96,12 @@ module Jets::Cfn::Builders
         add_resource(resource)
         add_outputs_across_templates(resource.outputs)
       end
+    end
+
+    def add_gateway_routes_parameters
+      add_parameters({
+        "RestApi" => "RestApi"
+      })
     end
 
     def add_outputs_across_templates(attributes)
