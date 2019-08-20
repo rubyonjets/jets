@@ -25,6 +25,13 @@ concurrent | For each prewarming job run, this controls how many times in parall
 
 For example, with a rate of 2 hours and concurrent of 2, this results in the Lambda functions being called with a prewarm request 24 times after 24 hours (12 hours x 2).
 
+To execute prewarming, Jets will create two Lambda functions:
+
+Name | Explanation
+--- | ---
+warm | If concurrent is `1`.
+torch | If concurrent is greater `1`, the torch job will concurrently call the `warm` job.
+
 ## Public Ratio
 
 The `prewarm.public_ratio` activates extra prewarming for the internal `jets/public_controller.rb`.  The `jets/public_controller.rb` handles serving static files out of the `public` folder. The `prewarm.public_ratio` tells Jets to prewarm the public_controller's lambda function a little bit extra. You can tune the extra prewarming ratio higher or lower according to your needs.
