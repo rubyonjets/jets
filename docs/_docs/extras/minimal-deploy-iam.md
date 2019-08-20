@@ -26,108 +26,25 @@ It is recommended that you create an IAM group and associate it with the IAM use
 Here's a summary of the commands:
 
     aws iam create-group --group-name Jets
-    export MY_PREFIX=my-cool-prefix
-    cat <<EOF > /tmp/jets-iam-policy.json
+    cat << 'EOF' > /tmp/jets-iam-policy.json
     {
         "Version": "2012-10-17",
         "Statement": [
             {
                 "Effect": "Allow",
                 "Action": [
-                    "cloudformation:CreateStack",
-                    "cloudformation:DescribeStackEvents",
-                    "cloudformation:DescribeStackResources",
-                    "cloudformation:DeleteStack",
-                    "cloudformation:UpdateStack"
-                ],
-                "Resource": [
-                    "arn:aws:cloudformation:*:*:stack/${MY_PREFIX}-*",
-                    "arn:aws:cloudformation:*:*:stack/${MY_PREFIX}-*/*"
-                ]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "iam:PassRole",
-                    "iam:GetRole*",
-                    "iam:CreateRole",
-                    "iam:PutRolePolicy",
-                    "iam:DeleteRolePolicy",
-                    "iam:DeleteRole"
-                ],
-                "Resource": [
-                    "arn:aws:iam::*:role/${MY_PREFIX}-*"
-                ]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "lambda:PublishLayerVersion",
-                    "lambda:DeleteLayerVersion",
-                    "lambda:GetFunction",
-                    "lambda:CreateFunction",
-                    "lambda:GetLayerVersion",
-                    "lambda:GetFunctionConfiguration",
-                    "lambda:DeleteFunction",
-                    "lambda:GetFunctionConfiguration",
-                    "lambda:AddPermission",
-                    "lambda:RemovePermission",
-                    "lambda:InvokeFunction"
-                ],
-                "Resource": [
-                    "arn:aws:lambda:*:*:function:${MY_PREFIX}-*",
-                    "arn:aws:lambda:*:*:layer:prod-${MY_PREFIX}-*:*",
-                    "arn:aws:lambda:*:*:layer:dev-${MY_PREFIX}-*:*",
-                    "arn:aws:lambda:*:*:layer:prod-${MY_PREFIX}-*",
-                    "arn:aws:lambda:*:*:layer:rev-${MY_PREFIX}-*"
-                ]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "s3:CreateBucket",
-                    "s3:List*",
-                    "s3:Describe*",
-                    "s3:Put*",
-                    "s3:Get*",
-                    "s3:Delete*"
-                ],
-                "Resource": [
-                    "arn:aws:s3:::${MY_PREFIX}-*",
-                    "arn:aws:s3:::${MY_PREFIX}-*/*"
-                ]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
                     "apigateway:*",
-                    "cloudformation:DescribeStacks",
-                    "logs:DescribeLogGroups"
-                ],
+                    "cloudformation:*",
+                    "dynamodb:*",
+                    "events:*",
+                    "iam:*",
+                    "lambda:*",
+                    "logs:*",
+                    "route53:*",
+                    "s3:*"
+                 ],
                 "Resource": [
                     "*"
-                ]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "logs:DeleteLogGroup"
-                ],
-                "Resource": [
-                    "arn:aws:logs:*:*:log-group:/aws/lambda/${MY_PREFIX}-*:*:*"
-                ]
-            },
-            {
-                "Effect": "Allow",
-                "Action": [
-                    "events:PutRule",
-                    "events:DescribeRule",
-                    "events:RemoveTargets",
-                    "events:DeleteRule",
-                    "events:PutTargets"
-                ],
-                "Resource": [
-                    "arn:aws:events:*:*:rule/${MY_PREFIX}-*"
                 ]
             }
         ]
