@@ -23,7 +23,7 @@ Option | Explanation
 rate | This controls how often the prewarming job runs.
 concurrent | For each prewarming job run, this controls how many times in parallel to hit the functions with a prewarm request.
 
-For example, with a rate of 2 hours and concurrent of 2, this results in the Lambda functions being called with a prewarm request 24 times after 24 hours (12 hours x 2).
+For example, with a rate of 2 hours and concurrent of 2, this results in the Lambda functions being called with a prewarm request 48 times after 24 hours (24 hours x 2).
 
 To execute prewarming, Jets will create two Lambda functions:
 
