@@ -1,8 +1,9 @@
 module Jets::Resource::ApiGateway
   class Resource < Jets::Resource::Base
-    def initialize(path, internal: false)
+    def initialize(path, internal: false, indexed_paths: nil)
       @path = path # Examples: "posts/:id/edit" or "posts"
       @internal = internal
+      @indexed_paths = indexed_paths unless indexed_paths.nil? 
     end
 
     def definition

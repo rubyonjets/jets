@@ -1,5 +1,6 @@
 module Jets::Cfn::Builders
   class ApiGatewayBuilder
+    extend Memoist  
     include Interface
     include Paged
     include Jets::AwsServices
@@ -88,18 +89,19 @@ module Jets::Cfn::Builders
       #
       # Note we must use .all_paths, not .routes here because we need to
       # build the parent ApiGateway::Resource nodes also   
-      indexed_paths.each do |index|
-        new_template
-        index.each do |path|
-          homepage = path == ''
-          next if homepage # handled by RootResourceId output already
-  
-          resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true)
-          add_resource(resource)
-          add_outputs_and_exports(resource.outputs)
-          add_parameter("RestApi", Description: 'RestApi')
-        end
+      indexed_paths.each do |path, page_number|
+        homepage = path == ''
+        next if homepage # handled by RootResourceId output already
+        turn_to_page(page_number)
+        resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true, indexed_paths: indexed_paths)
+        add_resource(resource)
+        add_outputs_and_exports(resource.outputs)
+        add_gateway_routes_parameters
       end
+    end
+
+    def add_gateway_routes_parameters
+      add_parameter("RestApi", Description: 'RestApi')  
     end
 
     def add_outputs_and_exports(attributes) 
@@ -113,20 +115,29 @@ module Jets::Cfn::Builders
     # Having a resource and its corresponding parent resource ( :ParentId ) in the same template is not guaranteed
     # so routes are indexed up front to allow us to determine how to find :ParentId ( !Ref vs !ImportValue )
     def indexed_paths
-      # indexed_paths is an Array of Array.  Each inner array represents a separate template for the routes contained in it.
+      # indexed_paths is a Hash with key => path and value => page_number.  Each page number represents a separate 
+      # template for the routes contained in it.
+      # The reason for making the hash is we need to pass these indexed_paths to Jets::Resource::ApiGateway::Resource so it can
+      # easily determine what page a parent path is in.
       # NOTE: that we are trying to keep Outputs to 60 and below, however, we are indexing "paths" here.  Currently there 
       # is a one to one relationship to paths and outputs for Jets::Resource::ApiGateway::Resource.  If that one to one changes
       # this solution will not work
-      indexed_paths = []
+      indexed_paths = Hash.new
       starting_index = 0
+      page = 1
       loop do
-        indexed_paths.push(Jets::Router.all_paths[starting_index, AWS_OUTPUT_LIMIT])
+        new_template # create new template here since we know we will need this page later
+        Jets::Router.all_paths[starting_index, AWS_OUTPUT_LIMIT].each do |path|
+          indexed_paths[path] = page
+        end
         starting_index += AWS_OUTPUT_LIMIT
+        page += 1
         break if starting_index >= Jets::Router.all_paths.length
       end
 
       indexed_paths
     end
+    memoize :indexed_paths
 
     def new_template
       push(ActiveSupport::HashWithIndifferentAccess.new(Resources: {}))
