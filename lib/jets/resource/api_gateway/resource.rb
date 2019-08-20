@@ -23,7 +23,7 @@ module Jets::Resource::ApiGateway
         logical_id => {
           Value: "!Ref #{logical_id}", 
           Export: {
-            Name: "#{logical_id}-#{ENV['JETS_ENV'] || 'dev'}"
+            Name: "#{logical_id}-#{Jets::Resource::ApiGateway::Deployment.stage_name}"
           }
         }
       }
