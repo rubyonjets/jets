@@ -51,11 +51,13 @@ module Jets::Commands
     end
 
     def build_minimal_template
+      # minimal_template does no longer includes ApiGateway since that is now paged and
+      # at this point we know nothing about the pages.
       Jets::Cfn::Builders::ParentBuilder.new(@options).build
     end
 
     def build_api_gateway_templates
-      Jets::Cfn::Builders::ApiGatewayBuilder.new(@options).build
+      @api_gateway_builder = Jets::Cfn::Builders::ApiGatewayBuilder.new(@options).build
       Jets::Cfn::Builders::ApiDeploymentBuilder.new(@options).build
     end
 
@@ -92,7 +94,9 @@ module Jets::Commands
     end
 
     def build_parent_template
-      Jets::Cfn::Builders::ParentBuilder.new(@options).build
+      options = @options.dup
+      options[:api_gateway_page_range] = @api_gateway_builder.range
+      Jets::Cfn::Builders::ParentBuilder.new(options).build
     end
 
     def clean_templates

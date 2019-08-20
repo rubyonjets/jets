@@ -13,6 +13,7 @@ module Jets::Cfn::Builders
 
       compose # must be implemented by subclass
       write
+      self
     end
 
     def write

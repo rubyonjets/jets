@@ -27,12 +27,7 @@ module Jets::Cfn::Builders
 
     # template_path is an interface method
     def template_path
-      case current_page_number
-      when 0
-        return Jets::Naming.api_gateway_template_path('')
-      else
-        return Jets::Naming.api_gateway_template_path("-#{current_page_number}")
-      end
+      Jets::Naming.api_gateway_template_path("-#{current_page_number}")
     end
 
     # do not bother writing a template if routes are empty
