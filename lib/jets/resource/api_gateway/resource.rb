@@ -47,13 +47,18 @@ module Jets::Resource::ApiGateway
       if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')
         parent_logical_id = path_logical_id(parent_path)
-        path_page = @indexed_paths.fetch(@path)
-        parent_path_page = @indexed_paths.fetch(parent_path)
+        
+        if @indexed_paths
+          path_page = @indexed_paths.fetch(@path)
+          parent_path_page = @indexed_paths.fetch(parent_path)
 
-        if path_page == parent_path_page
-          "!Ref " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
+          if path_page == parent_path_page
+            "!Ref " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
+          else
+            "!ImportValue " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource-#{Jets::Resource::ApiGateway::Deployment.stage_name}")
+          end
         else
-          "!ImportValue " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource-#{Jets::Resource::ApiGateway::Deployment.stage_name}")
+          "!Ref " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
         end
       else
         "!GetAtt #{RestApi.logical_id(@internal)}.RootResourceId"
