@@ -16,7 +16,7 @@ module Jets::Resource::ApiGateway
           }
         }
       }
-    end
+    end  
 
     def outputs
       {

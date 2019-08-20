@@ -88,7 +88,6 @@ module Jets::Cfn::Builders
       #
       # Note we must use .all_paths, not .routes here because we need to
       # build the parent ApiGateway::Resource nodes also   
-      add_gateway_routes_parameters
       indexed_paths.each do |index|
         new_template
         index.each do |path|
@@ -98,6 +97,7 @@ module Jets::Cfn::Builders
           resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true)
           add_resource(resource)
           add_outputs_and_exports(resource.outputs)
+          add_parameter("RestApi", Description: 'RestApi')
         end
       end
     end
@@ -126,12 +126,6 @@ module Jets::Cfn::Builders
       end
 
       indexed_paths
-    end
-
-    def add_gateway_routes_parameters
-      add_parameters({
-        "RestApi" => "RestApi"
-      })
     end
 
     def new_template
