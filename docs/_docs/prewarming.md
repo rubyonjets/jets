@@ -20,8 +20,8 @@ end
 
 Concurrency can be helpful if requests are coming in at the same time in parallel. Example: The Lambda function gets 60 requests/minute and each request takes 1 second to process.
 
-Case 1: All 60 requests come in at the same time within the first second. Desired concurrency should be 60 otherwise 59 of 60 requests will be hit with a cold start (in worst case scenario).
-Case 2: The 60 requests come in serially each second for a minute. The same lambda "container" will be able to serve all the requests without a cold start in theory.
+* Case 1: All 60 requests come in at the same time within the first second. Desired concurrency should be 60 otherwise 59 of 60 requests will be hit with a cold start (in worst case scenario).
+* Case 2: The 60 requests come in serially each second for a minute. The same lambda "container" will be able to serve all the requests without a cold start in theory.
 
 Same would apply on traditional servers like Puma where you need more Puma threads and or processes to handle increased concurrency.
 
