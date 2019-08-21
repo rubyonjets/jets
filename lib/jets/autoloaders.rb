@@ -27,7 +27,6 @@ module Jets
         Zeitwerk::Loader.new.tap do |loader|
           loader.tag = "jets.main"
           # loader.inflector = Inflector.new # TODO: allow custom app inflector
-          loader.ignore("#{Jets.root}/app/shared/functions")
         end
       end
       memoize :main

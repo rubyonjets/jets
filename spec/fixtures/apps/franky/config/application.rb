@@ -1,7 +1,7 @@
 Jets.application.configure do
   config.project_name = "demo"
   # config.env_extra = 2
-  # config.extra_autoload_paths = []
+  # config.autoload_paths = []
 
   config.cors = true
 

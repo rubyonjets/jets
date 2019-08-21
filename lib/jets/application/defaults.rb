@@ -54,8 +54,8 @@ class Jets::Application
       config = ActiveSupport::OrderedOptions.new
       config.project_name = parse_project_name # must set early because other configs requires this
       config.cors = false
-      config.autoload_paths = default_autoload_paths
-      config.extra_autoload_paths = []
+      config.autoload_paths = [] # allows for customization
+      config.ignore_paths = [] # allows for customization
       config.logger = Jets::Logger.new($stderr)
 
       # function properties defaults
@@ -175,6 +175,13 @@ class Jets::Application
       paths << "#{Jets.root}/app/shared/extensions"
 
       paths
+    end
+
+    def default_ignore_paths
+      %w[
+        app/functions
+        app/shared/functions
+      ]
     end
   end
 end

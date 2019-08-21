@@ -11,7 +11,7 @@ class Jets::Booter
 
       Jets.application.setup!
 
-      # Turbines are loaded after setup_auto_load_paths in Jets.application.setup!  Some Turbine options are defined
+      # Turbines are loaded after setup_autoload_paths in Jets.application.setup!  Some Turbine options are defined
       # in the project so setup must happen before internal Turbines are loaded.
       load_internal_turbines
 
@@ -25,12 +25,28 @@ class Jets::Booter
 
       setup_db # establish db connections in Lambda Execution Context.
       # The eager load calls connects_to in models and establish those connections in Lambda Execution Context also.
-      Jets::Autoloaders.main.eager_load # Eager load project code. Rather have user find out early than later on AWS Lambda.
+      eager_load
 
       # TODO: Figure out how to build middleware during Jets.boot without breaking jets new and webpacker:install
       # build_middleware_stack
 
       @booted = true
+    end
+
+    def eager_load
+      preload_extensions
+      Jets::Autoloaders.main.eager_load # Eager load project code. Rather have user find out early than later on AWS Lambda.
+    end
+
+    def preload_extensions
+      base_path = "#{Jets.root}/app/extensions"
+      Dir.glob("#{base_path}/**/*.rb").each do |path|
+        next unless File.file?(path)
+
+        class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').camelize
+        klass = class_name.constantize # autoload
+        Jets::Lambda::Functions.extend(klass)
+      end
     end
 
     # Using ActiveRecord outside of Rails, so we need to set up the db connection ourself.
