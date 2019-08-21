@@ -22,26 +22,26 @@ class Jets::Router
       route
     end
 
-    private
+  private
 
-      attr_reader :path, :method
+    attr_reader :path, :method
 
-      # "hot reload" for development
-      def reset_routes!
-        return unless Jets.env.development?
+    # "hot reload" for development
+    def reset_routes!
+      return unless Jets.env.development?
 
-        Jets::Router.clear!
-        Jets.application.load_routes(refresh: true)
-      end
+      Jets::Router.clear!
+      Jets.application.load_routes(refresh: true)
+    end
 
-      def matcher
-        Jets::Router::Matcher.new(path, method)
-      end
-      memoize :matcher
+    def matcher
+      Jets::Router::Matcher.new(path, method)
+    end
+    memoize :matcher
 
-      def router
-        Jets.application.routes
-      end
-      memoize :router
+    def router
+      Jets.application.routes
+    end
+    memoize :router
   end
 end
