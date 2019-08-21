@@ -15,6 +15,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green? | Run jets upgrade?
 --- | --- | --- | ---
+2.1.1 | Change `config.extra_autoload_paths` to `config.autoload_paths` | No | Yes
 2.0.0 | Add csrf forgery protection. The `jets upgrade` commands updates your code with the csrf logic. New apps generated with `jets new` does this already.  | No | Yes
 1.4.11 | Removed vendor/dynomite gem. Must add dynomite to Gemfile now. New apps generated with `jets new` does this.  | No | Yes
 1.3.0 | Official AWS Ruby Support added.  Removed longer needed `config.ruby.lazy_load` feature. | No | No

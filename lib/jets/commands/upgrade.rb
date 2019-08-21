@@ -14,6 +14,7 @@ module Jets::Commands
       inject_csrf_meta_tags
       update_crud_js
       update_config_application_rb
+      update_autoload_paths_config
       puts "Upgrade complete."
     end
 
@@ -74,6 +75,31 @@ module Jets::Commands
       content = lines.join
       IO.write(app_rb, content)
       puts "Update: #{app_rb} with default_protect_from_forgery"
+    end
+
+    def update_autoload_paths_config
+      app_rb = "config/application.rb"
+      lines = IO.readlines(app_rb)
+
+      new_config = lines.find { |l| l.include?('config.autoload_paths') }
+      return if new_config
+
+      old_config = lines.find { |l| l.include?('config.extra_autoload_paths') }
+      return unless old_config
+
+      lines.map! do |line|
+        md = line.match(/config\.extra_autoload_paths(.*)/)
+        if md
+          rest = md[1]
+          "  config.autoload_paths#{rest}"
+        else
+          line
+        end
+      end
+
+      content = lines.join
+      IO.write(app_rb, content)
+      puts "Update: #{app_rb} with config.autoload_paths"
     end
   end
 end
