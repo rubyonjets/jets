@@ -8,16 +8,30 @@ module Jets::Resource::ChildStack
     def initialize(s3_bucket, options={})
       super
       @page = options[:page]
+      @page_range = options[:page_range]
     end
     
     def definition
 
+      properties = {
+        template_url: template_url,
+      }
+      properties["parameters"] = parameters unless @page == 0
+
       Hash["api_gateway_#{@page}" => {
         type: "AWS::CloudFormation::Stack",
-        properties: {
-          template_url: template_url,
-        }
+        properties: properties
       }]
+
+
+    end
+
+    def parameters
+      p = {
+        RestApi: "!GetAtt ApiGateway0.Outputs.RestApi",
+        RootResourceId: "!GetAtt ApiGateway0.Outputs.RootResourceId",
+      } 
+      p
     end
 
     def outputs

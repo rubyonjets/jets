@@ -61,7 +61,7 @@ module Jets::Resource::ApiGateway
           "!Ref " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
         end
       else
-        "!GetAtt #{RestApi.logical_id(@internal)}.RootResourceId"
+        '!Ref RootResourceId'
       end
     end
 

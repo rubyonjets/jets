@@ -96,7 +96,8 @@ module Jets::Cfn::Builders
     end
 
     def add_gateway_routes_parameters
-      add_parameter("RestApi", Description: 'RestApi')  
+      add_parameter('RestApi', Description: 'RestApi') 
+      add_parameter('RootResourceId', Description: 'RootResourceId')  
     end
 
     def add_outputs_and_exports(attributes) 
@@ -118,11 +119,14 @@ module Jets::Cfn::Builders
       # is a one to one relationship to paths and outputs for Jets::Resource::ApiGateway::Resource.  If that one to one changes
       # this solution will not work
       indexed_paths = Hash.new
+      # root path == RootResource which comes off RestApi and is in ApiGateway0
+      indexed_paths[''] = 0
       starting_index = 0
       page = 1
       loop do
         new_template # create new template here since we know we will need this page later
         Jets::Router.all_paths[starting_index, AWS_OUTPUT_LIMIT].each do |path|
+          next if path.empty?
           indexed_paths[path] = page
         end
         starting_index += AWS_OUTPUT_LIMIT
