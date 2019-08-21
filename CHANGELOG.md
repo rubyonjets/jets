@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.1]
+- #347 Add documentation about torch vs. warm
+- #348 Provide another minimal privileges example
+- #349 Fix route params for specs
+- #350 Fix config.autoload_paths setting
+- remove the jets c warning
+
 ## [2.1.0]
 - #345 upgrade to use rails 6 components
 
