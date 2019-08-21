@@ -17,6 +17,8 @@ Upgrades the Jets project structure to the latest version. This command is desig
 
     $ jets upgrade
 
+Refer to https://rubyonjets.com/docs/extras/upgrading/
+
 ## Options
 
 ```

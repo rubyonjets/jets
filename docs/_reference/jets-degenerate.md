@@ -11,34 +11,22 @@ reference: true
 
 Destroys things like scaffolds.
 
-This piggy backs off of the [rails scaffold generator](https://guides.rubyonrails.org/command_line.html#rails-generate).
+This piggy backs off of the [rails scaffold destroy](https://guides.rubyonrails.org/command_line.html#rails-destroy).
 
-## General options
+## Example
 
-    -h, [--help]     # Print generator's options and usage
-    -p, [--pretend]  # Run but do not make any changes
-    -f, [--force]    # Overwrite files that already exist
-    -s, [--skip]     # Skip files that already exist
-    -q, [--quiet]    # Suppress status output
-
-Please choose a generator below.
-
-Jets:
-
-    application_record
-    controller
-    helper
-    job
-    migration
-    model
-    resource
-    scaffold
-    scaffold_controller
-    task
-
-ActiveRecord:
-
-    active_record:application_record
+    $ jets degenerate scaffold post title:string body:text published:boolean
+          invoke  active_record
+          remove    db/migrate/20190225231821_create_posts.rb
+          remove    app/models/post.rb
+          invoke  resource_route
+          route    resources :posts
+          invoke  scaffold_controller
+          remove    app/controllers/posts_controller.rb
+          invoke    erb
+          invoke    helper
+          remove      app/helpers/posts_helper.rb
+    $
 
 ## Options
 

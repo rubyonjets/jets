@@ -2,7 +2,7 @@ This piggy backs off of the [rails scaffold destroy](https://guides.rubyonrails.
 
 ## Example
 
-    $ jets destroy scaffold Post title:string body:text published:boolean
+    $ jets degenerate scaffold post title:string body:text published:boolean
           invoke  active_record
           remove    db/migrate/20190225231821_create_posts.rb
           remove    app/models/post.rb

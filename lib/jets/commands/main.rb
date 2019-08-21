@@ -103,7 +103,7 @@ module Jets::Commands
     end
 
     desc "degenerate [type] [args]", "Destroys things like scaffolds"
-    long_desc Help.text(:generate) # do use Jets::Generator.help as it'll load Rails const
+    long_desc Help.text(:degenerate) # do use Jets::Generator.help as it'll load Rails const
     def degenerate(generator, *args)
       Jets::Generator.revoke(generator, *args)
     end
