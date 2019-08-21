@@ -1,5 +1,7 @@
 module Jets::SpecHelpers::Controllers
   class Request
+    extend Memoist
+
     attr_accessor :method, :path, :headers, :params
     def initialize(method, path, headers={}, params={})
       @method, @path, @headers, @params = method, path, headers, params
@@ -7,14 +9,14 @@ module Jets::SpecHelpers::Controllers
 
     def event
       json = {}
-      id_params = path.scan(%r{:([^/]+)}).flatten
+      id_params = route.path.scan(%r{:([^/]+)}).flatten
       expanded_path = path.dup
       path_parameters = {}
 
       id_params.each do |id_param|
-        raise "missing param: :#{id_param}" unless params.path_params.include? id_param.to_sym
+        raise "missing param: :#{id_param}" unless path_params.include? id_param.to_sym
 
-        path_param_value = params.path_params[id_param.to_sym]
+        path_param_value = path_params[id_param.to_sym]
         raise "Path param :#{id_param} value cannot be blank" if path_param_value.blank?
 
         expanded_path.gsub!(":#{id_param}", path_param_value.to_s)
@@ -50,19 +52,28 @@ module Jets::SpecHelpers::Controllers
       json
     end
 
-    def find_route!
+    def path_params
+      params.path_params.reverse_merge(extract_parameters)
+    end
+    memoize :path_params
+
+    def extract_parameters
+      route.extract_parameters(normalized_path).symbolize_keys
+    end
+
+    def normalized_path
       path = self.path
       path = path[0..-2] if path.end_with? '/'
       path = path[1..-1] if path.start_with? '/'
-
-      route = Jets::Router.routes.find { |r| r.path == path && r.method == method.to_s.upcase }
-      raise "Route not found: #{method.to_s.upcase} #{path}" if route.blank?
-
-      route
+      path
     end
 
+    def route
+      Jets::Router::Finder.new(normalized_path, method).run
+    end
+    memoize :route
+
     def dispatch!
-      route = find_route!
       klass = Object.const_get(route.controller_name)
       controller = klass.new(event, {}, route.action_name)
       response = controller.process! # response is API Gateway Hash
