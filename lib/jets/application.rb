@@ -15,7 +15,7 @@ class Jets::Application
     load_default_config
     setup_autoload_paths
     setup_ignore_paths
-    autoload_setup
+    main_loader_setup
   end
 
   def configs!
@@ -120,7 +120,7 @@ class Jets::Application
     end
   end
 
-  def autoload_setup
+  def main_loader_setup
     main_loader.enable_reloading if Jets.env.development?
     main_loader.setup # only respected on the first call
   end
