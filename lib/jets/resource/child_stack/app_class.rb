@@ -60,13 +60,17 @@ module Jets::Resource::ChildStack
       return {} if Jets::Router.routes.empty?
 
       params = {
-        RestApi: "!GetAtt ApiGateway.Outputs.RestApi",
+        RestApi: "!GetAtt ApiGateway0.Outputs.RestApi",
       }
       scoped_routes.each do |route|
         resource = Jets::Resource::ApiGateway::Resource.new(route.path)
-        params[resource.logical_id] = "!GetAtt ApiGateway.Outputs.#{resource.logical_id}"
+        params[resource.logical_id] = "!GetAtt ApiGateway#{path_index(route.path)}.Outputs.#{resource.logical_id}"
       end
       params
+    end
+
+    def path_index(path)
+      @options[:indexed_paths].fetch(path) 
     end
 
     def controller?

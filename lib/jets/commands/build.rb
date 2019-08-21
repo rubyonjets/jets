@@ -96,6 +96,7 @@ module Jets::Commands
     def build_parent_template
       options = @options.dup
       options[:api_gateway_page_range] = @api_gateway_builder.range
+      options[:indexed_paths] = @api_gateway_builder.indexed_paths
       Jets::Cfn::Builders::ParentBuilder.new(options).build
     end
 

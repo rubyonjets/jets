@@ -71,7 +71,7 @@ module Jets::Cfn::Builders
     end
 
     def add_app_class_stack(path)
-      resource = Jets::Resource::ChildStack::AppClass.new(@options[:s3_bucket], path: path)
+      resource = Jets::Resource::ChildStack::AppClass.new(@options[:s3_bucket], path: path, indexed_paths: @options[:indexed_paths])
       add_child_resources(resource)
     end
 
