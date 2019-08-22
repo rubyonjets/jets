@@ -55,7 +55,6 @@ module Jets::Resource::ApiGateway
           # off se we can pass it in as a Parameter from the parent template
           path_page = @indexed_paths.fetch(@path)
           parent_path_page = @indexed_paths.fetch(parent_path)
-          puts "path #{@path} parent #{parent_path} #{path_page} #{parent_path_page} #{path_page != parent_path_page}"
           required_resources_from_parameters.push({
             :logical_id => resource_to_reference,
             :location => "ApiGateway#{parent_path_page}.Outputs.#{resource_to_reference}" 
