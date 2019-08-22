@@ -9,6 +9,7 @@ module Jets::Resource::ChildStack
       super
       @page = options[:page]
       @page_range = options[:page_range]
+      @required_parameters = options[:required_parameters]
     end
     
     def definition
@@ -31,6 +32,11 @@ module Jets::Resource::ChildStack
         RestApi: "!GetAtt ApiGateway0.Outputs.RestApi",
         RootResourceId: "!GetAtt ApiGateway0.Outputs.RootResourceId",
       } 
+
+      @required_parameters.each do |required_parameter|
+        p[required_parameter[:logical_id]] = "!GetAtt #{required_parameter[:location]}"
+      end unless @required_parameters.nil?
+
       p
     end
 

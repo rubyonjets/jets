@@ -97,6 +97,7 @@ module Jets::Commands
       options = @options.dup
       options[:api_gateway_page_range] = @api_gateway_builder.range
       options[:indexed_paths] = @api_gateway_builder.indexed_paths
+      options[:required_parameters] = @api_gateway_builder.required_parameters
       Jets::Cfn::Builders::ParentBuilder.new(options).build
     end
 

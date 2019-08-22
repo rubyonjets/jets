@@ -91,13 +91,25 @@ module Jets::Cfn::Builders
         resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true, indexed_paths: indexed_paths)
         add_resource(resource)
         add_outputs_and_exports(resource.outputs)
-        add_gateway_routes_parameters
+        add_gateway_routes_parameters(resource, page_number)
       end
     end
 
-    def add_gateway_routes_parameters
+    # TODO : consider refactoring this to make intent more clear
+    def add_gateway_routes_parameters(resource, page_number)
       add_parameter('RestApi', Description: 'RestApi') 
-      add_parameter('RootResourceId', Description: 'RootResourceId')  
+      add_parameter('RootResourceId', Description: 'RootResourceId')
+      resource.required_resources_from_parameters.each do |required_resource|
+        add_parameter(required_resource[:logical_id], Description: required_resource[:logical_id])
+        required_parameters_for_page = required_parameters[page_number] ||= []
+        required_parameters_for_page.push required_resource
+      end
+    end
+
+    # required_parameters will be used by the Parent Builder to know what parameters need to be passed
+    # to gateway template
+    def required_parameters
+      @required_parameters ||= []
     end
 
     def add_outputs_and_exports(attributes) 

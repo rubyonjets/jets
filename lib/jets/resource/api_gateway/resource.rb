@@ -23,9 +23,10 @@ module Jets::Resource::ApiGateway
       {
         logical_id => {
           Value: "!Ref #{logical_id}", 
-          Export: {
-            Name: "#{logical_id}-#{Jets::Resource::ApiGateway::Deployment.stage_name}"
-          }
+          # RDB no longer exporting
+          # Export: {
+          #   Name: "#{logical_id}-#{Jets::Resource::ApiGateway::Deployment.stage_name}"
+          # }
         }
       }
     end
@@ -47,22 +48,27 @@ module Jets::Resource::ApiGateway
       if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')
         parent_logical_id = path_logical_id(parent_path)
-        
+
+        resource_to_reference = Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
         if @indexed_paths
+          # If the parent resource is not found in the same template as self, we need to save the parent
+          # off se we can pass it in as a Parameter from the parent template
           path_page = @indexed_paths.fetch(@path)
           parent_path_page = @indexed_paths.fetch(parent_path)
-
-          if path_page == parent_path_page
-            "!Ref " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
-          else
-            "!ImportValue " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource-#{Jets::Resource::ApiGateway::Deployment.stage_name}")
-          end
-        else
-          "!Ref " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
+          puts "path #{@path} parent #{parent_path} #{path_page} #{parent_path_page} #{path_page != parent_path_page}"
+          required_resources_from_parameters.push({
+            :logical_id => resource_to_reference,
+            :location => "ApiGateway#{parent_path_page}.Outputs.#{resource_to_reference}" 
+          }) if path_page != parent_path_page 
         end
+        "!Ref #{resource_to_reference}"
       else
         '!Ref RootResourceId'
       end
+    end
+
+    def required_resources_from_parameters
+      @required_resources_from_parameters ||= []
     end
 
     def path_part

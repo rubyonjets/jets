@@ -82,7 +82,7 @@ module Jets::Cfn::Builders
 
     def add_api_gateway
       @options[:api_gateway_page_range]&.each do |page|
-        resource = Jets::Resource::ChildStack::ApiGateway.new(@options[:s3_bucket], page: page, page_range: @options[:api_gateway_page_range])
+        resource = Jets::Resource::ChildStack::ApiGateway.new(@options[:s3_bucket], page: page, page_range: @options[:api_gateway_page_range], required_parameters: @options[:required_parameters][page] )
         add_child_resources(resource)          
       end
     end
