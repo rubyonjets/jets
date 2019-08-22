@@ -57,6 +57,7 @@ module Jets::Cfn::Builders
 
       if full? and !Jets::Router.routes.empty?
         add_api_gateway
+        add_api_resources
         add_api_deployment
       end
     end
@@ -78,6 +79,20 @@ module Jets::Cfn::Builders
     def add_api_gateway
       resource = Jets::Resource::ChildStack::ApiGateway.new(@options[:s3_bucket])
       add_child_resources(resource)
+    end
+
+    def add_api_resources
+      expression = "#{Jets::Naming.template_path_prefix}-api-resources-*"
+      # IE: path: #{Jets.build_root}/templates/demo-dev-2-api-resources-1.yml"
+      Dir.glob(expression).sort.each do |path|
+        next unless File.file?(path)
+
+        regexp = Regexp.new("#{Jets.config.project_namespace}-api-resources-(\\d+).yml") # tricky to escape \d pattern
+        md = path.match(regexp)
+        page = md[1]
+        resource = Jets::Resource::ChildStack::ApiResource.new(@options[:s3_bucket], page: page)
+        add_child_resources(resource)
+      end
     end
 
     def add_api_deployment

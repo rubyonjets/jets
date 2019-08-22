@@ -37,14 +37,18 @@ module Jets::Resource::ApiGateway
       path.empty? ? 'Homepage route: /' : "Route for: /#{path}"
     end
 
-    def parent_id
+    def parent_path_parameter
       if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')
         parent_logical_id = path_logical_id(parent_path)
-        "!Ref " + Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
+        Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
       else
-        "!GetAtt #{RestApi.logical_id(@internal)}.RootResourceId"
+        "RootResourceId"
       end
+    end
+
+    def parent_id
+      "!Ref " + parent_path_parameter
     end
 
     def path_part

@@ -3,6 +3,10 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     extend Memoist
     include Jets::AwsServices
 
+    def self.changed?
+      new.changed?
+    end
+
     # Build up deployed routes from the existing CloudFormation resources.
     def deployed_routes
       routes = []
