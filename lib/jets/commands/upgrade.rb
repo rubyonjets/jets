@@ -21,7 +21,6 @@ module Jets::Commands
 
     def environment_configs
       path = File.expand_path("templates/skeleton/config/environments", File.dirname(__FILE__))
-      puts "path #{path}"
       Dir.glob("#{path}/*").each do |src|
         config_file = "config/environments/#{File.basename(src)}"
         dest = "#{Jets.root}/#{config_file}"
