@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["BalutBomber"]
   spec.email         = ["balutbomber@gmail.com"]
   spec.summary       = "Fork of rubyonJets - emergency fix for handling AWS CF 60 Output limit.  Will PR later"
-  spec.description   = "Jets is a framework that allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build an application and deploy it to AWS Lambda. Jets makes serverless accessible to everyone."
+  spec.description   = "Fork of rubyonJets - emergency fix for handling AWS CF 60 Output limit.  Will PR later. If you want to use jets please see http://rubyonjets.com"
   spec.homepage      = "http://rubyonjets.com"
   spec.license       = "MIT"
 
