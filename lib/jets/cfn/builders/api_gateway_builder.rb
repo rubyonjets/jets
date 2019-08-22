@@ -5,7 +5,7 @@ module Jets::Cfn::Builders
     include Paged
     include Jets::AwsServices
 
-    AWS_OUTPUT_LIMIT = 20
+    AWS_OUTPUT_LIMIT = 60
 
     def initialize(options={})
       @options = options
