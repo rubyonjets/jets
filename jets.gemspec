@@ -5,11 +5,11 @@ require "jets/version"
 require "jets/rdoc"
 
 Gem::Specification.new do |spec|
-  spec.name          = "jets"
+  spec.name          = "jets_bb_fork"
   spec.version       = Jets::VERSION
-  spec.authors       = ["Tung Nguyen"]
-  spec.email         = ["tongueroo@gmail.com"]
-  spec.summary       = "Ruby Serverless Framework on AWS Lambda"
+  spec.authors       = ["BalutBomber"]
+  spec.email         = ["balutbomber@gmail.com"]
+  spec.summary       = "Fork of rubyonJets - emergency fix for handling AWS CF 60 Output limit.  Will PR later"
   spec.description   = "Jets is a framework that allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build an application and deploy it to AWS Lambda. Jets makes serverless accessible to everyone."
   spec.homepage      = "http://rubyonjets.com"
   spec.license       = "MIT"

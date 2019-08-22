@@ -10,32 +10,32 @@ describe Jets::CLI do
 
   describe "jets" do
     it "build" do
-      out = execute("exe/bytala_jets_fork_1932 build #{@args}")
+      out = execute("exe/jets_bb_fork build #{@args}")
       # puts out
       expect(out).to include("Building project")
     end
 
     it "deploy" do
-      out = execute("exe/bytala_jets_fork_1932 deploy #{@args}")
+      out = execute("exe/jets_bb_fork deploy #{@args}")
       # puts out
       expect(out).to include("Deploying")
     end
 
     it "delete" do
-      out = execute("exe/bytala_jets_fork_1932 delete #{@args}")
+      out = execute("exe/jets_bb_fork delete #{@args}")
       # puts out
       expect(out).to include("Deleting project")
   end
 
     it "routes" do
-      out = execute("exe/bytala_jets_fork_1932 routes #{@args}")
+      out = execute("exe/jets_bb_fork routes #{@args}")
       # puts out
       expect(out).to include("Verb")
       expect(out).to include("Path")
     end
 
     it "call" do
-      out = execute("exe/bytala_jets_fork_1932 call posts-controller-index #{@args}")
+      out = execute("exe/jets_bb_fork call posts-controller-index #{@args}")
       # puts out
       expect(out).to include("Calling lambda function")
     end
