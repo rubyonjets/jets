@@ -1,7 +1,7 @@
 describe "jets generate" do
   describe "migration" do
     it "creates a migration file" do
-      command = "exe/jets dynamodb:generate create_posts --partition-key id:string"
+      command = "exe/bytala_jets_fork_1932 dynamodb:generate create_posts --partition-key id:string"
       out = execute(command)
       puts "HIII".color(:yellow)
       # pp out # uncomment to debug
