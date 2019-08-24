@@ -59,6 +59,7 @@ class Jets::Router
     end
 
     def compute_as
+      return nil if @options[:as] == :disabled
       return unless @options[:method] == :get || @options[:root]
 
       controller, action = get_controller_action(@options)

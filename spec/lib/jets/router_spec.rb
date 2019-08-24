@@ -1331,8 +1331,8 @@ EOL
 |              | PATCH  | posts/:id         | posts#update       |
 |              | DELETE | posts/:id         | posts#delete       |
 |              | ANY    | comments/hot      | comments#hot       |
-| posts        | GET    | landing/posts     | posts#index        |
-| admin_pages  | GET    | admin/pages       | admin/pages#index  |
+|              | GET    | landing/posts     | posts#index        |
+|              | GET    | admin/pages       | admin/pages#index  |
 | related_post | GET    | related_posts/:id | related_posts#show |
 |              | ANY    | others/*proxy     | others#catchall    |
 +--------------+--------+-------------------+--------------------+

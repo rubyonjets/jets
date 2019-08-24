@@ -33,7 +33,7 @@ class Jets::Router::MethodCreator
     end
 
     def action
-      @action || self.class.name.split('::').last.downcase
+      @action || self.class.name.split('::').last.downcase # MethodCreator::Edit, MethodCreator::New, etc
     end
 
     def full_as
@@ -55,6 +55,7 @@ class Jets::Router::MethodCreator
     end
 
     def path_method
+      return if @as == :disabled
       <<~EOL
         def #{full_meth_name(:path)}#{meth_args}
           "#{meth_result}"
@@ -63,6 +64,7 @@ class Jets::Router::MethodCreator
     end
 
     def url_method
+      return if @as == :disabled
       path_method_call = "#{full_meth_name(:path)}#{meth_args}"
       # Note: It is important lazily get the value of ENV['JETS_HOST'] within the method.
       # Since it is not set until the requrest goes through the main middleware.
