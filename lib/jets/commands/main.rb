@@ -52,6 +52,7 @@ module Jets::Commands
     long_desc Help.text(:routes)
     def routes
       puts Jets::Router.help(Jets::Router.routes)
+      Jets::Router.validate_routes!
     end
 
     desc "console", "REPL console with Jets environment loaded"
