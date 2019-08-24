@@ -16,7 +16,7 @@ The following table summarizes the releases and upgrade paths.
 Version | Notes | Blue-Green? | Run jets upgrade?
 --- | --- | --- | ---
 2.1.1 | Change `config.extra_autoload_paths` to `config.autoload_paths` | No | Yes
-2.0.0 | Add csrf forgery protection. The `jets upgrade` commands updates your code with the csrf logic. New apps generated with `jets new` does this already.  | No | Yes
+2.0.0 | Add csrf forgery protection. The `jets upgrade` commands updates your code with the csrf logic. New apps generated with `jets new` does this already. The routes `namespace` behavior also changed.  Use `prefix` if you prefer the old behavior.  | No | Yes
 1.4.11 | Removed vendor/dynomite gem. Must add dynomite to Gemfile now. New apps generated with `jets new` does this.  | No | Yes
 1.3.0 | Official AWS Ruby Support added.  Removed longer needed `config.ruby.lazy_load` feature. | No | No
 1.2.0 | Set default `config.api.binary_media_types` to `multipart/form-data` to handle binary support.  | No | No
@@ -33,6 +33,7 @@ The following section provides a little more detail on each version upgrade. Not
 
 * csrf forgery protection added. Need to add `csrf_meta_tags` to the layout for js based non-get calls. Also need to update the stock `crud.js`. And update the `config/application.rb` and with `default_protect_from_forgery = false` when in api mode.  The `jets upgrade` command does this for you.
 * Note: The `jets upgrade` command does not update your `form_tag` to the newer `form_with` helper. The `jets generate scaffold` does, though.  Recommend generating a scaffold, comparing the form tags and upgrading as it makes sense. The current `form_tag` though includes authenticity_token so you can leave your forms as-is if needed.
+* The routes `namespace` behavior changed. Use the `prefix` method now if you prefer the old behavior. Otherwise, you must move your controllers to modules matching the namespace.
 
 ### 1.4.11
 
