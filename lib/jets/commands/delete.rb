@@ -44,13 +44,26 @@ class Jets::Commands::Delete
   end
 
   def confirm_project_exists
+    retries = 0
     begin
-      resp = cfn.describe_stacks(stack_name: parent_stack_name)
+      cfn.describe_stacks(stack_name: parent_stack_name)
     rescue Aws::CloudFormation::Errors::ValidationError
       # Aws::CloudFormation::Errors::ValidationError is thrown when the stack
       # does not exist
       puts "The parent stack #{Jets.config.project_namespace.color(:green)} for the project #{Jets.config.project_name.color(:green)} does not exist. So it cannot be deleted."
       exit 0
+    rescue Aws::CloudFormation::Errors::Throttling => e
+      retries += 1
+      seconds = 2 ** retries
+
+      puts "WARN: confirm_project_exists #{e.class} #{e.message}".color(:yellow)
+      puts "Backing off and will retry in #{seconds} seconds."
+      sleep(seconds)
+      if seconds > 90 # 2 ** 6 is 64 so will give up after 6 retries
+        puts "Giving up after #{retries} retries"
+      else
+        retry
+      end
     end
   end
 
