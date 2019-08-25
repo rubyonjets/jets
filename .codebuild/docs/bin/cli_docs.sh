@@ -7,6 +7,7 @@
 # cb start:
 #   CODEBUILD_SOURCE_VERSION=codebuild
 
+set +u
 if [ -n "$CODEBUILD_WEBHOOK_TRIGGER" ]; then # git push
   BRANCH=$(echo $CODEBUILD_WEBHOOK_TRIGGER | sed "s/.*\///")
 elif [ -n "$CODEBUILD_SOURCE_VERSION" ]; then # cb start
@@ -15,6 +16,7 @@ else
   BRANCH=UNKNOWN-BRANCH
   exit 1
 fi
+set -u
 git checkout $BRANCH
 
 # Generate docs
