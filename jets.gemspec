@@ -7,11 +7,11 @@ require "jets/rdoc"
 Gem::Specification.new do |spec|
   spec.name          = "jets"
   spec.version       = Jets::VERSION
-  spec.authors       = ["Tung Nguyen"]
-  spec.email         = ["tongueroo@gmail.com"]
-  spec.summary       = "Ruby Serverless Framework on AWS Lambda"
-  spec.description   = "Jets is a framework that allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build an application and deploy it to AWS Lambda. Jets makes serverless accessible to everyone."
-  spec.homepage      = "http://rubyonjets.com"
+  spec.author        = "Tung Nguyen"
+  spec.email         = "tongueroo@gmail.com"
+  spec.summary       = "Ruby Serverless Framework"
+  spec.description   = "Jets is a framework that allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build and deploy an application.  Jets leverages the power of Ruby to make serverless joyful for everyone."
+  spec.homepage      = "https://rubyonjets.com"
   spec.license       = "MIT"
 
   spec.required_ruby_version = '~> 2.5'
