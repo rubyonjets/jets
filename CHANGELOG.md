@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.2]
+- improve start .env.development example for postgres
+- #351 Update Turbine documentation
+- #355 improve jets routes command to also validate routes
+- #356 improvements to named route helpers
+- #357 paginate api gateway resources to support more routes
+- #358 rate limit backoff
+
 ## [2.1.1]
 - #347 Add documentation about torch vs. warm
 - #348 Provide another minimal privileges example
