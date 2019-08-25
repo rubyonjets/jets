@@ -14,7 +14,6 @@ if git log -1 --pretty=oneline | grep "$COMMIT_MESSAGE" ; then
 fi
 
 # If reach here, we have some changes on docs that we should commit.
-# Even though s
 git add docs
 git commit -m "$COMMIT_MESSAGE"
 
