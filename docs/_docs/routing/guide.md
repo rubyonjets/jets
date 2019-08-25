@@ -13,6 +13,7 @@ nav_order: 31
   * [3.1 as option](#31-as-option)
   * [3.2 member and collection options](#32-member-and-collection-options)
   * [3.3 Named routes path and url helper](#33-named-routes-path-and-url-helper)
+  * [3.4 Disable generated url helpers](#34-disable-generated-url-helpers)
 - [4. Singular Resource](#4-singular-resource)
 - [5. Nested Resources](#5-nested-resources)
 - [6. Resource Members and Collections](#6-resource-members-and-collections)
@@ -288,6 +289,16 @@ posts | posts_path => /posts | posts_url => localhost:8888/posts
 new_post | new_post_path => /posts/new | new_post_url => localhost:8888/posts/new
 post | post_path(1) => /posts/1 | post_url(1) => localhost:8888/posts/1
 edit_post | edit_post_path(1) => /posts/1/edit | edit_post_url(1) => localhost:8888/posts/1/edit
+
+### 3.4 Disable generated url helpers
+
+You can disable the generation of the url helper with `as: :disabled`. Example:
+
+```ruby
+get "posts", to: "posts#index", as: :disabled
+```
+
+You may want to do this if 2 generated url helpers happen to step on each other.
 
 ## 4. Singular Resource
 
