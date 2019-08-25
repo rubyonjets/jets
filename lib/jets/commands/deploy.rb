@@ -60,19 +60,11 @@ module Jets::Commands
     end
 
     def validate_routes!
-      check_route_connected_functions
-    end
-
-    # Checks that all routes are validate and have corresponding lambda functions
-    def check_route_connected_functions
-      return if Jets::Router.all_routes_valid
-
-      puts "Deploy fail: The jets application contain invalid routes.".color(:red)
-      puts "Please double check the routes below map to valid controllers:"
-      Jets::Router.invalid_routes.each do |route|
-        puts "  /#{route.path} => #{route.controller_name}##{route.action_name}"
+      valid = Jets::Router.validate_routes!
+      unless valid
+        puts "Deploy fail: The jets application contain invalid routes.".color(:red)
+        exit 1
       end
-      exit 1
     end
 
     def ship(stack_options)

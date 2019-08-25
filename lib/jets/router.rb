@@ -107,57 +107,74 @@ module Jets
       simple_routes + capture_routes + wildcard_routes
     end
 
-    def self.has_controller?(name)
-      routes.detect { |r| r.controller_name == name }
-    end
-
-    # Class methods
-    def self.draw
-      drawn_router
-    end
-
-    @@drawn_router = nil
-    def self.drawn_router
-      return @@drawn_router if @@drawn_router
-
-      router = Jets.application.routes
-      @@drawn_router = router
-    end
-
-    def self.clear!
-      @@drawn_router = nil
-      Jets::Router::Helpers::NamedRoutesHelper.clear!
-    end
-
-    def self.routes
-      drawn_router.routes
-    end
-
-    # Returns all paths including subpaths.
-    # Example:
-    # Input: ["posts/:id/edit"]
-    # Output: ["posts", "posts/:id", "posts/:id/edit"]
-    def self.all_paths
-      drawn_router.all_paths
-    end
-
-    def self.help(routes)
-      return "Your routes table is empty." if routes.empty?
-
-      table = Text::Table.new
-      table.head = %w[As Verb Path Controller#action]
-      routes.each do |route|
-        table.rows << [route.as, route.method, route.path, route.to]
+    class << self
+      def has_controller?(name)
+        routes.detect { |r| r.controller_name == name }
       end
-      table
-    end
 
-    def self.all_routes_valid
-      invalid_routes.empty?
-    end
+      # Class methods
+      def draw
+        drawn_router
+      end
 
-    def self.invalid_routes
-      routes.select { |r| !r.valid? }
+      @@drawn_router = nil
+      def drawn_router
+        return @@drawn_router if @@drawn_router
+
+        router = Jets.application.routes
+        @@drawn_router = router
+      end
+
+      def clear!
+        @@drawn_router = nil
+        Jets::Router::Helpers::NamedRoutesHelper.clear!
+      end
+
+      def routes
+        drawn_router.routes
+      end
+
+      # Returns all paths including subpaths.
+      # Example:
+      # Input: ["posts/:id/edit"]
+      # Output: ["posts", "posts/:id", "posts/:id/edit"]
+      def all_paths
+        drawn_router.all_paths
+      end
+
+      def help(routes)
+        return "Your routes table is empty." if routes.empty?
+
+        table = Text::Table.new
+        table.head = %w[As Verb Path Controller#action]
+        routes.each do |route|
+          table.rows << [route.as, route.method, route.path, route.to]
+        end
+        table
+      end
+
+      def all_routes_valid?
+        invalid_routes.empty?
+      end
+
+      def invalid_routes
+        routes.select { |r| !r.valid? }
+      end
+
+      def validate_routes!
+        check_route_connected_functions
+      end
+
+      # Checks that all routes are validate and have corresponding lambda functions
+      def check_route_connected_functions
+        return true if all_routes_valid?
+
+        puts "Please double check the routes below map to valid controllers:".color(:red)
+        invalid_routes.each do |route|
+          puts "  /#{route.path} => #{route.controller_name}##{route.action_name}"
+        end
+        false
+      end
     end
   end
 end
