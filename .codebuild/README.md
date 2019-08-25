@@ -4,6 +4,7 @@ To update the CodeBuild project:
 
 Main services:
 
+    export AWS_PROFILE=bolt-oss
     cb deploy jets --type docs # mainly cli docs and subnav update
 
 ## Start a Deploy
