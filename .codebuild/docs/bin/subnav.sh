@@ -1,12 +1,6 @@
 #!/bin/bash -eux
 
 cd docs
-
-pwd
-ls -a
-env | grep BUNDLE
-cat Gemfile
-
 # Unsure why but if cli_docs.sh runs bundle first, then bundle wont use the right bundler file
 export BUNDLE_GEMFILE=$(pwd)/Gemfile
 bundle
