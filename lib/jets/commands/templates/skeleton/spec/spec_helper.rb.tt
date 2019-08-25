@@ -12,12 +12,6 @@ Jets.boot
 
 require "jets/spec_helpers"
 
-require_relative '../lib/core_extensions/active_record/migration_checker'
-ActiveRecord::Tasks::DatabaseTasks.db_dir = "#{Jets.root}/db"
-ActiveRecord::Migration.extend CoreExtensions::ActiveRecord::MigrationChecker
-ActiveRecord::Migration.prepare_test_db
-
-
 <% if @webpacker -%>
 require 'capybara/rspec'
 Capybara.app = Jets.application

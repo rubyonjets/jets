@@ -1,4 +1,4 @@
-module CoreExtensions
+module Overrides
   module ActiveRecord
     module MigrationChecker
       def prepare_test_db
