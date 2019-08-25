@@ -62,11 +62,22 @@ module Jets::Resource::ChildStack
       params = {
         RestApi: "!GetAtt ApiGateway.Outputs.RestApi",
       }
-      scoped_routes.each do |route|
-        resource = Jets::Resource::ApiGateway::Resource.new(route.path)
-        params[resource.logical_id] = "!GetAtt ApiGateway.Outputs.#{resource.logical_id}"
+
+      template_path = @path
+      template = Jets::Cfn::BuiltTemplate.get(template_path)
+      template['Parameters'].keys.each do |p|
+        case p
+        when /Resource$/ # AWS::ApiGateway::Resource in api-resources templates. IE: demo-dev-api-resources-2.yml
+          params[p] = "!GetAtt #{api_resource_page(p)}.Outputs.#{p}"
+        when 'RootResourceId'
+          params[p] = "!GetAtt ApiGateway.Outputs.RootResourceId"
+        end
       end
       params
+    end
+
+    def api_resource_page(parameter)
+      ApiResource::Page.logical_id(parameter)
     end
 
     def controller?

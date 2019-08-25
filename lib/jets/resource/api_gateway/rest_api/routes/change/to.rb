@@ -1,10 +1,6 @@
 # Detects route to changes
 class Jets::Resource::ApiGateway::RestApi::Routes::Change
   class To < Base
-    def self.changed?
-      new.changed?
-    end
-
     def changed?
       deployed_routes.each do |deployed_route|
         new_route = find_comparable_route(deployed_route)

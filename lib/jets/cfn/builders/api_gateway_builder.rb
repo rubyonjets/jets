@@ -12,9 +12,9 @@ module Jets::Cfn::Builders
     def compose
       return unless @options[:templates] || @options[:stack_type] != :minimal
 
-      add_gateway_rest_api
-      add_custom_domain
-      add_gateway_routes
+      add_gateway_routes # "child template": build before add_gateway_rest_api. RestApi logical id and change detection is dependent on it.
+      add_gateway_rest_api # changes parent template
+      add_custom_domain    # changes parent template
     end
 
     # template_path is an interface method
@@ -57,23 +57,14 @@ module Jets::Cfn::Builders
     end
 
     # Adds route related Resources and Outputs
+    # Delegates to ApiResourcesBuilder
+    PAGE_LIMIT = Integer(ENV['JETS_AWS_OUTPUTS_LIMIT'] || 60) # Allow override for testing
     def add_gateway_routes
-      # The routes required a Gateway Resource to contain them.
-      # TODO: Support more routes. Right now outputing all routes in 1 template will hit the 60 routes limit.
-      # Will have to either output them as a joined string or break this up to multiple templates.
-      # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
-      # Outputs: Maximum number of outputs that you can declare in your AWS CloudFormation template. 60 outputs
-      # Output name: Maximum size of an output name. 255 characters.
-      #
-      # Note we must use .all_paths, not .routes here because we need to
-      # build the parent ApiGateway::Resource nodes also
-      Jets::Router.all_paths.each do |path|
-        homepage = path == ''
-        next if homepage # handled by RootResourceId output already
-
-        resource = Jets::Resource::ApiGateway::Resource.new(path, internal: true)
-        add_resource(resource)
-        add_outputs(resource.outputs)
+      # Reject homepage. Otherwise we have 60 - 1 resources on the first page.
+      # There's a next call in ApiResources.add_gateway_resources to skip the homepage.
+      all_paths = Jets::Router.all_paths.reject { |p| p == '' }
+      all_paths.each_slice(PAGE_LIMIT).each_with_index do |paths, i|
+        ApiResourcesBuilder.new(@options, paths, i+1).build
       end
     end
   end

@@ -31,6 +31,10 @@ module Helpers
   def json_file(path)
     JSON.load(IO.read(path))
   end
+
+  def yaml_file(path)
+    YAML.load_file(path)
+  end
 end
 
 RSpec.configure do |c|

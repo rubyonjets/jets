@@ -1,10 +1,6 @@
 # Detects route variable changes
 class Jets::Resource::ApiGateway::RestApi::Routes::Change
   class Variable < Base
-    def self.changed?
-      new.changed?
-    end
-
     def changed?
       changed = false
       deployed_routes.each do |deployed_route|

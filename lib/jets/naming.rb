@@ -30,6 +30,10 @@ class Jets::Naming
       "#{template_path_prefix}-api-gateway.yml"
     end
 
+    def api_resources_template_path(page)
+      "#{template_path_prefix}-api-resources-#{page}.yml"
+    end
+
     def api_deployment_template_path
       "#{template_path_prefix}-api-deployment.yml"
     end

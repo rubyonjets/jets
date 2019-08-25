@@ -1,0 +1,17 @@
+---
+Resources:
+  Hi4ApiResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !Ref HiApiResource
+      PathPart: '4'
+      RestApiId: !Ref RestApi
+Parameters:
+  RestApi:
+    Type: String
+    Description: RestApi
+  HiApiResource:
+    Type: String
+Outputs:
+  Hi4ApiResource:
+    Value: !Ref Hi4ApiResource
