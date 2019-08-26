@@ -31,6 +31,11 @@ class Jets::Controller
       @rendered_data = resp
     end
 
+    def redirect_back(fallback_location: '/')
+      location = request.headers["referer"] || fallback_location
+      redirect_to(location)
+    end
+
     def ensure_protocol(url)
       return url if url.starts_with?('http')
 
