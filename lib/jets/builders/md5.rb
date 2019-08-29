@@ -40,8 +40,8 @@ module Jets::Builders
       def dir(short_path)
         path = "#{Jets.build_root}/#{short_path}"
         files = Dir["#{path}/**/*"]
-        files.reject! { |f| File.directory?(f) }
-             .reject! { |f| File.symlink?(f) }
+        files = files.reject { |f| File.directory?(f) }
+                     .reject { |f| File.symlink?(f) }
         content = files.map do |f|
           Digest::MD5.file(f).to_s[0..7]
         end.join
