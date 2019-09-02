@@ -145,7 +145,7 @@ class Jets::Application
       config.helpers.host = nil # nil by default. Other examples: https://myurl.com:8888
 
       config.controllers = ActiveSupport::OrderedOptions.new
-      config.controllers.default_protect_from_forgery = true
+      config.controllers.default_protect_from_forgery = nil
 
       config
     end

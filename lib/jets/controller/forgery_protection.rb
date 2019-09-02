@@ -5,7 +5,7 @@ class Jets::Controller
     included do
       config = Jets.config
       default_protect_from_forgery = config.dig(:controllers, :default_protect_from_forgery)
-      if default_protect_from_forgery
+      if default_protect_from_forgery.nil? && config.mode == "html" || default_protect_from_forgery # true
         protect_from_forgery
       end
     end
