@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.3]
+- #359 redirect_back controller method
+- fix default_protect_from_forgery to account for api mode
+- fix md5 files.reject
+
 ## [2.1.2]
 - improve start .env.development example for postgres
 - #351 Update Turbine documentation
