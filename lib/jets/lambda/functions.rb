@@ -9,7 +9,7 @@ module Jets::Lambda
   class Functions
     attr_reader :event, :context, :meth
     def initialize(event, context, meth)
-      @event = event # Hash, JSON.parse(event) ran BaseProcessor
+      @event = HashWithIndifferentAccess.new(event) # Hash, JSON.parse(event) ran BaseProcessor
       @context = context # Hash. JSON.parse(context) ran in BaseProcessor
       @meth = meth
       # store meth because it is useful to for identifying the which template
