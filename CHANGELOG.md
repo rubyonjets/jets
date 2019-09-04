@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.5]
+- perform_later calls perform_now in local mode when not on lambda
+- fix: clear view cache in development mode
+
 ## [2.1.4]
 - allow jets code to access event object values with symbols also
 
