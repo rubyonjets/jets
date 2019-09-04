@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.4]
+- allow jets code to access event object values with symbols also
+
 ## [2.1.3]
 - #359 redirect_back controller method
 - fix default_protect_from_forgery to account for api mode
