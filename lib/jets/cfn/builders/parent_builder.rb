@@ -4,6 +4,7 @@ module Jets::Cfn::Builders
   class ParentBuilder
     include Interface
     include Jets::AwsServices
+    include Stagger
 
     def initialize(options={})
       @options = options
@@ -68,6 +69,7 @@ module Jets::Cfn::Builders
 
     def add_app_class_stack(path)
       resource = Jets::Resource::ChildStack::AppClass.new(@options[:s3_bucket], path: path)
+      add_stagger(resource)
       add_child_resources(resource)
     end
 
