@@ -30,9 +30,19 @@ module Jets::Job
       end
 
       def perform_later(meth, event={}, context={})
-        function_name = "#{self.to_s.underscore}-#{meth}"
-        call = Jets::Commands::Call.new(function_name, JSON.dump(event), invocation_type: "Event")
-        call.run
+        if on_lambda?
+          function_name = "#{self.to_s.underscore}-#{meth}"
+          call = Jets::Commands::Call.new(function_name, JSON.dump(event), invocation_type: "Event")
+          call.run
+        else
+          puts "INFO: Not on AWS Lambda. In local mode perform_later executes the job with perform_now instead."
+          perform_now(meth, event, context)
+        end
+      end
+
+    private
+      def on_lambda?
+        !!ENV['AWS_LAMBDA_FUNCTION_NAME']
       end
     end
   end
