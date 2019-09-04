@@ -33,6 +33,7 @@ module Jets::Controller::Rendering
         # _prefixes provided by jets/overrides/rails/action_controller.rb
         ActionController::Base._prefixes = @controller.controller_paths
         renderer = ActionController::Base.renderer.new(renderer_options)
+        clear_view_cache
         body = renderer.render(render_options)
         body = StringIO.new(body)
       end
@@ -150,6 +151,10 @@ module Jets::Controller::Rendering
       instance_vars
     end
 
+    def clear_view_cache
+      ActionView::LookupContext::DetailsKey.clear if Jets.env.development?
+    end
+
   private
     # From jets/controller/response.rb
     def drop_content_info?(status)
@@ -213,7 +218,6 @@ module Jets::Controller::Rendering
         end
 
         ActionController::Base.append_view_path("#{Jets.root}/app/views")
-        ActionView::Resolver.caching = !Jets.env.development?
 
         setup_webpacker if Jets.webpacker?
       end
