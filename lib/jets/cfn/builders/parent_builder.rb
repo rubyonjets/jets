@@ -41,25 +41,32 @@ module Jets::Cfn::Builders
     end
 
     def build_child_resources
-      expression = "#{Jets::Naming.template_path_prefix}-app-*"
-      # IE: path: #{Jets.build_root}/templates/demo-dev-2-comments_controller.yml
-      Dir.glob(expression).each do |path|
-        next unless File.file?(path)
+      for_each_path(:app) do |path|
         add_app_class_stack(path)
       end
-
-      expression = "#{Jets::Naming.template_path_prefix}-shared-*"
-      # IE: path: #{Jets.build_root}/templates/demo-dev-2-shared-resources.yml
-      Dir.glob(expression).each do |path|
-        next unless File.file?(path)
-
+      for_each_path(:shared) do |path|
         add_shared_resources(path)
       end
 
       if full? and !Jets::Router.routes.empty?
+        for_each_path(:authorizers) do |path|
+          add_authorizer_resources(path)
+        end
         add_api_gateway
         add_api_resources
         add_api_deployment
+      end
+    end
+
+    # Example paths:
+    #    #{Jets.build_root}/templates/demo-dev-2-shared-resources.yml
+    #    #{Jets.build_root}/templates/demo-dev-2-app-comments_controller.yml
+    #    #{Jets.build_root}/templates/demo-dev-2-authorizers-main_authorizer.yml
+    def for_each_path(type)
+      expression = "#{Jets::Naming.template_path_prefix}-#{type}-*"
+      Dir.glob(expression).each do |path|
+        next unless File.file?(path)
+        yield(path)
       end
     end
 
@@ -70,6 +77,11 @@ module Jets::Cfn::Builders
     def add_app_class_stack(path)
       resource = Jets::Resource::ChildStack::AppClass.new(@options[:s3_bucket], path: path)
       add_stagger(resource)
+      add_child_resources(resource)
+    end
+
+    def add_authorizer_resources(path)
+      resource = Jets::Resource::ChildStack::Authorizer.new(@options[:s3_bucket], path: path)
       add_child_resources(resource)
     end
 

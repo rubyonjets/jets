@@ -102,6 +102,9 @@ class Jets::Application
       config.api.endpoint_policy = nil # required when endpoint_type is EDGE
       config.api.api_key_required = false # Turn off API key required
 
+      config.api.authorizers = ActiveSupport::OrderedOptions.new
+      config.api.authorizers.default_token_source = "Auth" # method.request.header.Auth
+
       config.domain = ActiveSupport::OrderedOptions.new
       # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is nil
       # config.domain.cert_arn = "..."

@@ -19,7 +19,10 @@ module Jets::Cfn::Builders
       add_parameter("RestApi", Description: "RestApi")
       scoped_routes.each do |route|
         resource = Jets::Resource::ApiGateway::Resource.new(route.path)
-        add_parameter(resource.logical_id, Description: resource.desc)
+        add_parameter(resource.logical_id, description: resource.desc)
+        if route.authorizer
+          add_parameter(route.authorizer_id, description: route.authorizer_metadata)
+        end
       end
     end
 

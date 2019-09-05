@@ -5,6 +5,8 @@
 #
 module Jets::Resource::ChildStack
   class Shared < AppClass
+    include CommonParameters
+
     def initialize(s3_bucket, options={})
       super
       @path = options[:path]
@@ -37,15 +39,6 @@ module Jets::Resource::ChildStack
       end if depends_on
 
       props
-    end
-
-    def common_parameters
-      parameters = {
-        IamRole: "!GetAtt IamRole.Arn",
-        S3Bucket: "!Ref S3Bucket",
-      }
-      parameters[:GemLayer] = "!Ref GemLayer" unless Jets.poly_only?
-      parameters
     end
 
     # Returns output keys associated with the stack.  They are the resource logical ids.

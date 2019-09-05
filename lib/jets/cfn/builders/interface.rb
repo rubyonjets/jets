@@ -6,11 +6,13 @@ module Jets::Cfn::Builders
   module Interface
     extend Memoist
 
-    def build
+    def build(parent=false)
       # Do not bother building or writing the template unless there are functions defined
       return if @app_class && !@app_class.build?
 
-      compose # must be implemented by subclass
+      if @options.nil? || @options[:templates] || @options[:stack_type] != :minimal || parent
+        compose # must be implemented by subclass
+      end
       write
     end
 
@@ -58,7 +60,7 @@ module Jets::Cfn::Builders
       defaults = { Type: "String" }
       options = defaults.merge(options)
       @template[:Parameters] ||= {}
-      @template[:Parameters][name.to_s.camelize] = options
+      @template[:Parameters][name.to_s.camelize] = Jets::Camelizer.transform(options)
     end
 
     def add_outputs(attributes)
@@ -69,7 +71,7 @@ module Jets::Cfn::Builders
 
     def add_output(name, options={})
       @template[:Outputs] ||= {}
-      @template[:Outputs][name.camelize] = options
+      @template[:Outputs][name.camelize] = Jets::Camelizer.transform(options)
     end
 
     def add_resources

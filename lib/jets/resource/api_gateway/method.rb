@@ -1,9 +1,10 @@
 # Converts a Jets::Route to a CloudFormation Jets::Resource::ApiGateway::Method resource
 module Jets::Resource::ApiGateway
   class Method < Jets::Resource::Base
+    include Authorization
+
     # also delegate permission for a method
-    delegate :permission,
-             to: :resource
+    delegate :permission, to: :resource
 
     # route - Jets::Route
     def initialize(route)
@@ -14,22 +15,28 @@ module Jets::Resource::ApiGateway
       {
         method_logical_id => {
           type: "AWS::ApiGateway::Method",
-          properties: {
-            resource_id: "!Ref #{resource_id}",
-            rest_api_id: "!Ref #{RestApi.logical_id}",
-            http_method: @route.method,
-            request_parameters: {},
-            authorization_type: authorization_type,
-            api_key_required: api_key_required?,
-            integration: {
-              integration_http_method: "POST",
-              type: "AWS_PROXY",
-              uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${{namespace}LambdaFunction.Arn}/invocations"
-            },
-            method_responses: []
-          }
+          properties: props
         }
       }
+    end
+
+    def props
+      props = {
+        resource_id: "!Ref #{resource_id}",
+        rest_api_id: "!Ref #{RestApi.logical_id}",
+        http_method: @route.method,
+        request_parameters: {},
+        authorization_type: authorization_type,
+        api_key_required: api_key_required?,
+        integration: {
+          integration_http_method: "POST",
+          type: "AWS_PROXY",
+          uri: "!Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${{namespace}LambdaFunction.Arn}/invocations"
+        },
+        method_responses: []
+      }
+      props[:authorizer_id] = authorizer_id if authorizer_id
+      props
     end
 
     def method_logical_id
@@ -64,28 +71,6 @@ module Jets::Resource::ApiGateway
     memoize :cors
 
   private
-
-    def authorization_type
-      type = @route.authorization_type ||
-             controller_auth_type ||
-             Jets.config.api.authorization_type
-      type.to_s.upcase
-    end
-
-    def controller_auth_type
-      # Already handles inheritance via class_attribute
-      controller_klass.authorization_type
-    end
-
-    def api_key_required?
-      api_key_required == true
-    end
-
-    def api_key_required
-      @route.api_key_required ||
-        controller_klass.api_key_required ||
-        Jets.config.api.api_key_required
-    end
 
     def controller_klass
       @controller_klass ||= "#{controller_name}_controller".camelize.constantize

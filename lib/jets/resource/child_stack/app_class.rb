@@ -5,6 +5,8 @@
 #
 module Jets::Resource::ChildStack
   class AppClass < Base
+    include CommonParameters
+
     def initialize(s3_bucket, options={})
       super
       @path = options[:path]
@@ -52,10 +54,10 @@ module Jets::Resource::ChildStack
     end
 
     def parameters
-      common = self.class.common_parameters
-      common.merge!(controller_params) if controller?
-      common.merge!(depends.params) if depends
-      common
+      params = self.class.common_parameters
+      params.merge!(controller_params) if controller?
+      params.merge!(depends.params) if depends
+      params
     end
 
     def self.common_parameters
@@ -76,10 +78,13 @@ module Jets::Resource::ChildStack
 
       template_path = @path
       template = Jets::Cfn::BuiltTemplate.get(template_path)
-      template['Parameters'].keys.each do |p|
+      template['Parameters'].each do |p,data|
         case p
         when /Resource$/ # AWS::ApiGateway::Resource in api-resources templates. IE: demo-dev-api-resources-2.yml
           params[p] = "!GetAtt #{api_resource_page(p)}.Outputs.#{p}"
+        when /Authorizer$/ # AWS::ApiGateway::Authorizer in authorizers templates. IE: demo-dev-authorizers.yml
+          # Description contains metadata to get the Authorizer logical id
+          params[p] = "!GetAtt #{authorizer_output(data["Description"])}"
         when 'RootResourceId'
           params[p] = "!GetAtt ApiGateway.Outputs.RootResourceId"
         end
@@ -89,6 +94,12 @@ module Jets::Resource::ChildStack
 
     def api_resource_page(parameter)
       ApiResource::Page.logical_id(parameter)
+    end
+
+    def authorizer_output(desc)
+      authorizer_stack, authorizer_logical_id = desc.split('.')
+      # IE: MainAuthorizer.Outputs.ProtectAuthorizer
+      "#{authorizer_stack}.Outputs.#{authorizer_logical_id}"
     end
 
     def controller?
