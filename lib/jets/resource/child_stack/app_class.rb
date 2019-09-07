@@ -21,26 +21,18 @@ module Jets::Resource::ChildStack
           }
         }
       }
-      defintion[logical_id][:depends_on] = depends_on if depends_on
+      defintion[logical_id][:depends_on] = depends.stack_list if depends
       defintion
     end
 
-    def depends_on
+    def depends
       return if all_depends_on.empty?
-      depends = Jets::Stack::Depends.new(all_depends_on)
-      depends.stack_list
+      Jets::Stack::Depends.new(all_depends_on)
     end
-
-    def depends_on_params
-      return if all_depends_on.empty?
-      depends = Jets::Stack::Depends.new(all_depends_on)
-      depends.params
-    end
+    memoize :depends
 
     # Always returns an Array, could be empty
     def all_depends_on
-      return [] if current_app_class.depends_on.nil? && @stagger_depends_on.nil?
-
       depends_on = current_app_class.depends_on || [] # contains Depends::Items
       stagger_depends_on = @stagger_depends_on  || [] # contains Depends::Items
       depends_on + stagger_depends_on
@@ -62,7 +54,7 @@ module Jets::Resource::ChildStack
     def parameters
       common = self.class.common_parameters
       common.merge!(controller_params) if controller?
-      common.merge!(depends_on_params) if depends_on
+      common.merge!(depends.params) if depends
       common
     end
 
