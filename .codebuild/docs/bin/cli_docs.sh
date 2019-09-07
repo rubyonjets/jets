@@ -1,6 +1,8 @@
 #!/bin/bash -eux
 
 # Generate docs
-gem install bundler:1.16.6
+gem update --system
+# Unsure why but setting BUNDLE_GEMFILE fixes build in the codebuild docker env
+export BUNDLE_GEMFILE=$(pwd)/Gemfile
 bundle
 rake docs
