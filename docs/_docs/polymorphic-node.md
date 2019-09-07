@@ -1,6 +1,6 @@
 ---
 title: Polymorphic Node
-nav_order: 83
+nav_order: 84
 ---
 
 To write your Jets Lambda functions in node, it would look like this:

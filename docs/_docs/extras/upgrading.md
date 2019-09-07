@@ -1,6 +1,6 @@
 ---
 title: Upgrading Guide
-nav_order: 80
+nav_order: 81
 ---
 
 Upgrading Jets to some releases might require some extra changes.  For example, the Jets project structure can change. Or some version require a manual blue-green deployment.  This page provides a summary of the releases requiring some upgrade work.
