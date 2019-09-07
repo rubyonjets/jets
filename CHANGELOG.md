@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.6]
+- #364 Add stagger deploy option: https://rubyonjets.com/docs/extras/deploy-stagger/
+- codebuild: add caching to speed up build
+
 ## [2.1.5]
 - perform_later calls perform_now in local mode when not on lambda
 - fix: clear view cache in development mode
