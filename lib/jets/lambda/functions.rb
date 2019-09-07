@@ -29,6 +29,11 @@ module Jets::Lambda
         super
         self.subclasses << base if base.name
       end
+
+      # Needed for depends_on. Got added due to stagger logic.
+      def output_keys
+        []
+      end
     end
   end
 end

@@ -21,29 +21,40 @@ module Jets::Resource::ChildStack
           }
         }
       }
-      defintion[logical_id][:depends_on] = depends_on if depends_on
+      defintion[logical_id][:depends_on] = depends.stack_list if depends
       defintion
     end
 
-    def depends_on
-      klass = current_app_class.constantize
-      return unless klass.depends_on
+    def depends
+      return if all_depends_on.empty?
+      Jets::Stack::Depends.new(all_depends_on)
+    end
+    memoize :depends
 
-      depends = Jets::Stack::Depends.new(klass.depends_on)
-      depends.stack_list
+    # Always returns an Array, could be empty
+    def all_depends_on
+      depends_on = current_app_class.depends_on || [] # contains Depends::Items
+      stagger_depends_on = @stagger_depends_on  || [] # contains Depends::Items
+      depends_on + stagger_depends_on
     end
 
-    def depends_on_params
-      klass = current_app_class.constantize
-      return unless klass.depends_on
-      depends = Jets::Stack::Depends.new(klass.depends_on)
-      depends.params
+    # For staggering. We're abusing depends_on to slow down the update rate.
+    #
+    # For this type of depends_on, there are no template parameters or outputs. To use the normal depends at we would
+    # have to make app classes adhere to what Jets::Stack::Depends requires.  This is mainly dependency_outputs and
+    # output_keys for each class right now.  It would not be that difficult but is not needed. So we create the
+    # Jets::Stack::Depends::Item objects directly.
+    def add_stagger_depends_on(stacks)
+      stack_names = stacks.map { |s| s.current_app_class.to_s.underscore }
+      items = stack_names.map { |name| Jets::Stack::Depends::Item.new(name) }
+      @stagger_depends_on ||= []
+      @stagger_depends_on += items.flatten
     end
 
     def parameters
       common = self.class.common_parameters
       common.merge!(controller_params) if controller?
-      common.merge!(depends_on_params) if depends_on
+      common.merge!(depends.params) if depends
       common
     end
 
@@ -86,7 +97,7 @@ module Jets::Resource::ChildStack
 
     def scoped_routes
       @routes ||= Jets::Router.routes.select do |route|
-        route.controller_name == current_app_class
+        route.controller_name == current_app_class.to_s
       end
     end
 
@@ -96,6 +107,7 @@ module Jets::Resource::ChildStack
         .sub(/\.yml$/,'')
         .gsub('-','/')
         .camelize
+        .constantize
     end
 
     # map the path to a camelized logical_id. Example:

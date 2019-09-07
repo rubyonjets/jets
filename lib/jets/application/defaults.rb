@@ -147,6 +147,11 @@ class Jets::Application
       config.controllers = ActiveSupport::OrderedOptions.new
       config.controllers.default_protect_from_forgery = nil
 
+      config.deploy = ActiveSupport::OrderedOptions.new
+      config.deploy.stagger = ActiveSupport::OrderedOptions.new
+      config.deploy.stagger.enabled = false
+      config.deploy.stagger.batch_size = 10
+
       config
     end
 

@@ -35,7 +35,6 @@ module Jets::Cfn::Builders
 
     def depends_on_params
       return {} unless @app_class.depends_on
-
       depends = Jets::Stack::Depends.new(@app_class.depends_on)
       depends.params
     end
