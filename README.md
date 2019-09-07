@@ -4,7 +4,7 @@
 
 Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonjets.com/).
 
-![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiUE12K3ljQTFQUjVpRW0reGhGVHVQdkplTHlOdUtENnBya2JhVWVXaFIvTU92MlBtV3hIUE9pb25jWGw0MS9jN2RXMERKRHh5Nzhvd01Za0NyeUs5SCtzPSIsIml2UGFyYW1ldGVyU3BlYyI6IkMybEJFaXdzejJEaHNWVmEiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiRXY0bzFlZS93TUF0cXhDaGdEY2FIbTVtdW43YjB0andmbnRTL3VvbWJOcTBOM3IxWDZPSFh2OHpvczBmdU5QcHpjUThvd084RERORFlvZVI4QWVKcis0PSIsIml2UGFyYW1ldGVyU3BlYyI6IllBZk0xTmVWZ3c2K3VWdTYiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 [![CircleCI](https://circleci.com/gh/tongueroo/jets.svg?style=svg)](https://circleci.com/gh/tongueroo/jets)
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
 [![Support](https://img.shields.io/badge/Support-Help-blue.svg)](http://rubyonjets.com/support/)
