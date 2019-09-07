@@ -30,6 +30,6 @@ config.deploy.stagger.batch_size = 10 # default is 10
 
 Normally, your Jets code gets translated to CloudFormation nested stacks that get created in parallel.  The stagger options tell CloudFormation to create the stacks serially instead.  Roughly speaking, if your Jets application generates 50 nested stacks, this results in 5 total batches with 10 stacks each. The stagger option intentionally slows down the deploy.
 
-Configuring these settings may help you to stay under this rate limit.  The settings can be tuned for your application.
+Configuring these settings may help you to stay under the rate limit.  The settings can be tuned for your application.
 
 {% include prev_next.md %}
