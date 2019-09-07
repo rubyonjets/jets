@@ -3,6 +3,8 @@ version: 0.2
 phases:
   build:
     commands:
-      - git config --global user.email "tongueroo@gmail.com"
-      - git config --global user.name "Tung Nguyen"
       - .codebuild/docs/bin/build.sh
+cache:
+  paths:
+    - /usr/local/bundle
+    - /usr/local/lib/ruby/gems/2.5.0
