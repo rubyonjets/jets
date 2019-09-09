@@ -372,9 +372,9 @@ module Jets::Builders
     end
 
     def copy_ruby_version_file
-      return unless File.exists?(".ruby-version")
-
-      FileUtils.cp_r(Jets.root.join(".ruby-version"), build_area)
+      ruby_version_path = Jets.root.join(".ruby-version")
+      return unless File.exists?(ruby_version_path)
+      FileUtils.cp_r(ruby_version_path, build_area)
     end
 
     def ruby_version_supported?
