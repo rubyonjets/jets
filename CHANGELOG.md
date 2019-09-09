@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.1.7]
+- #366 fix copy ruby version
+- fix codebuild for docs
+
 ## [2.1.6]
 - #364 Add stagger deploy option: https://rubyonjets.com/docs/extras/deploy-stagger/
 - codebuild: add caching to speed up build
