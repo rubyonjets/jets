@@ -13,7 +13,7 @@ This error indicates that AWS has wisely established internal rate limits for it
 
 In other words, your Jets application is creating so many Lambda functions in parallel that it is hitting internal AWS Lambda EC2 rate limits.
 
-Other users have [reported](https://forums.aws.amazon.com/thread.jspa?threadID=240384) running into this limit intermittently: [Rate Limit Exceeded?](https://community.rubyonjets.com/t/rate-limit-exceeded/257)  Interestingly, testing a Jets application with over 200 Lambda functions was not enough to trigger this internal rate limit.
+Other users have [reported](https://forums.aws.amazon.com/thread.jspa?threadID=240384) running into this limit intermittently: [Rate Limit Exceeded?](https://community.rubyonjets.com/t/rate-limit-exceeded/257)  Interestingly, testing a Jets application with over 200 Lambda functions *without* staggering was still not enough to trigger this internal rate limit.
 
 ![](/img/docs/extras/deploy-stagger-lambda-functions.png)
 
