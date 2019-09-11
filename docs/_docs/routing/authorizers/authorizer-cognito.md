@@ -11,6 +11,9 @@ class MainAuthorizer < ApplicationAuthorizer
     name: "MyCognito", # <= name is used as the "function" name
     identity_source: "Authorization", # maps to method.request.header.Authorization
     type: :cognito_user_pools,
+    provider_arns: [
+      "arn:aws:cognito-idp:us-west-2:112233445566:userpool/us-west-2_DbXaf8jP7",
+    ],
   )
   # no lambda function
 end
