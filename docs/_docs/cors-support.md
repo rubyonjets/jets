@@ -66,6 +66,6 @@ Jets.application.configure do
 end
 ```
 
-More info: [Routes Authorization]({% link _docs/routing/authorization.md %})
+More info: [Routes Authorization]({% link _docs/routing/authorizers/authorization-types.md %})
 
 {% include prev_next.md %}

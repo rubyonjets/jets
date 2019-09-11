@@ -10,8 +10,6 @@ module Jets::Cfn::Builders
 
     # compose is an interface method
     def compose
-      return unless @options[:templates] || @options[:stack_type] != :minimal
-
       add_gateway_routes # "child template": build before add_gateway_rest_api. RestApi logical id and change detection is dependent on it.
       add_gateway_rest_api # changes parent template
       add_custom_domain    # changes parent template

@@ -22,9 +22,9 @@ module Jets::Cfn::Builders
     end
 
     def add_common_parameters
-      common_parameters = Jets::Resource::ChildStack::AppClass.common_parameters
+      common_parameters = Jets::Resource::ChildStack::CommonParameters.common_parameters
       common_parameters.each do |k,_|
-        add_parameter(k, Description: k)
+        add_parameter(k, Description: k.to_s)
       end
 
       depends_on_params.each do |output_key, output_value|

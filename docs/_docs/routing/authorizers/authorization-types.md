@@ -1,20 +1,16 @@
 ---
-title: Authorization
+title: Authorization Types
 nav_order: 32
 ---
 
-## Authorization
-
-By default, calling API Gateway does not require authorization. You can add authorization to your API with API Gateway authorization types. There are several authorization types available:
+By default, calling API Gateway does not require authorization. You can add authorization to your API with [API Gateway authorizers]({% link _docs/routing/authorizers.md %}) and authorization types. There are several authorization types available:
 
 * NONE - open access
 * AWS_IAM - use [AWS IAM](https://aws.amazon.com/iam/) permissions
 * CUSTOM - custom authorizer
-* COGNITO_USER_POOLS - [Cognito](https://aws.amazon.com/cognito/) User Pool
+* COGNITO\_USER\_POOLS - [Cognito](https://aws.amazon.com/cognito/) User Pool
 
 The complete list of authorization types is available in the [AWS API Gateway docs](https://docs.aws.amazon.com/apigateway/api-reference/resource/method/#authorizationType).
-
-You can also make use of [Before Filters]({% link _docs/extras/action-filters.md %}) to build your own custom authorization system instead of using API Gateway Authorization types.
 
 ### Application Wide
 
@@ -49,5 +45,9 @@ Jets.application.routes.draw do
   get  "posts", to: "posts#index", authorization_type: :aws_iam
 end
 ```
+
+### Inferred Authorization Type
+
+When using [Jets Authorizers]({% link _docs/routing/authorizers.md %}), Jets will infer the right `authorization_type` for `CUSTOM` and `COGNITO_USER_POOLS` types. So it is recommended to only set authorization_type when you're using other types like `AWS_IAM`.
 
 {% include prev_next.md %}

@@ -42,6 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-sns"
   spec.add_dependency "aws-sdk-sqs"
   spec.add_dependency "aws-sdk-ssm"
+  spec.add_dependency "cfn_camelizer"
   spec.add_dependency "cfnresponse"
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency

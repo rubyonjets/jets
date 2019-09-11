@@ -6,6 +6,7 @@
 class Jets::Router
   class Route
     include Util
+    include Authorization
 
     CAPTURE_REGEX = "([^/]*)" # as string
 
@@ -182,14 +183,6 @@ class Jets::Router
       labels.map do |next_label|
         [next_label, values.delete_at(0)]
       end.to_h
-    end
-
-    def authorization_type
-      @options[:authorization_type]
-    end
-
-    def api_key_required
-      @options[:api_key_required]
     end
 
   private

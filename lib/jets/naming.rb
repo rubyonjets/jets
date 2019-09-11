@@ -7,12 +7,12 @@ class Jets::Naming
     extend Memoist
 
     def app_template_path(app_class)
-      underscored = app_class.to_s.underscore.gsub('/','-')
+      underscored = underscore(app_class)
       "#{template_path_prefix}-app-#{underscored}.yml"
     end
 
     def shared_template_path(shared_class)
-      underscored = shared_class.to_s.underscore.gsub('/','-')
+      underscored = underscore(shared_class)
       "#{template_path_prefix}-shared-#{underscored}.yml"
     end
 
@@ -48,6 +48,16 @@ class Jets::Naming
 
     def gateway_api_name
       "#{Jets.config.project_namespace}"
+    end
+
+    def authorizer_template_path(path)
+      underscored = underscore(path)
+      underscored.sub!(/^app-/, '')
+      "#{template_path_prefix}-#{underscored}.yml"
+    end
+
+    def underscore(s)
+      s.to_s.underscore.sub(/\.rb$/,'').gsub('/','-')
     end
   end
 end

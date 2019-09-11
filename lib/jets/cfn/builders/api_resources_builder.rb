@@ -10,8 +10,6 @@ module Jets::Cfn::Builders
 
     # compose is an interface method
     def compose
-      return unless @options[:templates] || @options[:stack_type] != :minimal
-
       add_rest_api_parameter
       add_gateway_routes
     end
