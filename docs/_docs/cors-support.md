@@ -1,6 +1,6 @@
 ---
 title: CORS Support
-nav_order: 34
+nav_order: 39
 ---
 
 Enabling CORS is simple.  You just set `config.cors` in the `config/application.rb` file.  Here's an example:

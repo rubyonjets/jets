@@ -1,6 +1,6 @@
 ---
 title: Authorizer Tips
-nav_order: 32
+nav_order: 34
 ---
 
 Here are some tips for working with API Gateway Authorizers. The tips may help those who are newer to API Gateway Authorizers.

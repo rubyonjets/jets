@@ -1,6 +1,6 @@
 ---
 title: Custom Resources
-nav_order: 59
+nav_order: 64
 ---
 
 You can create any custom AWS resources with Jets as a first-class citizen.  There are 2 types of custom resources:

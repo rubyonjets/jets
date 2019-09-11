@@ -1,6 +1,6 @@
 ---
 title: Associated Resources Extensions
-nav_order: 62
+nav_order: 67
 ---
 
 You can define your own custom associated resource methods. This helps for shorter and cleaner code. Remember that methods like `cron` and `rate` are just convenience methods that ultimately call the `resource` method. You can extend Jets with custom convenience methods.

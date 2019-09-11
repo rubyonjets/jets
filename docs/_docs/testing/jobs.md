@@ -1,6 +1,6 @@
 ---
 title: Job Spec
-nav_order: 46
+nav_order: 51
 ---
 
 Let's say you have a HardJob class:

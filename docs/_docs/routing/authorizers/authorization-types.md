@@ -1,6 +1,6 @@
 ---
 title: Authorization Types
-nav_order: 32
+nav_order: 37
 ---
 
 By default, calling API Gateway does not require authorization. You can add authorization to your API with [API Gateway authorizers]({% link _docs/routing/authorizers.md %}) and authorization types. There are several authorization types available:

@@ -1,6 +1,6 @@
 ---
 title: Authorizer Caching
-nav_order: 32
+nav_order: 35
 ---
 
 You can cache the authorizer with the `ttl` convenience property. This means the Authorizer lambda function will not be called again until the ttl expires. Example:

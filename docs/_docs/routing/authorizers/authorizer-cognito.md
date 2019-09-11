@@ -1,6 +1,6 @@
 ---
 title: Cognito Authorizer
-nav_order: 32
+nav_order: 36
 ---
 
 Cognito authorizers are also supported by setting the type to `:cognito_user_pools`. Example:
