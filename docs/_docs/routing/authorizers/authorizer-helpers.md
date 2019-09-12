@@ -11,7 +11,7 @@ Here's the simplest form:
 
 ```ruby
 def protect
-  resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:ymy8tbxw7b/*/GET/my/path"
+  resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:f0ivxw7nkl/dev/GET/posts
   build_policy(resource, "current_user")
 end
 ```
@@ -40,7 +40,7 @@ You can add `context` and `usage_identifier_key` as the 3rd and 4th parameters a
 
 ```ruby
 def protect
-  resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:ymy8tbxw7b/*/GET/my/path"
+  resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:f0ivxw7nkl/dev/GET/posts
   build_policy(resource, "current_user", { string_key: "value" }, "usage-key" )
 end
 ```
@@ -84,7 +84,7 @@ class MainAuthorizer < ApplicationAuthorizer
     type: "token", # valid values: token, cognito_user_pools, request. Jets upcases internally.
   )
   def protect
-    resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:ymy8tbxw7b/*/GET/my/path"
+    resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:f0ivxw7nkl/dev/GET/posts
     build_policy(
       principal_id: "current_user",
       policy_document: {
