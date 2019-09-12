@@ -6,7 +6,7 @@
 class Jets::Router
   class Route
     include Util
-    include Authorization
+    include Authorizer
 
     CAPTURE_REGEX = "([^/]*)" # as string
 

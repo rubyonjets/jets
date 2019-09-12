@@ -24,6 +24,10 @@ module Jets::Cfn::Builders
           add_parameter(route.authorizer_id, description: route.authorizer_metadata)
         end
       end
+
+      if @app_class.authorizer
+        add_parameter(@app_class.authorizer_id, description: @app_class.authorizer_metadata)
+      end
     end
 
     def add_routes

@@ -33,7 +33,8 @@ module Jets::Authorizer
       # function associated with the cognito authorizer.
       def cognito_authorizer(props={})
         resources = [props]
-        meth = props[:name]
+        # Authorizer name can have dashes, but "method" name should be underscored for correct logical id.
+        meth = props[:name].gsub('-','_')
         resource = Jets::Resource::ApiGateway::Authorizer.new(props)
 
         # Mimic task to grab base_replacements, namely namespace.

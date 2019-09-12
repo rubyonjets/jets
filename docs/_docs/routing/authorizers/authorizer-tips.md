@@ -82,7 +82,7 @@ The request authorizer type is almost as simple as the token type. The Jets `aut
 
 ## Identity Sources: Request
 
-For request type authorizers, all identity sources must be provided with the request.  The identity sources can be request headers, query string parameters, stage names, and or context variables. They are set as a comma-separated list on the `identity_source` property.  Example:
+For request type authorizers, the identity sources can be request headers, query string parameters, stage names, and or context variables. They are set as a comma-separated list on the `identity_source` property.  Example:
 
 ```ruby
 authorizer(
@@ -92,7 +92,7 @@ authorizer(
 )
 ```
 
-If the request does not pass all the items in the identity_source list, then the Lambda authorizer function does *not* even get called!  Remember to send them all. Example:
+All identity sources must be provided with the request. If the request does not pass all the items in the identity_source list, then the Lambda authorizer function does *not* even get called!  Remember to send them all. Example:
 
     curl -H "Header1: test" "https://bxqim55nwg.execute-api.us-west-2.amazonaws.com/dev/protected/url?QueryString1=test"
 

@@ -64,7 +64,7 @@ Jets.application.routes.draw do
 end
 ```
 
-When the `authorizer` property is used, the `authorization_type` is inferred from the authorizer property and automatically set for you. The `authorization_type` can be overridden by setting it explicitly. Refer to the [Authorization Types docs]({% link _docs/routing/authorizers/authorization-types.md %}) for more info.  Jets handles setting `authorization_type` to `CUSTOM` AND `COGNITO_USER_POOLS` types automatically.  So it is recommended to let Jets handle that for you. For the `AWS_IAM` type you will need to handle it appropriately.
+When the `authorizer` property is used, the `authorization_type` is inferred from the authorizer property and automatically set for you. The `authorization_type` can be overridden by setting it explicitly. Refer to the [Authorization Types docs]({% link _docs/routing/authorizers/authorization-types.md %}) for more info.  For `CUSTOM` AND `COGNITO_USER_POOLS` authorization types, it is recommended to let Jets handle it. For the `AWS_IAM` type you will need to handle it appropriately.
 
 ## Authorizer in Controllers
 
@@ -94,21 +94,6 @@ end
 
 Setting the authorizer in the controller is just syntactical sugar. Ultimately, the authorizer is still set at the API Gateway Method Resource.
 
-## Authorizer Name Workaround
-
-The [ApiGateway::Authorizer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-authorizer.html#cfn-apigateway-authorizer-name) CloudFormation docs state that the name is not required, but, in testing, have found it to be required.  If you rename the lambda function or reassociate the authorizer with another Lambda function, the stack may roll back from a naming collision. To work around this, rename the authorizer for that deploy.  Example:
-
-```ruby
-class MainAuthorizer < ApplicationAuthorizer
-  authorizer(
-    name: "MyAuthorizer2", # <= Change this
-    identity_source: "Auth", # maps to method.request.header.Auth
-    type: :request, # valid values: token, cognito_user_pools, request. Jets upcases internally.
-  )
-  # ...
-end
-```
-
 ## Authorizer Defaults
 
 The `authorizer` method has some conventional defaults.  The following:
@@ -134,6 +119,21 @@ The only required option for the `authorizer` method is `name`.  Also, the defau
 ```ruby
 Jets.application.configure do
   config.api.authorizers.default_token_source = "Auth" # method.request.header.Auth
+end
+```
+
+## Authorizer Name Workaround
+
+The [ApiGateway::Authorizer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-authorizer.html#cfn-apigateway-authorizer-name) CloudFormation docs state that the name is not required, but, in testing, have found it to be required.  If you rename the lambda function or reassociate the authorizer with another Lambda function, the stack may roll back from a naming collision. To work around this, rename the authorizer for that deploy.  Example:
+
+```ruby
+class MainAuthorizer < ApplicationAuthorizer
+  authorizer(
+    name: "MyAuthorizer2", # <= Change this
+    identity_source: "Auth", # maps to method.request.header.Auth
+    type: :request, # valid values: token, cognito_user_pools, request. Jets upcases internally.
+  )
+  # ...
 end
 ```
 
