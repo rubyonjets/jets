@@ -50,24 +50,19 @@ It generates:
 ```json
 {
   "principalId": "current_user",
+  "policyDocument": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": "execute-api:Invoke",
+        "Effect": "Allow",
+        "Resource": "arn:aws:execute-api:us-west-2:112233445566:f0ivxw7nkl/dev/GET/posts"
+      }
+    ]
+  },
   "context": {
     "stringKey": "value"
   },
-  "policyDocument": [
-    {
-      "Version": "2012-10-17",
-      "Statement": [
-        {
-          "Action": "execute-api:Invoke",
-          "Effect": "Allow",
-          "Resource": "arn:aws:execute-api:us-west-2:112233445566:f0ivxw7nkl/dev/GET/posts"
-        }
-      ]
-    },
-    {
-      "StringKey": "value"
-    }
-  ],
   "usageIdentifierKey": "usage-key"
 }
 ```
