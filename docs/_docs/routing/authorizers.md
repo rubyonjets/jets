@@ -15,7 +15,7 @@ class MainAuthorizer < ApplicationAuthorizer
     type: :request, # valid values: token, cognito_user_pools, request. Jets upcases internally.
   )
   def protect
-    # Must confirm to Amazon API Gateway Lambda Authorizer Output structure
+    # Must conform to Amazon API Gateway Lambda Authorizer Output structure
     # https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html
     resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:ymy8tbxw7b/*/GET/my/path"
     {
