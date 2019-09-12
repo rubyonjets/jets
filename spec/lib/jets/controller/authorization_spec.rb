@@ -14,7 +14,7 @@ describe Jets::Controller::Authorization do
   context "no filter options" do
     let(:controller) { TestAuthController }
     it "logical_id" do
-      logical_id = controller.authorizer_logical_id("index")
+      logical_id = controller.authorizer_logical_id_for("index")
       expect(logical_id).to eq "MainProtectAuthorizer"
     end
   end
@@ -22,9 +22,9 @@ describe Jets::Controller::Authorization do
   context "only filter" do
     let(:controller) { TestAuthOnlyController }
     it "logical_id" do
-      logical_id = controller.authorizer_logical_id("index")
+      logical_id = controller.authorizer_logical_id_for("index")
       expect(logical_id).to eq "MainProtectAuthorizer"
-      logical_id = controller.authorizer_logical_id("show")
+      logical_id = controller.authorizer_logical_id_for("show")
       expect(logical_id).to be nil
     end
   end
@@ -32,9 +32,9 @@ describe Jets::Controller::Authorization do
   context "except filter" do
     let(:controller) { TestAuthExceptController }
     it "logical_id" do
-      logical_id = controller.authorizer_logical_id("index")
+      logical_id = controller.authorizer_logical_id_for("index")
       expect(logical_id).to be nil
-      logical_id = controller.authorizer_logical_id("show")
+      logical_id = controller.authorizer_logical_id_for("show")
       expect(logical_id).to eq "MainProtectAuthorizer"
     end
   end

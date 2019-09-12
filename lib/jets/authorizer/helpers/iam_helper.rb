@@ -31,17 +31,14 @@ module Jets::Authorizer::Helpers
         props[:usage_identifier_key] = usage_identifier_key if usage_identifier_key
       end
 
-      props = Jets::Camelizer.transform(props) # keys get converted from Symbols to Strings as part of this
-      # Only top-level keys and keys under context are pascalized
-      props.transform_keys! { |k| pascalize(k) }
-      if props['context']
-        props['context'].transform_keys! { |k| pascalize(k) }
-      end
+      props.transform_keys! { |k| pascalize(k) } # Only top-level keys are pascalized
+      # policyDocument is camelized, everything else is left alone
+      props["policyDocument"] = Jets::Camelizer.transform(props["policyDocument"])
       props
     end
 
     def pascalize(value)
-      new_value = value.camelize
+      new_value = value.to_s.camelize
       first_char = new_value[0..0].downcase
       new_value[0] = first_char
       new_value

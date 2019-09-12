@@ -5,7 +5,7 @@ class Jets::Resource::ApiGateway::Method
       if @route.authorizer
         logical_id = @route.authorizer_id
       elsif controller_klass.authorizer
-        logical_id = controller_klass.authorizer_logical_id(@route.action_name)
+        logical_id = controller_klass.authorizer_logical_id_for(@route.action_name)
       end
 
       "!Ref #{logical_id}" if logical_id

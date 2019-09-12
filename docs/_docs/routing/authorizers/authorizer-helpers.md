@@ -61,7 +61,7 @@ It generates:
     ]
   },
   "context": {
-    "stringKey": "value"
+    "string_key": "value"
   },
   "usageIdentifierKey": "usage-key"
 }
@@ -117,11 +117,42 @@ The `build_policy` helper will pascalize and camelize the keys appropriately for
     ]
   },
   "context": {
-    "stringKey": "value",
-    "numberKey": "1",
-    "booleanKey": "true"
+    "string_key": "value",
+    "number_key": "1",
+    "boolean_key": "true"
   },
   "usageIdentifierKey": "whatever"
+}
+```
+
+## API Gateway Event requestContext
+
+The context passed from the Lambda authorizer function to the API Gateway event. Here's an example:
+
+```json
+{
+    "resource": "/posts",
+    "path": "/posts",
+    "httpMethod": "GET",
+    "headers": {...},
+    ...
+    "requestContext": {
+        "resourceId": "x73tio",
+        "authorizer": {
+            "string_key": "value",
+            "principalId": "current_user",
+            "integrationLatency": 3080
+        },
+        ...
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            ...
+        },
+        "domainName": "j5yjv2qkog.execute-api.us-west-2.amazonaws.com",
+        "apiId": "j5yjv2qkog"
+    },
+    "body": null,
+    "isBase64Encoded": false
 }
 ```
 
