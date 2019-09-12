@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.2.1]
+- #369 clean up authorizers and bug fixes
+
 ## [2.2.0]
 - #368 API Gateway Authorizer Concept Support
 
