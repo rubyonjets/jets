@@ -35,7 +35,7 @@ class MainAuthorizer < ApplicationAuthorizer
 end
 ```
 
-The `authorizer` keyword builds an ApiGateway Authorizer. The authorizator options map to CloudFormation [ApiGateway::Authorizer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-authorizer.html) properties. You can use any of the properties supported by CloudFormation. The authorizer is associated with the Lambda function directly below it.
+The `authorizer` keyword builds an ApiGateway Authorizer. The authorizer options map to CloudFormation [ApiGateway::Authorizer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-authorizer.html) properties. You can use any of the properties supported by CloudFormation. The authorizer is associated with the Lambda function directly below it.
 
 The Lambda function must return a response in the [Amazon API Gateway Lambda Authorizer Output structure](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html).  The example above builds the raw structure, you may also be interested in the [build_policy helper]({% link _docs/routing/authorizers/authorizer-helpers.md %}).
 
