@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.2.2]
+- #370 Use unicode for encoding when using postgres
+
 ## [2.2.1]
 - #369 clean up authorizers and bug fixes
 
