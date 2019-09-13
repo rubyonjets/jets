@@ -1,10 +1,9 @@
 default: &default
   adapter: <%= @database == 'mysql' ? 'mysql2' : 'postgresql' %>
-  encoding: utf8mb4
+  encoding: <%= @database == 'mysql' ? 'utf8mb4' : 'unicode' %>
   pool: <%%= ENV["DB_POOL"] || 5  %>
   database: <%%= ENV['DB_NAME'] || '<%= @project_name %>_development' %>
 <% if @database == 'mysql' -%>
-  encoding: utf8mb4
   username: <%%= ENV['DB_USER'] || 'root' %>
 <% else -%>
   username: <%%= ENV['DB_USER'] || ENV['USER'] %>
