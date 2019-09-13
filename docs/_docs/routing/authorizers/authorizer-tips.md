@@ -42,7 +42,7 @@ If the request does not include the host header that matches with the identify s
     $ curl -H "WrongHeader: test" https://bxqim55nwg.execute-api.us-west-2.amazonaws.com/dev/protected/url
     {"message":"Unauthorized"}
 
-Remember even though you get a response. The response is from the AWS API Gateway side only. The request *never* hits your authorizer function.  Please make sure to pass the header that matches what's configured for `identity_source`.  Jets sets `Auth` as the default identify source header.
+Remember even though you get a response. The response is from the AWS API Gateway side only. The request *never* hits your authorizer function.  Please make sure to pass the header that matches what's configured for `identity_source`.  Jets sets `Auth` as the default identity source header.
 
 ## Authorizer Type: Request
 
