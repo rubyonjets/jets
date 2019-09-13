@@ -122,6 +122,28 @@ Jets.application.configure do
 end
 ```
 
+## Identity Source Convention
+
+You may have noticed `identity_source` understands a shorthand value: `identity_source: "Auth"`. Jets expands it out to `method.request.header.Auth`. For example:
+
+```ruby
+authorizer(
+  name: "MyAuthorizer",
+  identity_source: "Auth",
+)
+```
+
+is the same as:
+
+```ruby
+authorizer(
+  name: "MyAuthorizer",
+  identity_source: "method.request.header.Auth",
+)
+```
+
+If the `identity_source` value contains a `.` then Jets leaves it as-is. If it does not, then it will conventionally adds `method.request.header.` to it.  This also applies comma-separated `identity_source` values.  Jets expands each item without a `.`.
+
 ## Authorizer Name Workaround
 
 The [ApiGateway::Authorizer](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-authorizer.html#cfn-apigateway-authorizer-name) CloudFormation docs state that the name is not required, but, in testing, have found it to be required.  If you rename the lambda function or reassociate the authorizer with another Lambda function, the stack may roll back from a naming collision. To work around this, rename the authorizer for that deploy.  Example:

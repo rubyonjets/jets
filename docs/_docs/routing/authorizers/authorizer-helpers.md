@@ -92,8 +92,8 @@ class MainAuthorizer < ApplicationAuthorizer
       },
       context: {
         string_key: "value",
-        number_key: "1",
-        boolean_key: "true"
+        number_key: 1,
+        boolean_key: true
       },
       usage_identifier_key: "whatever",
     )
@@ -118,8 +118,8 @@ The `build_policy` helper will pascalize and camelize the keys appropriately for
   },
   "context": {
     "string_key": "value",
-    "number_key": "1",
-    "boolean_key": "true"
+    "number_key": 1,
+    "boolean_key": true
   },
   "usageIdentifierKey": "whatever"
 }
