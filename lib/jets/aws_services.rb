@@ -14,19 +14,19 @@ module Jets::AwsServices
   include StackStatus
   include AwsSession
 
-  def credentials
-    return unless session_from_environment?
+  def cli_credentials
+    return unless env_contains_aws_login_data?
     Aws::Credentials.new(
-      session_from_environment.credentials.access_key_id,
-      session_from_environment.credentials.secret_access_key,
-      session_from_environment.credentials.session_token
+      env_credentials.access_key_id,
+      env_credentials.secret_access_key,
+      env_credentials.session_token
     )
   end
 
   def aws_cli_options
-    return unless session_from_environment?
-    return {region: ENV['AWS_REGION'], credentials: credentials} if ENV['AWS_REGION']
-    { credentials: credentials }
+    return unless cli_credentials
+    return {region: ENV['AWS_REGION'], credentials: cli_credentials} if ENV['AWS_REGION']
+    { credentials: cli_credentials }
   end
 
   def apigateway
@@ -75,15 +75,7 @@ module Jets::AwsServices
   global_memoize :sqs
 
   def sts
-    sts_client = Aws::STS::Client.new
-    return sts_client unless session_from_environment?
-    sts_client.assume_role(role_arn: ENV['AWS_ROLE_ARN']) if ENV['AWS_ROLE_ARN']
-    sts_client.get_session_token(
-      duration_seconds: 900,
-      serial_number: ENV['AWS_MFA_SERIAL'],
-      token_code: ENV['AWS_MFA_TOKEN']
-    ) if mfa_login?
-    sts_client
+    Aws::STS::Client.new(aws_cli_options)
   end
   global_memoize :sts
 end
