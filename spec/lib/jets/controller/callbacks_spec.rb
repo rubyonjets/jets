@@ -56,6 +56,33 @@ class PrependAppendAfterController < Jets::Controller::Base
   def prepended; end
 end
 
+class SkippedBeforeController < Jets::Controller::Base
+  before_action :first
+  before_action :second
+  skip_before_action :first
+
+  def first; end
+  def second; end
+end
+
+class SkippedBeforeWithOnlyController < Jets::Controller::Base
+  before_action :first
+  skip_before_action :first, only: %i[index]
+
+  def first; end
+  def index; end
+end
+
+
+class SkippedAfterController < Jets::Controller::Base
+  after_action :first
+  after_action :second
+  skip_after_action :first
+
+  def first; end
+  def second; end
+end
+
 describe Jets::Controller::Base do
   context FakeController do
     let(:controller) { FakeController.new({}, nil, "meth") }
@@ -94,6 +121,27 @@ describe Jets::Controller::Base do
     subject { PrependAppendAfterController.new({}, nil, :index) }
     it "prepends method" do
       expect(subject.class.after_actions).to eq [[:prepended, {}], [:normal, {}]]
+    end
+  end
+
+  context SkippedBeforeController do
+    subject { SkippedBeforeController.new({}, nil, :index) }
+    it "skips method" do
+      expect(subject.class.before_actions).to eq [[:second, {}]]
+    end
+  end
+
+  context SkippedBeforeWithOnlyController do
+    subject { SkippedBeforeWithOnlyController.new({}, nil, :index) }
+    it "adds the method to the except of the callback" do
+      expect(subject.class.before_actions).to eq [[:first, {except: [:index]}]]
+    end
+  end
+
+  context SkippedAfterController do
+    subject { SkippedAfterController.new({}, nil, :index) }
+    it "skips method" do
+      expect(subject.class.after_actions).to eq [[:second, {}]]
     end
   end
 end

@@ -1,12 +1,13 @@
 *.gem
 *.rbc
 .bundle
+.byebug_history
 .config
 .yardoc
-InstalledFiles
 _yardoc
 coverage
 doc/
+InstalledFiles
 lib/bundler/man
 pkg
 rdoc
@@ -15,10 +16,9 @@ test/tmp
 test/version_tmp
 tmp
 
-spec/fixtures/project/handlers
 .codebuild/definitions
-demo*
 /html
+/demo
+Gemfile.lock
 spec/fixtures/apps/franky/dynamodb/migrate
-Gemfile.lock 
-.byebug_history
+spec/fixtures/project/handlers

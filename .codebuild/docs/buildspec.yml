@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - .codebuild/docs/bin/build.sh
+cache:
+  paths:
+    - /usr/local/bundle
+    - /usr/local/lib/ruby/gems/2.5.0

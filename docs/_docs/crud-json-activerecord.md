@@ -66,7 +66,7 @@ In the next step, we'll update the .env.development and set the local database c
 ```yaml
 default: &default
   adapter: postgresql
-  encoding: utf8
+  encoding: unicode
   pool: <%= ENV["DB_POOL"] || 5  %>
   database: <%= ENV['DB_NAME'] || 'demo_dev' %>
   username: <%= ENV['DB_USER'] || ENV['USER'] %>

@@ -1,7 +1,11 @@
 ---
 title: VPC
-nav_order: 79
+nav_order: 93
 ---
+
+**Update 9/3/2019**: [Announcing improved VPC networking for AWS Lambda functions](https://aws.amazon.com/blogs/compute/announcing-improved-vpc-networking-for-aws-lambda-functions/). This removes the extra cold-start penalty associated with Lambda and VPC. It essentially moves the creation of the ENI to function creation time instead of invocation time.
+
+These docs are kept around for posterity.
 
 Though running your AWS Lambda functions within a VPC is supported, unless completely necessary, it is generally not recommended.  The reasons are:
 

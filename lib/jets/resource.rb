@@ -21,7 +21,20 @@ class Jets::Resource
     id = template.keys.first
     # replace possible {namespace} in the logical id
     id = replacer.replace_value(id)
-    Jets::Camelizer.camelize(id)
+    id = Jets::Camelizer.camelize(id)
+
+    Jets::Resource.truncate_id(id)
+  end
+
+  def self.truncate_id(id)
+    # Api Gateway resource name has a limit of 64 characters.
+    # Yet it throws not found when ID is longer than 62 characters and I don't know why.
+    # To keep it safe, let's stick to the 62 characters limit.
+    if id.size > 62
+      "#{id[0..55]}#{Digest::MD5.hexdigest(id)[0..5]}"
+    else
+      id
+    end
   end
 
   def type

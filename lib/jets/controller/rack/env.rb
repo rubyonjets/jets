@@ -29,7 +29,7 @@ module Jets::Controller::Rack
         'QUERY_STRING' => query_string,
         'REMOTE_ADDR' => headers['X-Forwarded-For'],
         'REMOTE_HOST' => headers['Host'],
-        'REQUEST_METHOD' => @event['httpMethod'],
+        'REQUEST_METHOD' => @event['httpMethod'] || 'GET', # useful to default to GET when testing with Lambda console
         'REQUEST_PATH' => @event['path'],
         'REQUEST_URI' => request_uri,
         'SCRIPT_NAME' => "",

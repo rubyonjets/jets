@@ -9,7 +9,7 @@ module Jets::Lambda
   class Functions
     attr_reader :event, :context, :meth
     def initialize(event, context, meth)
-      @event = event # Hash, JSON.parse(event) ran BaseProcessor
+      @event = HashWithIndifferentAccess.new(event) # Hash, JSON.parse(event) ran BaseProcessor
       @context = context # Hash. JSON.parse(context) ran in BaseProcessor
       @meth = meth
       # store meth because it is useful to for identifying the which template
@@ -28,6 +28,11 @@ module Jets::Lambda
       def inherited(base)
         super
         self.subclasses << base if base.name
+      end
+
+      # Needed for depends_on. Got added due to stagger logic.
+      def output_keys
+        []
       end
     end
   end

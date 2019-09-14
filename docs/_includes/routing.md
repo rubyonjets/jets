@@ -20,7 +20,7 @@ end
 
 You can check your routes in the API Gateway console:
 
-![](/img/quick-start/demo-api-gateway.png)
+![Screenshot of generated API Gateway resources in the AWS Console](/img/quick-start/demo-api-gateway.png)
 
 You can get your API Gateway endpoints from the API Gateway console, and test them with curl or postman. Example:
 
@@ -48,3 +48,7 @@ Run the `jets routes` cli command to get a list of your routes.
     | ANY    | *catchall      | jets/public#show   |
     +--------+----------------+--------------------+
     $
+
+## Routing Guide
+
+There is more information about the Jets Router in the [Routing Guide docs]({% link _docs/routing/guide.md %}).

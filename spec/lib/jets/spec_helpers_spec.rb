@@ -68,6 +68,12 @@ describe Jets::SpecHelpers do
       expect(JSON.parse(response.body)['filter']).to eq 'abc'
     end
 
+    it "gets 200 with route params" do
+      get '/spec_helper_test/123'
+      expect(response.status).to eq 200
+      expect(JSON.parse(response.body)['id']).to eq '123'
+    end
+
     it "gets 404 with id" do
       get '/spec_helper_test/:id', id: 404
       expect(response.status).to eq 404

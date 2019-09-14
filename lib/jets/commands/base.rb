@@ -138,7 +138,6 @@ class Jets::Commands::Base < Thor
     def eager_load!
       return if Jets::Turbo.afterburner?
 
-      Jets.application.setup_auto_load_paths # in case an app/extension is defined
       Jets::Autoloaders.once.eager_load
     end
     memoize :eager_load!

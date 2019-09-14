@@ -1,15 +1,15 @@
 class Jets::Stack
   class Depends
     def initialize(items)
-      @items = items
+      @items = items # Jets::Stack::Depends::Item - has stack and options properties
     end
 
     def params
       result = {}
       @items.each do |item|
-        logical_id = item.stack.to_s.camelize # logical_id
-        dependency_outputs(logical_id).each do |output|
-          dependency_class = logical_id.to_s.camelize
+        class_name = item.class_name
+        dependency_outputs(class_name).each do |output|
+          dependency_class = class_name.to_s.camelize
           output_key = item.options[:class_prefix] ?
             "#{dependency_class}#{output}" : # already camelized
             output
@@ -21,14 +21,14 @@ class Jets::Stack
       result
     end
 
+    # Returns CloudFormation template logical ids
     def stack_list
-      @items.map do |item|
-        item.stack.to_s.camelize # logical_id # logical_id
-      end
+      @items.map(&:logical_id)
     end
 
-    def dependency_outputs(logical_id)
-      logical_id.to_s.camelize.constantize.output_keys
+  private
+    def dependency_outputs(class_name)
+      class_name.to_s.camelize.constantize.output_keys
     end
   end
 end

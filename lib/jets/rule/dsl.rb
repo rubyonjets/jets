@@ -70,7 +70,6 @@ module Jets::Rule::Dsl
       # Creates a task but registers it to all_managed_rules instead of all_tasks
       # because we do not want Lambda functions to be created.
       def register_managed_rule(name, definition)
-
         # Mimic task to grab base_replacements, namely namespace.
         # Do not actually use the task to create a Lambda function for managed rules.
         # Only using the task for base_replacements.

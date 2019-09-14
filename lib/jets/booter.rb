@@ -11,7 +11,7 @@ class Jets::Booter
 
       Jets.application.setup!
 
-      # Turbines are loaded after setup_auto_load_paths in Jets.application.setup!  Some Turbine options are defined
+      # Turbines are loaded after setup_autoload_paths in Jets.application.setup!  Some Turbine options are defined
       # in the project so setup must happen before internal Turbines are loaded.
       load_internal_turbines
 
@@ -23,14 +23,62 @@ class Jets::Booter
       run_turbines(:after_initializers)
       Jets.application.finish!
 
-      # Eager load project code. Rather have user find out early than later on AWS Lambda.
-      Jets::Autoloaders.main.eager_load
+      setup_db # establish db connections in Lambda Execution Context.
+      # The eager load calls connects_to in models and establish those connections in Lambda Execution Context also.
+      eager_load
 
-      setup_db
       # TODO: Figure out how to build middleware during Jets.boot without breaking jets new and webpacker:install
       # build_middleware_stack
 
       @booted = true
+    end
+
+    def eager_load
+      preload_extensions
+      Jets::Autoloaders.main.eager_load # Eager load project code. Rather have user find out early than later on AWS Lambda.
+    end
+
+    def preload_extensions
+      base_path = "#{Jets.root}/app/extensions"
+      Dir.glob("#{base_path}/**/*.rb").each do |path|
+        next unless File.file?(path)
+
+        class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').camelize
+        klass = class_name.constantize # autoload
+        Jets::Lambda::Functions.extend(klass)
+      end
+    end
+
+    # Using ActiveRecord outside of Rails, so we need to set up the db connection ourself.
+    #
+    # Only connects to database for ActiveRecord and when config/database.yml exists.
+    # Dynomite handles connecting to the clients lazily.
+    def setup_db
+      return unless File.exist?("#{Jets.root}/config/database.yml")
+
+      db_configs = Jets.application.config.database
+      # DatabaseTasks.database_configuration for db:create db:migrate tasks
+      # Documented in DatabaseTasks that this is the right way to set it when
+      # using ActiveRecord rake tasks outside of Rails.
+      ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
+
+      if db_configs[Jets.env].blank?
+        abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
+      end
+      ActiveRecord::Base.configurations = db_configs
+      connect_db
+    end
+
+    # Eager connect to database, so connections are established in the Lambda Execution Context and get reused.
+    # Interestingly, the connections info is stored in the shared state but the connection doesnt show up on
+    # `show processlist` until after a query. Have confirmed that the connection is reused and the connection count stays
+    # the same.
+    def connect_db
+      primary_hash_config = ActiveRecord::Base.configurations.configs_for(env_name: Jets.env).find { |hash_config|
+        hash_config.spec_name == "primary"
+      }
+      primary_config = primary_hash_config.config # config is a normal Ruby Hash
+      ActiveRecord::Base.establish_connection(primary_config)
     end
 
     def load_internal_turbines
@@ -70,27 +118,6 @@ class Jets::Booter
     # Builds and memoize stack so it only gets built on bootup
     def build_middleware_stack
       Jets.application.build_stack
-    end
-
-    # Only connects connect to database for ActiveRecord and when
-    # config/database.yml exists.
-    # Dynomite handles connecting to the clients lazily.
-    def setup_db
-      return unless File.exist?("#{Jets.root}/config/database.yml")
-
-      db_configs = Jets.application.config.database
-      # DatabaseTasks.database_configuration for db:create db:migrate tasks
-      # Documented in DatabaseTasks that this is the right way to set it when
-      # using ActiveRecord rake tasks outside of Rails.
-      ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
-
-      current_config = db_configs[Jets.env]
-      if current_config.blank?
-        abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
-      end
-      # Using ActiveRecord rake tasks outside of Rails, so we need to set up the
-      # db connection ourselves
-      ActiveRecord::Base.establish_connection(current_config)
     end
 
     # Cannot call this for the jets new

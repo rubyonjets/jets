@@ -7,16 +7,19 @@ gem "jets"
 gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
 <% end -%>
 <% if @database == 'postgresql' %>
-# Include pg gem if you are using ActiveRecord, remove if you are not
+# Include pg gem if you are using ActiveRecord, remove next line
+# and config/database.yml file if you are not
 gem "pg", "~> 1.1.3"
 <% elsif @database == 'mysql' %>
-# Include mysql2 gem if you are using ActiveRecord, remove if you are not
+# Include mysql2 gem if you are using ActiveRecord, remove next line
+# and config/database.yml file if you are not
 gem "mysql2", "~> 0.5.2"
 <% end %>
 <% unless options[:mode] == 'job' -%>
 gem "dynomite"
 <% end -%>
 
+# development and test groups are not bundled as part of the deployment
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -362,3 +362,17 @@ blockquote {
   margin: 0 0 24px;
   border-left: 5px solid #eee;
 }
+
+ul.toc {
+  list-style-type: none;
+  padding: 5px;
+  margin-left: 0;
+  li {
+    list-style-type: none;
+    padding-left: 5px;
+    margin-left: 0;
+  }
+  ul {
+    padding-left: 10px;
+  }
+}

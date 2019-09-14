@@ -1,6 +1,6 @@
 ---
 title: Polymorphic Node
-nav_order: 75
+nav_order: 89
 ---
 
 To write your Jets Lambda functions in node, it would look like this:
@@ -38,7 +38,7 @@ Notice, how with the node code, you must handle returning the proper lambda prox
 
 ## Lambda console
 
-![](/img/docs/poly/poly-lambda-function-node.png)
+![The AWS function UI demonstrating implementation of the sample code.](/img/docs/poly/poly-lambda-function-node.png)
 
 ## Default Handler Name
 

@@ -55,7 +55,7 @@ module Jets::Builders
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned out.
     def jetskeep
-      always = %w[.bundle packs]
+      always = %w[.bundle packs vendor]
       path = "#{@project_root}/.jetskeep"
       return always unless File.exist?(path)
 

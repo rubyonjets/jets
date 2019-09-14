@@ -3,6 +3,104 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.2.2]
+- #370 Use unicode for encoding when using postgres
+
+## [2.2.1]
+- #369 clean up authorizers and bug fixes
+
+## [2.2.0]
+- #368 API Gateway Authorizer Concept Support
+
+## [2.1.7]
+- #366 fix copy ruby version
+- fix codebuild for docs
+
+## [2.1.6]
+- #364 Add stagger deploy option: https://rubyonjets.com/docs/extras/deploy-stagger/
+- codebuild: add caching to speed up build
+
+## [2.1.5]
+- perform_later calls perform_now in local mode when not on lambda
+- fix: clear view cache in development mode
+
+## [2.1.4]
+- allow jets code to access event object values with symbols also
+
+## [2.1.3]
+- #359 redirect_back controller method
+- fix default_protect_from_forgery to account for api mode
+- fix md5 files.reject
+
+## [2.1.2]
+- improve start .env.development example for postgres
+- #351 Update Turbine documentation
+- #355 improve jets routes command to also validate routes
+- #356 improvements to named route helpers
+- #357 paginate api gateway resources to support more routes
+- #358 rate limit backoff
+
+## [2.1.1]
+- #347 Add documentation about torch vs. warm
+- #348 Provide another minimal privileges example
+- #349 Fix route params for specs
+- #350 Fix config.autoload_paths setting
+- remove the jets c warning
+
+## [2.1.0]
+- #345 upgrade to use rails 6 components
+
+## [2.0.6]
+- #344 controller `helper_method` macro
+
+## [2.0.5]
+- #333 Always keep vendor directory
+- #335 Controller action_name method
+- #336 Escape paths passed to rsync
+- #338 Support for "apiKeyRequired" option for API method
+- #339 Implement endpoint_policy configuration
+- #340 Fix tidy_spec from #333
+- #341 Return exist status 1 if deployment fails
+- #342 Adding support for `:only` option, to the skip\_before_action method
+- #343 spec helpers: dont cache request headers between specs
+
+## [2.0.4]
+- #332 spec helpers: include routes helper
+
+## [2.0.3]
+- #331 spec_helpers fixes: response.headers support, fix session, run spec controller through middleware
+
+## [2.0.2]
+- #322, #325, #326, #329 update docs
+- #330 fix remove Rails const
+
+## [2.0.1]
+- #319 improve mega mode or afterburner, start back up rack process if it dies for any reason
+
+## [2.0.0]
+- #318 Major Routing upgrade
+- Routing Upgrades: nested resources, namespace, scope, singular resource
+- Name routes helpers
+- Forgery protection
+- Generators upgrades: scaffold, controller, model, job, etc
+- Autoload Rake tasks in lib/tasks.
+- Update upgrading docs
+
+## [1.9.32]
+- #317 fix jets deploy when no /tmp/jets exists yet
+
+## [1.9.31]
+- #307 Update comment in Gemfile template
+- #315 Improve spec_helpers: Use Rack::Multipart utils to properly build body params (especially with files and nested hashes)from galetahub/master
+- #316 Copy .ruby-version file to build directory
+
+## [1.9.30]
+- #305 allow url paths that contain dashes
+
+## [1.9.29]
+- #303 API Gateway: Do not generate resource names longer than 62 characters
+- #304 Add skip\_before\_action and skip\_after\_action method callbacks
+
 ## [1.9.28]
 - #302 improve jets call guesser, do a simple detection at the start
 

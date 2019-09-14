@@ -1,17 +1,12 @@
-<%% editing = @event["path"].include?("edit") %>
-<%% action = editing ? "/<%= plural_table_name %>/#{<%= singular_table_name %>.id}" : "/<%= plural_table_name %>" %>
-<%%= form_tag(action) do %>
-<%% if editing -%>
-  <input type="hidden" name="_method" value="put" />
-<%% end -%>
+<%%= form_with(model: <%= model_resource_name %>, local: true) do |form| %>
   <%% if <%= singular_table_name %>.errors.any? %>
     <div id="error_explanation">
       <h2><%%= pluralize(<%= singular_table_name %>.errors.count, "error") %> prohibited this <%= singular_table_name %> from being saved:</h2>
 
       <ul>
-      <%% <%= singular_table_name %>.errors.full_messages.each do |message| %>
-        <li><%%= message %></li>
-      <%% end %>
+        <%% <%= singular_table_name %>.errors.full_messages.each do |message| %>
+          <li><%%= message %></li>
+        <%% end %>
       </ul>
     </div>
   <%% end %>
@@ -19,21 +14,21 @@
 <% attributes.each do |attribute| -%>
   <div class="field">
 <% if attribute.password_digest? -%>
-    <%%= label_tag :password %>
-    <%%= password_field_tag :password, <%= singular_table_name %>.<%= attribute.column_name %> %>
+    <%%= form.label :password %>
+    <%%= form.password_field :password %>
   </div>
 
   <div class="field">
-    <%%= label_tag :password_confirmation %>
-    <%%= password_field_tag :password_confirmation, <%= singular_table_name %>.<%= attribute.column_name %> %>
+    <%%= form.label :password_confirmation %>
+    <%%= form.password_field :password_confirmation %>
 <% else -%>
-    <%%= label_tag :<%= attribute.column_name %> %>
-    <%%= <%= attribute.field_type %>_tag "<%= "#{singular_table_name}[#{attribute.column_name}]" %>"<%= ", 'yes'" if attribute.field_type =~ /check_box/ %>, <%= singular_table_name %>.<%= attribute.column_name %> %>
+    <%%= form.label :<%= attribute.column_name %> %>
+    <%%= form.<%= attribute.field_type %> :<%= attribute.column_name %> %>
 <% end -%>
   </div>
 
 <% end -%>
   <div class="actions">
-    <%%= submit_tag("Submit") %>
+    <%%= form.submit %>
   </div>
 <%% end %>

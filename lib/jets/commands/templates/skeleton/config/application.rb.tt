@@ -12,7 +12,7 @@ Jets.application.configure do
 <% end -%>
 
   # config.env_extra = 2 # can also set this with JETS_ENV_EXTRA
-  # config.extra_autoload_paths = []
+  # config.autoload_paths = []
 
   # config.asset_base_url = 'https://cloudfront.domain.com/assets' # example
 
@@ -64,4 +64,8 @@ Jets.application.configure do
   # local testing environment you may want to log these messages to 'test.log' file to keep your
   # testing suite output readable.
   # config.logger = Jets::Logger.new($strerr)
+
+<% if @options[:mode] == 'api' -%>
+  config.controllers.default_protect_from_forgery = false
+<% end -%>
 end

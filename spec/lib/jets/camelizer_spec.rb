@@ -41,16 +41,23 @@ describe "Camelizer" do
   end
 
   it "dont touch anything with - or /" do
-    h = {foo_bar: 1, "has-dash": 2, "has/slash": 3,"application/json":4}
+    h = {foo_bar: 1, "has-dash" => 2, "has/slash" => 3, "application/json" => 4}
     result = Jets::Camelizer.transform(h)
     # pp result
     expect(result).to eq("FooBar"=>1, "has-dash"=>2,"has/slash"=>3,"application/json"=>4)
   end
 
-  it "special map keys" do
-    h = {template_url: 1, ttl: 60}
+  it "special map keys cloudformation stack" do
+    h = {type: "AWS::CloudFormation::Stack", properties: {template_url: 1}}
     result = Jets::Camelizer.transform(h)
     # pp result
-    expect(result).to eq("TemplateURL"=>1, "TTL"=> 60)
+    expect(result).to eq({"Type" => "AWS::CloudFormation::Stack", "Properties" => {"TemplateURL"=>1}})
+  end
+
+  it "special map keys cloudformation stack" do
+    h = {type: "AWS::Route53::RecordSet", properties: {ttl: 60}}
+    result = Jets::Camelizer.transform(h)
+    # pp result
+    expect(result).to eq({"Type" => "AWS::Route53::RecordSet", "Properties" => {"TTL"=>60}})
   end
 end

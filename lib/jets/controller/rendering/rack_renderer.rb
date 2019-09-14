@@ -26,27 +26,19 @@ module Jets::Controller::Rendering
       # x-jets-base64 to convert this Rack triplet to a API Gateway hash structure later
       headers["x-jets-base64"] = base64 ? 'yes' : 'no' # headers values must be Strings
 
-      # Rails rendering does heavy lifting
       if drop_content_info?(status)
         body = StringIO.new
       else
-
+        # Rails rendering does heavy lifting
+        # _prefixes provided by jets/overrides/rails/action_controller.rb
+        ActionController::Base._prefixes = @controller.controller_paths
         renderer = ActionController::Base.renderer.new(renderer_options)
+        clear_view_cache
         body = renderer.render(render_options)
         body = StringIO.new(body)
       end
 
       [status, headers, body] # triplet
-    end
-
-    # Example: posts/index
-    def default_template_name
-      "#{template_namespace}/#{@controller.meth}"
-    end
-
-    # PostsController => "posts" is the namespace
-    def template_namespace
-      @controller.class.to_s.sub('Controller','').underscore.pluralize
     end
 
     # default options:
@@ -72,6 +64,41 @@ module Jets::Controller::Rendering
       # Note @options[:method] uses @options vs options on purpose
       @options[:method] = event["httpMethod"].downcase if event["httpMethod"]
       options
+    end
+
+    def render_options
+      # normalize the template option
+      template = @options[:template]
+      if template and !template.include?('/')
+        template = "#{template_namespace}/#{template}"
+      end
+      template ||= default_template_name
+      # ready to override @options[:template]
+      @options[:template] = template if @options[:template]
+
+      render_options = {
+        template: template, # weird: template needs to be set no matter because it
+          # sets the name which is used in lookup_context.rb:209:in `normalize_name'
+        layout: @options[:layout],
+        assigns: controller_instance_variables,
+        # prefixes: ["posts"],
+      }
+      types = %w[json inline plain file xml body action].map(&:to_sym)
+      types.each do |type|
+        render_options[type] = @options[type] if @options[type]
+      end
+
+      render_options
+    end
+
+    # Example: posts/index
+    def default_template_name
+      "#{template_namespace}/#{@controller.meth}"
+    end
+
+    # PostsController => "posts" is the namespace
+    def template_namespace
+      @controller.class.to_s.sub('Controller','').underscore.pluralize
     end
 
     # Takes headers and adds HTTP_ to front of the keys because that is what rack
@@ -110,30 +137,7 @@ module Jets::Controller::Rendering
       results
     end
 
-    def render_options
-      # nomralize the template option
-      template = @options[:template]
-      if template and !template.include?('/')
-        template = "#{template_namespace}/#{template}"
-      end
-      template ||= default_template_name
-      # ready to override @options[:template]
-      @options[:template] = template if @options[:template]
-
-      render_options = {
-        template: template, # weird: template needs to be set no matter because it
-          # sets the name which is used in lookup_context.rb:209:in `normalize_name'
-        layout: @options[:layout],
-        assigns: controller_instance_variables,
-      }
-      types = %w[json inline plain file xml body action].map(&:to_sym)
-      types.each do |type|
-        render_options[type] = @options[type] if @options[type]
-      end
-
-      render_options
-    end
-
+    # Pass controller instance variables from jets-based controller to ActionView scope
     def controller_instance_variables
       instance_vars = @controller.instance_variables.inject({}) do |vars, v|
         k = v.to_s.sub(/^@/,'') # @var => var
@@ -141,7 +145,14 @@ module Jets::Controller::Rendering
         vars
       end
       instance_vars[:event] = event
+      # jets internal variables
+      # So ActionView has access back to the jets controller
+      instance_vars[:_jets] = { controller: @controller }
       instance_vars
+    end
+
+    def clear_view_cache
+      ActionView::LookupContext::DetailsKey.clear if Jets.env.development?
     end
 
   private
@@ -199,14 +210,14 @@ module Jets::Controller::Rendering
         # Assign local variable because scope in the `:action_view do` block changes
         app_helper_classes = find_app_helper_classes
         ActiveSupport.on_load :action_view do
-          include ApplicationHelper # include first
+          include Jets::Router::Helpers # internal routes helpers
+          include ApplicationHelper  # include first
           app_helper_classes.each do |helper_class|
             include helper_class
           end
         end
 
         ActionController::Base.append_view_path("#{Jets.root}/app/views")
-        ActionView::Resolver.caching = !Jets.env.development?
 
         setup_webpacker if Jets.webpacker?
       end

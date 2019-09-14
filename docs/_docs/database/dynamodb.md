@@ -1,6 +1,6 @@
 ---
 title: Database DynamoDB
-nav_order: 39
+nav_order: 47
 ---
 
 Jets supports DynamoDB via [Dynomite](https://github.com/tongueroo/dynomite).

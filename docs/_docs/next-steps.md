@@ -1,6 +1,6 @@
 ---
 title: Next Steps
-nav_order: 86
+nav_order: 100
 ---
 
 Hopefully, you have a good feel for how Jets works now. From here, there are a few resources that can help you continue along:

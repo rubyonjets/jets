@@ -34,6 +34,7 @@ module Jets::Builders
       compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
       compile_rails_assets
       copy_project
+      copy_ruby_version_file
       Dir.chdir("#{stage_area}/code") do
         # These commands run from project root
         code_setup
@@ -368,6 +369,12 @@ module Jets::Builders
         ruby_variant = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.x'
         abort("Jets uses Ruby #{Jets::RUBY_VERSION}.  You should use a variant of Ruby #{ruby_variant}".color(:red))
       end
+    end
+
+    def copy_ruby_version_file
+      ruby_version_path = Jets.root.join(".ruby-version")
+      return unless File.exists?(ruby_version_path)
+      FileUtils.cp_r(ruby_version_path, build_area)
     end
 
     def ruby_version_supported?

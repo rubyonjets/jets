@@ -2,9 +2,12 @@ require 'text-table'
 
 module Jets
   class Router
+    include Dsl
+
     attr_reader :routes
     def initialize
       @routes = []
+      @scope = Scope.new
     end
 
     def draw(&block)
@@ -20,51 +23,40 @@ module Jets
       raise collision.exception if collide
     end
 
-    # Methods supported by API Gateway
-    %w[any delete get head options patch post put].each do |method_name|
-      define_method method_name do |path, options|
-        create_route(options.merge(path: path, method: __method__))
+    def create_route(options)
+      # TODO: Can use it to add additional things like authorization_type
+      # Would be good to add authorization_type at the controller level also
+      infer_to_option!(options)
+      handle_on!(options)
+      MethodCreator.new(options, @scope).define_url_helper!
+      @routes << Route.new(options, @scope)
+    end
+
+    # Can possibly infer to option from the path. Example:
+    #
+    #     get 'posts/index'
+    #     get 'posts', to: 'posts#index'
+    #
+    #     get 'posts/show'
+    #     get 'posts', to: 'posts#show'
+    #
+    def infer_to_option!(options)
+      return if options[:to]
+
+      path = options[:path].to_s
+      return unless path.include?('/')
+
+      items = path.split('/')
+      if items.size == 2
+        options[:to] = items.join('#')
       end
     end
 
-    def create_route(options)
-      # Currently only using scope to add namespace
-      # TODO: Can use it to add additional things like authorization_type
-      # Would be good to add authorization_type at the controller level also
-      options[:path] = add_namespace(options[:path])
-      @routes << Route.new(options)
-    end
-
-    def add_namespace(path)
-      return path unless @scope
-      ns = @scope.full_namespace
-      return path unless ns
-      "#{ns}/#{path}"
-    end
-
-    def namespace(ns, &block)
-      scope(namespace: ns, &block)
-    end
-
-    def scope(options={})
-      root_level = @scope.nil?
-      @scope = root_level ? Scope.new(options) : @scope.new(options)
-      yield
-    ensure
-      @scope = @scope.parent if @scope
-    end
-
-    # resources macro expands to all the routes
-    def resources(name)
-      get "#{name}", to: "#{name}#index"
-      get "#{name}/new", to: "#{name}#new" unless api_mode?
-      get "#{name}/:id", to: "#{name}#show"
-      post "#{name}", to: "#{name}#create"
-      get "#{name}/:id/edit", to: "#{name}#edit" unless api_mode?
-      put "#{name}/:id", to: "#{name}#update"
-      post "#{name}/:id", to: "#{name}#update" # for binary uploads
-      patch "#{name}/:id", to: "#{name}#update"
-      delete "#{name}/:id", to: "#{name}#delete"
+    def handle_on!(options)
+      if options[:on] && !%w[resources resource].include?(@scope.from.to_s)
+        raise Error.new("ERROR: The `on:` option can only be used within a resource or resources block")
+      end
+      options[:on] ||= @on_option if @on_option
     end
 
     def api_mode?
@@ -79,13 +71,6 @@ module Jets
       end
       api_mode = Jets.config.mode == 'api' || Jets.config.api_mode || Jets.config.api_generator
       api_mode
-    end
-
-    # root "posts#index"
-    def root(to, options={})
-      default = {path: '', to: to, method: :get, root: true}
-      options = default.merge(options)
-      @routes << Route.new(options)
     end
 
     # Useful for creating API Gateway Resources
@@ -122,56 +107,74 @@ module Jets
       simple_routes + capture_routes + wildcard_routes
     end
 
-    def self.has_controller?(name)
-      routes.detect { |r| r.controller_name == name }
-    end
-
-    # Class methods
-    def self.draw
-      drawn_router
-    end
-
-    @@drawn_router = nil
-    def self.drawn_router
-      return @@drawn_router if @@drawn_router
-
-      router = Jets.application.routes
-      @@drawn_router = router
-    end
-
-    def self.clear!
-      @@drawn_router = nil
-    end
-
-    def self.routes
-      drawn_router.routes
-    end
-
-    # Returns all paths including subpaths.
-    # Example:
-    # Input: ["posts/:id/edit"]
-    # Output: ["posts", "posts/:id", "posts/:id/edit"]
-    def self.all_paths
-      drawn_router.all_paths
-    end
-
-    def self.routes_help
-      return "Your routes table is empty." if routes.empty?
-
-      table = Text::Table.new
-      table.head = %w[Verb Path Controller#action]
-      routes.each do |route|
-        table.rows << [route.method, route.path, route.to]
+    class << self
+      def has_controller?(name)
+        routes.detect { |r| r.controller_name == name }
       end
-      table
-    end
 
-    def self.all_routes_valid
-      invalid_routes.empty?
-    end
+      # Class methods
+      def draw
+        drawn_router
+      end
 
-    def self.invalid_routes
-      routes.select { |r| !r.valid? }
+      @@drawn_router = nil
+      def drawn_router
+        return @@drawn_router if @@drawn_router
+
+        router = Jets.application.routes
+        @@drawn_router = router
+      end
+
+      def clear!
+        @@drawn_router = nil
+        Jets::Router::Helpers::NamedRoutesHelper.clear!
+      end
+
+      def routes
+        drawn_router.routes
+      end
+
+      # Returns all paths including subpaths.
+      # Example:
+      # Input: ["posts/:id/edit"]
+      # Output: ["posts", "posts/:id", "posts/:id/edit"]
+      def all_paths
+        drawn_router.all_paths
+      end
+
+      def help(routes)
+        return "Your routes table is empty." if routes.empty?
+
+        table = Text::Table.new
+        table.head = %w[As Verb Path Controller#action]
+        routes.each do |route|
+          table.rows << [route.as, route.method, route.path, route.to]
+        end
+        table
+      end
+
+      def all_routes_valid?
+        invalid_routes.empty?
+      end
+
+      def invalid_routes
+        routes.select { |r| !r.valid? }
+      end
+
+      def validate_routes!
+        check_route_connected_functions
+      end
+
+      # Checks that all routes are validate and have corresponding lambda functions
+      def check_route_connected_functions
+        return true if all_routes_valid?
+
+        puts "Please double check the routes below map to valid controllers:".color(:red)
+        invalid_routes.each do |route|
+          puts "  /#{route.path} => #{route.controller_name}##{route.action_name}"
+        end
+        false
+      end
     end
   end
 end

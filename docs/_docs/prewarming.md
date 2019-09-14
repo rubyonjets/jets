@@ -1,6 +1,6 @@
 ---
 title: Prewarming
-nav_order: 18
+nav_order: 17
 ---
 
 Jets supports prewarming your application to remedy the Lambda cold start issue.  Prewarming is enabled by default.  Only [Controller]({% link _docs/controllers.md %}) functions are prewarmed. To adjust the prewarming settings, edit your `config/application.rb`. Example:
@@ -18,12 +18,26 @@ end
 
 ## Rate vs Concurrency
 
+Concurrency can be helpful if requests are coming in at the same time in parallel. Example: The Lambda function gets 60 requests/minute and each request takes 1 second to process.
+
+* Case 1: All 60 requests come in at the same time within the first second. Desired concurrency should be 60 otherwise 59 of 60 requests will be hit with a cold start (in worst case scenario).
+* Case 2: The 60 requests come in serially each second for a minute. The same lambda "container" will be able to serve all the requests without a cold start in theory.
+
+Same would apply on traditional servers like Puma where you need more Puma threads and or processes to handle increased concurrency.
+
 Option | Explanation
 --- | ---
 rate | This controls how often the prewarming job runs.
 concurrent | For each prewarming job run, this controls how many times in parallel to hit the functions with a prewarm request.
 
-For example, with a rate of 2 hours and concurrent of 2, this results in the Lambda functions being called with a prewarm request 24 times after 24 hours (12 hours x 2).
+For example, with a rate of 2 hours and concurrent of 2, this results in the Lambda functions being called with a prewarm request 48 times after 24 hours (24 hours x 2).
+
+To execute prewarming, Jets will create two Lambda functions:
+
+Name | Explanation
+--- | ---
+warm | If concurrent is `1`.
+torch | If concurrent is greater `1`, the torch job will concurrently call the `warm` job.
 
 ## Public Ratio
 
@@ -45,7 +59,7 @@ After a deployment finishes, Jets automatically prewarms the app immediately.  T
 
 Jets appends an `x-jets-prewarm-count` header to the response to help you see if the lambda function was prewarmed. The header looks like this:
 
-![](/img/docs/prewarm-header.png)
+![Screenshot emphasizing the x-jets-prewarm-count header](/img/docs/prewarm-header.png)
 
 We can see that the lambda function had been prewarmed once and called 4 times since the last time AWS Lambda recycled the Lambda function.
 

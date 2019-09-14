@@ -1,6 +1,7 @@
 class Jets::RackController < Jets::Controller::Base
   layout false
   internal true
+  skip_forgery_protection
 
   # Megamode
   def process

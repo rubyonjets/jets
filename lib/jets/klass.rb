@@ -45,15 +45,15 @@ class Jets::Klass
       end
     end
 
+    APP_TYPES = %w[controller job rule authorizer]
     def from_task(task)
       class_name = task.class_name
       filename = class_name.underscore
 
-      # Examples of filename: posts_controller, hard_job, security_rule,
+      # Examples of filename: posts_controller, hard_job, security_rule, main_authorizer
       #   hello_function, hello
-      valid_types = %w[controller job rule]
       type = filename.split('_').last
-      type = "function" unless valid_types.include?(type)
+      type = "function" unless APP_TYPES.include?(type)
 
       path = "app/#{type.pluralize}/#{filename}.rb"
       from_path(path)

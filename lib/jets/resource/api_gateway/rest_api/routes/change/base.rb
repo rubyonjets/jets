@@ -3,6 +3,10 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     extend Memoist
     include Jets::AwsServices
 
+    def self.changed?
+      new.changed?
+    end
+
     # Build up deployed routes from the existing CloudFormation resources.
     def deployed_routes
       routes = []
@@ -13,6 +17,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
         resp = apigateway.get_resources(
           rest_api_id: rest_api_id,
           position: position,
+          limit: 500, # default: 25 max: 500
         )
         resources += resp.items
         position = resp.position
@@ -33,7 +38,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
           path = recreate_path(resource.path)
           method = http_verb.downcase.to_sym
           to = to(resource.id, http_verb)
-          route = Jets::Route.new(path: path, method: method, to: to)
+          route = Jets::Router::Route.new(path: path, method: method, to: to)
           routes << route
         end
       end
@@ -53,11 +58,27 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     end
 
     def method_uri(resource_id, http_method)
-      resp = apigateway.get_method(
-        rest_api_id: rest_api_id,
-        resource_id: resource_id,
-        http_method: http_method
-      )
+      # https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html
+      retries = 0
+      begin
+        resp = apigateway.get_method(
+          rest_api_id: rest_api_id,
+          resource_id: resource_id,
+          http_method: http_method
+        )
+      rescue Aws::APIGateway::Errors::TooManyRequestsException => e
+        retries += 1
+        seconds = 2 ** retries
+
+        puts "WARN: method_uri #{e.class} #{e.message}".color(:yellow)
+        puts "Backing off and will retry in #{seconds} seconds."
+        sleep(seconds)
+        if seconds > 90 # 2 ** 6 is 64 so will give up after 6 retries
+          puts "Giving up after #{retries} retries"
+        else
+          retry
+        end
+      end
       resp.method_integration.uri
     end
 

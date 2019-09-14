@@ -1,13 +1,17 @@
 module Jets::AwsServices
   module StackStatus
+    # Only cache if it is true because the initial deploy checks live status until a stack exists.
+    @@stack_exists_cache = [] # helps with CloudFormation rate limit
     def stack_exists?(stack_name)
       return false if ENV['TEST']
+      return true if @@stack_exists_cache.include?(stack_name)
 
       exist = nil
       begin
         # When the stack does not exist an exception is raised. Example:
         # Aws::CloudFormation::Errors::ValidationError: Stack with id blah does not exist
-        resp = cfn.describe_stacks(stack_name: stack_name)
+        cfn.describe_stacks(stack_name: stack_name)
+        @@stack_exists_cache << stack_name
         exist = true
       rescue Aws::CloudFormation::Errors::ValidationError => e
         if e.message =~ /does not exist/

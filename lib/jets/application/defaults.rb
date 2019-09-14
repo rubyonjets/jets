@@ -54,8 +54,8 @@ class Jets::Application
       config = ActiveSupport::OrderedOptions.new
       config.project_name = parse_project_name # must set early because other configs requires this
       config.cors = false
-      config.autoload_paths = default_autoload_paths
-      config.extra_autoload_paths = []
+      config.autoload_paths = [] # allows for customization
+      config.ignore_paths = [] # allows for customization
       config.logger = Jets::Logger.new($stderr)
 
       # function properties defaults
@@ -99,6 +99,11 @@ class Jets::Application
       config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
       config.api.binary_media_types = ['multipart/form-data']
       config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
+      config.api.endpoint_policy = nil # required when endpoint_type is EDGE
+      config.api.api_key_required = false # Turn off API key required
+
+      config.api.authorizers = ActiveSupport::OrderedOptions.new
+      config.api.authorizers.default_token_source = "Auth" # method.request.header.Auth
 
       config.domain = ActiveSupport::OrderedOptions.new
       # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is nil
@@ -139,6 +144,17 @@ class Jets::Application
       # So tried to defined this in the jets/mailer.rb Turbine only but jets new requires it
       # config.action_mailer = ActiveSupport::OrderedOptions.new
 
+      config.helpers = ActiveSupport::OrderedOptions.new
+      config.helpers.host = nil # nil by default. Other examples: https://myurl.com:8888
+
+      config.controllers = ActiveSupport::OrderedOptions.new
+      config.controllers.default_protect_from_forgery = nil
+
+      config.deploy = ActiveSupport::OrderedOptions.new
+      config.deploy.stagger = ActiveSupport::OrderedOptions.new
+      config.deploy.stagger.enabled = false
+      config.deploy.stagger.batch_size = 10
+
       config
     end
 
@@ -167,6 +183,13 @@ class Jets::Application
       paths << "#{Jets.root}/app/shared/extensions"
 
       paths
+    end
+
+    def default_ignore_paths
+      %w[
+        app/functions
+        app/shared/functions
+      ]
     end
   end
 end

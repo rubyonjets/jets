@@ -28,7 +28,7 @@ module Jets::Resource::ApiGateway
       if @path == ''
         "RootResourceId"
       else
-        "#{path_logical_id(@path)}ApiResource"
+        Jets::Resource.truncate_id "#{path_logical_id(@path)}ApiResource"
       end
     end
 
@@ -37,14 +37,18 @@ module Jets::Resource::ApiGateway
       path.empty? ? 'Homepage route: /' : "Route for: /#{path}"
     end
 
-    def parent_id
+    def parent_path_parameter
       if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')
         parent_logical_id = path_logical_id(parent_path)
-        "!Ref #{parent_logical_id}ApiResource"
+        Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
       else
-        "!GetAtt #{RestApi.logical_id(@internal)}.RootResourceId"
+        "RootResourceId"
       end
+    end
+
+    def parent_id
+      "!Ref " + parent_path_parameter
     end
 
     def path_part
@@ -72,7 +76,7 @@ module Jets::Resource::ApiGateway
   private
     # Similar path_logical_id method in resource/route.rb
     def path_logical_id(path)
-      path.gsub('/','_').gsub(':','').gsub('*','').camelize
+      path.gsub('/','_').gsub(':','').gsub('*','').gsub('-','_').camelize
     end
   end
 end

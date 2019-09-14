@@ -3,7 +3,7 @@ describe Jets::Resource::ApiGateway::Cors do
 
   context "cors" do
     let(:route) do
-      Jets::Route.new(path: "posts", method: :get, to: "posts#index")
+      Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index")
     end
     it "resource" do
       expect(resource.logical_id).to eq "PostsCorsApiMethod"
@@ -23,9 +23,9 @@ describe Jets::Resource::ApiGateway::Cors do
       expect(headers["access-control-allow-origin"]).to eq "*"
       expect(headers["access-control-allow-credentials"]).to eq "true"
       expect(headers["access-control-allow-methods"]).to eq "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT"
-      expect(headers["access-control-allow-headers"]).to eq "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent"
+      expect(headers["access-control-allow-headers"]).to eq "Content-Type,X-Amz-Date,Authorization,Auth,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent"
 
-      response_parameters = resource.response_parameters(true)
+      response_parameters = resource.response_parameters(method_response=true)
       # pp response_parameters
       expect(response_parameters).to eq(
         {"method.response.header.access-control-allow-origin"=>true,
@@ -34,20 +34,20 @@ describe Jets::Resource::ApiGateway::Cors do
          "method.response.header.access-control-allow-headers"=>true}
       )
 
-      response_parameters = resource.response_parameters(false)
+      response_parameters = resource.response_parameters(method_response=false)
       # pp response_parameters
       expect(response_parameters).to eq(
         {"method.response.header.access-control-allow-origin"=>"'*'",
          "method.response.header.access-control-allow-credentials"=>"'true'",
          "method.response.header.access-control-allow-methods"=>"'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'",
-         "method.response.header.access-control-allow-headers"=>"'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"}
+         "method.response.header.access-control-allow-headers"=>"'Content-Type,X-Amz-Date,Authorization,Auth,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"}
       )
     end
   end
 
   context "authorization" do
     let(:route) do
-      Jets::Route.new(path: "posts/:id", method: :get, to: "posts#show", authorization_type: 'AWS_IAM')
+      Jets::Router::Route.new(path: "posts/:id", method: :get, to: "posts#show", authorization_type: 'AWS_IAM')
     end
     it "can specify an authorization type" do
       expect(resource.properties["AuthorizationType"]).to eq 'AWS_IAM'

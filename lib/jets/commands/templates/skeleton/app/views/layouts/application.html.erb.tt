@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#000000">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <%%= csrf_meta_tags %>
   <title>Jets App</title>
   <%%= javascript_pack_tag "application" %>
   <%%= stylesheet_pack_tag "theme" %>

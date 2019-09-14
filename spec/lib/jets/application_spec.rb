@@ -46,4 +46,22 @@ describe Jets::Application do
       expect { Rails }.to raise_error(NameError)
     end
   end
+
+  context "database configurations" do
+    let(:app) { Jets::Application.instance }
+
+    it "standard single database config" do
+      configurations = app.load_db_config("spec/fixtures/db_configs/database.single.yml")
+      hash_config = configurations.configs_for(env_name: Jets.env).first # the test environment
+      config = hash_config.config
+      expect(config["adapter"]).to eq "mysql2"
+    end
+
+    it "standard multiple database config" do
+      configurations = app.load_db_config("spec/fixtures/db_configs/database.multi.yml")
+      hash_configs = configurations.configs_for(env_name: Jets.env, include_replicas: true)
+      spec_names = hash_configs.map { |h| h.spec_name }
+      expect(spec_names).to eq ["primary", "primary_replica", "animals", "animals_replica"]
+    end
+  end
 end

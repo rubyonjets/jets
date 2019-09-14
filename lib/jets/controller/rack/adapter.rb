@@ -77,7 +77,7 @@ module Jets::Controller::Rack
     #
     # Passes a these special variables so we have access to them in the middleware.
     # The controller instance is called in the Main middleware.
-    # The lambda.* info is used by the Rack::Local middleware to create a mimicked
+    # The lambda.* info is used by the Rack::Local middleware to create a mimiced
     # controller for the local server.
     #
     def rack_vars(vars)

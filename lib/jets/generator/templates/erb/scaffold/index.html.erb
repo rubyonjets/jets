@@ -14,11 +14,11 @@
     <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
       <tr class="jets-element-to-delete">
 <% attributes.reject(&:password_digest?).each do |attribute| -%>
-        <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
+        <td><%%= <%= singular_table_name %>.<%= attribute.column_name %> %></td>
 <% end -%>
-        <td><%%= link_to 'Show', "/<%= plural_table_name %>/#{<%= singular_table_name %>.id}" %></td>
-        <td><%%= link_to 'Edit', "/<%= plural_table_name %>/#{<%= singular_table_name %>.id}/edit" %></td>
-        <td><%%= link_to 'Destroy', "/<%= plural_table_name %>/#{<%= singular_table_name %>.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%%= link_to 'Show', <%= model_resource_name %> %></td>
+        <td><%%= link_to 'Edit', edit_<%= singular_route_name %>_path(<%= singular_table_name %>) %></td>
+        <td><%%= link_to 'Destroy', <%= model_resource_name %>, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <%% end %>
   </tbody>
@@ -26,4 +26,4 @@
 
 <br>
 
-<%%= link_to 'New <%= singular_table_name.titleize %>', "/<%= plural_table_name %>/new" %>
+<%%= link_to 'New <%= singular_table_name.titleize %>', new_<%= singular_route_name %>_path %>

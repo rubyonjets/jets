@@ -13,8 +13,9 @@ class Jets::Application
 
   def setup!
     load_default_config
-    autoload_paths = config.autoload_paths + config.extra_autoload_paths
-    setup_auto_load_paths(autoload_paths)
+    setup_autoload_paths
+    setup_ignore_paths
+    main_loader_setup
   end
 
   def configs!
@@ -99,14 +100,29 @@ class Jets::Application
     end
   end
 
-  def setup_auto_load_paths(autoload_paths=default_autoload_paths)
-    loader = Jets::Autoloaders.main
+  def main_loader
+    Jets::Autoloaders.main
+  end
+
+  def setup_autoload_paths
+    autoload_paths = default_autoload_paths + config.autoload_paths
     autoload_paths.each do |path|
       next unless File.exist?(path)
-      loader.push_dir(path)
+      main_loader.push_dir(path)
     end
-    loader.enable_reloading if Jets.env.development?
-    loader.setup
+  end
+
+  # Allow use to add config.ignore_paths just in case there's some case Jets hasn't considered
+  def setup_ignore_paths
+    ignore_paths = default_ignore_paths + config.ignore_paths
+    ignore_paths.each do |path|
+      main_loader.ignore("#{Jets.root}/#{path}")
+    end
+  end
+
+  def main_loader_setup
+    main_loader.enable_reloading if Jets.env.development?
+    main_loader.setup # only respected on the first call
   end
 
   def each_app_autoload_path(expression)
@@ -175,15 +191,16 @@ class Jets::Application
     end
   end
 
-  def load_db_config
+  def load_db_config(database_yml="#{Jets.root}/config/database.yml")
     config.database = {}
 
     Jets::Dotenv.load!
-    database_yml = "#{Jets.root}/config/database.yml"
     if File.exist?(database_yml)
+      require "active_record/database_configurations" # lazy require
       text = Jets::Erb.result(database_yml)
-      db_config = YAML.load(text)
-      config.database = db_config
+      db_configs = YAML.load(text)
+      configurations = ActiveRecord::DatabaseConfigurations.new(db_configs)
+      config.database = configurations
     end
   end
 

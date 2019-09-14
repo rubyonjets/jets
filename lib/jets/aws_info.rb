@@ -55,7 +55,7 @@ module Jets
       ENV['AWS_REGION'] ||= region
       begin
         sts.get_caller_identity.account
-      rescue Aws::Errors::MissingCredentialsError
+      rescue Aws::Errors::MissingCredentialsError, Aws::Errors::NoSuchEndpointError
         puts "INFO: You're missing AWS credentials. Only local services are currently available"
       end
     end
@@ -89,7 +89,7 @@ module Jets
     end
 
     def test?
-      ENV['TEST']
+      ENV['TEST'] || Jets.env.test?
     end
 
     private

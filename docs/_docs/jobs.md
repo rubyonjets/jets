@@ -28,11 +28,11 @@ In our example, the job `HardJob#dig` will run every 10 hours, and `HardJob#lift
 
 You can see the lambda functions which correspond to your job functions in the Lambda console:
 
-![](/img/docs/demo-lambda-functions-jobs.png)
+![The Lambda functions corresponding to the jobs in the AWS Console](/img/docs/demo-lambda-functions-jobs.png)
 
 The `rate` and `cron` methods create CloudWatch Event Rules to handle scheduling. You can see these CloudWatch Event Rules in the CloudWatch console:
 
-![](/img/docs/demo-job-cloudwatch-rule.png)
+![Generated CloudWatch Event Rules for scheduling in the AWS UI](/img/docs/demo-job-cloudwatch-rule.png)
 
 ## Running Jobs Explicitly
 

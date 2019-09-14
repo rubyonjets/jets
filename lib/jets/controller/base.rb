@@ -4,12 +4,15 @@ require "rack/utils" # Rack::Utils.parse_nested_query
 # Controller public methods get turned into Lambda functions.
 class Jets::Controller
   class Base < Jets::Lambda::Functions
+    include ActiveSupport::Rescuable
+    include Authorization
     include Callbacks
     include Cookies
+    include ForgeryProtection
+    include Jets::Router::Helpers
     include Layout
     include Params
     include Rendering
-    include ActiveSupport::Rescuable
 
     delegate :headers, to: :request
     delegate :set_header, to: :response
@@ -21,6 +24,23 @@ class Jets::Controller
       @response = Response.new
     end
 
+    # Overrides Base.process
+    def self.process(event, context={}, meth)
+      controller = new(event, context, meth)
+      # Using send because process! is private method in Jets::RackController so
+      # it doesnt create a lambda function.  It's doesnt matter what scope process!
+      # is in Controller::Base because Jets lambda functions inheritance doesnt
+      # include methods in Controller::Base.
+      controller.send(:process!)
+    end
+
+    # One key difference between process! vs dispatch!
+    #
+    #    process! - takes the request through the middleware stack
+    #    dispatch! - does not
+    #
+    # Most of the time, you want process! instead of dispatch!
+    #
     def process!
       adapter = Jets::Controller::Rack::Adapter.new(event, context, meth)
       adapter.rack_vars(
@@ -78,30 +98,34 @@ class Jets::Controller
       JSON.dump(data)
     end
 
-    def self.process(event, context={}, meth)
-      controller = new(event, context, meth)
-      # Using send because process! is private method in Jets::RackController so
-      # it doesnt create a lambda function.  It's doesnt matter what scope process!
-      # is in Controller::Base because Jets lambda functions inheritance doesnt
-      # include methods in Controller::Base.
-      controller.send(:process!)
+    def controller_paths
+      paths = []
+      klass = self.class
+      while klass != Jets::Controller::Base
+        paths << klass.controller_path
+        klass = klass.superclass
+      end
+      paths
+    end
+
+    def action_name
+      @meth
     end
 
     class_attribute :internal_controller
-    def self.internal(value=nil)
-      if !value.nil?
-        self.internal_controller = value
-      else
-        self.internal_controller
+    class << self
+      def internal(value=nil)
+        if !value.nil?
+          self.internal_controller = value
+        else
+          self.internal_controller
+        end
       end
-    end
 
-    class_attribute :auth_type
-    def self.authorization_type(value=nil)
-      if !value.nil?
-        self.auth_type = value
-      else
-        self.auth_type
+      def helper_method(*meths)
+        meths.each do |meth|
+          Jets::Router::Helpers.define_helper_method(meth)
+        end
       end
     end
   end

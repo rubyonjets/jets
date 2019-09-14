@@ -51,7 +51,8 @@ module Jets::Commands
     desc "routes", "Print out your application routes"
     long_desc Help.text(:routes)
     def routes
-      puts Jets::Router.routes_help
+      puts Jets::Router.help(Jets::Router.routes)
+      Jets::Router.validate_routes!
     end
 
     desc "console", "REPL console with Jets environment loaded"
@@ -97,13 +98,13 @@ module Jets::Commands
     end
 
     desc "generate [type] [args]", "Generates things like scaffolds"
-    long_desc Help.text(:generate)
+    long_desc Help.text(:generate) # do use Jets::Generator.help as it'll load Rails const
     def generate(generator, *args)
       Jets::Generator.invoke(generator, *args)
     end
 
     desc "degenerate [type] [args]", "Destroys things like scaffolds"
-    long_desc Help.text(:degenerate)
+    long_desc Help.text(:degenerate) # do use Jets::Generator.help as it'll load Rails const
     def degenerate(generator, *args)
       Jets::Generator.revoke(generator, *args)
     end

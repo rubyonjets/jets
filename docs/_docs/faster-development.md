@@ -1,6 +1,6 @@
 ---
 title: Faster Development
-nav_order: 46
+nav_order: 57
 ---
 
 Here are some suggestions to speed up development with Jets and AWS Lambda.
@@ -41,10 +41,10 @@ Thanks to the use of Lambda Layers, the `jets deploy` process optimizes things a
 
 An additional benefit of the Gem Layer is that it keeps your application code size small. Your app code is usually under the 3MB limit, which is the current maximum package size for the AWS Lambda Console Editor.  This means you can live edit your code, develop, and test without a full deploy.  This is even faster than being able to ssh into the server. Here's a screenshot:
 
-![](/img/docs/faster-development-live-edit.png)
+![Screenshot of AWS UI allowing editing of function code](/img/docs/faster-development-live-edit.png)
 
 ## CI/CD Pipeline
 
-Another approach for a team is to set up a CI/CD pipeline that will deploy when git commits are pushed.
+Another approach for a team is to set up a CI/CD pipeline that will deploy when git commits are pushed.  You may be interested in the [Continuous Integration with CodeBuild docs]({% link _docs/extras/codebuild.md %}).
 
 {% include prev_next.md %}
