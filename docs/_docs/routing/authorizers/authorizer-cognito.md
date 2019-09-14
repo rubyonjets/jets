@@ -39,7 +39,7 @@ Since there is no Lambda function associated with the Cognito Authorizer, Jets u
 
 ## Authorizer in Controllers
 
-Cognito authorizer also can be set in the controller instead of the `routes.rb` file. Example:
+Cognito authorizers also can be set in the controller instead of the `routes.rb` file. Example:
 
 ```ruby
 class PostsController < ApplicationController
