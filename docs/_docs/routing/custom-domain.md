@@ -68,5 +68,3 @@ If you need to switch this and avoid downtime, you will need to do a manual blue
 Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. This is one of the reasons why a Custom Domain is recommended to be set up, so the endpoint url remains the same.  Generally, the route change detection works well. If you need to force the creation of a brand new Rest API, you can use `JETS_REPLACE_API=1 jets deploy`.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

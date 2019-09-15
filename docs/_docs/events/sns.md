@@ -135,5 +135,3 @@ You can send a message via the SNS Console, sdk, etc also.
 ```
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

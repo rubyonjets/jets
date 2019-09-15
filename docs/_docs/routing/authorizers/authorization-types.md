@@ -51,5 +51,3 @@ end
 When using [Jets Authorizers]({% link _docs/routing/authorizers.md %}), Jets will infer the right `authorization_type` for `CUSTOM` and `COGNITO_USER_POOLS` types. So it is recommended to only set authorization_type when you're using other types like `AWS_IAM`.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

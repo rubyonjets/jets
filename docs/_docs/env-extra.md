@@ -34,5 +34,3 @@ With the ability to create entire applications with just a variable change, you 
 4. Delete the old environment
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

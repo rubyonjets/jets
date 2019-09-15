@@ -155,5 +155,3 @@ The context from the Lambda authorizer function output is passed to API Gateway 
 ```
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

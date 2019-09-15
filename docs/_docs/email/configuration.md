@@ -48,5 +48,3 @@ One way to test SMTP server connection is with telnet. Example:
 Note, to escape out of the telnet session you have to use the escape sequence `^]`.  That's the control key plus close square bracket key.  Then you can type `quit`.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

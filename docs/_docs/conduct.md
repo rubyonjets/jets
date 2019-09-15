@@ -21,5 +21,3 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be repor
 This conduct guideline based on [The Ruby Community Conduct Guideline](https://www.ruby-lang.org/en/conduct/).
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

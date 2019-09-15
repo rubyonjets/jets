@@ -32,5 +32,3 @@ It then becomes powerful to combine multiple negative filters to help you focus 
 Filtering out noise that you do not want to see when you are trying to focus on debugging your specific issue can be very helpful.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

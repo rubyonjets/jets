@@ -33,5 +33,3 @@ The code above creates an SQS Queue with a `message_retention_period` of 120 sec
 Note: The `sqs_queue` is an example and is actually already implemented by Jets. We're using it for demonstrative purposes.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

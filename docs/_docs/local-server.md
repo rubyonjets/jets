@@ -22,5 +22,3 @@ You can test your app at [http://localhost:8888](http://localhost:8888). Here's 
 You can find examples of all the CRUD actions at [Jets CRUD Tutorials]({% link _docs/tutorials.md %}).
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

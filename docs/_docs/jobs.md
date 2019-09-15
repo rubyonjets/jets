@@ -72,5 +72,3 @@ end
 The cron expression is in the [AWS Cron format](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html).  The AWS Cron format has six required fields, separated by white space.  This is slightly different from the traditional Linux cron format which has 5 fields.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

@@ -76,5 +76,3 @@ This is because Rails includes the `uglifier` and `coffee-rails` gems, which dep
 Another approach that seems to work is to move the `uglifier` and `coffee-rails` gems in the Gemfile `development` group. Jets does not bundle gems in the development group as a part of deployment to Lambda.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

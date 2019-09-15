@@ -119,5 +119,3 @@ This results in the rules looking something like this `cis-check-incoming-ssh-di
 * [AWS::Config::ConfigRule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-config-configrule.html) CloudFormation reference
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

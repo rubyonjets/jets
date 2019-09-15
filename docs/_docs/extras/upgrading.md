@@ -108,5 +108,3 @@ Then update the Gateway API Custom Domain to point to the newly deployed `JETS_E
 7. Destroy the old environment.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

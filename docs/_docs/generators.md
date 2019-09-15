@@ -72,5 +72,3 @@ The scaffold generator also has an api mode.
     jets generate task feeds fetch erase add
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

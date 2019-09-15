@@ -73,5 +73,3 @@ The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.co
 Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you could start defining your own custom convenience resource methods that wrap the `resource` method for more concise code as [Associated Resources Extensions]({% link _docs/function-resources/function-resources-extensions.md %}).
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

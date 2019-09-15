@@ -17,5 +17,3 @@ end
 Jets uses one layer for the [Gem Layer]({% link _docs/extras/gem-layer.md %}). The current max Lambda Layers is 5, so this means you can add up to 4 of your own custom layers.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

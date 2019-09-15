@@ -51,5 +51,3 @@ To deploy to different environments:
     jets deploy production
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

@@ -22,5 +22,3 @@ end
 ```
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

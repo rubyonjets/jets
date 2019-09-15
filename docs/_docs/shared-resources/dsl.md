@@ -80,5 +80,3 @@ end
 The DSL provides full access to creating custom CloudFormation stacks and AWS resources.  It is also easy extend the DSL with your own [Shared Resource Extensions]({% link _docs/shared-resources/extensions.md %}). This helps you remove duplication and keep your code concise.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

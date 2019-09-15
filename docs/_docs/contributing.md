@@ -102,5 +102,3 @@ For more thorough testing, you should create a jets demo app and run the integra
 Thanks! Hacking on Jets should be fun. If you find any of this hard to figure out, let us know so we can improve our process or documentation!
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

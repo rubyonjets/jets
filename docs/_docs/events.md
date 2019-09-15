@@ -17,5 +17,3 @@ AWS Lambda supports many event triggers.  With event triggers, you can use Lambd
 The next sections cover the event triggers.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

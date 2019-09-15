@@ -59,5 +59,3 @@ You can manually reproduce the error in the API Gateway console also.
 So currently, to fix this you must rename `:post_id` to `:id` and use the same sibling variables under the same parent paths.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

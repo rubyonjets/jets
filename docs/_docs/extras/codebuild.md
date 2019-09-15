@@ -23,5 +23,3 @@ There's also an additional example in the [separate-unit-and-deploy](https://git
 Refer to the [codebuild.cloud jets examples](https://codebuild.cloud/docs/examples/jets/) docs for the details.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

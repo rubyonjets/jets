@@ -46,5 +46,3 @@ When you run specs, you may need to migrate first. Here are the commands:
     bundle exec rspec
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

@@ -39,5 +39,3 @@ public  | Contains static files meant to be served "as-is".
 spec | Contains tests.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

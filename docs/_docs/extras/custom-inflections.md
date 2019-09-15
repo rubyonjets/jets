@@ -23,5 +23,3 @@ hi: hi
 This changes the singularization and pluralization of words to fit your needs.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

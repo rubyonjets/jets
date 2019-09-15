@@ -26,5 +26,3 @@ A Node example:
 ![](/img/docs/poly/poly-lambda-function-node.png)
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

@@ -16,5 +16,3 @@ If you are testing the Jets controller from the Lambda console, you don't really
 Locally when you run `jets server`, it starts up a rackup server and runs it through the same set of Rack middlewares.
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

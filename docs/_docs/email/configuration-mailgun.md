@@ -37,5 +37,3 @@ MAILGUN_DOMAIN=mydomain.com
 ```
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}

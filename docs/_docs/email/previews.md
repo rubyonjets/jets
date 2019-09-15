@@ -40,5 +40,3 @@ To see the email preview visit: [localhost:8888/jets/mailers/user_mailer/new_use
 ![](/img/docs/email-preview.png)
 
 {% include prev_next.md %}
-
-{% include prev_next.md %}
