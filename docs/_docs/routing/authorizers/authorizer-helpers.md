@@ -123,7 +123,7 @@ The `build_policy` helper will pascalize and camelize the keys appropriately for
 
 ## API Gateway Event requestContext
 
-The context from the Lambda authorizer function output is passed to API Gateway event. It is under the `requestContext.authorizer` key. Here's an example:
+The context from the Lambda authorizer function output is passed to API Gateway event. It can be found under the `requestContext.authorizer` key. Example:
 
 ```json
 {
