@@ -21,7 +21,7 @@ Example of passing the header with curl:
 
     curl -H "Auth: test" https://bxqim55nwg.execute-api.us-west-2.amazonaws.com/dev/protected/url
 
-API Gateway converts the `Auth` Host header to `authorizationToken`. Make sure the request you send to your API Gateway endpoint has the header configured in the `identity_source`, not `authorizationToken`.
+API Gateway converts the `Auth` Host header to `authorizationToken`. Make sure the request you send to your API Gateway endpoint has the header configured in the `identity_source`.
 
 By the time it hits the Authorizer Lambda function it looks like this:
 
@@ -33,7 +33,7 @@ By the time it hits the Authorizer Lambda function it looks like this:
 }
 ```
 
-So within the authorizer Lambda function, you can get the token with `event['authorizationToken']`.
+So you send the token with the `Auth: test` header, but within the authorizer Lambda function, you grab the token with `event[:authorizationToken]`.
 
 ## Identity Source: Token
 

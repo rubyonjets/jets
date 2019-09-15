@@ -140,6 +140,8 @@ The context from the Lambda authorizer function output is passed to API Gateway 
         "resourceId": "x73tio",
         "authorizer": {
             "string_key": "value",
+            "number_key": 1,
+            "boolean_key": true,
             "principalId": "current_user",
             "integrationLatency": 3080
         },
