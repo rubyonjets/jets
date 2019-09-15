@@ -67,3 +67,5 @@ You should see the data in the Lambda function's CloudWatch logs.
 ![](/img/docs/iot-cloudwatch-log.png)
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

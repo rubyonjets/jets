@@ -71,3 +71,5 @@ Note, this is just conjecture. It is rumored that AWS is working on speed improv
 In the future, AWS Lambda might use some form of [network trunking](https://www.techopedia.com/definition/9775/trunking) and provision and destroy the network card only as needed. This is already an approach AWS has taken with [ECS awsvpcTrunking](https://aws.amazon.com/about-aws/whats-new/2019/06/Amazon-ECS-Improves-ENI-Density-Limits-for-awsvpc-Networking-Mode/).  Additionally, AWS will probably also speed up the network card deletion process itself.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

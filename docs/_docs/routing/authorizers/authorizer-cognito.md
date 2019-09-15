@@ -50,3 +50,5 @@ end
 Setting the authorizer in the controller is just syntactical sugar. Ultimately, the authorizer is still set at the API Gateway Method Resource.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

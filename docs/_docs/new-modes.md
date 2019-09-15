@@ -76,3 +76,5 @@ A notable option is the `--no-database` option.  If you have an app that does no
 Refer to the CLI reference [jets new](http://rubyonjets.com/reference/jets-new/) for more info.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

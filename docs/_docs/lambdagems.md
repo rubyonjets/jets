@@ -12,3 +12,5 @@ So Jets downloads pre-compiled gems from the [Lambda Gems](https://www.lambdagem
 For gems that are not provided by the Lambda Gems, you can build your own custom Lambda Layer and use it as part of your Jets project. Details here: [Custom Lambda Layers]({% link _docs/extras/custom-lambda-layers.md %}).
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

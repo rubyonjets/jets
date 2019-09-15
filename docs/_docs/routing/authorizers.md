@@ -164,3 +164,5 @@ end
 Note: You can also make use of [Before Filters]({% link _docs/extras/action-filters.md %}) to build your own custom authorization system instead of using API Gateway Authorizers.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

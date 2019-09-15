@@ -13,3 +13,5 @@ posts#show | `{"path": "/posts/123"}` | The post id must be provided and exist i
 posts#edit | `{"path": "/posts/123/edit", "pathParameters": {"id": "123"}}` | You will also need pathParameters because that's how the controller gets the id parameter.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

@@ -31,3 +31,5 @@ If you would like professional help, [BoltOps](https://www.boltops.com/) provide
 * Consulting: Can help review, design, and architect your serverless application. Can evaluate trade-offs, limits, and benefits. Or just provide general guidance. 
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

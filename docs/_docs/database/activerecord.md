@@ -23,3 +23,5 @@ On AWS Lambda, there's something called the [Lambda Execution Context](https://d
 It's also worth noting that AWS clients provided by the [Jets::AwsServices](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb) module similarly leverage the Lambda Execution context. IE: The clients get reused between lambda calls.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

@@ -15,3 +15,5 @@ Here's an example of creating migrations:
 If you are using DynamoDB it can be useful to use DynamoDB Local, just like you would use a local SQL server. It's simply a jar file you download and run. Here's a [DynamoDB Local Setup Walkthrough](https://github.com/tongueroo/jets/wiki/Dynamodb-Local-Setup-Walkthrough) that takes about 5 minutes.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

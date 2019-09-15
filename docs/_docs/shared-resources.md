@@ -66,3 +66,5 @@ The Jets::Stack `lookup` method uses a [CloudFormation Output](https://docs.aws.
 Understanding the general shared `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanations above help.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

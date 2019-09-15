@@ -111,3 +111,5 @@ Notice in the above example that you can even mix in the `rate` declaration with
 * [CloudWatch Events Event Examples From Each Supported Service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html) - Long list of supported events.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

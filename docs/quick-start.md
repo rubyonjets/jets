@@ -42,3 +42,5 @@ API Gateway:
 Congratulations!  You have successfully deployed your serverless ruby application. It's that simple. 😁
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

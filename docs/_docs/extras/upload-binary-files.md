@@ -31,3 +31,5 @@ You can use `params[:post][:photo]` in the controller to read the file and save 
 This blog tutorial provides an example of image uploading with Jets and Carrierwave: [Image Upload Carrierwave Tutorial](https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support).
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

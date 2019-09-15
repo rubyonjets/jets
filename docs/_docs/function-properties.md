@@ -102,3 +102,5 @@ tags | class_tags
 Refer to the [AWS::Lambda::Function](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) CloudFormation docs for a list of the properties. You can also refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

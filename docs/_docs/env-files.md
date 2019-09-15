@@ -63,3 +63,5 @@ AWS Systems Manager Parameter Store is supported.  Storing secrets as SSM Parame
 The SSM parameters are fetched and interpolated into your environment at build time so make sure to re-deploy your app after making changes to your SSM parameters to ensure they are picked up correctly.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

@@ -165,3 +165,5 @@ An IAM policy is generated for the Lambda function associated with the SQS event
 Note, AWS does not currently support Lambda function triggers with FIFO queues, so the queue must be a standard queue to use Lambda triggers.  If you are using a FIFO queue, a [possible way](https://stackoverflow.com/questions/53416890/cant-trigger-lambdas-on-sqs-fifo) to process the messages is with a Job that polls the queues and does the processing.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

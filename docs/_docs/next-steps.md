@@ -14,3 +14,5 @@ Hopefully, you have a good feel for how Jets works now. From here, there are a f
 Everyone can contribute to making jets better, including the documentation. These docs are the jets repo located the [docs folder](https://github.com/tongueroo/jets/tree/master/docs). Please fork the project and open a pull request!  We love your pull requests. Contributions are encouraged and welcomed!
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

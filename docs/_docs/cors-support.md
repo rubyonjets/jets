@@ -69,3 +69,5 @@ end
 More info: [Routes Authorization]({% link _docs/routing/authorizers/authorization-types.md %})
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

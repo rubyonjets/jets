@@ -75,3 +75,5 @@ end
 Understanding of what is happening underneath the hood with Jets and CloudFormation helps to understand shared resources usage. Remember that each class gets translated into a nested child stack. The parameters are possibly passed between the stacks. The depends_on declaration tells Jets to pass all the outputs from the `List` stack as input parameters to the `HardJob` stack.  In this case, one of the outputs from the `sqs_queue(:waitlist)` resource declaration is `Waitlist`. The `Wailist` output contains the SQS arn.  `HardJob` references the input parameter. This is how it is possible for `HardJob` to refer to a resource created in another stack.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

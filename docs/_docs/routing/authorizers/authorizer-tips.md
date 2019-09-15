@@ -103,3 +103,5 @@ When working with authorizers for the first time, it will likely help if you dis
 Note, the CloudFormation docs state that the default ttl is 300, but that only seems to be with the API Gateway console.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

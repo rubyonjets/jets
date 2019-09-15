@@ -86,3 +86,5 @@ end
 You can use any of the resource forms depending on how much customization and control is needed.  It is probably best to try the simplest form first and then go up your way to the long form when needed.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

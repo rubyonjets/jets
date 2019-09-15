@@ -93,3 +93,5 @@ Here's a screenshot of the event in the CloudWatch Log console.
 Jets generates an IAM policy for the Lambda function associated with the DynamoDB event that allows the permissions needed.  You can control and override the IAM policy with normal [IAM Policies]({% link _docs/iam-policies.md %}) if required, though.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

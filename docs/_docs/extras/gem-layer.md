@@ -14,3 +14,5 @@ A key advantage is that it results in your code size being smaller. If your appl
 An additional advantage of using a separate Gem Layer is that this allows Jets to optimize the deploy process and upload the gems only to s3 only when they change.  AWS designed Lambda Layers understanding this benefit. On a slow internet connection this significantly improves your [development speed]({% link _docs/faster-development.md %}) and happiness.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

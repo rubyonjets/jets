@@ -38,3 +38,5 @@ Usually looking at all the streams is most helpful. If you'd like though, you ca
 You are now looking at the logs of one specific Lambda container.
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

@@ -47,3 +47,5 @@ Here are the video playlists for the tutorial series.
 * [{{ post.title }}]({{ post.url }}){% endfor %}
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}

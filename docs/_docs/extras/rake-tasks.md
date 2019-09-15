@@ -10,3 +10,5 @@ You can add custom rake tasks in the `lib/tasks` folder in your project.  There'
     $
 
 {% include prev_next.md %}
+
+{% include prev_next.md %}
