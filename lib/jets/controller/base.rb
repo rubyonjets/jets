@@ -31,6 +31,7 @@ class Jets::Controller
       # it doesnt create a lambda function.  It's doesnt matter what scope process!
       # is in Controller::Base because Jets lambda functions inheritance doesnt
       # include methods in Controller::Base.
+      # TODO: Can process! be a protected method to avoid this?
       controller.send(:process!)
     end
 
@@ -49,11 +50,30 @@ class Jets::Controller
         'lambda.event' => event,
         'lambda.meth' => meth,
       )
-      # adapter.process ultimately calls app controller action at the very last
-      # middleware stack.
+
+      # adapter.process calls
+      #
+      #     Jets.application.call(env)
+      #
+      # and that goes through the middleware stacks. The last middleware stack is Jets::Controller::Middleware::Main
+      #
+      #     class Jets::Controller::Middleware::Main
+      #       def call!
+      #         setup
+      #         @controller.dispatch! # Returns triplet
+      #       end
+      #     end
+      #
       adapter.process # Returns API Gateway hash structure
     end
 
+    # One key difference between process! vs dispatch!
+    #
+    #    process! - takes the request through the middleware stack
+    #    dispatch! - does not
+    #
+    # dispatch! is useful for megamode or mounted applications
+    #
     def dispatch!
       t1 = Time.now
       log_info_start

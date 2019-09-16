@@ -57,6 +57,8 @@ module Jets
         sts.get_caller_identity.account
       rescue Aws::Errors::MissingCredentialsError, Aws::Errors::NoSuchEndpointError
         puts "INFO: You're missing AWS credentials. Only local services are currently available"
+      rescue Seahorse::Client::NetworkingError
+        puts "INFO: No internet connection available. Only local services are currently available"
       end
     end
     memoize :account

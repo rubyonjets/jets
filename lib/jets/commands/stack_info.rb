@@ -11,8 +11,8 @@ module Jets::Commands::StackInfo
 
   def s3_bucket
     return @s3_bucket if @s3_bucket
-
     return nil if first_run?
+    return "fake-bucket" if ENV['JETS_BUILD_NO_INTERNET']
 
     resp = cfn.describe_stacks(stack_name: parent_stack_name)
     output = resp.stacks[0].outputs.find {|o| o.output_key == 'S3Bucket'}
