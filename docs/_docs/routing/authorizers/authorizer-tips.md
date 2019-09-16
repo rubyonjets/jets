@@ -37,7 +37,7 @@ So you send the token with the `Auth: test` header, but within the authorizer La
 
 ## Identity Source: Token
 
-If the request does not include the host header that matches with the identify source, then the Lambda authorizer function does *not* even get called!  You'll get an `Unauthorized` response like so:
+If the request does not include the host header that matches with the identity source, then the Lambda authorizer function does *not* even get called!  You'll get an `Unauthorized` response like so:
 
     $ curl -H "WrongHeader: test" https://bxqim55nwg.execute-api.us-west-2.amazonaws.com/dev/protected/url
     {"message":"Unauthorized"}
