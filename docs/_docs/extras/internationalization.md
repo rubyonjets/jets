@@ -1,6 +1,6 @@
 ---
 title: Internationalization
-nav_order: 78
+nav_order: 87
 ---
 
 Jets now supports [I18n](https://github.com/ruby-i18n/i18n) internationalization functionality out of the box.
