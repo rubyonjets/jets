@@ -24,7 +24,7 @@ module Jets::AwsServices
   end
 
   def aws_cli_options
-    return unless cli_credentials
+    return {} unless cli_credentials
     return {region: ENV['AWS_REGION'], credentials: cli_credentials} if ENV['AWS_REGION']
     { credentials: cli_credentials }
   end
