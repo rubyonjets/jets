@@ -22,4 +22,8 @@ On AWS Lambda, there's something called the [Lambda Execution Context](https://d
 
 It's also worth noting that AWS clients provided by the [Jets::AwsServices](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb) module similarly leverage the Lambda Execution context. IE: The clients get reused between lambda calls.
 
+## Aurora Database Support
+
+Since Aurora should work since it is MySQL compatible. Note, with Aurora, your Lambda functions must be configured with a VPC.
+
 {% include prev_next.md %}
