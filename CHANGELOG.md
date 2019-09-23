@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.2.3]
+- add newline so github edits dont case extra codebuild commit
+- #372 fix to allow using only cognito authorizers
+
 ## [2.2.2]
 - #370 Use unicode for encoding when using postgres
 
