@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.2.4]
+- #346 Check that migrations have been ran as part of running project specs. If migrations haven't ran, exit and report an error.
+
 ## [2.2.3]
 - add newline so github edits dont case extra codebuild commit
 - #372 fix to allow using only cognito authorizers
