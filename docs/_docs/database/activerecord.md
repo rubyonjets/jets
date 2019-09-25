@@ -24,6 +24,6 @@ It's also worth noting that AWS clients provided by the [Jets::AwsServices](http
 
 ## Aurora Database Support
 
-Since Aurora should work since it is MySQL compatible. Note, with Aurora, your Lambda functions must be configured with a VPC.
+Aurora should work since it is MySQL compatible. Note, with Aurora, your Lambda functions must be configured with a VPC.
 
 {% include prev_next.md %}
