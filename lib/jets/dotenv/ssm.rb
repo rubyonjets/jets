@@ -23,7 +23,7 @@ class Jets::Dotenv
       end
 
       if @missing.empty?
-        interpolated_variables.to_h # success
+        interpolated_variables.to_h.sort_by { |k,_| k }.to_h # success
       else
         message = "Error loading .env variables. No matching SSM parameters found for:\n".color(:red)
         message += @missing.map { |k,v,n| "  #{k}=ssm:#{v} # ssm name: #{n}"}.join("\n")
