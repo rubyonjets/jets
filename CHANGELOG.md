@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.2.5]
+- #374 fix rspec execution for projects with no database
+- #375 add jets dotenv:show command
+
 ## [2.2.4]
 - #346 Check that migrations have been ran as part of running project specs. If migrations haven't ran, exit and report an error.
 
