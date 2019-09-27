@@ -9,7 +9,7 @@ module Jets
   end
 end
 
-unless ENV["SKIP_MIGRATION_CHECK"] == "true"
+if File.exist?("#{Jets.root}/config/database.yml") && !ENV["SKIP_MIGRATION_CHECK"]
   ActiveRecord::Tasks::DatabaseTasks.db_dir = "#{Jets.root}/db"
   ActiveRecord::Migration.extend ActiveRecord::MigrationChecker
   ActiveRecord::Migration.prepare_test_db
