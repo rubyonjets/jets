@@ -23,7 +23,7 @@ The Jets generators piggybacks off of the Rails generators. The generators have 
 
         active_record:application_record
 
-To get more info on each generator provide the -h flag to each of htem. Examples:
+To get more info on each generator provide the -h flag to each of them. Examples:
 
     jets generate controller -h
     jets generate job -h
