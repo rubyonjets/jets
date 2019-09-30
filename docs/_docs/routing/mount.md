@@ -15,11 +15,15 @@ end
 
 Many Ruby Web frameworks are Rack compatible like [Sinatra](http://sinatrarb.com/), [Grape](http://www.ruby-grape.org), [Padrino](http://padrinorb.com/), [Hanami](https://hanamirb.org), and [more](https://www.phusionpassenger.com/library/deploy/config_ru.html). The mount ability allows you to run them on serverless with minimal effort.
 
-Note: The Rack apps do not have reside in the `app/racks` folder. They only need to be in a folder is autoloaded.
+Note: The Rack apps do not have reside in the `app/racks` folder. They only need to be in a folder that is autoloaded.
+
+## Examples
+
+For an example project demonstrating the use of mount, check out [tongueroo/jets-routes-mount](https://github.com/tongueroo/jets-routes-mount).
 
 ## Gemfile Dependencies
 
-When you mount a Rack app, you must also remember to add the Rack app's dependencies to your Gemfile. For example, if you are mounting a Sinatra app, then add the sinatra gem to `Gemfile`:
+When you mount a Rack app, you must also remember to add the its dependencies to your Gemfile. For example, if you are mounting a Sinatra app, then add the sinatra gem to `Gemfile`:
 
 ```ruby
 gem "sintara"
@@ -34,10 +38,6 @@ Jets.application.routes.draw do
   mount GrapeApp, at: '' # app/racks/grape_app
 end
 ```
-
-## Examples
-
-For an example project demonstrating the use of mount, check out [tongueroo/jets-routes-mount](https://github.com/tongueroo/jets-routes-mount).
 
 ## Custom Domain
 
