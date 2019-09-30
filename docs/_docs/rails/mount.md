@@ -2,7 +2,9 @@
 title: Mounting Rails Apps
 ---
 
-Rails applications are Rack compatible. So, in theory, you can also mount a Rails application in routes. However, it is not currently recommended. 
+Rails applications are Rack compatible. So, in theory, you can also mount a Rails application in routes. However, it is not currently recommended.  Instead, use [Afterburner]({% link _docs/rails/afterburner.md %}) and [Mega Mode]({% link _docs/rails/megamode.md %}) to run a Rails app.
+
+## Why?
 
 Rails is its own unique beast. You have to strip down a lot of Rails functionality with the mount approach.  The end result is that the app is hardly useable.  Here is some context, thoughts, and reasons to help understand this.
 
