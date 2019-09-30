@@ -30,7 +30,9 @@ class Jets::Router
       prefix = account_scope(prefix)
       prefix = account_on(prefix)
 
-      [prefix, @options[:path]].compact.join('/')
+      path = [prefix, @options[:path]].compact.join('/')
+      path = path[1..-1] if path.starts_with?('/') # be more forgiving if / accidentally included
+      path
     end
 
     def account_scope(prefix)
@@ -183,6 +185,10 @@ class Jets::Router
       labels.map do |next_label|
         [next_label, values.delete_at(0)]
       end.to_h
+    end
+
+    def mount_class
+      @options[:mount_class]
     end
 
   private

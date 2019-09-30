@@ -131,8 +131,8 @@ module Jets::Commands
       # how project classes are loaded.
       # TODO: rework code so that Dir.pwd does not have to be in tmp_code for build to work.
       #
-      # app_files method is mainly used to determine what templates to build.
-      # app_files method is also used to determine what handlers to build.
+      # app_files used to determine what CloudFormation templates to build.
+      # app_files also used to determine what handlers to build.
       def app_files
         paths = []
         expression = "#{Jets.root}/app/**/**/*.rb"
@@ -224,23 +224,23 @@ module Jets::Commands
       # The copying of other internal files like views is done in builders/code_builder.rb copy_internal_jets_code
       def internal_app_files
         paths = []
-        controllers = File.expand_path("../../internal/app/controllers/jets", __FILE__)
+        internal = File.expand_path("../internal", __dir__)
 
-        public_catchall = Jets::Router.has_controller?("Jets::PublicController")
-        paths << "#{controllers}/public_controller.rb" if public_catchall
-
-        rack_catchall = Jets::Router.has_controller?("Jets::RackController")
-        paths << "#{controllers}/rack_controller.rb" if rack_catchall
-
-        mailer_controller = Jets::Router.has_controller?("Jets::MailersController")
-        paths << "#{controllers}/mailers_controller.rb" if mailer_controller
+        controllers = "#{internal}/app/controllers/jets"
+        paths << "#{controllers}/public_controller.rb" if router_has?("Jets::PublicController")
+        paths << "#{controllers}/rack_controller.rb" if router_has?("Jets::RackController")
+        paths << "#{controllers}/mailers_controller.rb" if router_has?("Jets::MailersController")
+        paths << "#{controllers}/mount_controller.rb" if router_has?("Jets::MountController")
 
         if Jets.config.prewarm.enable
-          jobs = File.expand_path("../../internal/app/jobs/jets", __FILE__)
-          paths << "#{jobs}/preheat_job.rb"
+          paths << "#{internal}/app/jobs/jets/preheat_job.rb"
         end
 
         paths
+      end
+
+      def router_has?(controller)
+        Jets::Router.has_controller?(controller)
       end
 
       def tmp_code(full_build_path=false)
