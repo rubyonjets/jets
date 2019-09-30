@@ -23,7 +23,8 @@ nav_order: 31
   * [9.1 prefix example](#91-prefix-example)
   * [9.2 as example](#92-as-example)
   * [9.3 module example](#93-module-example)
-- [10. Configuring Host](#10-configuring-host)
+- [10. Mount Rack Apps](#10-mount-rack-apps)
+- [11. Configuring Host](#11-configuring-host)
 
 ## 1. Introduction
 
@@ -570,7 +571,19 @@ Results in:
 
 Only the controller module is affected.
 
-## 10. Configuring Host
+## 10. Mount Rack Apps
+
+Jets supports mounting Rack applications. Example:
+
+```ruby
+Jets.application.routes.draw do
+  mount RackApp, at: 'rack'  # app/racks/rack_app
+end
+```
+
+More info: [Mount Rack Apps docs]({% link _docs/routing/mount.md %})
+
+## 11. Configuring Host
 
 The named routes `_url` methods, will infer the hostname from the request by default.  If you need to configure it explicitly, then you can with `config.helpers.host`. Example:
 

@@ -1,6 +1,6 @@
 ---
 title: Mount Rack Apps
-nav_order: 38
+nav_order: 39
 ---
 
 Jets Routing supports mounting Rack applications. Example:
@@ -34,6 +34,10 @@ Jets.application.routes.draw do
   mount GrapeApp, at: '' # app/racks/grape_app
 end
 ```
+
+## Examples
+
+For an example project demonstrating the use of mount, check out [tongueroo/jets-routes-mount](https://github.com/tongueroo/jets-routes-mount).
 
 ## Custom Domain
 
