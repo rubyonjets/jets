@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.0]
+- #377 routes mount support
+
 ## [2.2.5]
 - #374 fix rspec execution for projects with no database
 - #375 add jets dotenv:show command
