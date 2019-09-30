@@ -1,6 +1,5 @@
 ---
 title: Mounting Rails Apps
-nav_order: 39
 ---
 
 Rails applications are Rack compatible. So, in theory, you can also mount a Rails application in routes. However, Rails is its own unique beast. You have to strip down a lot of Rails functionality with this approach.  The end result is the the app is hardly useable.  Here is some context, thoughts, and reasons to help understand this.
@@ -42,5 +41,3 @@ There is currently a 250MB code size package limit for AWS Lambda. When includin
 ## Stripping It All Down
 
 Ultimately, you have to strip down much of Rails functionality get it running as a mounted app. Note, I have also experimented with a lighter Rails engine and have also ran into similar quirks. So it is currently not recommendeded to run a Rails application mounted as a Jets route .
-
-{% include prev_next.md %}

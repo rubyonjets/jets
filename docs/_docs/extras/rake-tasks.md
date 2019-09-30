@@ -1,6 +1,6 @@
 ---
 title: Rake Tasks
-nav_order: 83
+nav_order: 84
 ---
 
 You can add custom rake tasks in the `lib/tasks` folder in your project.  There's a `jets generate task` command to help you get started.

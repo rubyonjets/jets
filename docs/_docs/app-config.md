@@ -1,6 +1,6 @@
 ---
 title: Application Configuration
-nav_order: 40
+nav_order: 41
 ---
 
 You can set application-wide configurations in the `config/application.rb` file. You can configure global things like project_name, autoload_paths, function timeout, memory size, etc. Example:
