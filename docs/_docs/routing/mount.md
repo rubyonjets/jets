@@ -51,7 +51,7 @@ Instead of:
 
     https://xbrp9dekhc.execute-api.us-west-2.amazonaws.com/dev/posts # works
 
-A quick way to fix this is use a [Custom Domain]({% link _docs/routing/custom-domain.md %}).  Custom domain urls not have a stage name appeneding and will look something like this:
+A quick way to fix this is use a [Custom Domain]({% link _docs/routing/custom-domain.md %}).  Custom domain urls not have a stage name appended and will look something like this:
 
     https://demo-dev.example.com/posts # works
 
