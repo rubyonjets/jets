@@ -44,4 +44,4 @@ There is currently a 250MB code size package limit for AWS Lambda. When includin
 
 ## Stripping It All Down
 
-Ultimately, you have to strip down much of Rails functionality get it running as a mounted app. Note, I have also experimented with a lighter Rails engine and have also ran into similar quirks. So it is currently not recommendeded to run a Rails application mounted as a Jets route .
+Ultimately, you have to strip down much of Rails functionality to get it running as a mounted app. Note, I have also experimented with a lighter Rails engine and have also ran into similar quirks. So it is currently not recommendeded to run a Rails application mounted as a Jets route .
