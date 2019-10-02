@@ -11,7 +11,7 @@ This security posture is considered better than deploying from a development mac
 
 ## Examples
 
-The Jets Examples uses the [Cody](https://cody.run/) tool to simplify creating and managing the CodeBuild project. The codebuild tool is essentially a DSL wrapper that creates the CodeBuild project and IAM role with CloudFormation.
+The Jets Examples uses the [Cody](https://cody.run/) tool to simplify creating and managing the CodeBuild project. Cody is essentially a DSL wrapper that creates the CodeBuild project and IAM role with CloudFormation.
 
 The [Jets Example](https://cody.run/docs/examples/jets/) shows how to set up 1 simple CodeBuild project that will run specs and then deploy the Jets application.
 
