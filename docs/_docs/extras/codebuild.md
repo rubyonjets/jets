@@ -11,15 +11,15 @@ This security posture is considered better than deploying from a development mac
 
 ## Examples
 
-The Jets Examples uses the [codebuild.cloud](https://codebuild.cloud/) tool to simplify creating and managing the CodeBuild project. The codebuild tool is essentially a DSL wrapper that creates the CodeBuild project and IAM role with CloudFormation.
+The Jets Examples uses the [Cody](https://cody.run/) tool to simplify creating and managing the CodeBuild project. The codebuild tool is essentially a DSL wrapper that creates the CodeBuild project and IAM role with CloudFormation.
 
-The [Jets Example](https://codebuild.cloud/docs/examples/jets/) shows how to set up 1 simple CodeBuild project that will run specs and then deploy the Jets application.
+The [Jets Example](https://cody.run/docs/examples/jets/) shows how to set up 1 simple CodeBuild project that will run specs and then deploy the Jets application.
 
 There's also an additional example in the [separate-unit-and-deploy](https://github.com/tongueroo/jets-codebuild/tree/separate-unit-and-deploy) branch in the GitHub repo that shows how to create 2 separate CodeBuild projects for unit tests and deployment. Some advantages:
 
 * The projects are decoupled and you can run them separately.
 * Only the deploy project requires IAM access to create the AWS resources.
 
-Refer to the [codebuild.cloud jets examples](https://codebuild.cloud/docs/examples/jets/) docs for the details.
+Refer to the [Cody Jets Examples](https://cody.run/docs/examples/jets/) docs for the details.
 
 {% include prev_next.md %}
