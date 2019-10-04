@@ -1,6 +1,6 @@
 ---
 title: Sessions
-nav_order: 44
+nav_order: 45
 ---
 
 You can use sessions to store data between requests. To use sessions use the `session` helper. Example:

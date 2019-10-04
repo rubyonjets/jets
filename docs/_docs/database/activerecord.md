@@ -1,6 +1,6 @@
 ---
 title: Database ActiveRecord
-nav_order: 48
+nav_order: 52
 ---
 
 Jets also supports ActiveRecord and currently the PostgreSQL and MySQL.  This is configured with your `Gemfile` and `config/database.yml`.
@@ -21,5 +21,9 @@ On traditional long-running servers, usually, when a web server starts up a pool
 On AWS Lambda, there's something called the [Lambda Execution Context](https://docs.aws.amazon.com/lambda/latest/dg/running-lambda-code.html).  The Lambda Execution Context gets reused between lambda function runs. Jets establishes the DB connection within the Lambda Execution Context outside the handler. So DB connections get reused between subsequent lambda function runs. This prevents DB connections from ever-increasing. The AWS docs specifically point out to use the Lambda Execution Context for things like establishing DB connections.
 
 It's also worth noting that AWS clients provided by the [Jets::AwsServices](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb) module similarly leverage the Lambda Execution context. IE: The clients get reused between lambda calls.
+
+## Aurora Database Support
+
+Aurora should work since it is MySQL compatible. Note, with Aurora, your Lambda functions must be configured with a VPC.
 
 {% include prev_next.md %}

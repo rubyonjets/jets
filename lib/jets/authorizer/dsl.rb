@@ -54,6 +54,10 @@ module Jets::Authorizer
       def cognito_authorizers
         all_cognito_authorizers.values
       end
+
+      def build?
+        !tasks.empty? || !all_cognito_authorizers.empty?
+      end
     end
 
     included do

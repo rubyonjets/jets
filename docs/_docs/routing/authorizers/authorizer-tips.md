@@ -21,7 +21,7 @@ Example of passing the header with curl:
 
     curl -H "Auth: test" https://bxqim55nwg.execute-api.us-west-2.amazonaws.com/dev/protected/url
 
-API Gateway converts the `Auth` Host header to `authorizationToken`. Make sure the request you send to your API Gateway endpoint has the header configured in the `identity_source`, not `authorizationToken`.
+API Gateway converts the `Auth` Host header to `authorizationToken`. Make sure the request you send to your API Gateway endpoint has the header configured in the `identity_source`.
 
 By the time it hits the Authorizer Lambda function it looks like this:
 
@@ -33,11 +33,11 @@ By the time it hits the Authorizer Lambda function it looks like this:
 }
 ```
 
-So within the authorizer Lambda function, you can get the token with `event['authorizationToken']`.
+So you send the token with the `Auth: test` header, but within the authorizer Lambda function, you grab the token with `event[:authorizationToken]`.
 
 ## Identity Source: Token
 
-If the request does not include the host header that matches with the identify source, then the Lambda authorizer function does *not* even get called!  You'll get an `Unauthorized` response like so:
+If the request does not include the host header that matches with the identity source, then the Lambda authorizer function does *not* even get called!  You'll get an `Unauthorized` response like so:
 
     $ curl -H "WrongHeader: test" https://bxqim55nwg.execute-api.us-west-2.amazonaws.com/dev/protected/url
     {"message":"Unauthorized"}
@@ -46,7 +46,7 @@ Remember even though you get a response. The response is from the AWS API Gatewa
 
 ## Authorizer Type: Request
 
-The request authorizer type is almost as simple as the token type. The Jets `authorizer` method uses it as as the default type.  With the request type, you have more control over what items from the request that get passed through to the authorizer function.  You also receive a fuller event payload in this structure:
+The request authorizer type is almost as simple as the token type. The Jets `authorizer` method uses it as as the default type.  With the request type, you have more control over what items get passed to the authorizer function.  You receive a fuller event payload in this structure:
 
 ```json
 {

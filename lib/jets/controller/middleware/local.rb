@@ -30,9 +30,10 @@ module Jets::Controller::Middleware
         status, headers, body = @controller.dispatch! # jets/rack_controller
         headers.delete "transfer-encoding"
         [status, headers, body]
+      elsif route.to == 'jets/mount#call' # mount route
+        status, headers, body = @controller.dispatch! # jets/mount_controller
+        [status, headers, body]
       elsif polymorphic_function?
-        # Will never hit when calling polymorphic function on AWS Lambda.
-        # This can only really get called with the local server.
         run_polymophic_function
       else # Normal Jets request
         mimic_aws_lambda!(env, mimic.vars) unless on_aws?(env)
@@ -40,7 +41,9 @@ module Jets::Controller::Middleware
       end
     end
 
+    # Never hit when calling polymorphic function on AWS Lambda. Can only get called with the local server.
     def polymorphic_function?
+      return false if ENV['_HANDLER'] # slight speed improvement on Lambda
       polymorphic_function.task.lang != :ruby
     end
 

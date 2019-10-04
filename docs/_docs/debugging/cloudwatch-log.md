@@ -1,6 +1,6 @@
 ---
 title: Debugging CloudWatch Logs
-nav_order: 54
+nav_order: 58
 ---
 
 Being able to inspect the CloudWatch logs effectively helps debug your Lambda functions.  The CloudWatch Logs interface may take a little time to get used to for those who are new to using the CloudWatch console.  Hopefully, these docs provide a few useful tips to help you use CloudWatch logs effectively.

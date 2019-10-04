@@ -1,6 +1,6 @@
 ---
 title: Controller Spec
-nav_order: 50
+nav_order: 54
 ---
 
 Here's a simple example of a controller spec.

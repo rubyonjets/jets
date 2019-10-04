@@ -1,6 +1,6 @@
 ---
 title: Core Resource Model
-nav_order: 65
+nav_order: 69
 ---
 
 At the core of Jets is the resource model. Understanding the core `resource` model and method will allow you to create any resource supported by CloudFormation with Jets.
@@ -45,6 +45,6 @@ end
 
 The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html) as a CloudFormation resource.
 
-With this design, you can create any resource with Jets and associate them with your Lambda functions. Once you understand how the `resource` method works, you can define any resource that you required. Methods like `rate`, `cron`, `events_rule`, `event_pattern` simply run some setup logic and call the `resource` method.
+With this design, you can create any resource with Jets and associate them with your Lambda functions. Once you understand how the `resource` method works, you can define any resource that you required. Methods like `rate`, `cron`, `rule_event` simply run some setup logic and call the `resource` method.
 
 {% include prev_next.md %}

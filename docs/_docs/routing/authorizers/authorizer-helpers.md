@@ -73,11 +73,7 @@ The `build_policy` method also takes a hash in its generalized form. Here's an e
 
 ```ruby
 class MainAuthorizer < ApplicationAuthorizer
-  authorizer(
-    name: "MyAuthorizer",
-    identity_source: "method.request.header.Authorization",
-    type: "token", # valid values: token, cognito_user_pools, request. Jets upcases internally.
-  )
+  authorizer(name: "MyAuthorizer")
   def protect
     resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:f0ivxw7nkl/dev/GET/posts
     build_policy(
@@ -127,7 +123,7 @@ The `build_policy` helper will pascalize and camelize the keys appropriately for
 
 ## API Gateway Event requestContext
 
-The context from the Lambda authorizer function output is passed to API Gateway event. It is under the `requestContext.authorizer` key. Here's an example:
+The context from the Lambda authorizer function output is passed to API Gateway event. It can be found under the `requestContext.authorizer` key. Example:
 
 ```json
 {
@@ -140,6 +136,8 @@ The context from the Lambda authorizer function output is passed to API Gateway 
         "resourceId": "x73tio",
         "authorizer": {
             "string_key": "value",
+            "number_key": 1,
+            "boolean_key": true,
             "principalId": "current_user",
             "integrationLatency": 3080
         },

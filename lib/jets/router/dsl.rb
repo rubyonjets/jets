@@ -1,5 +1,7 @@
 class Jets::Router
   module Dsl
+    include Mount
+
     # Methods supported by API Gateway
     %w[any delete get head options patch post put].each do |method_name|
       define_method method_name do |path, options={}|
