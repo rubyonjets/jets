@@ -96,7 +96,7 @@ module Jets::Cfn
       end
 
       return if final
-      sleep 5 unless ENV['TEST']
+      sleep 5 unless Jets.env.test?
       refresh_events
     end
 

@@ -36,7 +36,7 @@ module Jets::Builders
       say "Total Package: #{megabytes(total_size)}"
       say "Over limit by: #{megabytes(overlimit)}"
       say "Sometimes blowing away the /tmp/jets cache will reduce the size: rm -rf /tmp/jets"
-      # sh "du -kcsh #{stage_area}/*" unless ENV['TEST'] # uncomment to debug
+      # sh "du -kcsh #{stage_area}/*" unless Jets.env.test? # uncomment to debug
     end
 
     def compute_size(path)
@@ -51,7 +51,7 @@ module Jets::Builders
     end
 
     def say(message)
-      puts message unless ENV['TEST']
+      puts message unless Jets.env.test?
     end
   end
 end

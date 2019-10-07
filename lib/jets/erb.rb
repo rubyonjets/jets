@@ -38,7 +38,7 @@ class Jets::Erb
             printf("%#{spacing}d %s\n", line_number, line_content)
           end
         end
-        exit 1 unless ENV['TEST']
+        exit 1 unless Jets.env.test?
       end
     end
 

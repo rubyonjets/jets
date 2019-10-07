@@ -43,7 +43,7 @@ class Jets::Processors::MainProcessor
 
       result
     rescue Exception => e
-      unless ENV['TEST']
+      unless Jets.env.test?
         # Customize error message slightly so nodejs shim can process the
         # returned error message.
         # The "RubyError: " is a marker that the javascript shim scans for.
