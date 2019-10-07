@@ -1,4 +1,4 @@
-ENV["TEST"] = "1"
+ENV["JETS_TEST"] = "1"
 ENV["JETS_ENV"] = "test"
 ENV["JETS_ROOT"] = "./spec/fixtures/apps/franky"
 # Ensures aws api never called. Fixture home folder does not contain ~/.aws/credentails

@@ -34,7 +34,7 @@ class Jets::PreheatJob < ApplicationJob
         function_name = "jets-preheat_job-warm"
         event_json = JSON.dump(event)
         options = call_options(event[:quiet])
-        Jets::Commands::Call.new(function_name, event_json, options).run unless ENV['TEST']
+        Jets::Commands::Call.new(function_name, event_json, options).run unless Jets.env.test?
       end
     end
     threads.each { |t| t.join }

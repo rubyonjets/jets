@@ -5,7 +5,7 @@ module Jets
     include AwsServices
 
     def region
-      return 'us-east-1' if test?
+      return 'us-east-1' if Jets.env.test?
 
       return ENV['JETS_AWS_REGION'] if ENV['JETS_AWS_REGION'] # highest precedence
       return ENV['AWS_REGION'] if ENV['AWS_REGION']
@@ -48,7 +48,7 @@ module Jets
 
     # aws sts get-caller-identity
     def account
-      return '123456789' if test?
+      return '123456789' if Jets.env.test?
       return ENV['JETS_AWS_ACCOUNT'] if ENV['JETS_AWS_ACCOUNT']
 
       # ensure region set, required for sts.get_caller_identity.account to work
@@ -70,7 +70,7 @@ module Jets
     BUCKET_DOES_NOT_YET_EXIST = "bucket-does-not-yet-exist" # use const to save from misspellings
     @@s3_bucket = BUCKET_DOES_NOT_YET_EXIST
     def s3_bucket
-      return "fake-test-s3-bucket" if ENV['TEST']
+      return "fake-test-s3-bucket" if Jets.env.test?
       return @@s3_bucket unless @@s3_bucket == BUCKET_DOES_NOT_YET_EXIST
 
       resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
@@ -88,10 +88,6 @@ module Jets
       # Rescuing all exceptions in case there are other exceptions dont know about yet
       # Here are the known ones: Aws::CloudFormation::Errors::ValidationError, Aws::CloudFormation::Errors::InvalidClientTokenId
       BUCKET_DOES_NOT_YET_EXIST
-    end
-
-    def test?
-      ENV['TEST'] || Jets.env.test?
     end
 
     private

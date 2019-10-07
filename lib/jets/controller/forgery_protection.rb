@@ -30,7 +30,7 @@ class Jets::Controller
 
     # Instance methods
     def verify_authenticity_token
-      return true if ENV['TEST'] || request.get? || request.head?
+      return true if Jets.env.test? || request.get? || request.head?
 
       token = session[:authenticity_token]
       verified = !token.nil? && (token == params[:authenticity_token] || token == request.headers["x-csrf-token"])
