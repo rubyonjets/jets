@@ -23,6 +23,8 @@ module Jets::Cfn::Builders
     end
 
     def build_minimal_resources
+      add_description("Jets: #{Jets.version} Code: #{Util::Source.version}")
+
       # Initial s3 bucket, used to store code zipfile and templates Jets generates
       resource = Jets::Resource::S3::Bucket.new(logical_id: "s3_bucket")
       add_resource(resource)

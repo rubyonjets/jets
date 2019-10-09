@@ -50,6 +50,10 @@ module Jets::Cfn::Builders
       results.join("\n") + "\n"
     end
 
+    def add_description(desc)
+      @template[:Description] = desc
+    end
+
     def add_parameters(attributes)
       attributes.each do |name,value|
         add_parameter(name.to_s.camelize, Description: value)
