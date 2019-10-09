@@ -11,6 +11,7 @@ module Jets::Cfn::Builders
       add_api_gateway_parameters
       add_functions
       add_routes
+      add_resources
     end
 
     def add_api_gateway_parameters
