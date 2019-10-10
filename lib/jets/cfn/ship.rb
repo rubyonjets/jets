@@ -80,7 +80,7 @@ module Jets::Cfn
     end
 
     def template
-      @template ||= Template.new(Jets::Naming.parent_template_path, @options)
+      @template ||= TemplateSource.new(Jets::Naming.parent_template_path, @options)
     end
 
     # check for /(_COMPLETE|_FAILED)$/ status

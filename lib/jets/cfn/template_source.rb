@@ -1,5 +1,5 @@
 module Jets::Cfn
-  class Template
+  class TemplateSource
     include Jets::AwsServices
 
     attr_reader :path
