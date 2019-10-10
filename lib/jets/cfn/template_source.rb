@@ -4,7 +4,7 @@ module Jets::Cfn
 
     attr_reader :path
 
-    def inilialize(path, options)
+    def initialize(path, options)
       @path = path
       @options = options
     end
