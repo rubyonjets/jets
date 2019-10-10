@@ -31,10 +31,6 @@ module Jets::Cfn
       bucket_name.present?
     end
 
-    def bucket_name
-      @options[:s3_bucket]
-    end
-
     def from_s3
       {
         template_url: url
@@ -48,9 +44,18 @@ module Jets::Cfn
     end
 
     def upload_file_to_s3
-      key = "jets/cfn-templates/#{File.basename(path)}"
-      obj = s3_resource.bucket(bucket_name).object(key)
+      obj = s3_resource.bucket(bucket_name).object(s3_key)
       obj.upload_file(path)
+
+      "s3://#{bucket_name}/#{s3_key}"
+    end
+
+    def bucket_name
+      @options[:s3_bucket]
+    end
+
+    def s3_key
+      @s3_key ||= "jets/cfn-templates/#{File.basename(path)}"
     end
   end
 end
