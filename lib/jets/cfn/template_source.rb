@@ -47,7 +47,7 @@ module Jets::Cfn
       obj = s3_resource.bucket(bucket_name).object(s3_key)
       obj.upload_file(path)
 
-      "s3://#{bucket_name}/#{s3_key}"
+      "https://s3.amazonaws.com/#{bucket_name}/#{s3_key}"
     end
 
     def bucket_name
