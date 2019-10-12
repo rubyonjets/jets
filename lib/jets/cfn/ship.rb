@@ -6,7 +6,6 @@ module Jets::Cfn
     def initialize(options)
       @options = options
       @parent_stack_name = Jets::Naming.parent_stack_name
-      @template_path = Jets::Naming.parent_template_path
     end
 
     def run
@@ -75,10 +74,13 @@ module Jets::Cfn
     def stack_options
       {
         stack_name: @parent_stack_name,
-        template_body: IO.read(@template_path),
         capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
         # disable_rollback: !@options[:rollback],
-      }
+      }.merge!(template.to_h)
+    end
+
+    def template
+      @template ||= TemplateSource.new(Jets::Naming.parent_template_path, @options)
     end
 
     # check for /(_COMPLETE|_FAILED)$/ status
