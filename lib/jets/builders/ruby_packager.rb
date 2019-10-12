@@ -50,11 +50,19 @@ module Jets::Builders
       # Uncomment out to always remove the cache/vendor/gems to debug
       # FileUtils.rm_rf("#{cache_area}/vendor/gems")
 
+      # Remove .bundle folder so .bundle/config doesnt affect how Jets packages gems.
+      # Not using BUNDLE_IGNORE_CONFIG=1 to allow home ~/.bundle/config to affect bundling though.
+      # This is useful if you have private gems sources that require authentication. Example:
+      #
+      #    bundle config gems.myprivatesource.com user:pass
+      #
+
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_clean_env do
         sh(
+          "rm -rf #{cache_area}/.bundle && " \
           "cd #{cache_area} && " \
-          "env BUNDLE_IGNORE_CONFIG=1 bundle install --path #{cache_area}/vendor/gems --without development test"
+          "env bundle install --path #{cache_area}/vendor/gems --without development test"
         )
       end
 
