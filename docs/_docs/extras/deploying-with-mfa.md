@@ -1,5 +1,5 @@
 ---
-title: MFA
+title: Deploying with MFA
 nav_order: 89
 ---
 
