@@ -7,7 +7,7 @@ nav_order: 89
 
 Jets supports the use of Multi Factor Authentication using AWS environment variables.
 
-Using a secure note in your favorite password manager, you can present environment variables for your jets commands.
+Using a secure note in your favorite password manager, you can preset environment variables for your jets commands.
 
 Here is an example of a secure note template that ends with a `jets deploy`:
 ```bash
@@ -15,7 +15,7 @@ stty -echo
 set +o history
 unset AWS_SESSION_TOKEN AWS_MFA_SERIAL AWS_SECURE_TOKEN
 export AWS_ACCESS_KEY_ID=<aws access key id>
-export AWS_SECRET_ACCESS_KEY=<aws secrect>
+export AWS_SECRET_ACCESS_KEY=<aws secret>
 export AWS_REGION=<aws region>
 export AWS_ACCOUNT_ID=<aws account id>
 export USER=<aws username>
