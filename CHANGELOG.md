@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.1]
+- #378 use JETS_TEST=1 env var instead of TEST=1 and favor Jets.env.test? method
+- #382 associated resources support for controllers
+- #383 add jets and code version to parent template description
+- #384 upload template to s3
+- #386 Allow Jets.once to be called in simple function
+- #387 remove .bundle/config instead of BUNDLE_IGNORE_CONFIG=1
+- allow accidental mount at / to work also
+
 ## [2.3.0]
 - #377 routes mount support
 
