@@ -573,7 +573,7 @@ Only the controller module is affected.
 
 ## 10. Mount Rack Apps
 
-Jets supports mounting Rack applications. Example:
+Jets supports mounting Rack applications. This allows you to run most Rack compatible on serverless with little effort. Example:
 
 ```ruby
 Jets.application.routes.draw do
