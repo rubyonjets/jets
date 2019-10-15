@@ -3,11 +3,23 @@ title: Authorizer Helpers
 nav_order: 33
 ---
 
-The Authorizer Lambda function must return a response that conforms to the [Amazon API Gateway Lambda Authorizer Output](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html).  Jets provides some Authorizer Helpers to help generate the policy document response.
+The Authorizer Lambda function must return a response that conforms to the [Amazon API Gateway Lambda Authorizer Output](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-lambda-authorizer-output.html).  Jets provides some Authorizer Helpers to help generate the policy document response. Here's a simple complete example:
 
-## Simple Examples
+```ruby
+class MainAuthorizer < ApplicationAuthorizer
+  authorizer(
+    name: "MyAuthorizer",
+  )
+  def protect
+    resource = event[:methodArn] # IE: arn:aws:execute-api:us-west-2:112233445566:f0ivxw7nkl/dev/GET/posts
+    build_policy(resource, "current_user")
+  end
+end
+```
 
-Here's the simplest form:
+## Different Forms: Simple Form
+
+The `build_policy` helper has different forms. Here's the simplest form:
 
 ```ruby
 def protect
