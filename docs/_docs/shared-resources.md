@@ -3,7 +3,7 @@ title: Shared Resources
 nav_order: 72
 ---
 
-Shared resources are how you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/function-resources.md %}), you can add custom AWS resources which are associated with Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as meant to be associated with a Lambda function. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
+Shared resources are how you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/function-resources.md %}), you can add custom AWS resources which are associated with Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with a Lambda function. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
 
 ## SNS Topic Example
 
