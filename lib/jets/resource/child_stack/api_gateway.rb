@@ -16,12 +16,6 @@ module Jets::Resource::ChildStack
       }
     end
 
-    def outputs
-      {
-        logical_id => "!Ref #{logical_id}",
-      }
-    end
-
     def template_filename
       "#{Jets.config.project_namespace}-api-gateway.yml"
     end
