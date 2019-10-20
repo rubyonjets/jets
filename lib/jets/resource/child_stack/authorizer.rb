@@ -26,12 +26,6 @@ module Jets::Resource::ChildStack
       params
     end
 
-    def outputs
-      {
-        logical_id => "!Ref #{logical_id}",
-      }
-    end
-
     # map the path to a camelized logical_id. IE: ProtectAuthorizer
     def authorizer_logical_id
       regexp = Regexp.new(".*#{Jets.config.project_namespace}-authorizers-")

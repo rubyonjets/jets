@@ -47,12 +47,6 @@ module Jets::Resource::ChildStack
       Page.logical_id(parameter)
     end
 
-    def outputs
-      {
-        logical_id => "!Ref #{logical_id}",
-      }
-    end
-
     def template_filename
       "#{Jets.config.project_namespace}-api-resources-#{@page}.yml"
     end

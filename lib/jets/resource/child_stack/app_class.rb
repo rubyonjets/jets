@@ -102,8 +102,20 @@ module Jets::Resource::ChildStack
       "#{authorizer_stack}.Outputs.#{authorizer_logical_id}"
     end
 
+    def outputs
+      if controller? or job?
+        {}
+      else
+        super # { logical_id => "!Ref #{logical_id}" } in base.rb
+      end
+    end
+
     def controller?
       @path.include?('_controller.yml')
+    end
+
+    def job?
+      @path.include?('_job.yml')
     end
 
     def scoped_routes

@@ -91,8 +91,8 @@ module Jets::Cfn
         print_events(i)
       else
         i = find_index(:last_shown)
-        # puts "last_shown index #{i}"
-        print_events(i-1) unless i == 0
+        puts "last_shown index #{i.inspect}" if ENV["JETS_STATUS_DEBUG"]
+        print_events(i-1) unless i == 0 or i.nil?
       end
 
       return if final
@@ -105,7 +105,7 @@ module Jets::Cfn
         print_event(e)
       end
       @last_shown_event_id = @events[0]["event_id"]
-      # puts "@last_shown_event_id #{@last_shown_event_id.inspect}"
+      puts "@last_shown_event_id #{@last_shown_event_id.inspect}"
     end
 
     def print_event(e)
@@ -149,6 +149,7 @@ module Jets::Cfn
     end
 
     def last_shown_index
+      puts "last_shown_index: @last_shown_event_id #{@last_shown_event_id}"
       @events.find_index do |event|
         event["event_id"] == @last_shown_event_id
       end
