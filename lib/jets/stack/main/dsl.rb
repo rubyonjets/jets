@@ -12,17 +12,6 @@ class Jets::Stack
         include Sns
         include Sqs
       end
-
-      def self.included(base)
-        base_path = "#{Jets.root}/app/shared/extensions"
-        Dir.glob("#{base_path}/**/*.rb").each do |path|
-          next unless File.file?(path)
-
-          class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').camelize
-          klass = class_name.constantize # autoload
-          base.extend(klass)
-        end
-      end
     end
   end
 end

@@ -4,8 +4,22 @@ module Jets::Stack::Main::Dsl
       "!Ref #{value.to_s.camelize}"
     end
 
-    def getatt(value, attribute=:arn)
-      "!GetAtt #{value.to_s.camelize}.#{attribute.to_s.camelize}"
+    # Examples:
+    #   get_attr("logical_id.attribute")
+    #   get_attr("logical_id", "attribute")
+    #   get_attr(["logical_id", "attribute"])
+    def get_att(*item)
+      item = item.flatten
+      options = item.last.is_a?(Hash) ? item.pop : {}
+
+      # list is an Array
+      list = if item.size == 1
+                item.first.split('.')
+              else
+                item
+              end
+      list.map! { |s| s.to_s.camelize } unless options[:autoformat] == false
+      { "Fn::GetAtt" => list }
     end
 
     def logical_id(value)
