@@ -3,7 +3,7 @@ module Jets::Stack::Main::Dsl
     def sqs_queue(id, props={})
       # props[:queue_name] ||= id.to_s # comment out to allow CloudFormation to generate name
       resource(id, "AWS::SQS::Queue", props)
-      output(id, getatt(id, :arn)) # normal !Ref returns the sqs url the ARN is useful for nested stacks depends_on
+      output(id, get_att(id, :arn)) # normal !Ref returns the sqs url the ARN is useful for nested stacks depends_on
       output("#{id}_url", ref(id)) # useful for Stack.lookup method. IE: List.lookup(:waitlist_url)
     end
   end

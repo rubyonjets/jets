@@ -25,12 +25,33 @@ class Jets::Booter
 
       setup_db # establish db connections in Lambda Execution Context.
       # The eager load calls connects_to in models and establish those connections in Lambda Execution Context also.
+      internal_finisher
       eager_load
 
       # TODO: Figure out how to build middleware during Jets.boot without breaking jets new and webpacker:install
       # build_middleware_stack
 
       @booted = true
+    end
+
+    # Runs right before eager_load
+    def internal_finisher
+      load_shared_extensions
+    end
+
+    # Shared extensions are added near the end because they require the Jets app load paths to first.
+    # We eager load the extensions and then use the loaded modules to extend Jets::Stack directly.
+    # Originally used an included hook but thats too early before app/shared/extensions is in the load_path.
+    def load_shared_extensions
+      Jets::Autoloaders.once.preload("#{Jets.root}/app/shared/extensions")
+      base_path = "#{Jets.root}/app/shared/extensions"
+      Dir.glob("#{base_path}/**/*.rb").each do |path|
+        next unless File.file?(path)
+
+        class_name = path.sub("#{base_path}/", '').sub(/\.rb/,'').camelize
+        mod = class_name.constantize # autoload
+        Jets::Stack.extend(mod)
+      end
     end
 
     def eager_load
