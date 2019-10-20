@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.2]
+- #394 introduce internal_finisher to fix shared resource extensions
+
 ## [2.3.1]
 - #378 use JETS_TEST=1 env var instead of TEST=1 and favor Jets.env.test? method
 - #382 associated resources support for controllers
