@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.3]
+- fix sqs_queue
+
 ## [2.3.2]
 - #394 introduce internal_finisher to fix shared resource extensions
 
