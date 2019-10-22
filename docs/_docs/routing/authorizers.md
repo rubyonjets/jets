@@ -142,7 +142,7 @@ authorizer(
 )
 ```
 
-If the `identity_source` value contains a `.` then Jets leaves it as-is. If it does not, then it will conventionally adds `method.request.header.` to it.  This also applies comma-separated `identity_source` values.  Jets expands each item without a `.`.
+If the `identity_source` value contains a `.` then Jets leaves it as-is. If it does not, then it will conventionally adds `method.request.header.`.  This also applies to comma-separated `identity_source` values.  Jets expands each item without a `.`.
 
 ## Authorizer Name Workaround
 
