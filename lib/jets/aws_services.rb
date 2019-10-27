@@ -1,6 +1,7 @@
 require "aws-sdk-apigateway"
 require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
+require "aws-sdk-comprehend"
 require "aws-sdk-dynamodb"
 require "aws-sdk-lambda"
 require "aws-sdk-s3"
@@ -37,6 +38,11 @@ module Jets::AwsServices
     Aws::CloudWatchLogs::Client.new
   end
   global_memoize :logs
+
+  def comprehend
+    Aws::Comprehend::Client.new
+  end
+  global_memoize :comprehend
 
   def s3
     Aws::S3::Client.new
