@@ -16,7 +16,7 @@ require "rainbow/ext/string"
 gem_root = File.dirname(__dir__)
 $:.unshift("#{gem_root}/lib")
 $:.unshift("#{gem_root}/vendor/cfn-status/lib")
-require "cfn_status"
+require "cfn/status"
 
 require "jets/autoloaders"
 Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]

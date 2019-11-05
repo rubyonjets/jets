@@ -1,7 +1,7 @@
-require 'cfn_status'
+require 'cfn/status'
 
 module Jets::Cfn
-  class Status < CfnStatus
+  class Status < Cfn::Status
     def initialize(options={})
       @stack_name = Jets::Naming.parent_stack_name
       super(@stack_name, options)
