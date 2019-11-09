@@ -9,6 +9,8 @@ require "aws-sdk-sts"
 require "aws-sdk-sns"
 require "aws-sdk-sqs"
 
+require "aws_mfa_secure/ext/aws" # add MFA support
+
 module Jets::AwsServices
   include GlobalMemoist
   include StackStatus
