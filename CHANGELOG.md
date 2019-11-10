@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.5]
+- #397 kinesis_stream dsl method.
+- #401 use `reconnect: true` for skeleton database.yml
+- #402 mfa support
+
 ## [2.3.4]
 - #395 Stay under Outputs Limits for large Jets apps. remove unused outputs
 - use vendor/cfn-status: poll CloudFormation stack events for large stacks
