@@ -4,6 +4,7 @@ ENV["JETS_ROOT"] = "./spec/fixtures/apps/franky"
 # Ensures aws api never called. Fixture home folder does not contain ~/.aws/credentails
 ENV['HOME'] = File.join(Dir.pwd,'spec/fixtures/home')
 ENV['SECRET_KEY_BASE'] = 'fake'
+ENV['AWS_MFA_SECURE_TEST'] = '1'
 
 # require "simplecov"
 # SimpleCov.start

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/tongueroo/jets.git
-  revision: 6ed1b97192e690d2d7061701186ecae4ab7670b1
+  revision: fce79f3d5472b32ba9cf25214e0aa99bf3b3534f
   branch: master
   submodules: true
   specs:
@@ -88,7 +88,7 @@ GEM
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
     aws-eventstream (1.0.3)
-    aws-mfa-secure (0.3.0)
+    aws-mfa-secure (0.3.1)
       activesupport
       aws-sdk-core
       memoist
