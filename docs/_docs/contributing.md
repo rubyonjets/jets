@@ -1,6 +1,6 @@
 ---
 title: Contributing to Jets
-nav_order: 100
+nav_order: 101
 ---
 
 Hi there! Interested in contributing to Jets? We'd love your help. Jets is an open source project, built one contribution at a time by users like you.
