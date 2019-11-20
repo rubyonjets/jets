@@ -10,6 +10,8 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 [![Support](https://img.shields.io/badge/Support-Help-blue.svg)](http://rubyonjets.com/support/)
 [![Gitter Chat](https://badges.gitter.im/tongueroo/jets.png)](https://gitter.im/tongueroo/jets)
 
+[![BoltOps Badge](https://img.boltops.com/boltops/badges/boltops-badge.png)](https://www.boltops.com)
+
 **Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/extras/upgrading/).
 
 ## What is Ruby on Jets?
