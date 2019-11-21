@@ -14,4 +14,5 @@ Funds donated via Patreon go directly to support Tung Nguyen's full-time work on
 - Erlend Finvåg
 - Nate Clark
 - Hirokatsu Endo
+- Michael Choi
 <!--10 end-->
