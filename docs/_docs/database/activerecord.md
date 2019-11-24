@@ -5,6 +5,16 @@ nav_order: 52
 
 Jets also supports ActiveRecord and currently the PostgreSQL and MySQL.  This is configured with your `Gemfile` and `config/database.yml`.
 
+### Database Adapter
+
+The default database adapter configured by [jets new](https://rubyonjets.com/reference/jets-new/) is MySQL.
+
+    jets new demo
+
+If you would like to use PostgreSQL instead, use:
+
+    jets new demo --database=postgresql
+
 ## Migrations
 
 Here's an example of creating migrations:
