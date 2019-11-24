@@ -78,6 +78,9 @@ class Jets::Generator
 
   def run(behavior=:invoke)
     self.class.require_generators
+
+    Jets::Commands::Db::Tasks.load!
+
     Rails::Generators.configure!(config)
     Rails::Generators.invoke(@generator, @args, behavior: behavior, destination_root: Jets.root)
   end
