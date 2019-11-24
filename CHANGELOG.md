@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.7]
+- ensure at least cfn_camelizer 0.4.6 installed
+
 ## [2.3.6]
 - #407 Fix error with 'references' in jets generate model
 - #408 add note about database adapter to quick start, also link to more docs
