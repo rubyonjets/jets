@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="http://rubyonjets.com"><img src="http://rubyonjets.com/img/logos/jets-logo.png" /></a>
+  <a href="http://rubyonjets.com"><img src="https://img.boltops.com/boltops/logos/jets-logo-full.png" /></a>
 </div>
 
 Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonjets.com/).
