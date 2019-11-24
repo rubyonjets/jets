@@ -26,7 +26,13 @@ module Jets::Cfn::Builders
       add_description("Jets: #{Jets.version} Code: #{Util::Source.version}")
 
       # Initial s3 bucket, used to store code zipfile and templates Jets generates
-      resource = Jets::Resource::S3::Bucket.new(logical_id: "s3_bucket")
+      resource = Jets::Resource::S3::Bucket.new(logical_id: "s3_bucket",
+        bucket_encryption: {
+          server_side_encryption_configuration: [
+            server_side_encryption_by_default: {
+              sse_algorithm: "AES256"
+          }]}
+      )
       add_resource(resource)
       add_outputs(resource.outputs)
 
