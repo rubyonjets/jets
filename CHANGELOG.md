@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.6]
+- #407 Fix error with 'references' in jets generate model
+- #408 add note about database adapter to quick start, also link to more docs
+- #409 enable sse-s3 encryption on parent s3 bucket by default
+
 ## [2.3.5]
 - #397 kinesis_stream dsl method.
 - #401 use `reconnect: true` for skeleton database.yml
