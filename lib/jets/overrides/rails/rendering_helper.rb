@@ -6,7 +6,7 @@ module Jets::RenderingHelper
   #   <%= render "articles/mypartial" %>
   def render(options = {}, locals = {}, &block)
     if options.is_a?(String) && !options.include?('/')
-      folder = _get_containing_folder(caller[0])
+      folder = _get_containing_folder(caller)
       partial_name = options # happens to be the partial name
       partial_name = "#{folder}/#{partial_name}"
       options = partial_name
@@ -17,7 +17,9 @@ module Jets::RenderingHelper
 
   # Ugly, going back up the caller stack to find out what view path
   # we are in
-  def _get_containing_folder(caller_line)
+  def _get_containing_folder(caller_lines)
+    caller_line = caller_lines.find { |caller_line| !caller_line.include?('gems') }
+
     text = caller_line.split(':').first
     # .../fixtures/apps/demo/app/views/posts/index.html.erb
     text.split('/')[-2] # posts
