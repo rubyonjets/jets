@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "actionview", "~> 6.0.0"
   spec.add_dependency "activerecord", "~> 6.0.0"
   spec.add_dependency "activesupport", "~> 6.0.0"
-  spec.add_dependency "aws-mfa-secure"
+  spec.add_dependency "aws-mfa-secure", "~> 0.4.0"
   spec.add_dependency "aws-sdk-apigateway"
   spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-cloudwatchlogs"
