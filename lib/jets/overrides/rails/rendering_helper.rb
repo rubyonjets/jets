@@ -18,8 +18,7 @@ module Jets::RenderingHelper
   # Ugly, going back up the caller stack to find out what view path
   # we are in
   def _get_containing_folder(caller_lines)
-    caller_line = caller_lines.find { |caller_line| !caller_line.include?('gems') }
-
+    caller_line = caller_lines.find { |l| !l.include?('/gems/') }
     text = caller_line.split(':').first
     # .../fixtures/apps/demo/app/views/posts/index.html.erb
     text.split('/')[-2] # posts
