@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.8]
+- #410 Fix `render` doesn't recognize relative patial path with haml
+- #412 attempt at fixing STI and hot reloading issue
+- #413 add config.hot_reload option to allow override
+- #414 more narrow check for /gems/ for caller_lines search
+
 ## [2.3.7]
 - ensure at least cfn_camelizer 0.4.6 installed
 
