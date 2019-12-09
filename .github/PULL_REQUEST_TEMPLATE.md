@@ -34,9 +34,17 @@ Provide a description of what your pull request changes.
 Is this related to any GitHub issue(s) or another relevant link?
 -->
 
+## How to Test
+
+<!--
+Please provide instructions on how to test the fix. This speeds up reviewing the PR.
+-->
+
+
 ## Version Changes
 
 <!--
 Which semantic version change would you recommend?
 If you don't know, feel free to omit it.
 -->
+
