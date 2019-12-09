@@ -155,6 +155,8 @@ class Jets::Application
       config.deploy.stagger.enabled = false
       config.deploy.stagger.batch_size = 10
 
+      config.hot_reload = Jets.env.development?
+
       config
     end
 
