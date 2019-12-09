@@ -37,7 +37,7 @@ Is this related to any GitHub issue(s) or another relevant link?
 ## How to Test
 
 <!--
-Please provide instructions on how to test the fix. This speeds up reviewing the PR.
+Please provide instructions on how to test the fix. This speeds up reviewing the PR. If testing requires a demo Jets project, please provide an example repo.
 -->
 
 
