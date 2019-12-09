@@ -7,7 +7,7 @@ module Jets::Controller::Middleware
     @@reload_lock = Mutex.new
     def call(env)
       @@reload_lock.synchronize do
-        Jets::Autoloaders.main.reload
+        Zeitwerk::Loader.eager_load_all
         @app.call(env)
       end
     end
