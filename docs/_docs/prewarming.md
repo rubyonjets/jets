@@ -3,6 +3,10 @@ title: Prewarming
 nav_order: 17
 ---
 
+**UPDATE 12/3/2019**: AWS has released [Provisioned Concurrency for Lambda Functions](https://aws.amazon.com/blogs/aws/new-provisioned-concurrency-for-lambda-functions/) which essentially keeps the Lambda functions warm. It moves the cold start from invocation time to the Lambda function build time. Refer to the [Provisioned Concurrency pricing](https://aws.amazon.com/lambda/pricing/) for cost details.
+
+Provisioned Concurrency is configured via a property on the [AWS::Lambda::Alias](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-alias-provisionedconcurrencyconfiguration.html) resource. Jets does not yet currently support this.  Support will be added in the future. PRs are welcome and will be considered. 😁
+
 Jets supports prewarming your application to remedy the Lambda cold start issue.  Prewarming is enabled by default.  Only [Controller]({% link _docs/controllers.md %}) functions are prewarmed. To adjust the prewarming settings, edit your `config/application.rb`. Example:
 
 ```ruby
