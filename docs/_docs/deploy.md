@@ -50,4 +50,11 @@ To deploy to different environments:
 
     jets deploy production
 
+## Deploying to Multiple Regions
+
+Deploying to multiple regions can be achieved with `AWS_REGION`.  Example:
+
+    AWS_REGION=us-east-1 jets deploy
+    AWS_REGION=us-west-2 jets deploy
+
 {% include prev_next.md %}
