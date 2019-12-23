@@ -54,7 +54,7 @@ Here are the instructions to install MySQL and PostgreSQL:
 
 ### AWS CLI
 
-The AWS CLI required. You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) via pip.
+The AWS CLI is required. You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) via pip.
 
     pip install awscli --upgrade --user
 
