@@ -45,4 +45,6 @@ API Gateway:
 
 Congratulations!  You have successfully deployed your serverless ruby application. It's that simple. 😁
 
+Note: Make sure to also have the aws cli installed: [Install docs]({% link _docs/install.md %})
+
 {% include prev_next.md %}
