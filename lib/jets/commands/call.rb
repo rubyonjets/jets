@@ -134,7 +134,7 @@ class Jets::Commands::Call
     return unless system("type pbcopy > /dev/null")
 
     # TODO: for add_console_link_to_clipboard get the region from the ~/.aws/config and AWS_PROFILE setting
-    region = Aws.config[:region] || 'us-east-1'
+    region = Aws::S3::Client.new.config.region || ENV["AWS_REGION"] ||'us-east-1'
     link = "https://console.aws.amazon.com/lambda/home?region=#{region}#/functions/#{function_name}?tab=configuration"
     system("echo #{link} | pbcopy")
     puts "Pro tip: The Lambda Console Link to the #{function_name} function has been added to your clipboard." unless @options[:mute]
