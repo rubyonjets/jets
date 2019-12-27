@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.9]
+- #415 docs: aws cli install required, also note how to deploy to multiple regions
+- #417 'jets call' honours region configuration
+
 ## [2.3.8]
 - #410 Fix `render` doesn't recognize relative patial path with haml
 - #412 attempt at fixing STI and hot reloading issue
