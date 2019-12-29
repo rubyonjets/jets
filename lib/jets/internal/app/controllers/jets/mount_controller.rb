@@ -44,14 +44,20 @@ private
     # remap path info
     mount_at = mount_at(path)
     path_info = env["PATH_INFO"]
+    env["SCRIPT_NAME"] = script_name(mount_at)
     env["PATH_INFO"] = path_info.sub(mount_at,'')
     env["ORIGINAL_PATH_INFO"] = path_info
-    env["SCRIPT_NAME"] = mount_at
     env
   end
 
   # Removes the wildcard: rack/*path => rack
   def mount_at(path)
     path.gsub(/\*.*/,'')
+  end
+
+  # Adding forward slash to script name, to generate proper path.
+  # First remove all the occurance of forward slash at the begining and then add one.
+  def script_name(path)
+    '/' + path.gsub(/^\/*/,'')
   end
 end
