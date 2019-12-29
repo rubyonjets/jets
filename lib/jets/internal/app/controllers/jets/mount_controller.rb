@@ -46,6 +46,7 @@ private
     path_info = env["PATH_INFO"]
     env["PATH_INFO"] = path_info.sub(mount_at,'')
     env["ORIGINAL_PATH_INFO"] = path_info
+    env["SCRIPT_NAME"] = mount_at
     env
   end
 
