@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.10]
+- #418 Setting `ENV["SCRIPT_NAME"]` same as mount_at value.
+
 ## [2.3.9]
 - #415 docs: aws cli install required, also note how to deploy to multiple regions
 - #417 'jets call' honours region configuration
