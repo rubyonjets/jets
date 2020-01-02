@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.11]
+- #419 Added forward slash before script_name env variable, so that correct path get generated. As it happens Rails
+
 ## [2.3.10]
 - #418 Setting `ENV["SCRIPT_NAME"]` same as mount_at value.
 
