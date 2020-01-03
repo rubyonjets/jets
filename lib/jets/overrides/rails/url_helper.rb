@@ -6,17 +6,16 @@ module Jets::UrlHelper
 
   # Basic implementation of url_for to allow use helpers without routes existence
   def url_for(options = nil) # :nodoc:
-    url = case options
-          when String
+    url = if options.is_a?(String)
             options
-          when :back
+          elsif options == :back
             _back_url
-          when ActiveRecord::Base
+          elsif options.respond_to?(:to_model)
             _handle_model(options)
-          when Array
+          elsif options.is_a?(Array)
             _handle_array(options)
           else
-            raise ArgumentError, "Please provided a String or ActiveRecord model to link_to as the the second argument. The Jets link_to helper takes as the second argument."
+            raise ArgumentError, "The Jets link_to helper only supports some types of arguments. Please provided a String or an object that supports ActiveModel to link_to as the the second argument."
           end
 
     add_stage_name(url)
