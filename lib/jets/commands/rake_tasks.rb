@@ -27,6 +27,7 @@ class Jets::Commands::RakeTasks
     def load_webpacker_tasks
       begin
         require "webpacker"
+        require "webpacker/rake_tasks"
       rescue LoadError
         # puts "WARN: unable to load gem. #{$!}. Running with 'bundle exec' might fix this warning."
         # Happens whne user calls jets help outside the jets project folder.
