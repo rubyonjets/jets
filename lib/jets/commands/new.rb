@@ -24,6 +24,7 @@ module Jets::Commands
 
     def set_initial_variables
       @project_name = project_folder == '.' ? File.basename(Dir.pwd) : project_folder
+      @database_name = @project_name.gsub('-','_')
 
       # options is a frozen hash by Thor so cannot modify it.
       # Also had trouble unfreezing it with .dup. So using instance variables instead

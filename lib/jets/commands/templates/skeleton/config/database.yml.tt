@@ -2,7 +2,7 @@ default: &default
   adapter: <%= @database == 'mysql' ? 'mysql2' : 'postgresql' %>
   encoding: <%= @database == 'mysql' ? 'utf8mb4' : 'unicode' %>
   pool: <%%= ENV["DB_POOL"] || 5  %>
-  database: <%%= ENV['DB_NAME'] || '<%= @project_name %>_development' %>
+  database: <%%= ENV['DB_NAME'] || '<%= @database_name %>_development' %>
 <% if @database == 'mysql' -%>
   username: <%%= ENV['DB_USER'] || 'root' %>
 <% else -%>
@@ -15,13 +15,13 @@ default: &default
 
 development:
   <<: *default
-  database: <%%= ENV['DB_NAME'] || '<%= @project_name %>_development' %>
+  database: <%%= ENV['DB_NAME'] || '<%= @database_name %>_development' %>
 
 test:
   <<: *default
-  database: <%= @project_name %>_test
+  database: <%= @database_name %>_test
 
 production:
   <<: *default
-  database: <%= @project_name %>_production
+  database: <%= @database_name %>_production
   url: <%%= ENV['DATABASE_URL'] %>
