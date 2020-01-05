@@ -152,6 +152,8 @@ module Jets::Commands
 
     # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
     def exit_unless_updateable!
+      return if ENV['JETS_FORCE_UPDATEABLE'] # useful for debugging if stack stack updating
+
       stack_name = Jets::Naming.parent_stack_name
       exists = stack_exists?(stack_name)
       return unless exists # continue because stack could be updating
