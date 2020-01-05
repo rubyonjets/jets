@@ -64,6 +64,20 @@ If you need to switch this and avoid downtime, you will need to do a manual blue
 
 Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. This is one of the reasons why a Custom Domain is recommended to be set up, so the endpoint url remains the same.  Generally, the route change detection works well. If you need to force the creation of a brand new Rest API, you can use `JETS_REPLACE_API=1 jets deploy`.
 
+## HostedZoneId
+
+You can also specify a `hosted_zone_id` instead of `hosted_zone_name`.
+
+```ruby
+Jets.application.configure do
+  config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
+  config.domain.hosted_zone_name = "coolapp.com" # String
+  config.domain.hosted_zone_id = "/hostedzone/Z2E57RZEXAMPLE"
+end
+```
+
+Note, you should still specify the `hosted_zone_name` because it is conventionally used for the API Gateway Custom Domain name.
+
 ## Disable Route53
 
 If `config.domain.hosted_zone_name` is set, then `config.domain.route53=true` will be the default behavior. It is useful to turn off the Jets managed route53 record if you would like to manage the DNS yourself.  Though there may be little point as the DNS must always match the API Custom Domain Name.

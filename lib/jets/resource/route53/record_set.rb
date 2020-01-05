@@ -28,7 +28,12 @@ module Jets::Resource::Route53
         comment: "DNS record managed by Jets",
         name: name,
       }
-      base[:hosted_zone_name] = hosted_zone_name
+      hosted_zone_id = Jets.config.domain.hosted_zone_id
+      if hosted_zone_id
+        base[:hosted_zone_id] = hosted_zone_id
+      else
+        base[:hosted_zone_name] = hosted_zone_name
+      end
 
       if Jets.config.domain.apex
         base.merge(
