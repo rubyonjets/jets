@@ -12,7 +12,7 @@ dev-demo-2.coolapp.com | xyzoabc123.execute-api.us-west-2.amazonaws.com | 2
 
 Here's a diagram also:
 
-![](/img/docs/jets-vanity-endpoint.png)
+![](/img/docs/routing/jets-vanity-endpoint.png)
 
 ## Vanity Endpoint
 
@@ -25,9 +25,6 @@ Jets.application.configure do
   config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
   config.domain.hosted_zone_name = "coolapp.com" # String
   # config.domain.name = "#{Jets.project_namespace}.coolapp.com" # Default is the example convention
-  # config.domain.route53 = true # false to disable route53 from being managed by jets.
-      # The domain.route53 setting defaults to true if if a hosted_zone_name is set.
-      # It might be useful to turn of route53 if you are managing the DNS yourself.
 
   # NOTE: Changing the endpoint_configuration can result 10 minutes of downtime if going from REGIONAL to EDGE
   # config.domain.endpoint_configuration = { types: ["REGIONAL"] } # EDGE or REGIONAL
@@ -67,6 +64,37 @@ If you need to switch this and avoid downtime, you will need to do a manual blue
 
 Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. This is one of the reasons why a Custom Domain is recommended to be set up, so the endpoint url remains the same.  Generally, the route change detection works well. If you need to force the creation of a brand new Rest API, you can use `JETS_REPLACE_API=1 jets deploy`.
 
-Additionally, for even more DNS control, consider using a CloudFront CDN in front of the Custom Domain endpoint.
+## Disable Route53
+
+If `config.domain.hosted_zone_name` is set, then `config.domain.route53=true` will be the default behavior. It is useful to turn off the Jets managed route53 record if you would like to manage the DNS yourself.  Though there may be little point as the DNS must always match the API Custom Domain Name.
+
+```ruby
+Jets.application.configure do
+  # ...
+  config.domain.route53 = false # disable route53 from being managed by jets.
+```
+
+## Route53 Apex Domain
+
+Jets creates a CNAME route53 record by default. Jets can also create zone apex records or naked domain names. Example:
+
+```ruby
+Jets.application.configure do
+  config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
+  config.domain.hosted_zone_name = "coolapp.com" # String
+  config.domain.name = "coolapp.com"
+  config.domain.apex = true # # apex or naked domain. Use AliasTarget with an A record instead of a CNAME
+end
+```
+
+Though apex records are supported, it is recommended to put CloudFront of the API Gateway Custom Domain instead.
+
+## CloudFront Recommendation
+
+For the most control, it is recommended to create a CloudFront distribution **outside** of Jets. Then put CloudFront in front of the API Gateway Custom Domain.  Example:
+
+![](/img/docs/routing/jets-vanity-endpoint-cloudfront.png)
+
+This provides you full manual control over the DNS. You can deploy additional [extra environments]({% link _docs/env-extra.md %}) and update which Jets environment CloudFront points to. This type of blue-green deployment can be useful for large feature rollouts. Using CloudFront will also allow you to do things like redirect http to https. The notable drawback is that CloudFront changes can take 15m+ to deploy.
 
 {% include prev_next.md %}

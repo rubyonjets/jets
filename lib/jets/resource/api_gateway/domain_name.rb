@@ -40,9 +40,15 @@ module Jets::Resource::ApiGateway
     end
 
     def domain_name
-      subdomain = Jets.project_namespace
-      managed_domain_name = "#{subdomain}.#{Jets.config.domain.hosted_zone_name}"
-      name = Jets.config.domain.name || managed_domain_name
+      name = Jets.config.domain.name
+      if Jets.config.domain.apex
+        name ||= Jets.config.domain.hosted_zone_name
+      else
+        subdomain = Jets.project_namespace
+        managed_domain_name = "#{subdomain}.#{Jets.config.domain.hosted_zone_name}"
+        name ||= managed_domain_name
+      end
+
       # Strip trailing period if there is one set accidentally or else get this error
       #   Trailing period should be omitted from domain name (Service: AmazonApiGateway; Status Code: 400; Error Code: BadRequestException
       name.sub(/\.$/,'')

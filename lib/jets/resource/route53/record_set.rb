@@ -18,18 +18,41 @@ module Jets::Resource::Route53
       {
         dns_record: {
           type: "AWS::Route53::RecordSet",
-          properties: {
-            hosted_zone_name: hosted_zone_name,
-            comment: "DNS record managed by Jets",
-            name: name,
-            type: "CNAME",
-            ttl: "60",
-            resource_records: [
-              cname,
-            ],
-          }
+          properties: record_set_properties
         }
       }
+    end
+
+    def record_set_properties
+      base = {
+        comment: "DNS record managed by Jets",
+        name: name,
+      }
+      base[:hosted_zone_name] = hosted_zone_name
+
+      if Jets.config.domain.apex
+        base.merge(
+          alias_target: {
+            dns_name: cname,
+            hosted_zone_id: domain_name_hosted_zone,
+          },
+          type: "A",
+        )
+      else
+        base.merge({
+          type: "CNAME",
+          ttl: "60",
+          resource_records: [cname],
+        })
+      end
+    end
+
+    def domain_name_hosted_zone
+      if endpoint_types.include?("REGIONAL")
+        "!GetAtt DomainName.RegionalHostedZoneId"
+      else
+        "!GetAtt DomainName.DistributionHostedZoneId"
+      end
     end
 
     def cname
