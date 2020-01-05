@@ -98,8 +98,8 @@ module Jets::Builders
 
       # Code prep and zipping
       check_code_size!
-      calculate_md5s # must be called before generate_shims and create_zip_files
       generate_shims
+      calculate_md5s # must be called before create_zip_files because checksums need to be populated
       create_zip_files
     end
 
