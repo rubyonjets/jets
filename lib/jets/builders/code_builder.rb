@@ -77,6 +77,7 @@ module Jets::Builders
     end
 
     def exist_on_s3?(filename)
+      return false if ENV['JETS_BUILD_NO_INTERNET']
       s3_key = "jets/code/#{filename}"
       begin
         s3.head_object(bucket: s3_bucket, key: s3_key)
