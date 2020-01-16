@@ -10,7 +10,7 @@ class Jets::Controller
     end
 
     def filter(params)
-      params_filter.filter(params)
+      params && params_filter.filter(params)
     end
 
     def filter_json(json_text)

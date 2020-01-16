@@ -147,4 +147,36 @@ describe Jets::Controller::Base do
       expect(resp['headers']['x-jets-base64']).to eq "no"
     end
   end
+
+  describe "#log_info_start" do
+    let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
+
+    context "When Jets.config is set with filtered_parameters" do
+      it "Logs event and params with sensitive data masked" do
+        Jets.config.controllers.filtered_parameters = [:a, :key1]  #a from queryStringParameters and key1 from body
+
+        expect(Jets.logger).to receive(:info).with('  Parameters: {"key3":"value3","key2":"value2","key1":"[FILTERED]","a":"[FILTERED]","b":"2"}')
+
+        expected_event_log = '  Event: {"resource":"/posts","path":"/posts","httpMethod":"POST","headers":{"Accept":"*/*","Accept-Encoding":"gzip, deflate","cache-control":"no-cache","CloudFront-Forwarded-Proto":"https","CloudFront-Is-Desktop-Viewer":"true","CloudFront-Is-Mobile-Viewer":"false","CloudFront-Is-SmartTV-Viewer":"false","CloudFront-Is-Tablet-Viewer":"false","CloudFront-Viewer-Country":"US","Content-Type":"text/plain","Host":"uhghn8z6t1.execute-api.us-east-1.amazonaws.com","Postman-Token":"7166b11b-59de-4e7b-ad35-24e556b7a083","User-Agent":"PostmanRuntime/6.4.1","Via":"1.1 55676da1e5c0a9c4e60a94a95b01dc04.cloudfront.net (CloudFront)","X-Amz-Cf-Id":"iERhUw6ghRnv1uRYfxJaUsDGWVbERFSZ4K00CIgZtJ0T6yeFdItMeQ==","X-Amzn-Trace-Id":"Root=1-59f50229-587ec5271678236e50ad91b1","X-Forwarded-For":"69.42.1.180, 54.239.203.100","X-Forwarded-Port":"443","X-Forwarded-Proto":"https"},"queryStringParameters":{"a":"[FILTERED]","b":"2"},"pathParameters":null,"stageVariables":null,"requestContext":{"path":"/stag/posts","accountId":"123456789012","resourceId":"c0yhg8","stage":"stag","requestId":"e5c39604-bc2d-11e7-abbe-1baaa0f8e02e","identity":{"cognitoIdentityPoolId":null,"accountId":null,"cognitoIdentityId":null,"caller":null,"apiKey":"","sourceIp":"69.42.1.180","accessKey":null,"cognitoAuthenticationType":null,"cognitoAuthenticationProvider":null,"userArn":null,"userAgent":"PostmanRuntime/6.4.1","user":null},"resourcePath":"/posts","httpMethod":"POST","apiId":"uhghn8z6t1"},"body":"{\"key3\":\"value3\",\"key2\":\"value2\",\"key1\":\"[FILTERED]\"}","isBase64Encoded":false}'
+        expect(Jets.logger).to receive(:info).with(expected_event_log)
+        expect(Jets.logger).to receive(:info).at_least(:once)
+
+        controller.log_info_start
+      end
+    end
+
+    context "When Jets.config is not set with filtered_parameters" do
+      it "Logs event and params with original payload" do
+        Jets.config.controllers.filtered_parameters = []
+
+        expect(Jets.logger).to receive(:info).with('  Parameters: {"key3":"value3","key2":"value2","key1":"value1","a":"1","b":"2"}')
+
+        expected_event_log = '  Event: {"resource":"/posts","path":"/posts","httpMethod":"POST","headers":{"Accept":"*/*","Accept-Encoding":"gzip, deflate","cache-control":"no-cache","CloudFront-Forwarded-Proto":"https","CloudFront-Is-Desktop-Viewer":"true","CloudFront-Is-Mobile-Viewer":"false","CloudFront-Is-SmartTV-Viewer":"false","CloudFront-Is-Tablet-Viewer":"false","CloudFront-Viewer-Country":"US","Content-Type":"text/plain","Host":"uhghn8z6t1.execute-api.us-east-1.amazonaws.com","Postman-Token":"7166b11b-59de-4e7b-ad35-24e556b7a083","User-Agent":"PostmanRuntime/6.4.1","Via":"1.1 55676da1e5c0a9c4e60a94a95b01dc04.cloudfront.net (CloudFront)","X-Amz-Cf-Id":"iERhUw6ghRnv1uRYfxJaUsDGWVbERFSZ4K00CIgZtJ0T6yeFdItMeQ==","X-Amzn-Trace-Id":"Root=1-59f50229-587ec5271678236e50ad91b1","X-Forwarded-For":"69.42.1.180, 54.239.203.100","X-Forwarded-Port":"443","X-Forwarded-Proto":"https"},"queryStringParameters":{"a":"1","b":"2"},"pathParameters":null,"stageVariables":null,"requestContext":{"path":"/stag/posts","accountId":"123456789012","resourceId":"c0yhg8","stage":"stag","requestId":"e5c39604-bc2d-11e7-abbe-1baaa0f8e02e","identity":{"cognitoIdentityPoolId":null,"accountId":null,"cognitoIdentityId":null,"caller":null,"apiKey":"","sourceIp":"69.42.1.180","accessKey":null,"cognitoAuthenticationType":null,"cognitoAuthenticationProvider":null,"userArn":null,"userAgent":"PostmanRuntime/6.4.1","user":null},"resourcePath":"/posts","httpMethod":"POST","apiId":"uhghn8z6t1"},"body":"{\n  \"key3\": \"value3\",\n  \"key2\": \"value2\",\n  \"key1\": \"value1\"\n}","isBase64Encoded":false}'
+        expect(Jets.logger).to receive(:info).with(expected_event_log)
+        expect(Jets.logger).to receive(:info).at_least(:once)
+
+        controller.log_info_start
+      end
+    end
+  end
 end
