@@ -1,5 +1,4 @@
 require "action_controller/metal/strong_parameters"
-require "active_support/parameter_filter"
 require "action_dispatch"
 require "rack"
 
@@ -90,7 +89,7 @@ class Jets::Controller
     end
 
     def parameter_filter
-      @parameter_filter ||= ActiveSupport::ParameterFilter.new Jets.config.controllers.filtered_parameters
+      @parameter_filter ||= ParametersFilter.new Jets.config.controllers.filtered_parameters
     end
   end
 end
