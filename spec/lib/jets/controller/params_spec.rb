@@ -83,6 +83,13 @@ describe Jets::Controller::Params do
   end
 
   describe "#filtered_params" do
+    let(:event) { {} }
+
+    it "Forwards options to params" do
+      expect(controller).to receive(:params).with(body_parameters: false, path_parameters: true, raw: true)
+
+      controller.send(:filtered_parameters, body_parameters: false, path_parameters: true, raw: false)
+    end
 
     context "With plain filtered parameters" do
       let(:event) { multipart_event(:simple_form) }
