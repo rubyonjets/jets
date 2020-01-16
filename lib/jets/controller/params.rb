@@ -1,4 +1,5 @@
 require "action_controller/metal/strong_parameters"
+require "active_support/parameter_filter"
 require "action_dispatch"
 require "rack"
 
@@ -27,6 +28,10 @@ class Jets::Controller
         params = ActionDispatch::Request::Utils.normalize_encode_params(params) # for file uploads
         ActionController::Parameters.new(params)
       end
+    end
+
+    def filtered_parameters(**kwargs)
+      parameter_filter.filter params(**kwargs, raw: true) # Always filter raw hash
     end
 
     def query_parameters
@@ -82,6 +87,10 @@ class Jets::Controller
     def base64_decode(body)
       return nil if body.nil?
       Base64.decode64(body)
+    end
+
+    def parameter_filter
+      @parameter_filter ||= ActiveSupport::ParameterFilter.new Jets.config.controllers.filtered_parameters
     end
   end
 end
