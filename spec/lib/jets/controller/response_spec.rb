@@ -13,9 +13,9 @@ describe Jets::Controller::Response do
       resp.set_cookie(:favorite_food, "chocolate cookie")
       resp.set_cookie(:favorite_color, "yellow")
       resp.delete_cookie(:favorite_food)
-      expect(resp.headers).to eq({"Set-Cookie"=>
-        "favorite_color=yellow\n" +
-        "favorite_food=; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 -0000"})
+      cookie = resp.headers["Set-Cookie"]
+      expect(cookie).to include("favorite_color=yellow")
+      expect(cookie).to include("max-age=0; expires=Thu, 01 Jan 1970 00:00:00")
     end
   end
 end

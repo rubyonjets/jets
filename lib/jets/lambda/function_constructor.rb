@@ -35,7 +35,7 @@ module Jets::Lambda
     def build
       code = IO.read(@code_path)
       function_klass = Class.new(Jets::Lambda::Function)
-      function_klass.module_eval(code)
+      function_klass.module_eval(code, @code_path)
       adjust_tasks(function_klass)
       function_klass # assign this to a Constant for a pretty class name
     end
