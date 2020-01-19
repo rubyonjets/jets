@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.12]
+- #421 use underscore for database name in database.yml
+- #422 url_for: allow any activemodel compatiable object to work
+- #423 add apex domain support
+- #424 md5 fix subtle bug when code doesnt get uploaded from newly generated shims
+- #425 add hosted zone id support
+- #426 use headers origin for actual host in case of cloudfront in front
+- #428 fixes to JETS_BUILD_NO_INTERNET env var option
+- #429 fix simple function tmp_loader
+
 ## [2.3.11]
 - #419 Added forward slash before script_name env variable, so that correct path get generated. As it happens Rails
 
