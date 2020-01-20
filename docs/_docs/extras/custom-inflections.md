@@ -1,6 +1,6 @@
 ---
 title: Custom Inflections
-nav_order: 82
+nav_order: 83
 ---
 
 Jets lookups folders, files, and classes based on naming conventions. It singularizes or pluralizes words as a part of this naming convention. For example:

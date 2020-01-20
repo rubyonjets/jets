@@ -1,6 +1,6 @@
 ---
 title: Rails Support
-nav_order: 47
+nav_order: 48
 ---
 
 Jets supports deploying Rails applications with a few approaches that are experimental.
