@@ -5,6 +5,8 @@ nav_order: 85
 
 You can include and use your own [Custom Lambda Layers](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). This allows you to handle cases of extra customization like additional system libraries and gems.  Here's how you configure custom Lambda Layers.
 
+config/application.rb:
+
 ```ruby
 Jets.application.configure do
   config.lambda.layers = [
