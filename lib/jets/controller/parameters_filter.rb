@@ -14,7 +14,7 @@ class Jets::Controller
     end
 
     def filter_json(json_text)
-      return json_text if filters.empty?
+      return json_text if filters.blank? || json_text.blank?
 
       begin
         hash_params = JSON.parse(json_text)
