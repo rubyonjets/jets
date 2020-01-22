@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+- Fixed ApiResources with long names not included in the main CloudFormation template
+
 ## [2.3.12]
 - #421 use underscore for database name in database.yml
 - #422 url_for: allow any activemodel compatiable object to work

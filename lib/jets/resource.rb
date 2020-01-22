@@ -26,14 +26,14 @@ class Jets::Resource
     Jets::Resource.truncate_id(id)
   end
 
-  def self.truncate_id(id)
+  def self.truncate_id(id, postfix = '')
     # Api Gateway resource name has a limit of 64 characters.
     # Yet it throws not found when ID is longer than 62 characters and I don't know why.
     # To keep it safe, let's stick to the 62 characters limit.
-    if id.size > 62
-      "#{id[0..55]}#{Digest::MD5.hexdigest(id)[0..5]}"
+    if id.size + postfix.size > 62
+      "#{id[0..(55 - postfix.size)]}#{Digest::MD5.hexdigest(id)[0..5]}#{postfix}"
     else
-      id
+      "#{id}#{postfix}"
     end
   end
 
