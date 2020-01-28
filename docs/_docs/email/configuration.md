@@ -1,5 +1,5 @@
 ---
-title: Email Configuration STMP
+title: Email Configuration SMTP
 nav_order: 65
 ---
 
