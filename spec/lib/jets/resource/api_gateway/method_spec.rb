@@ -39,7 +39,7 @@ describe Jets::Resource::ApiGateway::Method do
       properties = resource.properties
       # pp properties # uncomment to debug
       expect(properties["RestApiId"]).to eq "!Ref RestApi"
-      expect(properties["ResourceId"]).to eq "!Ref PostsPostIdCommentsCommentIdImagesImagesSourceUrlsSource9fe958"
+      expect(properties["ResourceId"]).to eq "!Ref PostsPostIdCommentsCommentIdImagesImagesSourcaa1e8bApiResource"
       expect(properties["HttpMethod"]).to eq "GET"
     end
   end

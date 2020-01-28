@@ -28,7 +28,7 @@ module Jets::Resource::ApiGateway
       if @path == ''
         "RootResourceId"
       else
-        Jets::Resource.truncate_id "#{path_logical_id(@path)}ApiResource"
+        Jets::Resource.truncate_id path_logical_id(@path), "ApiResource"
       end
     end
 
@@ -41,7 +41,7 @@ module Jets::Resource::ApiGateway
       if @path.include?('/') # posts/:id or posts/:id/edit
         parent_path = @path.split('/')[0..-2].join('/')
         parent_logical_id = path_logical_id(parent_path)
-        Jets::Resource.truncate_id("#{parent_logical_id}ApiResource")
+        Jets::Resource.truncate_id(parent_logical_id, "ApiResource")
       else
         "RootResourceId"
       end
