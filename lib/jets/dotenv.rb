@@ -22,18 +22,18 @@ class Jets::Dotenv
   # dotenv files with the following precedence:
   #
   # - .env.development.jets_env_extra (highest)
-  # - .env.development.remote (2nd highest)
-  # - .env.development.local
+  # - .env.development.remote (2nd highest, only if JETS_ENV_REMOTE=1)
+  # - .env.development.local (unless JETS_ENV_REMOTE=1)
   # - .env.development
-  # - .env.local - This file is loaded for all environments _except_ `test`.
+  # - .env.local - This file is loaded for all environments _except_ `test` or unless JETS_ENV_REMOTE=1
   # - .env - The original (lowest)
   #
   def dotenv_files
     files = [
       root.join(".env"),
-      (root.join(".env.local") unless Jets.env.test?),
+      (root.join(".env.local") unless (Jets.env.test? || @remote)),
       root.join(".env.#{Jets.env}"),
-      root.join(".env.#{Jets.env}.local"),
+      (root.join(".env.#{Jets.env}.local") unless @remote),
     ]
     files << root.join(".env.#{Jets.env}.remote") if @remote
     if ENV["JETS_ENV_EXTRA"]
