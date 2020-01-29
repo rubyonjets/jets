@@ -1,5 +1,15 @@
 describe Jets::Dotenv do
   describe "#load!" do
+    it "ignores *.remote files unless JETS_ENV_REMOTE=1" do
+      env = Jets::Dotenv.new(false).load!
+      expect(env["ONLY_REMOTE"]).to eq nil
+      expect(env["ONLY_LOCAL"]).to eq "1"
+    end
+    it "ignores *.local files when JETS_ENV_REMOTE=1" do
+      env = Jets::Dotenv.new(true).load!
+      expect(env["ONLY_REMOTE"]).to eq "1"
+      expect(env["ONLY_LOCAL"]).to eq nil
+    end
     it "replaces ssm:<relative-path> with SSM parameters prefixed with /<app-name>/<jets-env>/" do
       relative_path = "authenticated-url"
       value = "https://foo:bar@example.com"
