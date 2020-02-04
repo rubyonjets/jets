@@ -1,0 +1,1 @@
+JETS_TEST_INITIALIZER_TWO_TIME = DateTime.current
