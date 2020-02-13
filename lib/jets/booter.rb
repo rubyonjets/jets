@@ -120,7 +120,7 @@ class Jets::Booter
 
     # All Turbines
     def app_initializers
-      Dir.glob("#{Jets.root}/config/initializers/**/*").each do |path|
+      Dir.glob("#{Jets.root}/config/initializers/**/*").sort.each do |path|
         load path
       end
     end

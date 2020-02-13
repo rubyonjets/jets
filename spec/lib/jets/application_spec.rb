@@ -64,4 +64,10 @@ describe Jets::Application do
       expect(spec_names).to eq ["primary", "primary_replica", "animals", "animals_replica"]
     end
   end
+
+  context "custom initializers" do
+    it "should load in order" do
+      expect(JETS_TEST_INITIALIZER_ONE_TIME).to be < JETS_TEST_INITIALIZER_TWO_TIME
+    end
+  end
 end
