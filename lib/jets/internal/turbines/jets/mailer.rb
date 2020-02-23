@@ -8,6 +8,7 @@ module Jets
     end
 
     initializer "action_mailer.set_configs" do |app|
+      app.config.action_mailer ||= ActiveSupport::OrderedOptions.new # TODO: temp fix. only happens sometimes?
       options = app.config.action_mailer
       options.default_url_options ||= {}
       options.default_url_options[:protocol] ||= "https"
