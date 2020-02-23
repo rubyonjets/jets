@@ -3,8 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
-## [UNRELEASED]
-- Fixed ApiResources with long names not included in the main CloudFormation template
+## [2.3.13]
+- #430 Remove out-of-date note about FIFO Queue
+- #433 Fixed ApiResources with long names not included in the main CloudFormation template
+- #435 fix typo SMTP
+- #437 Ignore *.local files when JETS_ENV_REMOTE=1
+- #438 Forcing sort of initializers
+- #446 temp fix for actionmailer turbine initializer
+- update to ruby 2.5.7
 
 ## [2.3.12]
 - #421 use underscore for database name in database.yml
