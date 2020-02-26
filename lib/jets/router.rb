@@ -93,18 +93,18 @@ module Jets
     # Useful for RouterMatcher
     #
     # Precedence:
-    # 1. Routes with no captures get highest precedence: posts/new
-    # 2. Then consider the routes with captures: post/:id
-    # 3. Last consider the routes with wildcards: *catchall
+    # Routes with wildcards are considered after routes without wildcards
     #
-    # Within these 2 groups we consider the routes with the longest path first
-    # since posts/:id and posts/:id/edit can both match.
+    # Routes with fewer captures are ordered first since both
+    # /posts/:post_id/comments/new and /posts/:post_id/comments/:id are equally
+    # long
+    #
+    # Routes with the same amount of captures and wildcards are orderd so that
+    # the longest path is considered first since posts/:id and posts/:id/edit
+    # can both match.
     def ordered_routes
-      length = Proc.new { |r| r.path.length * -1 }
-      capture_routes = routes.select { |r| r.path.include?(':') }.sort_by(&length)
-      wildcard_routes = routes.select { |r| r.path.include?('*') }.sort_by(&length)
-      simple_routes = (routes - capture_routes - wildcard_routes).sort_by(&length)
-      simple_routes + capture_routes + wildcard_routes
+      length = Proc.new { |r| [r.path.count("*"), r.path.count(":"), r.path.length * -1] }
+      routes.sort_by(&length)
     end
 
     class << self
