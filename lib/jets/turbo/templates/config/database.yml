@@ -1,6 +1,10 @@
 default: &default
   adapter:  <%= @adapter %>
+<% if @adapter == 'postgresql' -%>
+  encoding: unicode
+<% else -%>
   encoding: utf8mb4
+<% end -%>
   pool: <%%= ENV["DB_POOL"] || 5  %>
   database: <%%= ENV['DB_NAME'] || '<%= @database_development %>' %>
 <% if @adapter == 'postgresql' -%>
