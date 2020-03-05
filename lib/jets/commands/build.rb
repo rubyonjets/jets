@@ -32,6 +32,7 @@ module Jets::Commands
       clean_templates
       build_minimal_template
       build_all_templates if full?
+      puts "Generated CloudFormation templates at #{Jets.build_root}/templates"
     end
 
     def full?
