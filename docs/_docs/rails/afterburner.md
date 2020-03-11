@@ -63,7 +63,7 @@ Read the documentation for [Function Properties]({% link _docs/function-properti
 
 Generally, it is recommended you run Jets application directly instead of Afterburner mode. Though mostly hidden from a user perspective, there is overhead associated and extra obfuscation with Jets Afterburner. This [Mega Mode Post](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda) may help.
 
-When you run a Jets application natively, you also get access to the full power of Jets. Some examples are [Jobs]({% link _docs/jobs.md %}), [Events]({% link _docs/events.md %}), and [IAM Policies]({% link _docs/iam-policies.md %}).
+Though it is possible to leverage Jets features in Afterburner by adding code to [.jets/project](https://community.rubyonjets.com/t/how-to-test-an-afterburner-job-from-lambda-test-events/203), it's recommended to run Jets natively when possible. When you run a Jets application natively, you also get direct access to the full power of Jets. Some examples are [Jobs]({% link _docs/jobs.md %}), [Events]({% link _docs/events.md %}), and [IAM Policies]({% link _docs/iam-policies.md %}).
 
 ## JavaScript Runtime Error
 
