@@ -58,13 +58,22 @@ describe Jets::Application do
                                        ])
     end
 
-    it "sets iam_policy to app.class.default_iam_policy neither iam_policy nor default_iam_policy are set" do
+    it "sets iam_policy to app.class.default_iam_policy iam_policy and default_iam_policy are unset" do
       app.configure do
         config.default_iam_policy = nil
         config.iam_policy = nil
         set_iam_policy
       end
       expect(config.iam_policy).to eql(app.class.default_iam_policy)
+    end
+
+    it "sets iam_policy to empty when iam_policy and default_iam_policy are empty" do
+      app.configure do
+        config.default_iam_policy = []
+        config.iam_policy = []
+        set_iam_policy
+      end
+      expect(config.iam_policy).to eql([])
     end
   end
 
