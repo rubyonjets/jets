@@ -10,18 +10,12 @@ class Jets::Application
           effect: "Allow",
           resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
         }
-        s3_bucket = Jets.aws.s3_bucket
         s3_readonly = {
-          action: ["s3:Get*", "s3:List*"],
+          action: ["s3:Get*", "s3:List*", "s3:HeadBucket"],
           effect: "Allow",
-          resource: "arn:aws:s3:::#{s3_bucket}*",
+          resource: "arn:aws:s3:::#{Jets.aws.s3_bucket}*",
         }
-        s3_bucket = {
-          action: ["s3:ListAllMyBuckets", "s3:HeadBucket"],
-          effect: "Allow",
-          resource: "arn:aws:s3:::*", # scoped to all buckets
-        }
-        policies = [logs, s3_readonly, s3_bucket]
+        policies = [logs, s3_readonly]
 
         cloudformation = {
           action: ["cloudformation:DescribeStacks", "cloudformation:DescribeStackResources"],
