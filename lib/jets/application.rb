@@ -175,7 +175,9 @@ class Jets::Application
   end
 
   def set_iam_policy
-    config.iam_policy ||= self.class.default_iam_policy
+    config.iam_policy ||= []
+    config.default_iam_policy ||= self.class.default_iam_policy
+    config.iam_policy = config.default_iam_policy | config.iam_policy
     config.managed_policy_definitions ||= [] # default empty
   end
 
