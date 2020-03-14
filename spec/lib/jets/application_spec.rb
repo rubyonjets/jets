@@ -58,7 +58,7 @@ describe Jets::Application do
                                        ])
     end
 
-    it "sets iam_policy to app.class.default_iam_policy iam_policy and default_iam_policy are unset" do
+    it "sets iam_policy to app.class.default_iam_policy when iam_policy and default_iam_policy are unset" do
       app.configure do
         config.default_iam_policy = nil
         config.iam_policy = nil
