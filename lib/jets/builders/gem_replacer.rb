@@ -6,7 +6,7 @@ module Jets::Builders
     end
 
     def run
-      check = Jets::Gems::Check.new
+      check = Jets::Gems::Check.new(cli: true)
       if Jets.config.lambda.layers.empty?
         found_gems = check.run! # exits early if missing gems found
       else
