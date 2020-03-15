@@ -6,7 +6,9 @@ module Jets::Builders
     end
 
     def run
-      check = Jets::Gems::Check.new(cli: true)
+      # use_gemspec to resolve http-parser gem issue
+      use_gemspec = !Jets::Turbo.afterburner? # gemspec approach breaks afterburner mode
+      check = Jets::Gems::Check.new(use_gemspec: use_gemspec)
       if Jets.config.lambda.layers.empty?
         found_gems = check.run! # exits early if missing gems found
       else
