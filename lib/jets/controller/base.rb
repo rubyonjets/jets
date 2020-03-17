@@ -112,9 +112,6 @@ class Jets::Controller
     def event_log
       display_event = @event.dup
 
-      display_event = @event.dup
-      display_event['body'] = '[BASE64_ENCODED]' if @event['isBase64Encoded']
-
       if @event['isBase64Encoded']
         display_event['body'] = '[BASE64_ENCODED]'
       else
