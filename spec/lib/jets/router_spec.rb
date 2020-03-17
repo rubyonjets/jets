@@ -1394,6 +1394,17 @@ EOL
         expect(paths).to eq(
           ["posts/new", "posts", "posts/:id/edit", "posts/:id", "*catchall"])
       end
+
+      it "ordered_routes should sort nested resources new before show" do
+        router.draw do
+          resources :posts do
+            resources :comments
+          end
+          any "*catchall", to: "catch#all"
+        end
+        paths = router.ordered_routes.map(&:path).uniq
+        expect(paths.index("posts/:post_id/comments/new")).to be < paths.index("posts/:post_id/comments/:id")
+      end
     end
 
     context "direct as" do
