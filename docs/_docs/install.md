@@ -21,16 +21,16 @@ Jets uses Ruby 2.5, and code written with patch variants of it should also work.
 
 For apps with HTML pages, jets uses [webpacker](https://github.com/rails/webpacker) to compile assets, which requires yarn.  [Node version manager](https://github.com/creationix/nvm), nvm, is recommended if you want to manage node versions.
 
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
     # note follow the instructions after the curl command to source nvm
-    nvm install 8.10.0 # please check AWS Lambda for the latest node runtime
+    nvm install v12.13.0
     nvm alias default node # sets the default version
 
 Once node is installed, install yarn with:
 
     npm install -g yarn
 
-You can use any version of yarn that works with webpacker.
+You can use any version of yarn that works with webpacker. If you run into webpacker issues, try upgrading node and yarn to the latest version.
 
 ## Database
 
