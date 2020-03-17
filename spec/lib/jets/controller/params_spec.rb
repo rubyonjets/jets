@@ -81,4 +81,68 @@ describe Jets::Controller::Params do
       end
     end
   end
+
+  describe "#filtered_params" do
+    let(:event) { {} }
+
+    it "Forwards options to params" do
+      expect(controller).to receive(:params).with(body_parameters: false, path_parameters: true, raw: true)
+
+      controller.send(:filtered_parameters, body_parameters: false, path_parameters: true, raw: false)
+    end
+
+    context "With plain filtered parameters" do
+      let(:event) { multipart_event(:simple_form) }
+
+      it "Masks provided keys as [FILTERED]" do
+        Jets.config.controllers.filtered_parameters = [:title]
+
+        filtered_params = controller.send(:filtered_parameters)
+        expect(filtered_params).to eq(
+          "name" => "Tung",
+          "title" => "[FILTERED]"
+        )
+      end
+    end
+
+    context "With nested filtered parameters" do
+      let(:event) { multipart_event(:nested) }
+
+      it "Masks provided keys as [FILTERED]" do
+        Jets.config.controllers.filtered_parameters = ["foo.submit-name"]
+
+        filtered_params = controller.send(:filtered_parameters)
+        expect(filtered_params["foo"]["submit-name"]).to eq("[FILTERED]")
+      end
+    end
+
+    context "With nested array filtered parameters" do
+      let(:event) do
+        {
+          "headers" => {
+            "content-type" => "application/x-www-form-urlencoded; charset=UTF-8"
+          },
+          "body" => "users[0][name]=John&users[0][location]=Boston&users[1][name]=Luke&users[1][location]=Chicago"
+        }
+      end
+
+      it "Masks provided keys as [FILTERED]" do
+        Jets.config.controllers.filtered_parameters = [/users\.\d+\.name/]
+
+        filtered_params = controller.send(:filtered_parameters)
+        expect(filtered_params).to eq(
+          "users" => {
+            "0" => {
+              "name" => "[FILTERED]",
+              "location" => "Boston"
+            },
+            "1" => {
+              "name" => "[FILTERED]",
+              "location" => "Chicago"
+            }
+          }
+        )
+      end
+    end
+  end
 end

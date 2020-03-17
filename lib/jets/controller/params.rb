@@ -29,6 +29,10 @@ class Jets::Controller
       end
     end
 
+    def filtered_parameters(**kwargs)
+      parameter_filter.filter params(**kwargs, raw: true) # Always filter raw hash
+    end
+
     def query_parameters
       event["queryStringParameters"] || {}
     end
@@ -82,6 +86,10 @@ class Jets::Controller
     def base64_decode(body)
       return nil if body.nil?
       Base64.decode64(body)
+    end
+
+    def parameter_filter
+      @parameter_filter ||= ParametersFilter.new Jets.config.controllers.filtered_parameters
     end
   end
 end
