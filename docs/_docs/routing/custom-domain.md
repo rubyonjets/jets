@@ -109,6 +109,6 @@ For the most control, it is recommended to create a CloudFront distribution **ou
 
 ![](/img/docs/routing/jets-vanity-endpoint-cloudfront.png)
 
-This provides you full manual control over the DNS. You can deploy additional [extra environments]({% link _docs/env-extra.md %}) and update which Jets environment CloudFront points to. This type of blue-green deployment can be useful for large feature rollouts. Using CloudFront will also allow you to do things like redirect http to https. The notable drawback is that CloudFront changes can take 15m+ to deploy.
+This provides you full manual control over the DNS. You can deploy additional [extra environments]({% link _docs/env-extra.md %}) and update which Jets environment CloudFront points to. This type of blue-green deployment can be useful for large feature rollouts. Using CloudFront will also allow you to do things like redirect http to https. The notable drawback is that CloudFront changes can take 15m-45m to deploy.
 
 {% include prev_next.md %}

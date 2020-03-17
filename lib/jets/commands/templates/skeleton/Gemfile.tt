@@ -3,8 +3,8 @@ source "https://rubygems.org"
 gem "jets"
 
 <% if @webpacker -%>
-# Include webpacker if you are you are building html pages
-gem "webpacker", git: "https://github.com/tongueroo/webpacker.git", branch: "jets"
+# Include jetpacker if you are you are building html pages
+gem "jetpacker"
 <% end -%>
 <% if @database == 'postgresql' %>
 # Include pg gem if you are using ActiveRecord, remove next line
