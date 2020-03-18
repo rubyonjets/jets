@@ -99,8 +99,17 @@ module Jets::Builders
 
       # Code prep and zipping
       check_code_size!
-      generate_shims
-      calculate_md5s # must be called before create_zip_files because checksums need to be populated
+      calculate_md5s # must be called before create_zip_files and generate_shims because checksums need to be populated
+      # generate_shims and create_zip_files use checksums
+      #
+      # Notes:
+      #
+      # Had moved calculate_md5s to fix a what thought was a subtle issue https://github.com/tongueroo/jets/pull/424
+      # But am unsure about that the fix now. This essentially reverts that issue.
+      #
+      # Fix in https://github.com/tongueroo/jets/pull/459
+      #
+      generate_shims # the generated handlers/data.yml has rack_zip key
       create_zip_files
     end
 
