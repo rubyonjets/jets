@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.14]
+- #432 filtered_parameters support
+- #447 improve nested routes support. order routes so that nested resources always work
+- #451 Fix Jets turbo DB encoding
+- #452 Print Cfn templates location after build
+- #458 update webpacker fork with jetpacker gem
+- #459 fix afterburner mode
+
 ## [2.3.13]
 - #430 Remove out-of-date note about FIFO Queue
 - #433 Fixed ApiResources with long names not included in the main CloudFormation template
