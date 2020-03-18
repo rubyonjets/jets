@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "jets"
+gem "jets", git: "https://github.com/tongueroo/jets.git", submodules: true, branch: "master"
 
 <% if @webpacker -%>
 # Include jetpacker if you are you are building html pages
