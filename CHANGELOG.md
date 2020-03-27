@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.15]
+- #461 fix guesser lookup for long function names
+
 ## [2.3.14]
 - #432 filtered_parameters support
 - #447 improve nested routes support. order routes so that nested resources always work
