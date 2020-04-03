@@ -52,8 +52,8 @@ module Jets::Resource::Lambda
         environment: { variables: environment },
       }
 
-      appplication_config = Jets.application.config.function.to_h
-      baseline.merge(appplication_config)
+      application_config = Jets.application.config.function.to_h
+      baseline.merge(application_config)
     end
 
     # Class properties example:
