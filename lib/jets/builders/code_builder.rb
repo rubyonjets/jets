@@ -82,7 +82,7 @@ module Jets::Builders
       begin
         s3.head_object(bucket: s3_bucket, key: s3_key)
         true
-      rescue Aws::S3::Errors::NotFound
+      rescue Aws::S3::Errors::NotFound, Aws::S3::Errors::Forbidden
         false
       end
     end
