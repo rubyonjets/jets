@@ -1,5 +1,6 @@
 class ToysController < ApplicationController
   before_action :set_toy, only: [:show, :edit, :update, :delete]
+  authorization_scopes %w[create delete]
 
   # GET /toys
   def index
