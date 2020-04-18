@@ -30,7 +30,7 @@ Once node is installed, install yarn with:
 
     npm install -g yarn
 
-You can use any version of yarn that works with webpacker. If you run into webpacker issues, try upgrading node and yarn to the latest version.
+You can use any version of yarn that works with webpacker. If you run into webpacker issues, try upgrading node and yarn to the latest version. Also, upgrading the `yarn.lock` file with `yarn upgrade` sometimes helps.
 
 ## Database
 
