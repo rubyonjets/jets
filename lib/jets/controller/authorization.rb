@@ -6,7 +6,8 @@ class Jets::Controller
       class_attribute :auth_type,
                       :auth_to,
                       :auth_options, # for only and except filters
-                      :api_key_needed
+                      :api_key_needed,
+                      :authorization_scopes_value
     end
 
     class_methods do
@@ -28,6 +29,14 @@ class Jets::Controller
           self.auth_options = options # IE: only: %w[index] or expect: [:show]
         else
           self.auth_to
+        end
+      end
+
+      def authorization_scopes(value=nil)
+        if !value.nil?
+          self.authorization_scopes_value = value
+        else
+          self.authorization_scopes_value
         end
       end
 

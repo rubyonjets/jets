@@ -36,6 +36,8 @@ module Jets::Resource::ApiGateway
         method_responses: []
       }
       props[:authorizer_id] = authorizer_id if authorizer_id
+      props[:authorization_scopes] = authorization_scopes if authorization_scopes
+
       props
     end
 

@@ -62,4 +62,22 @@ describe Jets::Resource::ApiGateway::Method do
       expect(resource.properties["ApiKeyRequired"]).to eq 'true'
     end
   end
+
+  context "authorization scopes on rotes" do
+    let(:route) do
+      Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index", authorization_scopes: %w[create delete])
+    end
+    it "can specify an authorization scopes" do
+      expect(resource.properties["AuthorizationScopes"]).to eq ["create", "delete"]
+    end
+  end
+
+  context "authorization scopes on controller" do
+    let(:route) do
+      Jets::Router::Route.new(path: "toys", method: :get, to: "toys#index")
+    end
+    it "can specify an authorization scopes" do
+      expect(resource.properties["AuthorizationScopes"]).to eq ["create", "delete"]
+    end
+  end
 end

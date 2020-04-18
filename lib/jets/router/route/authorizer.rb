@@ -16,6 +16,10 @@ class Jets::Router::Route
       @options[:authorizer]
     end
 
+    def authorization_scopes
+      @options[:authorization_scopes]
+    end
+
     def authorization_type
       @options[:authorization_type] || inferred_authorization_type
     end

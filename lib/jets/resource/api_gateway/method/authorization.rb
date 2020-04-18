@@ -28,5 +28,14 @@ class Jets::Resource::ApiGateway::Method
         controller_klass.api_key_required ||
         Jets.config.api.api_key_required
     end
+
+    def authorization_scopes
+      if @route.authorization_scopes
+        authorization_scopes = @route.authorization_scopes
+      elsif controller_klass.authorization_scopes
+        authorization_scopes = controller_klass.authorization_scopes
+      end
+      authorization_scopes
+    end
   end
 end
