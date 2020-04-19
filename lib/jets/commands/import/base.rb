@@ -41,7 +41,7 @@ class Jets::Commands::Import
     end
 
     def bundle_install
-      Bundler.with_clean_env do
+      Bundler.with_unbundled_env do
         run "cd rack && bundle install"
       end
     end

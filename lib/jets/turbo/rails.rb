@@ -110,7 +110,7 @@ class Jets::Turbo
     # TODO: remove duplication, copied from jets/commands/import/base.rb
     # And modified it slightly
     def bundle_install
-      Bundler.with_clean_env do
+      Bundler.with_unbundled_env do
         sh "cd #{build_area}/#{@project_folder}/rack && bundle install"
       end
     end

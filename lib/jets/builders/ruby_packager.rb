@@ -59,7 +59,7 @@ module Jets::Builders
 
       FileUtils.rm_rf("#{cache_area}/.bundle")
       require "bundler" # dynamically require bundler so user can use any bundler
-      Bundler.with_clean_env do
+      Bundler.with_unbundled_env do
         sh(
           "cd #{cache_area} && " \
           "env bundle install --path #{cache_area}/vendor/gems --without development test"

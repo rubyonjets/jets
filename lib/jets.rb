@@ -18,6 +18,8 @@ $:.unshift("#{gem_root}/lib")
 $:.unshift("#{gem_root}/vendor/cfn-status/lib")
 require "cfn_status"
 
+require "jets/core_ext/bundler"
+
 require "jets/autoloaders"
 Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]
 Jets::Autoloaders.once.setup
