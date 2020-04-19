@@ -61,7 +61,7 @@ module Jets::Commands
     end
 
     def bundle_install
-      Bundler.with_clean_env do
+      Bundler.with_unbundled_env do
         system("BUNDLE_IGNORE_CONFIG=1 bundle install")
       end
     end

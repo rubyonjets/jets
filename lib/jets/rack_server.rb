@@ -34,7 +34,7 @@ module Jets
     def serve
       # Note, looks like stopping jets server with Ctrl-C sends the TERM signal
       # down to the sub bin/rackup command cleans up the child process fine.
-      Bundler.with_clean_env do
+      Bundler.with_unbundled_env do
         args = ''
         # only forward the host option, port is always 9292 for simplicity
         if @options[:host]

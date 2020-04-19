@@ -235,7 +235,7 @@ module Jets::Builders
 
       # Need to capture JETS_ROOT since can be changed by Turbo mode
       jets_root = Jets.root
-      Bundler.with_clean_env do
+      Bundler.with_unbundled_env do
         # Switch gemfile for Afterburner mode
         gemfile = ENV['BUNDLE_GEMFILE']
         ENV['BUNDLE_GEMFILE'] = "#{jets_root}/rack/Gemfile"
