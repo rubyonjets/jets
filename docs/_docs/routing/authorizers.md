@@ -94,6 +94,17 @@ end
 
 Setting the authorizer in the controller is just syntactical sugar. Ultimately, the authorizer is still set at the API Gateway Method Resource.
 
+## Test Authorizer
+
+To test the Authorizer, send a request with the `Auth` header and one without it.  Here's an example:
+
+    $ URL=https://wmtqdx6byd.execute-api.us-west-2.amazonaws.com/dev/posts # use your own URL
+    $ curl -H "Auth: test" $URL -vso /dev/null 2>&1 | grep '< HTTP'
+    < HTTP/2 200
+    $ curl $URL -vso /dev/null 2>&1 | grep '< HTTP'
+    < HTTP/2 401
+    $
+
 ## Authorizer Defaults
 
 The `authorizer` method has some conventional defaults.  The following:
