@@ -1,6 +1,6 @@
 ---
 title: Associated Resources
-nav_order: 70
+nav_order: 72
 ---
 
 As explained in the [Core Resource Model](http://rubyonjets.com/docs/core-resource/) docs, methods like `rate` and `cron` simply perform some wrapper logic and then ultimately call the `resource` method. We'll cover that wrapper logic and expansion process in more details here.

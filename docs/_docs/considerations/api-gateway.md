@@ -1,6 +1,6 @@
 ---
 title: API Gateway Routes
-nav_order: 96
+nav_order: 98
 ---
 
 Jets translates `config/routes.rb` definitions to API Gateway Resources: [Routing Overview](http://rubyonjets.com/docs/routing/). Essentially, API Gateway is the routing layer of a Jets application.  From the [AWS API Gateway](https://aws.amazon.com/api-gateway/) product page:

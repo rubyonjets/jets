@@ -1,6 +1,6 @@
 ---
 title: Database ActiveRecord
-nav_order: 52
+nav_order: 54
 ---
 
 Jets also supports ActiveRecord and currently the PostgreSQL and MySQL.  This is configured with your `Gemfile` and `config/database.yml`.

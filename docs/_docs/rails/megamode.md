@@ -1,6 +1,6 @@
 ---
 title: Mega Mode
-nav_order: 49
+nav_order: 51
 ---
 
 Jets Mega Mode supports deploying your Rails app also with little changes to your code.

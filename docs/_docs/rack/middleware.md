@@ -1,6 +1,6 @@
 ---
 title: Middleware
-nav_order: 44
+nav_order: 46
 ---
 
 [Jets Controllers]({% link _docs/controllers.md %}) run through a set of Rack middlewares. To can see the full list of middleware with the [jets middleware](http://rubyonjets.com/reference/jets-middleware/) command.

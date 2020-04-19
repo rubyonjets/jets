@@ -1,6 +1,6 @@
 ---
 title: 'Upload Binary Files: Images, Attachments, Etc'
-nav_order: 78
+nav_order: 80
 ---
 
 Jets supports the ability to upload files like images via [Binary Support](https://aws.amazon.com/about-aws/whats-new/2016/11/binary-data-now-supported-by-api-gateway/).  Binary support is enabled for `multipart/form-data` data.  Jets converts the uploaded data from a standard HTML file input field and passes it to your controller as a file object through the `params` helper.

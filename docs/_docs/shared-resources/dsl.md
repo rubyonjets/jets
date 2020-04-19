@@ -1,6 +1,6 @@
 ---
 title: Shared Resources DSL
-nav_order: 73
+nav_order: 75
 ---
 
 As mentioned in [Shared Resources]({% link _docs/shared-resources.md %}), the `sns_topic` is simply a convenience method that calls the `resources` and `output` methods that add sections to the CloudFormation template. Shared Resources inherit from the `Jets::Stack` class.  By inheriting from the `Jets::Stack` class, Shared Resources are provided access to a general CloudFormation template DSL.  Here are the main methods of that DSL:

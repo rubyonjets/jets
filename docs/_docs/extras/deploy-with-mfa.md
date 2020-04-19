@@ -1,6 +1,6 @@
 ---
 title: Deploying with MFA
-nav_order: 89
+nav_order: 91
 ---
 
 Jets supports the use of Multi Factor Authentication, MFA.  Jets leverages the [tongueroo/aws-mfa-secure](https://github.com/tongueroo/aws-mfa-secure) gem to achieve this.

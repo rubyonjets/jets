@@ -1,5 +1,6 @@
 ---
 title: Authorization Scopes
+nav_order: 38
 ---
 
 You can configure the OAuth2 scope in the Gateway API Method Request in two ways:
@@ -25,3 +26,5 @@ Jets.application.routes.draw do
   get  "posts", to: "posts#index", authorization_scopes: %w[create delete]
 end
 ```
+
+{% include prev_next.md %}

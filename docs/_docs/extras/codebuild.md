@@ -1,6 +1,6 @@
 ---
 title: 'Continuous Integration: Jets and CodeBuild'
-nav_order: 88
+nav_order: 90
 ---
 
 This page discusses setting up Continuous Integration.  We'll use [CodeBuild](https://aws.amazon.com/codebuild/), a fully managed build service from AWS.  It is similar to other services like: [circleci](https://circleci.com/), [travis-ci](https://travis-ci.org/), [semaphoreci](https://semaphoreci.com/), etc.

@@ -1,6 +1,6 @@
 ---
 title: Mount Rack Apps
-nav_order: 38
+nav_order: 39
 ---
 
 Jets Routing supports mounting Rack applications. Example:

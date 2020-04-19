@@ -1,6 +1,6 @@
 ---
 title: Rails Support
-nav_order: 48
+nav_order: 50
 ---
 
 Jets Afterburner mode supports deploying your Rails app requiring little changes to your code. This is an experimental feature.

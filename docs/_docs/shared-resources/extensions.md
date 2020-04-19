@@ -1,6 +1,6 @@
 ---
 title: Shared Resources Extensions
-nav_order: 74
+nav_order: 76
 ---
 
 To create your own Shared Resource Extensions, you define a module with the methods in the `app/shared/extensions` folder.  Here's a simple example:

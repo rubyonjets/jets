@@ -1,6 +1,6 @@
 ---
 title: The Jets Community Conduct Guideline
-nav_order: 103
+nav_order: 105
 ---
 
 We have picked the following conduct guideline based on Ruby's.  We wish for the Jets community to be safe, productive, and collaborative. Each Jets related community may pick their own Conduct Guideline or Code.

@@ -1,6 +1,6 @@
 ---
 title: Jets Turbine
-nav_order: 62
+nav_order: 64
 ---
 
 A `Jets::Turbine` provides hooks to extend Jets and or modify the initialization process. This is useful if you want to develop a third party extension for Jets like [sentry-jets](https://github.com/tongueroo/sentry-jets).

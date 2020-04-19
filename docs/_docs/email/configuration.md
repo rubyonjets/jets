@@ -1,6 +1,6 @@
 ---
 title: Email Configuration SMTP
-nav_order: 65
+nav_order: 67
 ---
 
 You can configure email with [initializers]({% link _docs/initializers.md %}).  Example:
