@@ -3,7 +3,9 @@ title: Authorization Scopes
 nav_order: 38
 ---
 
-You can configure the OAuth2 scope in the Gateway API Method Request in two ways:
+Authorization Scopes are support by Cognito authorizers. You can configure the OAuth2 scope in the Gateway API Method Request in two ways.
+
+Note: This interface may be adjusted.
 
 ### Controller Wide
 
@@ -11,7 +13,8 @@ You can configure controller-wide the OAuth2 Scope.  Example:
 
 ```ruby
 class PostsController < ApplicationController
-    authorization_scopes %w[create delete]
+  authorizer "main#my_cognito" # protects all actions in the controller
+  authorization_scopes %w[create delete]
 end
 ```
 
@@ -23,7 +26,7 @@ You can also configure the OAuth2 Scope on a per-route basis with the `authoriza
 
 ```ruby
 Jets.application.routes.draw do
-  get  "posts", to: "posts#index", authorization_scopes: %w[create delete]
+  get  "posts", to: "posts#index", authorizer: "main#my_cognito", authorization_scopes: %w[create delete]
 end
 ```
 
