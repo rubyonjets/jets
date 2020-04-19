@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.16]
+- #466 fix application_config typo
+- #467 Handle forbidden error from s3
+- #468 authorization_scopes
+- #469 Fixed typo from STMP to SMTP
+- #470 remove json dependency
+- #471 use `Bundler.with_unbundled_env` remove bundler deprecation
+
 ## [2.3.15]
 - #461 fix guesser lookup for long function names
 
