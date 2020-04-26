@@ -37,7 +37,7 @@ If you need full customization of the CORS response headers, you can set `config
 Jets.application.configure do
   # ...
   config.cors = {
-    "access-control-allow-origin" => "*.mydomain.com"
+    "access-control-allow-origin" => "*.mydomain.com",
     "access-control-allow-credentials" => true,
   }
 end
