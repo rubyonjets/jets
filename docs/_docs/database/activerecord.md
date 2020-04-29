@@ -15,6 +15,14 @@ If you would like to use PostgreSQL instead, use:
 
     jets new demo --database=postgresql
 
+## Create DB
+
+Before you start making migrations, create the development and test databases:
+
+```
+jets db:create
+```
+
 ## Migrations
 
 Here's an example of creating migrations:
