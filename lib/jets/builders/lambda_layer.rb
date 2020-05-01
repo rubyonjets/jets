@@ -10,6 +10,11 @@ module Jets::Builders
       replace_compiled_gems
     end
 
+    # Gives a string like "2.5.0"
+    def ruby_folder
+      Jets::Gems.ruby_folder
+    end
+    
     # Also restructure the folder from:
     #   vendor/gems/ruby/2.5.0
     # To:
@@ -17,13 +22,13 @@ module Jets::Builders
     #
     # For Lambda Layer structure
     def consolidate_gems_to_opt
-      src = "#{stage_area}/code/vendor/gems/ruby/2.5.0"
-      dest = "#{stage_area}/opt/ruby/gems/2.5.0"
+      src = "#{stage_area}/code/vendor/gems/ruby/#{ruby_folder}"
+      dest = "#{stage_area}/opt/ruby/gems/#{ruby_folder}"
       rsync_and_link(src, dest)
 
       return unless Jets.rack?
 
-      src = "#{stage_area}/rack/vendor/gems/ruby/2.5.0"
+      src = "#{stage_area}/rack/vendor/gems/ruby/#{ruby_folder}"
       rsync_and_link(src, dest)
     end
 
@@ -36,7 +41,7 @@ module Jets::Builders
 
       # Create symlink that will point to the gems in the Lambda Layer:
       #   stage/opt/ruby/gems/2.5.0 -> /opt/ruby/gems/2.5.0
-      FileUtils.ln_sf("/opt/ruby/gems/#{Jets::Gems.ruby_folder}", src)
+      FileUtils.ln_sf("/opt/ruby/gems/#{ruby_folder}", src)
     end
 
     # replace_compiled_gems:
