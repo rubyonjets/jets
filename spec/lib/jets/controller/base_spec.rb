@@ -179,4 +179,15 @@ describe Jets::Controller::Base do
       end
     end
   end
+
+  describe "#log_info_complete" do
+    it 'logs completion' do
+      status = 200
+      took = 1.5
+      expected_event_log = "Completed Status Code #{status} in #{took}s"
+      expect(Jets.logger).to receive(:info).with(expected_event_log)
+  
+      controller.log_info_start(status, took)
+    end
+  end
 end

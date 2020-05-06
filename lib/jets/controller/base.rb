@@ -95,7 +95,7 @@ class Jets::Controller
 
       took = Time.now - t1
       status = triplet[0]
-      Jets.logger.info "Completed Status Code #{status} in #{took}s"
+      log_info_complete(status, took)
       triplet # status, headers, body
     end
 
@@ -107,6 +107,10 @@ class Jets::Controller
       Jets.logger.info "Processing #{self.class.name}##{@meth}"
       Jets.logger.info "  Event: #{event_log}"
       Jets.logger.info "  Parameters: #{JSON.dump(filtered_parameters.to_h)}"
+    end
+
+    def log_info_complete(status, took)
+      Jets.logger.info "Completed Status Code #{status} in #{took}s"
     end
 
     def event_log
