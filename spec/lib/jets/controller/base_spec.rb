@@ -189,7 +189,7 @@ describe Jets::Controller::Base do
       expected_event_log = "Completed Status Code #{status} in #{took}s"
       expect(Jets.logger).to receive(:info).with(expected_event_log)
   
-      controller.log_info_start(status, took)
+      controller.log_info_complete(status, took)
     end
   end
 end
