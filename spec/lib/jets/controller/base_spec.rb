@@ -181,6 +181,8 @@ describe Jets::Controller::Base do
   end
 
   describe "#log_info_complete" do
+    let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
+
     it 'logs completion' do
       status = 200
       took = 1.5
