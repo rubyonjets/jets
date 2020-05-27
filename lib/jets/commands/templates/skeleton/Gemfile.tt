@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "jets"
 
 <% if @webpacker -%>
-# Include jetpacker if you are you are building html pages
+# Include jetpacker if you are building html pages
 gem "jetpacker"
 <% end -%>
 <% if @database == 'postgresql' %>
