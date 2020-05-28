@@ -13,9 +13,6 @@ module Jets::Controller::Rack
       options = {}
       options = add_top_level(options)
       options = add_http_headers(options)
-      pp "MeuOvo"
-      path_with_base_path = @event['resource'] if @event['path'] != @event['resource']
-      pp path_with_base_path
       path = path_with_base_path || @event['path'] || '/' # always set by API Gateway but might not be when testing shim, so setting it to make testing easier
       env = Rack::MockRequest.env_for(path, options)
       if @options[:adapter]
@@ -26,6 +23,19 @@ module Jets::Controller::Rack
     end
 
   private
+    def path_with_base_path
+      resource = @event['resource']
+      pathParameters = @event['pathParameters']
+      
+      resource = pathParameters.reduce(resource) {|resource, parameter|
+        key, value = parameter
+        resource = resource.gsub("{#{key}}", value)
+        resource
+      } unless pathParameters.nil?
+
+      resource
+    end
+
     def add_top_level(options)
       map = {
         'CONTENT_TYPE' => content_type,
