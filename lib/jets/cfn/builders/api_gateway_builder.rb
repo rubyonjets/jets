@@ -1,5 +1,6 @@
 module Jets::Cfn::Builders
   class ApiGatewayBuilder
+    extend Memoist
     include Interface
     include Jets::AwsServices
 
@@ -43,20 +44,38 @@ module Jets::Cfn::Builders
     end
 
     def add_domain_name
-      domain_name = Jets::Resource::ApiGateway::DomainName.new
-      #add_resource(domain_name)
-      add_outputs({
-        "DomainName" => "api.sbx.rvhub.com.br",
-      })
+      domain_name = create_domain_name()
+      add_outputs(domain_name)
     end
 
     def add_route53_dns
       dns = Jets::Resource::Route53::RecordSet.new
-      #add_resource(dns)
-      add_outputs({
-        "DomainName" => "api.sbx.rvhub.com.br",
-      })
+      resp = get_existing_domain_name(dns.domain_name)
+      add_resource(dns) if resp.nil?
+      add_outputs(dns.outputs) if resp.nil?
     end
+
+    def create_domain_name()
+      domain_name = Jets::Resource::ApiGateway::DomainName.new
+      resp = get_existing_domain_name(domain_name)
+      
+      return {
+        "DomainName" => resp.domain_name
+      } unless resp.nil?
+      
+      add_resource(domain_name)
+      return domain_name.outputs
+    end
+
+    def get_existing_domain_name(domain_name)
+      apigateway.get_domain_name({
+        domain_name: domain_name.domain_name
+      })
+    rescue
+      retrun nil
+    end
+    memoize :get_existing_domain_name
+
 
     # Adds route related Resources and Outputs
     # Delegates to ApiResourcesBuilder
