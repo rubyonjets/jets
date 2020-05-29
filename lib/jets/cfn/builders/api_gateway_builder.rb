@@ -44,14 +44,18 @@ module Jets::Cfn::Builders
 
     def add_domain_name
       domain_name = Jets::Resource::ApiGateway::DomainName.new
-      add_resource(domain_name)
-      add_outputs(domain_name.outputs)
+      #add_resource(domain_name)
+      add_outputs({
+        "DomainName" => "api.sbx.rvhub.com.br",
+      })
     end
 
     def add_route53_dns
       dns = Jets::Resource::Route53::RecordSet.new
-      add_resource(dns)
-      add_outputs(dns.outputs)
+      #add_resource(dns)
+      add_outputs({
+        "DomainName" => "api.sbx.rvhub.com.br",
+      })
     end
 
     # Adds route related Resources and Outputs
