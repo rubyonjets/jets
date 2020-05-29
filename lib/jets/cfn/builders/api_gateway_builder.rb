@@ -44,7 +44,9 @@ module Jets::Cfn::Builders
     end
 
     def add_domain_name
+      pp "Entrei!"
       domain_name = create_domain_name()
+      pp domain_name
       add_outputs(domain_name)
     end
 
