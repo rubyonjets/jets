@@ -34,8 +34,8 @@ describe PostsController, type: :controller do
   it "index returns a success response" do
     get '/posts'
     expect(response.status).to eq 200
-    pp reponse.headers
-    pp reponse.body
+    pp response.headers
+    pp response.body
   end
 end
 ```
