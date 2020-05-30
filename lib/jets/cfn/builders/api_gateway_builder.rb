@@ -74,7 +74,7 @@ module Jets::Cfn::Builders
         domain_name: domain_name.domain_name
       })
     rescue
-      retrun nil
+      return nil
     end
     memoize :get_existing_domain_name
 
