@@ -10,7 +10,7 @@ describe Jets::Cfn::Builders::ApiGatewayBuilder do
       # puts builder.text # uncomment to see template text
 
       resources = builder.template["Resources"]
-      resources
+
       expect(resources).to include("RestApi")
 
       expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-api-gateway.yml"
@@ -26,6 +26,9 @@ describe Jets::Cfn::Builders::ApiGatewayBuilder do
 
       expect(resources).to include("DomainName")
       expect(resources).to include("DnsRecord")
+      expect(resources).to include("RestApi")
+
+      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-api-gateway.yml"
     end
 
     it "must exclude DomainName and DnsRecord" do
@@ -44,6 +47,9 @@ describe Jets::Cfn::Builders::ApiGatewayBuilder do
       
       expect(resources).to_not include("DomainName")
       expect(resources).to_not include("DnsRecord")
+      expect(resources).to include("RestApi")
+
+      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-api-gateway.yml"
     end
 
     it "should not exclude DomainName and DnsRecord" do
@@ -62,6 +68,9 @@ describe Jets::Cfn::Builders::ApiGatewayBuilder do
       
       expect(resources).to include("DomainName")
       expect(resources).to include("DnsRecord")
+      expect(resources).to include("RestApi")
+
+      expect(builder.template_path).to eq "#{Jets.build_root}/templates/demo-test-api-gateway.yml"
     end
   end
 
