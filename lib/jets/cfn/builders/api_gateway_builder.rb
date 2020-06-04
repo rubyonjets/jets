@@ -91,7 +91,6 @@ module Jets::Cfn::Builders
         stack_name: api_gateway_physical_resource_id,
         logical_resource_id: "DnsRecord"
       }).stack_resource_detail
-      pp "teste"
       return true
     rescue
       return false

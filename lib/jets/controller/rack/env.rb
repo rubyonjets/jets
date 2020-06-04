@@ -27,11 +27,13 @@ module Jets::Controller::Rack
       resource = @event['resource']
       pathParameters = @event['pathParameters']
       
-      resource = pathParameters.reduce(resource) {|resource, parameter|
-        key, value = parameter
-        resource = resource.gsub("{#{key}}", value)
-        resource
-      } unless pathParameters.nil?
+      if(!pathParameters.nil? and !resource.nil?)
+        resource = pathParameters.reduce(resource) {|resource, parameter|
+          key, value = parameter
+          resource = resource.gsub("{#{key}}", value)
+          resource
+        }
+      end
 
       resource
     end
