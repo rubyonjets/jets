@@ -80,7 +80,7 @@ module Jets::Cfn::Builders
       cfn.describe_stack_resource({
         stack_name: api_gateway_physical_resource_id,
         logical_resource_id: "DomainName"
-      }).stack_resource_detail
+      })
       return true
     rescue
       return false
@@ -90,14 +90,14 @@ module Jets::Cfn::Builders
       cfn.describe_stack_resource({
         stack_name: api_gateway_physical_resource_id,
         logical_resource_id: "DnsRecord"
-      }).stack_resource_detail
+      })
       return true
     rescue
       return false
     end
 
     def api_gateway_physical_resource_id
-      stack_resource_detail = cfn.describe_stack_resource({
+      cfn.describe_stack_resource({
         stack_name: Jets::Naming.parent_stack_name,
         logical_resource_id: "ApiGateway"
       })
