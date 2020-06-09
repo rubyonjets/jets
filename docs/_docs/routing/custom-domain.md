@@ -103,6 +103,19 @@ end
 
 Though apex records are supported, it is recommended to put CloudFront of the API Gateway Custom Domain instead.
 
+## CustonDomain Base Path
+
+You can configure the base path in the custom domain by adding the base_path parameter . Example:
+
+```ruby
+Jets.application.configure do
+  config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
+  config.domain.hosted_zone_name = "coolapp.com" # String
+  config.domain.name = "coolapp.com"
+  config.domain.base_path = "accounts"
+end
+```
+
 ## CloudFront Recommendation
 
 For the most control, it is recommended to create a CloudFront distribution **outside** of Jets. Then put CloudFront in front of the API Gateway Custom Domain.  Example:
