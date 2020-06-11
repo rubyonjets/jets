@@ -140,7 +140,7 @@ class Jets::Commands::Call
     puts "Pro tip: The Lambda Console Link to the #{function_name} function has been added to your clipboard." unless @options[:mute]
   end
 
-  # TODO: Hook client_context up and maek sure it works. Think I've figure out how to sign client_context below.
+  # TODO: Hook client_context up and make sure it works. Think I've figure out how to sign client_context below.
   # Client context must be a valid Base64-encoded JSON object
   # Example: http://docs.aws.amazon.com/mobileanalytics/latest/ug/PutEvents.html
   def client_context
