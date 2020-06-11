@@ -46,7 +46,7 @@ Remember even though you get a response. The response is from the AWS API Gatewa
 
 ## Authorizer Type: Request
 
-The request authorizer type is almost as simple as the token type. The Jets `authorizer` method uses it as as the default type.  With the request type, you have more control over what items get passed to the authorizer function.  You receive a fuller event payload in this structure:
+The request authorizer type is almost as simple as the token type. The Jets `authorizer` method uses it as the default type.  With the request type, you have more control over what items get passed to the authorizer function.  You receive a fuller event payload in this structure:
 
 ```json
 {
