@@ -1,5 +1,6 @@
 require "base64"
 require "json"
+require "aws-sdk-lambda"
 
 class Jets::Commands::Call
   include Jets::AwsServices
@@ -59,8 +60,18 @@ class Jets::Commands::Call
       payload: transformed_event, # "fileb://file-path/input.json", <= JSON
       qualifier: @qualifier, # "1",
     }
+
+    opt = {}
+    opt = opt.merge({retry_limit: @options[:retry_limit]}) if @options[:retry_limit].present?
+    opt = opt.merge({http_read_timeout: @options[:read_timeout]}) if @options[:read_timeout].present?
+
+    client = if opt.empty?
+               aws_lambda
+             else
+               Aws::Lambda::Client.new(opt)
+             end
     begin
-      resp = aws_lambda.invoke(options)
+      resp = client.invoke(options)
     rescue Aws::Lambda::Errors::ResourceNotFoundException
       puts "The function #{function_name} was not found.  Maybe check the spelling or the AWS_PROFILE?".color(:red)
       return
