@@ -46,7 +46,7 @@ module Jets::SpecHelpers::Controllers
 
       params.query_params.each do |key, value|
         json['queryStringParameters'] ||= {}
-        json['queryStringParameters'][key.to_s] = value.to_s
+        json['queryStringParameters'][key.to_s] = value.deep_dup
       end
 
       json
