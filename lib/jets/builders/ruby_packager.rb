@@ -62,7 +62,9 @@ module Jets::Builders
       Bundler.with_unbundled_env do
         sh(
           "cd #{cache_area} && " \
-          "env bundle install --path #{cache_area}/vendor/gems --without development test"
+          "bundle config set path '#{cache_area}/vendor/gems' && " \
+          "bundle config set without 'development test' && " \
+          "env bundle install"
         )
       end
 
