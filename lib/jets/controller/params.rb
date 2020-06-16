@@ -15,10 +15,11 @@ class Jets::Controller
     #   3. body parameters
     def params(raw: false, path_parameters: true, body_parameters: true)
       path_params = event["pathParameters"] || {}
+      path_params = path_params.map { |k, path| [k, CGI.unescape(path)] }.to_h
 
       params = {}
       params = params.deep_merge(body_params) if body_parameters
-      params = params.deep_merge(query_parameters) # always
+      params = params.deep_merge(unescape_recursively(query_parameters)) # always
       params = params.deep_merge(path_params) if path_parameters
 
       if raw
@@ -26,6 +27,14 @@ class Jets::Controller
       else
         params = ActionDispatch::Request::Utils.normalize_encode_params(params) # for file uploads
         ActionController::Parameters.new(params)
+      end
+    end
+
+    def unescape_recursively(obj)
+      case obj
+      when Hash then obj.map { |k, v| [k, unescape_recursively(v)] }.to_h
+      when Array then obj.map { |v| unescape_recursively(v) }
+      else CGI.unescape(obj.to_s)
       end
     end
 
