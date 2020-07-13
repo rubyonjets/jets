@@ -14,6 +14,7 @@ module Jets::Controller::Rack
       options = add_top_level(options)
       options = add_http_headers(options)
       pp "INICIO"
+      pp "EVENT_PATH: #{@event['path']}"
       path = path_with_base_path || @event['path'] || '/' # always set by API Gateway but might not be when testing shim, so setting it to make testing easier
       pp "PATH: #{path}"
 
