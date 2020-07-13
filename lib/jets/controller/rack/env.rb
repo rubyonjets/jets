@@ -13,7 +13,10 @@ module Jets::Controller::Rack
       options = {}
       options = add_top_level(options)
       options = add_http_headers(options)
+      pp "INICIO"
       path = path_with_base_path || @event['path'] || '/' # always set by API Gateway but might not be when testing shim, so setting it to make testing easier
+      pp "PATH: #{path}"
+
       env = Rack::MockRequest.env_for(path, options)
       if @options[:adapter]
         env['adapter.event'] = @event
@@ -25,7 +28,9 @@ module Jets::Controller::Rack
   private
     def path_with_base_path
       resource = @event['resource']
+      pp "RESOURCE: #{resource}"
       pathParameters = @event['pathParameters']
+      pp "PATH_PARAMETERS: #{pathParameters}"
       
       if(!pathParameters.nil? and !resource.nil?)
         resource = pathParameters.reduce(resource) {|resource, parameter|
