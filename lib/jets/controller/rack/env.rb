@@ -36,7 +36,8 @@ module Jets::Controller::Rack
       if(!pathParameters.nil? and !resource.nil?)
         resource = pathParameters.reduce(resource) {|resource, parameter|
           key, value = parameter
-          resource = resource.gsub("{#{key}}", value)
+          resource = resource.gsub("{#{key}}", value) unless key.eql?("catchall")
+          resource = resource.gsub("{#{key}+}", value) if key.eql?("catchall")
           resource
         }
       end
