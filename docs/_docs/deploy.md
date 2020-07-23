@@ -48,7 +48,8 @@ To deploy to different accounts:
 
 To deploy to different environments:
 
-    jets deploy production
+    JETS_AGREE=yes JETS_ENV=development bundle exec jets deploy
+    JETS_AGREE=yes JETS_ENV=production JETS_ENV_REMOTE=1 bundle exec jets deploy
 
 ## Deploying to Multiple Regions
 
