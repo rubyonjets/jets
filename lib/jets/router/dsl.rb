@@ -62,6 +62,7 @@ class Jets::Router
       {
         as: options.delete(:as) || item, # delete as or it messes with create_route
         prefix: prefix,
+        param: options[:param],
         # module: options.delete(:module) || item, # NOTE: resources does not automatically set module, but namespace does
       }
     end
