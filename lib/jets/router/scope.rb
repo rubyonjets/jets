@@ -35,9 +35,13 @@ module Jets
 
           case current.from
           when :resources
-            variable = prefix.to_s.split('/').last
-            variable = ":#{variable.singularize}_id"
-            result.unshift(variable)
+            path_param = if current.options[:param]
+              ":#{current.options[:param]}"
+            else
+              resource_name = prefix.to_s.split('/').last
+              resource_name = ":#{resource_name.singularize}_id"
+            end
+            result.unshift(path_param)
             result.unshift(prefix)
           else # resource, namespace or general scope
             result.unshift(prefix)
