@@ -42,7 +42,7 @@ module Jets::Job
 
     private
       def on_lambda?
-        !!ENV['AWS_LAMBDA_FUNCTION_NAME'] || Jets.env.test?
+        !!ENV['AWS_LAMBDA_FUNCTION_NAME']
       end
     end
   end
