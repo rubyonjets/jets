@@ -76,7 +76,7 @@ module Jets::Resource::ApiGateway
   private
     # Similar path_logical_id method in resource/route.rb
     def path_logical_id(path)
-      path.gsub('/','_').gsub(':','').gsub('*','').gsub('-','_').camelize
+      path.gsub('/','_').gsub(':','').gsub('*','').gsub('-','_').gsub('.','_').camelize
     end
   end
 end
