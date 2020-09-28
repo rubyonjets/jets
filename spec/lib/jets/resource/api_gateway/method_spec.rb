@@ -44,6 +44,26 @@ describe Jets::Resource::ApiGateway::Method do
     end
   end
 
+  context "route contains dot" do
+    let(:route) do
+      Jets::Router::Route.new(path: "v1.2/posts/:post_id/", method: :get, to: "posts#index")
+    end
+
+    it "route contains dot" do
+      expect(resource.logical_id).to eq "V12PostsPostIdIndexGetApiMethod"
+      expect(resource.logical_id.size).to eq 31
+    end
+
+    it "resource" do
+      expect(resource.logical_id).to eq "V12PostsPostIdIndexGetApiMethod"
+      properties = resource.properties
+      # pp properties # uncomment to debug
+      expect(properties["RestApiId"]).to eq "!Ref RestApi"
+      expect(properties["ResourceId"]).to eq "!Ref V12PostsPostIdApiResource"
+      expect(properties["HttpMethod"]).to eq "GET"
+    end
+  end
+
   context "authorization" do
     let(:route) do
       Jets::Router::Route.new(path: "posts", method: :get, to: "posts#index", authorization_type: 'AWS_IAM')

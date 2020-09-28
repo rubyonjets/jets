@@ -72,5 +72,15 @@ describe Jets::Resource::ApiGateway::Resource do
     end
   end
 
+  context("url.with.dot") do
+    let(:path) { "url.with.dot" }
+    it "contains info for CloudFormation API Gateway Resources" do
+      expect(resource.logical_id).to eq "UrlWithDotApiResource"
+      properties = resource.properties
+      expect(properties["PathPart"]).to eq "url.with.dot"
+      expect(properties["ParentId"]).to eq "!Ref RootResourceId"
+    end
+  end
+
 end
 
