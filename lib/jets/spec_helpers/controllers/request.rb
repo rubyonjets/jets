@@ -31,13 +31,19 @@ module Jets::SpecHelpers::Controllers
 
       if method != :get
         json['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
-        body = Rack::Multipart.build_multipart(params.body_params)
 
-        if body
+        if params.body_params.is_a? String
+          body = params.body_params
           json['headers']['Content-Length'] ||= body.length.to_s
-          json['headers']['Content-Type'] = "multipart/form-data; boundary=#{Rack::Multipart::MULTIPART_BOUNDARY}"
         else
-          body = Rack::Utils.build_nested_query(params.body_params)
+          body = Rack::Multipart.build_multipart(params.body_params)
+
+          if body
+            json['headers']['Content-Length'] ||= body.length.to_s
+            json['headers']['Content-Type'] = "multipart/form-data; boundary=#{Rack::Multipart::MULTIPART_BOUNDARY}"
+          else
+            body = Rack::Utils.build_nested_query(params.body_params)
+          end
         end
 
         json['body'] = Base64.encode64(body)

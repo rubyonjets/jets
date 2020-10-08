@@ -28,6 +28,10 @@ class SimpleController < Jets::Controller::Base
   def destroy
     render json: {}, status: :no_content
   end
+
+  def echo_body
+    render plain: request.body.string
+  end
 end
 
 describe Jets::SpecHelpers do
@@ -41,6 +45,8 @@ describe Jets::SpecHelpers do
       put 'spec_helper_test/:id', to: 'simple#update'
 
       delete 'spec_helper_test/:id', to: 'simple#destroy'
+
+      post 'spec_helper_test/echo_body', to: 'simple#echo_body'
     end
   end
 
@@ -85,6 +91,26 @@ describe Jets::SpecHelpers do
       post '/spec_helper_test', params: { id: 123 } # params also works
       expect(response.status).to eq 201
       expect(JSON.parse(response.body)['id']).to eq '123'
+    end
+
+    context "with body" do
+      let(:body) { { a: 1, b: 2 }.to_json }
+
+      context "when using body string as :params" do
+        it "echoes body" do
+          post '/spec_helper_test/echo_body', params: body
+          expect(response.status).to eq 200
+          expect(response.body).to eq body
+        end
+      end
+
+      context "when using body string as :body" do
+        it "echoes body" do
+          post '/spec_helper_test/echo_body', body: body
+          expect(response.status).to eq 200
+          expect(response.body).to eq body
+        end
+      end
     end
   end
 

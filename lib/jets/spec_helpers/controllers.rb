@@ -25,7 +25,8 @@ module Jets::SpecHelpers
       request.path = path
       request.headers.deep_merge!(params.delete(:headers) || {})
 
-      request.params.body_params = params.delete(:params) || params || {}
+      request.params.body_params =
+        params.delete(:body) || params.delete(:params) || params || {}
 
       request.params.query_params = params.delete(:query)
       request.params.query_params ||= params if request.method == :get

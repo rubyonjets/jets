@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+- Method spec helpers now accepts `:body` param. Providing string as `params` has the same effect.
+
 ## [2.3.17]
 - #472 Docs: Update cors-support.md
 - #475 Docs: Update activerecord.md to include db:create step
