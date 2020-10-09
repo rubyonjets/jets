@@ -90,8 +90,21 @@ module Jets::Cfn
 
       key = s3_key(full_path)
       obj = s3_resource.bucket(bucket_name).object(key)
-      puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
-      obj.upload_file(full_path, acl: "public-read", cache_control: cache_control)
+      puts "Uploading and setting content type for s3://#{bucket_name}/#{key}" # uncomment to see and debug
+      obj.upload_file(full_path, { acl: "public-read", cache_control: cache_control }.merge(guess_content_type_headers(full_path)))
+    end
+
+    def guess_content_type_headers(full_path)
+      case File.extname(full_path)
+      when '.css'
+        { content_type: "text/css" }
+      when '.js'
+        { content_type: 'application/javascript' }
+      when '.html'
+        { content_type: 'text/html' }
+      else
+        {}
+      end
     end
 
     def s3_key(full_path)
