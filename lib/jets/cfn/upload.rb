@@ -7,6 +7,13 @@ module Jets::Cfn
     include ActionView::Helpers::NumberHelper # number_to_human_size
 
     attr_reader :bucket_name
+
+    CONTENT_TYPES_BY_EXTENSION = {
+      '.css' => 'text/css',
+      '.js' => 'application/javascript',
+      '.html' => 'text/html'
+    }
+
     def initialize(bucket_name)
       @bucket_name = bucket_name
     end
@@ -90,8 +97,17 @@ module Jets::Cfn
 
       key = s3_key(full_path)
       obj = s3_resource.bucket(bucket_name).object(key)
-      puts "Uploading s3://#{bucket_name}/#{key}" # uncomment to see and debug
-      obj.upload_file(full_path, acl: "public-read", cache_control: cache_control)
+      puts "Uploading and setting content type for s3://#{bucket_name}/#{key}" # uncomment to see and debug
+      obj.upload_file(full_path, { acl: "public-read", cache_control: cache_control }.merge(content_type_headers(full_path)))
+    end
+
+    def content_type_headers(full_path)
+      content_type = CONTENT_TYPES_BY_EXTENSION[File.extname(full_path)]
+      if content_type
+        { content_type: content_type }
+      else
+        {}
+      end
     end
 
     def s3_key(full_path)
