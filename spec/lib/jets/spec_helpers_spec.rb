@@ -45,6 +45,18 @@ describe Jets::SpecHelpers do
   end
 
   context "get" do
+    let(:nested_params) do 
+      {
+        level_1: {
+          level_2: {
+            level_3: {
+
+            }
+          }
+        }
+      }.with_indifferent_access
+    end
+
     it "gets 200" do
       get '/spec_helper_test'
       expect(response.status).to eq 200
@@ -60,6 +72,13 @@ describe Jets::SpecHelpers do
       get '/spec_helper_test/:id', id: 123, query: { filter: 'abc' }
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq 'abc'
+    end
+
+    it "gets 200 with nested query params" do
+      get '/spec_helper_test/:id', id: 123, query: { filter: nested_params }
+
+      expect(response.status).to eq 200
+      expect(JSON.parse(response.body)['filter']).to eq nested_params
     end
 
     it "gets 200 with query params no query keyword" do
