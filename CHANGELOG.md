@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.18]
+- #514 Allow to define route that contains dot
+- #515 set content type on upload by using extension so cloudfront will compress when serving
+- #517 support nested query params in tests
+
 ## [2.3.17]
 - #472 Docs: Update cors-support.md
 - #475 Docs: Update activerecord.md to include db:create step
