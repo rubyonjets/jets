@@ -46,9 +46,15 @@ To deploy to different accounts:
     jets deploy
     AWS_PROFILE=account2 jets deploy
 
-To deploy to different environments:
+## Deploying to Different environments:
+Deploying to different environments can be achieved with `JETS_ENV`.  
+Remember that things like config.domain.hosted_zone_name will need to be unique for your environment(s).
+These settings can be specified in config/environments/ to override the global settings.
 
-    jets deploy production
+Example:
+
+    JETS_AGREE=yes JETS_ENV=development bundle exec jets deploy
+    JETS_AGREE=yes JETS_ENV=production bundle exec jets deploy
 
 ## Deploying to Multiple Regions
 
