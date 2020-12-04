@@ -22,6 +22,7 @@ class Jets::Application
     load_environments_config
     load_db_config
     set_iam_policy # relies on dependent values, must be called afterwards
+    set_time_zone
     normalize_env_vars!
   end
 
@@ -177,6 +178,10 @@ class Jets::Application
   def set_iam_policy
     config.iam_policy ||= self.class.default_iam_policy
     config.managed_policy_definitions ||= [] # default empty
+  end
+
+  def set_time_zone
+    Time.zone_default = Time.find_zone!(config.time_zone)
   end
 
   # It is pretty easy to attempt to set environment variables without

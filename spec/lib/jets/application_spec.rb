@@ -36,6 +36,11 @@ describe Jets::Application do
       expect(config.function.memory_size).to eq 1536
     end
 
+    it "should have a default time zone defined" do
+      expect(config.time_zone).to eq "UTC"
+      expect(Time.zone).to eq Time.find_zone!("UTC")
+    end
+
     it "routes should be loaded" do
       router = app.routes
       expect(router).to be_a(Jets::Router)

@@ -57,6 +57,7 @@ class Jets::Application
       config.autoload_paths = [] # allows for customization
       config.ignore_paths = [] # allows for customization
       config.logger = Jets::Logger.new($stderr)
+      config.time_zone = "UTC"
 
       # function properties defaults
       config.function = ActiveSupport::OrderedOptions.new
