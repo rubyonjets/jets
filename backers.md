@@ -16,4 +16,5 @@ Funds donated via Patreon go directly to support Tung Nguyen's full-time work on
 - Hirokatsu Endo
 - Michael Choi
 - Phan Lam
+- Theron Welch
 <!--10 end-->
