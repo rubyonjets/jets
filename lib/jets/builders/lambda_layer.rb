@@ -17,13 +17,13 @@ module Jets::Builders
     #
     # For Lambda Layer structure
     def consolidate_gems_to_opt
-      src = "#{stage_area}/code/vendor/gems/ruby/2.5.0"
-      dest = "#{stage_area}/opt/ruby/gems/2.5.0"
+      src = "#{stage_area}/code/vendor/gems/ruby/#{Jets.ruby_folder}"
+      dest = "#{stage_area}/opt/ruby/gems/#{Jets.ruby_folder}"
       rsync_and_link(src, dest)
 
       return unless Jets.rack?
 
-      src = "#{stage_area}/rack/vendor/gems/ruby/2.5.0"
+      src = "#{stage_area}/rack/vendor/gems/ruby/#{Jets.ruby_folder}"
       rsync_and_link(src, dest)
     end
 

@@ -135,10 +135,15 @@ class Jets::CLI
       return Jets::Commands::Base.klass_from_namespace(namespace)
     end
 
+    return unless jets_project?
     rake_task_found = Jets::Commands::RakeCommand.namespaced_commands.include?(full_command)
     if rake_task_found
       return Jets::Commands::RakeCommand
     end
+  end
+
+  def jets_project?
+    File.exist?("config/application.rb")
   end
 
   # ["-h", "-?", "--help", "-D", "help"]
@@ -161,7 +166,7 @@ class Jets::CLI
     shell.say "Commands:"
     shell.print_table(thor_list, :indent => 2, :truncate => true)
 
-    unless rake_list.empty?
+    if jets_project? && !rake_list.empty?
       shell.say "\nCommands via rake:"
       shell.print_table(rake_list, :indent => 2, :truncate => true)
     end

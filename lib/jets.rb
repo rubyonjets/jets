@@ -1,6 +1,13 @@
 $stdout.sync = true unless ENV["JETS_STDOUT_SYNC"] == "0"
 
 $:.unshift(File.expand_path("../", __FILE__))
+
+require "jets/core_ext/bundler"
+require "jets/autoloaders"
+Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]
+Jets::Autoloaders.once.setup # must be called before cli.setup
+Jets::Autoloaders.cli.setup
+
 require "active_support"
 require "active_support/concern"
 require "active_support/core_ext"
@@ -18,14 +25,7 @@ $:.unshift("#{gem_root}/lib")
 $:.unshift("#{gem_root}/vendor/cfn-status/lib")
 require "cfn_status"
 
-require "jets/core_ext/bundler"
-
-require "jets/autoloaders"
-Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]
-Jets::Autoloaders.once.setup
-
 module Jets
-  RUBY_VERSION = "2.5.3"
   MAX_FUNCTION_NAME_SIZE = 64
 
   class Error < StandardError; end

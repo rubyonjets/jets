@@ -146,4 +146,8 @@ module Jets::Core
   def override_lambda_ruby_runtime
     require "jets/overrides/lambda"
   end
+
+  def ruby_folder
+    RUBY_VERSION.split('.')[0..1].join('.') + '.0'
+  end
 end

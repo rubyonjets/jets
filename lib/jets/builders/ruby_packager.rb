@@ -12,7 +12,6 @@ module Jets::Builders
     def install
       return unless gemfile_exist?
 
-      reconfigure_ruby_version
       clean_old_submodules
       bundle_install
       setup_bundle_config
@@ -92,14 +91,6 @@ module Jets::Builders
 
     def tidy_project(path)
       Tidy.new(path).cleanup!
-    end
-
-    # This is in case the user has a 2.5.x variant.
-    # Force usage of ruby version that jets supports
-    # The lambda server only has ruby 2.5.0 installed.
-    def reconfigure_ruby_version
-      ruby_version = "#{@full_app_root}/.ruby-version"
-      IO.write(ruby_version, Jets::RUBY_VERSION)
     end
 
     # When using submodules, bundler leaves old submodules behind. Over time this inflates

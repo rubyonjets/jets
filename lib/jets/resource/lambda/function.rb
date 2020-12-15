@@ -147,7 +147,7 @@ module Jets::Resource::Lambda
       map = {
         node: "nodejs8.10",
         python: "python3.6",
-        ruby: "ruby2.5",
+        ruby: "ruby2.7",
       }
       map[@task.lang]
     end

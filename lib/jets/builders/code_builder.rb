@@ -26,7 +26,6 @@ module Jets::Builders
     end
 
     def build
-      check_ruby_version
       @version_purger.purge
       cache_check_message
 
@@ -370,14 +369,6 @@ module Jets::Builders
     def cache_check_message
       if File.exist?("#{Jets.build_root}/cache")
         puts "The #{Jets.build_root}/cache folder exists. Incrementally re-building the jets using the cache.  To clear the cache: rm -rf #{Jets.build_root}/cache"
-      end
-    end
-
-    def check_ruby_version
-      unless ruby_version_supported?
-        puts "You are using Ruby version #{RUBY_VERSION} which is not supported by Jets."
-        ruby_variant = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.x'
-        abort("Jets uses Ruby #{Jets::RUBY_VERSION}.  You should use a variant of Ruby #{ruby_variant}".color(:red))
       end
     end
 

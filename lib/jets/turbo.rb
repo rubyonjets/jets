@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'memoist'
 
 module Jets
   class Turbo
