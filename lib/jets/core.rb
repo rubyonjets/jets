@@ -139,10 +139,6 @@ module Jets::Core
     rack.wait_for_socket
   end
 
-  def default_gems_source
-    "https://gems2.lambdagems.com"
-  end
-
   def override_lambda_ruby_runtime
     require "jets/overrides/lambda"
   end

@@ -19,6 +19,7 @@ module Jets::Builders
       # found gems will only have gems that were found
       found_gems.each do |gem_name, source|
         options = @options.merge(source_url: source)
+        puts "gem_name #{gem_name} options #{options}"
         gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, options)
         gem_extractor.run
       end

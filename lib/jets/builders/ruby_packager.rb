@@ -45,6 +45,7 @@ module Jets::Builders
       headline "Bundling: running bundle install in cache area: #{cache_area}."
 
       copy_gemfiles(full_project_path)
+      copy_bundled_gems(full_project_path)
 
       # Uncomment out to always remove the cache/vendor/gems to debug
       # FileUtils.rm_rf("#{cache_area}/vendor/gems")
@@ -126,6 +127,10 @@ module Jets::Builders
           FileUtils.rm_rf(path) # REMOVE old submodule directory
         end
       end
+    end
+
+    def copy_bundled_gems(full_project_path)
+      Jets::Util.cp_r("#{full_project_path}/bundled_gems", "#{cache_area}/bundled_gems")
     end
 
     def copy_gemfiles(full_project_path)

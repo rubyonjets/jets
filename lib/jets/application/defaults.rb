@@ -74,9 +74,7 @@ class Jets::Application
       config.prewarm.rack_ratio = 5
 
       config.gems = ActiveSupport::OrderedOptions.new
-      config.gems.sources = [
-        Jets.default_gems_source
-      ]
+      config.gems.sources = [default_gems_source]
 
       config.inflections = ActiveSupport::OrderedOptions.new
       config.inflections.irregular = {}
@@ -160,6 +158,11 @@ class Jets::Application
       config.hot_reload = Jets.env.development?
 
       config
+    end
+
+    def default_gems_source
+      # "https://gems2.lambdagems.com" - OLD
+      "https://gems3.lambdagems.com/api/v1" # NEW
     end
 
     # Essentially folders under app folder will be the default_autoload_paths. Example:
