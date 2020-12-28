@@ -98,7 +98,7 @@ module Jets::Controller::Rendering
 
     # PostsController => "posts" is the namespace
     def template_namespace
-      @controller.class.to_s.sub('Controller','').underscore.pluralize
+      @controller.class.to_s.sub('Controller','').underscore
     end
 
     # Takes headers and adds HTTP_ to front of the keys because that is what rack
