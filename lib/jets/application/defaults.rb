@@ -74,6 +74,7 @@ class Jets::Application
       config.prewarm.rack_ratio = 5
 
       config.gems = ActiveSupport::OrderedOptions.new
+      config.gems.disable = false
       config.gems.sources = [default_gems_source]
 
       config.inflections = ActiveSupport::OrderedOptions.new

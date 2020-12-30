@@ -12,6 +12,12 @@ module Jets::Commands
       Build.new(options).run
     end
 
+    desc "configure [TOKEN]", "configure token and updates ~/.jets/config.yml"
+    long_desc Help.text(:configure)
+    def configure(token=nil)
+      Configure.new(options.merge(token: token)).run
+    end
+
     desc "deploy [environment]", "Builds and deploys project to AWS Lambda"
     long_desc Help.text(:deploy)
     # Note the environment is here to trick the Thor parser to allowing an

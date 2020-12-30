@@ -2,7 +2,7 @@ require 'aws-sdk-ssm'
 
 class Jets::Dotenv
   class Ssm
-    SSM_VARIABLE_REGEXP = /^ssm:(.*)/
+    SSM_VARIABLE_REGEXP = /^ssm:(.*)/i
 
     def initialize(variables={})
       @variables = variables
@@ -13,6 +13,8 @@ class Jets::Dotenv
       interpolated_variables = @variables.map do |key, value|
         if value[SSM_VARIABLE_REGEXP]
           value = fetch_ssm_value(key, $1)
+        elsif value == "SSM"
+          value = fetch_ssm_value(key, "SSM")
         end
 
         [key, value]
@@ -26,7 +28,10 @@ class Jets::Dotenv
         interpolated_variables.to_h.sort_by { |k,_| k }.to_h # success
       else
         message = "Error loading .env variables. No matching SSM parameters found for:\n".color(:red)
-        message += @missing.map { |k,v,n| "  #{k}=ssm:#{v} # ssm name: #{n}"}.join("\n")
+        message += @missing.map do |k,v,n|
+          value = v == "SSM" ? v : "ssm:#{v}"
+          "  #{k}=#{value} # ssm name: #{n}"
+        end.join("\n")
         abort message
       end
     end
@@ -34,13 +39,22 @@ class Jets::Dotenv
     def fetch_ssm_value(key, value)
       return "fake-ssm-value" if ENV['JETS_BUILD_NO_INTERNET']
 
-      name = value.start_with?("/") ? value :
-        "/#{Jets.config.project_name}/#{Jets.env}/#{value}"
+      name = ssm_name(key, value)
       response = ssm.get_parameter(name: name, with_decryption: true)
       response.parameter.value
     rescue Aws::SSM::Errors::ParameterNotFound
       @missing << [key, value, name]
       ''
+    end
+
+    def ssm_name(key, value)
+      if value == "SSM"
+        "/#{Jets.config.project_name}/#{Jets.env}/#{key}"
+      else
+        value.start_with?("/") ?
+          value :
+          "/#{Jets.config.project_name}/#{Jets.env}/#{value}"
+      end
     end
 
     def ssm

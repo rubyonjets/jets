@@ -34,7 +34,6 @@ module Jets::Builders
       compile_rails_assets
       copy_project
       copy_ruby_version_file
-      Jets::Gems.root = Jets.root
       Dir.chdir("#{stage_area}/code") do
         # These commands run from project root
         code_setup

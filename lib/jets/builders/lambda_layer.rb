@@ -7,7 +7,7 @@ module Jets::Builders
     # Then replace the binary gems.
     def build
       consolidate_gems_to_opt
-      replace_compiled_gems
+      replace_compiled_gems unless Jets.config.gems.disable
     end
 
     # Also restructure the folder from:

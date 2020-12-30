@@ -130,7 +130,9 @@ module Jets::Builders
     end
 
     def copy_bundled_gems(full_project_path)
-      Jets::Util.cp_r("#{full_project_path}/bundled_gems", "#{cache_area}/bundled_gems")
+      src = "#{full_project_path}/bundled_gems"
+      return unless File.exist?(src)
+      Jets::Util.cp_r(src, "#{cache_area}/bundled_gems")
     end
 
     def copy_gemfiles(full_project_path)
