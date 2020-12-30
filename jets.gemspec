@@ -48,7 +48,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency
   spec.add_dependency "hashie"
-  spec.add_dependency "jets-gems"
   spec.add_dependency "jets-html-sanitizer"
   spec.add_dependency "kramdown"
   spec.add_dependency "memoist"
@@ -57,6 +56,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "railties", "~> 6.0.0" # for ActiveRecord database_tasks.rb
   spec.add_dependency "rainbow"
   spec.add_dependency "recursive-open-struct"
+  spec.add_dependency "serverlessgems"
   spec.add_dependency "shotgun"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"

@@ -16,9 +16,9 @@ require "active_support/ordered_hash"
 require "active_support/ordered_options"
 require "cfn_camelizer"
 require "fileutils"
-require "jets/gems"
 require "memoist"
 require "rainbow/ext/string"
+require "serverlessgems"
 
 gem_root = File.dirname(__dir__)
 $:.unshift("#{gem_root}/lib")
