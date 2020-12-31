@@ -46,7 +46,7 @@ social:
   - title: twitter
     url: http://twitter.com/tongueroo
   - title: github
-    url: http://github.com/tongueroo/jets
+    url: http://github.com/boltops-tools/jets
 
 # Credits content
 credits:
@@ -55,7 +55,7 @@ credits:
 markdown: kramdown
 permalink: pretty
 
-gh_url: "https://github.com/tongueroo/jets"
+gh_url: "https://github.com/boltops-tools/jets"
 
 collections:
   docs:

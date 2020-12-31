@@ -1,6 +1,5 @@
 ---
 title: Upgrading Guide
-nav_order: 93
 ---
 
 Upgrading Jets to some releases might require some extra changes.  For example, the Jets project structure can change. Or some version require a manual blue-green deployment.  This page provides a summary of the releases requiring some upgrade work.
@@ -107,4 +106,3 @@ Then update the Gateway API Custom Domain to point to the newly deployed `JETS_E
 6. Make sure there's no traffic hitting the old Jets environment. You can do this by checking out the CloudWatch metrics. Nothing should be hitting it aside from the pre-warming requests. You can disable the pre-warming requests manually by using the CloudWatch console also.
 7. Destroy the old environment.
 
-{% include prev_next.md %}

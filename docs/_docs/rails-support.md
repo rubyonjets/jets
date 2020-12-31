@@ -1,6 +1,5 @@
 ---
 title: Rails Support
-nav_order: 49
 ---
 
 Jets supports deploying Rails applications with a few approaches that are experimental.
@@ -12,4 +11,3 @@ Jets supports deploying Rails applications with a few approaches that are experi
 
 Rails is also rack compatible, so you may wonder if you can mount a Rails app with Jets [routes mount]({% link _docs/routing/mount.md %}) support. Mounting a Rails app is not currently recommended. Some thoughts on this here: [Mounting Rails Apps]({% link _docs/rails/mount.md %})
 
-{% include prev_next.md %}

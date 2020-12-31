@@ -1,25 +1,25 @@
-{% if page.subnav == false %}
+{% if page.sidebar == false %}
 
-    {{ content }}
+{{ content }}
 
 {% else %}
 
-    <section class="features" id="features">
-        <div class="container">
-            <div class="row">
-                {% if page.reference %}
-                <div class="col-md-9 reference-nav">
-                    <a href="/reference">Back to Reference Index</a>
-                </div>
-                {% endif %}
-                <div class="col-md-9 content-body">
-                    <h1>{{ page.title }}</h1>
-                    {{ content }}
-                    {% include edit-on-github.html %}
-                </div>
-                {% include subnav.html %}
-            </div>
-        </div>
-    </section>
+<div class="d-flex" id="wrapper">
+  {% include sidebar.html %}
+  <div id="content">
+    <div class="menu-top-bar">
+      <div id="menu-toggle">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <h1>{{ page.title }}</h1>
+      {{ content }}
+    </div>
+  </div>
+</div>
 
 {% endif %}

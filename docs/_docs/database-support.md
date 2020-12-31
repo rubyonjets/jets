@@ -1,6 +1,5 @@
 ---
 title: Database Support
-nav_order: 52
 ---
 
 Jets supports DynamoDB and ActiveRecord. Both DynamoDB and ActiveRecord can coexist in the same application.
@@ -10,4 +9,3 @@ Jets supports DynamoDB and ActiveRecord. Both DynamoDB and ActiveRecord can coex
 
 For ActiveRecord, currently MySQL and PostgreSQL is supported.
 
-{% include prev_next.md %}

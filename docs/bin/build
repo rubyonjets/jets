@@ -1,0 +1,4 @@
+#!/bin/bash
+
+bundle exec jekyll build
+bundle exec rake opal:build

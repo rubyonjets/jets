@@ -1,0 +1,30 @@
+table {
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 20px;
+  border: 1px solid #dfe2e5;
+}
+
+tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}
+
+td {
+  vertical-align: top;
+  border: 1px solid #dfe2e5;
+}
+
+th, td {
+  padding: 10px;
+}
+
+thead th {
+  background-color: #000000;
+  text-transform: uppercase;
+  color: #cdcdce;
+}
+
+tbody td {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  color: black;
+}

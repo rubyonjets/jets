@@ -74,8 +74,9 @@ class Jets::Application
       config.prewarm.rack_ratio = 5
 
       config.gems = ActiveSupport::OrderedOptions.new
+      config.gems.clean = false
       config.gems.disable = false
-      config.gems.sources = [default_gems_source]
+      config.gems.source = "https://api.serverlessgems.com/api/v1"
 
       config.inflections = ActiveSupport::OrderedOptions.new
       config.inflections.irregular = {}
@@ -151,6 +152,9 @@ class Jets::Application
       config.controllers.default_protect_from_forgery = nil
       config.controllers.filtered_parameters = []
 
+      config.app = ActiveSupport::OrderedOptions.new
+      config.app.domain = nil
+
       config.deploy = ActiveSupport::OrderedOptions.new
       config.deploy.stagger = ActiveSupport::OrderedOptions.new
       config.deploy.stagger.enabled = false
@@ -159,11 +163,6 @@ class Jets::Application
       config.hot_reload = Jets.env.development?
 
       config
-    end
-
-    def default_gems_source
-      # "https://gems2.lambdagems.com" - OLD
-      "https://gems3.lambdagems.com/api/v1" # NEW
     end
 
     # Essentially folders under app folder will be the default_autoload_paths. Example:

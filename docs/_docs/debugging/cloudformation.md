@@ -1,6 +1,5 @@
 ---
 title: Debugging CloudFormation
-nav_order: 59
 ---
 
 Underneath the hood, CloudFormation is used to provision AWS resources. This is discussed in this [podcast](http://5by5.tv/rubyonrails/253) interview.  Jets actually creates several CloudFormation stacks. It creates a parent stack and a bunch of nested child stacks.  Jets manages this all for you.
@@ -36,4 +35,3 @@ When a child stack is created for the very first time and happens to fail, Cloud
 
 You may want to try incrementally debugging it. First, create a simple class with just one method and get that deployed successfully. And then add your full logic and deploy again. With this approach, the rolled back child stack remain intact and you can see the error message post deploy.
 
-{% include prev_next.md %}

@@ -1,7 +1,6 @@
 ---
 title: SQS Events
 categories: events
-nav_order: 29
 ---
 
 Jets supports [SQS Events](https://aws.amazon.com/blogs/aws/aws-lambda-adds-amazon-simple-queue-service-to-supported-event-sources/) as a Lambda trigger. So you can send a message to an SQS queue and it triggers a Lambda function to run.  The Lambda function has access to the message data via `event`.
@@ -160,4 +159,3 @@ Here's an example of the event payload.
 
 An IAM policy is generated for the Lambda function associated with the SQS event that allows the permissions needed.  You can control and override the IAM policy with normal [IAM Policies]({% link _docs/iam-policies.md %}) if needed though.
 
-{% include prev_next.md %}

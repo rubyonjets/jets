@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+* Ruby 2.7 support
+* `jets configure` command
+* Improve autoloader
+* Big improvements to docs site, add search
+* Breaking: Use serverlessgems API
+* Breaking: use do not pluralize controller names for views folder
+* Shorted SSM secrets notation support
+
 ## [2.3.18]
 - #514 Allow to define route that contains dot
 - #515 set content type on upload by using extension so cloudfront will compress when serving

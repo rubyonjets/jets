@@ -1,6 +1,5 @@
 ---
 title: Mega Mode
-nav_order: 51
 ---
 
 Jets Mega Mode supports deploying your Rails app also with little changes to your code.
@@ -49,4 +48,3 @@ Since Mega Mode starts a separate rack server process within the Lambda Executio
 
 Since there is overhead associated with the Mega Mode approach, you may be wondering why take the approach. Simple. It's the most pragmatic way to get a Rails app running on serverless.
 
-{% include prev_next.md %}

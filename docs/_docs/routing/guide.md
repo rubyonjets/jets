@@ -1,6 +1,5 @@
 ---
 title: Routing Guide
-nav_order: 31
 ---
 
 {:.toc}
@@ -593,4 +592,3 @@ Jets.application.configure do
 end
 ```
 
-{% include prev_next.md %}

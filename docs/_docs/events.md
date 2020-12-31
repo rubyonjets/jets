@@ -1,6 +1,5 @@
 ---
 title: Events
-nav_order: 21
 ---
 
 Jets is also a powerful Glue Serverless Framework.
@@ -16,4 +15,3 @@ AWS Lambda supports many event triggers.  With event triggers, you can use Lambd
 
 The next sections cover the event triggers.
 
-{% include prev_next.md %}

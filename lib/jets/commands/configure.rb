@@ -9,6 +9,7 @@ module Jets::Commands
     def run
       data = load_yaml
       data['key'] = token
+      FileUtils.mkdir_p(File.dirname(path))
       IO.write(path, YAML.dump(data))
       puts "Updated #{pretty(path)}"
     end

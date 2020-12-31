@@ -1,6 +1,5 @@
 ---
 title: Jets Call
-nav_order: 13
 ---
 
 ## Remote Lambda Function
@@ -32,4 +31,3 @@ The `jets call` command supports a local testing mode with the `--local` option.
 
 For more info and `jets call` examples, check out the CLI reference: [jets call cli](http://rubyonjets.com/reference/jets-call/).
 
-{% include prev_next.md %}

@@ -1,6 +1,5 @@
 ---
 title: Structure
-nav_order: 9
 ---
 
 The `jets new` command generates a new project with the following directory structure:
@@ -38,4 +37,3 @@ db  | Contains database migrations. ActiveRecord migrations live under `db/migra
 public  | Contains static files meant to be served "as-is".
 spec | Contains tests.
 
-{% include prev_next.md %}

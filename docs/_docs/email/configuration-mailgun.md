@@ -1,6 +1,5 @@
 ---
 title: Email Configuration Mailgun
-nav_order: 68
 ---
 
 Here's an example on how to set up email with Mailgun.
@@ -36,4 +35,3 @@ MAILGUN_API_KEY=ADJ23JOXELX
 MAILGUN_DOMAIN=mydomain.com
 ```
 
-{% include prev_next.md %}

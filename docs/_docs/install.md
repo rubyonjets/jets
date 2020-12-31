@@ -1,6 +1,5 @@
 ---
 title: Installation
-nav_order: 7
 ---
 
 ## RubyGems
@@ -62,4 +61,3 @@ Then [configure it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-ge
 
     aws configure
 
-{% include prev_next.md %}

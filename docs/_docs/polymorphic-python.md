@@ -1,6 +1,5 @@
 ---
 title: Polymorphic Python
-nav_order: 95
 ---
 
 Polymorphic support for python works like so for the controller code:
@@ -76,4 +75,3 @@ class PostsController < ApplicationController
 end
 ```
 
-{% include prev_next.md %}

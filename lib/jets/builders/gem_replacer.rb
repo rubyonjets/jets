@@ -17,10 +17,8 @@ module Jets::Builders
       end
 
       # found gems will only have gems that were found
-      found_gems.each do |gem_name, source|
-        options = @options.merge(source_url: source)
-        puts "gem_name #{gem_name} options #{options}"
-        gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, options)
+      found_gems.each do |gem_name|
+        gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, @options)
         gem_extractor.run
       end
 
@@ -30,7 +28,7 @@ module Jets::Builders
     def sh(command)
       puts "=> #{command}".color(:green)
       success = system(command)
-      abort("Command Failed") unless success
+      abort("Command Failed: #{command}") unless success
       success
     end
 

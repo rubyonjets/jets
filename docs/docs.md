@@ -1,6 +1,5 @@
 ---
 title: Overview
-nav_order: 2
 ---
 
 ## What is Ruby on Jets?
@@ -46,4 +45,3 @@ Here are the video playlists for the tutorial series.
 {% for post in posts %}
 * [{{ post.title }}]({{ post.url }}){% endfor %}
 
-{% include prev_next.md %}

@@ -1,6 +1,5 @@
 ---
 title: Config Rules
-nav_order: 85
 ---
 
 Jets supports creating [AWS Config Rules](https://aws.amazon.com/config/) and associating them with lambda functions.  First, make sure you have a `app/rules/application_rule.rb`:
@@ -118,4 +117,3 @@ This results in the rules looking something like this `cis-check-incoming-ssh-di
 
 * [AWS::Config::ConfigRule](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-config-configrule.html) CloudFormation reference
 
-{% include prev_next.md %}

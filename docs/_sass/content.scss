@@ -1,0 +1,21 @@
+// https://www.w3schools.com/howto/howto_css_menu_icon.asp
+.menu-top-bar {
+  padding: 15px; // to match with .container-fluid 15px
+}
+#menu-toggle {
+  .bar1, .bar2, .bar3 {
+    width: 24px;
+    height: 2px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+}
+
+#content {
+  width: 100%;
+  max-width: 900px;
+  padding: 5px; // .container-fluid has 15px already
+  min-height: 85vh; // not 100vh so footer shows a little bit
+  transition: all 0.3s;
+}

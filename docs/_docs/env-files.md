@@ -1,6 +1,5 @@
 ---
 title: Env Files
-nav_order: 18
 ---
 
 Jets loads environment variables from `.env` files. The naming convention for these files is `.env.<environment>`.
@@ -62,4 +61,8 @@ AWS Systems Manager Parameter Store is supported.  Storing secrets as SSM Parame
 
 The SSM parameters are fetched and interpolated into your environment at build time so make sure to re-deploy your app after making changes to your SSM parameters to ensure they are picked up correctly.
 
-{% include prev_next.md %}
+Additionally, if the value is `SSM`. It will conventionally map to `/<app-name>/<jets-env>/KEY`.
+
+    MY_SECRET=SSM # references /<app-name>/<jets-env>/MY_SECRET
+    MySecret=SSM  # references /<app-name>/<jets-env>/MySecret
+

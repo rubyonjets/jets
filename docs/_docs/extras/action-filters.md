@@ -1,6 +1,5 @@
 ---
 title: Filters
-nav_order: 81
 ---
 
 Filters are methods that are run before or after a controller action.
@@ -58,4 +57,3 @@ class PostsController < ApplicationController
 
 ```
 
-{% include prev_next.md %}

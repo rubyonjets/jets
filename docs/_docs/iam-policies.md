@@ -1,6 +1,5 @@
 ---
 title: IAM Policies
-nav_order: 15
 ---
 
 Jets provides several ways to finely control the IAM policies associated with your Lambda functions. Here are the ways and their precedence:
@@ -215,4 +214,3 @@ The expanded IAM Policy documents gets included into the CloudFormation template
 
 The IAM Policies docs on this page refer to the IAM policy associated with your **Lambda Execution Role**. These permissions control what AWS resources your Lambda functions have access to.  This is different from the IAM role you use to deploy a Jets application, which is typically your IAM User permissions. If you are looking for the minimal IAM Policy to deploy a Jets application for your IAM user, check out [Minimal Deploy IAM Policy]({% link _docs/extras/minimal-deploy-iam.md %}).
 
-{% include prev_next.md %}

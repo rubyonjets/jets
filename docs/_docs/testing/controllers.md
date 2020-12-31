@@ -1,6 +1,5 @@
 ---
 title: Controller Spec
-nav_order: 56
 ---
 
 Here's a simple example of a controller spec.
@@ -45,4 +44,3 @@ When you run specs, you may need to migrate first. Here are the commands:
     JETS_ENV=test jets db:create db:migrate
     bundle exec rspec
 
-{% include prev_next.md %}

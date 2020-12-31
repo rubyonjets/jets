@@ -59,7 +59,6 @@ module Jets::Builders
       project_root = "#{stage_area}/opt"
       headline "Replacing compiled gems with AWS Lambda Linux compiled versions: #{project_root}"
       options = {
-        # s3: "lambdagems2",
         build_root: cache_area, # used in jets-gems
         project_root: project_root, # used in gem_replacer and jets-gems
       }

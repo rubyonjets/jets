@@ -1,6 +1,5 @@
 ---
 title: Env Extra
-nav_order: 19
 ---
 
 Jets has the concept of extra environments. This can be controlled by the `JETS_ENV_EXTRA` variable.  By setting `JETS_ENV_EXTRA` you can create additional identical environments.
@@ -33,4 +32,3 @@ With the ability to create entire applications with just a variable change, you 
 3. Switch the DNS over to the new stack
 4. Delete the old environment
 
-{% include prev_next.md %}

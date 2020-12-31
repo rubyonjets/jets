@@ -1,6 +1,5 @@
 ---
 title: Email Sending
-nav_order: 66
 ---
 
 Jets supports sending emails via ActionMailer.
@@ -43,4 +42,3 @@ Then in the console:
 
 Though ActionMailer itself supports sending email asynchronously, Jets use of ActionMailer does not currently. Emails are delivered synchronously. Asynchronously support will be added in time. Pull requests are welcome.
 
-{% include prev_next.md %}

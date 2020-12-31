@@ -14,7 +14,7 @@ module Jets::Builders
 
       clean_old_submodules
       bundle_install
-      setup_bundle_config
+      copy_bundle_config
       copy_cache_gems
     end
 
@@ -57,12 +57,12 @@ module Jets::Builders
       #    bundle config gems.myprivatesource.com user:pass
       #
 
-      FileUtils.rm_rf("#{cache_area}/.bundle")
+      setup_bundle_config
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_unbundled_env do
         sh(
           "cd #{cache_area} && " \
-          "env bundle install --path #{cache_area}/vendor/gems --without development test"
+          "env bundle install"
         )
       end
 
@@ -168,9 +168,7 @@ module Jets::Builders
       IO.write(gemfile_lock, content)
     end
 
-    def setup_bundle_config
-      ensure_build_cache_bundle_config_exists!
-
+    def copy_bundle_config
       # Override project's .bundle/config and ensure that .bundle/config matches
       # at these 2 spots:
       #   app_root/.bundle/config
@@ -185,7 +183,8 @@ module Jets::Builders
     # this only happens with ssh debugging, not when the ci.sh script gets ran.
     # But on macosx it exists.
     # Dont know why this is the case.
-    def ensure_build_cache_bundle_config_exists!
+    def setup_bundle_config
+      FileUtils.rm_rf("#{cache_area}/.bundle")
       text =<<-EOL
 ---
 BUNDLE_FROZEN: "true"

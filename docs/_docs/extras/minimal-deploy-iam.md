@@ -1,6 +1,5 @@
 ---
 title: Minimal Deploy IAM Policy
-nav_order: 83
 ---
 
 The IAM user you use to run the `jets deploy` command needs a minimal set of IAM policies in order to deploy a Jets application. Here is a table of the baseline services needed:
@@ -189,4 +188,3 @@ This page refers to your **user** IAM policy used when running `jets deploy`. Th
 * [IAM Policies]({% link _docs/iam-policies.md %})
 * [Managed IAM Policies]({% link _docs/managed-iam-policies.md %})
 
-{% include prev_next.md %}

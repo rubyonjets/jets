@@ -1,0 +1,99 @@
+// Global styling for this template
+body {
+  // font-family: 'Muli', 'Helvetica', 'Arial', 'sans-serif';
+  // @include body-font;
+  // -webkit-tap-highlight-color: $gray-darker;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+  // font-size: 0.95rem;
+  font-size: 16px;
+  color: #24292e;
+}
+
+a {
+  // color: #7386D5; // pretty light-blue
+  color: #0275d8; // gray?
+  @include transition-all;
+  &:hover,
+  &:focus {
+    color: darken(#0275d8, 10%);
+  }
+}
+
+hr {
+  max-width: 100px;
+  margin: 25px auto 0;
+  border-width: 1px;
+  border-color: fade-out($gray-darker, .9);
+}
+
+hr.light {
+    border-color: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
+  line-height: 1.5;
+  font-weight: 510;
+}
+
+h1 {
+  font-size: 1.8em;
+  border-bottom: 1px solid #eaecef;
+  font-weight: 530;
+}
+h2 {
+  font-size: 1.4em;
+  border-bottom: 1px solid #eaecef;
+}
+h3 {
+  font-size: 1.2em;
+}
+
+p {
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+li {
+  font-size: 16px;
+  padding-bottom: 8px;
+}
+
+section {
+    padding: 60px 0;
+    h2 {
+        // font-size: 50px;
+    }
+}
+
+::-moz-selection {
+    color: white;
+    background: $gray-darker;
+    text-shadow: none;
+}
+
+::selection {
+    color: white;
+    background: $gray-darker;
+    text-shadow: none;
+}
+
+img::selection {
+    color: white;
+    background: transparent;
+}
+
+img::-moz-selection {
+    color: white;
+    background: transparent;
+}
+
+img.doc-photo {
+    max-width: 600px;
+}
+
+.commands {
+    max-width: 400px;
+    margin-right: auto;
+}
+
