@@ -15,15 +15,11 @@ require "active_support/dependencies"
 require "active_support/ordered_hash"
 require "active_support/ordered_options"
 require "cfn_camelizer"
+require "cfn_status"
 require "fileutils"
 require "memoist"
 require "rainbow/ext/string"
 require "serverlessgems"
-
-gem_root = File.dirname(__dir__)
-$:.unshift("#{gem_root}/lib")
-$:.unshift("#{gem_root}/vendor/cfn-status/lib")
-require "cfn_status"
 
 module Jets
   MAX_FUNCTION_NAME_SIZE = 64

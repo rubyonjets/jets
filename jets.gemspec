@@ -43,6 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-sns"
   spec.add_dependency "aws-sdk-sqs"
   spec.add_dependency "aws-sdk-ssm"
+  spec.add_dependency "cfn-status"
   spec.add_dependency "cfn_camelizer", "~> 0.4.6"
   spec.add_dependency "cfnresponse"
   spec.add_dependency "dotenv"
@@ -66,5 +67,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency "cfn-status"
 end
