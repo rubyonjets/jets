@@ -1,6 +1,9 @@
 source "https://rubygems.org"
 
-gem "jets"
+# gem "jets"
+gem "jets", git: "https://github.com/boltops-tools/jets.git", submodules: true, branch: "qa"
+gem "serverlessgems", git: "https://github.com/boltops-tools/serverlessgems", submodules: true
+
 
 <% if @webpacker -%>
 # Include jetpacker if you are building html pages

@@ -85,12 +85,11 @@ So the IAM policies are **additive**.
 
 ## Application-wide: Override but Keep Default
 
-If you would like to override the default Application-wide IAM policy in `config/application.rb` and still use the Jets default application IAM policy.  You can use something like this:
+If you would like to override the default Application-wide IAM policy in `config/application.rb` and still use the Jets default application IAM policy, then set `config.iam_policy`:
 
 ```ruby
 Jets.application.configure do |config|
   config.iam_policy = [
-    Jets::Application.default_iam_policy,
     {
       action: ["dynamodb:*"],
       effect: "Allow",
@@ -100,7 +99,25 @@ Jets.application.configure do |config|
 end
 ```
 
-This is useful because the Jets default application IAM policy is dynamically calculated depending on what the resources are being provisioned.  For example, using [Shared Resources]({% link _docs/shared-resources.md %}) will add CloudFormation read permissions.
+This **adds** to the Jets default application IAM policy. This is useful because the default application IAM policy is dynamically calculated depending on what the resources are being provisioned.  For example, using [Shared Resources]({% link _docs/shared-resources.md %}) will add CloudFormation read permissions.
+
+## Application-wide: Override Entirely
+
+If you wish to override the Jets default application IAM policy entirely, then set `config.default_iam_policy`:
+
+```ruby
+Jets.application.configure do |config|
+  config.default_iam_policy = [
+    {
+      action: ["logs:*", "s3:*"],
+      effect: "Allow",
+      resource: "*",
+    }
+  ]
+end
+```
+
+Note, be careful using this advanced technique because it will override the IAM default policy entirely. It could prevent the Jets application from working right because it doesn't have enough permissions. You must make sure that the policy has the right permissions.
 
 ## IAM Policy Definition Styles
 
