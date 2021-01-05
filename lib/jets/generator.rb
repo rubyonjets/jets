@@ -89,9 +89,8 @@ class Jets::Generator
     g = Rails::Configuration::Generators.new
     g.orm             :active_record, migration: true, timestamps: true
     # TODO: support g.orm :dynamodb
-    g.test_framework  false #:test_unit, fixture: false
-    # g.test_framework :rspec # need to
-    # TODO: load rspec configuration to use rspec
+    g.test_framework  nil #:test_unit, fixture: false
+    # g.test_framework :rspec # TODO: load rspec configuration to use rspec
     g.stylesheets     false
     g.javascripts     false
     g.assets          false
