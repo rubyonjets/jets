@@ -36,6 +36,15 @@ module Helpers
   def yaml_file(path)
     YAML.load_file(path)
   end
+
+  # Only needed for specs since the application_spec calls iam_policy and internally
+  # override Jets.application singleton. This affects other tests. The effected test need
+  # to call this to reload config.iam settings.
+  def reset_application_config_iam!
+    Jets.application.config.iam_policy = nil
+    Jets.application.config.default_iam_policy = nil
+    Jets.application.set_iam_policy
+  end
 end
 
 RSpec.configure do |c|

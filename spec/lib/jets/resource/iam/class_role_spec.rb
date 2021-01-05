@@ -1,11 +1,13 @@
 describe Jets::Resource::Iam::ClassRole do
+  before(:each) do
+    reset_application_config_iam!
+  end
   let(:role) do
     Jets::Resource::Iam::ClassRole.new(PostsController)
   end
 
   context "iam policy" do
     it "inherits from the application wide iam policy" do
-      # pp role.policy_document # uncomment to debug
       expect(role.policy_document).to eq(
         {"Version"=>"2012-10-17",
          "Statement"=>
