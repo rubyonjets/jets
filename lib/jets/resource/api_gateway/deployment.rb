@@ -15,6 +15,7 @@ module Jets::Resource::ApiGateway
 
     def parameters
       p = {
+        "GemLayer" => "GemLayer",
         "IamRole" => "IamRole",
         "RestApi" => "RestApi",
         "S3Bucket" => "S3Bucket",

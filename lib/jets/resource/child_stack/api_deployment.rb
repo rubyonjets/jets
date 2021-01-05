@@ -20,6 +20,7 @@ module Jets::Resource::ChildStack
 
     def parameters
       p = {
+        GemLayer: "!Ref GemLayer",
         IamRole: "!GetAtt IamRole.Arn",
         RestApi: "!GetAtt ApiGateway.Outputs.RestApi",
         S3Bucket: "!Ref S3Bucket",

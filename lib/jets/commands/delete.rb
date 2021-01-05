@@ -114,7 +114,7 @@ class Jets::Commands::Delete
   end
 
   def are_you_sure?
-    if @options[:sure]
+    if @options[:yes]
       sure = 'y'
     else
       puts "Are you sure you want to want to delete the #{Jets.config.project_namespace.color(:green)} project? (y/N)"

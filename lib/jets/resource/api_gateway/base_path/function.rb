@@ -14,13 +14,18 @@ module Jets::Resource::ApiGateway::BasePath
             },
             role: "!GetAtt BasePathRole.Arn",
             handler: handler,
-            runtime: "ruby2.5",
+            runtime: "ruby2.7",
             timeout: 60,
             memory_size: 1536,
             environment: env_properties[:environment],
+            layers: layers,
           }
         }
       }
+    end
+
+    def layers
+      ["!Ref GemLayer"]
     end
 
     def function_name

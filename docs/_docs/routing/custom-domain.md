@@ -102,19 +102,6 @@ end
 
 Though apex records are supported, it is recommended to put CloudFront of the API Gateway Custom Domain instead.
 
-## CustonDomain Base Path
-
-You can configure the base path in the custom domain by adding the base_path parameter . Example:
-
-```ruby
-Jets.application.configure do
-  config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
-  config.domain.hosted_zone_name = "coolapp.com" # String
-  config.domain.name = "coolapp.com"
-  config.domain.base_path = "accounts"
-end
-```
-
 ## CloudFront Recommendation
 
 For the most control, it is recommended to create a CloudFront distribution **outside** of Jets. Then put CloudFront in front of the API Gateway Custom Domain.  Example:
@@ -132,3 +119,20 @@ When [CloudFront is configured with API Gateway](https://aws.amazon.com/premiums
 
 Configuring either of these will set the host the app with "see".  The `config.app.domain` option takes the highest precedence.
 
+## Multiple Custom Domain Base Paths
+
+You can configure the base path in the custom domain by adding the base_path parameter . Example:
+
+```ruby
+Jets.application.configure do
+  config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
+  config.domain.hosted_zone_name = "coolapp.com" # String
+  config.domain.name = "coolapp.com"
+  config.domain.base_path = "accounts"
+end
+```
+
+If then deploy another app with the same `domain.name` but a different `domain.base_path = "api"`, then the mapping works like this:
+
+    coolapp.com/accounts => root of jets app 1
+    coolapp.com/api      => root of jets app 2

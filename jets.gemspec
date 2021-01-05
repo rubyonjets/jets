@@ -45,7 +45,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-ssm"
   spec.add_dependency "cfn-status"
   spec.add_dependency "cfn_camelizer", "~> 0.4.6"
-  spec.add_dependency "cfnresponse"
+  spec.add_dependency "cfn_response"
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency
   spec.add_dependency "hashie"
@@ -63,8 +63,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor"
   spec.add_dependency "zeitwerk"
 
-  spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"
+  spec.add_development_dependency "byebug"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "render_me_pretty"
   spec.add_development_dependency "rspec"
 end

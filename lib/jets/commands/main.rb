@@ -29,7 +29,7 @@ module Jets::Commands
 
     desc "delete", "Delete the Jets project and all its resources"
     long_desc Help.text(:delete)
-    option :sure, type: :boolean, desc: "Skip are you sure prompt."
+    option :yes, aliases: %w[y], type: :boolean, desc: "Skip are you sure prompt."
     option :wait, type: :boolean, default: true, desc: "Wait for stack deletion to complete."
     # Note the environment is here to trick the Thor parser to allowing an
     # environment parameter. It is not actually set here.  It is set earlier
