@@ -56,9 +56,9 @@ module Jets::Cfn::Builders
 
     # Adds route related Resources and Outputs
     # Delegates to ApiResourcesBuilder
-    PAGE_LIMIT = Integer(ENV['JETS_AWS_OUTPUTS_LIMIT'] || 60) # Allow override for testing
+    PAGE_LIMIT = Integer(ENV['JETS_AWS_OUTPUTS_LIMIT'] || 200) # Allow override for testing
     def add_gateway_routes
-      # Reject homepage. Otherwise we have 60 - 1 resources on the first page.
+      # Reject homepage. Otherwise we have 200 - 1 resources on the first page.
       # There's a next call in ApiResources.add_gateway_resources to skip the homepage.
       all_paths = Jets::Router.all_paths.reject { |p| p == '' }
       all_paths.each_slice(PAGE_LIMIT).each_with_index do |paths, i|
