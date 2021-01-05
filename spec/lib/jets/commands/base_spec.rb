@@ -24,11 +24,6 @@ describe Jets::Commands::Base do
       expect(klass).to be Jets::Commands::Main
     end
 
-    it "autocomplete console" do
-      full_command = Jets::Commands::Base.autocomplete("con")
-      expect(full_command).to eq "console"
-    end
-
     it "autocomplete server" do
       full_command = Jets::Commands::Base.autocomplete("ser")
       expect(full_command).to eq "server"
