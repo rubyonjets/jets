@@ -11,6 +11,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 * Breaking: Use serverlessgems API
 * Breaking: use do not pluralize controller names for views folder
 * Shorted SSM secrets notation support
+* Remove deprecation warnings: bundle, generate scaffold, webpacker, etc
 
 ## [2.3.18]
 - #514 Allow to define route that contains dot
