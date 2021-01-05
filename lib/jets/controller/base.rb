@@ -76,7 +76,7 @@ class Jets::Controller
     #
     def dispatch!
       t1 = Time.now
-      log_info_start
+      log_start
 
       begin
         if run_before_actions(break_if: -> { @rendered })
@@ -95,13 +95,13 @@ class Jets::Controller
 
       took = Time.now - t1
       status = triplet[0]
-      log_info_complete(status, took)
+      log_finish(status: status, took: took)
       triplet # status, headers, body
     end
 
-    def log_info_start
+    # Documented interface method, careful not to rename
+    def log_start
       # JSON.dump makes logging look pretty in CloudWatch logs because it keeps it on 1 line
-
       ip = request.ip
       Jets.logger.info "Started #{@event['httpMethod']} \"#{@event['path']}\" for #{ip} at #{Time.now}"
       Jets.logger.info "Processing #{self.class.name}##{@meth}"
@@ -109,7 +109,9 @@ class Jets::Controller
       Jets.logger.info "  Parameters: #{JSON.dump(filtered_parameters.to_h)}"
     end
 
-    def log_info_complete(status, took)
+    # Documented interface method, careful not to rename
+    def log_finish(options={})
+      status, took = options[:status], options[:took]
       Jets.logger.info "Completed Status Code #{status} in #{took}s"
     end
 
