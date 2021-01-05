@@ -85,7 +85,7 @@ class BasePathMapping
     @event = event
     @rest_api_id = get_rest_api_id
     @domain_name = get_domain_name
-    @base_path = ''
+    @base_path = get_base_path || ''
   end
 
   def update
@@ -104,7 +104,7 @@ class BasePathMapping
   def delete(fail_silently=false)
     apigateway.delete_base_path_mapping(
       domain_name: @domain_name, # required
-      base_path: '(none)',
+      base_path: @base_path == '' ? '(none)' : @base_path,
     )
   # https://github.com/tongueroo/jets/issues/255
   # Used to return: Aws::APIGateway::Errors::NotFoundException
@@ -134,6 +134,11 @@ class BasePathMapping
 
   def get_rest_api_id
     param = deployment_stack[:parameters].find { |p| p.parameter_key == 'RestApi' }
+    param.parameter_value
+  end
+
+  def get_base_path
+    param = deployment_stack[:parameters].find { |p| p.parameter_key == 'BasePath' }
     param.parameter_value
   end
 
