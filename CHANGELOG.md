@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.18]
+- #514 Allow to define route that contains dot
+- #515 set content type on upload by using extension so cloudfront will compress when serving
+- #517 support nested query params in tests
+
+## [2.3.17]
+- #472 Docs: Update cors-support.md
+- #475 Docs: Update activerecord.md to include db:create step
+- #476 Docs: Update authorizer-cognito.md
+- #482 Docs: Fixed description for "jetpacker" gem in Gemfile
+- #483 Docs: controllers Fix minor typo
+- #489 Docs: call typo
+- #490 Docs: authorizers typo
+- #504 Docs: tutorial series
+- #505 Docs: display more tutorial articles
+- #509 Docs: Update lamdba permissions for minimal-iam-policy doc
+- #512 Bug fix: fix on_lambda? check allow testing #512
+
 ## [2.3.16]
 - #466 fix application_config typo
 - #467 Handle forbidden error from s3

@@ -338,6 +338,58 @@ EOL
         expect(app.user_path(1)).to eq("/users/1")
         expect(app.edit_user_path(1)).to eq("/users/1/edit")
       end
+
+      it "param custom my_comment_id with block" do
+        router.draw do
+          resources :posts do
+            resources :comments, param: :my_comment_id, only: [:create] do
+              get :test, on: :member
+            end
+          end
+
+          resources :parent, param: :my_parent_id do
+            resources :child, only: [:create, :show], param: :my_child_id do
+              # nothing
+            end
+          end
+
+          resources :users, param: :my_user_id, only: [] do
+            get :test, on: :member
+          end
+        end
+
+        output = Jets::Router.help(router.routes).to_s
+        table =<<EOL
++--------------+--------+---------------------------------------------+-------------------+
+|      As      |  Verb  |                    Path                     | Controller#action |
++--------------+--------+---------------------------------------------+-------------------+
+| posts        | GET    | posts                                       | posts#index       |
+| new_post     | GET    | posts/new                                   | posts#new         |
+| post         | GET    | posts/:post_id                              | posts#show        |
+|              | POST   | posts                                       | posts#create      |
+| edit_post    | GET    | posts/:post_id/edit                         | posts#edit        |
+|              | PUT    | posts/:post_id                              | posts#update      |
+|              | POST   | posts/:post_id                              | posts#update      |
+|              | PATCH  | posts/:post_id                              | posts#update      |
+|              | DELETE | posts/:post_id                              | posts#delete      |
+|              | POST   | posts/:post_id/comments                     | comments#create   |
+| test_comment | GET    | posts/:post_id/comments/:my_comment_id/test | comments#test     |
+| parent       | GET    | parent                                      | parent#index      |
+| new_parent   | GET    | parent/new                                  | parent#new        |
+| parent       | GET    | parent/:my_parent_id                        | parent#show       |
+|              | POST   | parent                                      | parent#create     |
+| edit_parent  | GET    | parent/:my_parent_id/edit                   | parent#edit       |
+|              | PUT    | parent/:my_parent_id                        | parent#update     |
+|              | POST   | parent/:my_parent_id                        | parent#update     |
+|              | PATCH  | parent/:my_parent_id                        | parent#update     |
+|              | DELETE | parent/:my_parent_id                        | parent#delete     |
+| parent_child | GET    | parent/:my_parent_id/child/:my_child_id     | child#show        |
+|              | POST   | parent/:my_parent_id/child                  | child#create      |
+| test_user    | GET    | users/:my_user_id/test                      | users#test        |
++--------------+--------+---------------------------------------------+-------------------+
+EOL
+        expect(output).to eq(table)
+      end
     end
 
     context "singular resource" do

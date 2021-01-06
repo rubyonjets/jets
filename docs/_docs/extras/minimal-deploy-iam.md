@@ -96,9 +96,10 @@ If your environment requires a "least privilege" approach, these commands will c
                     "lambda:GetFunction",
                     "lambda:CreateFunction",
                     "lambda:GetLayerVersion",
-                    "lambda:GetFunctionConfiguration",
                     "lambda:DeleteFunction",
+                    "lambda:UpdateFunctionCode",
                     "lambda:GetFunctionConfiguration",
+                    "lambda:UpdateFunctionConfiguration",
                     "lambda:AddPermission",
                     "lambda:RemovePermission",
                     "lambda:InvokeFunction"
