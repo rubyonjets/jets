@@ -83,7 +83,7 @@ class Jets::Booter
       # using ActiveRecord rake tasks outside of Rails.
       ActiveRecord::Tasks::DatabaseTasks.database_configuration = db_configs
 
-      if db_configs[Jets.env].blank?
+      if db_configs.configs_for(env_name: Jets.env).blank?
         abort("ERROR: config/database.yml exists but no environment section configured for #{Jets.env}")
       end
       ActiveRecord::Base.configurations = db_configs
@@ -96,9 +96,9 @@ class Jets::Booter
     # the same.
     def connect_db
       primary_hash_config = ActiveRecord::Base.configurations.configs_for(env_name: Jets.env).find { |hash_config|
-        hash_config.spec_name == "primary"
+        hash_config.name == "primary"
       }
-      primary_config = primary_hash_config.config # config is a normal Ruby Hash
+      primary_config = primary_hash_config.configuration_hash # configuration_hash is a normal Ruby Hash
       ActiveRecord::Base.establish_connection(primary_config)
     end
 
