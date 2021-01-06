@@ -148,7 +148,7 @@ describe Jets::Controller::Base do
     end
   end
 
-  describe "#log_info_start" do
+  describe "#log_start" do
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
 
     context "When Jets.config is set with filtered_parameters" do
@@ -161,7 +161,7 @@ describe Jets::Controller::Base do
         expect(Jets.logger).to receive(:info).with(expected_event_log)
         expect(Jets.logger).to receive(:info).at_least(:once)
 
-        controller.log_info_start
+        controller.log_start
       end
     end
 
@@ -175,12 +175,12 @@ describe Jets::Controller::Base do
         expect(Jets.logger).to receive(:info).with(expected_event_log)
         expect(Jets.logger).to receive(:info).at_least(:once)
 
-        controller.log_info_start
+        controller.log_start
       end
     end
   end
 
-  describe "#log_info_complete" do
+  describe "#log_finish" do
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
 
     it 'logs completion' do
@@ -188,8 +188,8 @@ describe Jets::Controller::Base do
       took = 1.5
       expected_event_log = "Completed Status Code #{status} in #{took}s"
       expect(Jets.logger).to receive(:info).with(expected_event_log)
-  
-      controller.log_info_complete(status, took)
+
+      controller.log_finish(status: status, took: took)
     end
   end
 end
