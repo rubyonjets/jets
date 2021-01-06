@@ -106,7 +106,7 @@ JS
       after = "const { environment } = require('@rails/webpacker')\n"
       insert_into_file("config/webpack/environment.js", jquery, after: after)
 
-      run("yarn add bootstrap@4.0.0-beta jquery popper.js postcss-cssnext")
+      run("yarn add bootstrap jquery popper.js postcss-cssnext")
     end
 
     def git_init
