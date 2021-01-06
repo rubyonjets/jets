@@ -17,3 +17,7 @@ Here's another example with rvm.
 
     rvm use 2.5.8
     jets deploy
+
+## Bypass Ruby Version Check
+
+Jets checks your current ruby version and makes sure its a version that Jets supports. If you would like to bypass this check.
