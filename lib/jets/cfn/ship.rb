@@ -102,7 +102,7 @@ module Jets::Cfn
     end
 
     def clean_deploy_logs
-      Jets::Commands::Clean::Log.new.clean_deploys
+      Jets::Commands::Clean::Log.new(@options).clean_deploys
     end
 
     def endpoint_unavailable?
