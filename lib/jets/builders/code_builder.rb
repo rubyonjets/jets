@@ -26,6 +26,7 @@ module Jets::Builders
     end
 
     def build
+      check_ruby_version
       @version_purger.purge
       cache_check_message
 
@@ -378,14 +379,23 @@ module Jets::Builders
       FileUtils.cp_r(ruby_version_path, build_area)
     end
 
-    def ruby_version_supported?
-      pattern = /(\d+)\.(\d+)\.(\d+)/
-      md = RUBY_VERSION.match(pattern)
-      ruby = {major: md[1], minor: md[2]}
-      md = Jets::RUBY_VERSION.match(pattern)
-      jets = {major: md[1], minor: md[2]}
+    SUPPORTED_RUBY_VERSIONS = %w[2.5 2.7]
+    def check_ruby_version
+      return if ENV['JETS_SKIP_RUBY_CHECK']
+      return if ruby_version_supported?
+      puts <<~EOL.color(:red)
+      You are using Ruby version #{RUBY_VERSION} which is not supported by Jets.
+      Please use one of the Jets supported ruby versions: #{SUPPORTED_RUBY_VERSIONS.join(' ')}
+      If you would like to skip this check you can set: JETS_SKIP_RUBY_CHECK=1
+      EOL
+      exit 1
+    end
 
-      ruby[:major] == jets[:major] && ruby[:minor] == jets[:minor]
+    def ruby_version_supported?
+      md = RUBY_VERSION.match(/(\d+)\.(\d+)\.\d+/)
+      major, minor = md[1], md[2]
+      detected_ruby = [major, minor].join('.')
+      SUPPORTED_RUBY_VERSIONS.include?(detected_ruby)
     end
 
     # Group all the path settings together here
