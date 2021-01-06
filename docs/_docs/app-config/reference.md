@@ -20,7 +20,7 @@ prewarm.concurrency | Prewarning concurrency | 2
 prewarm.public_ratio | Prewarming public ratio | 3
 prewarm.rack_ratio | Prewarming rack ratio | 5
 gems.disable | Disable use of [Serverless Gems]({% link _docs/serverlessgems.md %}) service. Note, this means you must build a custom lambda layer yourself. | false
-gems.source | Default gems source | api.serverlessgems.com
+gems.source | Default gems source | https://api.serverlessgems.com/api/v1
 gems.clean | Whether or not to always rebuild binary gems in the cache folder. | false
 inflections.irregular | Special case inflections | {}
 assets.folders | Folders to assets package and upload to s3 | %w[assets images packs]

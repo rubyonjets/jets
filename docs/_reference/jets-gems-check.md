@@ -13,5 +13,5 @@ Check if pre-built Lambda gems are available from the gems source. You can confi
 
     # Sources for check for pre-compiled Lambda gems. Checks the list in order.
     Jets.application.configure do
-      config.gems.source = "https://api.serverlessgems.com"
+      config.gems.source = "https://api.serverlessgems.com/api/v1"
     end
