@@ -14,6 +14,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 * Remove deprecation warnings: bundle, generate scaffold, webpacker, etc
 * #457 Breaking change: Harden IAM policy and do allow list all buckets by default.
 * Also setting the `config.iam_policy` appends to the default policy now.
+* Upgrade to Rails 6.1 components
 
 ## [2.3.18]
 - #514 Allow to define route that contains dot

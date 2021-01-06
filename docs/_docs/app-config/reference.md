@@ -29,6 +29,7 @@ assets.max_age | Default max age on assets | 3600
 assets.cache_control | The cache control expiry. IE: `public, max-age=3600`. Note, `assets.max_age` is a shorter way to set cache_control.  | nil
 session.store | Session storage.  Note when accessing it use `session[:store]`` since ``.store` is an OrderedOptions method. | Rack::Session::Cookie
 session.options | Session storage options | {}
+api.auto_replace | Whether or not to auto replace the API Gateway when necessary. By default, will prompt user. Setting this to `true` bypasses the prompt. Note changing the API Gateway will change the endpoint. It's recommended to set up a [custom domain]({% link _docs/routing/custom-domain.md %}) which is updated with the new API Gateway endpoint automatically. | nil
 api.authorization_type | API Gateway default authorization_type | NONE
 api.cors_authorization_type | API Gateway default authorization_type for CORS. Note, default is `nil` so ApiGateway::Cors#cors_authorization_type handles. | nil
 api.binary_media_types | Content types to treat as binary | ['multipart/form-data']

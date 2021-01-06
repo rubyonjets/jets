@@ -8,10 +8,44 @@ class Jets::Resource::ApiGateway::RestApi
       return default unless stack_exists?(parent_stack_name) && api_gateway_exists?
 
       if changed?
+        auto_replace_prompt
         new_id
       else
         current
       end
+    end
+
+    def auto_replace_prompt
+      return if ENV['JETS_API_AUTO_REPLACE']
+      return unless ARGV[0] == "deploy"
+      case Jets.config.api.auto_replace
+      when nil
+        puts message.routes_changed
+        puts message.custom_domain
+        print "Would you like to continue the deployment? (y/N) "
+        answer = get_answer
+        exit 1 unless answer =~ /^y/
+      when false
+        puts message.routes_changed
+        puts message.auto_replace_disabled
+        exit 1
+      end
+    end
+
+    def message
+      Message.new
+    end
+    memoize :message
+
+    TIMEOUT_PERIOD = 120
+    def get_answer
+      Timeout::timeout(TIMEOUT_PERIOD) do
+        $stdin.gets
+      end
+    rescue Timeout::Error => e
+      puts "#{e.class}: #{e.message}".color(:red)
+      puts "Deployment timeout after #{TIMEOUT_PERIOD}s. Waited too long answer. Exiting."
+      exit 1
     end
 
     def changed?

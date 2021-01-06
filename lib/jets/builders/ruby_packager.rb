@@ -57,7 +57,7 @@ module Jets::Builders
       #    bundle config gems.myprivatesource.com user:pass
       #
 
-      setup_bundle_config
+      create_bundle_config
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_unbundled_env do
         sh(
@@ -65,6 +65,7 @@ module Jets::Builders
           "env bundle install"
         )
       end
+      create_bundle_config(frozen: true)
 
       remove_bundled_with("#{cache_area}/Gemfile.lock")
 
@@ -183,12 +184,12 @@ module Jets::Builders
     # this only happens with ssh debugging, not when the ci.sh script gets ran.
     # But on macosx it exists.
     # Dont know why this is the case.
-    def setup_bundle_config
+    def create_bundle_config(frozen: false)
       FileUtils.rm_rf("#{cache_area}/.bundle")
+      frozen_line = %Q|BUNDLE_FROZEN: "true"\n| if frozen
       text =<<-EOL
 ---
-BUNDLE_FROZEN: "true"
-BUNDLE_PATH: "vendor/gems"
+#{frozen_line}BUNDLE_PATH: "vendor/gems"
 BUNDLE_WITHOUT: "development:test"
 EOL
       bundle_config = "#{cache_area}/.bundle/config"
