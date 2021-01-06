@@ -59,8 +59,9 @@ class Jets::Commands::Call
       payload: transformed_event, # "fileb://file-path/input.json", <= JSON
       qualifier: @qualifier, # "1",
     }
+
     begin
-      resp = aws_lambda.invoke(options)
+      resp = lambda_client.invoke(options)
     rescue Aws::Lambda::Errors::ResourceNotFoundException
       puts "The function #{function_name} was not found.  Maybe check the spelling or the AWS_PROFILE?".color(:red)
       return
@@ -164,6 +165,18 @@ class Jets::Commands::Call
   #   jets call posts_controller-index '{"test":1}' | jq .
   def puts(text)
     $stderr.puts(text)
+  end
+
+  def lambda_client
+    opt = {}
+    opt = opt.merge({retry_limit: @options[:retry_limit]}) if @options[:retry_limit].present?
+    opt = opt.merge({http_read_timeout: @options[:read_timeout]}) if @options[:read_timeout].present?
+
+    if opt.empty?
+      aws_lambda
+    else
+      Aws::Lambda::Client.new(opt)
+    end
   end
 
 end

@@ -89,6 +89,8 @@ module Jets::Commands
     option :lambda_proxy, type: :boolean, default: true, desc: "Enables automatic Lambda proxy transformation of the event payload"
     option :guess, type: :boolean, default: true, desc: "Enables guess mode. Uses inference to allows use of all dashes to specify functions. Guess mode verifies that the function exists in the code base."
     option :local, type: :boolean, desc: "Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode guess mode is always used."
+    option :retry_limit, type: :numeric, default: nil, desc: "Retry count of invoking function. It work with remote call"
+    option :read_timeout, type: :numeric, default: nil, desc: " The number of seconds to wait for response data. It work with remote call"
     def call(function_name, payload='')
       # Printing to stdout can mangle up the response when piping
       # the value to jq. For example:
