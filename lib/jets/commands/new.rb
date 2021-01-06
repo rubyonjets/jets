@@ -89,6 +89,14 @@ module Jets::Commands
       run(command)
     end
 
+    def update_package_json
+      path = "package.json"
+      return unless File.exist?(path)
+      data = JSON.load(IO.read(path))
+      data["private"] = true
+      IO.write(path, JSON.pretty_generate(data))
+    end
+
     # bootstrap is dependent on webpacker, options[:bootstrap] is used
     # in webpacker_install.
     def bootstrap_install
