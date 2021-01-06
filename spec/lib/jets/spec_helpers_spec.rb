@@ -74,17 +74,23 @@ describe Jets::SpecHelpers do
       expect(JSON.parse(response.body)['filter']).to eq 'abc'
     end
 
-    it "gets 200 with nested query params 1" do
+    it "gets 200 with nested query params" do
       get '/spec_helper_test/:id', id: 123, query: { filter: nested_params }
 
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq nested_params
     end
 
-    it "gets 200 with nested query params 2" do
+    it "gets 200 with array query params" do
       get '/spec_helper_test/:id', id: 123, query: { filter: ['abc', 'def'] }
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq ['abc', 'def']
+    end
+
+    it "gets 200 with query params with params keyword" do
+      get '/spec_helper_test/:id', id: 123, params: { filter: 'abc' }
+      expect(response.status).to eq 200
+      expect(JSON.parse(response.body)['filter']).to eq 'abc'
     end
 
     it "gets 200 with query params no query keyword" do
