@@ -5,7 +5,7 @@ class Jets::Router
     # Methods supported by API Gateway
     %w[any delete get head options patch post put].each do |method_name|
       define_method method_name do |path, options={}|
-        create_route(options.merge(path: path, method: __method__))
+        create_route(options.merge(path: escape_path(path), method: __method__))
       end
     end
 
@@ -134,6 +134,11 @@ class Jets::Router
       options = default.merge(options)
       MethodCreator.new(options, @scope).create_root_helper
       @routes << Route.new(options, @scope)
+    end
+    private
+
+    def escape_path(path)
+      path.to_s.split('/').map { |s| s =~ /\A[:\*]/ ? s : CGI.escape(s) }.join('/')
     end
   end
 end
