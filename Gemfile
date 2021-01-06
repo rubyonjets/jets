@@ -11,5 +11,4 @@ group :development, :test do
   gem "dynomite"
   gem "jetpacker"
   gem "rspec_junit_formatter"
-  gem "serverlessgems", git: "https://github.com/boltops-tools/serverlessgems", submodules: true
 end
