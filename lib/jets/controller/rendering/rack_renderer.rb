@@ -63,6 +63,12 @@ module Jets::Controller::Rendering
 
       # Note @options[:method] uses @options vs options on purpose
       @options[:method] = event["httpMethod"].downcase if event["httpMethod"]
+
+      # This is how we pass parameters to actionpack. IE: params to the view.
+      # This is because renderer_options is actually the env that is passed to the rack request.
+      options.merge!("action_dispatch.request.path_parameters" => @controller.path_parameters)
+      options.merge!("action_dispatch.request.query_parameters" => @controller.query_parameters)
+      options.merge!("action_dispatch.request.request_parameters" => @controller.request_parameters)
       options
     end
 

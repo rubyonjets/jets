@@ -147,6 +147,10 @@ class Jets::Controller
       paths
     end
 
+    def controller_name
+      self.class.to_s.underscore
+    end
+
     def action_name
       @meth
     end
