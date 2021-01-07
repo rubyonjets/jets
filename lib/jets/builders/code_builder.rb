@@ -381,7 +381,7 @@ module Jets::Builders
 
     SUPPORTED_RUBY_VERSIONS = %w[2.5 2.7]
     def check_ruby_version
-      return if ENV['JETS_SKIP_RUBY_CHECK']
+      return unless ENV['JETS_RUBY_CHECK'] == '0' || Jets.config.ruby.check == false
       return if ruby_version_supported?
       puts <<~EOL.color(:red)
       You are using Ruby version #{RUBY_VERSION} which is not supported by Jets.

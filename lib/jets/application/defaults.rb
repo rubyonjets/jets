@@ -157,6 +157,9 @@ class Jets::Application
 
       config.hot_reload = Jets.env.development?
 
+      config.ruby = ActiveSupport::OrderedOptions.new
+      config.ruby.check = true
+
       config
     end
 

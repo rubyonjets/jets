@@ -20,4 +20,12 @@ Here's another example with rvm.
 
 ## Bypass Ruby Version Check
 
-Jets checks your current ruby version and makes sure its a version that Jets supports. If you would like to bypass this check.
+Jets checks your current ruby version and makes sure its a version that Jets supports. If you would like to bypass this check, you can set `JETS_RUBY_CHECK=0`. You can can also set a config.
+
+config/appplication.rb
+
+```ruby
+Jets.application.configure do
+  config.ruby.check = false
+end
+```
