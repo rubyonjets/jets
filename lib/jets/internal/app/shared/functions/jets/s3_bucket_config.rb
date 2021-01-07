@@ -1,5 +1,6 @@
 require 'bundler/setup'
-require "cfn_response"
+require 'active_support/core_ext/hash'
+require 'cfn_response'
 
 def lambda_handler(event:, context:)
   cfn = CfnResponse.new(event, context)
