@@ -14,6 +14,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green? | Run jets upgrade?
 --- | --- | --- | ---
+3.0.0 | Added Ruby 2.7 support. Use Serverless Gems for binary gems. | No | No
 2.1.1 | Change `config.extra_autoload_paths` to `config.autoload_paths` | No | Yes
 2.0.0 | Add csrf forgery protection. The `jets upgrade` commands updates your code with the csrf logic. New apps generated with `jets new` does this already. The routes `namespace` behavior also changed.  Use `prefix` if you prefer the old behavior.  | No | Yes
 1.4.11 | Removed vendor/dynomite gem. Must add dynomite to Gemfile now. New apps generated with `jets new` does this.  | No | Yes
@@ -27,6 +28,12 @@ Version | Notes | Blue-Green? | Run jets upgrade?
 ## Upgrade Details
 
 The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
+
+### 3.0.0
+
+* Ruby 2.7 support added. To use Ruby 2.7, just switch your current ruby version a 2.7.x variant and Jets will detect it.
+* [Serverless Gems](https://www.serverlessgems.com/) is used for binary gems.
+* App views are the underscore name of the controller. They are **not** camelized. This was a bug and has been fixed.
 
 ### 2.0.0
 
