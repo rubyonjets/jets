@@ -14,7 +14,7 @@ module Jets::Resource::ApiGateway::BasePath
             },
             role: "!GetAtt BasePathRole.Arn",
             handler: handler,
-            runtime: "ruby2.7",
+            runtime: Jets.ruby_runtime,
             timeout: 60,
             memory_size: 1536,
             environment: env_properties[:environment],
