@@ -6,21 +6,23 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 ## [3.0.0.beta]
 * Ruby 2.7 support
 * `jets configure` command
-* Improve autoloader
+* Improve autoloader: Shouldnt have to to call `bundle exec` in front of jets anymore.
 * Big improvements to docs site, add search
-* Breaking: Use serverlessgems API
+* Use serverlessgems API
 * Breaking: use do not pluralize controller names for views folder
 * Shorted SSM secrets notation support
-* Remove deprecation warnings: bundle, generate scaffold, webpacker, etc
-* #457 Breaking change: Harden IAM policy and do allow list all buckets by default.
+* Remove deprecations and warnings: bundle install, generate scaffold, webpacker, yarn license, etc
 * Also setting the `config.iam_policy` appends to the default policy now.
 * Upgrade to Rails 6.1 components
-* increase cloudformation output limit to 200
-* Replace -sure with -y option
+* Increase cloudformation output limit to 200
+* Replace `--sure` with `-y` option
 * Fix params helper in views
 * Webpacker upgrade
 * #328 i18n docs
-* #457 Improve iam_policy configuration
+* #391 Deploy Option: Auto Replace API Gateway
+* #453 Update to Bootstrap4 official release
+* #454 When the controller name is singular, the behavior of searching for the View file is different from expected.
+* #457 Breaking change: Harden IAM policy and do allow list all buckets by default. Breaking change.
 * #479 Create request completion log method
 * #487 API Gateway Base Path
 * #488 Add retry_limit and read_timeout options
@@ -28,9 +30,6 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 * #492 Add params keyword case with get method for spec helpers test
 * #494 Update ruby_packager.rb
 * #496 Add unicode test for spec_helpers test
-* #454 When the controller name is singular, the behavior of searching for the View file is different from expected.
-* #453 Update to Bootstrap4 official release
-* #391 Deploy Option: Auto Replace API Gateway
 * #499 default_iam_policy does not correctly include VPC related actions on resource creation
 
 ## [2.3.18]

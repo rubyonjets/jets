@@ -386,7 +386,7 @@ module Jets::Builders
       puts <<~EOL.color(:red)
       You are using Ruby version #{RUBY_VERSION} which is not supported by Jets.
       Please use one of the Jets supported ruby versions: #{SUPPORTED_RUBY_VERSIONS.join(' ')}
-      If you would like to skip this check you can set: JETS_SKIP_RUBY_CHECK=1
+      If you would like to skip this check you can set: JETS_RUBY_CHECK=0
       EOL
       exit 1
     end
