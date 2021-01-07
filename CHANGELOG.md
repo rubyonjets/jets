@@ -4,13 +4,13 @@ All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
 ## [3.0.0.beta]
-* Ruby 2.7 support
+* #444 Ruby 2.7 Support
 * `jets configure` command
 * Improve autoloader: Shouldnt have to to call `bundle exec` in front of jets anymore.
 * Big improvements to docs site, add search
 * Use serverlessgems API
 * Breaking: use do not pluralize controller names for views folder
-* Shorted SSM secrets notation support
+* Shorten SSM secrets notation support
 * Remove deprecations and warnings: bundle install, generate scaffold, webpacker, yarn license, etc
 * Also setting the `config.iam_policy` appends to the default policy now.
 * Upgrade to Rails 6.1 components
