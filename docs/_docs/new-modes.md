@@ -1,6 +1,5 @@
 ---
 title: Jets New Modes
-nav_order: 8
 ---
 
 The `jets new` command has 3 different modes: html, api, and job. Use the `--mode` option to specify one of them.  The modes allow you to generate different starter Jets projects for different needs.
@@ -75,4 +74,3 @@ A notable option is the `--no-database` option.  If you have an app that does no
     
 Refer to the CLI reference [jets new](http://rubyonjets.com/reference/jets-new/) for more info.
 
-{% include prev_next.md %}

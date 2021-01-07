@@ -1,11 +1,13 @@
 describe Jets::Resource::Iam::ClassRole do
+  before(:each) do
+    reset_application_config_iam!
+  end
   let(:role) do
     Jets::Resource::Iam::ClassRole.new(PostsController)
   end
 
   context "iam policy" do
     it "inherits from the application wide iam policy" do
-      # pp role.policy_document # uncomment to debug
       expect(role.policy_document).to eq(
         {"Version"=>"2012-10-17",
          "Statement"=>
@@ -15,12 +17,9 @@ describe Jets::Resource::Iam::ClassRole do
             "Effect"=>"Allow",
             "Resource"=>
              "arn:aws:logs:us-east-1:123456789:log-group:/aws/lambda/demo-test-*"},
-           {"Action"=>["s3:Get*", "s3:List*"],
+           {"Action"=>["s3:Get*", "s3:List*", "s3:HeadBucket"],
             "Effect"=>"Allow",
             "Resource"=>"arn:aws:s3:::fake-test-s3-bucket*"},
-           {"Action"=>["s3:ListAllMyBuckets", "s3:HeadBucket"],
-            "Effect"=>"Allow",
-            "Resource"=>"arn:aws:s3:::*"},
            {"Action"=>
              ["cloudformation:DescribeStacks",
               "cloudformation:DescribeStackResources"],

@@ -1,6 +1,5 @@
 ---
 title: Faster Development
-nav_order: 63
 ---
 
 Here are some suggestions to speed up development with Jets and AWS Lambda.
@@ -47,4 +46,3 @@ An additional benefit of the Gem Layer is that it keeps your application code si
 
 Another approach for a team is to set up a CI/CD pipeline that will deploy when git commits are pushed.  You may be interested in the [Continuous Integration with CodeBuild docs]({% link _docs/extras/codebuild.md %}).
 
-{% include prev_next.md %}

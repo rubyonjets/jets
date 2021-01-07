@@ -102,7 +102,7 @@ module Jets::Cfn
     end
 
     def clean_deploy_logs
-      Jets::Commands::Clean::Log.new.clean_deploys
+      Jets::Commands::Clean::Log.new(@options).clean_deploys
     end
 
     def endpoint_unavailable?
@@ -146,6 +146,7 @@ module Jets::Cfn
       # domain_name is a method on the Jets::Resource::ApiGateway::Domain instance
       url = "https://#{domain_name.domain_name}"
       puts "Custom Domain: #{url}"
+      puts "App Domain: #{Jets.config.app.domain}" if Jets.config.app.domain
     end
 
     # All CloudFormation states listed here:

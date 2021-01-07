@@ -1,6 +1,5 @@
 ---
 title: Polymorphic Support
-nav_order: 94
 ---
 
 ## What is polymorphic support?
@@ -25,4 +24,3 @@ A Node example:
 
 ![](/img/docs/poly/poly-lambda-function-node.png)
 
-{% include prev_next.md %}

@@ -1,6 +1,5 @@
 ---
 title: Authorizers
-nav_order: 32
 ---
 
 Jets supports writing [Lambda Authorizers](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-use-lambda-authorizer.html).  You define them in the `app/authorizers` folder. Here's an example:
@@ -174,4 +173,3 @@ end
 
 Note: You can also make use of [Before Filters]({% link _docs/extras/action-filters.md %}) to build your own custom authorization system instead of using API Gateway Authorizers.
 
-{% include prev_next.md %}

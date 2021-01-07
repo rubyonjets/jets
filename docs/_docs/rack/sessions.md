@@ -1,6 +1,5 @@
 ---
 title: Sessions
-nav_order: 47
 ---
 
 You can use sessions to store data between requests. To use sessions use the `session` helper. Example:
@@ -71,4 +70,3 @@ end
 
 It is best practice to store reference data like a database record id in session and look up the record in the application code.  This keeps session data size smaller. Also, the code is more robust to changes when the data structure changes later.  For example, the structure can change when a column is added to the table. The default session storage is cookies.  Cookies are limited to 4k of data.  So keep the session data underneath this limit for cookies.
 
-{% include prev_next.md %}

@@ -1,12 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% include head.html %}
-    <body id="page-top">
-    {% include nav.html %}
 
-    {% include content.html %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="{{ site.description }}">
+  <meta name="keywords" content="{{ site.keywords }}" />
+  {% if site.meta_author %}<meta name="author" content="{{ site.meta_author }}">{% endif %}
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
 
-    {% include footer.html %}
-    {% include js.html %}
-    </body>
+  {% if page.title %}
+  <title>{{ page.title }} - {{ site.title }}</title>
+  {% else %}
+  <title>Ruby on Jets | The Ruby Serverless Framework</title>
+  {% endif %}
+
+  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/vendor/simple-line-icons/css/simple-line-icons.css">
+  <link rel="stylesheet" href="/css/main.css">
+
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/app.js"></script>
+</head>
+
+<body>
+  {% include header.html %}
+  {% include content.html %}
+  {% include footer.html %}
+  {% include js.html %}
+</body>
 </html>

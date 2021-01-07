@@ -1,6 +1,5 @@
 ---
 title: API Gateway Routes
-nav_order: 98
 ---
 
 Jets translates `config/routes.rb` definitions to API Gateway Resources: [Routing Overview](http://rubyonjets.com/docs/routing/). Essentially, API Gateway is the routing layer of a Jets application.  From the [AWS API Gateway](https://aws.amazon.com/api-gateway/) product page:
@@ -58,4 +57,3 @@ You can manually reproduce the error in the API Gateway console also.
 
 So currently, to fix this you must rename `:post_id` to `:id` and use the same sibling variables under the same parent paths.
 
-{% include prev_next.md %}

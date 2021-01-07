@@ -1,0 +1,44 @@
+---
+layout: null
+---
+{% assign first = true %}
+[
+{% for doc in site.docs %}
+    {% if doc.title != null and doc.title != empty %}
+    {% unless first %},{% endunless %}{
+        "title": {{doc.title | jsonify}},
+        "search_title": {{doc.search_title | jsonify}},
+        "content": {{doc.content | markdownify | strip_html | replace:'├','' | replace:'└','' | replace:'─','' | replace:'│','' | jsonify}},
+        "link": "{{ site.baseurl }}{{ doc.url }}",
+        "search_omit": "{{ doc.search_omit }}"
+    }
+    {% assign first = false %}
+    {% endif %}
+{% endfor %}
+
+{% for post in site.posts %}
+    {% if post.title != null and post.title != empty %}
+    {% unless first %},{% endunless %}{
+        "title": {{post.title | jsonify}},
+        "search_title": {{doc.search_title | jsonify}},
+        "content": {{post.content | markdownify | strip_html | jsonify}},
+        "link": "{{ site.baseurl }}{{ post.url }}",
+        "search_omit": "{{ post.search_omit }}"
+    }
+    {% assign first = false %}
+    {% endif %}
+{% endfor %}
+
+{% for page in site.pages %}
+    {% if page.title != null and page.title != empty %}
+    {% unless first %},{% endunless %}{
+        "title": {{page.title | jsonify}},
+        "search_title": {{doc.search_title | jsonify}},
+        "content": {{page.content | markdownify | strip_html | jsonify}},
+        "link": "{{ site.baseurl }}{{ page.url | replace: 'index.html', '' }}",
+        "search_omit": "{{ page.search_omit }}"
+    }
+    {% assign first = false %}
+    {% endif %}
+{% endfor %}
+]

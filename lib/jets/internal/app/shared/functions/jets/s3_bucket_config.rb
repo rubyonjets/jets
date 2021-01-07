@@ -1,33 +1,23 @@
-require "active_support/all"
-require "aws-sdk-s3"
-require "cfnresponse"
-include Cfnresponse
+require 'bundler/setup'
+require 'active_support/core_ext/hash'
+require 'cfn_response'
 
 def lambda_handler(event:, context:)
-  # Print out debugging info immediately just in case
-  puts "event: #{json_pretty(event)}"
-  puts "context: #{json_pretty(context)}"
-
-  if %w[Create Update].include?(event['RequestType'])
-    properties = event["ResourceProperties"].dup
-    # After deleting ServiceToken, the rest of the values is the bucket configuration properties.
-    properties.delete("ServiceToken")
-    configurator = BucketConfigurator.new
-    configurator.put(properties)
+  cfn = CfnResponse.new(event, context)
+  cfn.response do
+    case event['RequestType']
+    when "Create", "Update"
+      properties = event["ResourceProperties"].dup
+      # After deleting ServiceToken, the rest of the values are the bucket configuration properties.
+      properties.delete("ServiceToken")
+      configurator = BucketConfigurator.new
+      configurator.put(properties)
+    end
   end
-
-  send_response(event, context, "SUCCESS")
-
-# We rescue all exceptions and send an message to CloudFormation so we dont have to
-# wait for over an hour for the stack operation to timeout and rollback.
-rescue Exception => e
-  puts e.message
-  puts e.backtrace
-  sleep 10 # a little time for logs to be sent to CloudWatch
-  send_response(event, context, "FAILED")
 end
 
 ########################################################
+require "aws-sdk-s3"
 
 class BucketConfigurator
   def put(props={})

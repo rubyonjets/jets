@@ -27,11 +27,11 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "actionmailer", "~> 6.0.0"
-  spec.add_dependency "actionpack", "~> 6.0.0"
-  spec.add_dependency "actionview", "~> 6.0.0"
-  spec.add_dependency "activerecord", "~> 6.0.0"
-  spec.add_dependency "activesupport", "~> 6.0.0"
+  spec.add_dependency "actionmailer", "~> 6.1.0"
+  spec.add_dependency "actionpack", "~> 6.1.0"
+  spec.add_dependency "actionview", "~> 6.1.0"
+  spec.add_dependency "activerecord", "~> 6.1.0"
+  spec.add_dependency "activesupport", "~> 6.1.0"
   spec.add_dependency "aws-mfa-secure", "~> 0.4.0"
   spec.add_dependency "aws-sdk-apigateway"
   spec.add_dependency "aws-sdk-cloudformation"
@@ -43,28 +43,29 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-sns"
   spec.add_dependency "aws-sdk-sqs"
   spec.add_dependency "aws-sdk-ssm"
+  spec.add_dependency "cfn-status"
   spec.add_dependency "cfn_camelizer", "~> 0.4.6"
-  spec.add_dependency "cfnresponse"
+  spec.add_dependency "cfn_response"
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency
   spec.add_dependency "hashie"
-  spec.add_dependency "jets-gems"
   spec.add_dependency "jets-html-sanitizer"
   spec.add_dependency "kramdown"
   spec.add_dependency "memoist"
   spec.add_dependency "mimemagic"
   spec.add_dependency "rack"
-  spec.add_dependency "railties", "~> 6.0.0" # for ActiveRecord database_tasks.rb
+  spec.add_dependency "railties", "~> 6.1.0" # for ActiveRecord database_tasks.rb
   spec.add_dependency "rainbow"
   spec.add_dependency "recursive-open-struct"
+  spec.add_dependency "serverlessgems"
   spec.add_dependency "shotgun"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"
   spec.add_dependency "zeitwerk"
 
-  spec.add_development_dependency "byebug"
   spec.add_development_dependency "bundler"
+  spec.add_development_dependency "byebug"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "render_me_pretty"
   spec.add_development_dependency "rspec"
-  spec.add_development_dependency "cfn-status"
 end

@@ -1,6 +1,5 @@
 ---
 title: Deploy
-nav_order: 12
 ---
 
 Once you are ready to deploy your app to Lambda, it's one command to do so:
@@ -63,4 +62,3 @@ Deploying to multiple regions can be achieved with `AWS_REGION`.  Example:
     AWS_REGION=us-east-1 jets deploy
     AWS_REGION=us-west-2 jets deploy
 
-{% include prev_next.md %}

@@ -84,7 +84,7 @@
     </div>
     <p class="version">
       <strong>Jets version:</strong> <%= Jets.version %><br />
-      <strong>Ruby version:</strong> <%= Jets::RUBY_VERSION %>
+      <strong>Ruby version:</strong> <%= RUBY_VERSION %>
     </p>
   </div>
 </body>

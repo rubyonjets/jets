@@ -1,3 +1,0 @@
-[submodule "vendor/cfn-status"]
-	path = vendor/cfn-status
-	url = https://github.com/tongueroo/cfn-status.git

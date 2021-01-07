@@ -1,6 +1,5 @@
 ---
 title: Custom Inflections
-nav_order: 84
 ---
 
 Jets lookups folders, files, and classes based on naming conventions. It singularizes or pluralizes words as a part of this naming convention. For example:
@@ -22,4 +21,3 @@ hi: hi
 
 This changes the singularization and pluralization of words to fit your needs.
 
-{% include prev_next.md %}

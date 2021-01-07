@@ -1,6 +1,5 @@
 ---
 title: REPL Console
-nav_order: 11
 ---
 
 You can test things out in a REPL console:
@@ -14,4 +13,3 @@ You can test things out in a REPL console:
     => "development"
     >>
 
-{% include prev_next.md %}

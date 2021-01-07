@@ -1,6 +1,5 @@
 ---
 title: Authorization Scopes
-nav_order: 38
 ---
 
 Authorization Scopes are support by Cognito authorizers. You can configure the OAuth2 scope in the Gateway API Method Request in two ways.
@@ -30,4 +29,3 @@ Jets.application.routes.draw do
 end
 ```
 
-{% include prev_next.md %}

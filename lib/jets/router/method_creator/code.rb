@@ -67,7 +67,7 @@ class Jets::Router::MethodCreator
       return if @as == :disabled
       path_method_call = "#{full_meth_name(:path)}#{meth_args}"
       # Note: It is important lazily get the value of ENV['JETS_HOST'] within the method.
-      # Since it is not set until the requrest goes through the main middleware.
+      # Since it is not set until the request goes through the main middleware.
       <<~EOL
         def #{full_meth_name(:url)}#{meth_args}
           "\#{ENV['JETS_HOST']}\#{#{path_method_call}}"

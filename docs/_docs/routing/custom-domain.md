@@ -1,6 +1,5 @@
 ---
 title: Custom Domain
-nav_order: 40
 ---
 
 Jets can create and associate a route53 custom domain with the API Gateway endpoint.  Jets manages the vanity route53 endpoint that points to the API Gateway endpoint.  It adjusts the endpoint transparently without you having to update your endpoint if Jets determines that a new API Gateway Rest API needs to be created. The route53 record is also updated. Here's a table with some example values to explain:
@@ -109,6 +108,31 @@ For the most control, it is recommended to create a CloudFront distribution **ou
 
 ![](/img/docs/routing/jets-vanity-endpoint-cloudfront.png)
 
-This provides you full manual control over the DNS. You can deploy additional [extra environments]({% link _docs/env-extra.md %}) and update which Jets environment CloudFront points to. This type of blue-green deployment can be useful for large feature rollouts. Using CloudFront will also allow you to do things like redirect http to https. The notable drawback is that CloudFront changes can take 15m-45m to deploy.
+This provides you full manual control over the DNS. You can deploy additional [extra environments]({% link _docs/env-extra.md %}) and update which Jets environment CloudFront points to. This type of blue-green deployment can be useful for large feature rollouts. Using CloudFront will also allow you to do things like redirect http to https. A notable drawback is that CloudFront changes can take 5m-20m to deploy.
 
-{% include prev_next.md %}
+## CloudFront Host
+
+When [CloudFront is configured with API Gateway](https://aws.amazon.com/premiumsupport/knowledge-center/api-gateway-cloudfront-distribution/), the Host header cannot is not passed to API Gateway. So the `request.host` your Jets app sees is the API Gateway Custom Domain. This will cause issues for methods like `redirect_to`.  To set the host you can:
+
+1. Set the `config.app.domain` option.
+2. Configure the CloudFront distribution with a Host Header `origin`.
+
+Configuring either of these will set the host the app with "see".  The `config.app.domain` option takes the highest precedence.
+
+## Multiple Custom Domain Base Paths
+
+You can configure the base path in the custom domain by adding the base_path parameter . Example:
+
+```ruby
+Jets.application.configure do
+  config.domain.cert_arn = "arn:aws:acm:us-west-2:112233445577:certificate/8d8919ce-a710-4050-976b-b33da991e7e8" # String
+  config.domain.hosted_zone_name = "coolapp.com" # String
+  config.domain.name = "coolapp.com"
+  config.domain.base_path = "accounts"
+end
+```
+
+If then deploy another app with the same `domain.name` but a different `domain.base_path = "api"`, then the mapping works like this:
+
+    coolapp.com/accounts => root of jets app 1
+    coolapp.com/api      => root of jets app 2

@@ -1,6 +1,5 @@
 ---
 title: Cookies
-nav_order: 48
 ---
 
 You can set cookies with the `cookies` helper.  Example:
@@ -21,4 +20,3 @@ class PostsController < ApplicationController
 end
 ```
 
-{% include prev_next.md %}

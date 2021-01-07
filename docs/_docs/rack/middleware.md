@@ -1,6 +1,5 @@
 ---
 title: Middleware
-nav_order: 46
 ---
 
 [Jets Controllers]({% link _docs/controllers.md %}) run through a set of Rack middlewares. To can see the full list of middleware with the [jets middleware](http://rubyonjets.com/reference/jets-middleware/) command.
@@ -34,4 +33,3 @@ Reults in this code:
 MyMiddleware::Cache.new(app, page_cache: false)
 ```
 
-{% include prev_next.md %}

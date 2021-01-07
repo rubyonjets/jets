@@ -1,6 +1,5 @@
 ---
 title: Rack Compatible
-nav_order: 45
 ---
 
 Jets is Rack compatible, both locally and remotely on AWS Lambda.
@@ -15,4 +14,3 @@ If you are testing the Jets controller from the Lambda console, you don't really
 
 Locally when you run `jets server`, it starts up a rackup server and runs it through the same set of Rack middlewares.
 
-{% include prev_next.md %}

@@ -1,6 +1,5 @@
 ---
 title: Generators
-nav_order: 20
 ---
 
 The Jets generators piggybacks off of the Rails generators. The generators have a lot of power and can save you time. You can use `jets generate -h` to list the generators:
@@ -71,4 +70,3 @@ The scaffold generator also has an api mode.
 
     jets generate task feeds fetch erase add
 
-{% include prev_next.md %}

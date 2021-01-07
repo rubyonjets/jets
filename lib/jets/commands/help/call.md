@@ -53,6 +53,14 @@ Jets figures out what functions to call by evaluating the app code and finds if 
 
     jets call admin-related_pages_controller-index --no-guess
 
+If you want to call a function which runs too long time, you can set `read_timeout`.
+
+    jets call some_long_job-index --read_timeout 900
+    
+And you can set `retry_limit`. If you don't want to retry you can set 0.
+
+    jets call some_long_job-index --retry_limit 0
+
 ## Local mode
 
 Instead of calling AWS lambda remote, you can also have `jets call` use the code directly on your machine.  To enable this, use the `--local` flag. Example:

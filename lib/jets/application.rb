@@ -65,7 +65,7 @@ class Jets::Application
     return ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME'] # override
 
     lines = IO.readlines("#{Jets.root}/config/application.rb")
-    project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ }
+    project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ && l !~ /^\s+#/ }
     project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') # project_name
   end
 
@@ -176,7 +176,9 @@ class Jets::Application
   end
 
   def set_iam_policy
-    config.iam_policy ||= self.class.default_iam_policy
+    config.iam_policy ||= []
+    config.default_iam_policy ||= self.class.default_iam_policy
+    config.iam_policy = config.default_iam_policy | config.iam_policy
     config.managed_policy_definitions ||= [] # default empty
   end
 

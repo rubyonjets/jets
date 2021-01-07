@@ -15,6 +15,7 @@ module Jets
     # Later in Jets::Booter, Bundle.require is called and includes the Jets.env group.
     #
     def setup
+      return unless jets_project?
       return unless bundler_enabled?
       Kernel.require "bundler/setup"
       Bundler.setup # Same as Bundler.setup(:default)
@@ -38,6 +39,7 @@ module Jets
     # rescued gracefully.  This is done in Jets::Commands::RakeTasks.load!  In the case when user is in another
     # project with another Gemfile, the load errors will also be rescued.
     def require
+      return unless jets_project?
       return unless bundler_enabled?
       Kernel.require "bundler/setup"
       Bundler.require(*bundler_groups)
@@ -75,6 +77,10 @@ module Jets
 
     def bundler_groups
       [:default, Jets.env.to_sym]
+    end
+
+    def jets_project?
+      File.exist?("config/application.rb")
     end
 
     extend self

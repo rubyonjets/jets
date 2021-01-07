@@ -1,6 +1,5 @@
 ---
 title: Polymorphic Node
-nav_order: 96
 ---
 
 To write your Jets Lambda functions in node, it would look like this:
@@ -70,4 +69,3 @@ class PostsController < ApplicationController
 end
 ```
 
-{% include prev_next.md %}

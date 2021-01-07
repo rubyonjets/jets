@@ -89,6 +89,14 @@ module Jets::Commands
       run(command)
     end
 
+    def update_package_json
+      path = "package.json"
+      return unless File.exist?(path)
+      data = JSON.load(IO.read(path))
+      data["private"] = true
+      IO.write(path, JSON.pretty_generate(data))
+    end
+
     # bootstrap is dependent on webpacker, options[:bootstrap] is used
     # in webpacker_install.
     def bootstrap_install
@@ -106,7 +114,7 @@ JS
       after = "const { environment } = require('@rails/webpacker')\n"
       insert_into_file("config/webpack/environment.js", jquery, after: after)
 
-      run("yarn add bootstrap@4.0.0-beta jquery popper.js postcss-cssnext")
+      run("yarn add bootstrap jquery popper.js postcss-cssnext")
     end
 
     def git_init

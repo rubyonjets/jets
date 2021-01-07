@@ -1,6 +1,5 @@
 ---
 title: Associated Resources Extensions
-nav_order: 73
 ---
 
 You can define your own custom associated resource methods. This helps for shorter and cleaner code. Remember that methods like `cron` and `rate` are just convenience methods that ultimately call the `resource` method. You can extend Jets with custom convenience methods.
@@ -85,4 +84,3 @@ end
 
 You can use any of the resource forms depending on how much customization and control is needed.  It is probably best to try the simplest form first and then go up your way to the long form when needed.
 
-{% include prev_next.md %}

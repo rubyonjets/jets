@@ -1,6 +1,5 @@
 ---
 title: 'Upload Binary Files: Images, Attachments, Etc'
-nav_order: 80
 ---
 
 Jets supports the ability to upload files like images via [Binary Support](https://aws.amazon.com/about-aws/whats-new/2016/11/binary-data-now-supported-by-api-gateway/).  Binary support is enabled for `multipart/form-data` data.  Jets converts the uploaded data from a standard HTML file input field and passes it to your controller as a file object through the `params` helper.
@@ -30,4 +29,3 @@ You can use `params[:post][:photo]` in the controller to read the file and save 
 
 This blog tutorial provides an example of image uploading with Jets and Carrierwave: [Image Upload Carrierwave Tutorial](https://blog.boltops.com/2018/12/13/jets-image-upload-carrierwave-tutorial-binary-support).
 
-{% include prev_next.md %}

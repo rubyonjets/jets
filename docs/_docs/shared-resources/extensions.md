@@ -1,6 +1,5 @@
 ---
 title: Shared Resources Extensions
-nav_order: 76
 ---
 
 To create your own Shared Resource Extensions, you define a module with the methods in the `app/shared/extensions` folder.  Here's a simple example:
@@ -32,4 +31,3 @@ The code above creates an SQS Queue with a `message_retention_period` of 120 sec
 
 Note: The `sqs_queue` is an example and is actually already implemented by Jets. We're using it for demonstrative purposes.
 
-{% include prev_next.md %}

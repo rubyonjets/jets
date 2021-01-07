@@ -1,0 +1,30 @@
+---
+title: Search
+search_omit: true
+---
+
+<div class="search-tips">
+  <h3>Search Tips:</h3>
+  <p>To OR search terms: "install aws"</p>
+  <p>To AND search terms: "+install +aws"</p>
+  <p>To filter or reject search terms: "-aws"</p>
+  <p>More: <a href="{% link search/tips.md %}">Search Tips</a></p>
+</div>
+
+<!-- Search results placeholder -->
+<p class="search-summary" data-search-found>
+  <span class="search-count" data-search-found-count></span> <span data-search-found-word>results</span> found for: <span class="search-terms" data-search-found-term></span>
+</p>
+<div data-search-results></div>
+
+<!-- Search result template -->
+<script type="text/x-template" id="search-result">
+  <div class="search-result">
+    <h3><a href="##Url##">##Title##</a></h3>
+    <div class="content">##Content##</div>
+  </div>
+</script>
+
+<!-- Search script - Must appear after template -->
+<script src="/search/lunr.js"></script>
+<script src="/search/search.js"></script>

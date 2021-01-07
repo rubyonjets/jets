@@ -1,6 +1,5 @@
 ---
 title: Associated Resources
-nav_order: 72
 ---
 
 As explained in the [Core Resource Model](http://rubyonjets.com/docs/core-resource/) docs, methods like `rate` and `cron` simply perform some wrapper logic and then ultimately call the `resource` method. We'll cover that wrapper logic and expansion process in more details here.
@@ -72,4 +71,3 @@ The `resource` method creates the [AWS::Events::Rule](https://docs.aws.amazon.co
 
 Understanding the core `resource` model is key to unlocking the power of full customization to a Jets application. Once you get used to the `resource` method, you could start defining your own custom convenience resource methods that wrap the `resource` method for more concise code as [Associated Resources Extensions]({% link _docs/function-resources/function-resources-extensions.md %}).
 
-{% include prev_next.md %}

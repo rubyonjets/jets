@@ -1,6 +1,5 @@
 ---
 title: Mount Rack Apps
-nav_order: 39
 ---
 
 Jets Routing supports mounting Rack applications. Example:
@@ -19,7 +18,7 @@ Note: The Rack apps do not have reside in the `app/racks` folder. They only need
 
 ## Examples
 
-For an example project demonstrating the use of mount, check out [tongueroo/jets-routes-mount](https://github.com/tongueroo/jets-routes-mount).
+For an example project demonstrating the use of mount, check out [boltops-tools/jets-routes-mount](https://github.com/boltops-tools/jets-routes-mount).
 
 ## Gemfile Dependencies
 
@@ -59,4 +58,3 @@ A quick way to fix this is use a [Custom Domain]({% link _docs/routing/custom-do
 
 For lightweight frameworks like Sinatra and Grape mounting them is recommended. For heavier frameworks like Rails, mounting is not currently recommended. See: [Mounting Rails Apps]({% link _docs/rails/mount.md %}).
 
-{% include prev_next.md %}

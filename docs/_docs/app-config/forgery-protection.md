@@ -1,6 +1,5 @@
 ---
 title: Forgery Protection
-nav_order: 43
 ---
 
 By default, csrf forgery protection is enabled in html mode and disabled in api mode. You can override the setting with `default_protect_from_forgery`.
@@ -19,4 +18,3 @@ class PostsController < ApplicationController
 end
 ```
 
-{% include prev_next.md %}

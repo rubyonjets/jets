@@ -1,6 +1,5 @@
 ---
 title: Shared Resources
-nav_order: 74
 ---
 
 Shared resources are how you create **standalone** custom AWS resources with Jets.  With the [Associated Resources]({% link _docs/function-resources.md %}), you can add custom AWS resources which are associated with Lambda functions.  Shared resources are also fully customizable AWS resources, but they are not as tightly associated with a Lambda function. Understanding Shared Resources will allow you to customize a Jets application with any custom resource.
@@ -37,7 +36,7 @@ class PostmanJob < ApplicationJob
 end
 ```
 
-The `lookup` method is available to the `Alert` class as a part of inheriting from the `Jets::Stack` class. Also note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/aws_services.rb). For services not included, add the gem to your project's Gemfile and set up the client in the code.
+The `lookup` method is available to the `Alert` class as a part of inheriting from the `Jets::Stack` class. Also note, the code above uses `include Jets::AwsServices` to provide access to the `sns` client.  Refer to the source for a full list of the clients that are included with the module: [jets/aws_services.rb](https://github.com/boltops-tools/jets/blob/master/lib/jets/aws_services.rb). For services not included, add the gem to your project's Gemfile and set up the client in the code.
 
 ## General Resource Form
 
@@ -65,4 +64,3 @@ The Jets::Stack `lookup` method uses a [CloudFormation Output](https://docs.aws.
 
 Understanding the general shared `resource` method is the key to adding any shared custom resource you require to a Jets application, so hopefully the explanations above help.
 
-{% include prev_next.md %}

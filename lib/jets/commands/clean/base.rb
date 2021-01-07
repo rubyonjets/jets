@@ -11,7 +11,7 @@ class Jets::Commands::Clean
     end
 
     def are_you_sure?(message)
-      return true if @options[:sure]
+      return true if @options[:yes]
 
       puts "Are you sure that you want to #{message}? (y/N)"
       yes = $stdin.gets.strip

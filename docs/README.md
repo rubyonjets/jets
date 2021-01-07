@@ -10,7 +10,7 @@ For minor changes like typos, you can click **Suggest an edit to this page**, lo
 
 For larger fixes, you can run the site locally with the following:
 
-    git clone https://github.com/tongueroo/jets.git
+    git clone https://github.com/boltops-tools/jets.git
     cd jets/docs
     bundle
     bin/web

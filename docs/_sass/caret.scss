@@ -1,0 +1,39 @@
+/*https://www.w3schools.com/howto/howto_js_treeview.asp*/
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+  font-family: initial;
+}
+
+.caret::before {
+  content: "\25B6";
+  // note: using font-family other than -apple-system makes the macos-ish look sidebar cursor on the iphone on chrome and safari.
+  font-family: -apple-system; // so care
+  color: #5d5353;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.caret-down::before {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  transform: rotate(90deg);
+}
+
+// to align the menu items
+.caret-spacing::before {
+  content: "\25B6"; // so we can keep the same width
+  color: white; // matches with background so cannot be seen
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+

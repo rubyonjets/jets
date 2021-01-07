@@ -71,9 +71,12 @@ class Jets::Controller
       add_stage_name(url)
     end
 
+    # Actual host can be headers["origin"] when cloudfront is in front.
+    # Remember to set custom header "origin" header in cloudfront distribution.
+    # Can also override with Jets.config.app.domain.
+    # The actual_host value is used by redirect_to.
     def actual_host
-      # actually host is in headers["origin"] when cloudfront is in front
-      headers["origin"] || headers["host"]
+      Jets.config.app.domain || headers["origin"] || headers["host"]
     end
 
   end

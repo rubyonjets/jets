@@ -1,6 +1,5 @@
 ---
 title: Job Spec
-nav_order: 57
 ---
 
 Let's say you have a HardJob class:
@@ -48,4 +47,3 @@ describe HardJob, type: :job do
 end
 ```
 
-{% include prev_next.md %}

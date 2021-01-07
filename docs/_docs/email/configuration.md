@@ -1,6 +1,5 @@
 ---
 title: Email Configuration SMTP
-nav_order: 67
 ---
 
 You can configure email with [initializers]({% link _docs/initializers.md %}).  Example:
@@ -47,4 +46,3 @@ One way to test SMTP server connection is with telnet. Example:
 
 Note, to escape out of the telnet session you have to use the escape sequence `^]`.  That's the control key plus close square bracket key.  Then you can type `quit`.
 
-{% include prev_next.md %}
