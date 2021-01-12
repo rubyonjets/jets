@@ -33,7 +33,7 @@ The following section provides a little more detail on each version upgrade. Not
 
 * Ruby 2.7 support added. To use Ruby 2.7, just switch your current ruby version a 2.7.x variant and Jets will detect it.
 * [Serverless Gems](https://www.serverlessgems.com/) is used for binary gems.
-* App views are the underscore name of the controller. They are **not** camelized. This was a bug and has been fixed.
+* App views are the underscored name of the controller. They are **not** pluralized. This was a bug and has been fixed.
 * The `config.iam_policy` option appends to the default Jets IAM policy, instead of overriding it. Use `config.default_iam_policy` to completely override.
 
 ### 2.0.0
