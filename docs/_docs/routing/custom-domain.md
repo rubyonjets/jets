@@ -68,7 +68,7 @@ Jets does what is necessary to deploy route changes. Sometimes this requires rep
 * A route variable at the same parent path has changed. IE: `get "/posts/:id", to: "/posts/#show"` to `get "/posts/:post_id", to: "/posts/#show"`
 * Routes have moved to different cloudformation stacks or "pages". With large apps that have 100+ routes, Jets must generate multiple stacks in order to stay under the [CloudFormation resource limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html). Reordering routes with these large apps can trigger a change.
 
-Important: When a new API Gateway is deployed, hhe endpoint will change. This is one of the reasons why a Custom Domain is recommended to be set up, so the endpoint url remains the same.  Generally, the route change detection works well. If you need to force the creation of a brand new Rest API, you can use `JETS_REPLACE_API=1 jets deploy`.
+Important: When a new API Gateway is deployed, the endpoint will change. This is one of the reasons why a Custom Domain is recommended to be set up, so the endpoint url remains the same.  Generally, the route change detection works well. If you need to force the creation of a brand new Rest API, you can use `JETS_REPLACE_API=1 jets deploy`.
 
 ## HostedZoneId
 
