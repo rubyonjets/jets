@@ -15,7 +15,7 @@ Here's a diagram also:
 
 ## Vanity Endpoint
 
-NOTE: If you have already previously set up an API Custom Domain, when Jets tries to add the Custom Domain it will fail. This is because the Custom Domain already exists, CloudFormation sees this, and will not destructively delete existing resources managed outside of its purview. Both the Custom Domain and the Route53 record associated with that domain must be delete before running `jets deploy`. This will occur downtime until the `jets deploy` completes. Fortunately, this only needs to be done once and after that Jets manages the vanity endpoint.  It is recommended that you set up the Custom Domain as early as possible so you do not run into this down the road.
+NOTE: If you have already previously set up an API Custom Domain, when Jets tries to add the Custom Domain it will fail. This is because the Custom Domain already exists, CloudFormation sees this, and will not destructively delete existing resources managed outside of its purview. Both the Custom Domain and the Route53 record associated with that domain must be deleted before running `jets deploy`. This will occur downtime until the `jets deploy` completes. Fortunately, this only needs to be done once and after that Jets manages the vanity endpoint.  It is recommended that you set up the Custom Domain as early as possible so you do not run into this down the road.
 
 To create a vanity endpoint edit the `config/application.rb` and edit `domain.cert_arn` and `domain.hosted_zone_name`:
 
@@ -61,7 +61,14 @@ If you need to switch this and avoid downtime, you will need to do a manual blue
 
 ## Routes Deployment
 
-Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. This is one of the reasons why a Custom Domain is recommended to be set up, so the endpoint url remains the same.  Generally, the route change detection works well. If you need to force the creation of a brand new Rest API, you can use `JETS_REPLACE_API=1 jets deploy`.
+Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. Jets does this because CloudFormation is unable to deploy certain API Gateway changes cleanly:
+
+* The `config.api.binary_media_types` has changed.
+* A route definition with the same path and method to has been updated. IE: `get "/signin", to: "/users#signin"` to `get "/signin", to: "/users#signin"`
+* A route variable at the same parent path has changed. IE: `get "/posts/:id", to: "/posts/#show"` to `get "/posts/:id"`
+* Routes have moved to different cloudformation stacks or "pages". With large apps that have 100+ routes, Jets must generate multiple stacks in order to stay under the [CloudFormation resource limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html). Reordering routes with these large apps can trigger a change.
+
+Important: When a new API Gateway is deployed, hhe endpoint will change. This is one of the reasons why a Custom Domain is recommended to be set up, so the endpoint url remains the same.  Generally, the route change detection works well. If you need to force the creation of a brand new Rest API, you can use `JETS_REPLACE_API=1 jets deploy`.
 
 ## HostedZoneId
 
