@@ -64,7 +64,7 @@ If you need to switch this and avoid downtime, you will need to do a manual blue
 Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. Jets does this because CloudFormation is unable to deploy certain API Gateway changes cleanly when:
 
 * The `config.api.binary_media_types` has changed.
-* A route definition with the same path and method to has been updated. IE: `get "/signin", to: "/users#signin"` to `get "/signin", to: "/users#signin"`
+* A route definition with the same path and method to has been updated. IE: `get "/signin", to: "/users#signin"` to `get "/signin", to: "/signups#signin"`
 * A route variable at the same parent path has changed. IE: `get "/posts/:id", to: "/posts/#show"` to `get "/posts/:post_id", to: "/posts/#show"`
 * Routes have moved to different cloudformation stacks or "pages". With large apps that have 100+ routes, Jets must generate multiple stacks in order to stay under the [CloudFormation resource limits](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html). Reordering routes with these large apps can trigger a change.
 
