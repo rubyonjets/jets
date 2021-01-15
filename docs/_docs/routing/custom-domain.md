@@ -61,7 +61,7 @@ If you need to switch this and avoid downtime, you will need to do a manual blue
 
 ## Routes Deployment
 
-Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. Jets does this because CloudFormation is unable to deploy certain API Gateway changes cleanly:
+Jets does what is necessary to deploy route changes. Sometimes this requires replacing the Rest API entirely. Jets detects this and will create a brand new Rest API when needed. Jets does this because CloudFormation is unable to deploy certain API Gateway changes cleanly when:
 
 * The `config.api.binary_media_types` has changed.
 * A route definition with the same path and method to has been updated. IE: `get "/signin", to: "/users#signin"` to `get "/signin", to: "/users#signin"`
