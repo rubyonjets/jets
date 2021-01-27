@@ -23,7 +23,7 @@ module Jets::Builders
       # => Creating zip file for /tmp/jets/demo/stage/bundled
 
       # https://serverfault.com/questions/265675/how-can-i-zip-compress-a-symlink
-      command = "cd #{@path} && zip --symlinks -rq #{zip_file} ."
+      command = "cd #{@path} && chmod -R 755 . && zip --symlinks -rq #{zip_file} ."
       sh(command)
       # move out of the lower folder to the stage folder
       # mv /tmp/jets/demo/stage/code/code.zip /tmp/jets/demo/stage/code.zip
