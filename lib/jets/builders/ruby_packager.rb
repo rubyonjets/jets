@@ -66,7 +66,7 @@ module Jets::Builders
         )
       end
 
-      remove_bundled_with("#{cache_area}/Gemfile.lock")
+      rewrite_gemfile_lock("#{cache_area}/Gemfile.lock")
 
       # Copy the Gemfile.lock back to the project in case it was updated.
       # For example we add the jets-rails to the Gemfile.
@@ -150,9 +150,10 @@ module Jets::Builders
 
     # Remove the BUNDLED WITH line since we don't control the bundler gem version on AWS Lambda
     # And this can cause issues with require 'bundler/setup'
-    def remove_bundled_with(gemfile_lock)
+    def rewrite_gemfile_lock(gemfile_lock)
       lines = IO.readlines(gemfile_lock)
 
+      # Remove BUNDLED WITH
       # amount is the number of lines to remove
       new_lines, capture, count, amount = [], true, 0, 2
       lines.each do |l|
@@ -164,6 +165,27 @@ module Jets::Builders
           count += 1
           capture = count > amount # renable capture
         end
+      end
+
+      # Replace things like nokogiri (1.11.1-x86_64-darwin) => nokogiri (1.11.1)
+      lines, new_lines = new_lines, []
+      lines.each do |l|
+        if l.include?("-x86_64-darwin")
+          l = l.sub('-x86_64-darwin','')
+        end
+        new_lines << l
+      end
+
+      # Make sure platform is ruby
+      lines, new_lines, marker = new_lines, [], false
+      lines.each do |l|
+        if marker # the next loop has the platform we want to replace
+          new_lines << "  ruby\n"
+          marker = false
+          next
+        end
+        marker = l.include?('PLATFORMS')
+        new_lines << l
       end
 
       content = new_lines.join('')
