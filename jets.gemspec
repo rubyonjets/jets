@@ -48,7 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency
   spec.add_dependency "hashie"
-  spec.add_dependency "jets-gems"
+  spec.add_dependency "jets-gems", "~> 0.2.3"
   spec.add_dependency "jets-html-sanitizer"
   spec.add_dependency "kramdown"
   spec.add_dependency "memoist"
