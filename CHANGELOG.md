@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [2.3.19] - 2021-01-28
+- #529 fix gem detection for some gems
+
 ## [2.3.18]
 - #514 Allow to define route that contains dot
 - #515 set content type on upload by using extension so cloudfront will compress when serving
