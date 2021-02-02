@@ -189,7 +189,7 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Official AWS Ruby Support for Jets](https://blog.boltops.com/2018/12/12/official-aws-ruby-support-for-jets-serverless-framework)
 * [Build an API with Jets](https://blog.boltops.com/2019/01/13/build-an-api-service-with-jets-ruby-serverless-framework)
 * [Serverless Ruby Cron Jobs Tutorial: Route53 Backup](https://blog.boltops.com/2019/01/03/serverless-ruby-cron-jobs-with-jets-route53-backup)
-* [Serverless Slack Commands: Fun with AWS Image Recognition](https://blog.boltops.com/2019/01/14/serverless-slack-commands-with-ruby)
+* [Serverless Slack Commands: Fun with AWS Image Recognition](https://blog.boltops.com/2021/02/02/serverless-slack-commands-with-ruby)
 * [Jets Afterburner: Rails Support](https://blog.boltops.com/2018/12/21/jets-afterburner-serverless-rails-on-aws-lambda-in-5-minutes)
 * [Jets Mega Mode: Jets and Rails](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda)
 * [Toronto Serverless Presentation](https://blog.boltops.com/2018/09/25/toronto-serverless-presentation-jets-framework-on-aws-lambda)
