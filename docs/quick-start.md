@@ -4,27 +4,9 @@ title: Quick Start
 
 In a hurry? No problem!  Here's a quick start to get going.
 
-## Prerequisites
-
-If you don't already have the [aws-cli](https://aws.amazon.com/cli/) installed,
-install it using your method of choice. For example, Homebrew on macOS:
-
-    brew install awscli
-
-Ensure it is also configured:
-
-    aws configure
-
-It will ask for an Access Key ID and Secret Access Key.
-Go to the [IAM within AWS Console](https://console.aws.amazon.com/iam)
-and either use your root
-[security credentials](https://console.aws.amazon.com/iam/home#/security_credentials)
-or create a user with the following permissions: TODO.
-
 ## Local Testing
 
-Jets requires the Ruby versions supported by AWS Lambda.
-Currently, that is Ruby 2.7. Set your Ruby environment to 2.7. Then:
+Review prerequisites on the [Install](/docs/install) page. Then:
 
     gem install jets
     jets new demo

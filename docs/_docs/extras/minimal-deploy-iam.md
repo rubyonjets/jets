@@ -50,7 +50,7 @@ Here's a summary of the commands:
     }
     EOF
     aws iam put-group-policy --group-name Jets --policy-name JetsPolicy --policy-document file:///tmp/jets-iam-policy.json
-    
+
 If your environment requires a "least privilege" approach, these commands will create a policy that has been reported to work well:
 
     aws iam create-group --group-name Jets
@@ -168,6 +168,23 @@ Finally, create a user and add the user to IAM group. Here's an example:
 
     aws iam create-user --user-name tung
     aws iam add-user-to-group --user-name tung --group-name Jets
+
+## Alternately create policy, group, and user in AWS console
+
+The above steps can alternately be created in AWS Console.
+
+Go to [IAM Policies](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#/policies).
+Click "Create policy", then "JSON", then "Next: tags", then "Next: review".
+Name the policy "JetsPolicy" and click "Create policy".
+
+Go to [IAM Groups](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#/groups).
+Click "Create new group". Name the group "Jets" and click "Next step".
+Search for "JetsPolicy", check its checkbox, click "Next step", then "Create group".
+
+Go to [IAM Users](https://console.aws.amazon.com/iam/home?nc2=h_m_sc#/users).
+Click "Add user". Give the user a name and check "Programmatic access".
+Click "Next: permissions". Check the "Jets" group to add user to group.
+Click "Next: tags", "Next: Review", then "Create user".
 
 ## Additional IAM Permissions
 
