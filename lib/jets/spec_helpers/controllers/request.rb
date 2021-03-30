@@ -31,7 +31,7 @@ module Jets::SpecHelpers::Controllers
       json['headers'] = (headers || {}).stringify_keys
 
       if method != :get
-        json['headers']['Content-Type'] = 'application/x-www-form-urlencoded'
+        json['headers']['Content-Type'] ||= 'application/x-www-form-urlencoded'
 
         if params.body_params.is_a? String
           body = params.body_params
