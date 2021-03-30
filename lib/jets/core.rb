@@ -139,11 +139,19 @@ module Jets::Core
     rack.wait_for_socket
   end
 
-  def default_gems_source
-    "https://gems2.lambdagems.com"
-  end
-
   def override_lambda_ruby_runtime
     require "jets/overrides/lambda"
+  end
+
+  def ruby_folder
+    RUBY_VERSION.split('.')[0..1].join('.') + '.0'
+  end
+
+  # used to configure internal lambda functions
+  # current ruby runtime that user is running
+  # IE: ruby2.5 ruby2.7
+  def ruby_runtime
+    version = RUBY_VERSION.split('.')[0..1].join('.')
+    "ruby#{version}"
   end
 end

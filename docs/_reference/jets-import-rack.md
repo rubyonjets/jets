@@ -17,12 +17,12 @@ Note, generic rack projects will likely need some adjustments to take into accou
 
 ## Example
 
-    jets import:rack http://github.com/tongueroo/jets-mega-rails.git
+    jets import:rack http://github.com/boltops-tools/jets-mega-rails.git
 
 ## More Examples
 
-    jets import:rack tongueroo/jets-mega-rails # expands to github
-    jets import:rack git@github.com:tongueroo/jets-mega-rails.git
+    jets import:rack boltops-tools/jets-mega-rails # expands to github
+    jets import:rack git@github.com:boltops-tools/jets-mega-rails.git
     jets import:rack /path/to/folder/jets-mega-rails
 
 ## Options

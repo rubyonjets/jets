@@ -1,6 +1,5 @@
 ---
 title: Shared Resources Functions
-nav_order: 78
 ---
 
 For some Shared Resources you might need to create Lambda functions themselves. Instead of writing the Lambda function code inline with the Shared Resource definition, you can define them in `app/shared/functions` and declare them with the `function` helper. Here's an example:
@@ -96,4 +95,3 @@ class Custom < Jets::Stack
 end
 ```
 
-{% include prev_next.md %}

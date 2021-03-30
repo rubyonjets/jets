@@ -1,6 +1,57 @@
 describe Jets::Controller::Params do
   let(:controller) { PostsController.new(event, nil, "update") }
 
+  context "with unicode" do
+    context "body parameter" do
+      let(:event) do
+        {
+          "headers" => {
+            "content-type" => "application/x-www-form-urlencoded; charset=UTF-8"
+          },
+          "body" => "name=#{CGI.escape("太郎")}&location=#{CGI.escape("東京")}"
+        }
+      end
+      it "decode values" do
+        params = controller.send(:params)
+        expect(params["name"]).to eq "太郎"
+      end
+    end
+
+    context "path parameter" do
+      let(:event) do
+        {
+          "pathParameters" => {
+            "name" => CGI.escape("太郎"),
+            "location" => CGI.escape("東京"),
+          }
+        }
+      end
+      it "decode values" do
+        params = controller.send(:params)
+        expect(params["name"]).to eq "太郎"
+      end
+    end
+
+    context "query parameter" do
+      let(:event) do
+        {
+          "queryStringParameters" => {
+            "name" => [
+              CGI.escape("太郎"),
+              CGI.escape("鈴木"),
+            ],
+            "location" => CGI.escape("東京"),
+          }
+        }
+      end
+      it "decode values" do
+        params = controller.send(:params)
+        expect(params["name"][0]).to eq "太郎"
+        expect(params["name"][1]).to eq "鈴木"
+      end
+    end
+  end
+
   context "update action called" do
     let(:event) do
       {

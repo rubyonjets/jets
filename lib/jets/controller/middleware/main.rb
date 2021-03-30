@@ -40,7 +40,8 @@ module Jets::Controller::Middleware
     end
 
     def jets_host
-      default = "#{@env['rack.url_scheme']}://#{@env['HTTP_HOST']}"
+      protocol = @event.dig('headers', 'X-Forwarded-Proto') || @env['rack.url_scheme']
+      default = "#{protocol}://#{@env['HTTP_HOST']}"
       Jets.config.helpers.host || default
     end
 

@@ -7,7 +7,7 @@ module Jets::Builders
     # Then replace the binary gems.
     def build
       consolidate_gems_to_opt
-      replace_compiled_gems
+      replace_compiled_gems unless Jets.config.gems.disable
     end
 
     # Also restructure the folder from:
@@ -17,13 +17,13 @@ module Jets::Builders
     #
     # For Lambda Layer structure
     def consolidate_gems_to_opt
-      src = "#{stage_area}/code/vendor/gems/ruby/2.5.0"
-      dest = "#{stage_area}/opt/ruby/gems/2.5.0"
+      src = "#{stage_area}/code/vendor/gems/ruby/#{Jets.ruby_folder}"
+      dest = "#{stage_area}/opt/ruby/gems/#{Jets.ruby_folder}"
       rsync_and_link(src, dest)
 
       return unless Jets.rack?
 
-      src = "#{stage_area}/rack/vendor/gems/ruby/2.5.0"
+      src = "#{stage_area}/rack/vendor/gems/ruby/#{Jets.ruby_folder}"
       rsync_and_link(src, dest)
     end
 
@@ -59,7 +59,6 @@ module Jets::Builders
       project_root = "#{stage_area}/opt"
       headline "Replacing compiled gems with AWS Lambda Linux compiled versions: #{project_root}"
       options = {
-        s3: "lambdagems2",
         build_root: cache_area, # used in jets-gems
         project_root: project_root, # used in gem_replacer and jets-gems
       }

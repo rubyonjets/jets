@@ -1,4 +1,5 @@
-ENV['CFNRESPONSE_TEST'] = '1'
+ENV['CFN_RESPONSE_SEND'] = '1'
+ENV['CFN_RESPONSE_VERBOSE'] = '0'
 require "ostruct"
 
 code = IO.read("./lib/jets/internal/app/shared/functions/jets/s3_bucket_config.rb")

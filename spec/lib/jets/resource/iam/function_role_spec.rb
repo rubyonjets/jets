@@ -19,12 +19,9 @@ describe Jets::Resource::Iam::FunctionRole do
             "Effect"=>"Allow",
             "Resource"=>
              "arn:aws:logs:us-east-1:123456789:log-group:/aws/lambda/demo-test-*"},
-           {"Action"=>["s3:Get*", "s3:List*"],
+           {"Action"=>["s3:Get*", "s3:List*", "s3:HeadBucket"],
             "Effect"=>"Allow",
             "Resource"=>"arn:aws:s3:::fake-test-s3-bucket*"},
-           {"Action"=>["s3:ListAllMyBuckets", "s3:HeadBucket"],
-            "Effect"=>"Allow",
-            "Resource"=>"arn:aws:s3:::*"},
            {"Action"=>
              ["cloudformation:DescribeStacks",
               "cloudformation:DescribeStackResources"],

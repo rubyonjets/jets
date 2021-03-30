@@ -10,18 +10,12 @@ class Jets::Application
           effect: "Allow",
           resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:/aws/lambda/#{project_namespace}-*",
         }
-        s3_bucket = Jets.aws.s3_bucket
         s3_readonly = {
-          action: ["s3:Get*", "s3:List*"],
+          action: ["s3:Get*", "s3:List*", "s3:HeadBucket"],
           effect: "Allow",
-          resource: "arn:aws:s3:::#{s3_bucket}*",
+          resource: "arn:aws:s3:::#{Jets.aws.s3_bucket}*",
         }
-        s3_bucket = {
-          action: ["s3:ListAllMyBuckets", "s3:HeadBucket"],
-          effect: "Allow",
-          resource: "arn:aws:s3:::*", # scoped to all buckets
-        }
-        policies = [logs, s3_readonly, s3_bucket]
+        policies = [logs, s3_readonly]
 
         cloudformation = {
           action: ["cloudformation:DescribeStacks", "cloudformation:DescribeStackResources"],
@@ -57,6 +51,7 @@ class Jets::Application
       config.autoload_paths = [] # allows for customization
       config.ignore_paths = [] # allows for customization
       config.logger = Jets::Logger.new($stderr)
+      config.time_zone = "UTC"
 
       # function properties defaults
       config.function = ActiveSupport::OrderedOptions.new
@@ -73,9 +68,9 @@ class Jets::Application
       config.prewarm.rack_ratio = 5
 
       config.gems = ActiveSupport::OrderedOptions.new
-      config.gems.sources = [
-        Jets.default_gems_source
-      ]
+      config.gems.clean = false
+      config.gems.disable = false
+      config.gems.source = "https://api.serverlessgems.com/api/v1"
 
       config.inflections = ActiveSupport::OrderedOptions.new
       config.inflections.irregular = {}
@@ -95,12 +90,13 @@ class Jets::Application
       config.session.options = {}
 
       config.api = ActiveSupport::OrderedOptions.new
-      config.api.authorization_type = "NONE"
-      config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
-      config.api.binary_media_types = ['multipart/form-data']
-      config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
-      config.api.endpoint_policy = nil # required when endpoint_type is EDGE
       config.api.api_key_required = false # Turn off API key required
+      config.api.authorization_type = "NONE"
+      config.api.auto_replace = nil # https://github.com/boltops-tools/jets/issues/391
+      config.api.binary_media_types = ['multipart/form-data']
+      config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
+      config.api.endpoint_policy = nil # required when endpoint_type is EDGE
+      config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
 
       config.api.authorizers = ActiveSupport::OrderedOptions.new
       config.api.authorizers.default_token_source = "Auth" # method.request.header.Auth
@@ -151,12 +147,18 @@ class Jets::Application
       config.controllers.default_protect_from_forgery = nil
       config.controllers.filtered_parameters = []
 
+      config.app = ActiveSupport::OrderedOptions.new
+      config.app.domain = nil
+
       config.deploy = ActiveSupport::OrderedOptions.new
       config.deploy.stagger = ActiveSupport::OrderedOptions.new
       config.deploy.stagger.enabled = false
       config.deploy.stagger.batch_size = 10
 
       config.hot_reload = Jets.env.development?
+
+      config.ruby = ActiveSupport::OrderedOptions.new
+      config.ruby.check = true
 
       config
     end

@@ -1,6 +1,5 @@
 ---
 title: Rails Support
-nav_order: 50
 ---
 
 Jets Afterburner mode supports deploying your Rails app requiring little changes to your code. This is an experimental feature.
@@ -81,4 +80,3 @@ If you are seeing a `Endpoint request timed out` error, it is probably because t
 
 Try going farther up the CloudWatch logs to find out where rackup is failing to start. That is the key. It may help to run [jets deploy](https://rubyonjets.com/reference/jets-deploy/) again and watch the logs during deployment time.  The usual errors are a database connection issue or a gem dependency issue.
 
-{% include prev_next.md %}

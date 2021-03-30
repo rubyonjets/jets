@@ -1,6 +1,5 @@
 ---
 title: Installation
-nav_order: 7
 ---
 
 ## RubyGems
@@ -15,7 +14,7 @@ Jets works on macosx and linux variants. Jets does not work on windows.  For win
 
 ### Ruby
 
-Jets uses Ruby 2.5, and code written with patch variants of it should also work.
+Jets supports Ruby 2.5 and Ruby 2.7. Patch variants of it should work. More details: [Using Different Ruby Versions]({% link _docs/extras/ruby-versions.md %}).
 
 ### Yarn
 
@@ -62,4 +61,3 @@ Then [configure it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-ge
 
     aws configure
 
-{% include prev_next.md %}

@@ -6,6 +6,50 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 ## [UNRELEASED]
 - Method spec helpers now accepts `:body` param. Providing string as `params` has the same effect.
 
+## [3.0.3] - 2021-03-24
+- [#532](https://github.com/boltops-tools/jets/pull/532) Update Copy Write Year
+- [#536](https://github.com/boltops-tools/jets/pull/536) use mini_mime instead
+
+## [3.0.2] - 2021-01-12
+- update serverlessgems gem
+
+## [3.0.1] - 2021-01-12
+- [#524](https://github.com/boltops-tools/jets/pull/524) fix native gem detection
+
+## [3.0.0]
+* #328 i18n docs
+* #391 Deploy Option: Auto Replace API Gateway
+* #444 Ruby 2.7 Support
+* #453 Update to Bootstrap4 official release
+* #454 When the controller name is singular, the behavior of searching for the View file is different from expected.
+* #457 Breaking change: Harden IAM policy and do allow list all buckets by default. Breaking change.
+* #479 Create request completion log method
+* #487 API Gateway Base Path
+* #488 Add retry_limit and read_timeout options
+* #491 Fix queryStringParameters handling for nested value in spec_helper
+* #492 Add params keyword case with get method for spec helpers test
+* #494 Update ruby_packager.rb
+* #496 Add unicode test for spec_helpers test
+* #499 default_iam_policy does not correctly include VPC related actions on resource creation
+* Improve autoloader: Shouldnt have to to call `bundle exec` in front of jets anymore.
+* `jets configure` command
+* Big improvements to docs site, add search
+* Use serverlessgems API
+* Breaking: use do not pluralize controller names for views folder
+* Shorten SSM secrets notation support
+* Remove deprecations and warnings: bundle install, generate scaffold, webpacker, yarn license, etc
+* Also setting the `config.iam_policy` appends to the default policy now.
+* Upgrade to Rails 6.1 components
+* Increase cloudformation output limit to 200
+* Replace `--sure` with `-y` option
+* Fix params helper in views
+* Webpacker upgrade
+
+## [2.3.18]
+- #514 Allow to define route that contains dot
+- #515 set content type on upload by using extension so cloudfront will compress when serving
+- #517 support nested query params in tests
+
 ## [2.3.17]
 - #472 Docs: Update cors-support.md
 - #475 Docs: Update activerecord.md to include db:create step

@@ -138,7 +138,7 @@ class Jets::Commands::Base < Thor
     def eager_load!
       return if Jets::Turbo.afterburner?
 
-      Jets::Autoloaders.once.eager_load
+      Jets::Autoloaders.cli.eager_load
     end
     memoize :eager_load!
   end

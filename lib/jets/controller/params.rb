@@ -14,11 +14,9 @@ class Jets::Controller
     #   2. query string parameters
     #   3. body parameters
     def params(raw: false, path_parameters: true, body_parameters: true)
-      path_params = event["pathParameters"] || {}
-
       params = {}
       params = params.deep_merge(body_params) if body_parameters
-      params = params.deep_merge(query_parameters) # always
+      params = params.deep_merge(unescape_recursively(query_params)) # always
       params = params.deep_merge(path_params) if path_parameters
 
       if raw
@@ -29,13 +27,36 @@ class Jets::Controller
       end
     end
 
+    def unescape_recursively(obj)
+      case obj
+      when Hash then obj.map { |k, v| [k, unescape_recursively(v)] }.to_h
+      when Array then obj.map { |v| unescape_recursively(v) }
+      else CGI.unescape(obj.to_s)
+      end
+    end
+
     def filtered_parameters(**kwargs)
       parameter_filter.filter params(**kwargs, raw: true) # Always filter raw hash
     end
 
-    def query_parameters
+    def path_params
+      path_params = event["pathParameters"] || {}
+      path_params = path_params.map { |k, path| [k, CGI.unescape(path)] }.to_h
+    end
+    alias_method :path_parameters, :path_params
+
+    def query_params
       event["queryStringParameters"] || {}
     end
+    alias_method :query_parameters, :query_params
+
+    def request_params
+      {
+        controller: controller_name,
+        action: action_name,
+      }
+    end
+    alias_method :request_parameters, :request_params
 
     def body_params
       body = event['isBase64Encoded'] ? base64_decode(event["body"]) : event["body"]
@@ -58,6 +79,7 @@ class Jets::Controller
       {} # fallback to empty Hash
     end
     memoize :body_params
+    alias_method :body_parameters, :body_params
 
   private
 

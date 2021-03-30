@@ -63,6 +63,12 @@ module Jets::Controller::Rendering
 
       # Note @options[:method] uses @options vs options on purpose
       @options[:method] = event["httpMethod"].downcase if event["httpMethod"]
+
+      # This is how we pass parameters to actionpack. IE: params to the view.
+      # This is because renderer_options is actually the env that is passed to the rack request.
+      options.merge!("action_dispatch.request.path_parameters" => @controller.path_parameters)
+      options.merge!("action_dispatch.request.query_parameters" => @controller.query_parameters)
+      options.merge!("action_dispatch.request.request_parameters" => @controller.request_parameters)
       options
     end
 
@@ -98,7 +104,7 @@ module Jets::Controller::Rendering
 
     # PostsController => "posts" is the namespace
     def template_namespace
-      @controller.class.to_s.sub('Controller','').underscore.pluralize
+      @controller.class.to_s.sub('Controller','').underscore
     end
 
     # Takes headers and adds HTTP_ to front of the keys because that is what rack

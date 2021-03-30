@@ -17,19 +17,30 @@ module Jets::Builders
       end
 
       # found gems will only have gems that were found
-      found_gems.each do |gem_name, source|
-        options = @options.merge(source_url: source)
-        gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, options)
+      found_gems.each do |gem_name|
+        gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, @options)
         gem_extractor.run
+        rename_gem(gem_name)
       end
 
       tidy
     end
 
+    def rename_gem(gem_name)
+      ruby_folder = "#{Jets.build_root}/stage/opt/ruby/gems/#{Jets::Gems.ruby_folder}"
+      gems_folder = "#{ruby_folder}/gems"
+      expr = "#{gems_folder}/#{gem_name}-x*-{darwin,linux}"
+      src = Dir.glob(expr).first
+      return unless src
+
+      dest = src.sub("-darwin", "-linux")
+      FileUtils.mv(src, dest) unless File.exist?(dest) # looks like rename_gem actually runs twice
+    end
+
     def sh(command)
       puts "=> #{command}".color(:green)
       success = system(command)
-      abort("Command Failed") unless success
+      abort("Command Failed: #{command}") unless success
       success
     end
 

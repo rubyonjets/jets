@@ -1,6 +1,5 @@
 ---
 title: CloudWatch Logs Search
-nav_order: 61
 ---
 
 CloudWatch search field might look like a simple plain text search box but it is not. The search filter supports some advanced Filter and Pattern matching syntax. More info here on the AWS Docs: [Filter and Pattern Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/FilterAndPatternSyntax.html).
@@ -31,4 +30,3 @@ It then becomes powerful to combine multiple negative filters to help you focus 
 
 Filtering out noise that you do not want to see when you are trying to focus on debugging your specific issue can be very helpful.
 
-{% include prev_next.md %}

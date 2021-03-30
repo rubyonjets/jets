@@ -1,6 +1,5 @@
 ---
 title: Filtering Params
-nav_order: 44
 ---
 
 By default, all params and event payload will be logged to CloudWatch in every request. You can override this setting with `filtered_parameters` to
@@ -20,4 +19,3 @@ class PostsController < ApplicationController
 end
 ```
 
-{% include prev_next.md %}

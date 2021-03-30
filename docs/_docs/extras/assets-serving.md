@@ -1,6 +1,5 @@
 ---
 title: Assets Serving
-nav_order: 79
 ---
 
 Jets handles asset serving by uploading asset files to s3 and serving them directly from s3. This is particularly beneficial for binary assets like images as s3 is better suited for serving them.
@@ -76,4 +75,3 @@ Jets.application.configure do
 end
 ```
 
-{% include prev_next.md %}

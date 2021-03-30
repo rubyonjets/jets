@@ -1,6 +1,5 @@
 ---
 title: Upgrading Guide
-nav_order: 93
 ---
 
 Upgrading Jets to some releases might require some extra changes.  For example, the Jets project structure can change. Or some version require a manual blue-green deployment.  This page provides a summary of the releases requiring some upgrade work.
@@ -15,6 +14,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green? | Run jets upgrade?
 --- | --- | --- | ---
+3.0.0 | Added Ruby 2.7 support. Use Serverless Gems for binary gems. | No | No
 2.1.1 | Change `config.extra_autoload_paths` to `config.autoload_paths` | No | Yes
 2.0.0 | Add csrf forgery protection. The `jets upgrade` commands updates your code with the csrf logic. New apps generated with `jets new` does this already. The routes `namespace` behavior also changed.  Use `prefix` if you prefer the old behavior.  | No | Yes
 1.4.11 | Removed vendor/dynomite gem. Must add dynomite to Gemfile now. New apps generated with `jets new` does this.  | No | Yes
@@ -28,6 +28,13 @@ Version | Notes | Blue-Green? | Run jets upgrade?
 ## Upgrade Details
 
 The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
+
+### 3.0.0
+
+* Ruby 2.7 support added. To use Ruby 2.7, just switch your current ruby version a 2.7.x variant and Jets will detect it.
+* [Serverless Gems](https://www.serverlessgems.com/) is used for binary gems.
+* App views are the underscored name of the controller. They are **not** pluralized. This was a bug and has been fixed.
+* The `config.iam_policy` option appends to the default Jets IAM policy, instead of overriding it. Use `config.default_iam_policy` to completely override.
 
 ### 2.0.0
 
@@ -107,4 +114,3 @@ Then update the Gateway API Custom Domain to point to the newly deployed `JETS_E
 6. Make sure there's no traffic hitting the old Jets environment. You can do this by checking out the CloudWatch metrics. Nothing should be hitting it aside from the pre-warming requests. You can disable the pre-warming requests manually by using the CloudWatch console also.
 7. Destroy the old environment.
 
-{% include prev_next.md %}

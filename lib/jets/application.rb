@@ -22,6 +22,7 @@ class Jets::Application
     load_environments_config
     load_db_config
     set_iam_policy # relies on dependent values, must be called afterwards
+    set_time_zone
     normalize_env_vars!
   end
 
@@ -64,7 +65,7 @@ class Jets::Application
     return ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME'] # override
 
     lines = IO.readlines("#{Jets.root}/config/application.rb")
-    project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ }
+    project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ && l !~ /^\s+#/ }
     project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') # project_name
   end
 
@@ -175,8 +176,14 @@ class Jets::Application
   end
 
   def set_iam_policy
-    config.iam_policy ||= self.class.default_iam_policy
+    config.iam_policy ||= []
+    config.default_iam_policy ||= self.class.default_iam_policy
+    config.iam_policy = config.default_iam_policy | config.iam_policy
     config.managed_policy_definitions ||= [] # default empty
+  end
+
+  def set_time_zone
+    Time.zone_default = Time.find_zone!(config.time_zone)
   end
 
   # It is pretty easy to attempt to set environment variables without

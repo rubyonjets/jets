@@ -1,0 +1,62 @@
+.btn {
+  padding: .5rem 1rem;
+    border-radius: 300px;
+    @include alt-font;
+}
+
+.btn-xl {
+  padding: 20px 40px;
+  border-color: $site-color-primary;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-family: $site-color-primary;
+  font-size: 18px;
+  // font-size: 11px;
+  // padding: 15px 45px;
+  font-weight: 700;
+  color: #fff;
+  background-color: $site-color-primary;
+}
+
+.btn-outline {
+    // color: white;
+    // border: 1px solid;
+    // border-color: white;
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+        color: white;
+        border-color: $theme-primary;
+        background-color: $theme-primary;
+    }
+}
+
+
+a#next {
+  color: white;
+}
+a#prev {
+  color: #0275d8;
+}
+a#next:hover {
+  text-decoration: underline;
+}
+a#prev:hover {
+  text-decoration: underline;
+}
+
+.keyboard-tip {
+  margin-top: 10px;
+  display: none;
+}
+@media(min-width:992px) {
+  .keyboard-tip {
+    display: block;
+    font-size: 0.9em;
+  }
+}
+
+.prev-next-buttons {
+  padding-bottom: 10px;
+}

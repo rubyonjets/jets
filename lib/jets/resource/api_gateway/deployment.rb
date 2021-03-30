@@ -15,11 +15,13 @@ module Jets::Resource::ApiGateway
 
     def parameters
       p = {
+        "GemLayer" => "GemLayer",
         "IamRole" => "IamRole",
         "RestApi" => "RestApi",
         "S3Bucket" => "S3Bucket",
       }
       p[:DomainName] = "DomainName" if Jets.custom_domain?
+      p[:BasePath] = "BasePath" unless Jets.config.domain.base_path.nil?
       p
     end
 

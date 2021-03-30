@@ -1,6 +1,5 @@
 ---
 title: 'Continuous Integration: Jets and CodeBuild'
-nav_order: 90
 ---
 
 This page discusses setting up Continuous Integration.  We'll use [CodeBuild](https://aws.amazon.com/codebuild/), a fully managed build service from AWS.  It is similar to other services like: [circleci](https://circleci.com/), [travis-ci](https://travis-ci.org/), [semaphoreci](https://semaphoreci.com/), etc.
@@ -15,11 +14,10 @@ The Jets Examples uses the [Cody](https://cody.run/) tool to simplify creating a
 
 The [Jets Example](https://cody.run/docs/examples/jets/) shows how to set up 1 simple CodeBuild project that will run specs and then deploy the Jets application.
 
-There's also an additional example in the [separate-unit-and-deploy](https://github.com/tongueroo/jets-codebuild/tree/separate-unit-and-deploy) branch in the GitHub repo that shows how to create 2 separate CodeBuild projects for unit tests and deployment. Some advantages:
+There's also an additional example in the [separate-unit-and-deploy](https://github.com/boltops-tools/jets-codebuild/tree/separate-unit-and-deploy) branch in the GitHub repo that shows how to create 2 separate CodeBuild projects for unit tests and deployment. Some advantages:
 
 * The projects are decoupled and you can run them separately.
 * Only the deploy project requires IAM access to create the AWS resources.
 
 Refer to the [Cody Jets Examples](https://cody.run/docs/examples/jets/) docs for the details.
 
-{% include prev_next.md %}

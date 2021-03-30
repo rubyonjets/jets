@@ -41,7 +41,7 @@ module Jets::Stack::Main::Dsl
       defaults[:function_name] = function_name if function_name
 
       props = defaults.merge(props)
-      props[:runtime] = "ruby2.5" if props[:runtime].to_s == "ruby"
+      props[:runtime] = Jets.ruby_runtime if props[:runtime].to_s == "ruby"
       props[:handler] = handler(props[:handler])
 
       logical_id = id.to_s.gsub('/','_')

@@ -3,6 +3,8 @@ Jets::Bundle.setup
 require "zeitwerk"
 
 module Jets
+  module Commands ; end
+
   module Autoloaders
     class OnceInflector < Zeitwerk::Inflector
       def camelize(basename, _abspath)
@@ -21,6 +23,7 @@ module Jets
       def log!
         main.log!
         once.log!
+        cli.log!
       end
 
       def main
@@ -56,6 +59,17 @@ module Jets
       end
       memoize :once
 
+      def cli
+        Zeitwerk::Loader.new.tap do |loader|
+          loader.tag = "jets.cli"
+          loader.inflector = OnceInflector.new
+
+          loader.push_dir("#{__dir__}/commands", namespace: Jets::Commands)
+          loader.ignore("#{__dir__}/commands/templates*")
+        end
+      end
+      memoize :cli
+
     private
       def internal_app_paths
         %w[
@@ -84,7 +98,7 @@ module Jets
           builders/rackup_wrappers
           builders/reconfigure_rails
           builders/templates
-          commands/templates
+          commands
           controller/middleware/webpacker_setup.rb
           core_ext
           internal

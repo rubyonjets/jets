@@ -1,7 +1,6 @@
 ---
 title: Kinesis Events
 categories: events
-nav_order: 26
 ---
 
 Jets supports [Kinesis Events](https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html) as a Lambda trigger. You can use Lambda to process the data from Kinesis. The Lambda function has access to the stream data via `event` and `kinesis_data`.
@@ -107,4 +106,3 @@ Here's an example of creating a kinesis stream via the CLI:
 
 Jets generates an IAM policy for the Lambda function associated with the Kinesis event that allows the permissions needed.  You can control and override the IAM policy with normal [IAM Policies]({% link _docs/iam-policies.md %}) if required, though.
 
-{% include prev_next.md %}

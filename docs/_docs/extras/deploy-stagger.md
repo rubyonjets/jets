@@ -1,6 +1,5 @@
 ---
 title: Deploy Stagger Option
-nav_order: 92
 ---
 
 ## Overview
@@ -32,4 +31,3 @@ Normally, your Jets code gets translated to CloudFormation nested stacks that ge
 
 Configuring these settings may help you to stay under the rate limit.  The settings can be tuned for your application.
 
-{% include prev_next.md %}

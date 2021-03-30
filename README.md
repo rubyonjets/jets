@@ -5,12 +5,14 @@
 Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonjets.com/).
 
 ![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiZ08vK2hjOHczQUVoUDhSYnBNNUU4T0gxQWJuOTlLaXpwVGQ1NjJ3NnVDY1dSdFVXQ3d2VXVSQzRFcU1qd1JPMndFZlByRktIcTUrZm5GWlM5dHpjM1ZrPSIsIml2UGFyYW1ldGVyU3BlYyI6Imluc1Qrd25GanhUdHlidjUiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
-[![CircleCI](https://circleci.com/gh/tongueroo/jets.svg?style=svg)](https://circleci.com/gh/tongueroo/jets)
+[![CircleCI](https://circleci.com/gh/boltops-tools/jets.svg?style=svg)](https://circleci.com/gh/boltops-tools/jets)
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
 [![Support](https://img.shields.io/badge/Support-Help-blue.svg)](http://rubyonjets.com/support/)
-[![Gitter Chat](https://badges.gitter.im/tongueroo/jets.png)](https://gitter.im/tongueroo/jets)
+[![Gitter Chat](https://badges.gitter.im/boltops-tools/jets.png)](https://gitter.im/boltops-tools/jets)
 
 [![BoltOps Badge](https://img.boltops.com/boltops/badges/boltops-badge.png)](https://www.boltops.com)
+
+Please **watch/star** this repo to help grow and support the project.
 
 **Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/extras/upgrading/).
 
@@ -189,7 +191,7 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Official AWS Ruby Support for Jets](https://blog.boltops.com/2018/12/12/official-aws-ruby-support-for-jets-serverless-framework)
 * [Build an API with Jets](https://blog.boltops.com/2019/01/13/build-an-api-service-with-jets-ruby-serverless-framework)
 * [Serverless Ruby Cron Jobs Tutorial: Route53 Backup](https://blog.boltops.com/2019/01/03/serverless-ruby-cron-jobs-with-jets-route53-backup)
-* [Serverless Slack Commands: Fun with AWS Image Recognition](https://blog.boltops.com/2019/01/14/serverless-slack-commands-with-ruby)
+* [Serverless Slack Commands: Fun with AWS Image Recognition](https://blog.boltops.com/2021/02/02/serverless-slack-commands-with-ruby)
 * [Jets Afterburner: Rails Support](https://blog.boltops.com/2018/12/21/jets-afterburner-serverless-rails-on-aws-lambda-in-5-minutes)
 * [Jets Mega Mode: Jets and Rails](https://blog.boltops.com/2018/11/03/jets-mega-mode-run-rails-on-aws-lambda)
 * [Toronto Serverless Presentation](https://blog.boltops.com/2018/09/25/toronto-serverless-presentation-jets-framework-on-aws-lambda)

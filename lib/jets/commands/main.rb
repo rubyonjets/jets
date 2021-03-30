@@ -12,6 +12,12 @@ module Jets::Commands
       Build.new(options).run
     end
 
+    desc "configure [TOKEN]", "configure token and updates ~/.jets/config.yml"
+    long_desc Help.text(:configure)
+    def configure(token=nil)
+      Configure.new(options.merge(token: token)).run
+    end
+
     desc "deploy [environment]", "Builds and deploys project to AWS Lambda"
     long_desc Help.text(:deploy)
     # Note the environment is here to trick the Thor parser to allowing an
@@ -23,7 +29,7 @@ module Jets::Commands
 
     desc "delete", "Delete the Jets project and all its resources"
     long_desc Help.text(:delete)
-    option :sure, type: :boolean, desc: "Skip are you sure prompt."
+    option :yes, aliases: %w[y], type: :boolean, desc: "Skip are you sure prompt."
     option :wait, type: :boolean, default: true, desc: "Wait for stack deletion to complete."
     # Note the environment is here to trick the Thor parser to allowing an
     # environment parameter. It is not actually set here.  It is set earlier
@@ -83,6 +89,8 @@ module Jets::Commands
     option :lambda_proxy, type: :boolean, default: true, desc: "Enables automatic Lambda proxy transformation of the event payload"
     option :guess, type: :boolean, default: true, desc: "Enables guess mode. Uses inference to allows use of all dashes to specify functions. Guess mode verifies that the function exists in the code base."
     option :local, type: :boolean, desc: "Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode guess mode is always used."
+    option :retry_limit, type: :numeric, default: nil, desc: "Retry count of invoking function. It work with remote call"
+    option :read_timeout, type: :numeric, default: nil, desc: " The number of seconds to wait for response data. It work with remote call"
     def call(function_name, payload='')
       # Printing to stdout can mangle up the response when piping
       # the value to jq. For example:

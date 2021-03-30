@@ -1,6 +1,5 @@
 ---
 title: FAQ
-nav_order: 101
 ---
 
 **Q: How do I set cookies from Jets?**
@@ -43,4 +42,3 @@ or
 
 No. There are currently no plans to support windows.  Recommend trying out [Cloud9 IDE](https://aws.amazon.com/cloud9/) There are some nice advantages like [Faster Development](https://rubyonjets.com/docs/faster-development/) Note, you will have to pay for the ec2 instance when it’s running and for the EBS volume. For typical dev usage, found it’s about $10/mo The cost may vary. By default, the ec2 hibernates within 30m when idled to save costs.
 
-{% include prev_next.md %}

@@ -1,6 +1,5 @@
 ---
 title: Prewarming
-nav_order: 17
 ---
 
 **UPDATE 12/3/2019**: AWS has released [Provisioned Concurrency for Lambda Functions](https://aws.amazon.com/blogs/aws/new-provisioned-concurrency-for-lambda-functions/) which essentially keeps the Lambda functions warm. It moves the cold start from invocation time to the Lambda function build time. Refer to the [Provisioned Concurrency pricing](https://aws.amazon.com/lambda/pricing/) for cost details.
@@ -92,4 +91,3 @@ class PrewarmJob < ApplicationJob
 end
 ```
 
-{% include prev_next.md %}

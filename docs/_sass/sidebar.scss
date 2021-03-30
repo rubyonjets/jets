@@ -1,0 +1,107 @@
+#wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+#sidebar {
+  padding-top: 20px;
+  padding-left: 20px;
+  min-width: 250px;
+  max-width: 250px;
+  transition: all 0.3s;
+}
+
+#sidebar.toggled {
+  margin-left: -250px;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -250px;
+  }
+  #sidebar.toggled {
+    margin-left: 0;
+  }
+}
+
+// only show cross symbol on mobile. desktop will always have hamburger
+@media (max-width: 768px) {
+  .cross {
+    .bar1 {
+      -webkit-transform: rotate(-45deg) translate(-6px, 6px);
+      transform: rotate(-45deg) translate(-6px, 6px);
+    }
+    .bar2 {opacity: 0;}
+    .bar3 {
+      -webkit-transform: rotate(45deg) translate(-5px, -5px);
+      transform: rotate(45deg) translate(-5px, -5px);
+    }
+  }
+}
+
+.content-nav {
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  font-size: 1.25em;
+
+  h2 {
+    color: #194f96;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    margin-bottom: 0;
+  }
+
+  ul, ol {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    margin: 0;
+    padding: 0; // reset defaults.scss
+    padding-left: 8px;
+    list-style-type: none;
+  }
+
+  a {
+    // color: #0865ca;
+    color: #365881;
+  }
+
+  a.current-page {
+    color: #d88a13;
+  }
+}
+
+.content-nav a.active {
+  color: #101010;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.content-nav > ul {
+  padding-bottom: 15px;
+}
+
+.menu-options {
+  padding-left: 10px;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  h2 {
+    font-size: 0.95em;
+    border: none;
+  }
+  li {
+    font-size: 0.85em;
+    padding-bottom: 4px;
+  }
+}
+

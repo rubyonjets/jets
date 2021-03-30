@@ -1,7 +1,6 @@
 ---
 title: SNS Events
 categories: events
-nav_order: 28
 ---
 
 Jets supports [SNS Events](https://docs.aws.amazon.com/lambda/latest/dg/with-sns-example.html) as a Lambda trigger. So you can send a message to an SNS topic and it triggers a Lambda function to run.  The Lambda function has access to the message data via `event`.
@@ -134,4 +133,3 @@ You can send a message via the SNS Console, sdk, etc also.
 }
 ```
 
-{% include prev_next.md %}

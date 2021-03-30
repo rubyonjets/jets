@@ -1,6 +1,5 @@
 ---
 title: Shared Resources Depends On
-nav_order: 77
 ---
 
 CloudFormation has a concept of the [DependsOn Attribute](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-dependson.html). Normally, you do not have to use it as CloudFormation is smart enough to figure out how to sequence the creation of the dependent resources most of the time. For example, if you are creating a Route53 Record that's connected to ELB, CloudFormation knows to create the ELB before proceeding to create the Route53 record. There are times though when you need to specify the DependsOn attribute to control the creation order explicitly.
@@ -74,4 +73,3 @@ end
 
 Understanding of what is happening underneath the hood with Jets and CloudFormation helps to understand shared resources usage. Remember that each class gets translated into a nested child stack. The parameters are possibly passed between the stacks. The depends_on declaration tells Jets to pass all the outputs from the `List` stack as input parameters to the `HardJob` stack.  In this case, one of the outputs from the `sqs_queue(:waitlist)` resource declaration is `Waitlist`. The `Waitlist` output contains the SQS arn.  `HardJob` references the input parameter. This is how it is possible for `HardJob` to refer to a resource created in another stack.
 
-{% include prev_next.md %}

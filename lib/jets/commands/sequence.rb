@@ -10,6 +10,12 @@ class Jets::Commands::Sequence < Thor::Group
   end
 
 private
+  def jets_minor_version
+    md = Jets::VERSION.match(/(\d+)\.(\d+)\.\d+/)
+    major, minor = md[1], md[2]
+    [major, minor, '0'].join('.')
+  end
+
   def clone_project
     unless git_installed?
       abort "Unable to detect git installation on your system. Git needs to be installed in order to use the --repo option."

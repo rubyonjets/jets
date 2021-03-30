@@ -1,6 +1,5 @@
 ---
 title: Function Properties
-nav_order: 14
 ---
 
 Jets ultimately translate Ruby code into Lambda functions. Each [Lambda function's properties](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) can be controlled with Jets. Here are the ways to set the function properties and their order of precedence:
@@ -99,6 +98,5 @@ vpc_config | class_vpc_config
 tags | class_tags
 
 
-Refer to the [AWS::Lambda::Function](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) CloudFormation docs for a list of the properties. You can also refer to the source code itself: [lambda/dsl.rb](https://github.com/tongueroo/jets/blob/master/lib/jets/lambda/dsl.rb)
+Refer to the [AWS::Lambda::Function](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html) CloudFormation docs for a list of the properties. You can also refer to the source code itself: [lambda/dsl.rb](https://github.com/boltops-tools/jets/blob/master/lib/jets/lambda/dsl.rb)
 
-{% include prev_next.md %}

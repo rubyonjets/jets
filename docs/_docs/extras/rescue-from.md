@@ -1,6 +1,5 @@
 ---
 title: Error Handling
-nav_order: 82
 ---
 
 Jets provides some error handling capabilities in controllers that can rescue errors that occur during the callbacks or action. This is done with the `rescue_from` method.
@@ -32,4 +31,3 @@ private
 end
 ```
 
-{% include prev_next.md %}

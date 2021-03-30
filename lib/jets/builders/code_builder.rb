@@ -373,28 +373,29 @@ module Jets::Builders
       end
     end
 
-    def check_ruby_version
-      unless ruby_version_supported?
-        puts "You are using Ruby version #{RUBY_VERSION} which is not supported by Jets."
-        ruby_variant = Jets::RUBY_VERSION.split('.')[0..1].join('.') + '.x'
-        abort("Jets uses Ruby #{Jets::RUBY_VERSION}.  You should use a variant of Ruby #{ruby_variant}".color(:red))
-      end
-    end
-
     def copy_ruby_version_file
       ruby_version_path = Jets.root.join(".ruby-version")
       return unless File.exists?(ruby_version_path)
       FileUtils.cp_r(ruby_version_path, build_area)
     end
 
-    def ruby_version_supported?
-      pattern = /(\d+)\.(\d+)\.(\d+)/
-      md = RUBY_VERSION.match(pattern)
-      ruby = {major: md[1], minor: md[2]}
-      md = Jets::RUBY_VERSION.match(pattern)
-      jets = {major: md[1], minor: md[2]}
+    SUPPORTED_RUBY_VERSIONS = %w[2.5 2.7]
+    def check_ruby_version
+      return unless ENV['JETS_RUBY_CHECK'] == '0' || Jets.config.ruby.check == false
+      return if ruby_version_supported?
+      puts <<~EOL.color(:red)
+      You are using Ruby version #{RUBY_VERSION} which is not supported by Jets.
+      Please use one of the Jets supported ruby versions: #{SUPPORTED_RUBY_VERSIONS.join(' ')}
+      If you would like to skip this check you can set: JETS_RUBY_CHECK=0
+      EOL
+      exit 1
+    end
 
-      ruby[:major] == jets[:major] && ruby[:minor] == jets[:minor]
+    def ruby_version_supported?
+      md = RUBY_VERSION.match(/(\d+)\.(\d+)\.\d+/)
+      major, minor = md[1], md[2]
+      detected_ruby = [major, minor].join('.')
+      SUPPORTED_RUBY_VERSIONS.include?(detected_ruby)
     end
 
     # Group all the path settings together here

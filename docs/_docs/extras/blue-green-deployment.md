@@ -1,6 +1,5 @@
 ---
 title: Blue-Green Deployment
-nav_order: 88
 ---
 
 ## Background
@@ -26,4 +25,3 @@ This is where Jets and AWS Lambda power shines. We simply create another [extra 
 
 When we create new environments there will be no CloudFormation update issues because the application is entirely brand new.
 
-{% include prev_next.md %}

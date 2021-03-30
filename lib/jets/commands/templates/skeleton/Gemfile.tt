@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "jets"
+gem "jets", "~> <%= jets_minor_version %>"
 
 <% if @webpacker -%>
 # Include jetpacker if you are building html pages

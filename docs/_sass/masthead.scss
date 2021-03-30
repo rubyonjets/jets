@@ -1,0 +1,78 @@
+// Styling for the masthead
+header.masthead {
+  position: relative;
+  overflow-y: hidden;
+  width: 100%;
+  min-height: auto;
+  color: white;
+  background-color: #020766;
+
+  h1, h2 {
+    border: none;
+  }
+
+  h2 {
+    font-weight: 200;
+    font-size: 24px;
+  }
+
+  .header-content {
+    position: relative;
+    padding: 50px 0 30px;
+    text-align: center;
+    .header-content-inner {
+      position: relative;
+      max-width: 500px;
+      margin: 0 auto;
+      h1 {
+        font-size: 30px;
+        margin-top: 0;
+        margin-bottom: 30px;
+      }
+      .list-badges {
+        margin-bottom: 25px;
+        img {
+          height: 50px;
+          margin-bottom: 25px;
+        }
+      }
+    }
+  }
+  .device-container {
+    max-width: 300px;
+    margin: 0 auto 100px;
+    .screen img {
+      border-radius: 3px;
+    }
+  }
+  @media (min-width: 768px) {
+    // min-height: 100%;
+    .header-content {
+      // height: 100vh;
+      min-height: 600px;
+      padding: 0;
+      text-align: left;
+      .header-content-inner {
+        position: absolute;
+        top: 50%;
+        max-width: none;
+        margin: 0;
+        transform: translateY(-50%);
+        h1 {
+          font-size: 35px;
+        }
+      }
+    }
+    .device-container {
+      max-width: none;
+      max-height: calc(100vh - 100px);
+      margin: 100px auto 0;
+    }
+  }
+  @media (min-width: 992px) {
+    .header-content .header-content-inner h1 {
+      font-size: 40px;
+      line-height: normal;
+    }
+  }
+}

@@ -39,7 +39,7 @@ class Jets::Commands::Delete
 
   def delete_logs
     puts "Deleting CloudWatch logs"
-    log = Jets::Commands::Clean::Log.new(mute: true, sure: true)
+    log = Jets::Commands::Clean::Log.new(mute: true, yes: true)
     log.clean
   end
 
@@ -114,7 +114,7 @@ class Jets::Commands::Delete
   end
 
   def are_you_sure?
-    if @options[:sure]
+    if @options[:yes]
       sure = 'y'
     else
       puts "Are you sure you want to want to delete the #{Jets.config.project_namespace.color(:green)} project? (y/N)"

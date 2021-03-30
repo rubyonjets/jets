@@ -12,10 +12,9 @@ module Jets::Builders
     def install
       return unless gemfile_exist?
 
-      reconfigure_ruby_version
       clean_old_submodules
       bundle_install
-      setup_bundle_config
+      copy_bundle_config
       copy_cache_gems
     end
 
@@ -46,6 +45,7 @@ module Jets::Builders
       headline "Bundling: running bundle install in cache area: #{cache_area}."
 
       copy_gemfiles(full_project_path)
+      copy_bundled_gems(full_project_path)
 
       # Uncomment out to always remove the cache/vendor/gems to debug
       # FileUtils.rm_rf("#{cache_area}/vendor/gems")
@@ -57,16 +57,17 @@ module Jets::Builders
       #    bundle config gems.myprivatesource.com user:pass
       #
 
-      FileUtils.rm_rf("#{cache_area}/.bundle")
+      create_bundle_config
       require "bundler" # dynamically require bundler so user can use any bundler
       Bundler.with_unbundled_env do
         sh(
           "cd #{cache_area} && " \
-          "env bundle install --path #{cache_area}/vendor/gems --without development test"
+          "env bundle install"
         )
       end
+      create_bundle_config(frozen: true)
 
-      remove_bundled_with("#{cache_area}/Gemfile.lock")
+      rewrite_gemfile_lock("#{cache_area}/Gemfile.lock")
 
       # Copy the Gemfile.lock back to the project in case it was updated.
       # For example we add the jets-rails to the Gemfile.
@@ -92,14 +93,6 @@ module Jets::Builders
 
     def tidy_project(path)
       Tidy.new(path).cleanup!
-    end
-
-    # This is in case the user has a 2.5.x variant.
-    # Force usage of ruby version that jets supports
-    # The lambda server only has ruby 2.5.0 installed.
-    def reconfigure_ruby_version
-      ruby_version = "#{@full_app_root}/.ruby-version"
-      IO.write(ruby_version, Jets::RUBY_VERSION)
     end
 
     # When using submodules, bundler leaves old submodules behind. Over time this inflates
@@ -137,6 +130,12 @@ module Jets::Builders
       end
     end
 
+    def copy_bundled_gems(full_project_path)
+      src = "#{full_project_path}/bundled_gems"
+      return unless File.exist?(src)
+      Jets::Util.cp_r(src, "#{cache_area}/bundled_gems")
+    end
+
     def copy_gemfiles(full_project_path)
       FileUtils.mkdir_p(cache_area)
       FileUtils.cp("#{full_project_path}/Gemfile", "#{cache_area}/Gemfile")
@@ -150,9 +149,10 @@ module Jets::Builders
 
     # Remove the BUNDLED WITH line since we don't control the bundler gem version on AWS Lambda
     # And this can cause issues with require 'bundler/setup'
-    def remove_bundled_with(gemfile_lock)
+    def rewrite_gemfile_lock(gemfile_lock)
       lines = IO.readlines(gemfile_lock)
 
+      # Remove BUNDLED WITH
       # amount is the number of lines to remove
       new_lines, capture, count, amount = [], true, 0, 2
       lines.each do |l|
@@ -166,13 +166,32 @@ module Jets::Builders
         end
       end
 
+      # Replace things like nokogiri (1.11.1-x86_64-darwin) => nokogiri (1.11.1)
+      lines, new_lines = new_lines, []
+      lines.each do |l|
+        if l.include?("-x86_64-darwin")
+          l = l.sub('-x86_64-darwin','')
+        end
+        new_lines << l
+      end
+
+      # Make sure platform is ruby
+      lines, new_lines, marker = new_lines, [], false
+      lines.each do |l|
+        if marker # the next loop has the platform we want to replace
+          new_lines << "  ruby\n"
+          marker = false
+          next
+        end
+        marker = l.include?('PLATFORMS')
+        new_lines << l
+      end
+
       content = new_lines.join('')
       IO.write(gemfile_lock, content)
     end
 
-    def setup_bundle_config
-      ensure_build_cache_bundle_config_exists!
-
+    def copy_bundle_config
       # Override project's .bundle/config and ensure that .bundle/config matches
       # at these 2 spots:
       #   app_root/.bundle/config
@@ -187,11 +206,12 @@ module Jets::Builders
     # this only happens with ssh debugging, not when the ci.sh script gets ran.
     # But on macosx it exists.
     # Dont know why this is the case.
-    def ensure_build_cache_bundle_config_exists!
+    def create_bundle_config(frozen: false)
+      FileUtils.rm_rf("#{cache_area}/.bundle")
+      frozen_line = %Q|BUNDLE_FROZEN: "true"\n| if frozen
       text =<<-EOL
 ---
-BUNDLE_FROZEN: "true"
-BUNDLE_PATH: "vendor/gems"
+#{frozen_line}BUNDLE_PATH: "vendor/gems"
 BUNDLE_WITHOUT: "development:test"
 EOL
       bundle_config = "#{cache_area}/.bundle/config"

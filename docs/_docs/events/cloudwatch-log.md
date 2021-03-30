@@ -1,7 +1,6 @@
 ---
 title: CloudWatch Log Events
 categories: events
-nav_order: 22
 ---
 
 Jets supports [CloudWatch Log Events](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SubscriptionFilters.html#LambdaFunctionExample). This allows you to have a Lambda function run when your CloudWatch Log Group receives log data.  You can access the data via `event` and `log_event`.
@@ -85,4 +84,3 @@ Here's a screenshot of CloudWatch logs to show an example of this data:
 
 ![](/img/docs/logs-subscription-filter-cloudwatch.png)
 
-{% include prev_next.md %}

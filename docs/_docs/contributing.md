@@ -1,6 +1,5 @@
 ---
 title: Contributing to Jets
-nav_order: 103
 ---
 
 Hi there! Interested in contributing to Jets? We'd love your help. Jets is an open source project, built one contribution at a time by users like you.
@@ -13,12 +12,12 @@ See [the support guidelines]({% link support.md %})
 
 Whether you're a developer, an infrastructure engineer, or just an enthusiast, there are lots of ways to contribute. Here are a few ideas:
 
-* [Install Jets on your computer](https://rubyonjets.com/docs/install/) and kick the tires. Does it work? Does it do what you'd expect? If not, [open an issue](https://github.com/tongueroo/jets/issues/new/choose) and let us know.
-* Comment on some of the project's [open issues](https://github.com/tongueroo/jets/issues). Have you experienced the same problem? Know a workaround? Do you have a suggestion for how the feature could be better?
+* [Install Jets on your computer](https://rubyonjets.com/docs/install/) and kick the tires. Does it work? Does it do what you'd expect? If not, [open an issue](https://github.com/boltops-tools/jets/issues/new/choose) and let us know.
+* Comment on some of the project's [open issues](https://github.com/boltops-tools/jets/issues). Have you experienced the same problem? Know a workaround? Do you have a suggestion for how the feature could be better?
 * Read through [the documentation](https://rubyonjets.com/docs/), and click the "improve this page" button, any time you see something confusing or have a suggestion for something that could be improved.
 * Browse through the [Jets Community forum](https://community.rubyonjets.com), and lend a hand answering questions. There's a good chance you've already experienced what another user is experiencing.
-* Find [an open issue](https://github.com/tongueroo/jets/issues) (especially [those labeled `help wanted`](https://github.com/tongueroo/jets/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)), and submit a proposed fix. If it's your first pull request, we promise we won't bite and are glad to answer any questions.
-* Help evaluate [open pull requests](https://github.com/tongueroo/jets/pulls), by testing the changes locally and reviewing what's proposed.
+* Find [an open issue](https://github.com/boltops-tools/jets/issues) (especially [those labeled `help wanted`](https://github.com/boltops-tools/jets/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)), and submit a proposed fix. If it's your first pull request, we promise we won't bite and are glad to answer any questions.
+* Help evaluate [open pull requests](https://github.com/boltops-tools/jets/pulls), by testing the changes locally and reviewing what's proposed.
 
 ## Submitting a pull request
 
@@ -36,7 +35,7 @@ Whether you're a developer, an infrastructure engineer, or just an enthusiast, t
 
 Many small changes can be made entirely through the github.com web interface.
 
-1. Navigate to the file within [tongueroo/jets](https://github.com/tongueroo/jets) that you'd like to edit.
+1. Navigate to the file within [boltops-tools/jets](https://github.com/boltops-tools/jets) that you'd like to edit.
 2. Click the pencil icon in the top right corner to edit the file.
 3. Make your proposed changes.
 4. Click "Propose file change."
@@ -48,7 +47,7 @@ That's it! You'll be automatically subscribed to receive updates as others revie
 
 ### Submitting a pull request via Git command line
 
-1. Fork the project by clicking "Fork" in the top right corner of [tongueroo/jets](https://github.com/tongueroo/jets).
+1. Fork the project by clicking "Fork" in the top right corner of [boltops-tools/jets](https://github.com/boltops-tools/jets).
 2. Clone the repository locally `git clone https://github.com/<your-username>/jets`.
 3. Fetch submodules `git submodule init && git submodule update`.
 4. Create a new, descriptively named branch to contain your change ( `git checkout -b my-awesome-feature` ).
@@ -63,7 +62,7 @@ We want the Jets documentation to be the best it can be. We've open-sourced our 
 
 ### How to submit changes
 
-You can find the documentation for [rubyonjets.com](http://rubyonjets.com) in the [docs](https://github.com/tongueroo/jets/tree/master/docs) directory. See the section above, [submitting a pull request](#submitting-a-pull-request) for information on how to propose a change.
+You can find the documentation for [rubyonjets.com](http://rubyonjets.com) in the [docs](https://github.com/boltops-tools/jets/tree/master/docs) directory. See the section above, [submitting a pull request](#submitting-a-pull-request) for information on how to propose a change.
 
 One gotcha, all pull requests should be directed at the `master` branch (the default branch).
 
@@ -95,10 +94,9 @@ To run the test suite by running the following command:
 
     bundle exec rspec
 
-For more thorough testing, you should create a jets demo app and run the integration test script. Instructions for that are at [readme/testing.md](https://github.com/tongueroo/jets/blob/master/readme/testing.md).
+For more thorough testing, you should create a jets demo app and run the integration test script. Instructions for that are at [readme/testing.md](https://github.com/boltops-tools/jets/blob/master/readme/testing.md).
 
 ## Thank You
 
 Thanks! Hacking on Jets should be fun. If you find any of this hard to figure out, let us know so we can improve our process or documentation!
 
-{% include prev_next.md %}
