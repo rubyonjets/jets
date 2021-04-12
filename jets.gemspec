@@ -52,7 +52,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "jets-html-sanitizer"
   spec.add_dependency "kramdown"
   spec.add_dependency "memoist"
-  spec.add_dependency "mimemagic"
   spec.add_dependency "rack"
   spec.add_dependency "railties", "~> 6.1.0" # for ActiveRecord database_tasks.rb
   spec.add_dependency "rainbow"
