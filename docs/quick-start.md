@@ -6,6 +6,8 @@ In a hurry? No problem!  Here's a quick start to get going.
 
 ## Local Testing
 
+Review prerequisites on the [Install](/docs/install) page. Then:
+
     gem install jets
     jets new demo
     cd demo
