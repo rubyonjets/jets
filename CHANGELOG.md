@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [UNRELEASED]
+- Method spec helpers now accepts `:body` param. Providing string as `params` has the same effect.
+
+## [3.0.3] - 2021-03-24
+- [#532](https://github.com/boltops-tools/jets/pull/532) Update Copy Write Year
+- [#536](https://github.com/boltops-tools/jets/pull/536) use mini_mime instead
+
 ## [3.0.2] - 2021-01-12
 - update serverlessgems gem
 

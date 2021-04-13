@@ -1,5 +1,5 @@
 require "rack/mime"
-require "mimemagic"
+require "mini_mime"
 
 class Jets::PublicController < Jets::Controller::Base
   layout false
@@ -12,7 +12,7 @@ class Jets::PublicController < Jets::Controller::Base
 
     if File.exist?(catchall_path)
       content_type = Rack::Mime.mime_type(File.extname(catchall_path))
-      binary = !MimeMagic.by_path(catchall_path).text?
+      binary = !MiniMime.lookup_by_filename(catchall_path).content_type.include?("text")
 
       # For binary support to work, the client also has to send the right Accept header.
       # And the media type has been to added to api gateway.

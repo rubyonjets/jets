@@ -1,11 +1,15 @@
 module ActiveRecord
   module MigrationChecker
     def prepare_test_db
-      current_config = ::ActiveRecord::Base.connection_config
+      current_config = ::ActiveRecord::Base.connection_db_config
       all_configs = ::ActiveRecord::Base.configurations.configs_for(env_name: Jets.env)
 
       needs_update = !all_configs.all? do |db_config|
-        ::ActiveRecord::Tasks::DatabaseTasks.schema_up_to_date?(db_config.config, ::ActiveRecord::Base.schema_format, nil, Jets.env, db_config.spec_name)
+        ::ActiveRecord::Tasks::DatabaseTasks.schema_up_to_date?(
+          db_config.configuration_hash, 
+          ::ActiveRecord::Base.schema_format, 
+          nil
+        )
       end
 
       if needs_update
