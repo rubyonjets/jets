@@ -57,7 +57,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "railties", "~> 6.1.0" # for ActiveRecord database_tasks.rb
   spec.add_dependency "rainbow"
   spec.add_dependency "recursive-open-struct"
-  spec.add_dependency "serverlessgems", "~> 0.1.2"
+  spec.add_dependency "serverlessgems", "~> 0.1.3"
   spec.add_dependency "shotgun"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"
