@@ -32,7 +32,8 @@ module Jets::SpecHelpers
         request.params.query_params ||= params.delete(:params)
         request.params.query_params ||= params
       else
-        request.params.body_params = params.delete(:params)
+        request.params.body_params = params.delete(:body)
+        request.params.body_params ||= params.delete(:params)
         request.params.body_params ||= params
       end
 
