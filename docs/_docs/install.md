@@ -21,19 +21,6 @@ to create the policy, group, and user.
 
 Use the user's credentials to configure the `aws-cli` below.
 
-### aws-cli
-
-Install the [aws-cli](https://aws.amazon.com/cli/) using your method of choice.
-For example, with Homebrew on macOS:
-
-    brew install awscli
-
-Configure it:
-
-    aws configure
-
-Use the user's Access Key ID and Secret Access Key from the IAM steps above.
-
 ### Ruby
 
 Jets supports Ruby 2.5 and Ruby 2.7,
@@ -78,11 +65,14 @@ Here are the instructions to install MySQL and PostgreSQL:
 
 ### AWS CLI
 
-The AWS CLI is required. You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html) via pip.
+The AWS CLI is required. You can install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/installing.html). Here's a few ways to install it.
 
     pip install awscli --upgrade --user
+
+Or with Homebrew on macOS:
+
+    brew install awscli
 
 Then [configure it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
     aws configure
-
