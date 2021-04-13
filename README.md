@@ -16,6 +16,10 @@ Please **watch/star** this repo to help grow and support the project.
 
 **Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/extras/upgrading/).
 
+## Sponsors
+
+[![](https://img.boltops.com/boltops/tools/jets/sponsors/arist.png)](https://arist.co/)
+
 ## What is Ruby on Jets?
 
 Jets is a Ruby Serverless Framework.  Jets allows you to create serverless applications with a beautiful language: Ruby.  It includes everything required to build an application and deploy it to AWS Lambda.

@@ -3,94 +3,90 @@ layout: default
 sidebar: false
 ---
 
-    <header class="masthead">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <div class="header-content">
-                        <div class="header-content-inner">
-                            <h1>Jets: The Ruby Serverless Framework</h1>
-                            <h2>Ruby on Jets allows you to create and deploy serverless services with ease, and to seamlessly glue AWS services together with the most beautiful dynamic language: Ruby. It includes everything you need to build an API and deploy it to AWS Lambda. Jets leverages the power of Ruby to make serverless joyful for everyone.</h2>
-                            <a href="{% link docs.md %}" class="btn btn-outline btn-xl">Learn More!</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <img src="/img/logos/jets-logo.png" class="homepage-logo" />
-                </div>
-            </div>
+<header class="masthead">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <div class="header-content">
+          <div class="header-content-inner">
+            <h1>Jets: The Ruby Serverless Framework</h1>
+            <h2>Ruby on Jets allows you to create and deploy serverless services with ease, and to seamlessly glue AWS services together with the most beautiful dynamic language: Ruby. It includes everything you need to build an API and deploy it to AWS Lambda. Jets leverages the power of Ruby to make serverless joyful for everyone.</h2>
+            <a href="{% link docs.md %}" class="btn btn-outline btn-xl">Learn More!</a>
+          </div>
         </div>
-    </header>
+      </div>
+      <div class="col-sm-4">
+        <img src="/img/logos/jets-logo.png" class="homepage-logo" />
+      </div>
+    </div>
+  </div>
+</header>
 
-    <!--<section class="download bg-primary text-center" id="download">-->
-    <!--    <div class="container">-->
-    <!--        <div class="row">-->
-    <!--            <div class="col-lg-12 text-center">-->
-    <!--                <h2>What Is Jets?</h2>-->
-    <!--                <hr class="star-light">-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--        <div class="row">-->
-    <!--            <div class="col-lg-6">-->
-    <!--                <p>Building serverless applications can be challenging.  Jets makes it simple and fun. It includes everything required to build and deploy a serverless application to AWS Lambda. Focus on your business logic while Jets handles the mundane gruntwork.</p>-->
-    <!--            </div>-->
-    <!--            <div class="col-lg-6">-->
-    <!--                <p>Jets was built to allow you to quickly build serverless applications with a beautiful language: Ruby. Jets offers powerful tools to help you develop in the serverless world. Jets is a great use case for services and glue code.</p>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--</section>-->
+<section class="sponsors bg-primary text-center" id="sponsors">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2>Sponsors</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <p><a href="https://arist.co/"><img src="https://img.boltops.com/boltops/tools/jets/sponsors/arist.png" /></a></p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    {% include example.html %}
+{% include example.html %}
 
-    {% include commands.html %}
+{% include commands.html %}
 
-    <section class="learning-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Learning Content</h2>
+<section class="learning-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h2 class="section-heading">Learning Content</h2>
+      </div>
+      <div class="col-lg-12">
+        <div class="article-box">
+          <div class="exclusives">
+            <div class="article-box">
+              <div class="row">
+
+              {% assign home_articles = site.data.intro_series | concat: site.data.tutorial_series | concat: site.data.articles %}
+              {% assign posts = home_articles %}
+              {% for post in posts limit: 99 %}
+              <div class="col-md-4">
+                <div class="related-body">
+                  <div class="related-thumbnail">
+                    <a href="{{ post.url }}">
+                      <img src="{{ post.thumbnail }}" class="center-crop" />
+                    </a>
+                  </div>
+                  <span class="related-link">
+                    <a href="{{ post.url }}">{{ post.title }}</a>
+                  </span>
                 </div>
-                <div class="col-lg-12">
-                    <div class="article-box">
-                      <div class="exclusives">
-                        <div class="article-box">
-                          <div class="row">
+              </div>
 
-                          {% assign home_articles = site.data.intro_series | concat: site.data.tutorial_series | concat: site.data.articles %}
-                          {% assign posts = home_articles %}
-                          {% for post in posts limit: 99 %}
-                          <div class="col-md-4">
-                            <div class="related-body">
-                              <div class="related-thumbnail">
-                                <a href="{{ post.url }}">
-                                  <img src="{{ post.thumbnail }}" class="center-crop" />
-                                </a>
-                              </div>
-                              <span class="related-link">
-                                <a href="{{ post.url }}">{{ post.title }}</a>
-                              </span>
-                            </div>
-                          </div>
+              {% endfor %}
 
-                          {% endfor %}
-
-                          </div>
-                          <div class="related-filler"></div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
+              </div>
+              <div class="related-filler"></div>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <section class="cta">
-        <div class="cta-content">
-            <div class="container">
-                <h2>Learn More</h2>
-                <a href="{% link quick-start.md %}" class="btn btn-outline btn-xl">Quick Start</a>
-            </div>
-        </div>
-        <div class="overlay"></div>
-    </section>
+<section class="cta">
+  <div class="cta-content">
+    <div class="container">
+      <h2>Learn More</h2>
+      <a href="{% link quick-start.md %}" class="btn btn-outline btn-xl">Quick Start</a>
+    </div>
+  </div>
+  <div class="overlay"></div>
+</section>
