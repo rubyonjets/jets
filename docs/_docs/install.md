@@ -12,15 +12,6 @@ Install jets via RubyGems.
 
 Jets works on macosx and linux variants. Jets does not work on windows.  For windows, recommend considering [Cloud9 IDE](https://aws.amazon.com/cloud9/). There are some nice advantages like [Faster Development](https://rubyonjets.com/docs/faster-development/).
 
-### IAM policy, group, and user
-
-The IAM user you use to run the `jets deploy` command
-needs a minimal set of IAM policies in order to deploy a Jets application.
-Follow the [Minimal Deploy Policy IAM Policy](/docs/extras/minimal-deploy-iam)
-to create the policy, group, and user.
-
-Use the user's credentials to configure the `aws-cli` below.
-
 ### Ruby
 
 Jets supports Ruby 2.5 and Ruby 2.7,
@@ -76,3 +67,11 @@ Or with Homebrew on macOS:
 Then [configure it](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
 
     aws configure
+
+
+### IAM policy, group, and user
+
+The IAM user you use to run the `jets deploy` command
+needs a minimal set of IAM policies in order to deploy a Jets application.
+Follow the [Minimal Deploy Policy IAM Policy](/docs/extras/minimal-deploy-iam)
+to create the policy, group, and user. Use the user's credentials to configure the `aws-cli` above.
