@@ -57,7 +57,7 @@ Note, these should be the default values, but there are noted here in case these
 
 This is an important step as the javascript world, and webpacker will not know to compile your assets and images unless they are imported. Running `bin/webpack` evaluates the javascript code and each import call adds info to be tracked. This is now webpack knows to compile the images and add them to `public/packs/manifest.json`.  Note: In development mode, `bin/webpack` runs automatically as part of the request cycle.
 
-Instead of importing images one at a time, we'll import the entire folder recursively.  See: [705](https://github.com/rails/webpacker/issues/705]. Here's a more concise way to import a folder of images. Add this line to your code.
+Instead of importing images one at a time, we'll import the entire folder recursively.  See: [705](https://github.com/rails/webpacker/issues/705). Here's a more concise way to import a folder of images. Add this line to your code.
 
 app/javascript/packs/application.js
 
