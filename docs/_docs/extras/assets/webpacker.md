@@ -96,7 +96,7 @@ To double-check that the assets are compiling correctly, run `bin/webpack` and c
 
 ## Cache Headers
 
-The Jets default max-age for assets serving out of s3 is 3600s or 1h. When using webpacker, since the sha checksums are added it's makes sense to override the setting with longer TTLs. You can override the setting and configure the folders with the [Application Configuration]({% link _docs/app-config.md %}). Here's an example:
+The Jets default max-age for assets serving out of s3 is 3600s or 1h. When using webpacker, since the sha checksums are added, it makes sense to use longer TTLs. Here's an example:
 
 ```ruby
 Jets.application.configure do
