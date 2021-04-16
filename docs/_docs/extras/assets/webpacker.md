@@ -65,7 +65,7 @@ app/javascript/packs/application.js
 require.context('../../assets/images', true)
 ```
 
-##3 4. Use the `image_pack_tag` in your views with the conventional `media` prefix.
+### 4. Use the `image_pack_tag` in your views with the conventional `media` prefix.
 
 Now you're ready to use the `image_pack_tag` in the views. Here's an example.
 
@@ -83,7 +83,7 @@ Notice the convention:
 
 This is the current convention that webpack has chosen.
 
-### Debugging Tip
+## Debugging Tip
 
 To double-check that the assets are compiling correctly, run `bin/webpack` and check generated `manifest.json`
 
@@ -93,6 +93,22 @@ To double-check that the assets are compiling correctly, run `bin/webpack` and c
       "media/southpark/eric.png": "/packs/media/southpark/eric-6809100c.png",
       "media/southpark/stan.png": "/packs/media/southpark/stan-91559ff6.png",
     $
+
+## Cache Headers
+
+The Jets default max-age for assets serving out of s3 is 3600s or 1h. When using webpacker, since the sha checksums are added it's makes sense to override the setting with longer TTLs. You can override the setting and configure the folders with the [Application Configuration]({% link _docs/app-config.md %}). Here's an example:
+
+```ruby
+Jets.application.configure do
+  # ...
+  # Default assets settings
+  config.assets.folders = %w[assets images packs]
+  config.assets.max_age = 3600 # max_age is a short way to set cache_control and expands to cache_control="public, max-age=3600"
+  # config.assets.cache_control = nil # IE: "public, max-age=3600" # override max_age for more fine-grain control.
+  # config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path, defaults to the s3 bucket url
+                                 # IE: https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-1inlzkvujq8zb
+end
+```
 
 ## Deploying
 
