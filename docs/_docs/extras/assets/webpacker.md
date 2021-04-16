@@ -79,7 +79,7 @@ app/views/hello/index.html.erb
 Notice the convention:
 
     app/assets/images/jets.png => image_pack_tag("media/images/jets.png")
-    app/assets/images/southpark/jets.png => image_pack_tag("media/eric/jets.png")
+    app/assets/images/southpark/jets.png => image_pack_tag("media/southpark/eric.png")
 
 This is the current convention that webpack has chosen.
 
