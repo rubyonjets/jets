@@ -55,7 +55,7 @@ Note, these should be the default values, but there are noted here in case these
 
 ### 3. Import images in `app/javascript/packs/application.js`
 
-This is an important step as the javascript world and webpacker will not know to compile your assets and images unless they are imported. Running `bin/webpack` evaluates the javascript code and each import call adds info to be tracked. This is now webpack knows to compile the images and add them to `public/packs/manifest.json`.  Note: In development mode, `bin/webpack` runs automatically as part of the request cycle.
+This is an important step as the javascript world and webpacker will not know to compile your assets and images unless they are imported. Running `bin/webpack` evaluates the javascript code and each import call adds info to be tracked. This is how webpack knows to compile the images and add them to `public/packs/manifest.json`.  Note: In development mode, `bin/webpack` runs automatically as part of the request cycle.
 
 Instead of importing images one at a time, we'll import the entire folder recursively.  See: [705](https://github.com/rails/webpacker/issues/705). Here's a more concise way to import a folder of images. Add this line to your code.
 
@@ -112,7 +112,7 @@ end
 
 ## Deploying
 
-Jets will automatically upload images in `public/assets` to s3 by default. See the `assets.folders` setting at [Config References]({% link _docs/app-config/reference.md %}).  Jets has also decorated the `image_pack_tag` so assets will be served from the s3 bucket.  Running:
+Jets will automatically upload images in `public/packs` to s3 by default. See the `assets.folders` setting at [Config References]({% link _docs/app-config/reference.md %}).  Jets has also decorated the `image_pack_tag` so assets will be served from the s3 bucket.  Running:
 
     jets deploy
 
