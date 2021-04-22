@@ -136,6 +136,8 @@ module Jets::Resource::Lambda
 
     def get_layers(runtime)
       return nil unless runtime =~ /^ruby/
+      return Jets.config.lambda.layers if Jets.config.gems.disable
+      
       ["!Ref GemLayer"] + Jets.config.lambda.layers
     end
 
