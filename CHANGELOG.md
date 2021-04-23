@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.5] - 2021-04-23
+- [#542](https://github.com/boltops-tools/jets/pull/542) fix custom layers
+
 ## [3.0.4] - 2021-04-13
 - [#537](https://github.com/boltops-tools/jets/pull/537) Docs Add instructions for aws-cli prerequisite
 - [#528](https://github.com/boltops-tools/jets/pull/528) Adjust permissions to fix custom layer
