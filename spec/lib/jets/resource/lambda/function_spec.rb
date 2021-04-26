@@ -14,6 +14,18 @@ describe Jets::Resource::Lambda::Function do
     end
   end
 
+  context "function with description specified" do
+    let(:task) do
+      ArticlesController.all_public_tasks[:index]
+    end
+    it "uses function properties" do
+      expect(resource.logical_id).to eq "IndexLambdaFunction"
+      properties = resource.properties
+      # puts YAML.dump(properties) # uncomment to debug
+      expect(properties["Description"]).to eq "All articles"
+    end
+  end
+
   context "controller" do
     let(:task) do
       PostsController.all_public_tasks[:index]
