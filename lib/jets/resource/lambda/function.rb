@@ -123,6 +123,7 @@ module Jets::Resource::Lambda
     def finalize_properties!(props)
       handler = full_handler(props)
       runtime = get_runtime(props)
+      description = get_descripton(props)
       managed = {
         handler: handler,
         runtime: runtime,
@@ -204,7 +205,11 @@ module Jets::Resource::Lambda
       function_name.size > Jets::MAX_FUNCTION_NAME_SIZE ? nil : function_name
     end
 
-    def description
+    def get_descripton(props)
+      props[:description] || default_description
+    end
+      
+    def default_description
       # Example values:
       #   @app_class: Admin/PagesController
       #   @task.meth: index
