@@ -1,5 +1,5 @@
 {
-  "resource": "/books/list",
+  "resource": "/books/{path+}",
   "path": "/books/list",
   "httpMethod": "GET",
   "headers": {
