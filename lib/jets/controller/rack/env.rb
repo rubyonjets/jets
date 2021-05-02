@@ -64,7 +64,7 @@ module Jets::Controller::Rack
     end
 
     def content_type
-      headers['Content-Type'] || Jets::Controller::DEFAULT_CONTENT_TYPE
+      headers['content-type'] || Jets::Controller::DEFAULT_CONTENT_TYPE
     end
 
     def content_length

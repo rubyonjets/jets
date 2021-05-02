@@ -12,7 +12,7 @@
     "CloudFront-Is-SmartTV-Viewer": "false",
     "CloudFront-Is-Tablet-Viewer": "false",
     "CloudFront-Viewer-Country": "US",
-    "Content-Type": "text/plain",
+    "content-type": "text/plain",
     "Host": "uhghn8z6t1.execute-api.us-east-1.amazonaws.com",
     "Postman-Token": "7166b11b-59de-4e7b-ad35-24e556b7a083",
     "User-Agent": "PostmanRuntime/6.4.1",
