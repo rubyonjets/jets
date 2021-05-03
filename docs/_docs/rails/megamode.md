@@ -2,6 +2,8 @@
 title: Mega Mode
 ---
 
+{% include rails-update.md %}
+
 Jets Mega Mode supports deploying your Rails app also with little changes to your code.
 
 <div class="video-box"><div class="video-container"><iframe src="https://www.youtube.com/embed/gDLH9ui9ITk" frameborder="0" allowfullscreen=""></iframe></div></div>

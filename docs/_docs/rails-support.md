@@ -2,6 +2,8 @@
 title: Rails Support
 ---
 
+{% include rails-update.md %}
+
 Jets supports deploying Rails applications with a few approaches that are experimental.
 
 1. [Jets Afterburner Mode]({% link _docs/rails/afterburner.md %})
