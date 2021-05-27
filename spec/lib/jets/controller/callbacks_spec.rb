@@ -56,23 +56,26 @@ class PrependAppendAfterController < Jets::Controller::Base
   def prepended; end
 end
 
-class SkippedBeforeController < Jets::Controller::Base
+class SkippedBeforeParentController < Jets::Controller::Base
   before_action :first
-  before_action :second
-  skip_before_action :first
 
   def first; end
   def second; end
 end
 
-class SkippedBeforeWithOnlyController < Jets::Controller::Base
-  before_action :first
+class SkippedBeforeController < SkippedBeforeParentController
+  before_action :second
+  skip_before_action :first
+end
+
+class SkippedBeforeWithOnlyController < SkippedBeforeParentController
   skip_before_action :first, only: %i[index]
 
-  def first; end
   def index; end
 end
 
+class NoSkippedBeforeController < SkippedBeforeParentController
+end
 
 class SkippedAfterController < Jets::Controller::Base
   after_action :first
@@ -135,6 +138,14 @@ describe Jets::Controller::Base do
     subject { SkippedBeforeWithOnlyController.new({}, nil, :index) }
     it "adds the method to the except of the callback" do
       expect(subject.class.before_actions).to eq [[:first, {except: [:index]}]]
+    end
+  end
+
+  context NoSkippedBeforeController do
+    subject { NoSkippedBeforeController.new({}, nil, :index) }
+    it 'shared parent doesnt skip' do  
+      puts subject.class.name
+      expect(subject.class.before_actions).to eq [[:first, {}]]
     end
   end
 
