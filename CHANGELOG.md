@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.7] - 2021-05-27
+- Dont bypass class_attribute setters (#559)
+- update pg version in jets new Gemfile to latest (#558)
+
 ## [3.0.6] - 2021-05-27
 - Handle Errors::InvalidClientTokenId when `get_caller_identity` fails (#543)
 - Use description specifed in function properties (#545)
