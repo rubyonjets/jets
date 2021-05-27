@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.6] - 2021-05-27
+- Handle Errors::InvalidClientTokenId when `get_caller_identity` fails (#543)
+- Use description specifed in function properties (#545)
+- allow multi value response headers (#556)
+- rails support update
+
 ## [3.0.5] - 2021-04-23
 - [#542](https://github.com/boltops-tools/jets/pull/542) fix custom layers
 
