@@ -20,8 +20,8 @@ class Jets::Controller
           self.before_actions = before_actions
                                   .reject { |act| act.first.to_s == meth.to_s }
 
-          # If options include the only param,
-          # re-add the action using the setter with the exception param 
+          # If options include the `only` option,
+          # re-add the action using the setter with the `except` option 
           before_action(meth, { except: options[:only] }) if options[:only].present?
         end
 
