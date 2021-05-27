@@ -34,14 +34,20 @@ module Jets::Controller::Rack
       body = body.respond_to?(:read) ? body.read : body
       body = Base64.encode64(body) if base64
 
-      resp = {
-        "statusCode" => status,
-        "headers" => headers,
-        "body" => body,
-        "isBase64Encoded" => base64,
-      }
-      adjust_for_elb(resp)
-      resp
+      {}.tap do |resp|
+        resp['statusCode'] = status
+        resp['body'] = body
+        resp['isBase64Encoded'] = base64
+        add_response_headers(resp, headers)
+        adjust_for_elb(resp)
+      end
+    end
+
+    def add_response_headers(resp, headers)
+      resp['headers'] = headers.reject { |_, val| val.is_a?(Array) }
+      multi_value_headers = headers.select { |_, val| val.is_a?(Array) }
+
+      resp['multiValueHeaders'] = multi_value_headers unless multi_value_headers.blank?
     end
 
     # Note: ELB is not officially support. This is just in case users wish to manually
