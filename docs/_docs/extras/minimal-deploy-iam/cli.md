@@ -44,6 +44,7 @@ If your environment requires a "least privilege" approach, these commands will c
                 "Action": [
                     "cloudformation:CreateStack",
                     "cloudformation:DescribeStackEvents",
+                    "cloudformation:DescribeStackResource",
                     "cloudformation:DescribeStackResources",
                     "cloudformation:DeleteStack",
                     "cloudformation:UpdateStack"
