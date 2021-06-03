@@ -35,6 +35,7 @@ module Jets::Builders
       removals = always_removals
       removals += get_removals("#{@project_root}/.gitignore")
       removals += get_removals("#{@project_root}/.dockerignore")
+      removals += get_removals("#{@project_root}/.jetsignore")
       removals = removals.reject do |p|
         jetskeep.find do |keep|
           p.include?(keep)
