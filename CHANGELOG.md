@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.8] - 2021-06-03
+- Update cli.md (#560)
+- respect .jetsignore also (#562)
+
 ## [3.0.7] - 2021-05-27
 - Dont bypass class_attribute setters (#559)
 - update pg version in jets new Gemfile to latest (#558)
