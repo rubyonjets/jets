@@ -1,5 +1,6 @@
 require 'action_view'
 require 'digest'
+require 'rack/mime'
 
 module Jets::Cfn
   class Upload
@@ -7,12 +8,6 @@ module Jets::Cfn
     include ActionView::Helpers::NumberHelper # number_to_human_size
 
     attr_reader :bucket_name
-
-    CONTENT_TYPES_BY_EXTENSION = {
-      '.css' => 'text/css',
-      '.js' => 'application/javascript',
-      '.html' => 'text/html'
-    }
 
     def initialize(bucket_name)
       @bucket_name = bucket_name
@@ -93,16 +88,23 @@ module Jets::Cfn
     end
 
     def upload_to_s3(full_path)
-      return if identical_on_s3?(full_path)
+      return if identical_on_s3?(full_path) && !ENV['JETS_ASSET_UPLOAD_FORCE']
 
       key = s3_key(full_path)
       obj = s3_resource.bucket(bucket_name).object(key)
-      puts "Uploading and setting content type for s3://#{bucket_name}/#{key}" # uncomment to see and debug
-      obj.upload_file(full_path, { acl: "public-read", cache_control: cache_control }.merge(content_type_headers(full_path)))
+      content_type = content_type_headers(full_path)
+      puts "Uploading and setting content type for s3://#{bucket_name}/#{key} content_type #{content_type[:content_type].inspect}"
+      obj.upload_file(full_path, { acl: "public-read", cache_control: cache_control }.merge(content_type))
     end
 
+    CONTENT_TYPES_BY_EXTENSION = {
+      '.css'  => 'text/css',
+      '.html' => 'text/html',
+      '.js'   => 'application/javascript',
+    }
     def content_type_headers(full_path)
-      content_type = CONTENT_TYPES_BY_EXTENSION[File.extname(full_path)]
+      ext = File.extname(full_path)
+      content_type = CONTENT_TYPES_BY_EXTENSION[ext] || Rack::Mime.mime_type(ext)
       if content_type
         { content_type: content_type }
       else
