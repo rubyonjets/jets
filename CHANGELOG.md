@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.9] - 2021-06-14
+- fix content type s3 metadata (#564)
+
 ## [3.0.8] - 2021-06-03
 - Update cli.md (#560)
 - respect .jetsignore also (#562)
