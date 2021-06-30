@@ -1,12 +1,15 @@
 # Thanks: Rails dbconsole_command.rb
 module Jets::Commands
   class Dbconsole
+    extend Memoist
+
     def self.start(*args)
       new(*args).start
     end
 
     def initialize(options = {})
-      @options = options
+      defaults = {"include_password" => true}
+      @options = defaults.merge(options)
     end
 
     def start
@@ -85,14 +88,14 @@ module Jets::Commands
     end
 
     def config
-      @config ||= begin
-        if configurations[environment].blank?
-          raise ActiveRecord::AdapterNotSpecified, "'#{environment}' database is not configured. Available configuration: #{configurations.inspect}"
-        else
-          configurations[environment]
-        end
+      configs = configurations.configs_for(env_name: environment)
+      if configs.blank?
+        raise ActiveRecord::AdapterNotSpecified, "'#{environment}' database is not configured. Available configuration: #{configurations.inspect}"
+      else
+        configs.first.configuration_hash.dup.stringify_keys!
       end
     end
+    memoize :config
 
     def environment
       Jets.env.to_s
