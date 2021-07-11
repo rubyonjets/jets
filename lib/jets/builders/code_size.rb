@@ -40,9 +40,15 @@ module Jets::Builders
     end
 
     def compute_size(path)
-      # -k option is required for macosx but not for linux
-      out = `du -ks #{path}`
-      out.split(' ').first.to_i # bytes
+      total_bytes = 0
+      Dir.each_child(path) do |entry|
+        child_path = File.join(path, entry)
+        next unless File.exist?(child_path)
+        total_bytes += File.lstat(child_path).size
+        next if File.symlink?(child_path)
+        total_bytes += compute_size(child_path) if File.directory?(child_path)
+      end
+      total_bytes
     end
 
     def megabytes(bytes)
