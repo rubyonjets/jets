@@ -48,7 +48,7 @@ module Jets::Builders
         next if File.symlink?(child_path)
         total_bytes += compute_size(child_path) if File.directory?(child_path)
       end
-      total_bytes
+      total_bytes / 1024
     end
 
     def megabytes(bytes)
