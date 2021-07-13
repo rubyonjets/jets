@@ -8,6 +8,10 @@ module Jets::Builders
     def build
       consolidate_gems_to_opt
       replace_compiled_gems unless Jets.config.gems.disable
+
+      # we need to delete this directory if it exists
+      bundle_path = "#{stage_area}/code/vendor/bundle"
+      FileUtils.rm_rf(bundle_path) if Dir.exist?(bundle_path)
     end
 
     # Also restructure the folder from:
