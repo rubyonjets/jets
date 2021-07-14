@@ -43,7 +43,7 @@ module Jets::Core
   memoize :logger
 
   def webpacker?
-    Gem.loaded_specs.keys.include?("webpacker")
+    Gem.loaded_specs.keys.any?{|k| k.start_with?("webpacker")}
   end
   memoize :webpacker?
 
