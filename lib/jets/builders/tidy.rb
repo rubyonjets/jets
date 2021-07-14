@@ -38,7 +38,7 @@ module Jets::Builders
       removals += get_removals("#{@project_root}/.jetsignore")
       removals = removals.reject do |p|
         jetskeep.find do |keep|
-          p.include?(keep)
+          p == keep
         end
       end
       removals.uniq
@@ -56,7 +56,7 @@ module Jets::Builders
     # We clean out ignored files pretty aggressively. So provide
     # a way for users to keep files from being cleaned out.
     def jetskeep
-      always = %w[.bundle packs vendor]
+      always = %w[.bundle /public/packs /public/packs-test vendor]
       path = "#{@project_root}/.jetskeep"
       return always unless File.exist?(path)
 
