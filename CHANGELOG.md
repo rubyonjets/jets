@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.10] - 2021-07-14
+- [#575](https://github.com/boltops-tools/jets/pull/575) fix missing webpacker helpers
+- [#576](https://github.com/boltops-tools/jets/pull/576) Fixes API Gateway base path Lambda not respecting various config opts
+- [#577](https://github.com/boltops-tools/jets/pull/577) Adjust .jetskeep handling and add .jetsignore docs
+- fix dbconsole (#568)
+
 ## [3.0.9] - 2021-06-14
 - fix content type s3 metadata (#564)
 
