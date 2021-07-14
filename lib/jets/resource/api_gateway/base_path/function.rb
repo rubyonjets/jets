@@ -25,7 +25,9 @@ module Jets::Resource::ApiGateway::BasePath
     end
 
     def layers
-      ["!Ref GemLayer"]
+      return Jets.config.lambda.layers if Jets.config.gems.disable
+
+      ["!Ref GemLayer"] + Jets.config.lambda.layers
     end
 
     def function_name
