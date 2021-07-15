@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.11] - 2021-07-15
+- update serverlessgems gem
+
 ## [3.0.10] - 2021-07-14
 - [#575](https://github.com/boltops-tools/jets/pull/575) fix missing webpacker helpers
 - [#576](https://github.com/boltops-tools/jets/pull/576) Fixes API Gateway base path Lambda not respecting various config opts
