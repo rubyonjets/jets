@@ -1,4 +1,4 @@
-require 'action_view'
+require "active_support/number_helper"
 
 # Examples:
 #
@@ -10,7 +10,7 @@ require 'action_view'
 #
 module Jets::Builders
   class Md5Zip
-    include ActionView::Helpers::NumberHelper # number_to_human_size
+    include ActiveSupport::NumberHelper # number_to_human_size
     include Util
 
     def initialize(folder)
