@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.12] - 2021-08-08
+- [#578](https://github.com/boltops-tools/jets/pull/578) Update "jets delete" documentation to be --yes instead of --skip
+- [#580](https://github.com/boltops-tools/jets/pull/580) Use active support instead of actionview
+- [#581](https://github.com/boltops-tools/jets/pull/581) Csrf csrf-param authenticity_token and use @rails/ujs for crud
+
 ## [3.0.11] - 2021-07-15
 - update serverlessgems gem
 
