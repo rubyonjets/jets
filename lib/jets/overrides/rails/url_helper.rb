@@ -77,7 +77,10 @@ module Jets::UrlHelper
 
   def csrf_meta_tags
     if protect_against_forgery?
-      tag("meta", name: "csrf-token", content: masked_authenticity_token).html_safe
+      html = tag("meta", name: "csrf-token", content: masked_authenticity_token).html_safe
+      html << "\n"
+      html << tag("meta", name: "csrf-param", content: "authenticity_token").html_safe
+      html
     end
   end
 end # UrlHelper

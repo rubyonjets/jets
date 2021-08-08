@@ -29,6 +29,19 @@ Version | Notes | Blue-Green? | Run jets upgrade?
 
 The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
 
+### 3.0.12
+
+* Use @rails/ujs to handle basic CRUD.
+
+For apps going from Jets 3.0.11 and below, you must make some manual changes.
+
+1. Run `yarn install @rails/ujs`
+2. Remove `import '../src/jets/crud'` from `app/javascript/packs/application.js`
+3. Add instead: `import Rails from "@rails/ujs"` and `Rails.start()`
+4. Delete `app/javascript/src/jets/crud.js`
+
+This gets you on Rails UJS, which is has better support for javascript interactions.
+
 ### 3.0.0
 
 * Ruby 2.7 support added. To use Ruby 2.7, just switch your current ruby version a 2.7.x variant and Jets will detect it.
