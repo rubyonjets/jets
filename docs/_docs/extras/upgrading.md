@@ -14,6 +14,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green? | Run jets upgrade?
 --- | --- | --- | ---
+3.0.12 | Using @rails/ujs. Will need to make some manual changes. See details below. Manually changes are not needed for newly generated projects. | No | No
 3.0.0 | Added Ruby 2.7 support. Use Serverless Gems for binary gems. | No | No
 2.1.1 | Change `config.extra_autoload_paths` to `config.autoload_paths` | No | Yes
 2.0.0 | Add csrf forgery protection. The `jets upgrade` commands updates your code with the csrf logic. New apps generated with `jets new` does this already. The routes `namespace` behavior also changed.  Use `prefix` if you prefer the old behavior.  | No | Yes
