@@ -18,5 +18,6 @@
 <% if @bootstrap -%>
 import 'bootstrap/dist/js/bootstrap';
 <% end -%>
-import '../src/jets/crud'
-console.log('Hello World from Webpacker')
+
+import Rails from "@rails/ujs"
+Rails.start()
