@@ -30,14 +30,14 @@ This deletes the all the contents in the internal s3 bucket that jets uses and t
     Project demo-dev deleted!
     $
 
-You can bypass the are you sure prompt with the `--sure` flag.
+You can bypass the are you sure prompt with the `--yes` flag.
 
-    $ jets delete --sure
+    $ jets delete --yes
 
 ## Options
 
 ```
-[--sure], [--no-sure]  # Skip are you sure prompt.
+[--yes],               # Skip are you sure prompt.
 [--wait], [--no-wait]  # Wait for stack deletion to complete.
                        # Default: true
 [--noop], [--no-noop]  
