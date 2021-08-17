@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.13] - 2021-08-17
+- [#582](https://github.com/boltops-tools/jets/pull/582) use Shotgun::Static middleware always
+
 ## [3.0.12] - 2021-08-08
 - [#578](https://github.com/boltops-tools/jets/pull/578) Update "jets delete" documentation to be --yes instead of --skip
 - [#580](https://github.com/boltops-tools/jets/pull/580) Use active support instead of actionview
