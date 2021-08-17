@@ -5,7 +5,7 @@ describe Jets::Middleware::Stack do
       endpoint = Jets::Controller::Middleware::Main
       middleware = default_stack.build(endpoint) # uncomment to see middleware tree
       # pp middleware # uncomment to see and debug
-      expect(middleware).to be_a Rack::Runtime # top of the tree
+      expect(middleware).to be_a Shotgun::Static # top of the tree
       # $ jets middleware
       # use Rack::Runtime
       # use Rack::MethodOverride
