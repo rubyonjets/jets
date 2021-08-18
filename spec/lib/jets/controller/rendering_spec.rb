@@ -29,6 +29,13 @@ describe Jets::Controller::Base do
     it "render json" do
       status, headers, body = controller.render(json: {my: "data"})
       expect(body).to respond_to(:each)
+      expect(headers["Content-Type"]).to eq "application/json"
+    end
+
+    it "render json with content-type" do
+      status, headers, body = controller.render(json: {my: "data"}, content_type: "application/json;charset=UTF-8")
+      expect(body).to respond_to(:each)
+      expect(headers["Content-Type"]).to eq "application/json;charset=UTF-8"
     end
 
     it "render file" do
