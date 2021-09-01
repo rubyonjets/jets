@@ -70,6 +70,7 @@ module Jets::Controller::Middleware
 
     def on_aws?(env)
       return false if Jets.env.test? # usually with test we're passing in full API Gateway fixtures with the HTTP_X_AMZN_TRACE_ID
+      return false if ENV['JETS_SERVER_ELB_OVERRIDE'] # If we're using an ELB and Jets is inside a container running jets server, we don't want to pretend we're on AWS.
       on_cloud9 = !!(env['HTTP_HOST'] =~ /cloud9\..*\.amazonaws\.com/)
       !!env['HTTP_X_AMZN_TRACE_ID'] && !on_cloud9
     end
