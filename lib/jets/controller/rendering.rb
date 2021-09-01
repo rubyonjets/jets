@@ -62,15 +62,26 @@ class Jets::Controller
       rest.merge(template: template)
     end
 
-    # Add API Gateway Stage Name
-    def add_stage_name(url)
+    # Example usage:
+    #
+    #   render json: {success: true, location: add_stage(posts_path)}
+    #
+    def add_stage(url)
       return url unless actual_host
 
-      Jets::Controller::Stage.add(actual_host, url)
+      uri = URI.parse(url)
+      # if no location.host, we been provided a relative host
+      if !uri.host && actual_host
+        url = "/#{url}" unless url.starts_with?('/')
+        url = Jets::Controller::Stage.add(actual_host, url)
+        actual_host + url
+      else
+        url
+      end
     end
 
     def url_for(url)
-      add_stage_name(url)
+      add_stage(url)
     end
 
     # Actual host can be headers["origin"] when cloudfront is in front.
