@@ -7,16 +7,7 @@ class Jets::Controller
         raise "redirect_to url parameter must be a String. Please pass in a string"
       end
 
-      uri = URI.parse(url)
-      # if no location.host, we been provided a relative host
-      if !uri.host && actual_host
-        url = "/#{url}" unless url.starts_with?('/')
-        url = add_stage_name(url)
-        redirect_url = actual_host + url
-      else
-        redirect_url = url
-      end
-
+      redirect_url = add_stage(url)
       redirect_url = ensure_protocol(redirect_url)
 
       aws_proxy = Rendering::RackRenderer.new(self,
