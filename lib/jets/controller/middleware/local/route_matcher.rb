@@ -5,17 +5,17 @@ class Jets::Controller::Middleware::Local
     end
 
     def find_route
-      Jets::Router::Finder.new(method, path).run
+      Jets::Router::Finder.new(path, method).run
     end
 
   private
     attr_reader :env
 
-    def path
+    def method
       env["REQUEST_METHOD"] || "GET"
     end
 
-    def method
+    def path
       env["PATH_INFO"].sub(/^\//,'')
     end
   end
