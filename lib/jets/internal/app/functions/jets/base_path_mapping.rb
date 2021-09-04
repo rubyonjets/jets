@@ -4,6 +4,25 @@ require 'aws-sdk-cloudformation'
 class BasePathMapping
   def initialize(event, stage_name)
     @event, @stage_name = event, stage_name
+    aws_config_update!
+  end
+
+  # Override the AWS retry settings. The aws-sdk-core has expondential backup with this formula:
+  #
+  #   2 ** c.retries * c.config.retry_base_delay
+  #
+  # So the max delay will be 2 ** 7 * 0.6 = 76.8s
+  #
+  # Useful links:
+  #
+  #   https://github.com/aws/aws-sdk-ruby/blob/master/gems/aws-sdk-core/lib/aws-sdk-core/plugins/retry_errors.rb
+  #   https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html
+  #
+  def aws_config_update!
+    Aws.config.update(
+      retry_limit: 7, # default: 3
+      retry_base_delay: 0.6, # default: 0.3
+    )
   end
 
   # Cannot use update_base_path_mapping to update the base_mapping because it doesnt
