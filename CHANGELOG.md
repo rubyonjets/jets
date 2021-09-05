@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.15] - 2021-09-05
+- [#587](https://github.com/boltops-tools/jets/pull/587) Fix private method names
+- [#588](https://github.com/boltops-tools/jets/pull/588) custom domain: adjust rate limit for base mapping
+- [#589](https://github.com/boltops-tools/jets/pull/589) Ujs
+
 ## [3.0.14] - 2021-09-01
 - [#583](https://github.com/boltops-tools/jets/pull/583) Don't overwrite content_type  when rendering json or xml with content_type specified
 - [#584](https://github.com/boltops-tools/jets/pull/584) Adds an override flag to change behaviour when Jets is behind an ELB running Jets Server
