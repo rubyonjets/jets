@@ -114,7 +114,14 @@ JS
       after = "const { environment } = require('@rails/webpacker')\n"
       insert_into_file("config/webpack/environment.js", jquery, after: after)
 
-      run("yarn add bootstrap jquery popper.js postcss-cssnext @rails/ujs")
+      jets_ujs =<<-JS
+import Jets from "@rubyonjets/ujs-compat"
+Jets.start()
+JS
+      after = "Rails.start()\n"
+      insert_into_file("app/javascript/packs/application.js", jets_ujs, after: after)
+
+      run("yarn add bootstrap jquery popper.js postcss-cssnext @rails/ujs @rubyonjets/ujs-compat")
     end
 
     def git_init

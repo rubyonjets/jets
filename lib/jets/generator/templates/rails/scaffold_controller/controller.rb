@@ -56,7 +56,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   def delete
     @<%= orm_instance.destroy %>
     if request.xhr?
-      render json: {success: true}
+      render json: {success: true, location: <%= table_name %>_path}
     else
       redirect_to <%= table_name %>_path
     end
