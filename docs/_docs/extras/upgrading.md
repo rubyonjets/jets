@@ -14,6 +14,7 @@ The following table summarizes the releases and upgrade paths.
 
 Version | Notes | Blue-Green? | Run jets upgrade?
 --- | --- | --- | ---
+3.0.14 | Using @rubyonjets/ujs-compat. Will need to make some manual changes. See details below. Manually changes are not needed for newly generated projects. | No | No
 3.0.12 | Using @rails/ujs. Will need to make some manual changes. See details below. Manually changes are not needed for newly generated projects. | No | No
 3.0.0 | Added Ruby 2.7 support. Use Serverless Gems for binary gems. | No | No
 2.1.1 | Change `config.extra_autoload_paths` to `config.autoload_paths` | No | Yes
@@ -29,6 +30,15 @@ Version | Notes | Blue-Green? | Run jets upgrade?
 ## Upgrade Details
 
 The following section provides a little more detail on each version upgrade. Note, not all versions required more details.
+
+### 3.0.14
+
+* Use @rubyonjets/ujs-compat to handle delete of CRUD.
+
+For apps going from Jets 3.0.12 and below, you must make some manual changes.
+
+1. Run `yarn install @rubyonjets/ujs-compact`
+2. Add instead: `import Jets from "@rubyonjets/ujs-compat"` and `Jets.start()` at the bottom of `app/javascript/packs/application.js`
 
 ### 3.0.12
 
