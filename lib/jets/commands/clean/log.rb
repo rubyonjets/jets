@@ -26,20 +26,7 @@ class Jets::Commands::Clean
     end
 
     def delete_log_group(log_group_name)
-      retries = 0
       logs.delete_log_group(log_group_name: log_group_name)
-    rescue Aws::CloudWatchLogs::Errors::ThrottlingException => e
-      retries += 1
-      seconds = 2 ** retries
-
-      puts "WARN: delete_log_group #{e.class} #{e.message}".color(:yellow)
-      puts "Backing off and will retry in #{seconds} seconds."
-      sleep(seconds)
-      if seconds > 90 # 2 ** 6 is 64 so will give up after 6 retries
-        puts "Giving up after #{retries} retries"
-      else
-        retry
-      end
     end
 
     def clean_deploys
