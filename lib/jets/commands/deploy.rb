@@ -9,7 +9,6 @@ module Jets::Commands
     end
 
     def run
-      aws_config_update!
       deployment_env = Jets.config.project_namespace.color(:green)
       puts "Deploying to Lambda #{deployment_env} environment..."
       return if @options[:noop]
@@ -35,29 +34,6 @@ module Jets::Commands
       # TODO: possible deploy hook point: before_ship
       create_s3_event_buckets
       ship(stack_type: :full, s3_bucket: s3_bucket)
-    end
-
-    # Override the AWS retry settings during a deploy.
-    #
-    # The aws-sdk-core has expondential backup with this formula:
-    #
-    #   2 ** c.retries * c.config.retry_base_delay
-    #
-    # So the max delay will be 2 ** 7 * 0.6 = 76.8s
-    #
-    # Only scoping this to deploy because dont want to affect people's application that use the aws sdk.
-    #
-    # There is also additional rate backoff logic elsewhere, since this is only scoped to deploys.
-    #
-    # Useful links:
-    #   https://github.com/aws/aws-sdk-ruby/blob/master/gems/aws-sdk-core/lib/aws-sdk-core/plugins/retry_errors.rb
-    #   https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html
-    #
-    def aws_config_update!
-      Aws.config.update(
-        retry_limit: 7, # default: 3
-        retry_base_delay: 0.6, # default: 0.3
-      )
     end
 
     def create_s3_event_buckets
@@ -126,28 +102,8 @@ module Jets::Commands
     end
 
     def find_stack(stack_name)
-      retries = 0
       resp = cfn.describe_stacks(stack_name: stack_name)
       resp.stacks.first
-    rescue Aws::CloudFormation::Errors::ValidationError => e
-      # example: Stack with id demo-dev does not exist
-      if e.message =~ /Stack with/ && e.message =~ /does not exist/
-        nil
-      else
-        raise
-      end
-    rescue Aws::CloudFormation::Errors::Throttling => e
-      retries += 1
-      seconds = 2 ** retries
-
-      puts "WARN: find_stack #{e.class} #{e.message}".color(:yellow)
-      puts "Backing off and will retry in #{seconds} seconds."
-      sleep(seconds)
-      if seconds > 90 # 2 ** 6 is 64 so will give up after 6 retries
-        puts "Giving up after #{retries} retries"
-      else
-        retry
-      end
     end
 
     # All CloudFormation states listed here: http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-describing-stacks.html
