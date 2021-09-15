@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.17] - 2021-09-15
+- [#593](https://github.com/boltops-tools/jets/pull/593) Fix deploy for new projects. Added rescue block back into lib/jets/commands/deploy.rb
+
 ## [3.0.16] - 2021-09-10
 - [#590](https://github.com/boltops-tools/jets/pull/590) Improve Rate Limit Handling
 
