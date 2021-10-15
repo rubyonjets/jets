@@ -29,11 +29,23 @@ describe Jets::Job::Base do
       expect(resp).to eq(done: "digging")
     end
 
+    it "perform_now" do
+      resp = HardJob.perform_now(:dig, ActionController::Parameters.new(key1: "value1"))
+      expect(resp).to eq(done: "digging")
+    end
+
     it "perform_later" do
       allow(Jets::Commands::Call).to receive(:new).and_return(null)
       allow(HardJob).to receive(:on_lambda?).and_return(true)
       HardJob.perform_later(:dig, {})
       expect(Jets::Commands::Call).to have_received(:new)
+    end
+
+    it "perform_later" do
+      allow(Jets::Commands::Call).to receive(:new).and_return(null)
+      allow(HardJob).to receive(:on_lambda?).and_return(true)
+      expect(Jets::Commands::Call).to receive(:new).with('hard_job-dig', "{\"key1\":\"value1\"}", invocation_type: "Event")
+      HardJob.perform_later(:dig, ActionController::Parameters.new(key1: "value1"))
     end
   end
 
