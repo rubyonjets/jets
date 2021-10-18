@@ -43,7 +43,7 @@ class Jets::Controller
     # Most of the time, you want process! instead of dispatch!
     #
     def process!
-      adapter = Jets::Controller::Rack::Adapter.new(event, context, meth)
+      adapter = Jets::Controller::Rack::Adapter.new(event, context)
       adapter.rack_vars(
         'jets.controller' => self,
         'lambda.context' => context,
@@ -75,6 +75,8 @@ class Jets::Controller
     # dispatch! is useful for megamode or mounted applications
     #
     def dispatch!
+      method_override!
+
       t1 = Time.now
       log_start
 
@@ -99,12 +101,30 @@ class Jets::Controller
       triplet # status, headers, body
     end
 
+    # Override @meth when POST with _method=delete
+    # By the time processing reaches dispatch which calls method_override!
+    # The Rack::MethodOverride middleware has overriden env['REQUEST_METHOD'] with DELETE
+    # and set env['rack.methodoverride.original_method']
+    def method_override!
+      env = request.env
+      if env['rack.methodoverride.original_method'] && env['REQUEST_METHOD'] == 'DELETE'
+        @original_meth = @meth
+        @meth = "delete"
+      end
+    end
+
+    def processing_log
+      processing = "Processing #{self.class.name}##{@meth}"
+      processing << " (original method #{@original_meth})" if @original_meth
+      processing
+    end
+
     # Documented interface method, careful not to rename
     def log_start
       # JSON.dump makes logging look pretty in CloudWatch logs because it keeps it on 1 line
       ip = request.ip
       Jets.logger.info "Started #{@event['httpMethod']} \"#{@event['path']}\" for #{ip} at #{Time.now}"
-      Jets.logger.info "Processing #{self.class.name}##{@meth}"
+      Jets.logger.info processing_log
       Jets.logger.info "  Event: #{event_log}"
       Jets.logger.info "  Parameters: #{JSON.dump(filtered_parameters.to_h)}"
     end

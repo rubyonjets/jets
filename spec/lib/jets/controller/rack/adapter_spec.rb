@@ -1,8 +1,7 @@
 describe Jets::Controller::Rack::Adapter do
-  let(:adapter) { Jets::Controller::Rack::Adapter.new(event, context, meth) }
+  let(:adapter) { Jets::Controller::Rack::Adapter.new(event, context) }
   let(:context) { nil }
   let(:event) { json_file("spec/fixtures/dumps/api_gateway/posts/index.json") }
-  let(:meth)  { :index }
   let(:default_status) { 200 }
   let(:default_body) { StringIO.new(body_text) }
   let(:body_text) { 'Test body' }
