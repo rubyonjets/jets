@@ -18,6 +18,7 @@ gem "mysql2", "~> 0.5.3"
 <% unless options[:mode] == 'job' -%>
 gem "dynomite"
 <% end -%>
+gem "zeitwerk", "~> 2.4.0"
 
 # development and test groups are not bundled as part of the deployment
 group :development, :test do
