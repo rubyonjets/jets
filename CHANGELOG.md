@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.18] - 2021-10-20
+- [#596](https://github.com/boltops-tools/jets/pull/596) Serialize job data correctly
+- [#598](https://github.com/boltops-tools/jets/pull/598) fixing issues when mounting
+- [#599](https://github.com/boltops-tools/jets/pull/599) pin to zeitwerk 2.4.x
+- [#600](https://github.com/boltops-tools/jets/pull/600) method override also on the lambda function side
+
 ## [3.0.17] - 2021-09-15
 - [#593](https://github.com/boltops-tools/jets/pull/593) Fix deploy for new projects. Added rescue block back into lib/jets/commands/deploy.rb
 
