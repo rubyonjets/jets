@@ -5,13 +5,13 @@ module Jets::Controller::Rack
     extend Memoist
 
     # Returns back API Gateway response hash structure
-    def self.process(event, context, meth)
-      adapter = new(event, context, meth)
+    def self.process(event, context)
+      adapter = new(event, context)
       adapter.process
     end
 
-    def initialize(event, context, meth)
-      @event, @context, @meth = event, context, meth
+    def initialize(event, context)
+      @event, @context = event, context
     end
 
     # 1. Convert API Gateway event event to Rack env

@@ -27,7 +27,7 @@ module Jets::Controller::Rack
     def path_with_base_path
       resource = @event['resource']
       pathParameters = @event['pathParameters']
-      
+
       if(!pathParameters.nil? and !resource.nil?)
         resource = pathParameters.reduce(resource) {|resource, parameter|
           key, value = parameter
@@ -64,7 +64,9 @@ module Jets::Controller::Rack
     end
 
     def content_type
-      headers['Content-Type'] || Jets::Controller::DEFAULT_CONTENT_TYPE
+      # Rack (local) uses Content-Type and APIGW (remote) uses content-type
+      # Rack::MethodOverride relys on content-type to detect content type properly.
+      headers['Content-Type'] || headers['content-type'] || Jets::Controller::DEFAULT_CONTENT_TYPE
     end
 
     def content_length
