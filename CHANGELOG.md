@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.19] - 2021-10-20
+- [#602](https://github.com/boltops-tools/jets/pull/602) pin zeitwerk to 2.4.x in gemfile
+
 ## [3.0.18] - 2021-10-20
 - [#596](https://github.com/boltops-tools/jets/pull/596) Serialize job data correctly
 - [#598](https://github.com/boltops-tools/jets/pull/598) fixing issues when mounting
