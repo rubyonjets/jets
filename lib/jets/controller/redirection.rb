@@ -19,11 +19,11 @@ class Jets::Controller
         options[:status] = 200
         options[:body] = JSON.dump(success: true, location: redirect_url)
       else
-        options[:status] = 302
+        options[:status] = 301
         options[:body] = ""
       end
       Jets.logger.info("redirect_to options #{options}")
-      default.merge!(options)
+      options = default.merge(options)
 
       aws_proxy = Rendering::RackRenderer.new(self, options)
       resp = aws_proxy.render
