@@ -13,7 +13,7 @@ module Jets::Middleware
         middleware.use Shotgun::Static
         middleware.use Rack::Runtime
         middleware.use Jets::Controller::Middleware::Cors if cors_enabled?
-        middleware.use Rack::MethodOverride # must come before Middleware::Local for multipart post forms to work
+        middleware.use Rack::MethodOverride unless ENV['JETS_RACK_METHOD_OVERRIDE'] == '0' # must come before Middleware::Local for multipart post forms to work
         middleware.use Jets::Controller::Middleware::Reloader if Jets.config.hot_reload
         middleware.use Jets::Controller::Middleware::Local # mimics AWS Lambda for local server only
         middleware.use session_store, session_options

@@ -29,11 +29,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     @<%= singular_table_name %> = <%= orm_class.build(class_name, "#{singular_table_name}_params") %>
 
     if @<%= orm_instance.save %>
-      if request.xhr?
-        render json: {success: true, location: url_for(@<%= singular_table_name %>)}
-      else
-        redirect_to <%= singular_table_name %>_path(@<%= singular_table_name %>)
-      end
+      redirect_to <%= singular_table_name %>_path(@<%= singular_table_name %>)
     else
       render :new
     end
@@ -42,11 +38,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # PUT <%= route_url %>/1
   def update
     if @<%= orm_instance.update("#{singular_table_name}_params") %>
-      if request.xhr?
-        render json: {success: true, location: url_for(@<%= singular_table_name %>)}
-      else
-        redirect_to <%= singular_table_name %>_path(@<%= singular_table_name %>)
-      end
+      redirect_to <%= singular_table_name %>_path(@<%= singular_table_name %>)
     else
       render :edit
     end
@@ -55,11 +47,7 @@ class <%= controller_class_name %>Controller < ApplicationController
   # DELETE <%= route_url %>/1
   def delete
     @<%= orm_instance.destroy %>
-    if request.xhr?
-      render json: {success: true, location: <%= table_name %>_path}
-    else
-      redirect_to <%= table_name %>_path
-    end
+    redirect_to <%= table_name %>_path
   end
 
 private

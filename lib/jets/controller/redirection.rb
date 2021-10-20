@@ -10,12 +10,22 @@ class Jets::Controller
       redirect_url = add_stage(url)
       redirect_url = ensure_protocol(redirect_url)
 
-      aws_proxy = Rendering::RackRenderer.new(self,
-        status: options[:status] || 302,
+      default = {
         headers: { "Location" => redirect_url },
-        body: "",
         isBase64Encoded: false,
-      )
+      }
+      if request.xhr?
+        options[:content_type] = "application/json"
+        options[:status] = 200
+        options[:body] = JSON.dump(success: true, location: redirect_url)
+      else
+        options[:status] = 302
+        options[:body] = ""
+      end
+      Jets.logger.info("redirect_to options #{options}")
+      default.merge!(options)
+
+      aws_proxy = Rendering::RackRenderer.new(self, options)
       resp = aws_proxy.render
       # redirect is a type of rendering
       @rendered = true
