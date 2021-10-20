@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.20] - 2021-10-20
+- [#603](https://github.com/boltops-tools/jets/pull/603) redirect_to: smarter handling of request xhr
+- [#604](https://github.com/boltops-tools/jets/pull/604) fix redirect_to 301 and keep use default
+
 ## [3.0.19] - 2021-10-20
 - [#602](https://github.com/boltops-tools/jets/pull/602) pin zeitwerk to 2.4.x in gemfile
 
