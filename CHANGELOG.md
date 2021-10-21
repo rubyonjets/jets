@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.21] - 2021-10-21
+- [#605](https://github.com/boltops-tools/jets/pull/605) use safer 302 redirect as default
+
 ## [3.0.20] - 2021-10-20
 - [#603](https://github.com/boltops-tools/jets/pull/603) redirect_to: smarter handling of request xhr
 - [#604](https://github.com/boltops-tools/jets/pull/604) fix redirect_to 301 and keep use default
