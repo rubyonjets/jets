@@ -15,12 +15,12 @@ class Jets::Controller
         isBase64Encoded: false,
       }
       if request.xhr?
-        options[:content_type] = "application/json"
-        options[:status] = 200
-        options[:body] = JSON.dump(success: true, location: redirect_url)
+        options[:content_type] ||= "application/json"
+        options[:status] ||= 200
+        options[:body] ||= JSON.dump(success: true, location: redirect_url)
       else
-        options[:status] = 301
-        options[:body] = ""
+        options[:status] ||= 302
+        options[:body] ||= ""
       end
       Jets.logger.info("redirect_to options #{options}")
       options = default.merge(options)
