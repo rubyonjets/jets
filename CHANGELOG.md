@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.22] - 2021-10-26
+- [#607](https://github.com/boltops-tools/jets/pull/607) Job serialize - Revert "Fix job params serialization"
+
 ## [3.0.21] - 2021-10-21
 - [#605](https://github.com/boltops-tools/jets/pull/605) use safer 302 redirect as default
 
