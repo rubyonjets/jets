@@ -35,22 +35,6 @@ describe Jets::Job::Base do
       HardJob.perform_later(:dig, {})
       expect(Jets::Commands::Call).to have_received(:new)
     end
-
-    context 'when using ActionController::Parameters object' do
-      let(:event) { ActionController::Parameters.new(key1: "value1") }
-
-      it "perform_now" do
-        resp = HardJob.perform_now(:dig, event)
-        expect(resp).to eq(done: "digging")
-      end
-
-      it "perform_later" do
-        allow(Jets::Commands::Call).to receive(:new).and_return(null)
-        allow(HardJob).to receive(:on_lambda?).and_return(true)
-        expect(Jets::Commands::Call).to receive(:new).with('hard_job-dig', "{\"key1\":\"value1\"}", invocation_type: "Event")
-        HardJob.perform_later(:dig, event)
-      end
-    end
   end
 
   context EasyJob do
