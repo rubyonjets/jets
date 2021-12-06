@@ -176,14 +176,23 @@ module Jets::Builders
       end
 
       # Make sure platform is ruby
-      lines, new_lines, marker = new_lines, [], false
+      lines, new_lines, in_platforms_section, platforms_rewritten = new_lines, [], false, false
       lines.each do |l|
-        if marker # the next loop has the platform we want to replace
+        if in_platforms_section && platforms_rewritten # once PLATFORMS has been found, skip all lines until the next section
+          if l.present?
+            next
+          else
+            in_platforms_section = false
+          end
+        end
+
+        if in_platforms_section && !platforms_rewritten # specify ruby as the only platform
           new_lines << "  ruby\n"
-          marker = false
+          platforms_rewritten = true
           next
         end
-        marker = l.include?('PLATFORMS')
+
+        in_platforms_section = l.include?('PLATFORMS')
         new_lines << l
       end
 
