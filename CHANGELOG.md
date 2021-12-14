@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.0.23] - 2021-12-14
+- [#610](https://github.com/boltops-tools/jets/pull/610) Rewrite PLATFORMS section to specify Ruby only
+- [#611](https://github.com/boltops-tools/jets/pull/611) Update ruby_packager.rb
+
 ## [3.0.22] - 2021-10-26
 - [#607](https://github.com/boltops-tools/jets/pull/607) Job serialize - Revert "Fix job params serialization"
 
