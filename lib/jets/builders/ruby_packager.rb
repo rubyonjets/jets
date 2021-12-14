@@ -3,7 +3,9 @@ require "bundler" # for clean_old_submodules only
 module Jets::Builders
   class RubyPackager
     include Util
-
+    
+    GEM_REGEXP = /-(arm|x)\d+.*-(darwin|linux)/    
+    
     attr_reader :full_app_root
     def initialize(relative_app_root)
       @full_app_root = "#{build_area}/#{relative_app_root}"
@@ -169,9 +171,7 @@ module Jets::Builders
       # Replace things like nokogiri (1.11.1-x86_64-darwin) => nokogiri (1.11.1)
       lines, new_lines = new_lines, []
       lines.each do |l|
-        if l.include?("-x86_64-darwin")
-          l = l.sub('-x86_64-darwin','')
-        end
+        l.sub!(GEM_REGEXP, '') if l =~ GEM_REGEXP
         new_lines << l
       end
 
