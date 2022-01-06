@@ -88,8 +88,10 @@ If your environment requires a "least privilege" approach, these commands will c
                     "arn:aws:lambda:*:*:function:${MY_PREFIX}-*",
                     "arn:aws:lambda:*:*:layer:prod-${MY_PREFIX}-*:*",
                     "arn:aws:lambda:*:*:layer:dev-${MY_PREFIX}-*:*",
+                    "arn:aws:lambda:*:*:layer:stag-${MY_PREFIX}-*:*",
                     "arn:aws:lambda:*:*:layer:prod-${MY_PREFIX}-*",
-                    "arn:aws:lambda:*:*:layer:dev-${MY_PREFIX}-*"
+                    "arn:aws:lambda:*:*:layer:dev-${MY_PREFIX}-*",
+                    "arn:aws:lambda:*:*:layer:stag-${MY_PREFIX}-*"
                 ]
             },
             {
