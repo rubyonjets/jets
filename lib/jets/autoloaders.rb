@@ -48,6 +48,9 @@ module Jets
             loader.do_not_eager_load("#{__dir__}/#{path}")
           end
 
+          internal_turbine_path = "#{__dir__}/internal/turbines"
+          loader.push_dir(internal_turbine_path)
+
           do_not_eager_load_paths.each do |path|
             loader.do_not_eager_load("#{__dir__}/#{path}")
           end

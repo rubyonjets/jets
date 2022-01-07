@@ -61,15 +61,6 @@ module Jets
       end
       memoize :template
 
-      # Eager loading the app/shared resources to ensure shared resources have been registered.
-      # Not being used anymore but keeping around just in case for now.
-      def eager_load_shared_resources!
-        Dir.glob("#{Jets.root}/app/shared/**").each do |path|
-          next if path.include?("app/shared/functions")
-          Jets::Autoloaders.main.preload(path)
-        end
-      end
-
       def lookup(logical_id)
         looker.output(logical_id)
       end
