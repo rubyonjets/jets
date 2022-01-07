@@ -16,7 +16,7 @@ details, you may be blocked from ever submitting issues to Jets again.
 Please use your best judgment. 👍
 
 If you are unsure this is a bug in Jets, please consider asking your question at:
-https://community.rubyonjets.com
+https://community.boltops.com
 
 Thanks!
 -->
@@ -28,7 +28,7 @@ Make sure that you've done all of these.  To mark a checkbox done, replace [ ] w
 -->
 
 - [ ] Upgrade Jets: Are you using the latest version of Jets? This allows Jets to fix issues fast. There's a `jets upgrade` command that makes this a simple task. There's also an Upgrading Guide: http://rubyonjets.com/docs/upgrading/
-- [ ] Reproducibility: Are you reporting a bug others will be able to reproduce and not asking a question. If you're unsure or want to ask a question, do so on https://community.rubyonjets.com
+- [ ] Reproducibility: Are you reporting a bug others will be able to reproduce and not asking a question. If you're unsure or want to ask a question, do so on https://community.boltops.com
 - [ ] Code sample: Have you put together a code sample to reproduce the issue and make it available?  Code samples help speed up fixes dramatically. If it's an easily reproducible issue, then code samples are not needed. If you're unsure, please include a code sample.
 
 ## My Environment
