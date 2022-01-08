@@ -43,7 +43,6 @@ class Jets::Booter
     # We eager load the extensions and then use the loaded modules to extend Jets::Stack directly.
     # Originally used an included hook but thats too early before app/shared/extensions is in the load_path.
     def load_shared_extensions
-      Jets::Autoloaders.once.preload("#{Jets.root}/app/shared/extensions")
       base_path = "#{Jets.root}/app/shared/extensions"
       Dir.glob("#{base_path}/**/*.rb").each do |path|
         next unless File.file?(path)
@@ -103,8 +102,8 @@ class Jets::Booter
     end
 
     def load_internal_turbines
-      Dir.glob("#{__dir__}/internal/turbines/**/*.rb").each do |path|
-        Jets::Autoloaders.once.preload(path)
+      Jets::Autoloaders.once.on_setup do
+        Jets::Mailer # only one right now
       end
     end
 
