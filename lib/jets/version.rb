@@ -1,3 +1,3 @@
 module Jets
-  VERSION = "3.0.23"
+  VERSION = "3.1.0"
 end
