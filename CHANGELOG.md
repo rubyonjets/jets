@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.1.1] - 2022-01-18
+- [#615](https://github.com/boltops-tools/jets/pull/615) adjust required_ruby_version
+
 ## [3.1.0] - 2022-01-08
 - [#614](https://github.com/boltops-tools/jets/pull/614) support zeitwerk 2.5
 - clean command alias -y for --yes option
