@@ -7,6 +7,9 @@ Jets.once  # runs once in lambda execution context
   meth = handler.split('.').last
 -%>
 def <%= meth -%>(event:, context:)
+  ActiveRecord::Base.connection.reconnect! unless ActiveRecord::Base.connection.active?
   Jets.process(event, context, "<%= handler -%>")
+ensure
+  ActiveRecord::Base.connection.disconnect!
 end
 <% end %>
