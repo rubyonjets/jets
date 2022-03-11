@@ -60,6 +60,34 @@ describe Jets::Job::Base do
     end
   end
 
+  context 'sns_event' do
+    it 'sns_event_payload' do
+      event = json_file("spec/fixtures/dumps/sns/sns_event.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.sns_event_payload)
+
+
+      expect(job.sns_event_payload.key?("body")).to be true
+      expect(job.sns_event_payload[:body]).to eq "This is a sns hard job"
+    end
+  end
+
+  context 'sqs_event' do
+    it 'sns_event_payload' do
+      event = json_file("spec/fixtures/dumps/sqs/sqs_event.json")
+      job = HardJob.new(event, {}, :dig)
+      # uncomment to debug
+      # puts JSON.pretty_generate(job.event)
+      # puts JSON.pretty_generate(job.sqs_event_payload)
+
+
+      expect(job.sqs_event_payload.key?("message")).to be true
+      expect(job.sqs_event_payload[:message]).to eq "This is a hard job"
+    end
+  end
+
   context "cloudwatch log event" do
     it "log_event" do
       event = json_file("spec/fixtures/dumps/logs/log_event.json")
