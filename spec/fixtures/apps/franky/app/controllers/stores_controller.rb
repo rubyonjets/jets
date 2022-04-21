@@ -5,7 +5,7 @@ class StoresController < ApplicationController
   class_env(my_test: "data")
 
   # timeout 30
-  properties(timeout: 20, memory_size: 1000)
+  properties(timeout: 20, memory_size: 1000, ephemeral_storage: { size: 1024 })
   def index
     response.headers["Set-Cookie"] = "foo=bar"
   end
