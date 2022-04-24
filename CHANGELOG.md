@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.1.2] - 2022-04-24
+- [#618](https://github.com/boltops-tools/jets/pull/618) Jets Console accepts environment cli argument
+- [#621](https://github.com/boltops-tools/jets/pull/621) Add SQS and SNS event helpers for jobs
+- [#624](https://github.com/boltops-tools/jets/pull/624) Add lambda.function.ephemeral_storage function property support
+
 ## [3.1.1] - 2022-01-18
 - [#615](https://github.com/boltops-tools/jets/pull/615) adjust required_ruby_version
 
