@@ -57,6 +57,7 @@ module Jets::Lambda::Dsl
       PROPERTIES = %W[
         dead_letter_config
         description
+        ephemeral_storage
         handler
         kms_key_arn
         memory_size

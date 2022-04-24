@@ -33,6 +33,7 @@ module Jets::Stack::Main::Dsl
         runtime: :ruby,
         timeout: Jets.config.function.timeout,
         memory_size: Jets.config.function.memory_size,
+        ephemeral_storage: Jets.config.function.ephemeral_storage,
         description: description,
       }
 

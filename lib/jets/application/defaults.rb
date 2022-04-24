@@ -59,6 +59,7 @@ class Jets::Application
       # default memory setting based on:
       # https://medium.com/epsagon/how-to-make-lambda-faster-memory-performance-benchmark-be6ebc41f0fc
       config.function.memory_size = 1536
+      config.function.ephemeral_storage = { size: 512 } # megabytes
 
       config.prewarm = ActiveSupport::OrderedOptions.new
       config.prewarm.enable = true

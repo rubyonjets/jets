@@ -48,6 +48,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
         properties = resources["ShowLambdaFunction"]["Properties"]
 
         expect(properties["MemorySize"]).to eq 1024
+        expect(properties["EphemeralStorage"]["Size"]).to eq 512
         # should not transform the keys under Variables section
         keys = properties["Environment"]["Variables"]
         # Just testing for some keys since we keep changing .env files
@@ -68,6 +69,7 @@ describe Jets::Cfn::Builders::ControllerBuilder do
 
         expect(properties["MemorySize"]).to eq 1000
         expect(properties["Timeout"]).to eq 20
+        expect(properties["EphemeralStorage"]["Size"]).to eq 1024
       end
     end
 
