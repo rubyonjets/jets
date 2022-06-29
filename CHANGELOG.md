@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.1.3] - 2022-06-29
+- [#626](https://github.com/boltops-tools/jets/pull/626) aws options to better handle rate limit for base path mapping
+
 ## [3.1.2] - 2022-04-24
 - [#618](https://github.com/boltops-tools/jets/pull/618) Jets Console accepts environment cli argument
 - [#621](https://github.com/boltops-tools/jets/pull/621) Add SQS and SNS event helpers for jobs
