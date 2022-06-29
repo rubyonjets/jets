@@ -91,10 +91,22 @@ class BasePathMapping
   end
 
   def apigateway
-    @apigateway ||= Aws::APIGateway::Client.new
+    @apigateway ||= Aws::APIGateway::Client.new(aws_options)
   end
 
   def cfn
-    @cfn ||= Aws::CloudFormation::Client.new
+    @cfn ||= Aws::CloudFormation::Client.new(aws_options)
+  end
+
+  def aws_options
+    options = {
+      retry_limit: 7, # default: 3
+      retry_base_delay: 0.6, # default: 0.3
+    }
+    options.merge!(
+      log_level: :debug,
+      logger: Logger.new($stdout),
+    ) if ENV['JETS_DEBUG_AWS_SDK']
+    options
   end
 end
