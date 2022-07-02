@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.1.4] - 2022-07-02
+- [#627](https://github.com/boltops-tools/jets/pull/627) use >= for most gem dependencies
+
 ## [3.1.3] - 2022-06-29
 - [#626](https://github.com/boltops-tools/jets/pull/626) aws options to better handle rate limit for base path mapping
 
