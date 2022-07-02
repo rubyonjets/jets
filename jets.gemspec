@@ -44,7 +44,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-sqs"
   spec.add_dependency "aws-sdk-ssm"
   spec.add_dependency "cfn-status"
-  spec.add_dependency "cfn_camelizer", "~> 0.4.6"
+  spec.add_dependency "cfn_camelizer", ">= 0.4.9"
   spec.add_dependency "cfn_response"
   spec.add_dependency "dotenv"
   spec.add_dependency "gems" # jets-gems dependency
@@ -57,11 +57,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "railties", "~> 6.1.0" # for ActiveRecord database_tasks.rb
   spec.add_dependency "rainbow"
   spec.add_dependency "recursive-open-struct"
-  spec.add_dependency "serverlessgems", "~> 0.1.4"
+  spec.add_dependency "serverlessgems", ">= 0.2.0"
   spec.add_dependency "shotgun"
   spec.add_dependency "text-table"
   spec.add_dependency "thor"
-  spec.add_dependency "zeitwerk", "~> 2.5.0"
+  spec.add_dependency "zeitwerk", ">= 2.6.0"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
