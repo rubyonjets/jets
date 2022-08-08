@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.1.5] - 2022-08-08
+- [#628](https://github.com/boltops-tools/jets/pull/628) Multiple Databases
+- [#629](https://github.com/boltops-tools/jets/pull/629) loosen zeitwerk dependency in generated project Gemfile
+- [#630](https://github.com/boltops-tools/jets/pull/630) compile assets with WEBPACKER_ASSET_HOST as s3 endpoint url
+
 ## [3.1.4] - 2022-07-02
 - [#627](https://github.com/boltops-tools/jets/pull/627) use >= for most gem dependencies
 
