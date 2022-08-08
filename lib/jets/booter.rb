@@ -94,11 +94,23 @@ class Jets::Booter
     # `show processlist` until after a query. Have confirmed that the connection is reused and the connection count stays
     # the same.
     def connect_db
-      primary_hash_config = ActiveRecord::Base.configurations.configs_for(env_name: Jets.env).find { |hash_config|
-        hash_config.name == "primary"
-      }
-      primary_config = primary_hash_config.configuration_hash # configuration_hash is a normal Ruby Hash
-      ActiveRecord::Base.establish_connection(primary_config)
+      if ActiveRecord::Base.legacy_connection_handling
+        primary_hash_config = ActiveRecord::Base.configurations.configs_for(env_name: Jets.env).find { |hash_config|
+          hash_config.name == "primary"
+        }
+  
+        primary_config = primary_hash_config.configuration_hash # configuration_hash is a normal Ruby Hash
+
+        ActiveRecord::Base.establish_connection(primary_config)
+      else
+        configs = ActiveRecord::Base.configurations.configs_for(env_name: Jets.env, include_replicas: true)
+
+        databases = { }
+        databases[:writing] = :primary if configs.any? { |config| config.name == "primary" }
+        databases[:reading] = :primary_replica if configs.any? { |config| config.name == "primary_replica" }
+
+        ActiveRecord::Base.connects_to database: databases
+      end
     end
 
     def load_internal_turbines
