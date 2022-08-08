@@ -77,10 +77,11 @@ class Jets::Application
       config.inflections.irregular = {}
 
       config.assets = ActiveSupport::OrderedOptions.new
-      config.assets.folders = %w[assets images packs]
       config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
-      config.assets.max_age = 3600
       config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
+      config.assets.folders = %w[assets images packs]
+      config.assets.max_age = 3600
+      config.assets.webpacker_asset_host = "s3_endpoint"  # true = use conventional by default
 
       config.ruby = ActiveSupport::OrderedOptions.new
 
