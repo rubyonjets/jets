@@ -20,7 +20,7 @@ Set I18n library so it knows which YAML files to load the locale translations.
 config/initializers/i18n.rb
 
 ```ruby
-I18n.load_path = Dir["#{Jets.root}/config/locales/*.yml"]
+I18n.load_path << Dir["#{Jets.root}/config/locales/*.yml"]
 I18n.backend.load_translations
 ```
 
