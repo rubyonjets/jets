@@ -5,6 +5,7 @@ module Jets::Resource::ApiGateway
         name: Jets::Naming.gateway_api_name,
         endpoint_configuration: { types: endpoint_types }
       }
+      properties[:endpoint_configuration][:vpc_endpoint_ids] = vpce_ids if vpce_ids
       properties[:binary_media_types] = binary_media_types if binary_media_types
       properties[:policy] = endpoint_policy if endpoint_policy
 
@@ -59,6 +60,15 @@ module Jets::Resource::ApiGateway
       return nil if endpoint_policy.nil? || endpoint_policy.empty?
 
       endpoint_policy
+    end
+
+    private
+
+    def vpce_ids
+      ids = Jets.config.api.vpc_endpoint_ids
+      return nil if ids.nil? || ids.empty?
+
+      ids
     end
   end
 end
