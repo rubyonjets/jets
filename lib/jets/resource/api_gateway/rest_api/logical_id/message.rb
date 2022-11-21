@@ -24,7 +24,18 @@ class Jets::Resource::ApiGateway::RestApi::LogicalId
         More info: custom domain docs: https://rubyonjets.com/docs/routing/custom-domain/
         EOL
       else
-        "Please set up a custom domain https://rubyonjets.com/docs/routing/custom-domain/"
+        <<~EOL
+        To avoid this prompt in the future, you can configure:
+
+        config/application.rb
+
+            config.api.auto_replace = true
+
+        However, you should also set up a custom domain for a "stable" endpoint.
+
+        https://rubyonjets.com/docs/routing/custom-domain/
+
+        EOL
       end
     end
 
