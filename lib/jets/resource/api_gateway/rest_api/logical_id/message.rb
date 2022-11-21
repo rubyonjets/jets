@@ -8,8 +8,7 @@ class Jets::Resource::ApiGateway::RestApi::LogicalId
     end
 
     def custom_domain
-      api = Jets::Resource::ApiGateway::DomainName.new
-      domain_name = api.domain_name
+      domain_name = Jets.config.domain.name
       if domain_name
         <<~EOL
         It looks like you have already set up a custom domain.
