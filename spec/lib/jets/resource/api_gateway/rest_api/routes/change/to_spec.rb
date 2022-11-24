@@ -5,7 +5,7 @@ describe Jets::Resource::ApiGateway::RestApi::Routes::Change::To do
 
   context "no changes detected" do
     it "changed" do
-      # Use new routes as the "deployed" routes that thats one way to mimic that
+      # Use new routes as the "deployed" routes. One way to mimic and test.
       # no routes have been changed
       new_routes = Jets::Router.routes
       deployed_routes = new_routes.clone

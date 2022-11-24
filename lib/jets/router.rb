@@ -134,6 +134,18 @@ module Jets
         drawn_router.routes
       end
 
+      # So we can save state in s3 post deploy. Example of structure.
+      #
+      #   [
+      #     {"scope"=>{"options"=>{"as"=>"posts", "prefix"=>"posts", "param"=>nil, "from"=>"resources"}, "parent"=>{"options"=>{}, "parent"=>nil, "level"=>1}, "level"=>2}, "options"=>{"to"=>"posts#index", "from_scope"=>true, "path"=>"posts", "method"=>"get"}, "path"=>"posts", "to"=>"posts#index", "as"=>"posts"},
+      #     {"scope"=>{"options"=>{"as"=>"posts", "prefix"=>"posts", "param"=>nil, "from"=>"resources"}, "parent"=>{"options"=>{}, "parent"=>nil, "level"=>1}, "level"=>2}, "options"=>{"to"=>"posts#new", "from_scope"=>true, "path"=>"posts/new", "method"=>"get"}, "path"=>"posts/new", "to"=>"posts#new", "as"=>"new_post"},
+      #     ...
+      #   ]
+      #
+      def to_json
+        JSON.dump(routes.map(&:to_h))
+      end
+
       # Returns all paths including subpaths.
       # Example:
       # Input: ["posts/:id/edit"]
