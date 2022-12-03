@@ -42,6 +42,7 @@ module Jets::Cfn
         exit 1
       end
 
+      save_apigw_state
       prewarm
       clean_deploy_logs
       show_api_endpoint
@@ -86,6 +87,12 @@ module Jets::Cfn
     # check for /(_COMPLETE|_FAILED)$/ status
     def wait_for_stack
       Jets::Cfn::Status.new(@options).wait
+    end
+
+    def save_apigw_state
+      state = Jets::Router::State.new
+      state.save("pages", Jets::Cfn::Builders::PageBuilder.pages)
+      state.save("routes", Jets::Router.routes)
     end
 
     def prewarm

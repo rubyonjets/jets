@@ -7,50 +7,21 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
       new.changed?
     end
 
-    # Build up deployed routes from the existing CloudFormation resources.
+    # Recreate routes from previously deployed stored state in s3
     def deployed_routes
-      routes = []
+      state = Jets::Router::State.new
+      data = state.load("routes")
+      return [] if data.nil?
 
-      resources, position = [], true
-      while position
-        position = nil if position == true # start of loop
-        resp = apigateway.get_resources(
-          rest_api_id: rest_api_id,
-          position: position,
-          limit: 500, # default: 25 max: 500
+      data.map do |item|
+        Jets::Router::Route.new(
+          path: item['path'],
+          method: item['options']['method'],
+          to: item['to'],
         )
-        resources += resp.items
-        position = resp.position
       end
-
-      resources.each do |resource|
-        resource_methods = resource.resource_methods
-        next if resource_methods.nil?
-
-        resource_methods.each do |http_verb, resource_method|
-          # puts "#{http_verb} #{resource.path} | resource.id #{resource.id}"
-          # puts to(resource.id, http_verb)
-
-          # Test changing config.cors and CloudFormation does an in-place update
-          # on the resource. So no need to do bluegreen deployments for OPTIONS.
-          next if http_verb == "OPTIONS"
-
-          path = recreate_path(resource.path)
-          method = http_verb.downcase.to_sym
-          to = to(resource.id, http_verb)
-          route = Jets::Router::Route.new(path: path, method: method, to: to)
-          routes << route
-        end
-      end
-      routes
     end
     memoize :deployed_routes
-
-    def recreate_path(path)
-      path = path.gsub(%r{^/},'')
-      path = path.gsub(/{([^}]*)\+}/, '*\1')
-      path.gsub(/{([^}]*)}/, ':\1')
-    end
 
     def to(resource_id, http_method)
       uri = method_uri(resource_id, http_method)

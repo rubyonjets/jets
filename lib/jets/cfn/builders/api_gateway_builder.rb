@@ -49,7 +49,7 @@ module Jets::Cfn::Builders
 
     def add_route53_dns
       dns = Jets::Resource::Route53::RecordSet.new
-      if !existing_domain_name?(dns.domain_name) or existing_dns_record_on_stack? 
+      if !existing_domain_name?(dns.domain_name) or existing_dns_record_on_stack?
         add_resource(dns)
         add_outputs(dns.outputs)
       end
@@ -57,11 +57,11 @@ module Jets::Cfn::Builders
 
     def create_domain_name()
       resource = Jets::Resource::ApiGateway::DomainName.new
-      
+
       return {
         "DomainName" => resource.domain_name
       } if (existing_domain_name?(resource) and !existing_domain_name_on_stack?)
-      
+
       add_resource(resource)
       return resource.outputs
     end
@@ -114,8 +114,9 @@ module Jets::Cfn::Builders
     def add_gateway_routes
       # Reject homepage. Otherwise we have 200 - 1 resources on the first page.
       # There's a next call in ApiResources.add_gateway_resources to skip the homepage.
-      all_paths = Jets::Router.all_paths.reject { |p| p == '' }
-      all_paths.each_slice(PAGE_LIMIT).each_with_index do |paths, i|
+      page_builder = Jets::Cfn::Builders::PageBuilder.new
+      pages = page_builder.build
+      pages.each_with_index do |paths, i|
         ApiResourcesBuilder.new(@options, paths, i+1).build
       end
     end

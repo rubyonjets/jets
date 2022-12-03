@@ -86,10 +86,18 @@ module Jets::AwsServices
       retry_limit: 7, # default: 3
       retry_base_delay: 0.6, # default: 0.3
     }
+    # See debug logger. Noisy.
+    # Example:
+    #     D, [2022-12-02T13:18:55.298788 #26182] DEBUG -- : [Aws::APIGateway::Client 200 0.030837 0 retries] get_method(rest_api_id:"mke40eh6l0",resource_id:"zf8w2m",http_method:"GET")
     options.merge!(
       log_level: :debug,
       logger: Logger.new($stdout),
     ) if ENV['JETS_DEBUG_AWS_SDK']
+    # https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/debugging.html to enable http_wire_trace
+    # See the HTTP headers and JSON responses. Super noisy.
+    options.merge!(
+      http_wire_trace: true,
+    ) if ENV['JETS_DEBUG_AWS_SDK_HTTP_WIRE_TRACE']
     options
   end
 end
