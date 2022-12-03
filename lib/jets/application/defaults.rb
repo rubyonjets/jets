@@ -99,6 +99,7 @@ class Jets::Application
       config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
       config.api.endpoint_policy = nil # required when endpoint_type is EDGE
       config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
+      config.api.vpc_endpoint_ids = nil
 
       config.api.authorizers = ActiveSupport::OrderedOptions.new
       config.api.authorizers.default_token_source = "Auth" # method.request.header.Auth
