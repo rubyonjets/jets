@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.2.0] - 2022-12-03
+- [#631](https://github.com/boltops-tools/jets/pull/631) Implement vpc_endpoint_ids configuration
+- [#634](https://github.com/boltops-tools/jets/pull/634) Custom domain messaging
+- [#635](https://github.com/boltops-tools/jets/pull/635) smarter apigw routes paging calculation
+- Introduce the storage of APIGW routes state in the jets managed s3 bucket under path jets/state/apigw/pages.json and jets/state/apigw/routes.json
+- This speeds up deployment for apps with a large number of routes. Depending on the internet connection this can be minutes faster.
+- Update internationalization.md
+- fix domain.name check when APIGW changes
+- improve change apigw endpoint change messaging
+
 ## [3.1.5] - 2022-08-08
 - [#628](https://github.com/boltops-tools/jets/pull/628) Multiple Databases
 - [#629](https://github.com/boltops-tools/jets/pull/629) loosen zeitwerk dependency in generated project Gemfile
