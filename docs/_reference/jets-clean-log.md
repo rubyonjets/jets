@@ -20,8 +20,8 @@ Essentially removes the CloudWatch groups assocated with the app. Lambda request
 ## Options
 
 ```
-[--noop], [--no-noop]  # noop or dry-run mode
-[--mute], [--no-mute]  # mute output
-[--sure], [--no-sure]  # bypass are you sure prompt
+    [--noop], [--no-noop]  # noop or dry-run mode
+    [--mute], [--no-mute]  # mute output
+y, [--yes], [--no-yes]     # bypass are you sure prompt
 ```
 
