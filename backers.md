@@ -11,10 +11,5 @@ Funds donated via Patreon go directly to support Tung Nguyen's full-time work on
 <h2 align="center">Backers via Patreon</h2>
 
 <!--10 start-->
-- Erlend Finvåg
-- Nate Clark
-- Hirokatsu Endo
-- Michael Choi
-- Phan Lam
 - Theron Welch
 <!--10 end-->
