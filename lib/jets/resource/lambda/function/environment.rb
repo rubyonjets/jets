@@ -36,7 +36,7 @@ class Jets::Resource::Lambda::Function
       exit 1
     end
 
-    # https://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html#lambda-environment-variables
+    # https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html
     def reserved_variables
       %w[
         _HANDLER
