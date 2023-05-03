@@ -26,7 +26,26 @@ module Jets::Cfn::Builders
       add_description("Jets: #{Jets.version} Code: #{Util::Source.version}")
 
       # Initial s3 bucket, used to store code zipfile and templates Jets generates
+      #
+      # AWS changed the default behavior of s3 buckets to block public access
+      #   https://aws.amazon.com/blogs/aws/amazon-s3-block-public-access-another-layer-of-protection-for-your-accounts-and-buckets/
+      #   https://github.com/aws-amplify/amplify-cli/issues/12503
+      #
+      # Jets uploads assets to s3 bucket with acl: "public-read" here
+      #   https://github.com/boltops-tools/jets/blob/c5858ec2706a606665a92c3ada3f16ae4c753372/lib/jets/cfn/upload.rb#L97
+      #
+      # Use minimal s3 bucket policy to allow public read access to assets.
+      # Leave the other options as comments to help document the default behavior.
       resource = Jets::Resource::S3::Bucket.new(logical_id: "s3_bucket",
+        PublicAccessBlockConfiguration: {
+          BlockPublicAcls: false,
+          # BlockPublicPolicy: false,
+          # IgnorePublicAcls: false,
+          # RestrictPublicBuckets: false
+        },
+        OwnershipControls: {
+          Rules: [{ObjectOwnership: "ObjectWriter"}]
+        },
         bucket_encryption: {
           server_side_encryption_configuration: [
             server_side_encryption_by_default: {
