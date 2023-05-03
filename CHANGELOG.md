@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.2.1] - 2023-05-03
+- [#637](https://github.com/boltops-tools/jets/pull/637) Readme: Replace "splat out" with "had" a baby
+- [#638](https://github.com/boltops-tools/jets/pull/638) feature: update an array of reserved variables in aws lambda
+- [#639](https://github.com/boltops-tools/jets/pull/639) fix assets upload during deploy
+
 ## [3.2.0] - 2022-12-03
 - [#631](https://github.com/boltops-tools/jets/pull/631) Implement vpc_endpoint_ids configuration
 - [#634](https://github.com/boltops-tools/jets/pull/634) Custom domain messaging
