@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.2.2] - 2023-05-19
+- [#640](https://github.com/boltops-tools/jets/pull/640) Base path mapping CloudFormation custom resource and lambda function hardening
+
 ## [3.2.1] - 2023-05-03
 - [#637](https://github.com/boltops-tools/jets/pull/637) Readme: Replace "splat out" with "had" a baby
 - [#638](https://github.com/boltops-tools/jets/pull/638) feature: update an array of reserved variables in aws lambda
