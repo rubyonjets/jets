@@ -7,7 +7,7 @@ module Jets::Cfn
         if @@cache[path]
           @@cache[path] # using cache
         else
-          @@cache[path] = YAML.load_file(path) # setting and using cache
+          @@cache[path] = Jets::Util::Yamler.load_file(path) # setting and using cache
         end
       end
     end

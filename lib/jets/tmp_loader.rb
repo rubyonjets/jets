@@ -9,7 +9,7 @@ module Jets
     def initialize(yaml_path=nil)
       yaml_path ||= "#{Jets.root}/handlers/data.yml"
       return unless File.exist?(yaml_path)
-      @data = YAML.load_file(yaml_path)
+      @data = Jets::Util::Yamler.load_file(yaml_path)
       @s3_bucket = @data['s3_bucket']
       @rack_zip = @data['rack_zip']
     end

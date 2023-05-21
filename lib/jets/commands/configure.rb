@@ -16,7 +16,7 @@ module Jets::Commands
 
     def load_yaml
       if File.exist?(path)
-        YAML.load_file(path)
+        Jets::Util::Yamler.load_file(path)
       else
         {}
       end

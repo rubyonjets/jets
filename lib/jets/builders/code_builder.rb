@@ -26,7 +26,6 @@ module Jets::Builders
     end
 
     def build
-      check_ruby_version
       @version_purger.purge
       cache_check_message
 
@@ -356,7 +355,7 @@ module Jets::Builders
       webpacker_yml = "#{"#{stage_area}/code"}/config/webpacker.yml"
       return unless File.exist?(webpacker_yml)
 
-      config = YAML.load_file(webpacker_yml)
+      config = Jets::Util::Yamler.load_file(webpacker_yml)
       config["development"]["compile"] = false # force this to be false for deployment
       new_yaml = YAML.dump(config)
       IO.write(webpacker_yml, new_yaml)
@@ -411,25 +410,6 @@ module Jets::Builders
       ruby_version_path = Jets.root.join(".ruby-version")
       return unless File.exists?(ruby_version_path)
       FileUtils.cp_r(ruby_version_path, build_area)
-    end
-
-    SUPPORTED_RUBY_VERSIONS = %w[2.5 2.7]
-    def check_ruby_version
-      return unless ENV['JETS_RUBY_CHECK'] == '0' || Jets.config.ruby.check == false
-      return if ruby_version_supported?
-      puts <<~EOL.color(:red)
-      You are using Ruby version #{RUBY_VERSION} which is not supported by Jets.
-      Please use one of the Jets supported ruby versions: #{SUPPORTED_RUBY_VERSIONS.join(' ')}
-      If you would like to skip this check you can set: JETS_RUBY_CHECK=0
-      EOL
-      exit 1
-    end
-
-    def ruby_version_supported?
-      md = RUBY_VERSION.match(/(\d+)\.(\d+)\.\d+/)
-      major, minor = md[1], md[2]
-      detected_ruby = [major, minor].join('.')
-      SUPPORTED_RUBY_VERSIONS.include?(detected_ruby)
     end
 
     # Group all the path settings together here

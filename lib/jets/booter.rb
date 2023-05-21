@@ -10,6 +10,7 @@ class Jets::Booter
       Jets::Bundle.require
 
       Jets.application.setup!
+      check_ruby_version!
 
       # Turbines are loaded after setup_autoload_paths in Jets.application.setup!  Some Turbine options are defined
       # in the project so setup must happen before internal Turbines are loaded.
@@ -98,7 +99,7 @@ class Jets::Booter
         primary_hash_config = ActiveRecord::Base.configurations.configs_for(env_name: Jets.env).find { |hash_config|
           hash_config.name == "primary"
         }
-  
+
         primary_config = primary_hash_config.configuration_hash # configuration_hash is a normal Ruby Hash
 
         ActiveRecord::Base.establish_connection(primary_config)
@@ -173,6 +174,52 @@ class Jets::Booter
         puts "  jets upgrade"
         exit 1
       end
+    end
+
+    def check_ruby_version!
+      return if ENV['JETS_RUBY_CHECK'] == '0'
+      return if !Jets.config.ruby.check
+      return if ruby_version_supported?
+
+      puts <<~EOL.color(:red)
+        You are using Ruby #{RUBY_VERSION}
+        AWS Lambda does not support this version.
+        Please use one of the supported Ruby versions: #{supported_ruby_versions.join(' ')}
+      EOL
+
+      puts <<~EOL
+        If you would like to skip this check, you can set: JETS_RUBY_CHECK=0 or configure
+
+        config/application.rb
+
+            Jets.application.configure do
+              config.ruby.check = false
+            end
+
+        Or if you want to allow additional Ruby versions, then configure:
+
+        config/application.rb
+
+            Jets.application.configure do
+              config.ruby.supported_versions = ["2.5", "2.7", "3.2"]
+            end
+
+        Note: If AWS Lambda does not officially support the Ruby version,
+        you'll need to also provide the Ruby Custom Runtime Layer.
+        Related Docs: https://rubyonjets.com/docs/extras/custom-runtime/
+      EOL
+      exit 1
+    end
+
+    def ruby_version_supported?
+      md = RUBY_VERSION.match(/(\d+)\.(\d+)\.\d+/)
+      major, minor = md[1], md[2]
+      detected_ruby = [major, minor].join('.')
+      supported_ruby_versions.include?(detected_ruby)
+    end
+
+    def supported_ruby_versions
+      Jets.config.ruby.supported_versions
     end
   end
 end

@@ -321,7 +321,8 @@ module Jets::Lambda::Dsl
       #
       # Do not include tasks from the direct subclasses of Jets::Lambda::Functions
       # because those classes are abstract.  Dont want those methods to be included.
-      def find_all_tasks(public: true)
+      def find_all_tasks(options={})
+        public = options[:public].nil? ? true : options[:public]
         klass = self
         direct_subclasses = Jets::Lambda::Functions.subclasses
         lookup = []

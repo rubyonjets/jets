@@ -163,6 +163,7 @@ class Jets::Application
 
       config.ruby = ActiveSupport::OrderedOptions.new
       config.ruby.check = true
+      config.ruby.supported_versions = %w[2.5 2.7 3.2] # supported by AWS Lambda
 
       config
     end
