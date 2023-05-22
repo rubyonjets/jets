@@ -1,6 +1,8 @@
 module Jets::Builders
   class GemReplacer
     extend Memoist
+    include Util
+    
     def initialize(options)
       @options = options
     end
@@ -35,13 +37,6 @@ module Jets::Builders
 
       dest = src.sub("-darwin", "-linux")
       FileUtils.mv(src, dest) unless File.exist?(dest) # looks like rename_gem actually runs twice
-    end
-
-    def sh(command)
-      puts "=> #{command}".color(:green)
-      success = system(command)
-      abort("Command Failed: #{command}") unless success
-      success
     end
 
     def ruby_folder

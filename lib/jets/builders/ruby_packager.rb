@@ -3,9 +3,9 @@ require "bundler" # for clean_old_submodules only
 module Jets::Builders
   class RubyPackager
     include Util
-    
-    GEM_REGEXP = /-(arm|x)\d+.*-(darwin|linux)/    
-    
+
+    GEM_REGEXP = /-(arm|x)\d+.*-(darwin|linux)/
+
     attr_reader :full_app_root
     def initialize(relative_app_root)
       @full_app_root = "#{build_area}/#{relative_app_root}"
@@ -16,6 +16,7 @@ module Jets::Builders
 
       clean_old_submodules
       bundle_install
+      bundle_check
       copy_bundle_config
       copy_cache_gems
     end
@@ -75,7 +76,39 @@ module Jets::Builders
       # For example we add the jets-rails to the Gemfile.
       copy_back_gemfile_lock
 
-      puts 'Bundle install success.'
+      puts 'Bundle install completed'
+    end
+
+    # Example `bundle check` error:
+    #
+    #     The following gems are missing
+    #     * date (3.3.3)
+    #     * timeout (0.3.2)
+    #     Install missing gems with `bundle install`
+    #
+    # Example success:
+    #
+    #     The Gemfile's dependencies are satisfied
+    #
+    def bundle_check
+      out = ''
+      Bundler.with_unbundled_env do
+        out = `cd #{cache_area} && bundle check 2>&1`
+      end
+      if out.include?("missing")
+        puts "Failed: bundle check".color(:red)
+        puts <<~EOL
+          This means something went wrong with the bundle install.
+          Jets will prevent the deployment to AWS Lambda.
+          It's better to error now instead of finding out on AWS Lambda.
+          The bundle install can fail for different system-specific reasons.
+          It could be an outdated or incompatible version of RubyGems and Ruby.
+
+          Related: https://community.boltops.com/t/could-not-find-timeout-0-3-1-in-any-of-the-sources/996
+
+        EOL
+        exit 1
+      end
     end
 
     def copy_back_gemfile_lock
