@@ -163,13 +163,12 @@ class Jets::Application
     staging: 'stag',
   }
   def set_computed_configs!
-    # env_extra can be also be set with JETS_ENV_EXTRA.
-    # JETS_ENV_EXTRA higher precedence than config.env_extra
-    config.env_extra = ENV['JETS_ENV_EXTRA'] if ENV['JETS_ENV_EXTRA']
-    # IE: With env_extra: project-dev-1
-    #     Without env_extra: project-dev
+    # env var JETS_EXTRA higher precedence than config.extra
+    config.extra = Jets.extra
+    # IE: With extra: project-dev-1
+    #     Without extra: project-dev
     config.short_env = ENV_MAP[Jets.env.to_sym] || Jets.env
-    # table_namespace does not have the env_extra, more common case desired.
+    # table_namespace does not have the extra, more common case desired.
     config.table_namespace = [config.project_name, config.short_env].compact.join('-')
 
     config.project_namespace = Jets.project_namespace

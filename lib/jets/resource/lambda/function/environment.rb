@@ -16,7 +16,8 @@ class Jets::Resource::Lambda::Function
     def jets_env
       env = {}
       env[:JETS_ENV] = Jets.env.to_s
-      env[:JETS_ENV_EXTRA] = Jets.config.env_extra if Jets.config.env_extra
+      env[:JETS_ENV_EXTRA] = Jets.extra if Jets.extra # keep JETS_ENV_EXTRA for backwards compatibility
+      env[:JETS_EXTRA] = Jets.extra if Jets.extra
       env[:JETS_PROJECT_NAME] = ENV['JETS_PROJECT_NAME'] if ENV['JETS_PROJECT_NAME']
       env[:JETS_STAGE] = Jets::Resource::ApiGateway::Deployment.stage_name
       env[:JETS_AWS_ACCOUNT] = Jets.aws.account

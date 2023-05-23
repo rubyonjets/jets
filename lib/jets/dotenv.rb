@@ -36,8 +36,8 @@ class Jets::Dotenv
       (root.join(".env.#{Jets.env}.local") unless @remote),
     ]
     files << root.join(".env.#{Jets.env}.remote") if @remote
-    if ENV["JETS_ENV_EXTRA"]
-      files << root.join(".env.#{Jets.env}.#{ENV["JETS_ENV_EXTRA"]}")
+    if Jets.extra
+      files << root.join(".env.#{Jets.env}.#{Jets.extra}")
     end
     files.compact
   end

@@ -57,7 +57,7 @@ module Jets::Resource::ApiGateway
 
     def self.stage_name
       # Stage name only allows a-zA-Z0-9_
-      [Jets.config.short_env, Jets.config.env_extra].compact.join('_').gsub('-','_')
+      [Jets.config.short_env, Jets.config.extra].compact.join('_').gsub('-','_')
     end
 
     def timestamp

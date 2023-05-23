@@ -32,7 +32,19 @@ module Jets::Core
   end
   memoize :env
 
-  def build_root
+  @@extra_warning_shown = false
+  def extra
+    # Keep for backwards compatibility
+    unless ENV['JETS_ENV_EXTRA'].blank?
+      puts "DEPRECATION WARNING: JETS_ENV_EXTRA is deprecated. Use JETS_EXTRA instead.".color(:yellow) unless @@extra_warning_shown
+      @@extra_warning_shown = true
+      extra = ENV['JETS_ENV_EXTRA']
+    end
+    extra = ENV['JETS_EXTRA'] unless ENV['JETS_EXTRA'].blank?
+    extra
+  end
+
+def build_root
     "/tmp/jets/#{config.project_name}".freeze
   end
   memoize :build_root
@@ -76,7 +88,7 @@ module Jets::Core
   end
 
   def project_namespace
-    [config.project_name, config.short_env, config.env_extra].compact.join('-').gsub('_','-')
+    [config.project_name, config.short_env, config.extra].compact.join('-').gsub('_','-')
   end
 
   def rack?

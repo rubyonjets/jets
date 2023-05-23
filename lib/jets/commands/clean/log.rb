@@ -4,7 +4,7 @@
 #   /aws/lambda/demo-dev-2-jets-preheat_job-warm
 #   /aws/lambda/demo-dev-2-jets-public_controller-show
 #
-# We're doing this because JETS_ENV_EXTRA environments can create additional matching
+# We're doing this because Jets.extra environments can create additional matching
 # log groups and we don't want to overly-aggressively delete them.
 #
 # The `keep_prefixes(log_group_names)` method calcuates the log groups to keep.
@@ -78,7 +78,7 @@ class Jets::Commands::Clean
 
     # Check for the prefixes to keep. The slightly tricky thing to watch for is
     # for the prefix matching addiitonal log groups that belong to other
-    # JETS_ENV_EXTRA=xxx created environments.
+    # JETS_EXTRA=xxx created environments.
     #
     # We find and store the prefixes to keep so we don't over aggressively delete
     # log groups.
