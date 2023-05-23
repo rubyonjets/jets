@@ -10,7 +10,7 @@ private
   def process!
     status, headers, body = dispatch!
     # Use the adapter only to convert the Rack triplet to a API Gateway hash structure
-    adapter = Jets::Controller::Rack::Adapter.new(event, context, meth)
+    adapter = Jets::Controller::Rack::Adapter.new(event, context)
     adapter.convert_to_api_gateway(status, headers, body)
   end
 end
