@@ -16,6 +16,22 @@ class Jets::Router
       @path = compute_path
       @to = compute_to
       @as = compute_as
+      # Pretty tricky. The @options[:mount_class] is a class that is mounted.
+      # For Grape apps, calling ActiveSupport to_json on a Grape class causes an infinite loop.
+      # Can reproduce with `GrapeApp.to_json`
+      # There's some type of collision between Grape and ActiveSupport to_json.
+      # Coerce mount_class option into a string so that when the route is serialized to JSON
+      # it is a string it won't cause an infinite loop. This allows the apigw routes to be
+      # saved to s3 and loaded back up at the end of a deploy.
+      # Related PR: smarter apigw routes paging calculation #635
+      # https://github.com/boltops-tools/jets/pull/635
+      # Debugging notes: https://gist.github.com/tongueroo/c9baa7e98d5ad68bbdd770fde4651963
+      @options[:mount_class] = @options[:mount_class].to_s if @options[:mount_class]
+    end
+
+    # Constantize back to the original class
+    def mount_class
+      @options[:mount_class].constantize
     end
 
     def compute_path
@@ -185,10 +201,6 @@ class Jets::Router
       labels.map do |next_label|
         [next_label, values.delete_at(0)]
       end.to_h
-    end
-
-    def mount_class
-      @options[:mount_class]
     end
 
     def to_h
