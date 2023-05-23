@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.0] - Unreleased
+Single Lambda Function for Controllers
+* For controllers, a single Lambda function is deployed going forward.
+* APIGW serves as proxy endpoint for requests to the single Lambda function. Techniquely, there are 2 APIGW endpoints.
+* Jobs and other classes still create a discrete lambda function per Ruby method.
+
+Jets Engines support
+* Jets Engines closely resemble Rails engines.
+* Use as many Rails middlewares as possible
+
+Jets Controllers are "ActionController and ActionView compatible."
+* View Scope has first-class citizens access to Jets Controller instances.
+* Breaking Change: `resources :posts` and `delete` route method routes to controller `destroy` method like rails instead of `delete` method.
+
+Jets Controllers now support:
+* around filters
+* cache control and etag caching support
+* content security policy
+* cookies support via actionpack
+* flash support
+* forgery protection improvements
+* importmap support
+* i18n support
+
+New Jets CLI structure that
+* Close to Rails CLI structure
+
+Jets Pro support
+* deploys, release history, rollback support
+* use jets-api gem
+
+Refactor CloudFormation Builders
+* Use CamelCase properties internally
+* Short name template filenames and class names without the _builder.
+* Fully qualify LambdaFunction logical id.
+
+Misc
+* Remove afterburner turbo and mega mode to prepare for container-based Rails support.
+* Autoloaders refactor. gem (Jets internal), main (user app), once (user app)
+* CORS via with middleware only.
+* Improve ActionMailer integration. Improve preview support.
+* logger active support logger and tagged logging support
+* dynamodb event conventional table namespace
+* enable iot rule by default bug fix
+* create named route methods for all CRUD actions
+* Jets.cache support
+
+Breaking changes:
+* Pass request.headers straight without downcase. IE: `X-Amzn-Trace-Id`. Introduce request.downcase_headers instead.
+* Jets.config.prewarm.concurrency option removed.
+* dynomite decoupling and integration improvements
+
+
 ## [4.0.10] - 2023-12-04
 - [#678](https://github.com/boltops-tools/jets/pull/678) handle option method or http_method from route state
 
@@ -28,6 +81,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 
 ## [4.0.3] - 2023-08-03
 - [#657](https://github.com/boltops-tools/jets/pull/657) [Fix] ApiGateway for local Middleware: fix query_string_parameters
+Breaking Changes:
 
 ## [4.0.2] - 2023-08-03
 - [#660](https://github.com/boltops-tools/jets/pull/660) Fix prewarming

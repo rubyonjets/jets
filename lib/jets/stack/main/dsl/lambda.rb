@@ -1,5 +1,7 @@
 module Jets::Stack::Main::Dsl
   module Lambda
+    include Jets::Util::Camelize
+
     # Example:
     #
     #   function(:hello,
@@ -24,26 +26,26 @@ module Jets::Stack::Main::Dsl
       class_namespace = self.to_s.underscore.gsub('/','-') # IE: Jets::Domain => jets-domain
       description = "#{self.to_s} #{meth}" # not bother adding extension
       defaults = {
-        code: {
-          s3_bucket: "!Ref S3Bucket",
-          s3_key: code_s3_key
+        Code: {
+          S3Bucket: "!Ref S3Bucket",
+          S3Key: code_s3_key
         },
-        role: "!Ref IamRole",
-        handler: "#{id}.lambda_handler", # default ruby convention
-        runtime: :ruby,
-        timeout: Jets.config.function.timeout,
-        memory_size: Jets.config.function.memory_size,
-        ephemeral_storage: Jets.config.function.ephemeral_storage,
-        description: description,
+        Role: "!Ref IamRole",
+        Handler: "#{id}.lambda_handler", # default ruby convention
+        Timeout: Jets.config.function.timeout,
+        MemorySize: Jets.config.function.memory_size,
+        EphemeralStorage: Jets.config.function.ephemeral_storage,
+        Description: description,
       }
 
-      function_name = "#{Jets.config.project_namespace}-#{class_namespace}-#{meth}"
-      function_name = function_name.size > Jets::MAX_FUNCTION_NAME_SIZE ? nil : function_name
-      defaults[:function_name] = function_name if function_name
+      function_name = "#{Jets.project_namespace}-#{class_namespace}-#{meth}"
+      function_name = function_name.size > Jets::Cfn::Resource::Lambda::Function::MAX_FUNCTION_NAME_SIZE ? nil : function_name
+      defaults[:FunctionName] = function_name if function_name
 
       props = defaults.merge(props)
-      props[:runtime] = Jets.ruby_runtime if props[:runtime].to_s == "ruby"
-      props[:handler] = handler(props[:handler])
+      # shared/functions do not include the GemLayer and no custom runtime support
+      props[:Runtime] ||= Jets.ruby_runtime
+      props[:Handler] = handler(props[:Handler])
 
       logical_id = id.to_s.gsub('/','_')
       resource(logical_id, "AWS::Lambda::Function", props)
@@ -53,15 +55,19 @@ module Jets::Stack::Main::Dsl
 
     def python_function(id, props={})
       meth = sanitize_method_name(id)
-      props[:handler] ||= "#{meth}.lambda_handler" # default python convention
-      props[:runtime] = "python3.6"
+      props[:Handler] ||= "#{meth}.lambda_handler" # default python convention
+      props[:Runtime] ||= default_runtimes[:python]
       function(id, props)
+    end
+
+    def default_runtimes
+      Jets::Cfn::Resource::Lambda::Function.default_runtimes
     end
 
     def node_function(id, props={})
       meth = sanitize_method_name(id)
-      props[:handler] ||= "#{meth}.handler" # default python convention
-      props[:runtime] = "nodejs8.10"
+      props[:Handler] ||= "#{meth}.handler" # default python convention
+      props[:Runtime] ||= default_runtimes[:node]
       function(id, props)
     end
 
@@ -70,7 +76,7 @@ module Jets::Stack::Main::Dsl
     #   permission(:my_permission, principal: "events.amazonaws.com")
     #
     def permission(id, props={})
-      defaults = { action: "lambda:InvokeFunction" }
+      defaults = { Action: "lambda:InvokeFunction" }
       props = defaults.merge(props)
       resource(id, "AWS::Lambda::Permission", props)
     end

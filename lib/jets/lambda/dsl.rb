@@ -2,6 +2,8 @@
 #
 #   default_associated_resource_definition
 #
+require "dsl_evaluator" # for DslEvaluator.print_code only
+
 module Jets::Lambda::Dsl
   extend ActiveSupport::Concern
 
@@ -12,6 +14,7 @@ module Jets::Lambda::Dsl
   included do
     class << self
       extend Memoist
+      include Warnings
 
       def class_properties(options=nil)
         if options
@@ -31,23 +34,23 @@ module Jets::Lambda::Dsl
 
       def class_environment(hash)
         environment = standardize_env(hash)
-        class_properties(environment: environment)
+        class_properties(Environment: environment)
       end
       alias_method :class_env, :class_environment
 
       def environment(hash)
         environment = standardize_env(hash)
-        properties(environment: environment)
+        properties(Environment: environment)
       end
       alias_method :env, :environment
 
       # Allows user to pass in hash with or without the :variables key.
       def standardize_env(hash)
-        return hash if hash.key?(:variables)
+        return hash if hash.key?(:Variables)
 
         environment = {}
-        environment[:variables] ||= {}
-        environment[:variables].merge!(hash)
+        environment[:Variables] ||= {}
+        environment[:Variables].merge!(hash)
         environment
       end
 
@@ -99,7 +102,9 @@ module Jets::Lambda::Dsl
         if definitions.empty?
           @iam_policy
         else
-          @iam_policy = definitions.flatten
+          iam_policy_unused_warning(managed=false)
+          @iam_policy ||= []
+          @iam_policy += definitions.flatten
         end
       end
 
@@ -108,7 +113,9 @@ module Jets::Lambda::Dsl
         if definitions.empty?
           @class_iam_policy
         else
-          @class_iam_policy = definitions.flatten
+          class_iam_policy_unused_warning(managed=false)
+          @class_iam_policy ||= []
+          @class_iam_policy += definitions.flatten
         end
       end
 
@@ -117,7 +124,9 @@ module Jets::Lambda::Dsl
         if definitions.empty?
           @managed_iam_policy
         else
-          @managed_iam_policy = definitions.flatten
+          iam_policy_unused_warning(managed=true)
+          @managed_iam_policy ||= []
+          @managed_iam_policy += definitions.flatten
         end
       end
 
@@ -126,7 +135,9 @@ module Jets::Lambda::Dsl
         if definitions.empty?
           @class_managed_iam_policy
         else
-          @class_managed_iam_policy = definitions.flatten
+          class_iam_policy_unused_warning(managed=true)
+          @class_managed_iam_policy ||= []
+          @class_managed_iam_policy += definitions.flatten
         end
       end
 
@@ -142,7 +153,7 @@ module Jets::Lambda::Dsl
           @associated_resources || []
         else
           @associated_resources ||= []
-          associated_resource = Jets::Resource::Associated.new(definitions)
+          associated_resource = Jets::Cfn::Resource::Associated.new(definitions)
           associated_resource.multiple_resources = @multiple_resources
           @associated_resources << associated_resource
           @associated_resources.flatten!
@@ -208,7 +219,7 @@ module Jets::Lambda::Dsl
 
           logical_id = logical_id.to_s.sub(/\d+$/,'')
           new_definition = { "#{logical_id}#{n}" => attributes }
-          numbered_resources << Jets::Resource::Associated.new(new_definition)
+          numbered_resources << Jets::Cfn::Resource::Associated.new(new_definition)
           n += 1
         end
         @associated_resources = numbered_resources
@@ -248,13 +259,13 @@ module Jets::Lambda::Dsl
         return if %w[initialize method_missing].include?(meth.to_s)
         return unless public_method_defined?(meth)
 
-        register_task(meth)
+        register_definition(meth)
       end
 
-      def register_task(meth, lang=:ruby)
+      def register_definition(meth, lang=:ruby)
         # Note: for anonymous classes like for app/functions self.name is ""
         # We adjust the class name when we build the functions later in
-        # FunctionContstructor#adjust_tasks.
+        # FunctionContstructor#adjust_definitions.
 
         # At this point we can use the current associated_properties and defined the
         # associated resource with the Lambda function.
@@ -268,7 +279,7 @@ module Jets::Lambda::Dsl
           add_logical_id_counter
         end
 
-        all_tasks[meth] = Jets::Lambda::Task.new(self.name, meth,
+        all_definitions[meth] = Jets::Lambda::Definition.new(self.name, meth,
           properties: @properties, # lambda function properties
           iam_policy: @iam_policy,
           managed_iam_policy: @managed_iam_policy,
@@ -279,7 +290,7 @@ module Jets::Lambda::Dsl
         # Done storing options, clear out for the next added method.
         clear_properties
         # Important to clear @properties at the end of registering outside of
-        # register_task because register_task is overridden in Jets::Job::Dsl
+        # register_definition because register_definition is overridden in Jets::Job::Dsl
         #
         #   Jets::Job::Base < Jets::Lambda::Functions
         #
@@ -302,28 +313,28 @@ module Jets::Lambda::Dsl
         @associated_properties = nil
       end
 
-      # Returns the all tasks for this class with their method names as keys.
+      # Returns the all definitions for this class with their method names as keys.
       #
       # ==== Returns
-      # OrderedHash:: An ordered hash with tasks names as keys and Task
+      # OrderedHash:: An ordered hash with definitions names as keys and definition
       #               objects as values.
       #
-      def all_tasks
-        @all_tasks ||= ActiveSupport::OrderedHash.new
+      def all_definitions
+        @all_definitions ||= ActiveSupport::OrderedHash.new
       end
-      # Do not call all tasks outside this class, instead use: tasks or lambda functions
-      private :all_tasks
+      # Do not call all definitions outside this class, instead use: definitions or lambda functions
+      private :all_definitions
 
-      # Goes up the class inheritance chain to build the tasks.
+      # Goes up the class inheritance chain to build the definitions.
       #
       # Example heirarchy:
       #
       #   Jets::Lambda::Functions > Jets::Controller::Base > ApplicationController ...
       #     > PostsController > ChildPostsController
       #
-      # Do not include tasks from the direct subclasses of Jets::Lambda::Functions
+      # Do not include definitions from the direct subclasses of Jets::Lambda::Functions
       # because those classes are abstract.  Dont want those methods to be included.
-      def find_all_tasks(options={})
+      def find_all_definitions(options={})
         public = options[:public].nil? ? true : options[:public]
         klass = self
         direct_subclasses = Jets::Lambda::Functions.subclasses
@@ -331,53 +342,53 @@ module Jets::Lambda::Dsl
 
         # Go up class inheritance and builds lookup structure in memory
         until direct_subclasses.include?(klass)
-          lookup << klass.send(:all_tasks) # one place we want to call private all_tasks method
+          lookup << klass.send(:all_definitions) # one place we want to call private all_definitions method
           klass = klass.superclass
         end
-        merged_tasks = ActiveSupport::OrderedHash.new
-        # Go back down the class inheritance chain in reverse order and merge the tasks
-        lookup.reverse.each do |tasks_hash|
-          # tasks_hash is a result of all_tasks. Example: PostsController.all_tasks
-          merged_tasks.merge!(tasks_hash)
+        merged_definitions = ActiveSupport::OrderedHash.new
+        # Go back down the class inheritance chain in reverse order and merge the definitions
+        lookup.reverse.each do |definitions_hash|
+          # definitions_hash is a result of all_definitions. Example: PostsController.all_definitions
+          merged_definitions.merge!(definitions_hash)
         end
 
         # The cfn builders required the right final child class to build the lambda functions correctly.
-        merged_tasks.each do |meth, task|
+        merged_definitions.each do |meth, definition|
           # Override the class name for the cfn builders
-          task = task.clone # do not stomp over current tasks since things are usually looked by reference
-          task.instance_variable_set(:@class_name, self.name)
-          merged_tasks[meth] = task
+          definition = definition.clone # do not stomp over current definitions since things are usually looked by reference
+          definition.instance_variable_set(:@class_name, self.name)
+          merged_definitions[meth] = definition
         end
 
         # Methods can be made private with the :private keyword after the method has been defined.
         # To account for this, loop back thorugh all the methods and check if the method is indeed public.
-        tasks = ActiveSupport::OrderedHash.new
-        merged_tasks.each do |meth, task|
+        definitions = ActiveSupport::OrderedHash.new
+        merged_definitions.each do |meth, definition|
           if public
-            tasks[meth] = task if task.public_meth?
+            definitions[meth] = definition if definition.public_meth?
           else
-            tasks[meth] = task unless task.public_meth?
+            definitions[meth] = definition unless definition.public_meth?
           end
         end
-        tasks
+        definitions
       end
-      memoize :find_all_tasks
+      memoize :find_all_definitions
 
-      def all_public_tasks
-        find_all_tasks(public: true)
-      end
-
-      def all_private_tasks
-        find_all_tasks(public: false)
+      def all_public_definitions
+        find_all_definitions(public: true)
       end
 
-      # Returns the tasks for this class in Array form.
+      def all_private_definitions
+        find_all_definitions(public: false)
+      end
+
+      # Returns the definitions for this class in Array form.
       #
       # ==== Returns
-      # Array of task objects
+      # Array of definition objects
       #
-      def tasks
-        all_public_tasks.values
+      def definitions
+        all_public_definitions.values
       end
 
       # The public methods defined in the project app class ulimately become
@@ -386,18 +397,18 @@ module Jets::Lambda::Dsl
       # Example return value:
       #   [:index, :new, :create, :show]
       def lambda_functions
-        all_public_tasks.keys
+        all_public_definitions.keys
       end
 
-      # Used in Jets::Cfn::Builders::Interface#build
+      # Used in Jets::Cfn::Builder::Interface#build
       # Overridden in rule/dsl.rb
       def build?
-        !tasks.empty?
+        !definitions.empty?
       end
 
       # Polymorphic support
       def defpoly(lang, meth)
-        register_task(meth, lang)
+        register_definition(meth, lang)
       end
 
       def python(meth)

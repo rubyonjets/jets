@@ -1,13 +1,5 @@
 $stdout.sync = true unless ENV["JETS_STDOUT_SYNC"] == "0"
-
 $:.unshift(File.expand_path("../", __FILE__))
-
-require "jets/core_ext/bundler"
-require "jets/core_ext/file"
-require "jets/autoloaders"
-Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]
-Jets::Autoloaders.once.setup # must be called before cli.setup
-Jets::Autoloaders.cli.setup
 
 require "active_support"
 require "active_support/concern"
@@ -21,16 +13,16 @@ require "fileutils"
 require "json"
 require "memoist"
 require "rainbow/ext/string"
-require "serverlessgems"
+require "jets-api"
+
+require "jets/core_ext"
+require "jets/autoloaders"
+loader = Jets::Autoloaders.for_gem
+loader.setup
 
 module Jets
-  MAX_FUNCTION_NAME_SIZE = 64
-
   class Error < StandardError; end
   extend Core # root, logger, etc
 end
 
-# required for booter.rb: setup_db
-Jets::Autoloaders.once.on_setup do
-  Jets::Db
-end
+loader.eager_load if Jets.eager_load_gem?

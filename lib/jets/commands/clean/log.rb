@@ -8,7 +8,7 @@
 # log groups and we don't want to overly-aggressively delete them.
 #
 # The `keep_prefixes(log_group_names)` method calcuates the log groups to keep.
-class Jets::Commands::Clean
+module Jets::Commands::Clean
   class Log < Base
     extend Memoist
     include Jets::AwsServices

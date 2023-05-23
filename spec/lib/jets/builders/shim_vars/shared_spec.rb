@@ -12,7 +12,7 @@ describe Jets::Builders::ShimVars::Shared do
       end
       functions
     end
-    let(:fun) { functions.find { |fun| fun.source_file.include?('bob.rb') } }
+    let(:fun) { functions.find { |fun| fun.source_file&.include?('bob.rb') } }
 
     it "deduces info for shim" do
       expect(vars.functions.size).to eq 1

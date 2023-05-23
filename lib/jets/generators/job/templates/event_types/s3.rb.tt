@@ -1,0 +1,11 @@
+<% module_namespacing do -%>
+class <%= class_name %>Job < ApplicationJob
+  # Please read the Considerations section before using s3_event
+  s3_event "my-bucket" # new or existing bucket
+  def <%= options[:name] %>
+    puts "event #{JSON.dump(event)}"
+    puts "s3_event #{JSON.dump(s3_event)}"
+    puts "s3_object #{JSON.dump(s3_object)}"
+  end
+end
+<% end -%>

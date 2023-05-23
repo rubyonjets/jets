@@ -47,6 +47,32 @@ module Jets::Builders
       end
     end
 
+    def generate_handler(vars)
+      template = handler_template(vars)
+      result = evaluate_template(template, vars)
+      dest = "#{tmp_code}/#{vars.dest_path}"
+
+      # Dont generate handles for all controllers if one_lambda_for_all_controllers
+      # Instead generate the same handler and use it. Writing to the same file
+      # multiple times but this is a simple way to implement this.
+      # It also keeps the logical in one spot.
+      if Jets.config.cfn.build.controllers == 'one_lambda_for_all_controllers' &&
+           dest.include?('handlers/controllers')
+        dest = "handlers/controller.rb"
+      end
+
+      FileUtils.mkdir_p(File.dirname(dest))
+      IO.write(dest, result)
+    end
+
+    def handler_template(vars)
+      if vars.process_type == "controller"
+        Jets.config.cfn.build.controllers + ".rb" # IE: templates/handlers/one_lambda_for_all_controllers.rb
+      else # job, rule, etc
+        "one_lambda_per_method.rb"
+      end
+    end
+
     # source_path: app/functions/simple.rb
     def copy_simple_function(source_path)
       # Handler: handlers/controllers/posts_controller.handle
@@ -56,7 +82,7 @@ module Jets::Builders
     end
 
     def app_files
-      Jets::Commands::Build.app_files
+      Jets::Cfn::Builder.app_files
     end
 
     def poly_shims
@@ -64,7 +90,7 @@ module Jets::Builders
 
       app_files.each do |path|
         vars = Jets::Builders::ShimVars::App.new(path)
-        poly_tasks = vars.klass.tasks.select { |t| t.lang != :ruby }
+        poly_tasks = vars.klass.definitions.select { |d| d.lang != :ruby }
         poly_tasks.each do |task|
           source_path = get_source_path(path, task)
           if File.exist?(source_path)
@@ -100,7 +126,8 @@ module Jets::Builders
     end
 
     def jets_base_path
-      copy_function_template("functions/jets/base_path.rb", stage_name: Jets::Resource::ApiGateway::Deployment.stage_name)
+      copy_function_template("functions/jets/base_path.rb", stage_name: Jets::Cfn::Resource::ApiGateway::Deployment.stage_name)
+      copy_function_template("functions/jets/base_path_mapping.rb")
     end
 
     def s3_bucket_config
@@ -109,8 +136,8 @@ module Jets::Builders
 
     # Copy code from internal folder to materialized app code
     def copy_function_template(path, vars={})
-      internal = File.expand_path("../internal", File.dirname(__FILE__))
-      src = "#{internal}/app/#{path}"
+      engines_internal_path = File.expand_path("../../../engines/internal", __dir__)
+      src = "#{engines_internal_path}/app/#{path}"
       result = Jets::Erb.result(src, vars)
       dest = "#{tmp_code}/handlers/#{path}"
       FileUtils.mkdir_p(File.dirname(dest))
@@ -124,7 +151,7 @@ module Jets::Builders
       source_path = fun.source_file
       unless source_path
         attributes = fun.template.values.first
-        function_name = attributes['Properties']['FunctionName']
+        function_name = attributes[:Properties][:FunctionName]
         puts "WARN: missing source file for: '#{function_name}' function".color(:yellow)
         return
       end
@@ -166,15 +193,8 @@ module Jets::Builders
       IO.write(dest, result)
     end
 
-    def generate_handler(vars)
-      result = evaluate_template("handler.rb", vars)
-      dest = "#{tmp_code}/#{vars.dest_path}"
-      FileUtils.mkdir_p(File.dirname(dest))
-      IO.write(dest, result)
-    end
-
     def evaluate_template(template_file, vars)
-      template_path = File.expand_path("../templates/#{template_file}", __FILE__)
+      template_path = File.expand_path("../templates/handlers/#{template_file}", __FILE__)
       Jets::Erb.result(template_path, vars: vars)
     end
 

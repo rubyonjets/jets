@@ -1,15 +1,15 @@
 module Jets::Stack::Main::Dsl
   module Cloudwatch
     def cloudwatch_alarm(id, hash={})
-      if hash.key?(:depends_on)
+      if hash.key?(:DependsOn)
         attributes = hash # leave structure alone and add type only
-        attributes[:type] = "AWS::CloudWatch::Alarm"
+        attributes[:Type] = "AWS::CloudWatch::Alarm"
       else
         # the attributes are properties
         properties = hash
         attributes = {
-          type: "AWS::CloudWatch::Alarm",
-          properties: properties,
+          Type: "AWS::CloudWatch::Alarm",
+          Properties: properties,
         }
       end
       resource(id, attributes)

@@ -36,18 +36,18 @@ module Jets::Lambda
       code = IO.read(@code_path)
       function_klass = Class.new(Jets::Lambda::Function)
       function_klass.module_eval(code, @code_path)
-      adjust_tasks(function_klass)
+      adjust_definitions(function_klass)
       function_klass # assign this to a Constant for a pretty class name
     end
 
-    # For anonymous classes method_added during task registration contains ""
+    # For anonymous classes method_added during definition registration contains ""
     # for the class name.  We adjust it here.
-    def adjust_tasks(klass)
+    def adjust_definitions(klass)
       class_name = @code_path.to_s.sub(/.*\/functions\//,'').sub(/\.rb$/, '')
       class_name = class_name.camelize
-      klass.tasks.each do |task|
-        task.class_name = class_name
-        task.type = "function"
+      klass.definitions.each do |definition|
+        definition.class_name = class_name
+        definition.type = "function"
       end
     end
   end

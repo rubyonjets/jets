@@ -2,7 +2,7 @@ module Jets::Job::Dsl
   module S3Event
     def s3_event(bucket_name, props={})
       stack_name = declare_s3_bucket_resources(bucket_name) # only set up once per bucket
-      declare_sns_subscription(topic_arn: "!Ref #{stack_name}SnsTopic") # set up subscription every time
+      declare_sns_subscription(TopicArn: "!Ref #{stack_name}SnsTopic") # set up subscription every time
     end
 
     # Returns stack_name

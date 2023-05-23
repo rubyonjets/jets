@@ -11,7 +11,7 @@ module Jets::Builders
     end
 
     def symlink_gems
-      ruby_folder = Jets::Gems.ruby_folder
+      ruby_folder = Jets::Api::Gems.ruby_folder
       # IE: @full_app_root: /tmp/jets/demo/stage/code/rack
       dest = "#{@full_app_root}/vendor/gems/ruby/#{ruby_folder}"
       FileUtils.mkdir_p(File.dirname(dest))

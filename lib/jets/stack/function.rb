@@ -9,7 +9,7 @@ class Jets::Stack
 
     def meth
       attributes = @template.values.first
-      handler = attributes['Properties']['Handler']
+      handler = attributes[:Properties][:Handler]
       handler.split('.').last
     end
 
@@ -49,7 +49,7 @@ class Jets::Stack
 
     def base_search_expression
       attributes = @template.values.first
-      handler = attributes['Properties']['Handler']
+      handler = attributes[:Properties][:Handler]
       handler.split('.')[0..-2].join('.') + '.*' # search_expression
       # Example: handlers/shared/functions/jets/s3_bucket_config.*
     end

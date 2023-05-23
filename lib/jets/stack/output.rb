@@ -20,11 +20,11 @@ class Jets::Stack
         { logical_id => properties }
       elsif definition.size == 2 && second.is_a?(String) # short form
         logical_id = first
-        properties = second.is_a?(String) ? { value: second } : {}
+        properties = second.is_a?(String) ? { Value: second } : {}
         { logical_id => properties }
       elsif definition.size == 1
         logical_id = first.to_s
-        properties = {value: "!Ref #{logical_id.camelize}"}
+        properties = {Value: "!Ref #{logical_id.camelize}"}
         { logical_id => properties }
       else # I dont know what form
         raise "Invalid form provided. definition #{definition.inspect}"

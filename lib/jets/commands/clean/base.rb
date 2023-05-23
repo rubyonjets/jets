@@ -1,4 +1,4 @@
-class Jets::Commands::Clean
+module Jets::Commands::Clean
   class Base
     def initialize(options={})
       @options = options

@@ -4,22 +4,22 @@ module Jets::Job::Dsl
       if topic_name.to_s =~ /generate/
         declare_sns_topic(props.delete(:topic_properties))
         topic_arn = "!Ref {namespace}SnsTopic"
-        props.merge!(topic_arn: topic_arn)
+        props.merge!(TopicArn: topic_arn)
         declare_sns_subscription(props)
       elsif topic_name.include?('!Ref') # reference shared resource
         topic_arn = topic_name # contains !Ref
-        props.merge!(topic_arn: topic_arn)
+        props.merge!(TopicArn: topic_arn)
         declare_sns_subscription(props)
       else # existing topic: short name or full arn
         topic_arn = full_sns_topic_arn(topic_name)
-        props.merge!(topic_arn: topic_arn)
+        props.merge!(TopicArn: topic_arn)
         declare_sns_subscription(props)
       end
     end
 
     def declare_sns_topic(props={})
       props ||= {} # props.delete(:topic_properties) can be nil
-      r = Jets::Resource::Sns::Topic.new(props)
+      r = Jets::Cfn::Resource::Sns::Topic.new(props)
       with_fresh_properties do
         resource(r.definition) # add associated resource immediately
       end
@@ -27,14 +27,14 @@ module Jets::Job::Dsl
 
     def declare_sns_topic_policy(props={})
       props ||= {} # options.delete(:topic_policy_properties) can be nil
-      r = Jets::Resource::Sns::TopicPolicy.new(props)
+      r = Jets::Cfn::Resource::Sns::TopicPolicy.new(props)
       with_fresh_properties do
         resource(r.definition) # add associated resource immediately
       end
     end
 
     def declare_sns_subscription(props={})
-      r = Jets::Resource::Sns::Subscription.new(props)
+      r = Jets::Cfn::Resource::Sns::Subscription.new(props)
       with_fresh_properties do
         resource(r.definition) # add associated resource immediately
       end

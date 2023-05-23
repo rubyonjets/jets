@@ -27,16 +27,19 @@ module Jets::Job::Dsl
     end
 
     def schedule_job(expression, props={})
-      props = props.merge(schedule_expression: expression)
+      props = props.merge(ScheduleExpression: expression)
       rule_event(props)
     end
 
     def rule_event(props={})
+      # detail should all be lowercase: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-events-rule.html
+      # source should also all be lowercase
       if props.key?(:detail)
+        # :description should be lowercased. It's a convenience property, and belongs at a higher level
         description = props.key?(:description) ? props.delete(:description) : rule_description
-        rule_props = { event_pattern: props, description: description }
+        rule_props = { EventPattern: props, Description: description }
       else # if props.key?(:event_pattern)
-        props[:description] ||= rule_description
+        props[:Description] ||= rule_description
         rule_props = props
       end
 
@@ -52,7 +55,7 @@ module Jets::Job::Dsl
     end
 
     def events_rule_definition
-      resource = Jets::Resource::Events::Rule.new(associated_properties)
+      resource = Jets::Cfn::Resource::Events::Rule.new(associated_properties)
       resource.definition # returns a definition to be added by associated_resources
     end
 

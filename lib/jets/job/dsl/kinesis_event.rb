@@ -11,8 +11,8 @@ module Jets::Job::Dsl
 
       props = options # by this time options only has EventSourceMapping properties
       default = {
-        event_source_arn: stream_arn,
-        starting_position: "LATEST",
+        EventSourceArn: stream_arn,
+        StartingPosition: "LATEST",
       }
       props = default.merge(props)
 
@@ -34,12 +34,12 @@ module Jets::Job::Dsl
 
     def default_kinesis_stream_policy(stream_name_arn='*')
       {
-        action: ["kinesis:GetRecords",
+        Action: ["kinesis:GetRecords",
                  "kinesis:GetShardIterator",
                  "kinesis:DescribeStream",
                  "kinesis:ListStreams"],
-        effect: "Allow",
-        resource: stream_name_arn,
+        Effect: "Allow",
+        Resource: stream_name_arn,
       }
     end
   end

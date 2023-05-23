@@ -43,7 +43,7 @@ module Jets
         # All the & because resources might be nil
         templates = stack.resources&.map(&:template)&.select do |t|
           attributes = t.values.first
-          attributes['Type'] == 'AWS::Lambda::Function'
+          attributes[:Type] == 'AWS::Lambda::Function'
         end
         templates ||= []
         templates.map { |t| Function.new(t) }

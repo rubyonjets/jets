@@ -1,0 +1,8 @@
+<% module_namespacing do -%>
+class <%= class_name %>Job < ApplicationJob
+  rate "10 hours"
+  def <%= options[:name] %>
+    puts "Do something with event #{event}"
+  end
+end
+<% end -%>

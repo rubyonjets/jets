@@ -31,6 +31,7 @@ class Jets::Router::Route
     module ModuleMethods
       def logical_id(authorizer, prefix_class: true)
         klass, meth = authorizer.split("#")
+        klass += "_authorizer"
         words = [meth, "authorizer"]
         words.unshift(klass) if prefix_class
         words.join('_').camelize # logical_id

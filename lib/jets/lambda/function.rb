@@ -13,11 +13,11 @@ module Jets::Lambda
     end
 
     def self.handler
-      handler_task.meth
+      handler_definition.meth
     end
 
-    def self.handler_task
-      tasks.first
+    def self.handler_definition
+      definitions.first
     end
 
     # Used by main_processor.rb.  Same interface as controllers and jobs.

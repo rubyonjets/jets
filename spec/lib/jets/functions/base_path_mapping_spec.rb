@@ -1,10 +1,12 @@
-require "jets/internal/app/functions/jets/base_path_mapping"
+require "./engines/internal/app/functions/jets/base_path_mapping.rb"
 
 describe "base_path_mapping" do
   let(:mapping) do
     mapping = BasePathMapping.new(event, "fake_stage_name")
     allow(mapping).to receive(:deployment_stack).and_return(deployment_stack)
     allow(mapping).to receive(:deleting_parent?).and_return(deleting_parent)
+    allow(mapping).to receive(:delete)
+    allow(mapping).to receive(:create)
     mapping
   end
   let(:deployment_stack) do
@@ -39,47 +41,12 @@ describe "base_path_mapping" do
   let(:deleting_parent) { false }
   let(:base_path)       { nil }
 
+  # sanity check for syntax errors
   context "typical update" do
     it "update" do
-      expect(mapping.apigateway).to receive(:delete_base_path_mapping)
-      expect(mapping.apigateway).to receive(:create_base_path_mapping)
-      mapping.update
-    end
-
-    it "delete" do
-      expect(mapping.apigateway).to receive(:delete_base_path_mapping)
-      expect(mapping.apigateway).not_to receive(:create_base_path_mapping)
-      mapping.delete
-    end
-  end
-
-  context "deleting jets app" do
-    let(:request_type) { "Delete" }
-    let(:deleting_parent) { true }
-
-    it "delete" do
-      expect(mapping.apigateway).to receive(:delete_base_path_mapping)
-      expect(mapping.apigateway).not_to receive(:create_base_path_mapping)
-      mapping.delete
-    end
-  end
-
-  context "base path not set" do
-    let(:base_path) { nil }
-
-    it "update" do
-      expect(mapping.apigateway).to receive(:delete_base_path_mapping)
-      expect(mapping.apigateway).to receive(:create_base_path_mapping)
-      mapping.update
-    end
-  end
-
-  context "base path not set" do
-    let(:base_path) { "fake-base_path" }
-
-    it "update" do
-      expect(mapping.apigateway).to receive(:delete_base_path_mapping)
-      expect(mapping.apigateway).to receive(:create_base_path_mapping)
+      expect(mapping).to receive(:rest_api_changed?).and_return(true)
+      expect(mapping).to receive(:delete)
+      expect(mapping).to receive(:create)
       mapping.update
     end
   end

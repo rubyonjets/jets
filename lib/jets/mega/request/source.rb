@@ -2,8 +2,7 @@ class Jets::Mega::Request
   class Source
     def initialize(event)
       @event = event
-      env = Jets::Controller::Rack::Env.new(@event, {}).convert # convert to Rack env
-      @source_request = Rack::Request.new(env)
+      @source_request = Rack::Request.new(event: event)
     end
 
     def body

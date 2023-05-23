@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ruby on Jets</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <style type="text/css" media="screen" charset="utf-8">
+    body {
+      text-align: center;
+      margin: 0;
+    }
+    img {
+      max-width: 320px;
+    }
+    .container {
+      max-width: 648px;
+    }
+    @media (min-width: 768px) {
+      img {
+        max-width: none;
+      }
+      .container {
+        max-width: none;
+      }
+    }
+
+    .header {
+      padding: 20px;
+      /*background-color: #b81513;*/
+      /*color: white;*/
+    }
+    .title {
+      font-size: 1.5em;
+    }
+    @media (max-width: 500px) {
+      .title {
+        font-size: 1.3em;
+      }
+    }
+    .intro {
+      text-align: left;
+      font-size: large;
+      margin: 0 auto;
+      padding: 0 20px;
+      max-width: 640px;
+    }
+    pre, code {
+      padding: 0;
+      margin: 0;
+    }
+    pre {
+      margin-left: 20px;
+      width: 99%;
+      overflow: auto;
+    }
+    @media (max-width: 500px) {
+      pre {
+        margin-left: -30px;
+        font-size: 0.8em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <img src="https://s3.amazonaws.com/jets-public/jets/images/jets.png" class="logo" alt="logo" />
+      <h1 class="title">Welcome and congrats!<br /> Jets is running.</h1>
+    </header>
+    <div class="intro">
+      <p>
+        To get started:
+      </p>
+      <div class="code"><pre><code>
+        $ jets generate scaffold post title:string
+        $ jets db:create db:migrate
+        $ jets server
+        $ open http://localhost:8888/posts
+        $ jets help
+      </code></pre></div>
+      <p>Docs on: <a href="http://rubyonjets.com">rubyonjets.com</a></p>
+      <p>CLI: <a href="http://rubyonjets.com/reference">Jets CLI reference</a></p>
+      <p>Jets Info: <%= link_to "Properties", controller: "jets/info", action: "properties" %></p>
+      <p>Jets Info: <%= link_to "Routes", controller: "jets/info", action: "routes" %></p>
+    </div>
+    <p class="version">
+      <ul>
+        <li><strong>Jets version:</strong> <%= Jets.version %></li>
+        <li><strong>Ruby version:</strong> <%= RUBY_DESCRIPTION %></li>
+      </ul>
+    </p>
+  </div>
+</body>
+</html>

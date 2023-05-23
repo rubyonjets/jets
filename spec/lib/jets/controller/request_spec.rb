@@ -1,5 +1,8 @@
 describe Jets::Controller::Request do
-  let(:req) { Jets::Controller::Request.new(event, context=nil) }
+  let(:req) do
+    rack_env = Jets::Controller::RackAdapter::Env.new(event, {}).convert
+    Jets::Controller::Request.new(rack_env: rack_env, event: event)
+  end
 
   context "ajax request" do
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/xhr-delete.json") }

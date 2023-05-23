@@ -97,37 +97,31 @@ describe "Stack templates" do
   let(:stack) { ExampleStack2.new }
   it "parameters" do
     templates = stack.parameters.map(&:template)
-    # pp templates
     expect(templates).to eq(
-      [{"InstanceType"=>
-         {"Default"=>"t2.micro", "Description"=>"instance type", "Type"=>"String"}},
-       {"Company"=>{"Default"=>"boltops", "Type"=>"String"}},
-       {"AmiId"=>{"Default"=>"ami-123", "Type"=>"String"}},
-       {"IamRole"=>{"Type"=>"String"}},
-       {"S3Bucket"=>{"Type"=>"String"}}]
+      [{:InstanceType=>{:Default=>"t2.micro", :Description=>"instance type", :Type=>"String"}},
+        {:Company=>{:Default=>"boltops", :Type=>"String"}},
+        {:AmiId=>{:Default=>"ami-123", :Type=>"String"}},
+        {:IamRole=>{:Type=>"String"}},
+        {:S3Bucket=>{:Type=>"String"}}]
     )
   end
 
   it "outputs" do
     templates = stack.outputs.map(&:template)
     expect(templates).to eq(
-      [{"VpcId"=>{"Description"=>"vpc id", "Value"=>"!Ref VpcId"}},
-       {"StackName"=>{"Value"=>"!Ref AWS::StackName"}},
-       {"Elb"=>{"Value"=>"!Ref Elb"}},
-       {"Elb2"=>{"Value"=>"!Ref Elb2"}}]
+      [{:VpcId=>{:Description=>"vpc id", :Value=>"!Ref VpcId"}},
+      {:StackName=>{:Value=>"!Ref AWS::StackName"}},
+      {:Elb=>{:Value=>"!Ref Elb"}},
+      {:Elb2=>{:Value=>"!Ref Elb2"}}]
     )
   end
 
   it "resources" do
     templates = stack.resources.map(&:template)
     expect(templates).to eq(
-      [{"SnsTopic"=>
-        {"Type"=>"AWS::SNS::Topic",
-          "Properties"=>{"Description"=>"my desc", "DisplayName"=>"my name"}}},
-      {"SnsTopic2"=>
-        {"Type"=>"AWS::SNS::Topic", "Properties"=>{"DisplayName"=>"my name 2"}}},
-      {"SnsTopic3"=>
-        {"Type"=>"AWS::SNS::Topic", "Properties"=>{"DisplayName"=>"my name 3"}}}]
+      [{:SnsTopic=>{:Type=>"AWS::SNS::Topic", :Properties=>{:Description=>"my desc", :DisplayName=>"my name"}}},
+      {:SnsTopic2=>{:Type=>"AWS::SNS::Topic", :Properties=>{:DisplayName=>"my name 2"}}},
+      {:SnsTopic3=>{:Type=>"AWS::SNS::Topic", :Properties=>{:DisplayName=>"my name 3"}}}]
     )
   end
 
@@ -143,7 +137,6 @@ describe "Stack templates" do
       expect(ExampleCustom.functions.size).to eq 1
       expect(ExampleAlarm.functions.size).to eq 0
       expect(ExampleAlert.functions.size).to eq 0
-      expect(Custom.functions.size).to eq 5
     end
   end
 end

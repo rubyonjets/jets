@@ -12,7 +12,7 @@ describe "Stack output" do
     end
     it "template" do
       expect(output.template).to eq(
-        {"VpcId"=>{"Description"=>"vpc id", "Value"=>"!Ref VpcId"}}
+        {:VpcId=>{:Description=>"vpc id", :Value=>"!Ref VpcId"}}
       )
     end
   end
@@ -23,7 +23,7 @@ describe "Stack output" do
     end
     it "template" do
       expect(output.template).to eq(
-        {"StackName"=>{"Value"=>"!Ref AWS::StackName"}}
+        {:StackName=>{:Value=>"!Ref AWS::StackName"}}
       )
     end
   end
@@ -34,7 +34,7 @@ describe "Stack output" do
     end
     it "template" do
       expect(output.template).to eq(
-        {"Elb"=>{"Value"=>"!Ref Elb"}}
+        {:Elb=>{:Value=>"!Ref Elb"}}
       )
     end
   end
@@ -45,7 +45,7 @@ describe "Stack output" do
     end
     it "template" do
       expect(output.template).to eq(
-        {"Elb"=>{"Value"=>"!Ref Elb"}}
+        {:Elb=>{:Value=>"!Ref Elb"}}
       )
     end
   end

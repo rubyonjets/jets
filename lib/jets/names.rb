@@ -6,54 +6,70 @@ class Jets::Names
   class << self
     extend Memoist
 
+    def templates_folder
+      "#{Jets.build_root}/templates"
+    end
+
+    def one_controller_template_path
+      "#{templates_folder}/jets-controller.yml"
+    end
+
     def app_template_path(app_class)
       underscored = underscore(app_class)
-      "#{template_path_prefix}-app-#{underscored}.yml"
+      "#{templates_folder}/app-#{underscored}.yml"
     end
 
     def shared_template_path(shared_class)
       underscored = underscore(shared_class)
-      "#{template_path_prefix}-shared-#{underscored}.yml"
-    end
-
-    def template_path_prefix
-      "#{Jets.build_root}/templates/#{Jets.config.project_namespace}"
+      "#{templates_folder}/shared-#{underscored}.yml"
     end
 
     # consider moving these methods into cfn/builder/helpers.rb or that area.
     def parent_template_path
-      "#{template_path_prefix}.yml"
+      "#{templates_folder}/parent.yml"
     end
 
     # consider moving these methods into cfn/builder/helpers.rb or that area.
     def api_gateway_template_path
-      "#{template_path_prefix}-api-gateway.yml"
+      "#{templates_folder}/api-gateway.yml"
     end
 
-    def api_resources_template_path(page)
-      "#{template_path_prefix}-api-resources-#{page}.yml"
+    def api_resources_template_path(page_number)
+      "#{templates_folder}/api-resources-#{page_number}.yml"
+    end
+
+    def api_cors_template_path(page_number)
+      "#{templates_folder}/api-cors-#{page_number}.yml"
+    end
+
+    def api_methods_template_path(page_number)
+      "#{templates_folder}/api-methods-#{page_number}.yml"
     end
 
     def api_deployment_template_path
-      "#{template_path_prefix}-api-deployment.yml"
+      "#{templates_folder}/api-deployment.yml"
+    end
+
+    def api_mapping_template_path
+      "#{templates_folder}/api-mapping.yml"
     end
 
     def shared_resources_template_path
-      "#{template_path_prefix}-shared-resources.yml"
+      "#{templates_folder}/shared-resources.yml"
     end
 
     def parent_stack_name
-      File.basename(parent_template_path, ".yml")
+      Jets.project_namespace
     end
 
     def gateway_api_name
-      "#{Jets.config.project_namespace}"
+      Jets.project_namespace
     end
 
     def authorizer_template_path(path)
       underscored = underscore(path)
       underscored.sub!(/^app-/, '')
-      "#{template_path_prefix}-#{underscored}.yml"
+      "#{templates_folder}/#{underscored}.yml"
     end
 
     def underscore(s)

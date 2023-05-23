@@ -14,14 +14,14 @@ module Jets::Mega
 
     def proxy
       http_method = @event['httpMethod'] # GET, POST, PUT, DELETE, etc
-      params = @controller.params(raw: true, path_parameters: false)
+      params = @controller.params(include_path_params: false)
 
       uri = get_uri
 
       http = Net::HTTP.new(uri.host, uri.port)
       http.open_timeout = http.read_timeout = 60
 
-      # Rails sets _method=patch or _method=put as workaround
+      # Jets sets _method=patch or _method=put as workaround
       # Falls back to GET when testing in lambda console
       http_class = params['_method'] || http_method || 'GET'
       http_class.capitalize!
@@ -115,7 +115,7 @@ module Jets::Mega
     end
     memoize :source
 
-    # Rails sets _method=patch or _method=put as workaround
+    # Jets sets _method=patch or _method=put as workaround
     # Falls back to GET when testing in lambda console
     # @event['httpMethod'] is GET, POST, PUT, DELETE, etc
     def http_class
@@ -125,7 +125,7 @@ module Jets::Mega
     end
 
     def params
-      @controller.params(raw: true, path_parameters: false, body_parameters: true)
+      @controller.params(include_path_params: false, include_body_params: true)
     end
     memoize :params
 

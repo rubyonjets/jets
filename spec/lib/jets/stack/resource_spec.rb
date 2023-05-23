@@ -15,7 +15,7 @@ describe "Stack resource" do
     end
     it "template" do
       expect(resource.template).to eq(
-        {"SnsTopic" => {"Properties"=>{"Description"=>"my desc", "DisplayName"=>"my name"}, "Type"=>"AWS::SNS::Topic"}}
+        {:SnsTopic=>{:Type=>"AWS::SNS::Topic", :Properties=>{:Description=>"my desc", :DisplayName=>"my name"}}}
       )
     end
   end
@@ -30,7 +30,7 @@ describe "Stack resource" do
     end
     it "template" do
       expect(resource.template).to eq(
-        {"SnsTopic"=>{"Properties"=>{"DisplayName"=>"my name"}, "Type"=>"AWS::SNS::Topic"}}
+        {:SnsTopic=>{:Type=>"AWS::SNS::Topic", :Properties=>{:DisplayName=>"my name"}}}
       )
     end
   end
@@ -43,7 +43,7 @@ describe "Stack resource" do
     end
     it "template" do
       expect(resource.template).to eq(
-        {"SnsTopic"=>{"Type"=>"AWS::SNS::Topic"}}
+        {:SnsTopic=>{:Type=>"AWS::SNS::Topic"}}
       )
     end
   end
@@ -55,7 +55,7 @@ describe "Stack resource" do
     end
     it "template" do
       expect(resource.template).to eq(
-        {"SnsTopic"=>{"Type"=>"AWS::SNS::Topic"}}
+        {:SnsTopic=>{:Type=>"AWS::SNS::Topic"}}
       )
     end
   end
@@ -67,7 +67,7 @@ describe "Stack resource" do
     end
     it "template" do
       expect(resource.template).to eq(
-        {"SnsTopic" => {"Properties"=>{"DisplayName"=>"my name"}, "Type"=>"AWS::SNS::Topic"}}
+        {:SnsTopic=>{:Type=>"AWS::SNS::Topic", :Properties=>{:DisplayName=>"my name"}}}
       )
     end
   end
@@ -78,7 +78,7 @@ describe "Stack resource" do
     end
     it "template" do
       expect(resource.template).to eq(
-        {"SnsTopic" => {"Type"=>"AWS::SNS::Topic"}}
+        {:SnsTopic=>{:Type=>"AWS::SNS::Topic"}}
       )
     end
   end
@@ -89,7 +89,7 @@ describe "Stack resource" do
     end
     it "template" do
       expect(resource.template).to eq(
-        {"SnsTopic" => {"Type"=>"AWS::SNS::Topic"}}
+        {:SnsTopic=>{:Type=>"AWS::SNS::Topic"}}
       )
     end
   end
