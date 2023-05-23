@@ -1,0 +1,9 @@
+<% module_namespacing do -%>
+class <%= class_name %>Job < ApplicationJob
+  class_timeout 30 # must be less than or equal to the SNS Topic default timeout
+  sns_event "hello-topic"
+  def <%= options[:name] %>
+    puts "event #{JSON.dump(event)}"
+  end
+end
+<% end -%>

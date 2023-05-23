@@ -22,29 +22,30 @@ describe "Stack templates" do
   it "outputs" do
     templates = stack.outputs.map(&:template)
     expect(templates).to eq(
-      [{"BillingAlarm"=>{"Value"=>"!Ref BillingAlarm"}},
-       {"BillingNotification"=>{"Value"=>"!Ref BillingNotification"}}]
+      [{:BillingAlarm=>{:Value=>"!Ref BillingAlarm"}},
+        {:BillingNotification=>{:Value=>"!Ref BillingNotification"}}]
     )
   end
 
   it "resources" do
     templates = stack.resources.map(&:template)
     expect(templates).to eq(
-      [{"BillingAlarm"=>
-         {"DependsOn"=>"BillingNotification",
-          "Properties"=>
-           {"AlarmDescription"=>"Alarm if AWS spending is too much",
-            "Namespace"=>"AWS/Billing",
-            "MetricName"=>"EstimatedCharges",
-            "Dimensions"=>[{"Name"=>"Currency", "Value"=>"USD"}],
-            "Statistic"=>"Maximum",
-            "Period"=>"21600",
-            "EvaluationPeriods"=>"1",
-            "Threshold"=>100,
-            "ComparisonOperator"=>"GreaterThanThreshold",
-            "AlarmActions"=>["!Ref BillingNotification"]},
-          "Type"=>"AWS::CloudWatch::Alarm"}},
-       {"BillingNotification"=>{"Type"=>"AWS::SNS::Topic"}}]
+      [{:BillingAlarm=>
+        {:Type=>"AWS::CloudWatch::Alarm",
+         :Properties=>
+          {:DependsOn=>"BillingNotification",
+           :Properties=>
+            {:AlarmDescription=>"Alarm if AWS spending is too much",
+             :Namespace=>"AWS/Billing",
+             :MetricName=>"EstimatedCharges",
+             :Dimensions=>[{:Name=>"Currency", :Value=>"USD"}],
+             :Statistic=>"Maximum",
+             :Period=>"21600",
+             :EvaluationPeriods=>"1",
+             :Threshold=>100,
+             :ComparisonOperator=>"GreaterThanThreshold",
+             :AlarmActions=>["!Ref BillingNotification"]}}}},
+      {:BillingNotification=>{:Type=>"AWS::SNS::Topic"}}]
     )
   end
 end

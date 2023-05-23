@@ -1,25 +1,28 @@
 module Jets::Core
   extend Memoist
 
+  mattr_accessor :cache
+
+  delegate :aws, :autoloaders, :config, to: :application
+
+  @application = @app_class = nil
+
+  attr_writer :application
+  attr_accessor :app_class
   def application
-    Jets::Application.instance
+    @application ||= (app_class.instance if app_class)
   end
 
-  def config
+  def backtrace_cleaner
+    @backtrace_cleaner ||= Jets::BacktraceCleaner.new
+  end
+
+  # The Configuration instance used to configure the Rails environment
+  def configuration
     application.config
   end
 
-  def aws
-    application.aws
-  end
-
-  # Load all application base classes and project classes
-  def boot
-    Jets::Booter.boot!
-  end
-
   def root
-    # Do not memoize this method. Turbo mode can change it
     root = ENV['JETS_ROOT'].to_s
     root = Dir.pwd if root == ''
     Pathname.new(root)
@@ -44,24 +47,77 @@ module Jets::Core
     extra
   end
 
-def build_root
-    "/tmp/jets/#{config.project_name}".freeze
+  def project_name
+    path = "config/project_name"
+    if ENV['JETS_PROJECT_NAME'] && !ENV['JETS_PROJECT_NAME'].blank?
+      ENV['JETS_PROJECT_NAME']
+    elsif File.exist?(path)
+      IO.read(path).strip
+    elsif parsed_project_name
+      parsed_project_name
+    else
+      Dir.pwd.split("/").last # conventionally infer app name from current directory
+    end
+  end
+
+  def project_namespace
+    [project_name, short_env, extra].compact.join('-').gsub('_','-')
+  end
+
+  def table_namespace
+    [project_name, short_env].compact.join('-')
+  end
+
+  ENV_MAP = {
+    development: 'dev',
+    production: 'prod',
+    staging: 'stag',
+  }
+  def short_env
+    ENV_MAP[Jets.env.to_sym] || Jets.env
+  end
+
+  # Double evaling config/application.rb causes subtle issues:
+  #   * double loading of shared resources: Jets::Stack.subclasses will have the same
+  #   class twice when config is called when declaring a function
+  #   * forces us to rescue all exceptions, which is a big hammer
+  #
+  # Lets parse for the project name instead for now.
+  #
+  # Keep for backwards compatibility
+  def parsed_project_name
+    lines = IO.readlines("#{Jets.root}/config/application.rb")
+    project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ && l !~ /^\s+#/ }
+    project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') if project_name_line
+  end
+  memoize :parsed_project_name
+
+  # Load all application base classes and project classes
+  def boot
+    Jets::Booter.boot!
+  end
+
+  def build_root
+    "/tmp/jets/#{Jets.project_name}".freeze
   end
   memoize :build_root
 
   def logger
-    Jets.application.config.logger
+    @logger
   end
-  memoize :logger
+
+  def logger=(logger)
+    @logger = logger
+  end
+
+  def deprecator # :nodoc:
+    @deprecator ||= ActiveSupport::Deprecation.new
+  end
 
   def webpacker?
     Gem.loaded_specs.keys.any?{|k| k.start_with?("webpacker")}
   end
   memoize :webpacker?
-
-  def load_tasks
-    Jets::Commands::RakeTasks.load!
-  end
 
   def version
     Jets::VERSION
@@ -87,32 +143,9 @@ def build_root
     @@prewarm_count
   end
 
-  def project_namespace
-    [config.project_name, config.short_env, config.extra].compact.join('-').gsub('_','-')
-  end
-
-  def rack?
-    path = "#{Jets.root}/rack"
-    File.exist?(path) || File.symlink?(path)
-  end
-
   def poly_only?
     return true if ENV['JETS_POLY_ONLY'] # bypass to allow rapid development of handlers
-    Jets::Commands::Build.poly_only?
-  end
-
-  def report_exception(exception)
-    puts "DEPRECATED: report_exception. Use on_exception instead.".color(:yellow)
-    on_exception(exception)
-  end
-
-  def on_exception(exception)
-    Jets::Turbine.subclasses.each do |subclass|
-      reporters = subclass.on_exceptions || []
-      reporters.each do |label, block|
-        block.call(exception)
-      end
-    end
+    Jets::Cfn::Builder.poly_only?
   end
 
   def custom_domain?
@@ -136,19 +169,12 @@ def build_root
   def once
     boot
     override_lambda_ruby_runtime
+    # require "jets/overrides/puma" # leaving around as a comment in case needed in the future
     tmp_load!
-    start_rack_server
   end
 
   def tmp_load!
     Jets::TmpLoader.load!
-  end
-
-  # Megamode support
-  def start_rack_server(options={})
-    rack = Jets::RackServer.new(options)
-    rack.start
-    rack.wait_for_socket
   end
 
   def override_lambda_ruby_runtime
@@ -165,5 +191,64 @@ def build_root
   def ruby_runtime
     version = RUBY_VERSION.split('.')[0..1].join('.')
     "ruby#{version}"
+  end
+
+  def one_lambda_per_controller?
+    Jets.config.cfn.build.controllers == "one_lambda_per_controller"
+  end
+
+  def one_lambda_for_all_controllers?
+    Jets.config.cfn.build.controllers == "one_lambda_for_all_controllers"
+  end
+
+  # Do not memoize here. The JetsBucket.name does it's own special memoization.
+  def s3_bucket
+    Jets::Cfn::Resource::S3::JetsBucket.name
+  end
+
+  def report_exception(exception)
+    # See Jets::ExceptionReporting decorate_exception_with_exception_reported!
+    if exception.respond_to?(:with_exception_reported?) && exception.with_exception_reported?
+      return
+    end
+
+    Jets.application.turbines.each do |turbine|
+      turbine.on_exception_blocks.each do |block|
+        block.call(exception)
+      end
+    end
+  end
+
+  # Returns the ActiveSupport::ErrorReporter of the current \Jets project,
+  # otherwise it returns +nil+ if there is no project.
+  #
+  #   Jets.error.handle(IOError) do
+  #     # ...
+  #   end
+  #   Jets.error.report(error)
+  def error
+    application && application.executor.error_reporter
+    # ActiveSupport.error_reporter
+  end
+
+  # Returns a Pathname object of the public folder of the current
+  # \Jets project, otherwise it returns +nil+ if there is no project:
+  #
+  #   Jets.public_path
+  #     # => #<Pathname:/Users/someuser/some/path/project/public>
+  def public_path
+    application && Pathname.new(application.paths["public"].first)
+  end
+
+  def autoloaders
+    application.autoloaders
+  end
+
+  # It's useful to eager load and find out any error within the jets code immediately.
+  # Leaving in place because think the layer of protection is good.
+  # Eager load outside of a jets project can error. IE: `jets -h`
+  # Eager load inside a jets project is fine.
+  def eager_load_gem?
+    File.exist?("config/application.rb") || ENV['JETS_TEST'] || defined?(ENGINE_ROOT) # jets project
   end
 end

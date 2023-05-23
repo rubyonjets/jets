@@ -8,6 +8,7 @@ require 'json'
 module Jets::Rule
   class Base < Jets::Lambda::Functions
     include Dsl
+    prepend Jets::ExceptionReporting::Process
 
     class << self
       def process(event, context, meth)

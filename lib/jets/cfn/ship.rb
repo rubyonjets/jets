@@ -48,10 +48,20 @@ module Jets::Cfn
       clean_deploy_logs
       show_api_endpoint
       show_custom_domain
+      create_deployment_record
+    end
+
+    def create_deployment_record
+      return if @options[:stack_type] == :minimal
+      resp = Jets::Cfn::Deployment.new(@options.merge(stack_name: @parent_stack_name)).create
+      if resp
+        version = resp["version"]
+        Jets::Cfn::Upload.new.upload_cfn_templates(version) if version
+      end
     end
 
     def set_resource_tags
-      @tags = Jets.config.resource_tags.map { |key, value| { key: key, value: value } }
+      @tags = Jets.config.cfn.build.resource_tags.map { |key, value| { key: key, value: value } }
     end
 
     def save_stack
@@ -83,11 +93,11 @@ module Jets::Cfn
         capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
         # disable_rollback: !@options[:rollback],
         tags: @tags,
-      }.merge!(template.to_h)
+      }.merge!(template.stack_option)
     end
 
     def template
-      @template ||= TemplateSource.new(Jets::Names.parent_template_path, @options)
+      @template ||= Template.new(Jets::Names.parent_template_path, @options)
     end
 
     # check for /(_COMPLETE|_FAILED)$/ status
@@ -96,9 +106,7 @@ module Jets::Cfn
     end
 
     def save_apigw_state
-      state = Jets::Router::State.new
-      state.save("pages", Jets::Cfn::Builders::PageBuilder.pages)
-      state.save("routes", Jets::Router.routes)
+      Jets::Router::State.save_apigw_state
     end
 
     def prewarm
@@ -120,7 +128,7 @@ module Jets::Cfn
 
     def endpoint_unavailable?
       return true unless @options[:stack_type] == :full # s3 bucket is available
-      return true if Jets::Router.routes.empty?
+      return true if Jets::Router.no_routes?
       _, status = stack_status
       return true if status.include?("ROLLBACK")
       return true unless api_gateway
@@ -154,12 +162,12 @@ module Jets::Cfn
     def show_custom_domain
       return unless endpoint_available? && Jets.custom_domain? && Jets.config.domain.route53
 
-      domain_name = Jets::Resource::ApiGateway::DomainName.new
+      domain_name = Jets::Cfn::Resource::ApiGateway::DomainName.new
       # Looks funny but its right.
-      # domain_name is a method on the Jets::Resource::ApiGateway::Domain instance
+      # domain_name is a method on the Jets::Cfn::Resource::ApiGateway::Domain instance
       url = "https://#{domain_name.domain_name}"
       puts "Custom Domain: #{url}"
-      puts "App Domain: #{Jets.config.app.domain}" if Jets.config.app.domain
+      puts "App Domain: https://#{Jets.config.app.domain}" if Jets.config.app.domain
     end
 
     # All CloudFormation states listed here:
@@ -183,19 +191,12 @@ module Jets::Cfn
     end
 
     def capabilities
-      ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"] # TODO: remove capabilities hardcode
-      # return @options[:capabilities] if @options[:capabilities]
-      # if @options[:iam]
-      #   ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
-      # end
+      ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
     end
 
     # Upload both code and child templates to s3
     def upload_to_s3
-      raise "Did not specify @options[:s3_bucket] #{@options[:s3_bucket].inspect}" unless @options[:s3_bucket]
-
-      uploader = Upload.new(@options[:s3_bucket])
-      uploader.upload
+      Upload.new.upload
     end
   end
 end

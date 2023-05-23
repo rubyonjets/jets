@@ -7,6 +7,7 @@ module Jets::Authorizer
   class Base < Jets::Lambda::Functions
     include Dsl
     include Helpers::IamHelper
+    prepend Jets::ExceptionReporting::Process
 
     class << self
       def process(event, context, meth)

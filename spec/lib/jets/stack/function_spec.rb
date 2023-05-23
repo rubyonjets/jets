@@ -21,9 +21,9 @@ describe "Stack builder" do
   context "function with namespace" do
     let(:template) { FunctionExampleStack.new.resources.map(&:template)[1] }
     it "lang is ruby" do
-      props = template["AdminSendMessage"]["Properties"]
-      expect(props["FunctionName"]).to eq "demo-test-function_example_stack-admin-send_message"
-      expect(props["Handler"]).to eq "handlers/shared/functions/admin/send_message.lambda_handler"
+      props = template[:AdminSendMessage][:Properties]
+      expect(props[:FunctionName]).to eq "demo-test-function_example_stack-admin-send_message"
+      expect(props[:Handler]).to eq "handlers/shared/functions/admin/send_message.lambda_handler"
       expect(function.lang).to eq :ruby
     end
   end

@@ -1,114 +1,58 @@
 # route = Jets::Router::Route.new(
 #   path: "posts",
-#   method: :get,
+#   http_method: :get,
 #   to: "posts#index",
 # )
-class Jets::Router
+module Jets::Router
   class Route
-    include Util
+    extend Memoist
+    include Compat
+    include AfterInitialize
+    include As
     include Authorizer
+    include Path
+    include Util
 
     CAPTURE_REGEX = "([^/]*)" # as string
 
-    attr_reader :to, :as
+    attr_reader :options, :scope, :info, :defaults
+    attr_accessor :original_engine
     def initialize(options, scope=Scope.new)
-      @options, @scope = options, scope
-      @path = compute_path
-      @to = compute_to
-      @as = compute_as
-      # Pretty tricky. The @options[:mount_class] is a class that is mounted.
-      # For Grape apps, calling ActiveSupport to_json on a Grape class causes an infinite loop.
-      # Can reproduce with `GrapeApp.to_json`
-      # There's some type of collision between Grape and ActiveSupport to_json.
-      # Coerce mount_class option into a string so that when the route is serialized to JSON
-      # it is a string it won't cause an infinite loop. This allows the apigw routes to be
-      # saved to s3 and loaded back up at the end of a deploy.
-      # Related PR: smarter apigw routes paging calculation #635
-      # https://github.com/boltops-tools/jets/pull/635
-      # Debugging notes: https://gist.github.com/tongueroo/c9baa7e98d5ad68bbdd770fde4651963
-      @options[:mount_class] = @options[:mount_class].to_s if @options[:mount_class]
+      @options = options
+      @scope = scope
+      @info = Info.new(@options, @scope) # @info.action and @info.controller
+      after_initialize
+      @path_names = {}
     end
 
-    # Constantize back to the original class
-    def mount_class
-      @options[:mount_class].constantize
+    def to
+      engine || "#{@info.controller}##{@info.action}" # IE: posts#index
     end
 
-    def compute_path
-      # Note: The @options[:prefix] is missing prefix and is not support via direct create_route.
-      # This is because it can be added directly to the path. IE:
-      #
-      #     get "myprefix/posts", to: "posts#index"
-      #
-      # Also, this helps to keep the method creator logic more simple.
-      #
-      prefix = @scope.full_prefix
-      prefix = account_scope(prefix)
-      prefix = account_on(prefix)
+    def engine
+      @options[:engine]
+    end
+    alias rack_app engine
 
-      path = [prefix, @options[:path]].compact.join('/')
-      path = path[1..-1] if path.starts_with?('/') # be more forgiving if / accidentally included
-      path
+    def engine?
+      !!engine
     end
 
-    def account_scope(prefix)
-      return unless prefix
-      return prefix unless @options[:from_scope]
-
-      if @options[:singular_resource]
-        prefix.split('/')[0..-2].join('/')
-      else
-        prefix.split('/')[0..-3].join('/')
-      end
+    def endpoint
+      engine.to_s if engine
     end
 
-    def account_on(prefix)
-      # Tricky @scope.from == :resources since the account_scope already has accounted for it
-      if @options[:on] == :collection && @scope.from == :resources
-        prefix = prefix.split('/')[0..-2].join('/')
-      end
-      prefix == '' ? nil : prefix
+    def resolved_defaults
+      defaults = @options[:defaults] || {}
+      @scope.resolved_defaults.merge(defaults)
     end
 
-    def compute_to
-      controller, action = get_controller_action(@options)
-      mod = @options[:module] || @scope.full_module
-      controller = [mod, controller].compact.join('/') # add module
-      "#{controller}##{action}"
+    def http_method
+      @options[:http_method].to_s.upcase
     end
 
-    def compute_as
-      return nil if @options[:as] == :disabled
-      return unless @options[:method] == :get || @options[:root]
-
-      controller, action = get_controller_action(@options)
-      klass = if @options[:root]
-        Jets::Router::MethodCreator::Root
-      elsif %w[index edit show new].include?(action.to_s)
-        class_name = "Jets::Router::MethodCreator::#{action.camelize}"
-        class_name.constantize # Index, Show, Edit, New
-      else
-        Jets::Router::MethodCreator::Generic
-      end
-
-      klass.new(@options, @scope, controller).full_meth_name(nil)
-    end
-
-    # IE: standard: posts/:id/edit
-    #     api_gateway: posts/{id}/edit
-    def path(format=:jets)
-      case format
-      when :api_gateway
-        api_gateway_format(@path)
-      when :raw
-        @path
-      else # jets format
-        ensure_jets_format(@path)
-      end
-    end
-
-    def method
-      @options[:method].to_s.upcase
+    def constraints
+      @options[:constraints] || @scope.resolved_constraints
     end
 
     def internal?
@@ -116,17 +60,18 @@ class Jets::Router
     end
 
     def homepage?
-      path == ''
+      path == '/'
     end
 
     # IE: PostsController
-    def controller_name
-      to.sub(/#.*/,'').camelize + "Controller"
-    end
-
     # IE: index
-    def action_name
-      to.sub(/.*#/,'')
+    delegate :action, :controller, :is_collection?, :is_member?, to: :@info
+    alias action_name action
+
+    # IE: PostsController
+    # Different from @info.action
+    def controller_name
+      "#{controller.camelize}Controller" if controller
     end
 
     # Checks to see if the corresponding controller exists. Useful to validate routes
@@ -134,32 +79,55 @@ class Jets::Router
     def valid?
       controller_class = begin
         controller_name.constantize
-      rescue NameError
+      rescue NameError => e
         return false
       end
       controller_class.lambda_functions.include?(action_name.to_sym)
     end
 
+    # For Jets.config.cfn.build.routes == "one_apigw_method_for_all_routes"
+    # Need to build the pathParameters for the API Gateway event.
+    def rebuild_path_parameters(event)
+      extracted = extract_parameters(event["path"])
+      if extracted
+        params = event["pathParameters"] || {}
+        params.merge(extracted)
+      else
+        event["pathParameters"] # pass through
+      end
+    end
+
     # Extracts the path parameters from the actual path
     # Only supports extracting 1 parameter. So:
     #
-    #   actual_path: posts/tung/edit
+    #   request_path: posts/tung/edit
     #   route.path: posts/:id/edit
     #
     # Returns:
     #    { id: "tung" }
-    def extract_parameters(actual_path)
+    def extract_parameters(request_path)
+      request_path = "/#{request_path}" unless request_path.starts_with?('/') # be more forgiving if / accidentally not included
+      request_path = remove_engine_mount_at_path(request_path)
       if path.include?(':')
-        extract_parameters_capture(actual_path)
+        extract_parameters_capture(request_path)
       elsif path.include?('*')
-        extract_parameters_proxy(actual_path)
+        extract_parameters_proxy(request_path)
       else
         # Lambda AWS_PROXY sets null to the input request when there are no path parmeters
         nil
       end
     end
 
-    def extract_parameters_proxy(actual_path)
+    def remove_engine_mount_at_path(request_path)
+      return request_path unless original_engine
+
+      mount = Jets::Router::EngineMount.find_by(engine: original_engine)
+      return request_path unless mount
+
+      request_path.sub(mount.at, '')
+    end
+
+    def extract_parameters_proxy(request_path)
       # changes path to a string used for a regexp
       # others/*proxy => others\/(.*)
       # nested/others/*proxy => nested/others\/(.*)
@@ -168,9 +136,9 @@ class Jets::Router
         # leading_path: nested/others
         # capture everything after the leading_path as the value
         regexp = Regexp.new("#{leading_path}/(.*)")
-        value = actual_path.match(regexp)[1]
+        value = request_path.match(regexp)[1]
       else
-        value = actual_path
+        value = request_path
       end
 
       # the last segment without the '*' is the key
@@ -181,7 +149,7 @@ class Jets::Router
       { key => value }
     end
 
-    def extract_parameters_capture(actual_path)
+    def extract_parameters_capture(request_path)
       # changes path to a string used for a regexp
       # posts/:id/edit => posts\/(.*)\/edit
       labels = []
@@ -197,14 +165,49 @@ class Jets::Router
       regexp_string = "^#{regexp_string}$"
       regexp = Regexp.new(regexp_string)
 
-      values = regexp.match(actual_path).captures
+      values = regexp.match(request_path).captures
       labels.map do |next_label|
         [next_label, values.delete_at(0)]
       end.to_h
     end
 
-    def to_h
-      JSON.load(to_json)
+    # Prevents infinite loop when calling route.to_json for state.save("routes", ...)
+    def as_json(options= nil)
+      data = {
+        path: path,
+        http_method: http_method,
+        to: to,
+      }
+      data[:engine] = engine if engine
+      data[:internal] = internal if internal
+      data
+    end
+
+    # To keep "self #{self}" more concise and helpful
+    # Use "self #{self.inspect}" more verbose info
+    def to_s
+      "#<Jets::Router::Route:#{object_id} @options=#{@options}>"
+    end
+
+    # Old notes:
+    # For Grape apps, calling ActiveSupport to_json on a Grape class used to cause an infinite loop.
+    # Believe Grape fixed this issue. A GrapeApp.to_json now produces a string.
+    # No longer need to coerce to a string and back to a class.
+    #
+    # This is important because Sprocket::Environment.new cannot be coerced into a string or mounting wont work.
+    # This is used in sprockets-jets/lib/sprockets/jets/engine.rb
+    #
+    # Related PR: smarter apigw routes paging calculation #635
+    # https://github.com/boltops-tools/jets/pull/635
+    # Debugging notes: https://gist.github.com/tongueroo/c9baa7e98d5ad68bbdd770fde4651963
+    def mount_class
+      @options[:mount_class]
+    end
+
+    # For jets routes help table of routes
+    def mount_class_name
+      return unless mount_class
+      mount_class.class == Class ? mount_class : "#{mount_class.class}.new"
     end
 
   private

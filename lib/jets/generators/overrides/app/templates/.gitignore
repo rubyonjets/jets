@@ -1,0 +1,13 @@
+.bundle
+.byebug_history
+.DS_Store
+.env*
+*.gem
+/node_modules
+/public/assets
+/public/packs
+/public/packs-test
+bundled
+coverage
+pkg
+tmp

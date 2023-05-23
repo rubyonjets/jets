@@ -1,195 +1,117 @@
+require "action_controller"
+require "action_controller/log_subscriber"
+require "active_support/concern"
+require "active_support/callbacks"
+require "abstract_controller/callbacks"
 require "json"
 require "rack/utils" # Rack::Utils.parse_nested_query
 
 # Controller public methods get turned into Lambda functions.
-class Jets::Controller
+module Jets::Controller
+  DEFAULT_CONTENT_TYPE = "text/html; charset=utf-8"
+
+  class RoutingError < StandardError; end
+
   class Base < Jets::Lambda::Functions
-    include ActiveSupport::Rescuable
-    include Authorization
-    include Callbacks
-    include Cookies
-    include ForgeryProtection
-    include Jets::Router::Helpers
-    include Layout
-    include Params
-    include Rendering
+    # Make Jets controller "compatible" with Rails
+    # Note: Rolling include into a single Compat module causes naming conflicts with ActionController and AbstractController.
+    # So we include each module individually. It's clearer this way anyway.
+    include Compat::AbstractController::Base
+    include Compat::ActionController::Metal
+    include Compat::RouteSet
+    include Compat::Caching
+    include Compat::Future
 
-    delegate :headers, to: :request
-    delegate :set_header, to: :response
-    attr_reader :request, :response
-    attr_accessor :session
-    def initialize(event, context={}, meth)
-      super
-      @request = Request.new(event, context)
-      @response = Response.new
+    # Order matters due to use of super and the module included chain.
+    include AbstractController::Rendering    # at top to normalize render options asap
+    include AbstractController::Translation
+    include AbstractController::AssetPaths
+
+    include ActionController::Helpers
+    include Jets::Router::Helpers::NamedRoutes
+
+    include ActionController::UrlFor      # includes ActionDispatch::Routing::UrlFor
+    include ActionController::Redirecting
+    include ActionView::Layouts           # includes ActionView::Rendering
+    include ActionController::Rendering
+    include ActionController::Renderers::All # for use_renderers :json, :js, :xml
+    include ActionController::ConditionalGet
+    include ActionController::EtagWithTemplateDigest
+    include ActionController::EtagWithFlash
+    include ActionController::Caching
+    include ActionController::MimeResponds
+    include ActionController::ImplicitRender # includes BasicImplicitRender action_controller/metal/basic_implicit_render.rb
+    include ActionController::StrongParameters
+    include ActionController::ParameterEncoding
+    include ActionController::Cookies
+    include ActionController::Flash
+    include ActionController::FormBuilder
+    include ActionController::RequestForgeryProtection
+    include ActionController::ContentSecurityPolicy
+    include ActionController::PermissionsPolicy
+    # include ActionController::Streaming       # not supported
+    # include ActionController::DataStreaming   # not supported
+    include ActionController::HttpAuthentication::Basic::ControllerMethods
+    include ActionController::HttpAuthentication::Digest::ControllerMethods
+    include ActionController::HttpAuthentication::Token::ControllerMethods
+    # include ActionController::DefaultHeaders  # not needed
+    include ActionController::Logging           # log_at: ability to change log level
+
+    # More Jets overrides and customizations
+    include Handler               # Lambda Handler process! method. Runs on AWS only.
+    include RackAdapter::Action   # action rack method
+
+    # Before callbacks should also be executed as early as possible, so
+    # also include them at the bottom.
+    include AbstractController::Callbacks
+
+    # Must near bottom because decorating Rails behavior
+    include Decorate::Authorization         # APIGW Authorizers
+    include Decorate::UrlFor                # add_apigw_stage
+    include Decorate::Redirecting           # add_apigw_stage
+    include Decorate::Logging
+
+    # Append rescue at the bottom to wrap as much as possible.
+    include ActionController::Rescue
+
+    # Add instrumentations hooks at the bottom, to ensure they instrument
+    # all the methods properly.
+    include ActionController::Instrumentation # TODO: figure why notifications dont work
+
+    # Params wrapper should come before instrumentation so they are
+    # properly showed in logs
+    include ActionController::ParamsWrapper
+
+    def initialize(event, context, meth, rack_env)
+      # Passing in rack env so the same rack env (same object id) is used.
+      # This is important for:
+      #  1. Constraints lambda procs
+      #  2. Controller.action rack methods
+      @event = event
+      @context = context
+      @meth = meth
+      @rack_env = rack_env
+      @_request = Jets::Controller::Request.new(event: event, rack_env: @rack_env)
+      # Note: Rails sets request.route in the Rails::Engine#build_request instead.
+      # The Jets request class is built slightly differently, so set it here.
+      # The request.routes method is need to that url_helpers work in generally.
+      # It's just how Rails ActionView implements url_helpers.
+      @_request.routes = self.class._routes
+      @_response = Jets::Controller::Response.new
+      @_response.request = @request
+      # Jets::Controller::Base#initialize interface is different than ActionController::Controller::Base.
+      # The super call goes to ActionController modules that can decorate and call super again.
+      # At the end of the module chain is Jets::Controller::Compat::ActionController::Metal#initialize
+      # which goes back to the original Jets::Lambda::Functions#initialize(event, context, meth) interface.
+      super() # ActionController::Base#initialize() interface
     end
 
-    # Overrides Base.process
-    def self.process(event, context={}, meth)
-      controller = new(event, context, meth)
-      # Using send because process! is private method in Jets::RackController so
-      # it doesnt create a lambda function.  It's doesnt matter what scope process!
-      # is in Controller::Base because Jets lambda functions inheritance doesnt
-      # include methods in Controller::Base.
-      # TODO: Can process! be a protected method to avoid this?
-      controller.send(:process!)
-    end
+    abstract!
 
-    # One key difference between process! vs dispatch!
-    #
-    #    process! - takes the request through the middleware stack
-    #    dispatch! - does not
-    #
-    # Most of the time, you want process! instead of dispatch!
-    #
-    def process!
-      adapter = Jets::Controller::Rack::Adapter.new(event, context)
-      adapter.rack_vars(
-        'jets.controller' => self,
-        'lambda.context' => context,
-        'lambda.event' => event,
-        'lambda.meth' => meth,
-      )
-
-      # adapter.process calls
-      #
-      #     Jets.application.call(env)
-      #
-      # and that goes through the middleware stacks. The last middleware stack is Jets::Controller::Middleware::Main
-      #
-      #     class Jets::Controller::Middleware::Main
-      #       def call!
-      #         setup
-      #         @controller.dispatch! # Returns triplet
-      #       end
-      #     end
-      #
-      adapter.process # Returns API Gateway hash structure
-    end
-
-    # One key difference between process! vs dispatch!
-    #
-    #    process! - takes the request through the middleware stack
-    #    dispatch! - does not
-    #
-    # dispatch! is useful for megamode or mounted applications
-    #
-    def dispatch!
-      method_override!
-
-      t1 = Time.now
-      log_start
-
-      begin
-        if run_before_actions(break_if: -> { @rendered })
-          send(@meth)
-          action_completed = true
-        else
-          Jets.logger.info "Filter chain halted as #{@last_callback_name} rendered or redirected"
-        end
-
-        triplet = ensure_render
-        run_after_actions if action_completed
-      rescue Exception => exception
-        rescue_with_handler(exception) || raise
-        triplet = ensure_render
-      end
-
-      took = Time.now - t1
-      status = triplet[0]
-      log_finish(status: status, took: took)
-      triplet # status, headers, body
-    end
-
-    # Override @meth when POST with _method=delete
-    # By the time processing reaches dispatch which calls method_override!
-    # The Rack::MethodOverride middleware has overriden env['REQUEST_METHOD'] with DELETE
-    # and set env['rack.methodoverride.original_method']
-    def method_override!
-      env = request.env
-      if env['rack.methodoverride.original_method'] && env['REQUEST_METHOD'] == 'DELETE'
-        @original_meth = @meth
-        @meth = "delete"
-      end
-    end
-
-    def processing_log
-      processing = "Processing #{self.class.name}##{@meth}"
-      processing << " (original method #{@original_meth})" if @original_meth
-      processing
-    end
-
-    # Documented interface method, careful not to rename
-    def log_start
-      # JSON.dump makes logging look pretty in CloudWatch logs because it keeps it on 1 line
-      ip = request.ip
-      Jets.logger.info "Started #{@event['httpMethod']} \"#{@event['path']}\" for #{ip} at #{Time.now}"
-      Jets.logger.info processing_log
-      Jets.logger.info "  Event: #{event_log}"
-      Jets.logger.info "  Parameters: #{JSON.dump(filtered_parameters.to_h)}"
-    end
-
-    # Documented interface method, careful not to rename
-    def log_finish(options={})
-      status, took = options[:status], options[:took]
-      Jets.logger.info "Completed Status Code #{status} in #{took}s"
-    end
-
-    def event_log
-      display_event = @event.dup
-
-      if @event['isBase64Encoded']
-        display_event['body'] = '[BASE64_ENCODED]'
-      else
-        display_event['body'] = parameter_filter.filter_json(display_event['body'])
-      end
-
-      display_event["queryStringParameters"] = parameter_filter.filter(display_event['queryStringParameters'])
-      display_event["pathParameters"] = parameter_filter.filter(display_event['pathParameters'])
-      json_dump(display_event)
-    end
-
-    # Handles binary data safely
-    def json_dump(data)
-      JSON.dump(data)
-    rescue Encoding::UndefinedConversionError
-      data['body'] = '[BINARY]'
-      JSON.dump(data)
-    end
-
-    def controller_paths
-      paths = []
-      klass = self.class
-      while klass != Jets::Controller::Base
-        paths << klass.controller_path
-        klass = klass.superclass
-      end
-      paths
-    end
-
-    def controller_name
-      self.class.to_s.underscore
-    end
-
-    def action_name
-      @meth
-    end
-
-    class_attribute :internal_controller
-    class << self
-      def internal(value=nil)
-        if !value.nil?
-          self.internal_controller = value
-        else
-          self.internal_controller
-        end
-      end
-
-      def helper_method(*meths)
-        meths.each do |meth|
-          Jets::Router::Helpers.define_helper_method(meth)
-        end
-      end
-    end
+    use_renderers :json, :js, :xml
   end
+
+  # See Jets::Controller::Compat::ActionController::Metal dispatch! method
+
+  ActiveSupport.run_load_hooks(:jets_controller, Base)
 end

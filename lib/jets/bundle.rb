@@ -1,5 +1,3 @@
-require "jets/turbo"
-
 module Jets
   # Named Bundle vs Bundler to avoid having to fully qualify ::Bundler
   module Bundle
@@ -16,7 +14,7 @@ module Jets
     #
     def setup
       return unless jets_project?
-      return unless bundler_enabled?
+      return unless gemfile?
       Kernel.require "bundler/setup"
       Bundler.setup # Same as Bundler.setup(:default)
     rescue LoadError => e
@@ -40,7 +38,7 @@ module Jets
     # project with another Gemfile, the load errors will also be rescued.
     def require
       return unless jets_project?
-      return unless bundler_enabled?
+      return unless gemfile?
       Kernel.require "bundler/setup"
       Bundler.require(*bundler_groups)
     rescue LoadError => e
@@ -64,11 +62,6 @@ module Jets
 
         Also, running bundle exec in front of your command may remove this message.
       EOL
-    end
-
-    # Also check for Afterburner mode since in that mode jets is a standalone tool.
-    def bundler_enabled?
-      !Jets::Turbo.afterburner? && gemfile?
     end
 
     def gemfile?

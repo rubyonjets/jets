@@ -49,6 +49,7 @@ module Jets::Builders
 
       copy_gemfiles(full_project_path)
       copy_bundled_gems(full_project_path)
+      run_prebundle_copy
 
       # Uncomment out to always remove the cache/vendor/gems to debug
       # FileUtils.rm_rf("#{cache_area}/vendor/gems")
@@ -159,17 +160,11 @@ module Jets::Builders
       Dir.glob("#{cache_area}/vendor/gems/ruby/2.5.0/bundler/gems/*").each do |path|
         sha = path.split('-').last[0..6] # only first 7 chars of the git sha
         unless git_shas.include?(sha)
-          # puts "Removing old submoduled gem: #{path}" # uncomment to see and debug
           FileUtils.rm_rf(path) # REMOVE old submodule directory
         end
       end
     end
 
-    def copy_bundled_gems(full_project_path)
-      src = "#{full_project_path}/bundled_gems"
-      return unless File.exist?(src)
-      Jets::Util.cp_r(src, "#{cache_area}/bundled_gems")
-    end
 
     def copy_gemfiles(full_project_path)
       FileUtils.mkdir_p(cache_area)
@@ -180,6 +175,22 @@ module Jets::Builders
       return unless File.exist?(gemfile_lock)
 
       FileUtils.cp(gemfile_lock, dest)
+    end
+
+    def copy_bundled_gems(full_project_path)
+      src = "#{full_project_path}/bundled_gems"
+      return unless File.exist?(src)
+      Jets::Util.cp_r(src, "#{cache_area}/bundled_gems")
+    end
+
+    def run_prebundle_copy
+      paths = Jets.config.build.prebundle_copy
+      paths = Array(paths)
+      paths.each do |path|
+        src = "#{@full_app_root}/#{path}"
+        return unless File.exist?(src)
+        Jets::Util.cp_r(src, "#{cache_area}/#{path}")
+      end
     end
 
     # Remove the BUNDLED WITH line since we don't control the bundler gem version on AWS Lambda

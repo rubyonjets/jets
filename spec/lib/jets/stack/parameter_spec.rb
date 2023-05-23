@@ -12,7 +12,7 @@ describe "Stack parameter" do
     end
     it "template" do
       expect(parameter.template).to eq(
-        {"InstanceType"=>{"Default"=>"t2.micro", "Description"=>"instance type", "Type"=>"String"}}
+        {:InstanceType=>{:Default=>"t2.micro", :Description=>"instance type", :Type=>"String"}}
       )
     end
   end
@@ -23,7 +23,7 @@ describe "Stack parameter" do
     end
     it "template" do
       expect(parameter.template).to eq(
-        {"Company"=>{"Default"=>"boltops", "Type"=>"String"}}
+        {:Company=>{:Default=>"boltops", :Type=>"String"}}
       )
     end
   end
@@ -34,7 +34,7 @@ describe "Stack parameter" do
     end
     it "template" do
       expect(parameter.template).to eq(
-        {"AmiId"=>{"Default"=>"ami-123", "Type"=>"String"}}
+        {:AmiId=>{:Default=>"ami-123", :Type=>"String"}}
       )
     end
   end
@@ -45,7 +45,7 @@ describe "Stack parameter" do
     end
     it "template" do
       expect(parameter.template).to eq(
-        {"AmiId" => {"Type"=>"String"}}
+        {:AmiId=>{:Type=>"String"}}
       )
     end
   end

@@ -14,7 +14,12 @@ end
 
 describe Jets::Controller::Base do
   context RescuableController do
-    let(:controller) { RescuableController.new({}, nil, :index) }
+    before(:each) { silence_loggers! }
+    after(:each)  { restore_loggers! }
+
+    let(:controller) do
+      RescuableController.new({}, nil, :index, {})
+    end
 
     it "rescue_handlers includes error_handler only" do
       expect(controller.class.rescue_handlers).to eq [["StandardError", :error_handler]]
@@ -22,8 +27,8 @@ describe Jets::Controller::Base do
 
     it "rescues the error raised in index" do
       response = controller.dispatch!
-      expect(response[0]).to eq '500'
-      expect(response[2].read).to eq({error: "there was an error"}.to_json)
+      expect(response[0]).to eq 500
+      expect(response[2].first).to eq({error: "there was an error"}.to_json)
     end
   end
 end

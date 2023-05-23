@@ -1,6 +1,6 @@
 # All roads lead here
 #
-# 1. AWS Lambda: PostsController - Rack::Adapter - Jets.application.call
+# 1. AWS Lambda: PostsController - Handler::Apigw - Jets.application.call
 # 2. Local server:  config.ru - run Jet.application - Jets.application.call
 #
 # Then eventually:
@@ -9,22 +9,30 @@
 #
 module Jets::Controller::Middleware
   class Main
+    include Jets::ExceptionReporting
+
     def initialize(env)
       @env = env
-      @controller = env['jets.controller']
-      @event = env['lambda.event']
-      @context = env['lambda.context']
-      @meth = env['lambda.meth']
+      @controller = env['jets.controller'] # original controller instance from handler or mimic
+      @context = env['jets.context']  # original AWS Lambda event or mimic context
+      @event = env['jets.event']      # original AWS Lambda event or mimic event
+      @meth = env['jets.meth']
     end
 
     def call
-      ENV['JETS_HOST'] = jets_host # Dirty to use what's essentially a global variable but unsure how else to achieve
       dup.call!
     end
 
+    # With exception reporting here instead of Controller::Base#process so any
+    # exception in the middleware stack is caught.
+    # Also using with_exception_reporting instead of
+    # prepend Jets::ExceptionReporting::Process because the method is call!
+    # not process. The interface is different.
     def call!
-      setup
-      @controller.dispatch! # Returns triplet
+      with_exception_reporting do
+        setup
+        @controller.dispatch! # Returns triplet
+      end
     end
 
     # Common setup logical at this point of middleware processing right before

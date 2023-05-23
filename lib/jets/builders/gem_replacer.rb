@@ -2,15 +2,14 @@ module Jets::Builders
   class GemReplacer
     extend Memoist
     include Util
-    
+
     def initialize(options)
       @options = options
     end
 
     def run
       # use_gemspec to resolve http-parser gem issue
-      use_gemspec = !Jets::Turbo.afterburner? # gemspec approach breaks afterburner mode
-      check = Jets::Gems::Check.new(use_gemspec: use_gemspec)
+      check = Jets::Api::Gems::Check.new(use_gemspec: true)
       if Jets.config.lambda.layers.empty?
         found_gems = check.run! # exits early if missing gems found
       else
@@ -20,7 +19,7 @@ module Jets::Builders
 
       # found gems will only have gems that were found
       found_gems.each do |gem_name|
-        gem_extractor = Jets::Gems::Extract::Gem.new(gem_name, @options)
+        gem_extractor = Jets::Api::Gems::Extract::Gem.new(gem_name, @options)
         gem_extractor.run
         rename_gem(gem_name)
       end
@@ -29,7 +28,7 @@ module Jets::Builders
     end
 
     def rename_gem(gem_name)
-      ruby_folder = "#{Jets.build_root}/stage/opt/ruby/gems/#{Jets::Gems.ruby_folder}"
+      ruby_folder = "#{Jets.build_root}/stage/opt/ruby/gems/#{Jets::Api::Gems.ruby_folder}"
       gems_folder = "#{ruby_folder}/gems"
       expr = "#{gems_folder}/#{gem_name}-x*-{darwin,linux}"
       src = Dir.glob(expr).first
@@ -40,7 +39,7 @@ module Jets::Builders
     end
 
     def ruby_folder
-      Jets::Gems.ruby_folder
+      Jets::Api::Gems.ruby_folder
     end
 
     # remove unnecessary files to reduce package size

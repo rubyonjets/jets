@@ -1,29 +1,46 @@
 require 'rack/request'
 
-class Jets::Controller
-  class Request < ::Rack::Request
-    def initialize(event, context)
-      @event, @context = event, context
-      super(env)
+module Jets::Controller
+  class Request
+    include Rack::Request::Helpers
+    include Compat::Request
+    include Compat::Params
+
+    include ActionDispatch::Flash::RequestMethods
+    include ActionDispatch::Http::Cache::Request
+    include ActionDispatch::Http::MimeNegotiation
+    include ActionDispatch::Http::FilterParameters # parameter_filter and filtered_parameters
+    include ActionDispatch::Http::URL
+    include ActionDispatch::RequestCookieMethods
+    include ActionDispatch::ContentSecurityPolicy::Request
+    include ActionDispatch::PermissionsPolicy::Request
+    include Rack::Request::Env
+
+    # since jets delegates parameter_filter from controller to request
+    public :parameter_filter
+
+    attr_reader :event, :env
+    attr_accessor :routes
+    def initialize(rack_env: nil, event: nil)
+      @rack_env = rack_env
+      @event = event
+      @env = normalize_env
+      super(@env) # Rack::Env module => super()
     end
 
-    def env
-      @env ||= Jets::Controller::Rack::Env.new(@event, @context).convert # convert to Rack env
+    def normalize_env
+      if @rack_env # already rack env
+        @rack_env # rack_env is from Controller.action => lambda { |env| .. }
+      else
+        Jets::Controller::RackAdapter::Env.new(@event, {}).convert # convert to Rack env
+      end
     end
 
-    # When request hits the middleware Controller::Rack::Middleware::Main endpoint
-    # We set the it with the updated env since it could had been mutated down the
-    # middleware stack.
+    # When request hits the middleware Controller::RackAdapter::Middleware::Main endpoint
+    # We updated env since it could had been mutated down the middleware stack
+    # from Mimic to Main.
     def set_env!(env)
       @env = env
-    end
-
-    # API Gateway is inconsistent about how it cases it keys.
-    # Sometimes it is "x-requested-with" vs "X-Requested-With"
-    # Normalize it with downcase.
-    def headers
-      headers = @event["headers"] || {}
-      headers.transform_keys { |key| key.downcase }
     end
   end
 end

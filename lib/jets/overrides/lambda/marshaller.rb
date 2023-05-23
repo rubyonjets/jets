@@ -22,6 +22,16 @@ module AwsLambda
         else
           # Orignal method calls .to_json but this collides with ActiveSupport's to_json
           # method_response.to_json # application/json is assumed
+          # https://stackoverflow.com/questions/18067203/ruby-to-json-issue-with-error-illegal-malformed-utf-8
+          if method_response.is_a?(Hash)
+            method_response.deep_transform_values! do |v|
+              if v.respond_to?(:force_encoding) && !v.frozen?
+                v.force_encoding("ISO-8859-1").encode("UTF-8")
+              else
+                v # IE: Integer
+              end
+            end
+          end
           JSON.dump(method_response)
         end
       end

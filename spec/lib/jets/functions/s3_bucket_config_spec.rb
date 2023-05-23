@@ -2,7 +2,7 @@ ENV['CFN_RESPONSE_SEND'] = '1'
 ENV['CFN_RESPONSE_VERBOSE'] = '0'
 require "ostruct"
 
-code = IO.read("./lib/jets/internal/app/shared/functions/jets/s3_bucket_config.rb")
+code = IO.read("./engines/internal/app/shared/functions/jets/s3_bucket_config.rb")
 # Hack: Seems to be the only way to mimic access the methods by include Cfnresponse like send_response
 eval %Q{
   class MainScope

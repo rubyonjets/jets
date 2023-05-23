@@ -57,22 +57,26 @@ module Jets::Builders::ShimVars
     end
 
     def lang(meth)
-      klass.tasks.find
+      klass.definitions.find
     end
 
     # This gets called in the node shim js template
-    # IE handlers/controllers/posts_controller.index
+    # Example: handlers/controllers/posts_controller.index
     def handler_for(meth)
+      "#{handler_base}.#{meth}"
+    end
+
+    # Base portion of handler path.
+    # Example: handlers/controllers/posts_controller
+    def handler_base
       # possibly not include _function
       underscored_name = @relative_path.sub(%r{app/(\w+)/},'').sub('.rb','')
-      "handlers/#{process_type.pluralize}/#{underscored_name}.#{meth}"
+      "handlers/#{process_type.pluralize}/#{underscored_name}"
     end
 
     # Example return: "handlers/controllers/posts.js"
-    # TODO: rename this to dest_path or something better now since using native ruby
     def dest_path
-      @relative_path
-        .sub("app", "handlers")
+      @relative_path.sub("app", "handlers")
     end
   end
 end

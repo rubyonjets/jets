@@ -49,11 +49,11 @@ class Jets::Dotenv
 
     def ssm_name(key, value)
       if value == "SSM"
-        "/#{Jets.config.project_name}/#{Jets.env}/#{key}"
+        "/#{Jets.project_name}/#{Jets.env}/#{key}"
       else
         value.start_with?("/") ?
           value :
-          "/#{Jets.config.project_name}/#{Jets.env}/#{value}"
+          "/#{Jets.project_name}/#{Jets.env}/#{value}"
       end
     end
 

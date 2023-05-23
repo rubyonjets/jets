@@ -21,7 +21,7 @@ class Jets::Stack
       elsif (definition.size == 2 && second.is_a?(String)) || # short form
             definition.size == 1
         logical_id = first
-        properties = second.is_a?(String) ? { default: second } : {}
+        properties = second.is_a?(String) ? { Default: second } : {}
         { logical_id => properties }
       else # I dont know what form
         raise "Invalid form provided. definition #{definition.inspect}"
@@ -30,7 +30,7 @@ class Jets::Stack
 
     def add_required(attributes)
       properties = attributes.values.first
-      properties[:type] ||= 'String'
+      properties[:Type] ||= 'String'
       attributes
     end
   end

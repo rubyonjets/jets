@@ -5,23 +5,23 @@ describe Jets::Job::Base do
   # cron configs will have been loaded so we can use them later to configure
   # the lambda functions
   context HardJob do
-    it "tasks" do
-      tasks = HardJob.all_public_tasks.keys
-      expect(tasks).to eq [:dig, :drive, :lift]
+    it "definitions" do
+      definitions = HardJob.all_public_definitions.keys
+      expect(definitions).to eq [:dig, :drive, :lift]
 
-      dig_task = HardJob.all_public_tasks[:dig]
-      expect(dig_task).to be_a(Jets::Lambda::Task)
+      dig_definition = HardJob.all_public_definitions[:dig]
+      expect(dig_definition).to be_a(Jets::Lambda::Definition)
 
-      drive_task = HardJob.all_public_tasks[:lift]
-      expect(drive_task).to be_a(Jets::Lambda::Task)
+      drive_definition = HardJob.all_public_definitions[:lift]
+      expect(drive_definition).to be_a(Jets::Lambda::Definition)
     end
 
-    it "tasks contains flatten Array structure" do
-      tasks = HardJob.tasks
-      expect(tasks.first).to be_a(Jets::Lambda::Task)
+    it "definitions contains flatten Array structure" do
+      definitions = HardJob.definitions
+      expect(definitions.first).to be_a(Jets::Lambda::Definition)
 
-      task_names = tasks.map(&:name)
-      expect(task_names).to eq(HardJob.all_public_tasks.keys)
+      definition_names = definitions.map(&:name)
+      expect(definition_names).to eq(HardJob.all_public_definitions.keys)
     end
 
     it "perform_now" do
@@ -30,17 +30,17 @@ describe Jets::Job::Base do
     end
 
     it "perform_later" do
-      allow(Jets::Commands::Call).to receive(:new).and_return(null)
+      allow(Jets::Commands::Call::Caller).to receive(:new).and_return(null)
       allow(HardJob).to receive(:on_lambda?).and_return(true)
       HardJob.perform_later(:dig, {})
-      expect(Jets::Commands::Call).to have_received(:new)
+      expect(Jets::Commands::Call::Caller).to have_received(:new)
     end
   end
 
   context EasyJob do
-    it "tasks" do
-      tasks = EasyJob.all_public_tasks.keys
-      expect(tasks).to eq [:sleep]
+    it "definitions" do
+      definitions = EasyJob.all_public_definitions.keys
+      expect(definitions).to eq [:sleep]
     end
   end
 

@@ -16,12 +16,13 @@ class Jets::Dotenv
   end
 
   def on_aws?
+    return true if ENV['ON_AWS']
     !!ENV['_HANDLER'] # https://docs.aws.amazon.com/lambda/latest/dg/lambda-environment-variables.html
   end
 
   # dotenv files with the following precedence:
   #
-  # - .env.development.jets_env_extra (highest)
+  # - .env.development.jets_extra (highest)
   # - .env.development.remote (2nd highest, only if JETS_ENV_REMOTE=1)
   # - .env.development.local (unless JETS_ENV_REMOTE=1)
   # - .env.development

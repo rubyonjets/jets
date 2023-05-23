@@ -42,20 +42,13 @@ class Jets::Processors::MainProcessor
       end
 
       result
-    rescue Exception => e
-      unless Jets.env.test?
-        # Customize error message slightly so nodejs shim can process the
-        # returned error message.
-        # The "RubyError: " is a marker that the javascript shim scans for.
-        $stderr.puts("RubyError: #{e.class}: #{e.message}") # js needs this as the first line
-        backtrace = e.backtrace.map {|l| "  #{l}" }
-        $stderr.puts(backtrace)
-        # No need to having error in stderr above anymore because errors are handled in memory
-        # at ruby_server.rb but keeping around for posterity.
-      end
 
-      Jets.on_exception(e)
-      raise(e) # raise error to ruby_server.rb to rescue and handle
+    # Additional rescue Exception as a paranoid measure.  We want to make sure
+    # that we always report the exception.  This is the last line of defense.
+    # Note: This only happens when the code is running in Lambda.
+    rescue => exception
+      Jets.report_exception(exception)
+      raise(exception)
     end
   end
 end

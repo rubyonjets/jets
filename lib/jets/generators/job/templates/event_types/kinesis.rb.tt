@@ -1,0 +1,9 @@
+<% module_namespacing do -%>
+class <%= class_name %>Job < ApplicationJob
+  kinesis_event "my-stream" # existing stream
+  def <%= options[:name] %>
+    puts "event #{JSON.dump(event)}"
+    puts "kinesis_data #{JSON.dump(kinesis_data)}"
+  end
+end
+<% end -%>

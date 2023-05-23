@@ -1,0 +1,8 @@
+<% module_namespacing do -%>
+class <%= class_name %>Job < ApplicationJob
+  iot_event "SELECT * FROM 'my/topic'"
+  def <%= options[:name] %>
+    puts "event #{JSON.dump(event)}"
+  end
+end
+<% end -%>

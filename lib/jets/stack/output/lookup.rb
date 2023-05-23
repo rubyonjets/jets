@@ -19,7 +19,7 @@ class Jets::Stack::Output
 
     # Shared child stack arn
     def shared_stack_arn(logical_id)
-      parent_stack = Jets.config.project_namespace
+      parent_stack = Jets.project_namespace
       resp = cfn.describe_stacks(stack_name: parent_stack)
       parent = resp.stacks.first
       output_value(parent, logical_id)

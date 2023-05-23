@@ -1,0 +1,42 @@
+source "https://rubygems.org"
+
+if File.exist?("dev.mode")
+  gem "jets", path: "#{ENV['HOME']}/data/rubyonjets/jets"
+  gem "sprockets-jets", path: "#{ENV['HOME']}/data/rubyonjets/sprockets-jets" # , require: "sprockets/jets/turbine"
+  gem "importmap", path: "#{ENV['HOME']}/data/rubyonjets/importmap"
+  gem "importmap-jets", path: "#{ENV['HOME']}/data/rubyonjets/importmap-jets"
+  gem "kingsman", path: "#{ENV['HOME']}/data/rubyonjets/kingsman/kingsman"
+  gem "jets-responders", path: "#{ENV['HOME']}/data/rubyonjets/kingsman/jets-responders"
+  gem "dynomite", path: "#{ENV['HOME']}/data/rubyonjets/dynomite"
+else
+  gem "jets", github: "boltops-tools/jets", branch: "v5"
+  gem "sprockets-jets", github: "boltops-tools/sprockets-jets", branch: "main"
+  gem "importmap", github: "boltops-tools/importmap", branch: "main"
+  gem "importmap-jets", github: "boltops-tools/importmap-jets", branch: "main"
+  gem "kingsman", github: "boltops-tools/kingsman", branch: "main"
+  gem "jets-responders", github: "boltops-tools/jets-responders", branch: "main"
+  gem "dynomite", github: "boltops-tools/dynomite", branch: "edge2"
+end
+
+gem "jbuilder"
+
+# Include mysql2 gem if you are using ActiveRecord, remove next line
+# and config/database.yml file if you are not
+gem "mysql2", "~> 0.5.3"
+
+gem "zeitwerk", ">= 2.5.0"
+
+# development and test groups are not bundled as part of the deployment
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'shotgun'
+  gem 'rack'
+  gem 'puma'
+end
+
+group :test do
+  gem 'rspec' # rspec test group only or we get the "irb: warn: can't alias context from irb_context warning" when starting jets console
+  gem 'launchy'
+  gem 'capybara'
+end

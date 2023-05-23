@@ -14,8 +14,11 @@ module Jets::Authorizer
     extend ActiveSupport::Concern
 
     class_methods do
+      include Jets::Util::Camelize
+
       def authorizer(props={})
-        if props[:type].to_s.upcase == "COGNITO_USER_POOLS"
+        camelize(props)
+        if props[:Type].to_s.upcase == "COGNITO_USER_POOLS"
           cognito_authorizer(props)
         else
           lambda_authorizer(props)
@@ -24,26 +27,27 @@ module Jets::Authorizer
 
       def lambda_authorizer(props={})
         with_fresh_properties(multiple_resources: false) do
-          r = Jets::Resource::ApiGateway::Authorizer.new(props)
+          r = Jets::Cfn::Resource::ApiGateway::Authorizer.new(props)
           resource(r.definition) # add associated resource immediately
         end
       end
 
-      # Creates a task but registers it to cognito_authorizers instead of all_tasks because there is no Lambda
+      # Creates a definition but registers it to cognito_authorizers instead of all_tasks because there is no Lambda
       # function associated with the cognito authorizer.
       def cognito_authorizer(props={})
+        camelize(props)
         resources = [props]
         # Authorizer name can have dashes, but "method" name should be underscored for correct logical id.
-        meth = props[:name].gsub('-','_')
-        resource = Jets::Resource::ApiGateway::Authorizer.new(props)
+        meth = props[:Name].gsub('-','_')
+        resource = Jets::Cfn::Resource::ApiGateway::Authorizer.new(props)
 
-        # Mimic task to grab base_replacements, namely namespace.
-        # Do not actually use the task to create a Lambda function for cognito authorizer.
-        # Only using the task for base_replacements.
-        task = Jets::Lambda::Task.new(self.name, meth,
+        # Mimic definition to grab base_replacements, namely namespace.
+        # Do not actually use the definition to create a Lambda function for cognito authorizer.
+        # Only using the definition for base_replacements.
+        definition = Jets::Lambda::Definition.new(self.name, meth,
                  resources: resources,
                  replacements: {}) # No need for need additional replacements. Baseline replacements suffice
-        all_cognito_authorizers[name] = { definition: resource.definition, replacements: task.replacements }
+        all_cognito_authorizers[name] = { definition: resource.definition, replacements: definition.replacements }
         clear_properties
       end
 
@@ -56,7 +60,7 @@ module Jets::Authorizer
       end
 
       def build?
-        !tasks.empty? || !all_cognito_authorizers.empty?
+        !definitions.empty? || !all_cognito_authorizers.empty?
       end
     end
 

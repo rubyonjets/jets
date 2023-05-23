@@ -8,8 +8,7 @@ describe "Stack Depends" do
         [Jets::Stack::Depends::Item.new(:alert)]
       end
       it "params" do
-        # pp depends.params # uncomment to debug
-        expect(depends.params).to eq({"Delivered"=>"!GetAtt Alert.Outputs.Delivered"})
+        expect(depends.params).to eq({:Delivered=>"!GetAtt Alert.Outputs.Delivered"})
       end
     end
 
@@ -18,7 +17,6 @@ describe "Stack Depends" do
         [Jets::Stack::Depends::Item.new(:alert, class_prefix: true)]
       end
       it "params has prefix added to the key but not the value" do
-        # pp depends.params # uncomment to debug
         expect(depends.params).to eq({"AlertDelivered"=>"!GetAtt Alert.Outputs.Delivered"})
       end
     end
@@ -33,8 +31,7 @@ describe "Stack Depends" do
         ]
       end
       it "params" do
-        # pp depends.params # uncomment to debug
-        expect(depends.params).to eq({"Delivered"=>"!GetAtt Alert.Outputs.Delivered", "Test"=>"!GetAtt Custom.Outputs.Test"})
+        expect(depends.params).to eq({:Delivered=>"!GetAtt Alert.Outputs.Delivered", :Test=>"!GetAtt Custom.Outputs.Test"})
       end
     end
   end

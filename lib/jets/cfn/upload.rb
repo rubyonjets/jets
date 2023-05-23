@@ -1,17 +1,11 @@
-require 'action_view'
+require 'active_support/number_helper'
 require 'digest'
 require 'rack/mime'
 
 module Jets::Cfn
   class Upload
     include Jets::AwsServices
-    include ActionView::Helpers::NumberHelper # number_to_human_size
-
-    attr_reader :bucket_name
-
-    def initialize(bucket_name)
-      @bucket_name = bucket_name
-    end
+    include ActiveSupport::NumberHelper # number_to_human_size
 
     def upload
       upload_cfn_templates
@@ -19,14 +13,25 @@ module Jets::Cfn
       upload_assets
     end
 
-    def upload_cfn_templates
-      puts "Uploading CloudFormation templates to S3."
-      expression = "#{Jets::Names.template_path_prefix}-*"
+    def bucket_name
+      Jets.s3_bucket
+    end
+
+    def upload_cfn_templates(version=nil)
+      puts "Uploading CloudFormation templates to S3." unless version # hide message when version is passed in
+      expression = "#{Jets::Names.templates_folder}/*"
+      if version # outside of each loop to avoid repeating
+        version = "versions/#{version}"
+      else
+        checksum = Jets::Builders::Md5.checksums["stage/code"]
+        version = "shas/#{checksum}"
+      end
+      checksum = Jets::Builders::Md5.checksums["stage/code"]
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
-
-        key = "jets/cfn-templates/#{File.basename(path)}"
+        key = ["jets/cfn-templates", version, File.basename(path)].compact.join('/')
         obj = s3_resource.bucket(bucket_name).object(key)
+        puts "Uploading #{path} to s3://#{bucket_name}/#{key}".color(:green) if ENV['JETS_DEBUG']
         obj.upload_file(path)
       end
     end
@@ -60,15 +65,9 @@ module Jets::Cfn
 
     def upload_public_assets
       public_folders = %w[public]
-      public_folders = add_rack_assets(public_folders)
       public_folders.each do |folder|
         upload_asset_folder(folder)
       end
-    end
-
-    def add_rack_assets(public_folders)
-      return public_folders unless Jets.rack?
-      public_folders + %w[rack/public]
     end
 
     def upload_asset_folder(folder)
@@ -88,12 +87,17 @@ module Jets::Cfn
     end
 
     def upload_to_s3(full_path)
-      return if identical_on_s3?(full_path) && !ENV['JETS_ASSET_UPLOAD_FORCE']
+      if identical_on_s3?(full_path) && !ENV['JETS_ASSET_UPLOAD_FORCE']
+        puts "Asset is identical on s3: #{full_path}" if ENV['JETS_DEBUG_ASSETS']
+        return
+      end
 
       key = s3_key(full_path)
       obj = s3_resource.bucket(bucket_name).object(key)
       content_type = content_type_headers(full_path)
-      Jets.logger.debug "Uploading and setting content type for s3://#{bucket_name}/#{key} content_type #{content_type[:content_type].inspect}"
+      if ENV['JETS_DEBUG_ASSETS']
+        puts "Uploading and setting content type for s3://#{bucket_name}/#{key} content_type #{content_type[:content_type].inspect}"
+      end
       obj.upload_file(full_path, { acl: "public-read", cache_control: cache_control }.merge(content_type))
     end
 
@@ -152,6 +156,5 @@ module Jets::Cfn
         "#{minutes.to_i}m #{seconds.to_i}s"
       end
     end
-
   end
 end

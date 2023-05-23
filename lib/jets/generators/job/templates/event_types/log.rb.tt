@@ -1,0 +1,9 @@
+<% module_namespacing do -%>
+class <%= class_name %>Job < ApplicationJob
+  log_event "/aws/lambda/hello"
+  def <%= options[:name] %>
+    puts "event #{JSON.dump(event)}"
+    puts "log_event #{JSON.dump(log_event)}"
+  end
+end
+<% end -%>

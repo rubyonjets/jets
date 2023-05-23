@@ -1,5 +1,9 @@
-describe Jets::Controller::Params do
-  let(:controller) { PostsController.new(event, nil, "update") }
+describe Jets::Controller::Request::Compat::Params do
+  let(:controller) do
+    context = nil
+    rack_env = Jets::Controller::RackAdapter::Env.new(event, context).convert
+    PostsController.new(event, nil, "update", rack_env)
+  end
 
   context "with unicode" do
     context "body parameter" do
@@ -136,20 +140,15 @@ describe Jets::Controller::Params do
   describe "#filtered_params" do
     let(:event) { {} }
 
-    it "Forwards options to params" do
-      expect(controller).to receive(:params).with(body_parameters: false, path_parameters: true, raw: true)
-
-      controller.send(:filtered_parameters, body_parameters: false, path_parameters: true, raw: false)
-    end
-
     context "With plain filtered parameters" do
       let(:event) { multipart_event(:simple_form) }
 
       it "Masks provided keys as [FILTERED]" do
-        Jets.config.controllers.filtered_parameters = [:title]
-
+        controller.request.set_header("action_dispatch.parameter_filter", [:title])
         filtered_params = controller.send(:filtered_parameters)
         expect(filtered_params).to eq(
+          "action" => "index",
+          "controller" => "posts",
           "name" => "Tung",
           "title" => "[FILTERED]"
         )
@@ -160,8 +159,7 @@ describe Jets::Controller::Params do
       let(:event) { multipart_event(:nested) }
 
       it "Masks provided keys as [FILTERED]" do
-        Jets.config.controllers.filtered_parameters = ["foo.submit-name"]
-
+        controller.request.set_header("action_dispatch.parameter_filter", ["foo.submit-name"])
         filtered_params = controller.send(:filtered_parameters)
         expect(filtered_params["foo"]["submit-name"]).to eq("[FILTERED]")
       end
@@ -178,10 +176,12 @@ describe Jets::Controller::Params do
       end
 
       it "Masks provided keys as [FILTERED]" do
-        Jets.config.controllers.filtered_parameters = [/users\.\d+\.name/]
+        controller.request.set_header("action_dispatch.parameter_filter", [/users\.\d+\.name/])
 
         filtered_params = controller.send(:filtered_parameters)
         expect(filtered_params).to eq(
+          "action" => "index",
+          "controller" => "posts",
           "users" => {
             "0" => {
               "name" => "[FILTERED]",

@@ -4,20 +4,20 @@ describe Jets::Rule::Base do
   # by the time the class is finished loading into memory the properties have
   # been load loaded so we can use them later to configure the lambda functions
   context GameRule do
-    it "tasks" do
-      tasks = GameRule.all_public_tasks.keys
-      expect(tasks).to eq [:protect]
+    it "definitions" do
+      definitions = GameRule.all_public_definitions.keys
+      expect(definitions).to eq [:protect]
 
-      protect_task = GameRule.all_public_tasks[:protect]
-      expect(protect_task).to be_a(Jets::Lambda::Task)
+      protect_definition = GameRule.all_public_definitions[:protect]
+      expect(protect_definition).to be_a(Jets::Lambda::Definition)
     end
 
-    it "tasks contains flatten Array structure" do
-      tasks = GameRule.tasks
-      expect(tasks.first).to be_a(Jets::Lambda::Task)
+    it "definitions contains flatten Array structure" do
+      definitions = GameRule.definitions
+      expect(definitions.first).to be_a(Jets::Lambda::Definition)
 
-      task_names = tasks.map(&:name)
-      expect(task_names).to eq(GameRule.all_public_tasks.keys)
+      definition_names = definitions.map(&:name)
+      expect(definition_names).to eq(GameRule.all_public_definitions.keys)
     end
   end
 end
@@ -39,7 +39,7 @@ describe "example rules" do
     expect(Example3Rule.rule_namespace).to be nil
   end
 
-  let(:rule) { Jets::Resource::Config::ConfigRule.new(klass.to_s, "meth") }
+  let(:rule) { Jets::Cfn::Resource::Config::ConfigRule.new(klass.to_s, "meth") }
   context "inherited rule namespace" do
     let(:klass) { Example3Rule }
     it "config_rule_name" do

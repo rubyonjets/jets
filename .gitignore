@@ -7,6 +7,7 @@
 _yardoc
 coverage
 doc/
+docs/
 InstalledFiles
 lib/bundler/man
 pkg
@@ -15,10 +16,13 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+node_modules
 
 .codebuild/definitions
 /html
 /demo
 Gemfile.lock
-spec/fixtures/apps/franky/dynamodb/migrate
+spec/fixtures/demo/dynamodb/migrate
+spec/fixtures/demo/public/assets
 spec/fixtures/project/handlers
+yarn.lock

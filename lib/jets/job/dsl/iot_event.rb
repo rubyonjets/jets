@@ -3,19 +3,19 @@ module Jets::Job::Dsl
     # The user must at least pass in an SQL statement
     def iot_event(props={})
       if props.is_a?(String) # SQL Statement
-        props = {sql: props}
-        topic_props = {topic_rule_payload: props}
-      elsif props.key?(:topic_rule_payload) # full properties structure
+        props = {Sql: props}
+        topic_props = {TopicRulePayload: props}
+      elsif props.key?(:TopicRulePayload) # full properties structure
         topic_props = props
-      else # just the topic_rule_payload
-        topic_props = {topic_rule_payload: props}
+      else # just the TopicRulePayload
+        topic_props = {TopicRulePayload: props}
       end
 
       declare_iot_topic(topic_props)
     end
 
     def declare_iot_topic(props={})
-      r = Jets::Resource::Iot::TopicRule.new(props)
+      r = Jets::Cfn::Resource::Iot::TopicRule.new(props)
       with_fresh_properties do
         resource(r.definition) # add associated resource immediately
       end

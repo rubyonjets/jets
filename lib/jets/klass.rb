@@ -17,10 +17,10 @@
 #   Jets::Klass.from_path("app/functions/hello_function.rb")
 #   Jets::Klass.from_path("app/shared/functions/whatever.rb")
 #
-#   Jets::Klass.from_task(task)
+#   Jets::Klass.from_definition(definition)
 #
-# The from_task method takes a Jets::Lambda::Task as an argument and is useful
-# for the CloudFormation child stack generation there the registered task info
+# The from_definition method takes a Jets::Lambda::Definition as an argument and is useful
+# for the CloudFormation child stack generation there the registered definition info
 # is available but the path info is now.
 class Jets::Klass
   class << self
@@ -46,8 +46,8 @@ class Jets::Klass
     end
 
     APP_TYPES = %w[controller job rule authorizer]
-    def from_task(task)
-      class_name = task.class_name
+    def from_definition(definition)
+      class_name = definition.class_name
       filename = class_name.underscore
 
       # Examples of filename: posts_controller, hard_job, security_rule, main_authorizer
@@ -89,7 +89,6 @@ class Jets::Klass
     def modularize(class_name)
       leaves = []
       mods = class_name.split('::')[0..-2] # drop the last word
-      # puts "mods: #{mods}"
       return Object if mods.empty?
 
       leaves = []

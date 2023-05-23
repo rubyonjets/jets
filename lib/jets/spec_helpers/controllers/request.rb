@@ -10,7 +10,7 @@ module Jets::SpecHelpers::Controllers
     def event
       json = {}
       id_params = route.path.scan(%r{:([^/]+)}).flatten
-      expanded_path = escape_path(path)
+      expanded_path = route.escape_path(path)
       path_parameters = {}
 
       id_params.each do |id_param|
@@ -20,12 +20,12 @@ module Jets::SpecHelpers::Controllers
         raise "Path param :#{id_param} value cannot be blank" if path_param_value.blank?
 
         escaped_path_param_value = CGI.escape(path_param_value.to_s)
-        expanded_path.gsub!(":#{id_param}", escaped_path_param_value)
+        expanded_path = expanded_path.gsub(":#{id_param}", escaped_path_param_value)
         path_parameters.deep_merge!(id_param => escaped_path_param_value)
       end
 
-      json['resource'] = escape_path(path)
-      json['path'] = expanded_path
+      json['resource'] = strip_query_string(route.path.gsub(/:(\w+)/, '{\1}'))
+      json['path'] = strip_query_string(expanded_path)
       json['httpMethod'] = method.to_s.upcase
       json['pathParameters'] = path_parameters
       json['headers'] = (headers || {}).stringify_keys
@@ -51,10 +51,7 @@ module Jets::SpecHelpers::Controllers
         json['isBase64Encoded'] = true
       end
 
-      params.query_params.each do |key, value|
-        json['queryStringParameters'] ||= {}
-        json['queryStringParameters'][key.to_s] = value.deep_dup
-      end
+      json['queryStringParameters'] = params.query_params if params.query_params.present?
 
       json
     end
@@ -72,17 +69,32 @@ module Jets::SpecHelpers::Controllers
       path = self.path
       path = path[0..-2] if path.end_with? '/'
       path = path[1..-1] if path.start_with? '/'
+      path = strip_query_string(path)
       path
     end
 
+    def strip_query_string(path)
+      path.sub(/\?.*/, '')
+    end
+
     def route
-      Jets::Router::Finder.new(normalized_path, method).run
+      Jets::Router::Matcher.new(Jets.application.routes).find_by_env(
+        "REQUEST_METHOD" => method.to_s.upcase,
+        "PATH_INFO" => path,
+      )
     end
     memoize :route
 
+    def request
+      Jets::Controller::Request.new(event: event)
+    end
+    memoize :request
+
     def dispatch!
       klass = Object.const_get(route.controller_name)
-      controller = klass.new(event, {}, route.action_name)
+      context = Jets::Controller::Middleware::Mimic::LambdaContext.new
+      rack_env = Jets::Controller::RackAdapter::Env.new(event, context).convert
+      controller = klass.new(event, context, route.action_name, rack_env)
       response = controller.process! # response is API Gateway Hash
 
       unless response['statusCode'] && response['body']
@@ -90,12 +102,6 @@ module Jets::SpecHelpers::Controllers
       end
 
       Response.new(response) # converts APIGW hash to prettier object
-    end
-
-    private
-
-    def escape_path(path)
-      path.to_s.split('/').map { |s| s =~ /\A[:\*]/ ? s : CGI.escape(s) }.join('/')
     end
   end
 end

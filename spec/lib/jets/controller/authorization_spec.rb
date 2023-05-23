@@ -10,12 +10,12 @@ class TestAuthExceptController < Jets::Controller::Base
   authorizer "main#protect", only: [:show]
 end
 
-describe Jets::Controller::Authorization do
+describe Jets::Controller::Decorate::Authorization do
   context "no filter options" do
     let(:controller) { TestAuthController }
     it "logical_id" do
       logical_id = controller.authorizer_logical_id_for("index")
-      expect(logical_id).to eq "MainProtectAuthorizer"
+      expect(logical_id).to eq "MainAuthorizerProtectAuthorizer"
     end
   end
 
@@ -23,7 +23,7 @@ describe Jets::Controller::Authorization do
     let(:controller) { TestAuthOnlyController }
     it "logical_id" do
       logical_id = controller.authorizer_logical_id_for("index")
-      expect(logical_id).to eq "MainProtectAuthorizer"
+      expect(logical_id).to eq "MainAuthorizerProtectAuthorizer"
       logical_id = controller.authorizer_logical_id_for("show")
       expect(logical_id).to be nil
     end
@@ -35,7 +35,7 @@ describe Jets::Controller::Authorization do
       logical_id = controller.authorizer_logical_id_for("index")
       expect(logical_id).to be nil
       logical_id = controller.authorizer_logical_id_for("show")
-      expect(logical_id).to eq "MainProtectAuthorizer"
+      expect(logical_id).to eq "MainAuthorizerProtectAuthorizer"
     end
   end
 end
