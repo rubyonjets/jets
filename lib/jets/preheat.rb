@@ -91,12 +91,15 @@ module Jets
     #     ...
     #   ]
     def all_functions
-      classes.map do |klass|
-        tasks = klass.tasks.select { |t| t.lang == :ruby } # only prewarm ruby functions
-        tasks.map do |task|
-          meth = task.meth
-          underscored = klass.to_s.underscore.gsub('/','-')
-          "#{underscored}-#{meth}" # function_name
+      parent_stack = cfn.describe_stack_resources(stack_name: Jets::Naming.parent_stack_name)
+      parent_resources = parent_stack.stack_resources.select do |resource|
+        resource.logical_resource_id =~ /Controller$/ # only controller functions
+      end
+      physical_resource_ids = parent_resources.map(&:physical_resource_id)
+      resources = physical_resource_ids.inject([]) do |acc, physical_resource_id|
+        stack_resources = cfn.describe_stack_resources(stack_name: physical_resource_id).stack_resources
+        stack_resources.each do |stack_resource|
+          acc << stack_resource if stack_resource.logical_resource_id.ends_with?('LambdaFunction') # only functions
         end
       end.flatten.uniq.compact
     end

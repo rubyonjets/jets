@@ -12,13 +12,17 @@ class Jets::PreheatJob < ApplicationJob
       sid: "Statement1",
       action: ["logs:*"],
       effect: "Allow",
-      resource: "arn:aws:logs:#{Jets.aws.region}:#{Jets.aws.account}:log-group:#{Jets.config.project_namespace}-*",
+      resource: [
+        sub("arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${WarmLambdaFunction}"),
+      ]
     },
     {
       sid: "Statement2",
       action: ["lambda:InvokeFunction", "lambda:InvokeAsync"],
       effect: "Allow",
-      resource: "arn:aws:lambda:#{Jets.aws.region}:#{Jets.aws.account}:function:#{Jets.config.project_namespace}-*",
+      resource: [
+        sub("arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${WarmLambdaFunction}")
+      ]
     }
   )
 
