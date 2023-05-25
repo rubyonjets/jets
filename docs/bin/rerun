@@ -1,2 +1,0 @@
-#!/bin/bash
-exec bundle exec rerun -x --background --pattern 'opal/*.rb' 'rake opal:build'
