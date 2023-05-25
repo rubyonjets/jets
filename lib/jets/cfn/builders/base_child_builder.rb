@@ -69,7 +69,7 @@ module Jets::Cfn::Builders
 
     def validate_function_names!
       invalids = @app_class.tasks.reject do |task|
-        task.meth =~ /^[a-zA-Z][a-zA-Z0-9_]$/
+        task.meth.to_s =~ /^[a-zA-Z][a-zA-Z0-9_]/
       end
       return if invalids.empty?
       list = invalids.map do |task|
