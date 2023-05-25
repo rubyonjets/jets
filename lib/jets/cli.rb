@@ -137,10 +137,16 @@ class Jets::CLI
     end
 
     return unless jets_project?
-    rake_task_found = Jets::Commands::RakeCommand.namespaced_commands.include?(full_command)
-    if rake_task_found
-      return Jets::Commands::RakeCommand
-    end
+
+    Jets::Commands::RakeCommand if rake_task_found
+  end
+
+  def rake_task_found
+    return false unless full_command # can be nil for subcommands and would break jets help without this check
+    bracket_regex = /\[.*/ # matches everything after the first [
+    command = full_command.sub(bracket_regex, '') # remove everything after the first [
+    namespaced_commands = Jets::Commands::RakeCommand.namespaced_commands.map {|x| x.sub(bracket_regex, '') }
+    namespaced_commands.include?(command)
   end
 
   def jets_project?
