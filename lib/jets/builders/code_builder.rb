@@ -80,7 +80,7 @@ module Jets::Builders
       return false if ENV['JETS_BUILD_NO_INTERNET']
       s3_key = "jets/code/#{filename}"
       begin
-        logger.debug "Checking s3://#{s3_bucket}/#{s3_key}"
+        Jets.logger.debug "Checking s3://#{s3_bucket}/#{s3_key}"
         s3.head_object(bucket: s3_bucket, key: s3_key)
         true
       rescue Aws::S3::Errors::NotFound, Aws::S3::Errors::Forbidden
