@@ -55,7 +55,7 @@ module Jets::Cfn::Builders
       end
     end
 
-    def create_domain_name()
+    def create_domain_name
       resource = Jets::Resource::ApiGateway::DomainName.new
 
       return {
@@ -70,41 +70,44 @@ module Jets::Cfn::Builders
       apigateway.get_domain_name({
         domain_name: resource.domain_name
       })
-      return true
-    rescue
-      return false
+      true
+    # IE: Aws::APIGateway::Errors::NotFoundException Invalid domain name identifier specified
+    rescue Aws::APIGateway::Errors::NotFoundException
+      false
     end
     memoize :existing_domain_name?
 
     def existing_domain_name_on_stack?
-      cfn.describe_stack_resource({
+      cfn.describe_stack_resource(
         stack_name: api_gateway_physical_resource_id,
         logical_resource_id: "DomainName"
-      })
-      return true
-    rescue
-      return false
+      )
+      true
+    # IE: Aws::CloudFormation::Errors::ValidationError (Resource DomainName does not exist for stack demo-dev)
+    rescue Aws::CloudFormation::Errors::ValidationError
+      false
     end
 
     def existing_dns_record_on_stack?
-      cfn.describe_stack_resource({
+      cfn.describe_stack_resource(
         stack_name: api_gateway_physical_resource_id,
         logical_resource_id: "DnsRecord"
-      })
-      return true
-    rescue
-      return false
+      )
+      true
+    # IE: Aws::CloudFormation::Errors::ValidationError (Resource DnsRecord does not exist for stack demo-dev)
+    rescue Aws::CloudFormation::Errors::ValidationError
+      false
     end
 
     def api_gateway_physical_resource_id
-      cfn.describe_stack_resource({
+      resp = cfn.describe_stack_resource(
         stack_name: Jets::Naming.parent_stack_name,
         logical_resource_id: "ApiGateway"
-      })
-      .stack_resource_detail
-      .physical_resource_id
-    rescue
-      return nil
+      )
+      resp&.stack_resource_detail&.physical_resource_id
+    # IE: Aws::CloudFormation::Errors::ValidationError (Resource ApiGateway does not exist for stack demo-dev)
+    rescue Aws::CloudFormation::Errors::ValidationError
+      nil
     end
     memoize :api_gateway_physical_resource_id
 
