@@ -93,7 +93,7 @@ module Jets::Cfn
       key = s3_key(full_path)
       obj = s3_resource.bucket(bucket_name).object(key)
       content_type = content_type_headers(full_path)
-      puts "Uploading and setting content type for s3://#{bucket_name}/#{key} content_type #{content_type[:content_type].inspect}"
+      logger.debug "Uploading and setting content type for s3://#{bucket_name}/#{key} content_type #{content_type[:content_type].inspect}"
       obj.upload_file(full_path, { acl: "public-read", cache_control: cache_control }.merge(content_type))
     end
 
