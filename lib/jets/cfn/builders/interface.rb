@@ -88,8 +88,27 @@ module Jets::Cfn::Builders
       end
     end
 
+    # Note: Jets::Resource::Iam classes are special treated. They are the only resources that result
+    # in creating 2 CloudFormation resources: Iam::Policy and Iam::Role.
+    # This allows the user to refer to the Lambda Function name in the IAM Policy itself.
+    # We need separate resources to avoid CloudFormation erroring with a circular dependency.
+    # Using separate IAM::Policy and IAM::Role resources allows us avoid the circular dependency error.
+    #
+    # Handling logic here also centralizes code for this special behavior.
+    # Also important to note, this does not change the user-facing interface.
+    # IE: Users still uses code like:
+    #
+    #    iam_policy("s3", "sns")
+    #
+    # and be none-the-wiser about the special behavior.
     def add_resource(resource)
       add_template_resource(resource.logical_id, resource.type, resource.attributes)
+
+      if resource.class.to_s.include?("Jets::Resource::Iam")
+        role = resource # for clarity: resource is a Iam::*Role class
+        iam_policy = Jets::Resource::Iam::Policy.new(role)
+        add_template_resource(iam_policy.logical_id, iam_policy.type, iam_policy.attributes)
+      end
     end
 
     # The add_resource method can take an options Hash with both with either

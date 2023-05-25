@@ -24,11 +24,6 @@ module Jets::Resource::Iam
         }
       }
 
-      definition[logical_id][:properties][:policies] = [
-        policy_name: "#{policy_name[0..127]}", # required, limited to 128-chars
-        policy_document: policy_document,
-      ] unless policy_document['Statement'].empty?
-
       unless managed_policy_arns.empty?
         definition[logical_id][:properties][:managed_policy_arns] = managed_policy_arns
       end
