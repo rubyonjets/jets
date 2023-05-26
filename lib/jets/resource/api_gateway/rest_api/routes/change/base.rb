@@ -86,7 +86,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
 
     # Duplicated in rest_api/change_detection.rb, base_path/role.rb, rest_api/routes.rb
     def rest_api_id
-      stack_name = Jets::Naming.parent_stack_name
+      stack_name = Jets::Names.parent_stack_name
       return "RestApi" unless stack_exists?(stack_name)
 
       stack = cfn.describe_stacks(stack_name: stack_name).stacks.first

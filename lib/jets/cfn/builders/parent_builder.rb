@@ -19,7 +19,7 @@ module Jets::Cfn::Builders
 
     # template_path is an interface method
     def template_path
-      Jets::Naming.parent_template_path
+      Jets::Names.parent_template_path
     end
 
     def build_minimal_resources
@@ -90,7 +90,7 @@ module Jets::Cfn::Builders
     #    #{Jets.build_root}/templates/demo-dev-2-app-comments_controller.yml
     #    #{Jets.build_root}/templates/demo-dev-2-authorizers-main_authorizer.yml
     def for_each_path(type)
-      expression = "#{Jets::Naming.template_path_prefix}-#{type}-*"
+      expression = "#{Jets::Names.template_path_prefix}-#{type}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
         yield(path)
@@ -123,7 +123,7 @@ module Jets::Cfn::Builders
     end
 
     def add_api_resources
-      expression = "#{Jets::Naming.template_path_prefix}-api-resources-*"
+      expression = "#{Jets::Names.template_path_prefix}-api-resources-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-api-resources-1.yml"
       Dir.glob(expression).sort.each do |path|
         next unless File.file?(path)

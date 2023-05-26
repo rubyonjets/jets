@@ -49,7 +49,7 @@ class Jets::Commands::Clean
 
   private
     def prefix_guess
-      Jets::Naming.parent_stack_name
+      Jets::Names.parent_stack_name
     end
 
     def log_groups

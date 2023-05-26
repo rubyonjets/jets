@@ -1,7 +1,7 @@
-# This class groups the naming in one place.
-# Some naming is for CloudFormation
+# This class groups the names in one place.
+# Some names are for CloudFormation
 # Some are for the Build process
-class Jets::Naming
+class Jets::Names
   # Mainly used by build.rb
   class << self
     extend Memoist

@@ -5,7 +5,7 @@ module Jets::Cfn
 
     def initialize(options)
       @options = options
-      @parent_stack_name = Jets::Naming.parent_stack_name
+      @parent_stack_name = Jets::Names.parent_stack_name
     end
 
     def run
@@ -81,7 +81,7 @@ module Jets::Cfn
     end
 
     def template
-      @template ||= TemplateSource.new(Jets::Naming.parent_template_path, @options)
+      @template ||= TemplateSource.new(Jets::Names.parent_template_path, @options)
     end
 
     # check for /(_COMPLETE|_FAILED)$/ status

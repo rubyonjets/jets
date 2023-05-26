@@ -2,7 +2,7 @@ module Jets::Resource::ApiGateway
   class RestApi < Jets::Resource::Base
     def definition
       properties = {
-        name: Jets::Naming.gateway_api_name,
+        name: Jets::Names.gateway_api_name,
         endpoint_configuration: { types: endpoint_types }
       }
       properties[:endpoint_configuration][:vpc_endpoint_ids] = vpce_ids if vpce_ids

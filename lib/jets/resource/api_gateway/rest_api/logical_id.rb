@@ -88,7 +88,7 @@ class Jets::Resource::ApiGateway::RestApi
     end
 
     def parent_stack_name
-      Jets::Naming.parent_stack_name
+      Jets::Names.parent_stack_name
     end
 
     def default

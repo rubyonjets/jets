@@ -61,7 +61,7 @@ module Jets::Cfn::Builders
     end
 
     def template_path
-      Jets::Naming.authorizer_template_path(@path)
+      Jets::Names.authorizer_template_path(@path)
     end
   end
 end

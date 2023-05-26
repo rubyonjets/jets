@@ -25,6 +25,6 @@ module Jets::Commands::StackInfo
   end
 
   def parent_stack_name
-    Jets::Naming.parent_stack_name
+    Jets::Names.parent_stack_name
   end
 end

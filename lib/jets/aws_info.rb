@@ -73,7 +73,7 @@ module Jets
       return "fake-test-s3-bucket" if Jets.env.test?
       return @@s3_bucket unless @@s3_bucket == BUCKET_DOES_NOT_YET_EXIST
 
-      resp = cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name)
+      resp = cfn.describe_stacks(stack_name: Jets::Names.parent_stack_name)
       stack = resp.stacks.first
       output = stack["outputs"].find { |o| o["output_key"] == "S3Bucket" }
       @@s3_bucket = output["output_value"] # s3_bucket
@@ -83,7 +83,7 @@ module Jets
       # not been loaded in the config yet.  We do some trickery with loading
       # the config twice in Application#load_app_config
       # The first load will result in a Aws::CloudFormation::Errors::ValidationError
-      # since the Jets::Naming.parent_stack_name has not been properly set yet.
+      # since the Jets::Names.parent_stack_name has not been properly set yet.
       #
       # Rescuing all exceptions in case there are other exceptions dont know about yet
       # Here are the known ones: Aws::CloudFormation::Errors::ValidationError, Aws::CloudFormation::Errors::InvalidClientTokenId

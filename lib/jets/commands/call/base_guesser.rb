@@ -56,7 +56,7 @@ class Jets::Commands::Call
 
     @@parent_stack = nil
     def parent_stack
-      @@parent_stack ||= cfn.describe_stacks(stack_name: Jets::Naming.parent_stack_name).stacks.first
+      @@parent_stack ||= cfn.describe_stacks(stack_name: Jets::Names.parent_stack_name).stacks.first
     end
   end
 end
