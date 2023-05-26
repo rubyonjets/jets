@@ -18,7 +18,7 @@ module Jets::Cfn::Builders
 
     # template_path is an interface method
     def template_path
-      Jets::Naming.api_gateway_template_path
+      Jets::Names.api_gateway_template_path
     end
 
     # do not bother writing a template if routes are empty
@@ -101,7 +101,7 @@ module Jets::Cfn::Builders
 
     def api_gateway_physical_resource_id
       resp = cfn.describe_stack_resource(
-        stack_name: Jets::Naming.parent_stack_name,
+        stack_name: Jets::Names.parent_stack_name,
         logical_resource_id: "ApiGateway"
       )
       resp&.stack_resource_detail&.physical_resource_id

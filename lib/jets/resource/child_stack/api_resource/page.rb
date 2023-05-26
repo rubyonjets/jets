@@ -3,7 +3,7 @@ class Jets::Resource::ChildStack::ApiResource
   # Returns: logical id of ApiResource Page
   class Page
     def self.logical_id(parameter)
-      expression = "#{Jets::Naming.template_path_prefix}-api-resources-*"
+      expression = "#{Jets::Names.template_path_prefix}-api-resources-*"
       # IE: path: #{Jets.build_root}/templates/demo-dev-2-api-resources-1.yml"
       template_paths = Dir.glob(expression).sort.to_a
       found_template = template_paths.detect do |path|

@@ -63,7 +63,7 @@ module Jets::Resource::ChildStack
     # IE: app/resource.rb => Resource
     # Returns Resource class object in the example
     def current_shared_class
-      templates_prefix = "#{Jets::Naming.template_path_prefix}-shared-"
+      templates_prefix = "#{Jets::Names.template_path_prefix}-shared-"
       @path.sub(templates_prefix, '')
         .sub(/\.yml$/,'')
         .gsub('-','/')

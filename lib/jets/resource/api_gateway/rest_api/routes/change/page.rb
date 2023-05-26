@@ -33,7 +33,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     # logical id to page map
     # Important: In Cfn::Builders::ApiGatewayBuilder, the add_gateway_routes and ApiResourcesBuilder needs to run
     # before the parent add_gateway_rest_api method.
-    def local_logical_ids_map(path_expression="#{Jets::Naming.template_path_prefix}-api-resources-*.yml")
+    def local_logical_ids_map(path_expression="#{Jets::Names.template_path_prefix}-api-resources-*.yml")
       logical_ids = {} # logical id => page number
 
       Dir.glob(path_expression).each do |path|
@@ -85,7 +85,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     end
 
     def parent_resources
-      resp = cfn.describe_stack_resources(stack_name: Jets::Naming.parent_stack_name)
+      resp = cfn.describe_stack_resources(stack_name: Jets::Names.parent_stack_name)
       resp.stack_resources
     end
     memoize :parent_resources

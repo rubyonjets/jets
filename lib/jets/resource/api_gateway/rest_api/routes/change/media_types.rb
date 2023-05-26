@@ -30,7 +30,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
     end
 
     def parent_stack_name
-      Jets::Naming.parent_stack_name
+      Jets::Names.parent_stack_name
     end
   end
 end

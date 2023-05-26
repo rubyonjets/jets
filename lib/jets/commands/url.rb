@@ -7,7 +7,7 @@ module Jets::Commands
     end
 
     def display
-      stack_name = Jets::Naming.parent_stack_name
+      stack_name = Jets::Names.parent_stack_name
       unless stack_exists?(stack_name)
         puts "Stack for #{Jets.config.project_name.color(:green)} project for environment #{Jets.env.color(:green)}.  Couldn't find #{stack_name.color(:green)} stack."
         exit

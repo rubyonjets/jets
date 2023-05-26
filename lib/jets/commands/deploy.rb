@@ -81,7 +81,7 @@ module Jets::Commands
     memoize :status
 
     def stack_name
-      Jets::Naming.parent_stack_name
+      Jets::Names.parent_stack_name
     end
 
     # Checks for a few things before deciding to delete the parent stack
@@ -117,7 +117,7 @@ module Jets::Commands
     def exit_unless_updateable!
       return if ENV['JETS_FORCE_UPDATEABLE'] # useful for debugging if stack stack updating
 
-      stack_name = Jets::Naming.parent_stack_name
+      stack_name = Jets::Names.parent_stack_name
       exists = stack_exists?(stack_name)
       return unless exists # continue because stack could be updating
 

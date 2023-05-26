@@ -10,7 +10,7 @@ class Jets::Resource::ApiGateway::RestApi::Routes
     end
 
     def parent_stack_exists?
-      stack_exists?(Jets::Naming.parent_stack_name)
+      stack_exists?(Jets::Names.parent_stack_name)
     end
   end
 end

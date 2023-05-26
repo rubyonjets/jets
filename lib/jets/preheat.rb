@@ -91,7 +91,7 @@ module Jets
     #     ...
     #   ]
     def all_functions
-      parent_stack = cfn.describe_stack_resources(stack_name: Jets::Naming.parent_stack_name)
+      parent_stack = cfn.describe_stack_resources(stack_name: Jets::Names.parent_stack_name)
       parent_resources = parent_stack.stack_resources.select do |resource|
         resource.logical_resource_id =~ /Controller$/ # only controller functions
       end

@@ -21,7 +21,7 @@ module Jets::Cfn
 
     def upload_cfn_templates
       puts "Uploading CloudFormation templates to S3."
-      expression = "#{Jets::Naming.template_path_prefix}-*"
+      expression = "#{Jets::Names.template_path_prefix}-*"
       Dir.glob(expression).each do |path|
         next unless File.file?(path)
 

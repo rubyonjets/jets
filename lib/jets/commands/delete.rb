@@ -90,7 +90,7 @@ class Jets::Commands::Delete
   end
 
   def parent_stack_name
-    Jets::Naming.parent_stack_name
+    Jets::Names.parent_stack_name
   end
 
   def are_you_sure?

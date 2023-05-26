@@ -16,7 +16,7 @@ module Jets::Cfn::Builders
 
     # template_path is an interface method
     def template_path
-      Jets::Naming.api_resources_template_path(@page)
+      Jets::Names.api_resources_template_path(@page)
     end
 
     def add_rest_api_parameter

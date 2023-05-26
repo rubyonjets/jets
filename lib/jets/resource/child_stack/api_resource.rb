@@ -28,7 +28,7 @@ module Jets::Resource::ChildStack
       # Since dont have all the info required.
       # Read the template back to find the parameters required.
       # Actually might be easier to rationalize this approach.
-      template_path = Jets::Naming.api_resources_template_path(@page)
+      template_path = Jets::Names.api_resources_template_path(@page)
       template = Jets::Cfn::BuiltTemplate.get(template_path)
       template['Parameters'].keys.each do |p|
         case p
