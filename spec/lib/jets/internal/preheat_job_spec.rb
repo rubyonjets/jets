@@ -5,6 +5,7 @@ describe Jets::PreheatJob do
 
   context "warm" do
     it "calls all lambda functions with a prewarm request" do
+      allow(Jets::Preheat).to receive(:warm_all)
       job.warm
     end
   end

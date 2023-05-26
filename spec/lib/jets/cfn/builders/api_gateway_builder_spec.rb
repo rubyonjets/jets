@@ -37,9 +37,8 @@ describe Jets::Cfn::Builders::ApiGatewayBuilder do
 
       allow(builder.apigateway).to receive(:get_domain_name).and_return({})
       allow(builder.cfn).to receive(:describe_stack_resource).with(hash_including(:logical_resource_id => "ApiGateway")).and_return(nil)
-      allow(builder.cfn).to receive(:describe_stack_resource).with(hash_including(:logical_resource_id => "DomainName")).and_throw(:this_symbol)
-      allow(builder.cfn).to receive(:describe_stack_resource).with(hash_including(:logical_resource_id => "DnsRecord")).and_throw(:this_symbol)
-
+      allow(builder.cfn).to receive(:describe_stack_resource).with(hash_including(:logical_resource_id => "DomainName")).and_raise(Aws::CloudFormation::Errors::ValidationError.new(nil, nil))
+      allow(builder.cfn).to receive(:describe_stack_resource).with(hash_including(:logical_resource_id => "DnsRecord")).and_raise(Aws::CloudFormation::Errors::ValidationError.new(nil, nil))
 
       builder.compose
 
