@@ -3,6 +3,7 @@ $stdout.sync = true unless ENV["JETS_STDOUT_SYNC"] == "0"
 $:.unshift(File.expand_path("../", __FILE__))
 
 require "jets/core_ext/bundler"
+require "jets/core_ext/file"
 require "jets/autoloaders"
 Jets::Autoloaders.log! if ENV["JETS_AUTOLOAD_LOG"]
 Jets::Autoloaders.once.setup # must be called before cli.setup

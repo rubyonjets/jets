@@ -5,7 +5,7 @@ class Jets::Turbo
       return unless File.exist?(current_yaml)
 
       vars = {}
-      current_database = YAML.load_file(current_yaml)
+      current_database = Jets::Util::Yamler.load_file(current_yaml)
       database_names = infer_database_name(current_database)
       vars.merge!(database_names)
       vars['adapter'] = current_database['development']['adapter']

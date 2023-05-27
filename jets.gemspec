@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://rubyonjets.com"
   spec.license       = "MIT"
 
-  spec.required_ruby_version = ['>= 2.5.0', '< 3.0.0']
+  spec.required_ruby_version = ['>= 2.5.0']
   spec.rdoc_options += Jets::Rdoc.options
 
   vendor_files       = Dir.glob("vendor/**/*")

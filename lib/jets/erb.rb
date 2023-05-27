@@ -12,7 +12,7 @@ class Jets::Erb
       set_template_variables(variables)
       template = IO.read(path)
       begin
-        ERB.new(template, nil, "-").result(binding)
+        ERB.new(template, trim_mode: '-').result(binding)
       rescue Exception => e
         puts e
         puts e.backtrace if ENV['JETS_DEBUG']
