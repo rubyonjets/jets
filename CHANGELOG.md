@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.1] - 2023-06-06
+- [#655](https://github.com/boltops-tools/jets/pull/655) fix cors when using authorizers
+- [#656](https://github.com/boltops-tools/jets/pull/656) fix prewarming iam permission
+
 ## [4.0.0] - 2023-05-27
 - [#641](https://github.com/boltops-tools/jets/pull/641) bundle check and prevent error from getting to aws lambda
 - [#642](https://github.com/boltops-tools/jets/pull/642) Fix rack mounted apps: update interface with removed meth
