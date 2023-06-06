@@ -234,11 +234,13 @@ module Jets::Lambda::Dsl
       end
 
       def ref(name)
-        "!Ref #{name.to_s.camelize}"
+        name = name.is_a?(Symbol) ? name.to_s.camelize : name
+        "!Ref #{name}"
       end
 
       def sub(value)
-        "!Sub #{value.to_s.camelize}"
+        value = value.is_a?(Symbol) ? value.to_s.camelize : value
+        "!Sub #{value}"
       end
 
       # meth is a Symbol
