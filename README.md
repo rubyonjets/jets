@@ -5,10 +5,8 @@
 Ruby and Lambda had a baby and that child's name is [Jets](http://rubyonjets.com/).
 
 ![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiZ08vK2hjOHczQUVoUDhSYnBNNUU4T0gxQWJuOTlLaXpwVGQ1NjJ3NnVDY1dSdFVXQ3d2VXVSQzRFcU1qd1JPMndFZlByRktIcTUrZm5GWlM5dHpjM1ZrPSIsIml2UGFyYW1ldGVyU3BlYyI6Imluc1Qrd25GanhUdHlidjUiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
-[![CircleCI](https://circleci.com/gh/boltops-tools/jets.svg?style=svg)](https://circleci.com/gh/boltops-tools/jets)
 [![Gem Version](https://badge.fury.io/rb/jets.svg)](https://badge.fury.io/rb/jets)
 [![Support](https://img.shields.io/badge/Support-Help-blue.svg)](http://rubyonjets.com/support/)
-[![Gitter Chat](https://badges.gitter.im/boltops-tools/jets.png)](https://gitter.im/boltops-tools/jets)
 
 [![BoltOps Badge](https://img.boltops.com/boltops/badges/boltops-badge.png)](https://www.boltops.com)
 
