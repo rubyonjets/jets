@@ -78,14 +78,14 @@ class Jets::Controller::Middleware::Local
     end
 
     def query_string_parameters
-      @env['QUERY_STRING']&.split('&')&.each_with_object({}) do |hash, parameter|
+      @env['QUERY_STRING']&.split('&')&.each_with_object({}) do |parameter, hash|
         key, value = parameter.split('=')
         hash[key] = value
       end || {}
     end
 
     def multi_value_query_string_parameters
-      @env['QUERY_STRING']&.split('&')&.each_with_object({}) do |hash, parameter|
+      @env['QUERY_STRING']&.split('&')&.each_with_object({}) do |parameter, hash|
         key, value = parameter.split('=')
         hash[key] = [] if hash[key].nil?
         hash[key] << value
