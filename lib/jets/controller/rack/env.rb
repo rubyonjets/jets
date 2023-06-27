@@ -112,9 +112,15 @@ module Jets::Controller::Rack
     end
 
     def query_string
-      qs_params = @event["queryStringParameters"] || {} # always set with API Gateway but when testing node shim might not be
-      hash = Jets::Mega::HashConverter.encode(qs_params)
-      hash.to_query
+      qs_params = @event["multiValueQueryStringParameters"] || {} # always set with API Gateway but when testing node shim might not be
+
+      array = qs_params.each_with_object([]) do |(key, value), arr|
+        arr << value.map do |v|
+          v.to_query(key)
+        end
+      end
+
+      array.join("&")
     end
 
     def headers

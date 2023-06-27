@@ -16,6 +16,7 @@ class Jets::Controller::Middleware::Local
         "httpMethod" => @env['REQUEST_METHOD'], # GET
         "headers" => request_headers,
         "queryStringParameters" => query_string_parameters,
+        "multiValueQueryStringParameters" => multi_value_query_string_parameters,
         "pathParameters" => @route.extract_parameters(path),
         "stageVariables" => nil,
         "requestContext" => {},
@@ -77,7 +78,18 @@ class Jets::Controller::Middleware::Local
     end
 
     def query_string_parameters
-      Rack::Utils.parse_nested_query(@env['QUERY_STRING'])
+      @env['QUERY_STRING']&.split('&')&.each_with_object({}) do |hash, parameter|
+        key, value = parameter.split('=')
+        hash[key] = value
+      end || {}
+    end
+
+    def multi_value_query_string_parameters
+      @env['QUERY_STRING']&.split('&')&.each_with_object({}) do |hash, parameter|
+        key, value = parameter.split('=')
+        hash[key] = [] if hash[key].nil?
+        hash[key] << value
+      end || {}
     end
 
     # To get the post body:
