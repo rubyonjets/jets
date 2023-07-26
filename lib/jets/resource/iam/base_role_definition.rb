@@ -24,11 +24,25 @@ module Jets::Resource::Iam
         }
       }
 
+      # Add vpc permissions to all policies
+      definition[logical_id][:properties][:policies] = [
+        policy_name: "vpc", # required, limited to 128-chars
+        policy_document: vpc_policy_document,
+      ] if vpc_policy_document
+
       unless managed_policy_arns.empty?
         definition[logical_id][:properties][:managed_policy_arns] = managed_policy_arns
       end
 
       definition
+    end
+
+    def vpc_policy_document
+      if Jets.config.function.vpc_config
+        {
+          Statement: [Jets::Application.vpc_iam_policy_statement]
+        }
+      end
     end
 
     def policy_document
