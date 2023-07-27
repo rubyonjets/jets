@@ -59,6 +59,7 @@ class Jets::Application
       # default memory setting based on:
       # https://medium.com/epsagon/how-to-make-lambda-faster-memory-performance-benchmark-be6ebc41f0fc
       config.function.memory_size = 1536
+      config.function.ephemeral_storage = { size: 512 } # megabytes
 
       config.prewarm = ActiveSupport::OrderedOptions.new
       config.prewarm.enable = true
@@ -76,10 +77,11 @@ class Jets::Application
       config.inflections.irregular = {}
 
       config.assets = ActiveSupport::OrderedOptions.new
-      config.assets.folders = %w[assets images packs]
       config.assets.base_url = nil # IE: https://cloudfront.com/my/base/path
-      config.assets.max_age = 3600
       config.assets.cache_control = nil # IE: public, max-age=3600 , max_age is a shorter way to set cache_control.
+      config.assets.folders = %w[assets images packs]
+      config.assets.max_age = 3600
+      config.assets.webpacker_asset_host = "s3_endpoint"  # true = use conventional by default
 
       config.ruby = ActiveSupport::OrderedOptions.new
 
@@ -97,6 +99,7 @@ class Jets::Application
       config.api.cors_authorization_type = nil # nil so ApiGateway::Cors#cors_authorization_type handles
       config.api.endpoint_policy = nil # required when endpoint_type is EDGE
       config.api.endpoint_type = 'EDGE' # PRIVATE, EDGE, REGIONAL
+      config.api.vpc_endpoint_ids = nil
 
       config.api.authorizers = ActiveSupport::OrderedOptions.new
       config.api.authorizers.default_token_source = "Auth" # method.request.header.Auth

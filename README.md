@@ -2,7 +2,7 @@
   <a href="http://rubyonjets.com"><img src="http://rubyonjets.com/img/logos/jets-logo-full.png" /></a>
 </div>
 
-Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonjets.com/).
+Ruby and Lambda had a baby and that child's name is [Jets](http://rubyonjets.com/).
 
 ![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiZ08vK2hjOHczQUVoUDhSYnBNNUU4T0gxQWJuOTlLaXpwVGQ1NjJ3NnVDY1dSdFVXQ3d2VXVSQzRFcU1qd1JPMndFZlByRktIcTUrZm5GWlM5dHpjM1ZrPSIsIml2UGFyYW1ldGVyU3BlYyI6Imluc1Qrd25GanhUdHlidjUiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 [![CircleCI](https://circleci.com/gh/boltops-tools/jets.svg?style=svg)](https://circleci.com/gh/boltops-tools/jets)
@@ -15,10 +15,6 @@ Ruby and Lambda splat out a baby and that child's name is [Jets](http://rubyonje
 Please **watch/star** this repo to help grow and support the project.
 
 **Upgrading**: If you are upgrading Jets, please check on the [Upgrading Notes](http://rubyonjets.com/docs/extras/upgrading/).
-
-## Sponsors
-
-[![](https://img.boltops.com/boltops/tools/jets/sponsors/arist.png)](https://arist.co/)
 
 ## What is Ruby on Jets?
 

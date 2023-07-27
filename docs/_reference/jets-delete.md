@@ -37,9 +37,9 @@ You can bypass the are you sure prompt with the `--yes` flag.
 ## Options
 
 ```
-[--yes],               # Skip are you sure prompt.
-[--wait], [--no-wait]  # Wait for stack deletion to complete.
-                       # Default: true
-[--noop], [--no-noop]  
+y, [--yes], [--no-yes]     # Skip are you sure prompt.
+    [--wait], [--no-wait]  # Wait for stack deletion to complete.
+                           # Default: true
+    [--noop], [--no-noop]  
 ```
 

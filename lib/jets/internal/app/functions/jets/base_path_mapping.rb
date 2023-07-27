@@ -28,8 +28,28 @@ class BasePathMapping
   # Cannot use update_base_path_mapping to update the base_mapping because it doesnt
   # allow us to change the rest_api_id. So we delete and create.
   def update
-    delete(true)
-    create
+    puts "BasePathMapping update"
+    if rest_api_changed?
+      delete(true)
+      create
+    else
+      puts "BasePathMapping update: rest_api_id #{rest_api_id} did not change. Skipping."
+    end
+
+    puts "BasePathMapping update complete"
+  end
+
+  def rest_api_changed?
+    puts "BasePathMapping checking if rest_api_id changed"
+    mapping = current_base_path_mapping
+    return true unless mapping
+    mapping.rest_api_id != rest_api_id
+  end
+
+  def current_base_path_mapping
+    resp = apigateway.get_base_path_mapping(base_path: "(none)", domain_name: domain_name)
+  rescue Aws::APIGateway::Errors::NotFoundException
+    return nil
   end
 
   # Dont delete the newly created base path mapping unless this is an operation
@@ -39,10 +59,14 @@ class BasePathMapping
   end
 
   def delete(fail_silently=false)
-    apigateway.delete_base_path_mapping(
+    puts "BasePathMapping delete"
+    options = {
       domain_name: domain_name, # required
       base_path: base_path.empty? ? '(none)' : base_path,
-    )
+    }
+    puts "BasePathMapping delete options #{options.inspect}"
+    apigateway.delete_base_path_mapping(options)
+    puts "BasePathMapping delete complete"
   # https://github.com/tongueroo/jets/issues/255
   # Used to return: Aws::APIGateway::Errors::NotFoundException
   # Now returns: Aws::APIGateway::Errors::InternalFailure
@@ -52,12 +76,41 @@ class BasePathMapping
   end
 
   def create
-    apigateway.create_base_path_mapping(
+    puts "BasePathMapping create"
+    options = {
       domain_name: domain_name, # required
       base_path: base_path,
       rest_api_id: rest_api_id, # required
       stage: @stage_name,
-    )
+    }
+    puts "BasePathMapping create options #{options.inspect}"
+    apigateway.create_base_path_mapping(options)
+    puts "BasePathMapping create complete"
+  rescue Aws::APIGateway::Errors::ServiceError => e
+    puts "ERROR: #{e.class}: #{e.message}"
+    puts "BasePathMapping create failed"
+    if e.message.include?("Invalid domain name identifier specified")
+      puts <<~EOL
+        This super edge case error seems to happen when the cloudformation stack does a rollback
+        because the BasePathMapping custom resource fails. This has happened with a strange combination of
+        ruby 2.7 and the timeout gem not being picked up in the AWS Lambda runtime environment
+        Specifically, when jets deploy was used with a rubygems install that is out-of-date.
+        See: https://community.boltops.com/t/could-not-find-timeout-0-3-1-in-any-of-the-sources/996
+
+        The new base path mapping is not created correctly and the old base path mapping is not properly deleted.
+        The old ghost base mapping interferes with the new base path mapping.
+        The workaround solution seems to require removing all the config.domain settings and deploying again. Example:
+
+        config/application.rb
+
+            config.domain.cert_arn = "arn:aws:acm:us-west-2:111111111111:certificate/EXAMPLE1-a3de-4fe7-b72e-4cc153c5303e"
+            config.domain.hosted_zone_name = "example.com"
+
+        Comment out those settings, deploy, then uncomment and deploy again.
+        If there's a better workaround, please let us know.
+      EOL
+    end
+    raise(e)
   end
 
   def deployment_stack
@@ -91,10 +144,28 @@ class BasePathMapping
   end
 
   def apigateway
-    @apigateway ||= Aws::APIGateway::Client.new
+    @apigateway ||= Aws::APIGateway::Client.new(aws_options)
   end
 
   def cfn
-    @cfn ||= Aws::CloudFormation::Client.new
+    @cfn ||= Aws::CloudFormation::Client.new(aws_options)
   end
+
+  def aws_options
+    options = {
+      retry_limit: 7, # default: 3
+      retry_base_delay: 0.6, # default: 0.3
+    }
+    options.merge!(
+      log_level: :debug,
+      logger: Logger.new($stdout),
+    ) if ENV['JETS_DEBUG_AWS_SDK']
+    options
+  end
+end
+
+if __FILE__ == $0
+  event = JSON.load(File.read(ARGV[0]))
+  context = nil # stub out
+  BasePathMapping.new(event, context).update
 end

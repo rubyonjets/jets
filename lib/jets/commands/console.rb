@@ -1,5 +1,11 @@
 class Jets::Commands::Console
-  def self.run
+  attr_reader :environment
+
+  def initialize(environment)
+    @environment = environment
+  end
+
+  def run
     puts Jets::Booter.message
 
     # Thanks: https://mutelight.org/bin-console

@@ -13,6 +13,8 @@ module Jets::Job
     include Helpers::KinesisEventHelper
     include Helpers::LogEventHelper
     include Helpers::S3EventHelper
+    include Helpers::SnsEventHelper
+    include Helpers::SqsEventHelper
 
     # Tracks bucket each time an s3_event is declared
     # Map of bucket_name => stack_name (nested part)

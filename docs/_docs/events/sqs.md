@@ -155,6 +155,15 @@ Here's an example of the event payload.
 }
 ```
 
+The `sqs_event_payload` helper method unravels the data and provides the SQS message body.
+
+### sqs_event_payload
+```ruby
+  {
+    "test": "hello world"
+  }
+```
+
 ## IAM Policy
 
 An IAM policy is generated for the Lambda function associated with the SQS event that allows the permissions needed.  You can control and override the IAM policy with normal [IAM Policies]({% link _docs/iam-policies.md %}) if needed though.

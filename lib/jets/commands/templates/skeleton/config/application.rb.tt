@@ -35,6 +35,7 @@ Jets.application.configure do
   #   security_group_ids: %w[sg-1 sg-2],
   #   subnet_ids: %w[subnet-1 subnet-2],
   # }
+  # config.function.ephemeral_storage = { size: 1536 }
   # The config.function settings to the CloudFormation Lambda Function properties.
   # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-function.html
   # Underscored format can be used for keys to make it look more ruby-ish.

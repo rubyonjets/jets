@@ -61,10 +61,13 @@ module Jets::Commands
       Jets::Router.validate_routes!
     end
 
-    desc "console", "REPL console with Jets environment loaded"
+    desc "console [environment]", "REPL console with Jets environment loaded"
     long_desc Help.text(:console)
-    def console
-      Console.run
+    # Note the environment is here to trick the Thor parser to allowing an
+    # environment parameter. It is not actually set here.  It is set earlier
+    # in cli.rb: set_jets_env_from_cli_arg!
+    def console(environment=nil)
+      Console.new(options).run
     end
 
     desc "runner", "Run Ruby code in the context of Jets app non-interactively"

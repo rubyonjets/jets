@@ -66,6 +66,14 @@ Jets figures out what functions to call by evaluating the app code and finds if 
 
     jets call admin-related_pages_controller-index --no-guess
 
+If you want to call a function which runs too long time, you can set `read_timeout`.
+
+    jets call some_long_job-index --read_timeout 900
+    
+And you can set `retry_limit`. If you don't want to retry you can set 0.
+
+    jets call some_long_job-index --retry_limit 0
+
 ## Local mode
 
 Instead of calling AWS lambda remote, you can also have `jets call` use the code directly on your machine.  To enable this, use the `--local` flag. Example:
@@ -86,6 +94,8 @@ Instead of calling AWS lambda remote, you can also have `jets call` use the code
 [--guess], [--no-guess]                # Enables guess mode. Uses inference to allows use of all dashes to specify functions. Guess mode verifies that the function exists in the code base.
                                        # Default: true
 [--local], [--no-local]                # Enables local mode. Instead of invoke the AWS Lambda function, the method gets called locally with current app code. With local mode guess mode is always used.
+[--retry-limit=N]                      # Retry count of invoking function. It work with remote call
+[--read-timeout=N]                     #  The number of seconds to wait for response data. It work with remote call
 [--noop], [--no-noop]                  
 ```
 

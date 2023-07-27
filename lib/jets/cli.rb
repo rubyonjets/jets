@@ -63,7 +63,8 @@ class Jets::CLI
     # Pretty tricky, we need to use the raw @given_args as thor_args eventually calls Commands::Base#eager_load!
     # which uses Jets.env before we get a chance to override ENV['JETS_ENV']
     command, env = @given_args[0..1]
-    return unless %w[deploy delete].include?(command)
+
+    return unless %w[deploy delete console c].include?(command)
     env = nil if env&.starts_with?('-')
     return unless env
     ENV['JETS_ENV'] = env ? env : 'development'

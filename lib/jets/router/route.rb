@@ -191,6 +191,10 @@ class Jets::Router
       @options[:mount_class]
     end
 
+    def to_h
+      JSON.load(to_json)
+    end
+
   private
     def ensure_jets_format(path)
       path.split('/').map do |s|

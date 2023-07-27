@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [3.2.2] - 2023-05-19
+- [#640](https://github.com/boltops-tools/jets/pull/640) Base path mapping CloudFormation custom resource and lambda function hardening
+
+## [3.2.1] - 2023-05-03
+- [#637](https://github.com/boltops-tools/jets/pull/637) Readme: Replace "splat out" with "had" a baby
+- [#638](https://github.com/boltops-tools/jets/pull/638) feature: update an array of reserved variables in aws lambda
+- [#639](https://github.com/boltops-tools/jets/pull/639) fix assets upload during deploy
+
+## [3.2.0] - 2022-12-03
+- [#631](https://github.com/boltops-tools/jets/pull/631) Implement vpc_endpoint_ids configuration
+- [#634](https://github.com/boltops-tools/jets/pull/634) Custom domain messaging
+- [#635](https://github.com/boltops-tools/jets/pull/635) smarter apigw routes paging calculation
+- Introduce the storage of APIGW routes state in the jets managed s3 bucket under path jets/state/apigw/pages.json and jets/state/apigw/routes.json
+- This speeds up deployment for apps with a large number of routes. Depending on the internet connection this can be minutes faster.
+- Update internationalization.md
+- fix domain.name check when APIGW changes
+- improve change apigw endpoint change messaging
+
+## [3.1.5] - 2022-08-08
+- [#628](https://github.com/boltops-tools/jets/pull/628) Multiple Databases
+- [#629](https://github.com/boltops-tools/jets/pull/629) loosen zeitwerk dependency in generated project Gemfile
+- [#630](https://github.com/boltops-tools/jets/pull/630) compile assets with WEBPACKER_ASSET_HOST as s3 endpoint url
+
+## [3.1.4] - 2022-07-02
+- [#627](https://github.com/boltops-tools/jets/pull/627) use >= for most gem dependencies
+
+## [3.1.3] - 2022-06-29
+- [#626](https://github.com/boltops-tools/jets/pull/626) aws options to better handle rate limit for base path mapping
+
+## [3.1.2] - 2022-04-24
+- [#618](https://github.com/boltops-tools/jets/pull/618) Jets Console accepts environment cli argument
+- [#621](https://github.com/boltops-tools/jets/pull/621) Add SQS and SNS event helpers for jobs
+- [#624](https://github.com/boltops-tools/jets/pull/624) Add lambda.function.ephemeral_storage function property support
+
 ## [3.1.1] - 2022-01-18
 - [#615](https://github.com/boltops-tools/jets/pull/615) adjust required_ruby_version
 

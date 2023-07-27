@@ -205,10 +205,43 @@ module Jets::Builders
       return unless webpacker_included?
 
       sh("yarn install")
+
+      ENV['WEBPACKER_ASSET_HOST'] = webpacker_asset_host if Jets.config.assets.webpacker_asset_host
       webpack_command = File.exist?("#{Jets.root}/bin/webpack") ?
           "bin/webpack" :
           `which webpack`.strip
       sh "JETS_ENV=#{Jets.env} #{webpack_command}"
+    end
+
+    # Different url for these. Examples:
+    #
+    #   webpacker_asset_host https://demo-dev-s3bucket-lw5vq7ht8ip4.s3.us-west-2.amazonaws.com/jets/public/packs/media/images/boltops-0dd1c6bd.png
+    #   s3_base_url          https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-lw5vq7ht8ip4/jets/packs/media/images/boltops-0dd1c6bd.png
+    #
+    # Interesting: webpacker_asset_host works but s3_base_url does not for CORs. IE: reactjs or vuejs requests
+    # Thinking AWS configures the non-subdomain url endpoint to be more restrictive.
+    #
+    def webpacker_asset_host
+      # Allow user to set assets.webpacker_asset_host
+      #
+      #   Jets.application.configure do
+      #     config.assets.webpacker_asset_host = "https://cloudfront.com/my/base/path"
+      #   end
+      #
+      assets = Jets.config.assets
+      return assets.webpacker_asset_host if assets.webpacker_asset_host && assets.webpacker_asset_host != "s3_endpoint"
+      return assets.base_url if assets.base_url
+
+      # By default, will use the s3 url endpoint directly by convention
+      return unless assets.webpacker_asset_host == "s3_endpoint"
+
+      region = Jets.aws.region
+
+      asset_base_url = region == 'us-east-1' ?
+        "https://#{s3_bucket}.s3.amazonaws.com" :
+        "https://#{s3_bucket}.s3.#{region}.amazonaws.com"
+
+      "#{asset_base_url}/jets/public" # s3_base_url
     end
 
     def webpacker_included?

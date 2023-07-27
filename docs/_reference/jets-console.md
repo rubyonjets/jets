@@ -5,7 +5,7 @@ reference: true
 
 ## Usage
 
-    jets console
+    jets console [environment]
 
 ## Description
 
