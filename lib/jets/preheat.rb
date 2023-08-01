@@ -1,6 +1,7 @@
 module Jets
   class Preheat
     extend Memoist
+    include Jets::AwsServices
 
     # Examples:
     #
