@@ -17,7 +17,9 @@ class Jets::Commands::Call
   end
 
   def function_name
-    if @guess
+    if @provided_function_name.starts_with?(Jets.config.project_namespace)
+      @provided_function_name # fully qualified function name
+    elsif @guess      
       ensure_guesses_found! # possibly exits here
       guesser.function_name # guesser adds namespace already
     else
