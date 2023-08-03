@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.2] - 2023-08-03
+- [#660](https://github.com/boltops-tools/jets/pull/660) Fix prewarming
+
 ## [4.0.1] - 2023-06-06
 - [#655](https://github.com/boltops-tools/jets/pull/655) fix cors when using authorizers
 - [#656](https://github.com/boltops-tools/jets/pull/656) fix prewarming iam permission
