@@ -7,7 +7,7 @@ module Jets::Mega
         value.each { |k,v| encode(v, append_key(key,k), out_hash) }
         out_hash
       when Array then
-        value.each { |v| encode(v, "#{key}[]", out_hash) }
+        value.each { |v| encode(v, "#{key}", out_hash) }
         out_hash
       when nil   then ''
       else
