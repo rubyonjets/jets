@@ -1,6 +1,7 @@
 module Jets
   class Preheat
     extend Memoist
+    include Jets::AwsServices
 
     # Examples:
     #
@@ -101,7 +102,9 @@ module Jets
         stack_resources.each do |stack_resource|
           acc << stack_resource if stack_resource.logical_resource_id.ends_with?('LambdaFunction') # only functions
         end
-      end.flatten.uniq.compact
+        acc
+      end
+      resources.map(&:physical_resource_id) # function names
     end
     memoize :all_functions
 
