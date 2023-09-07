@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.4] - 2023-09-07
+- [#662](https://github.com/boltops-tools/jets/pull/662) fix vpc iam permissions
+
 ## [4.0.3] - 2023-08-03
 - [#657](https://github.com/boltops-tools/jets/pull/657) [Fix] ApiGateway for local Middleware: fix query_string_parameters
 
