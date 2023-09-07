@@ -7,24 +7,7 @@ class Jets::PreheatJob < ApplicationJob
 
   class_timeout 30
   class_memory 1024
-  class_iam_policy(
-    {
-      sid: "Statement1",
-      action: ["logs:*"],
-      effect: "Allow",
-      resource: [
-        sub("arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${WarmLambdaFunction}"),
-      ]
-    },
-    {
-      Sid: "Statement2",
-      Action: ["lambda:InvokeFunction", "lambda:InvokeAsync"],
-      Effect: "Allow",
-      Resource: [
-        sub("arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:#{Jets.project_namespace}-*")
-      ]
-    }
-  )
+  class_iam_policy(Jets.config.preheat_job_iam_policy)
 
   rate(PREWARM_RATE) if torching
   def torch
