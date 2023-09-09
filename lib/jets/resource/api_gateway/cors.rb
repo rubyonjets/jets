@@ -51,7 +51,11 @@ module Jets::Resource::ApiGateway
     end
 
     def cors_authorization_type
-      Jets.config.api.cors_authorization_type || "NONE"
+      if @route.authorization_type.present?
+        @route.authorization_type
+      else
+        Jets.config.api.cors_authorization_type || "NONE"
+      end
     end
 
     def cors_logical_id
