@@ -175,7 +175,7 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Rails Support](http://rubyonjets.com/docs/rails-support/)
 * [Tutorials](http://rubyonjets.com/docs/tutorials/)
 * [Prewarming](http://rubyonjets.com/docs/prewarming/)
-* [Custom Resources](http://rubyonjets.com/docs/associated-resources/)
+* [Custom Resources](https://rubyonjets.com/docs/custom-resources/)
 * [Shared Resources](http://rubyonjets.com/docs/shared-resources/)
 * [Installation](http://rubyonjets.com/docs/install/)
 * [CLI Reference](http://rubyonjets.com/reference/)
