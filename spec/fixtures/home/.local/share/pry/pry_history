@@ -1,0 +1,11 @@
+hash_config
+hash_config.configuration_hash
+hash_config.configuration_hash.adapter
+hash_config.configuration_hash["adapter"]
+hash_config.configuration_hash
+hash_config.configuration_hash.class
+hash_config.configuration_hash["adapter"]
+hash_config.configuration_hash[:adapter]
+hash_configs
+spec_names = hash_configs.map { |h| h.spec_name }
+spec_names = hash_configs.map { |h| h.name }
