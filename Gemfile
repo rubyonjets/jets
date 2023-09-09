@@ -7,7 +7,7 @@ gemspec
 # TODO: Only require webpacker in Gemfile of project if possible.
 # Need both because of jets/application.rb and jets/webpacker/middleware_setup.rb
 group :development, :test do
-  gem "mysql2", "~> 0.5.2"
+  gem "mysql2", "~> 0.5.5"
   gem "dynomite"
   gem "jetpacker"
   gem "rspec_junit_formatter"
