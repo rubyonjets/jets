@@ -180,7 +180,7 @@ For more documentation, check out the official docs: [Ruby on Jets](http://rubyo
 * [Installation](http://rubyonjets.com/docs/install/)
 * [CLI Reference](http://rubyonjets.com/reference/)
 * [Contributing](http://rubyonjets.com/docs/contributing/)
-* [Support Jets](http://rubyonjets.com/support-jets/)
+* [Support Jets](https://rubyonjets.com/support/)
 * [Example Projects](https://github.com/tongueroo/jets-examples)
 
 ## Learning Content
