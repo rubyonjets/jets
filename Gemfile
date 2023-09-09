@@ -6,6 +6,7 @@ gemspec
 # required here for specs
 # TODO: Only require webpacker in Gemfile of project if possible.
 # Need both because of jets/application.rb and jets/webpacker/middleware_setup.rb
+gem "pry"
 group :development, :test do
   gem "mysql2", "~> 0.5.5"
   gem "dynomite"
