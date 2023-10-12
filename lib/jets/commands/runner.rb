@@ -1,5 +1,5 @@
 class Jets::Commands::Runner
-  def self.run(code)
+  def self.run(code, args=nil)
     if code =~ %r{^file://}
       path = code.sub('file://', '')
       full_path = "#{Jets.root}/#{path}"
