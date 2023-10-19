@@ -7,7 +7,7 @@ class Jets::PreheatJob < ApplicationJob
 
   class_timeout 30
   class_memory 1024
-  class_iam_policy(Jets.config.preheat_job_iam_policy)
+  class_iam_policy(Jets::Application.preheat_job_iam_policy)
 
   rate(PREWARM_RATE) if torching
   def torch

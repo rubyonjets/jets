@@ -41,6 +41,30 @@ class Jets::Application
           Resource: "*",
         }
       end
+
+      # Used by app/jobs/jets/preheat_job.rb
+      def preheat_job_iam_policy
+        policy = [
+          {
+            Sid: "Statement1",
+            Action: ["logs:*"],
+            Effect: "Allow",
+            Resource: [{
+              "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${JetsPreheatJobWarmLambdaFunction}"
+            }]
+          },
+          {
+            Sid: "Statement2",
+            Action: ["lambda:InvokeFunction", "lambda:InvokeAsync"],
+            Effect: "Allow",
+            Resource: [{
+              "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:#{Jets.project_namespace}-*"
+            }]
+          }
+        ]
+        policy << vpc_iam_policy_statement if Jets.config.function.vpc_config
+        policy
+      end
     end
 
     def default_config
@@ -199,30 +223,6 @@ class Jets::Application
         app/functions
         app/shared/functions
       ]
-    end
-
-    # Used by app/jobs/jets/preheat_job.rb
-    def preheat_job_iam_policy
-      policy = [
-        {
-          Sid: "Statement1",
-          Action: ["logs:*"],
-          Effect: "Allow",
-          Resource: [{
-            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${JetsPreheatJobWarmLambdaFunction}"
-          }]
-        },
-        {
-          Sid: "Statement2",
-          Action: ["lambda:InvokeFunction", "lambda:InvokeAsync"],
-          Effect: "Allow",
-          Resource: [{
-            "Fn::Sub": "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:#{Jets.project_namespace}-*"
-          }]
-        }
-      ]
-      policy << Jets::Application.vpc_iam_policy_statement if Jets.config.function.vpc_config
-      policy
     end
   end
 end
