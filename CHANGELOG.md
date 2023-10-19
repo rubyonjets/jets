@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.5] - 2023-10-19
+- [#665](https://github.com/boltops-tools/jets/pull/665) only add add_stage_name when request is present
+- [#669](https://github.com/boltops-tools/jets/pull/669) Add optional command args to the jets runner command.
+
 ## [4.0.4] - 2023-09-07
 - [#662](https://github.com/boltops-tools/jets/pull/662) fix vpc iam permissions
 
