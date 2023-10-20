@@ -50,7 +50,7 @@ class Jets::Application
             Action: ["logs:*"],
             Effect: "Allow",
             Resource: [{
-              "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${JetsPreheatJobWarmLambdaFunction}"
+              "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${WarmLambdaFunction}"
             }]
           },
           {
