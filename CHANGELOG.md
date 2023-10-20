@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.7] - 2023-10-20
+- [#671](https://github.com/boltops-tools/jets/pull/671) fix preheat warm job iam role reference
+
 ## [4.0.6] - 2023-10-20
 - [#670](https://github.com/boltops-tools/jets/pull/670) Fixes IAM role permissions for PreheatJob
 
