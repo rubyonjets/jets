@@ -72,8 +72,8 @@ module Jets::Commands
 
     desc "runner", "Run Ruby code in the context of Jets app non-interactively"
     long_desc Help.text(:runner)
-    def runner(code)
-      Runner.run(code)
+    def runner(code, args=nil)
+      Runner.run(code, args)
     end
 
     desc "dbconsole", "Starts DB REPL console"
