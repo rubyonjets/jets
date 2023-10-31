@@ -49,7 +49,6 @@ private
       %w[
         Procfile
         controllers
-        helpers
         javascript
         models/application_
         views
