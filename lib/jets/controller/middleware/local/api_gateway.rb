@@ -76,7 +76,7 @@ class Jets::Controller::Middleware::Local
 
       headers
     end
-
+asdf
     def query_string_parameters
       @env['QUERY_STRING']&.split('&')&.each_with_object({}) do |parameter, hash|
         key, value = parameter.split('=')
