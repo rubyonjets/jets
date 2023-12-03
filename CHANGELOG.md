@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.8] - 2023-12-03
+- [#677](https://github.com/boltops-tools/jets/pull/677) pin dynomite 1.2.7
+
 ## [4.0.7] - 2023-10-20
 - [#671](https://github.com/boltops-tools/jets/pull/671) fix preheat warm job iam role reference
 
