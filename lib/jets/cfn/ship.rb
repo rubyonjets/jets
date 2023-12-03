@@ -52,7 +52,6 @@ module Jets::Cfn
 
     def set_resource_tags
       @tags = Jets.config.resource_tags.map { |key, value| { key: key, value: value } }
-      puts "Adding resource_tags to CloudFormation:\n #{@tags}"
     end
 
     def save_stack
