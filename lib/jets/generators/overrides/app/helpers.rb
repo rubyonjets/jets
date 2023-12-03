@@ -56,7 +56,6 @@ module Jets::Generators::Overrides::App
     end
 
     def copy_project
-      # directory ".", project_folder, copy_options
       directory ".", ".", copy_options
     end
 
@@ -69,9 +68,6 @@ module Jets::Generators::Overrides::App
       excludes.uniq!
 
       unless @database
-        # Do not even generate the config/database.yml because
-        # Jets webpacker:install bombs and tries to load the db since it sees a
-        # config/database.yml but there's no database pg gem configured.
         excludes += %w[
           database.yml
           db

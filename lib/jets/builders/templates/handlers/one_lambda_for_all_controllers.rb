@@ -8,7 +8,7 @@ def lambda_handler(event:, context:)
     return
   end
 
-  <% if @vars.process_type == "controller" -%>
+<% if @vars.process_type == "controller" -%>
   route = Jets::Router.find_route_by_event(event)
   controller = route.controller_name
   action = route.action_name

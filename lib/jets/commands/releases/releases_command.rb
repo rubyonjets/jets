@@ -1,6 +1,6 @@
 module Jets::Command
   class ReleasesCommand < Base # :nodoc:
-    desc "history", "List deploy history"
+    desc "history", "List releases"
     long_desc Help.text(:history)
     paging_options(order: 'desc').call
     def perform

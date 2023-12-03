@@ -88,7 +88,13 @@ module Jets::Core
   def parsed_project_name
     lines = IO.readlines("#{Jets.root}/config/application.rb")
     project_name_line = lines.find { |l| l =~ /config\.project_name.*=/ && l !~ /^\s+#/ }
-    project_name_line.gsub(/.*=/,'').strip.gsub(/["']/,'') if project_name_line
+    if project_name_line
+      parsed = project_name_line.gsub(/.*=/,'').strip
+      # The +? makes it non-greedy
+      # See: https://ruby-doc.org/core-2.5.1/Regexp.html#class-Regexp-label-Repetition
+      md = parsed.match(/['"](.+?)['"]/)
+      md ? md[1] : raise("Unable to parse project name from config/application.rb: #{project_name_line}")
+    end
   end
   memoize :parsed_project_name
 

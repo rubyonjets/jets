@@ -32,7 +32,7 @@ module Jets::Router
       # Checking the request_method_from_hidden_method_field so that handler can find the right route
       # super early in the process. Otherwise lambda routes to the wrong controller action.
       @request_method = request_method || @request.request_method_from_hidden_method_field || @request.request_method.to_s.upcase
-      @request_path = @request.path
+      @request_path = strip_format(@request.path)
       route = find_route
       match_constraints(route) if route
     end
@@ -43,7 +43,7 @@ module Jets::Router
     def find_by_env(env)
       @env = env
       @request_method = env["REQUEST_METHOD"] || "GET"
-      @request_path = env["PATH_INFO"]
+      @request_path = strip_format(env["PATH_INFO"])
       find_route
     end
 
@@ -87,12 +87,16 @@ module Jets::Router
     end
     memoize :mount
 
+    def strip_format(path)
+      path.sub(/\..+$/, '') # Remove format from the end of the path
+    end
+
     def match?(route)
       # Immediately stop checking when the request http_method: GET, POST, ANY, etc
       # doesnt match.
       return false if request_method != route.http_method && route.http_method != "ANY"
 
-      route_path = route.path
+      route_path = strip_format(route.path)
       route_path = "#{mount.at}#{route_path}" if mount
 
       if request_path == route_path

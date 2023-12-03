@@ -16,12 +16,13 @@ Please **watch/star** this repo to help grow and support the project.
 
 ## What is Ruby on Jets?
 
-Jets is a Ruby Serverless Framework.  Jets allows you to create serverless applications with a beautiful language: Ruby.  It includes everything required to build an application and deploy it to AWS Lambda.
+Jets is a Ruby Serverless Framework. Jets allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build and deploy an application to AWS Lambda.
 
-It is key to understand AWS Lambda and API Gateway to understand Jets conceptually.  Jets maps your code to Lambda functions and API Gateway resources.
+Understanding AWS Lambda and API Gateway is key to understanding Jets conceptually. Jets map your code to Lambda functions and other AWS Resources like API Gateway and Event Rules.
 
-* **AWS Lambda** is Functions as a Service. It allows you to upload and run functions without worrying about the underlying infrastructure.
+* **AWS Lambda** is functions as a service. It allows you to upload and run functions without worrying about the underlying infrastructure.
 * **API Gateway** is the routing layer for Lambda. It is used to route REST URL endpoints to Lambda functions.
+* **EventBridge Rules** are events as a service. You can automatically run Lambda functions triggered from AWS services. You decide what events to catch and how to react to them.
 
 The official documentation is at [Ruby on Jets](http://rubyonjets.com).
 
@@ -42,14 +43,14 @@ end
 
 Here's the function in the Lambda console:
 
-![Code Example in AWS Lambda console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/jets-simple-lambda-function-console.png)
+![Code Example in AWS Lambda console](https://img.boltops.com/tools/jets/readme/simple-lambda-function.png)
 
 
-Though simple functions are supported by Jets, they do not add much value as other ways to write Ruby code with Jets. Classes like [Controllers](http://rubyonjets.com/docs/controllers/) and [Jobs](http://rubyonjets.com/docs/jobs/) add many conveniences and are more powerful to use. We’ll cover them next.
+Though simple functions are supported by Jets, they do not add as much value as other ways to write Ruby code with Jets. Classes like [Controllers](http://rubyonjets.com/docs/controllers/) and [Jobs](http://rubyonjets.com/docs/jobs/) add many conveniences and are more powerful to use. We’ll cover them next.
 
 ### Jets Controllers
 
-A Jets controller handles a web request and renders a response.  Here's an example:
+A Jets controller handles a web request and renders a response. Here's an example:
 
 app/controllers/posts_controller.rb:
 
@@ -69,11 +70,9 @@ class PostsController < ApplicationController
 end
 ```
 
-Helper methods like `params` provide the parameters from the API Gateway event. The `render` method renders a Lambda Proxy structure back that API Gateway understands.
+Helper methods like `params` provide the parameters from the API Gateway event. The `render` method returns a Lambda Proxy structure that API Gateway understands.
 
-Jets creates Lambda functions for each public method in your controller. Here they are in the Lambda console:
-
-![Lambda Functions for each public method in AWS Console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-lambda-functions-controller.png)
+Jets creates single Lambda functions to handle your Jets Controller requests. The Lambda Function handler is a shim that routes to your controller action.
 
 ### Jets Routing
 
@@ -83,23 +82,14 @@ config/routes.rb:
 
 ```ruby
 Jets.application.routes.draw do
-  get  "posts", to: "posts#index"
-  get  "posts/new", to: "posts#new"
-  get  "posts/:id", to: "posts#show"
-  post "posts", to: "posts#create"
-  get  "posts/:id/edit", to: "posts#edit"
-  put  "posts", to: "posts#update"
-  delete  "posts", to: "posts#delete"
-
-  resources :comments # expands to the RESTful routes above
-
+  resources :posts
   any "posts/hot", to: "posts#hot" # GET, POST, PUT, etc request all work
 end
 ```
 
 The `routes.rb` gets translated to API Gateway resources:
 
-![API Gateway Resources generated from routes in AWS console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/quick-start/demo-api-gateway.png)
+![API Gateway Resources generated from routes in AWS console](https://img.boltops.com/tools/jets/readme/apigw.png)
 
 Test your API Gateway endpoints with curl or postman. Note, replace the URL endpoint with the one that is created:
 
@@ -111,7 +101,7 @@ Test your API Gateway endpoints with curl or postman. Note, replace the URL endp
 
 ### Jets Jobs
 
-A Jets job handles asynchronous background jobs performed outside of the web request/response cycle. Here's an example:
+A Jets job handles asynchronous background jobs outside the web request/response cycle. Here's an example:
 
 app/jobs/hard_job.rb:
 
@@ -129,9 +119,13 @@ class HardJob < ApplicationJob
 end
 ```
 
-`HardJob#dig` runs every 10 hours and `HardJob#lift` runs every 12 hours.  The `rate` and `cron` methods created CloudWatch Event Rules. Example:
+![Jets Jobs in AWS Lambda Console](https://img.boltops.com/tools/jets/readme/jets-jobs.png)
 
-![CloudWatch Event Rules in AWS Console](https://raw.githubusercontent.com/tongueroo/jets/master/docs/img/docs/demo-job-cloudwatch-rule.png)
+`HardJob#dig` runs every 10 hours, and `HardJob#lift` runs every 12 hours. The `rate` and `cron` methods created CloudWatch Event Rules. Example:
+
+![CloudWatch Event Rules in AWS Console](https://img.boltops.com/tools/jets/readme/jets-jobs-event-rules.png)
+
+This simple example uses Scheduled Events. There are many more possibilities, see the [Events Docs](https://docs.rubyonjets.com/docs/events/).
 
 ### Jets Deployment
 
@@ -141,29 +135,19 @@ You can test your application with a local server that mimics API Gateway: [Jets
 
 After deployment, you can test the Lambda functions with the AWS Lambda console or the CLI.
 
-### AWS Lambda Console
-
-![Lambda Console](https://s3.amazonaws.com/boltops-demo/images/screenshots/lambda-console-posts-controller-index.png)
-
 ### Live Demos
 
 Here are some demos of Jets applications:
 
 * [Quintessential CRUD Jets app](https://demo.rubyonjets.com/)
 * [API Demo](https://api.demo.rubyonjets.com/)
-* [Jets Afterburner: Easy Rails Support](https://afterburner.demo.rubyonjets.com/)
-* [Mega Mode: Jets and Rails Combined](https://mega.demo.rubyonjets.com/)
 * [Image Upload with CarrierWave](https://upload.demo.rubyonjets.com/)
 
-Please feel free to add your own example to the [jets-examples](https://github.com/tongueroo/jets-examples) repo.
-
-### Rails Support
-
-[Jets Afterburner Mode](http://rubyonjets.com/docs/rails-support/) provides Rails support with little effort.  This allows you to run a Rails application on AWS Lambda. Also here's a Tutorial Blog Post: [Jets Afterburner: Rails Support](https://blog.boltops.com/2018/12/21/jets-afterburner-serverless-rails-on-aws-lambda-in-5-minutes).
+Please feel free to add your examples to the [rubyonjets/examples](https://github.com/rubyonjets/examples) repo.
 
 ### More Info
 
-For more documentation, check out the official docs: [Ruby on Jets](http://rubyonjets.com/).  Here's a list of useful links:
+For more documentation, check out the official docs: [Ruby on Jets](http://rubyonjets.com/). Here's a list of useful links:
 
 * [Quick Start](http://rubyonjets.com/quick-start/)
 * [Local Jets Server](http://rubyonjets.com/docs/local-server/)

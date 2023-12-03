@@ -45,6 +45,9 @@ class Jets::Dotenv
     rescue Aws::SSM::Errors::ParameterNotFound
       @missing << [key, value, name]
       ''
+    rescue Aws::SSM::Errors::ValidationException
+      puts "ERROR: Invalid SSM parameter name: #{name.inspect}".color(:red)
+      raise
     end
 
     def ssm_name(key, value)
