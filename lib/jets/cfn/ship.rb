@@ -16,6 +16,7 @@ module Jets::Cfn
 
       puts "Deploying CloudFormation stack with jets app!"
       begin
+        set_resource_tags
         save_stack
       rescue Aws::CloudFormation::Errors::InsufficientCapabilitiesException => e
         capabilities = e.message.match(/\[(.*)\]/)[1]
@@ -49,6 +50,11 @@ module Jets::Cfn
       show_custom_domain
     end
 
+    def set_resource_tags
+      @tags = Jets.config.resource_tags.map { |key, value| { key: key, value: value } }
+      puts "Adding resource_tags to CloudFormation:\n #{@tags}"
+    end
+
     def save_stack
       if stack_exists?(@parent_stack_name)
         update_stack
@@ -77,6 +83,7 @@ module Jets::Cfn
         stack_name: @parent_stack_name,
         capabilities: capabilities, # ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
         # disable_rollback: !@options[:rollback],
+        tags: @tags,
       }.merge!(template.to_h)
     end
 

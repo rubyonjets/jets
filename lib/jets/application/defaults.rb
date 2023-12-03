@@ -183,6 +183,8 @@ class Jets::Application
       config.deploy.stagger.batch_size = 10
 
       config.hot_reload = Jets.env.development?
+      
+      config.resource_tags = {}
 
       config.ruby = ActiveSupport::OrderedOptions.new
       config.ruby.check = true
