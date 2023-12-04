@@ -14,9 +14,10 @@ class Jets::Resource::ApiGateway::RestApi::Routes::Change
       return [] if data.nil?
 
       data.map do |item|
+        method = item.dig('options','method') || item.dig('options','http_method')
         Jets::Router::Route.new(
           path: item['path'],
-          method: item['options']['method'],
+          method: method,
           to: item['to'],
         )
       end
