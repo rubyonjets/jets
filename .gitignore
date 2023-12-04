@@ -4,6 +4,7 @@
 .byebug_history
 .config
 .yardoc
+.idea
 _yardoc
 coverage
 doc/
