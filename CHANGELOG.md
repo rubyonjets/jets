@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
-## [5.0.0] - Unreleased
+## [5.0.0] - 2023-12-05
 Single Lambda Function for Controllers
 * For controllers, a single Lambda function is deployed going forward.
 * APIGW serves as proxy endpoint for requests to the single Lambda function. Techniquely, there are 2 APIGW endpoints.
@@ -54,7 +54,6 @@ Breaking changes:
 * Pass request.headers straight without downcase. IE: `X-Amzn-Trace-Id`. Introduce request.downcase_headers instead.
 * Jets.config.prewarm.concurrency option removed.
 * dynomite decoupling and integration improvements
-
 
 ## [4.0.10] - 2023-12-04
 - [#678](https://github.com/boltops-tools/jets/pull/678) handle option method or http_method from route state
