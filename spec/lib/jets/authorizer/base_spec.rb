@@ -29,18 +29,14 @@ describe Jets::Authorizer::Base do
         },
         usage_identifier_key: "whatever",
       )
-      # puts "result:"
-      # puts JSON.pretty_generate(result)
-      expect(result.keys.sort).to eq(["context", "policyDocument", "principalId", "usageIdentifierKey"])
+      expect(result.keys.sort).to eq([:context, :policyDocument, :principalId, :usageIdentifierKey])
     end
 
     it "build_policy simplest form" do
       resource = event["methodArn"]
       result = authorizer.send(:build_policy, resource, "current_user", { string_key: "value" }, "usage-key")
-      # puts "result:"
-      # puts JSON.pretty_generate(result)
-      expect(result.keys.sort).to eq(["context", "policyDocument", "principalId", "usageIdentifierKey"])
-      expect(result["context"]).to eq({ string_key: "value" })  # left alone
+      expect(result.keys.sort).to eq([:context, :policyDocument, :principalId, :usageIdentifierKey])
+      expect(result[:context]).to eq({ string_key: "value" })  # left alone
     end
   end
 end

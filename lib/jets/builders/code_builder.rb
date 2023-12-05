@@ -30,8 +30,8 @@ module Jets::Builders
       cache_check_message
 
       clean_start
-      compile_assets # easier to do before we copy the project because node and yarn has been likely setup in the that dir
-      compile_rails_assets
+      assets_precompile
+      run_webpack # easier to do before we copy the project because node and yarn has been likely setup in the that dir
       copy_project
       copy_ruby_version_file
       Dir.chdir("#{stage_area}/code") do
@@ -95,7 +95,6 @@ module Jets::Builders
       # Reconfigure code
       store_s3_base_url
       disable_webpacker_middleware
-      copy_internal_jets_code
 
       # Code prep and zipping
       check_code_size!
@@ -117,32 +116,6 @@ module Jets::Builders
       CodeSize.check!
     end
 
-    # Materialized internal code into actually user Jets app as part of the deploy process.
-    # Examples of things that we might materialize:
-    #
-    #   Views
-    #   Simple Functions
-    #
-    # For functions,  We copy the files into the project because we cannot require
-    # simple functions directly since they are wrapped by an anonymous class.
-    def copy_internal_jets_code
-      files = []
-
-      mailers_controller = Jets::Router.has_controller?("Jets::MailersController")
-      if mailers_controller
-        files << "app/controllers/jets/mailers_controller.rb"
-        files << "app/views/jets/mailers"
-        files << "app/helpers/jets/mailers_helper.rb"
-      end
-
-      files.each do |relative_path|
-        src = File.expand_path("../internal/#{relative_path}", File.dirname(__FILE__))
-        dest = "#{"#{stage_area}/code"}/#{relative_path}"
-        FileUtils.mkdir_p(File.dirname(dest))
-        FileUtils.cp_r(src, dest)
-      end
-    end
-
     # Thanks https://stackoverflow.com/questions/9354595/recursively-getting-the-size-of-a-directory
     # Seems to overestimate a little bit but close enough.
     def dir_size(folder)
@@ -157,8 +130,8 @@ module Jets::Builders
     # At this point the minimal stack exists, so we can grab it with the AWS API.
     # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
+      return if Jets.config.mode == "job"
       write_s3_base_url("#{stage_area}/code/config/s3_base_url.txt")
-      write_s3_base_url("#{stage_area}/rack/config/s3_base_url.txt") if Jets.rack?
     end
 
     def write_s3_base_url(full_path)
@@ -175,12 +148,11 @@ module Jets::Builders
       #
       return Jets.config.assets.base_url if Jets.config.assets.base_url
 
+      # Note: subdomain form works with CORs but the subfolder form does not. Using subfolder form.
       region = Jets.aws.region
-
       asset_base_url = region == 'us-east-1' ?
-        "https://s3.amazonaws.com" :
-        "https://s3-#{region}.amazonaws.com"
-      "#{asset_base_url}/#{s3_bucket}/jets" # s3_base_url
+        "https://#{s3_bucket}.s3.amazonaws.com/jets" :
+        "https://#{s3_bucket}.s3-#{region}.amazonaws.com/jets"
     end
 
     def s3_bucket
@@ -193,50 +165,58 @@ module Jets::Builders
       FileUtils.touch(full_path)
     end
 
+    def assets_precompile
+      return if skip_assets?
+      return unless gemfile_include?("sprockets-jets")
+      sh "jets assets:precompile"
+    end
+
     # This happens in the current app directory not the tmp code for simplicity.
     # This is because the node and yarn has likely been set up correctly there.
-    def compile_assets
-      if ENV['JETS_SKIP_ASSETS']
-        puts "Skip compiling assets".color(:yellow) # useful for debugging
-        return
-      end
+    def run_webpack
+      return if skip_assets?
+      return unless gemfile_include?("jetpacker")
 
       headline "Compling assets in current project directory"
-      return unless webpacker_included?
-
       sh("yarn install")
 
-      ENV['WEBPACKER_ASSET_HOST'] = webpacker_asset_host if Jets.config.assets.webpacker_asset_host
+      ENV['WEBPACKER_ASSET_HOST'] = asset_host if Jets.config.assets.base_url
       webpack_command = File.exist?("#{Jets.root}/bin/webpack") ?
           "bin/webpack" :
           `which webpack`.strip
       sh "JETS_ENV=#{Jets.env} #{webpack_command}"
     end
 
+    def skip_assets?
+      if ENV['JETS_SKIP_ASSETS']
+        puts "Skip compiling assets".color(:yellow) # useful for debugging
+        return true
+      end
+      return true if Jets.config.mode == "job"
+      return true unless Jets.config.respond_to?(:assets)
+      Jets.config.assets.enable_webpack
+    end
+
     # Different url for these. Examples:
     #
-    #   webpacker_asset_host https://demo-dev-s3bucket-lw5vq7ht8ip4.s3.us-west-2.amazonaws.com/jets/public/packs/media/images/boltops-0dd1c6bd.png
-    #   s3_base_url          https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-lw5vq7ht8ip4/jets/packs/media/images/boltops-0dd1c6bd.png
+    #   asset_host  https://demo-dev-s3bucket-lw5vq7ht8ip4.s3.us-west-2.amazonaws.com/jets/public/packs/media/images/boltops-0dd1c6bd.png
+    #   s3_base_url https://s3-us-west-2.amazonaws.com/demo-dev-s3bucket-lw5vq7ht8ip4/jets/packs/media/images/boltops-0dd1c6bd.png
     #
-    # Interesting: webpacker_asset_host works but s3_base_url does not for CORs. IE: reactjs or vuejs requests
+    # Interesting: asset_host works but s3_base_url does not for CORs. IE: reactjs or vuejs requests
     # Thinking AWS configures the non-subdomain url endpoint to be more restrictive.
     #
-    def webpacker_asset_host
-      # Allow user to set assets.webpacker_asset_host
-      #
-      #   Jets.application.configure do
-      #     config.assets.webpacker_asset_host = "https://cloudfront.com/my/base/path"
-      #   end
-      #
+    # Allow user to set assets.asset_host
+    #
+    #   Jets.application.configure do
+    #     config.assets.asset_host = "https://cloudfront.com/my/base/path"
+    #   end
+    #
+    def asset_host
       assets = Jets.config.assets
-      return assets.webpacker_asset_host if assets.webpacker_asset_host && assets.webpacker_asset_host != "s3_endpoint"
-      return assets.base_url if assets.base_url
+      return assets.base_url if assets.base_url && assets.base_url != "s3_endpoint"
 
       # By default, will use the s3 url endpoint directly by convention
-      return unless assets.webpacker_asset_host == "s3_endpoint"
-
       region = Jets.aws.region
-
       asset_base_url = region == 'us-east-1' ?
         "https://#{s3_bucket}.s3.amazonaws.com" :
         "https://#{s3_bucket}.s3.#{region}.amazonaws.com"
@@ -244,7 +224,7 @@ module Jets::Builders
       "#{asset_base_url}/jets/public" # s3_base_url
     end
 
-    def webpacker_included?
+    def gemfile_include?(name)
       # Old code, leaving around for now:
       # Thanks: https://stackoverflow.com/questions/4195735/get-list-of-gems-being-used-by-a-bundler-project
       # webpacker_loaded = Gem.loaded_specs.keys.include?("webpacker")
@@ -253,56 +233,7 @@ module Jets::Builders
       # Checking this way because when using jets standalone for Afterburner mode we don't want to run into
       # bundler gem collisions.  TODO: figure out the a better way to handle the collisions.
       lines = IO.readlines("#{Jets.root}/Gemfile")
-      lines.detect { |l| l =~ /webpacker/ || l =~ /jetpacker/ }
-    end
-
-    # This happens in the current app directory not the tmp code for simplicity
-    # This is because the node likely been set up correctly there.
-    def compile_rails_assets
-      return unless Jets.rack? && rails? && !rails_api?
-
-      if ENV['JETS_SKIP_ASSETS']
-        puts "Skip compiling rack assets".color(:yellow) # useful for debugging
-        return
-      end
-
-      # Need to capture JETS_ROOT since can be changed by Turbo mode
-      jets_root = Jets.root
-      Bundler.with_unbundled_env do
-        # Switch gemfile for Afterburner mode
-        gemfile = ENV['BUNDLE_GEMFILE']
-        ENV['BUNDLE_GEMFILE'] = "#{jets_root}/rack/Gemfile"
-        sh "cd #{jets_root} && bundle install"
-        ENV['BUNDLE_GEMFILE'] = gemfile
-
-        rails_assets(:clobber, jets_root: jets_root)
-        rails_assets(:precompile, jets_root: jets_root)
-      end
-    end
-
-    def rails_assets(cmd, jets_root:)
-      # rake is available in both rails 4 and 5. rails command only in 5
-      command = "bundle exec rake assets:#{cmd} --trace"
-      command = "RAILS_ENV=#{Jets.env} #{command}" unless Jets.env.development?
-      sh("cd #{jets_root}/rack && #{command}")
-    end
-
-    # Rudimentary rails detection
-    # Duplicated in builders/reconfigure_rails.rb
-    def rails?
-      config_ru = "#{Jets.root}/rack/config.ru"
-      return false unless File.exist?(config_ru)
-      !IO.readlines(config_ru).grep(/Rails.application/).empty?
-    end
-
-    # Rudimentary rails api detection
-    # Duplicated in builders/reconfigure_rails.rb
-    # Another way of checking is loading a rails console and checking Rails.application.config.api_only
-    # Using this way for simplicity.
-    def rails_api?
-      config_app = "#{Jets.root}/rack/config/application.rb"
-      return false unless File.exist?(config_app)
-      !IO.readlines(config_app).grep(/config.api_only.*=.*true/).empty?
+      lines.detect { |l| l =~ /#{name}/ && l !~ /\s.*#/ }
     end
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
@@ -326,7 +257,6 @@ module Jets::Builders
       FileUtils.rm_rf("#{stage_area}/code") # remove current code folder
       move_node_modules(Jets.root, Jets.build_root)
       begin
-        # puts "cp -r #{@full_project_path} #{"#{stage_area}/code"}".color(:yellow) # uncomment to debug
         Jets::Util.cp_r(@full_project_path, "#{stage_area}/code")
       ensure
         move_node_modules(Jets.build_root, Jets.root) # move node_modules directory back
@@ -372,11 +302,14 @@ module Jets::Builders
     memoize :rack_packager
 
     def package_ruby
+      if ENV['JETS_SKIP_PACKAGE']
+        puts "Skip packaging ruby".color(:yellow) # useful for developing handlers
+        return
+      end
       return if Jets.poly_only?
 
       check_agree
       ruby_packager.install
-      reconfigure_rails # call here after "#{stage_area}/code" is available
       rack_packager.install
       ruby_packager.finish # by this time we have a /tmp/jets/demo/stage/code/vendor/gems
       rack_packager.finish
@@ -385,7 +318,7 @@ module Jets::Builders
     end
 
     def check_agree
-      agree = Jets::Gems::Agree.new
+      agree = Jets::Api::Agree.new
       agree.prompt
     end
 
@@ -393,11 +326,6 @@ module Jets::Builders
       return if Jets.poly_only?
       lambda_layer = LambdaLayer.new
       lambda_layer.build
-    end
-
-    # TODO: Move logic into plugin instead
-    def reconfigure_rails
-      ReconfigureRails.new("#{"#{stage_area}/code"}/rack").run
     end
 
     def cache_check_message
@@ -414,7 +342,7 @@ module Jets::Builders
 
     # Group all the path settings together here
     def self.tmp_code
-      Jets::Commands::Build.tmp_code
+      Jets::Cfn::Builder.tmp_code
     end
 
     def tmp_code

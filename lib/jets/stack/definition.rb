@@ -5,6 +5,7 @@
 class Jets::Stack
   module Definition
     extend ActiveSupport::Concern
+    include Jets::Util::Camelize
 
     # Example of usage that leads here:
     #
@@ -20,10 +21,6 @@ class Jets::Stack
 
     def register
       self.class.register(@subclass, *@definition)
-    end
-
-    def camelize(attributes)
-      Jets::Camelizer.transform(attributes)
     end
 
     class_methods do

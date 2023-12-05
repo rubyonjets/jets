@@ -24,7 +24,7 @@ module Jets
 
     # Makes remote call to the Lambda function.
     def warm(function_name)
-      Jets::Commands::Call.new(function_name, '{"_prewarm": "1"}', @options).run unless Jets.env.test?
+      Jets::Commands::Call::Caller.new(function_name, '{"_prewarm": "1"}', @options).run unless Jets.env.test?
     end
 
     # Loop through all methods for each class and makes special prewarm call to each method.
@@ -32,7 +32,6 @@ module Jets
       threads = []
       all_functions.each do |function_name|
         next if function_name.include?('jets-public_controller') # handled by warm_public_controller_more
-        next if function_name.include?('jets-rack_controller') # handled by warm_rack_controller_more
         threads << Thread.new do
           warm(function_name)
         end
@@ -41,7 +40,6 @@ module Jets
 
       # Warm the these controllers more since they can be hit more often
       warm_public_controller_more
-      warm_rack_controller_more
 
       # return the funciton names so we can see in the Lambda console
       # the functions being prewarmed
@@ -66,29 +64,18 @@ module Jets
       threads.each { |t| t.join }
     end
 
-    def warm_rack_controller_more
-      return unless Jets.rack?
-      function_name = 'jets-rack_controller-process' # key function name
-      return unless all_functions.include?(function_name)
-
-      rack_ratio = Jets.config.prewarm.rack_ratio
-      return if rack_ratio == 0
-
-      puts "Prewarming the rack controller extra at a ratio of #{rack_ratio}" unless @options[:mute]
-
-      threads = []
-      rack_ratio.times do
-        threads << Thread.new do
-          warm(function_name)
-        end
-      end
-      threads.each { |t| t.join }
-    end
-
     # Returns:
     #   [
-    #     "posts_controller-index",
-    #     "posts_controller-show",
+    #     "demo-posts_controller-index",
+    #     "demo-posts_controller-show",
+    #     ...
+    #   ]
+    #
+    #   or (for one lambda per controller)
+    #
+    #   [
+    #     "demo-posts_controller",
+    #     "demo-up_controller",
     #     ...
     #   ]
     def all_functions
@@ -109,7 +96,7 @@ module Jets
     memoize :all_functions
 
     def classes
-      Jets::Commands::Build.app_files.map do |path|
+      Jets::Cfn::Builder.app_files.map do |path|
         next if path.include?("preheat_job.rb") # dont want to cause an infinite loop, just in case
         next unless path =~ %r{app/controllers} # only prewarm controllers
 

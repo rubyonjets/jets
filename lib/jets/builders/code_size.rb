@@ -40,6 +40,7 @@ module Jets::Builders
     end
 
     def compute_size(path)
+      return 0 unless File.exist?(path)
       # -k option is required for macosx but not for linux
       out = `du -ks #{path}`
       out.split(' ').first.to_i # bytes

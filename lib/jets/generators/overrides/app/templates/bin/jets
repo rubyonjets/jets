@@ -1,0 +1,3 @@
+APP_PATH = File.expand_path("../config/application", __dir__)
+require "jets"
+require "jets/commands"

@@ -45,15 +45,18 @@ class Jets::Dotenv
     rescue Aws::SSM::Errors::ParameterNotFound
       @missing << [key, value, name]
       ''
+    rescue Aws::SSM::Errors::ValidationException
+      puts "ERROR: Invalid SSM parameter name: #{name.inspect}".color(:red)
+      raise
     end
 
     def ssm_name(key, value)
       if value == "SSM"
-        "/#{Jets.config.project_name}/#{Jets.env}/#{key}"
+        "/#{Jets.project_name}/#{Jets.env}/#{key}"
       else
         value.start_with?("/") ?
           value :
-          "/#{Jets.config.project_name}/#{Jets.env}/#{value}"
+          "/#{Jets.project_name}/#{Jets.env}/#{value}"
       end
     end
 

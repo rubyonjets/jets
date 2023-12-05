@@ -7,7 +7,7 @@ module Jets::Builders
     # Then replace the binary gems.
     def build
       consolidate_gems_to_opt
-      replace_compiled_gems unless Jets.config.gems.disable
+      replace_compiled_gems unless Jets.config.pro.disable
     end
 
     # Also restructure the folder from:
@@ -20,11 +20,6 @@ module Jets::Builders
       src = "#{stage_area}/code/vendor/gems/ruby/#{Jets.ruby_folder}"
       dest = "#{stage_area}/opt/ruby/gems/#{Jets.ruby_folder}"
       rsync_and_link(src, dest)
-
-      return unless Jets.rack?
-
-      src = "#{stage_area}/rack/vendor/gems/ruby/#{Jets.ruby_folder}"
-      rsync_and_link(src, dest)
     end
 
     def rsync_and_link(src, dest)
@@ -36,7 +31,7 @@ module Jets::Builders
 
       # Create symlink that will point to the gems in the Lambda Layer:
       #   stage/opt/ruby/gems/2.5.0 -> /opt/ruby/gems/2.5.0
-      FileUtils.ln_sf("/opt/ruby/gems/#{Jets::Gems.ruby_folder}", src)
+      FileUtils.ln_sf("/opt/ruby/gems/#{Jets::Api::Gems.ruby_folder}", src)
     end
 
     # replace_compiled_gems:

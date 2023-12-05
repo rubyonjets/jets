@@ -27,13 +27,13 @@ module Jets::Rule::Dsl
       def scope(value)
         scope = case value
           when String
-            {compliance_resource_types: [value]}
+            {ComplianceResourceTypes: [value]}
           when Array
-            {compliance_resource_types: value}
+            {ComplianceResourceTypes: value}
           else # default to hash
             value
           end
-        associated_properties(scope: scope)
+        associated_properties(Scope: scope)
       end
 
       # Convenience method that set properties. List based on https://amzn.to/2oSph1P
@@ -53,13 +53,13 @@ module Jets::Rule::Dsl
       end
 
       def config_rule_definition(meth)
-        resource = Jets::Resource::Config::ConfigRule.new(self, meth, associated_properties)
+        resource = Jets::Cfn::Resource::Config::ConfigRule.new(self, meth, associated_properties)
         resource.definition # returns a definition to be added by associated_resources
       end
 
       def managed_rule(name)
         name = name.to_s
-        managed_rule = Jets::Resource::Config::ManagedRule.new(self, name, associated_properties)
+        managed_rule = Jets::Cfn::Resource::Config::ManagedRule.new(self, name, associated_properties)
         resource(managed_rule.definition) # Sets @associated_resources
 
         # The key to not register the task to all_tasks to avoid creating a Lambda function.
@@ -75,7 +75,7 @@ module Jets::Rule::Dsl
         # Only using the task for base_replacements.
         resources = [definition]
         meth = name
-        task = Jets::Lambda::Task.new(self.name, meth,
+        task = Jets::Lambda::Definition.new(self.name, meth,
                  resources: resources,
                  replacements: replacements(meth))
         all_managed_rules[name] = { definition: definition, replacements: task.replacements }
@@ -102,7 +102,7 @@ module Jets::Rule::Dsl
 
       # Override Lambda::Dsl.build? to account for possible managed_rules
       def build?
-        !tasks.empty? || !managed_rules.empty?
+        !definitions.empty? || !managed_rules.empty?
       end
     end
   end

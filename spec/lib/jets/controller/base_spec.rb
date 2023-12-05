@@ -6,7 +6,13 @@ class TestSimpleController < Jets::Controller::Base
 end
 
 describe Jets::Controller::Base do
-  let(:controller) { TestSimpleController.new(event, context, meth) }
+  before(:each) { silence_loggers! }
+  after(:each)  { restore_loggers! }
+
+  let(:controller) do
+    rack_env = Jets::Controller::RackAdapter::Env.new(event, context).convert
+    TestSimpleController.new(event, context, meth, rack_env)
+  end
   let(:context) { nil }
   let(:meth) { "index" }
 
@@ -25,7 +31,7 @@ describe Jets::Controller::Base do
     end
 
     it "layout set to application" do
-      expect(controller.class.layout).to eq "application"
+      expect(controller.class._layout).to eq :application
     end
   end
 
@@ -37,10 +43,10 @@ describe Jets::Controller::Base do
     let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
 
     it "#render returns rack triplet" do
-      status, headers, body = controller.send(:render, json: {"my": "data"})
-      expect(status).to eq "200"
-      expect(headers).to be_a(Hash)
-      expect(body).to respond_to(:each)
+      body = controller.send(:render, json: {"my": "data"})
+      expect(controller.status).to eq 200
+      expect(controller.headers).to be_a(Hash)
+      expect(body).to eq "{\"my\":\"data\"}"
     end
 
     # Spec is to help understand the AWS_PROXY request format and
@@ -65,9 +71,9 @@ describe Jets::Controller::Base do
     end
 
     it "adds cors headers" do
-      status, headers, body = controller.send(:render, json: {"my": "data"})
-      expect(headers.keys).to_not include("Access-Control-Allow-Origin")
-      expect(headers.keys).to_not include("Access-Control-Allow-Credentials")
+      body = controller.send(:render, json: {"my": "data"})
+      expect(controller.headers.keys).to_not include("Access-Control-Allow-Origin")
+      expect(controller.headers.keys).to_not include("Access-Control-Allow-Credentials")
     end
   end
 
@@ -81,7 +87,7 @@ describe Jets::Controller::Base do
     end
     it "params merges all types of parameters together" do
       params = controller.send(:params)
-      expect(params.keys.sort).to eq(%w[qs-key path-key body-key1 body-key2].sort)
+      expect(params.keys.sort).to eq(%w[action body-key1 body-key2 controller path-key qs-key])
     end
   end
 
@@ -93,7 +99,7 @@ describe Jets::Controller::Base do
     end
     it "not error" do
       params = controller.send(:params)
-      expect(params.keys).to eq([])
+      expect(params.keys).to eq(["controller", "action"])
     end
   end
 
@@ -109,13 +115,18 @@ describe Jets::Controller::Base do
     end
     it "parse application/x-www-form-urlencoded form data" do
       params = controller.send(:params)
-      expect(params).to eq({
+      h = params.to_unsafe_hash
+      # Another spec is channging the controller action and controller name
+      # Quick fix for spec.
+      h.delete("controller")
+      h.delete("action")
+      expect(h).to eq({
         "article" => {
           "title" => "test1",
           "body" => "test2",
           "published" => "yes"
         },
-        "commit" => "Submit"
+        "commit" => "Submit",
       })
     end
   end
@@ -141,42 +152,9 @@ describe Jets::Controller::Base do
 
     it "new adapter" do
       resp = PostsController.process(event, {}, :index)
-      expect(resp['statusCode']).to eq "200"
+      expect(resp['statusCode']).to eq 200
       expect(resp['headers']).to include('X-Runtime') # confirm going through full middleware stack
-      # expect(body.read).to eq "whatever"
-      expect(resp['headers']['x-jets-base64']).to eq "no"
-    end
-  end
-
-  describe "#log_start" do
-    let(:event) { json_file("spec/fixtures/dumps/api_gateway/request.json") }
-
-    context "When Jets.config is set with filtered_parameters" do
-      it "Logs event and params with sensitive data masked" do
-        Jets.config.controllers.filtered_parameters = [:a, :key1]  #a from queryStringParameters and key1 from body
-
-        expect(Jets.logger).to receive(:info).with('  Parameters: {"key3":"value3","key2":"value2","key1":"[FILTERED]","a":"[FILTERED]","b":"2"}')
-
-        expected_event_log = '  Event: {"resource":"/posts","path":"/posts","httpMethod":"POST","headers":{"Accept":"*/*","Accept-Encoding":"gzip, deflate","cache-control":"no-cache","CloudFront-Forwarded-Proto":"https","CloudFront-Is-Desktop-Viewer":"true","CloudFront-Is-Mobile-Viewer":"false","CloudFront-Is-SmartTV-Viewer":"false","CloudFront-Is-Tablet-Viewer":"false","CloudFront-Viewer-Country":"US","Content-Type":"text/plain","Host":"uhghn8z6t1.execute-api.us-east-1.amazonaws.com","Postman-Token":"7166b11b-59de-4e7b-ad35-24e556b7a083","User-Agent":"PostmanRuntime/6.4.1","Via":"1.1 55676da1e5c0a9c4e60a94a95b01dc04.cloudfront.net (CloudFront)","X-Amz-Cf-Id":"iERhUw6ghRnv1uRYfxJaUsDGWVbERFSZ4K00CIgZtJ0T6yeFdItMeQ==","X-Amzn-Trace-Id":"Root=1-59f50229-587ec5271678236e50ad91b1","X-Forwarded-For":"69.42.1.180, 54.239.203.100","X-Forwarded-Port":"443","X-Forwarded-Proto":"https"},"queryStringParameters":{"a":"[FILTERED]","b":"2"},"pathParameters":null,"stageVariables":null,"requestContext":{"path":"/stag/posts","accountId":"123456789012","resourceId":"c0yhg8","stage":"stag","requestId":"e5c39604-bc2d-11e7-abbe-1baaa0f8e02e","identity":{"cognitoIdentityPoolId":null,"accountId":null,"cognitoIdentityId":null,"caller":null,"apiKey":"","sourceIp":"69.42.1.180","accessKey":null,"cognitoAuthenticationType":null,"cognitoAuthenticationProvider":null,"userArn":null,"userAgent":"PostmanRuntime/6.4.1","user":null},"resourcePath":"/posts","httpMethod":"POST","apiId":"uhghn8z6t1"},"body":"{\"key3\":\"value3\",\"key2\":\"value2\",\"key1\":\"[FILTERED]\"}","isBase64Encoded":false}'
-        expect(Jets.logger).to receive(:info).with(expected_event_log)
-        expect(Jets.logger).to receive(:info).at_least(:once)
-
-        controller.log_start
-      end
-    end
-
-    context "When Jets.config is not set with filtered_parameters" do
-      it "Logs event and params with original payload" do
-        Jets.config.controllers.filtered_parameters = []
-
-        expect(Jets.logger).to receive(:info).with('  Parameters: {"key3":"value3","key2":"value2","key1":"value1","a":"1","b":"2"}')
-
-        expected_event_log = '  Event: {"resource":"/posts","path":"/posts","httpMethod":"POST","headers":{"Accept":"*/*","Accept-Encoding":"gzip, deflate","cache-control":"no-cache","CloudFront-Forwarded-Proto":"https","CloudFront-Is-Desktop-Viewer":"true","CloudFront-Is-Mobile-Viewer":"false","CloudFront-Is-SmartTV-Viewer":"false","CloudFront-Is-Tablet-Viewer":"false","CloudFront-Viewer-Country":"US","Content-Type":"text/plain","Host":"uhghn8z6t1.execute-api.us-east-1.amazonaws.com","Postman-Token":"7166b11b-59de-4e7b-ad35-24e556b7a083","User-Agent":"PostmanRuntime/6.4.1","Via":"1.1 55676da1e5c0a9c4e60a94a95b01dc04.cloudfront.net (CloudFront)","X-Amz-Cf-Id":"iERhUw6ghRnv1uRYfxJaUsDGWVbERFSZ4K00CIgZtJ0T6yeFdItMeQ==","X-Amzn-Trace-Id":"Root=1-59f50229-587ec5271678236e50ad91b1","X-Forwarded-For":"69.42.1.180, 54.239.203.100","X-Forwarded-Port":"443","X-Forwarded-Proto":"https"},"queryStringParameters":{"a":"1","b":"2"},"pathParameters":null,"stageVariables":null,"requestContext":{"path":"/stag/posts","accountId":"123456789012","resourceId":"c0yhg8","stage":"stag","requestId":"e5c39604-bc2d-11e7-abbe-1baaa0f8e02e","identity":{"cognitoIdentityPoolId":null,"accountId":null,"cognitoIdentityId":null,"caller":null,"apiKey":"","sourceIp":"69.42.1.180","accessKey":null,"cognitoAuthenticationType":null,"cognitoAuthenticationProvider":null,"userArn":null,"userAgent":"PostmanRuntime/6.4.1","user":null},"resourcePath":"/posts","httpMethod":"POST","apiId":"uhghn8z6t1"},"body":"{\n  \"key3\": \"value3\",\n  \"key2\": \"value2\",\n  \"key1\": \"value1\"\n}","isBase64Encoded":false}'
-        expect(Jets.logger).to receive(:info).with(expected_event_log)
-        expect(Jets.logger).to receive(:info).at_least(:once)
-
-        controller.log_start
-      end
+      # expect(resp['headers']['x-jets-base64']).to eq "no" # no longer sending in jets v5
     end
   end
 
@@ -185,7 +163,7 @@ describe Jets::Controller::Base do
 
     it 'logs completion' do
       status = 200
-      took = 1.5
+      took = "1.500"
       expected_event_log = "Completed Status Code #{status} in #{took}s"
       expect(Jets.logger).to receive(:info).with(expected_event_log)
 

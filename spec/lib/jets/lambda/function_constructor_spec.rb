@@ -15,11 +15,11 @@ describe Jets::Lambda::FunctionConstructor do
     end
 
     context "without _function" do
-      it "build calls adjust_tasks and adds class_name and type" do
+      it "build calls adjust_definitions and adds class_name and type" do
         Hello = constructor.build
-        task = Hello.tasks.first
-        expect(task.class_name).to eq "Hello"
-        expect(task.type).to eq "function"
+        definition = Hello.definitions.first
+        expect(definition.class_name).to eq "Hello"
+        expect(definition.type).to eq "function"
       end
     end
   end
@@ -28,11 +28,11 @@ describe Jets::Lambda::FunctionConstructor do
     let(:code_path) { "app/shared/functions/whatever.rb" }
     let(:event) { {"key1" => "value1", "key2" => "value2", "key3" => "value3"} }
     context "assigned to constant" do
-      it "build calls adjust_tasks and adds class_name and type" do
+      it "build calls adjust_definitions and adds class_name and type" do
         Whatever = constructor.build
-        task = Whatever.tasks.first
-        expect(task.class_name).to eq "Whatever"
-        expect(task.type).to eq "function"
+        definition = Whatever.definitions.first
+        expect(definition.class_name).to eq "Whatever"
+        expect(definition.type).to eq "function"
 
         result = Whatever.process(event, {}, :handle)
         expect(result).to eq 'hello world: "value1"'

@@ -1,4 +1,4 @@
-class Jets::Commands::Call
+module Jets::Commands::Call
   class AutoloadGuesser < BaseGuesser
     def detect_class_name
       # First guess the class name assuming simple
@@ -53,7 +53,7 @@ class Jets::Commands::Call
       meth = underscored_function_name.sub(underscored_class_name, '')
       meth = meth.sub(/^[-_]/,'') # remove leading _ or -
 
-      if class_name.constantize.tasks.map(&:meth).include?(meth.to_sym)
+      if class_name.constantize.definitions.map(&:meth).include?(meth.to_sym)
         @method_name = meth
       else
         @method_name_error ="#{class_name} class found but #{meth} method not found"

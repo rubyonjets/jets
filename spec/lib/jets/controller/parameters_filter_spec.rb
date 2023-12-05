@@ -1,7 +1,15 @@
-RSpec.describe Jets::Controller::ParametersFilter do
-  describe "#filter_json" do
+class ParametersFilterTest
+  include Jets::Controller::Decorate::Logging
+  attr_reader :parameter_filter
+  def initialize(filter_values)
+    @parameter_filter = ActiveSupport::ParameterFilter.new(filter_values)
+  end
+end
+
+RSpec.describe "Jets::Controller::Decorate::Logging" do
+  describe "#filter_json_log" do
     let(:result) do
-      described_class.new(filtered_values).filter_json(json_text)
+      ParametersFilterTest.new(filtered_values).filter_json_log(json_text)
     end
 
     let(:json_text) do
@@ -33,8 +41,8 @@ RSpec.describe Jets::Controller::ParametersFilter do
       let(:filtered_values) { %i[password password_confirmation] }
       let(:json_text) { "just a text" }
 
-      it 'Should return a blank string' do
-        expect(result).to eq("")
+      it 'Should return a [FILTERED]' do
+        expect(result).to eq("[FILTERED]")
       end
     end
   end

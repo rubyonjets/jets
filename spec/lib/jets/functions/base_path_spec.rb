@@ -1,7 +1,7 @@
 require "ostruct"
 require "render_me_pretty"
 
-code = RenderMePretty.result("./lib/jets/internal/app/functions/jets/base_path.rb", stage_name: "test")
+code = RenderMePretty.result("./engines/internal/app/functions/jets/base_path.rb", stage_name: "test")
 # Hack to mimic lambda
 eval %Q{
 class MainScope

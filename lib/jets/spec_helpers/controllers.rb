@@ -2,13 +2,6 @@ module Jets::SpecHelpers
   module Controllers
     include Jets::Router::Helpers # must be at the top because response is overridden later
 
-    attr_reader :response
-    # Note: caching it like this instead of within the initialize results in the headers not being cached
-    # See: https://community.rubyonjets.com/t/is-jets-spechelpers-controllers-request-being-cached/244/2
-    def request
-      @request ||= Request.new(:get, '/', {}, Params.new)
-    end
-
     rest_methods = %w[get post put patch delete]
     rest_methods.each do |meth|
       define_method(meth) do |path, **params|
@@ -20,28 +13,43 @@ module Jets::SpecHelpers
       # end
     end
 
-    def http_call(method:, path:, **params)
-      request.method = method.to_sym
-      request.path = path
-      request.headers.deep_merge!(params.delete(:headers) || {})
+    attr_reader :request, :response
+    def http_call(method:, path:, **options)
+      headers = options.delete(:headers) || {}
+      md = path.match(/\?(.*)/)
+      query_string = md ? md[1] : ''
+      query = Rack::Utils.parse_nested_query(query_string)
 
-      request.params.query_params = params.delete(:query)
-
-      if request.method == :get
-        request.params.body_params = {}
-        request.params.query_params ||= params.delete(:params)
-        request.params.query_params ||= params
+      params = Params.new
+      if method.to_sym == :get
+        params.body_params = {}
+        params.query_params ||= options.delete(:params) || options
       else
-        request.params.body_params = params.delete(:body)
-        request.params.body_params ||= params.delete(:params)
-        request.params.body_params ||= params
+        params.body_params = options.delete(:body) || options.delete(:params) || options
       end
+      params.path_params = params.path_params
+      params.query_params = query
 
-      request.params.query_params ||= {}
+      # Note: Do not cache the request object.  Otherwise, it cannot be reused between specs.
+      # See: https://community.rubyonjets.com/t/is-jets-spechelpers-controllers-request-being-cached/244/2
+      @request = Request.new(method, path, headers, params)
 
-      request.params.path_params = params
+      @request.method = method.to_sym
+      @request.path = path
+      @request.headers.deep_merge!(headers)
 
-      @response = request.dispatch!
+      suppress_logging do
+        @response = @request.dispatch!
+      end
+    end
+
+    def suppress_logging
+      old_logger = Jets.logger
+      unless ENV['JETS_TEST_LOGGING']
+        Jets.logger = ActionView::Base.logger = Logger.new("/dev/null")
+      end
+      yield
+      Jets.logger = old_logger
     end
   end
 end

@@ -2,7 +2,11 @@ class RedirectionController < Jets::Controller::Base
 end
 
 describe RedirectionController do
-  let(:controller) { RedirectionController.new(event, context, meth) }
+  let(:controller) do
+    context = Jets::Controller::Middleware::Mimic::LambdaContext.new
+    rack_env = Jets::Controller::RackAdapter::Env.new(event, context).convert
+    RedirectionController.new(event, context, meth, rack_env)
+  end
   let(:context) { nil }
   let(:meth) { "index" }
 
@@ -13,9 +17,9 @@ describe RedirectionController do
         json_file("spec/fixtures/dumps/rack/posts/create.json")
       end
       it "redirect_to" do
-        status, headers, body = controller.send(:redirect_to, "/myurl", status: 301)
-        expect(status).to eq "301"
-        expect(headers["Location"]).to eq "http://localhost:8888/myurl"
+        body = controller.send(:redirect_to, "/myurl", status: 301)
+        expect(controller.status).to eq 301
+        expect(controller.headers["Location"]).to eq "http://localhost:8888/myurl"
       end
     end
   end
@@ -27,9 +31,9 @@ describe RedirectionController do
         json_file("spec/fixtures/dumps/api_gateway/posts/create.json")
       end
       it "redirect_to adds the stage name to the url" do
-        status, headers, body = controller.send(:redirect_to, "/myurl", status: 301)
-        expect(status).to eq "301"
-        expect(headers["Location"]).to eq "https://8s1wzivnz4.execute-api.us-east-1.amazonaws.com/test/myurl"
+        body = controller.send(:redirect_to, "/test/myurl", status: 301)
+        expect(controller.status).to eq 301
+        expect(controller.headers["Location"]).to eq "https://8s1wzivnz4.execute-api.us-east-1.amazonaws.com/test/myurl"
       end
     end
   end

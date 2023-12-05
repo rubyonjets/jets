@@ -55,7 +55,7 @@ module Jets::AwsServices
     end
 
     # Lookup output value.
-    # Used in Jets::Resource::ApiGateway::RestApi::* andJets::Commands::Url
+    # Used in Jets::Cfn::Resource::ApiGateway::RestApi::* andJets::Commands::Url
     def lookup(outputs, key)
       out = outputs.find { |o| o.output_key == key }
       out&.output_value

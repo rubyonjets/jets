@@ -1,6 +1,6 @@
 default: &default
   adapter: mysql2
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("JETS_MAX_THREADS") { 5 } %>
   timeout: 5000
   encoding: utf8mb4
 

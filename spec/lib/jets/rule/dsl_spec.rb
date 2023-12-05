@@ -18,14 +18,14 @@ describe Jets::Rule::Dsl do
     let(:rule) { FullPropertiesRule.new({}, nil, "protect") }
 
     it "associated_resources" do
-      protect_task = FullPropertiesRule.all_public_tasks[:protect]
-      expect(protect_task).to be_a(Jets::Lambda::Task)
+      protect_task = FullPropertiesRule.all_public_definitions[:protect]
+      expect(protect_task).to be_a(Jets::Lambda::Definition)
       resources = protect_task.associated_resources
       associated_resource = resources.first
-      expect(associated_resource.logical_id).to eq "{namespace}_config_rule"
+      expect(associated_resource.logical_id).to eq "{namespace}ConfigRule".to_sym
       attributes = associated_resource.attributes
-      props = attributes[:properties]
-      expect(props[:config_rule_name]).to eq "demo-test-full-properties-protect"
+      props = attributes[:Properties]
+      expect(props[:ConfigRuleName]).to eq "demo-test-full-properties-protect"
     end
   end
 
@@ -33,13 +33,13 @@ describe Jets::Rule::Dsl do
     let(:rule) { PrettyPropertiesRule.new({}, nil, "protect") }
 
     it "scope expands to full ComplianceResourceTypes with AWS::EC2::SecurityGroup" do
-      protect_task = PrettyPropertiesRule.all_public_tasks[:protect]
-      expect(protect_task).to be_a(Jets::Lambda::Task)
+      protect_task = PrettyPropertiesRule.all_public_definitions[:protect]
+      expect(protect_task).to be_a(Jets::Lambda::Definition)
       resources = protect_task.associated_resources
       associated_resource = resources.first
       attributes = associated_resource.attributes
-      props = attributes[:properties]
-      expect(props[:scope][:compliance_resource_types]).to eq(["AWS::EC2::SecurityGroup"])
+      props = attributes[:Properties]
+      expect(props[:Scope][:ComplianceResourceTypes]).to eq(["AWS::EC2::SecurityGroup"])
     end
   end
 end

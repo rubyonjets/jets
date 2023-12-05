@@ -1,0 +1,25 @@
+source "https://rubygems.org"
+
+gem "jets", "~> <%= Jets::VERSION %>"
+
+<%- if options[:mode] != 'job' && !options[:database].nil? -%>
+<%= database_gemfile_entry %>
+gem "sprockets-jets"
+<%- end -%>
+<%- if options[:mode] == 'html' -%>
+gem "importmap-jets"
+<%- end -%>
+gem "zeitwerk", ">= 2.6.12"
+
+# development and test groups are not bundled as part of the deployment
+group :development, :test do
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+<%- unless options[:mode] == 'job' -%>
+  gem 'rack'
+  gem 'puma'
+<%- end -%>
+end
+
+group :test do
+  gem 'rspec'
+end

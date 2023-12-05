@@ -15,17 +15,17 @@ describe Jets::Klass do
     expect(klass).to eq PostsController
   end
 
-  it "from_task" do
-    task = Jets::Lambda::Task.new("HardJob", :dig)
-    klass = Jets::Klass.from_task(task)
+  it "from_definition" do
+    definition = Jets::Lambda::Definition.new("HardJob", :dig)
+    klass = Jets::Klass.from_definition(definition)
     expect(klass).to eq HardJob
 
-    task = Jets::Lambda::Task.new("Hello", :handler, type: "function")
-    klass = Jets::Klass.from_task(task)
+    definition = Jets::Lambda::Definition.new("Hello", :handler, type: "function")
+    klass = Jets::Klass.from_definition(definition)
     expect(klass).to eq Hello
 
-    task = Jets::Lambda::Task.new("SimpleFunction", :handler, type: "function")
-    klass = Jets::Klass.from_task(task)
+    definition = Jets::Lambda::Definition.new("SimpleFunction", :handler, type: "function")
+    klass = Jets::Klass.from_definition(definition)
     expect(klass).to eq SimpleFunction
   end
 end

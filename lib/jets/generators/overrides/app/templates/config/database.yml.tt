@@ -1,0 +1,27 @@
+default: &default
+  adapter: <%= @database == 'mysql' ? 'mysql2' : 'postgresql' %>
+  encoding: <%= @database == 'mysql' ? 'utf8mb4' : 'unicode' %>
+  pool: <%%= ENV["DB_POOL"] || 5  %>
+  database: <%%= ENV['DB_NAME'] || '<%= @database_name %>_development' %>
+<% if @database == 'mysql' -%>
+  username: <%%= ENV['DB_USER'] || 'root' %>
+<% else -%>
+  username: <%%= ENV['DB_USER'] || ENV['USER'] %>
+<% end -%>
+  password: <%%= ENV['DB_PASS'] %>
+  host: <%%= ENV["DB_HOST"] %>
+  url: <%%= ENV['DATABASE_URL'] %> # takes higher precedence than other settings
+  # reconnect: true # reconnect option is deprecated with newer mysql database versions
+
+development:
+  <<: *default
+  database: <%%= ENV['DB_NAME'] || '<%= @database_name %>_development' %>
+
+test:
+  <<: *default
+  database: <%= @database_name %>_test
+
+production:
+  <<: *default
+  database: <%= @database_name %>_production
+  url: <%%= ENV['DATABASE_URL'] %>

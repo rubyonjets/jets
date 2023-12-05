@@ -40,23 +40,29 @@ end
 
 describe Jets::SpecHelpers do
   before do
+    Jets::Application::RoutesReloader.disable!
+    Jets.application.routes.clear!
     Jets.application.routes.draw do
-      get 'spec_helper_test', to: 'simple#index'
-      get 'ほげ', to: 'simple#index'
+      get '/spec_helper_test', to: 'simple#index'
+      get '/ほげ', to: 'simple#index'
 
-      get 'spec_helper_test/:id', to: 'simple#show'
-      get 'ほげ/:id', to: 'simple#show'
+      get '/spec_helper_test/:id', to: 'simple#show'
+      get '/ほげ/:id', to: 'simple#show'
 
-      post 'spec_helper_test', to: 'simple#create'
+      post '/spec_helper_test', to: 'simple#create'
 
-      put 'spec_helper_test/:id', to: 'simple#update'
+      put '/spec_helper_test/:id', to: 'simple#update'
 
-      delete 'spec_helper_test/:id', to: 'simple#destroy'
+      delete '/spec_helper_test/:id', to: 'simple#destroy'
 
-      post 'spec_helper_test/echo_body', to: 'simple#echo_body'
+      post '/spec_helper_test/echo_body', to: 'simple#echo_body'
 
-      post 'spec_helper_test/echo_headers', to: 'simple#echo_headers'
+      post '/spec_helper_test/echo_headers', to: 'simple#echo_headers'
     end
+  end
+
+  after do
+    Jets::Application::RoutesReloader.enable!
   end
 
   context "get" do
@@ -64,9 +70,7 @@ describe Jets::SpecHelpers do
       {
         level_1: {
           level_2: {
-            level_3: {
-
-            }
+            level_3: "value"
           }
         }
       }.with_indifferent_access
@@ -78,7 +82,7 @@ describe Jets::SpecHelpers do
     end
 
     it "gets 200 with id" do
-      get '/spec_helper_test/:id', id: 123
+      get '/spec_helper_test/123'
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['id']).to eq '123'
     end
@@ -89,44 +93,49 @@ describe Jets::SpecHelpers do
     end
 
     it "gets 200 with id and unicode" do
-      get '/ほげ/:id', id: 'ふが'
+      get '/ほげ/ふが'
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['id']).to eq 'ふが'
     end
 
     it "gets 200 with query params" do
-      get '/spec_helper_test/:id', id: 123, query: { filter: 'abc' }
+      get '/spec_helper_test/123?filter=abc'
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq 'abc'
     end
 
     it "gets 200 with nested query params" do
-      get '/spec_helper_test/:id', id: 123, query: { filter: nested_params }
+      query_string = Rack::Utils.build_nested_query(filter: nested_params)
+      get "/spec_helper_test/123?#{query_string}"
 
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq nested_params
     end
 
     it "gets 200 with array query params" do
-      get '/spec_helper_test/:id', id: 123, query: { filter: ['abc', 'def'] }
+      query_string = Rack::Utils.build_nested_query(filter: ['abc', 'def'])
+      get "/spec_helper_test/123?#{query_string}"
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq ['abc', 'def']
     end
 
     it "gets 200 with query params with params keyword" do
-      get '/spec_helper_test/:id', id: 123, params: { filter: 'abc' }
+      query_string = Rack::Utils.build_nested_query(filter: 'abc')
+      get "/spec_helper_test/123?#{query_string}"
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq 'abc'
     end
 
     it "gets 200 with unicode query params" do
-      get '/spec_helper_test/:id', id: 123, query: { filter: 'ふが' }
+      query_string = Rack::Utils.build_nested_query(filter: 'ふが')
+      get "/spec_helper_test/123?#{query_string}"
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq 'ふが'
     end
 
     it "gets 200 with query params no query keyword" do
-      get '/spec_helper_test/:id', id: 123, filter: 'abc'
+      query_string = Rack::Utils.build_nested_query(filter: 'abc')
+      get "/spec_helper_test/123?#{query_string}"
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['filter']).to eq 'abc'
     end
@@ -138,7 +147,7 @@ describe Jets::SpecHelpers do
     end
 
     it "gets 404 with id" do
-      get '/spec_helper_test/:id', id: 404
+      get '/spec_helper_test/404'
       expect(response.status).to eq 404
     end
   end
@@ -163,7 +172,7 @@ describe Jets::SpecHelpers do
         it "sets the valid content length" do
           post '/spec_helper_test/echo_headers', params: body
           expect(response.status).to eq 200
-          expect(JSON.parse(response.body)['content-length'].to_i).to eq body.size
+          expect(JSON.parse(response.body)['Content-Length'].to_i).to eq body.size
         end
       end
 
@@ -177,7 +186,7 @@ describe Jets::SpecHelpers do
         it "sets the valid content length" do
           post '/spec_helper_test/echo_headers', body: body
           expect(response.status).to eq 200
-          expect(JSON.parse(response.body)['content-length'].to_i).to eq body.size
+          expect(JSON.parse(response.body)['Content-Length'].to_i).to eq body.size
         end
       end
 
@@ -187,7 +196,7 @@ describe Jets::SpecHelpers do
         it 'sets the content-type header' do
           post '/spec_helper_test/echo_headers', body: body, headers: headers
           expect(response.status).to eq 200
-          expect(JSON.parse(response.body)['content-type']).to eq headers['Content-Type']
+          expect(JSON.parse(response.body)['Content-Type']).to eq headers['Content-Type']
         end
       end
 
@@ -195,7 +204,7 @@ describe Jets::SpecHelpers do
         it 'uses the default content type' do
           post '/spec_helper_test/echo_headers', body: body
           expect(response.status).to eq 200
-          expect(JSON.parse(response.body)['content-type']).to eq 'application/x-www-form-urlencoded'
+          expect(JSON.parse(response.body)['Content-Type']).to eq 'application/x-www-form-urlencoded'
         end
       end
     end
@@ -203,7 +212,7 @@ describe Jets::SpecHelpers do
 
   context "put" do
     it "puts" do
-      put '/spec_helper_test/:id', id: 1, name: 'Tom'
+      put '/spec_helper_test/1', name: 'Tom'
       expect(response.status).to eq 200
       expect(JSON.parse(response.body)['id']).to eq '1'
       expect(JSON.parse(response.body)['name']).to eq 'Tom'

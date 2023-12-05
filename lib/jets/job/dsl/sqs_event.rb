@@ -20,14 +20,14 @@
 #   class_timeout 30 # must be less than or equal to the SQS queue default timeout
 #
 #   event_source_mapping(
-#     event_source_arn: "arn:aws:sqs:us-west-2:112233445566:hello-queue",
+#     EventSourceArn: "arn:aws:sqs:us-west-2:112233445566:hello-queue",
 #   )
 #   iam_policy(
-#     action: ["sqs:ReceiveMessage",
-#             "sqs:DeleteMessage",
-#             "sqs:GetQueueAttributes"],
-#     effect: "Allow",
-#     resource: "arn:aws:sqs:us-west-2:112233445566:hello-queue",
+#     Action: ["sqs:ReceiveMessage",
+#              "sqs:DeleteMessage",
+#              "sqs:GetQueueAttributes"],
+#     Effect: "Allow",
+#     Resource: "arn:aws:sqs:us-west-2:112233445566:hello-queue",
 #   )
 #   def dig
 #     puts "dig event #{JSON.dump(event)}"
@@ -57,7 +57,7 @@ module Jets::Job::Dsl
 
       props = options # by this time options only has EventSourceMapping properties
       default = {
-        event_source_arn: queue_arn
+        EventSourceArn: queue_arn
       }
       props = default.merge(props)
 
@@ -66,7 +66,7 @@ module Jets::Job::Dsl
 
     def declare_sqs_queue(props)
       props ||= {} # since options.delete(:queue_properties) can be nil
-      r = Jets::Resource::Sqs::Queue.new(props)
+      r = Jets::Cfn::Resource::Sqs::Queue.new(props)
       with_fresh_properties do
         resource(r.definition) # add associated resource immediately
       end
@@ -85,11 +85,11 @@ module Jets::Job::Dsl
 
     def default_sqs_iam_policy(queue_name_arn='*')
       {
-        action: ["sqs:ReceiveMessage",
+        Action: ["sqs:ReceiveMessage",
                  "sqs:DeleteMessage",
                  "sqs:GetQueueAttributes"],
-        effect: "Allow",
-        resource: queue_name_arn,
+        Effect: "Allow",
+        Resource: queue_name_arn,
       }
     end
   end

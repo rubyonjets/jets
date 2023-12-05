@@ -1,35 +1,88 @@
-class Jets::Router
+module Jets::Router
   module Dsl
     include Mount
 
     # Methods supported by API Gateway
     %w[any delete get head options patch post put].each do |method_name|
-      define_method method_name do |path, options={}|
-        create_route(options.merge(path: escape_path(path), method: __method__))
+      define_method method_name do |*args|
+        options = args.extract_options!
+        normalize_path_to_controller_map_option!(args, options)
+        options = options.clone
+        path_arg = args.first
+        if path_arg.is_a?(Symbol)
+          options[:action] = path_arg # Info#action uses
+        end
+        options[:path] ||= path_arg
+        options[:http_method] = __method__
+        create_route(options)
       end
+    end
+
+    # Normally first args is a String that is the path
+    #     get "/posts", to: "posts#index"
+    # But it can also be a Hash that maps the path to the controller/action
+    #     get "/jets/info" => "jets/info#index"
+    # This logic normalize options to support both cases.
+    def normalize_path_to_controller_map_option!(args, options)
+      if !options[:to] && !args.first.is_a?(String) && !args.first.is_a?(Symbol)
+        map = options.find { |k,v| k.is_a?(String) }
+        path, to = map[0], map[1]
+        options[:to] = to
+        options[:path] = path
+        options.delete(path)
+      end
+    end
+
+    def match(path, options={})
+      via = options.delete(:via) || :any
+      Array(via).each do |http_method|
+        http_method = :any if via == :all
+        send http_method, path, options
+      end
+    end
+
+    def create_route(options)
+      one_apigw_method_for_all_routes_warning(options)
+      route = Route.new(options, @scope)
+      @routes << route
+    end
+
+    def constraints(constraints, &block)
+      scope(from: :constraints, constraints: constraints, &block)
+    end
+
+    def member(&block)
+      scope(from: :member, &block)
+    end
+
+    def collection(&block)
+      scope(from: :collection, &block)
+    end
+
+    def defaults(data={}, &block)
+      scope(from: :defaults, defaults: data, &block)
+    end
+
+    def path(path, &block)
+      scope(from: :path, path: path, &block)
     end
 
     def namespace(ns, &block)
-      scope(module: ns, prefix: ns, as: ns, from: :namespace, &block)
+      scope(from: :namespace, path: ns, module: ns, as: ns, &block)
     end
 
-    def prefix(prefix, &block)
-      scope(prefix: prefix, &block)
+    def shallow(&block)
+      scope(from: :shallow, &block)
     end
 
-    # scope supports three options: module, prefix and as.
-    # Jets vs Rails:
-    #   module - module
-    #   prefix - path
-    #   as - as
-    def scope(args)
-      # normalizes `scope(:admin)` as `scope(prefix: :admin)`
-      options = case args
-      when Hash
-        args
-      when String, Symbol
-        { prefix: args }
-      end
+    # Examples
+    #   scope :admin
+    #   scope path: :admin
+    #   scope 'admin', as: 'admin'
+    def scope(*args)
+      options = args.extract_options!
+      path = args.first
+      options[:path] = path.to_s if path
 
       root_level = @scope.nil?
       @scope = root_level ? Scope.new(options) : @scope.new(options)
@@ -39,106 +92,73 @@ class Jets::Router
     end
 
     # resources macro expands to all the routes
-    def resources(*items, **options)
-      items.each do |item|
-        scope_options = scope_options!(item, options)
-        scope_options[:from] = :resources # flag for MethodCreator logic: to handle method_name_leaf and more
-        scope(scope_options) do
-          each_resources(item, options, block_given?)
+    def resources(*args)
+      options = args.extract_options!
+      resource_names = args
+      resource_names.each do |resource_name|
+        scope(options.merge(from: :resources, resource_name: resource_name)) do
+          each_resource(resource_name, options)
           yield if block_given?
         end
       end
     end
 
-    def scope_options!(item, options)
-      prefix = if options[:prefix]
-        # prefix given from the resources macro get automatically prepended to the item name
-        p = options.delete(:prefix)
-        "#{p}/#{item}"
-      else
-        item
-      end
-
-      {
-        as: options.delete(:as) || item, # delete as or it messes with create_route
-        prefix: prefix,
-        param: options[:param],
-        # module: options.delete(:module) || item, # NOTE: resources does not automatically set module, but namespace does
-      }
-    end
-
-    def each_resources(name, options={}, has_block=nil)
-      o = Resources::Options.new(name, options)
-      f = Resources::Filter.new(name, options)
-      param = default_param(has_block, name, options)
-
-      get name, o.build(:index) if f.yes?(:index)
-      get "#{name}/new", o.build(:new) if f.yes?(:new) && !api_mode?
-      get "#{name}/:#{param}", o.build(:show) if f.yes?(:show)
-      post name, o.build(:create) if f.yes?(:create)
-      get "#{name}/:#{param}/edit", o.build(:edit) if f.yes?(:edit) && !api_mode?
-      put "#{name}/:#{param}", o.build(:update) if f.yes?(:update)
-      post "#{name}/:#{param}", o.build(:update) if f.yes?(:update) # for binary uploads
-      patch "#{name}/:#{param}", o.build(:update) if f.yes?(:update)
-      delete "#{name}/:#{param}", o.build(:delete) if f.yes?(:delete)
-    end
-
-    def resource(*items, **options)
-      items.each do |item|
-        scope_options = scope_options!(item, options)
-        scope_options[:from] = :resource # flag for MethodCreator logic: to handle method_name_leaf and more
-        scope(scope_options) do
-          each_resource(item, options, block_given?)
+    def resource(*args)
+      options = args.extract_options!
+      resource_names = args
+      resource_names.each do |resource_name|
+        scope(options.merge(from: :resource, resource_name: resource_name)) do
+          each_resource(resource_name, options.merge(singular_resource: true))
           yield if block_given?
         end
       end
     end
 
-    def each_resource(name, options={}, has_block=nil)
-      o = Resources::Options.new(name, options.merge(singular_resource: true))
-      f = Resources::Filter.new(name, options)
+    # Important: Options as, module, etc are handled by scope and should not be passed to the route
+    HANDLED_BY_SCOPE = [:as, :module, :path, :shallow].freeze
+    def each_resource(resource_name, options={})
+      HANDLED_BY_SCOPE.each do |opt|
+        options.delete(opt)
+      end
+      o = Resources::Options.new(resource_name, options)
+      f = Resources::Filter.new(resource_name, options)
 
-      get "#{name}/new", o.build(:new) if f.yes?(:new) && !api_mode?
-      get name, o.build(:show) if f.yes?(:show)
-      post name, o.build(:create) if f.yes?(:create)
-      get "#{name}/edit", o.build(:edit) if f.yes?(:edit) && !api_mode?
-      put name, o.build(:update) if f.yes?(:update)
-      post name, o.build(:update) if f.yes?(:update) # for binary uploads
-      patch name, o.build(:update) if f.yes?(:update)
-      delete name, o.build(:delete) if f.yes?(:delete)
-    end
-
-    def member
-      @on_option = :member
-      yield
-      @on_option = nil
-    end
-
-    def collection
-      @on_option = :collection
-      yield
-      @on_option = nil
-    end
-
-    # If a block has pass then we assume the resources will be nested and then prefix
-    # the param name with the resource. IE: post_id instead of id
-    # This avoids an API Gateway parent sibling variable collision.
-    def default_param(has_block, name, options)
-      default_param = has_block ? "#{name.to_s.singularize}_id".to_sym : :id
-      options[:param] || default_param
+      # Looks a little weird with '' but the path is handled by the scope
+      get '', o.build(:index) if f.yes?(:index) && !options[:singular_resource]
+      post '', o.build(:create) if f.yes?(:create)
+      get 'new', o.build(:new) if f.yes?(:new) && !api_mode?
+      get 'edit', o.build(:edit) if f.yes?(:edit) && !api_mode?
+      get '', o.build(:show) if f.yes?(:show)
+      put '', o.build(:update) if f.yes?(:update)
+      # post to update wont work with singular_resource because it's a route collision
+      # Also makes it so that route.to is always changed
+      # Leaving in case need it for some reason. Will remove later.
+      # post '', o.build(:update) if f.yes?(:update) # for binary uploads
+      patch '', o.build(:update) if f.yes?(:update)
+      delete '', o.build(:destroy) if f.yes?(:destroy)
     end
 
     # root "posts#index"
-    def root(to, options={})
-      default = {path: '', to: to, method: :get, root: true}
-      options = default.merge(options)
-      MethodCreator.new(options, @scope).create_root_helper
-      @routes << Route.new(options, @scope)
-    end
-    private
+    # root to: "posts#index"
+    def root(*args)
+      if args.size == 1
+        options = args.first
+        if options.is_a?(String) # root "posts#index"
+          to = options
+          options = {}
+        elsif options.is_a?(Hash) # root to: "posts#index"
+          to = options.delete(:to)
+        end
+      else
+        to = args[0]
+        options = args[1] || {}
+      end
 
-    def escape_path(path)
-      path.to_s.split('/').map { |s| s =~ /\A[:\*]/ ? s : CGI.escape(s) }.join('/')
+      http_method = options.delete(:via)
+      http_method ||= Jets.config.api.cors ? :any : :get
+      default = {path: '/', to: to, http_method: http_method, root: true}
+      options = default.merge(options)
+      create_route(options)
     end
   end
 end

@@ -5,8 +5,8 @@ module Kernel
   # @param path [String]
   # @return [Boolean]
   def require(path)
-    # Hack to prevent Rails const from being defined
-    # Actionview requires "rails-html-sanitizer" and that creates a Rails module
+    # Hack to prevent Jets const from being defined
+    # Actionview requires "jets-html-sanitizer" and that creates a Jets module
     path = "jets-html-sanitizer" if path == "rails-html-sanitizer" && !ENV['JETS_RAILS_CONST']
     jets_original_require(path)
   end

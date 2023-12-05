@@ -1,6 +1,6 @@
 require 'fileutils'
 
-class Jets::Commands::Clean
+module Jets::Commands::Clean
   class Build < Base
     def clean
       are_you_sure?("delete /tmp/jets")

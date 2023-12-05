@@ -1,6 +1,7 @@
 class Jets::Stack
   class Builder
     extend Memoist
+    include Jets::Util::Camelize
 
     def initialize(stack)
       @stack = stack
@@ -11,7 +12,7 @@ class Jets::Stack
       build_section(:parameters)
       build_section(:resources)
       build_section(:outputs)
-      Jets::Camelizer.transform(@template)
+      camelize(@template).deep_stringify_keys
     end
     memoize :template
 
@@ -20,7 +21,7 @@ class Jets::Stack
       return unless elements
 
       if section == :parameters
-        elements["GemLayer"] = {"Type"=>"String"} unless Jets.poly_only?
+        elements[:GemLayer] = {Type: "String"} unless Jets.poly_only?
       end
       @template[section] = elements
     end
