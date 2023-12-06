@@ -2,7 +2,7 @@ Jets.application.configure do
   config.cache_classes = true
   config.eager_load = true
   config.log_level = :info
-  config.logging.event = true # useful for CloudWatch logs
+  config.logging.event = false # can be useful for CloudWatch
 
 <%- unless options[:mode] == 'job' -%>
   config.consider_all_requests_local       = false

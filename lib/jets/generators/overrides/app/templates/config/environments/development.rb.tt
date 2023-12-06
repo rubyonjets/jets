@@ -3,7 +3,7 @@ Jets.application.configure do
 
   config.cache_classes = false
   config.eager_load = false
-  config.logging.event = false # dont show large event in local development logging
+  config.logging.event = false # can be useful for CloudWatch
 
 <%- unless options[:mode] == 'job' -%>
   # Show full error reports.
