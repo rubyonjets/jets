@@ -1,7 +1,7 @@
 module Jets::Command
   class ReleasesCommand < Base # :nodoc:
-    desc "history", "List releases"
-    long_desc Help.text(:history)
+    desc "releases", "List releases"
+    long_desc Help.text(:releases)
     paging_options(order: 'desc').call
     def perform
       Release.new(options.merge(paging_params)).list
@@ -35,7 +35,7 @@ module Jets::Command
         show_items(data)
       end
     rescue Jets::Api::RequestError => e
-      puts "ERROR: Unable to list history. #{e.class}: #{e.message}"
+      puts "ERROR: Unable to list releases. #{e.class}: #{e.message}"
     end
 
     def show_items(items)
@@ -66,7 +66,7 @@ module Jets::Command
       resp = Jets::Api::Release.retrieve(version)
       check_for_error_message!(resp)
     rescue Jets::Api::RequestError => e
-      puts "ERROR: Unable to get history. #{e.class}: #{e.message}"
+      puts "ERROR: Unable to get release. #{e.class}: #{e.message}"
     end
   end
 end
