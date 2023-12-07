@@ -98,6 +98,7 @@ module Jets
             self.full_namespace = full_namespace # store for help. clean:log => log
           end
 
+          Jets::Command.original_cli_command = command
           dispatch(command, args.dup, nil, config)
         end
 

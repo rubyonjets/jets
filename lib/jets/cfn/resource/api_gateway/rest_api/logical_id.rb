@@ -17,7 +17,7 @@ class Jets::Cfn::Resource::ApiGateway::RestApi
 
     def auto_replace_prompt
       return if ENV['JETS_API_AUTO_REPLACE']
-      return unless ARGV[0] == "deploy"
+      return unless Jets::Command.original_cli_command == "deploy"
       case Jets.config.api.auto_replace
       when nil
         puts message.routes_changed

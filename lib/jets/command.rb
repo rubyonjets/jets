@@ -17,6 +17,8 @@ module Jets
 
     HELP_MAPPINGS = %w(-h -? --help)
 
+    cattr_accessor :original_cli_command
+
     class << self
       def hidden_commands # :nodoc:
         @hidden_commands ||= []
