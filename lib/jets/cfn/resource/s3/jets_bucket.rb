@@ -53,7 +53,7 @@ module Jets::Cfn::Resource::S3
         begin
           resp = cfn.describe_stacks(stack_name: Jets::Names.parent_stack_name)
         rescue Aws::CloudFormation::Errors::ValidationError => e
-          if e.message.include?('does not exist') && ARGV[0] == 'build' # jets build
+          if e.message.include?('does not exist') && Jets::Command.original_cli_command == 'build' # jets build
             return "no-bucket-yet" # for jets build without s3 bucket yet
           else
             raise
