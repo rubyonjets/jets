@@ -14,6 +14,7 @@ require "json"
 require "memoist"
 require "rainbow/ext/string"
 require "jets-api"
+require "jets-git"
 
 require "jets/core_ext"
 require "jets/autoloaders"

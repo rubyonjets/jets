@@ -54,7 +54,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dsl_evaluator", ">= 0.3.0" # for DslEvaluator.print_code
   spec.add_dependency "gems"
   spec.add_dependency "hashie"
-  spec.add_dependency "jets-api"
+  spec.add_dependency "jets-api", ">= 0.1.4"
+  spec.add_dependency "jets-git"
   spec.add_dependency "jets-html-sanitizer"
   spec.add_dependency "kramdown"
   spec.add_dependency "memoist"

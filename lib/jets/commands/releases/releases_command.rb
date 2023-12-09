@@ -3,8 +3,24 @@ module Jets::Command
     desc "releases", "List releases"
     long_desc Help.text(:releases)
     paging_options(order: 'desc').call
+    option :sha, desc: "Show release git sha"
     def perform
       Release.new(options.merge(paging_params)).list
+    end
+
+    desc "releases:info", "View detailed information for a release"
+    long_desc Help.text(:info)
+    def info(version=nil)
+      if version.nil?
+        puts "ERROR: Must provide a version".color(:red)
+        puts <<~EOL
+          Example:
+
+            jets releases:info 3
+        EOL
+        exit 1
+      end
+      Release.new(options.merge(version: version)).show
     end
   end
 
@@ -40,14 +56,21 @@ module Jets::Command
 
     def show_items(items)
       presenter = CliFormat::Presenter.new
-      presenter.header = ["Version", "Status", "Released At", "Message"]
+      header = ["Version", "Status", "Released At", "Message"]
+      header << "Git Sha" if @options[:sha]
+      presenter.header = header
       items.each do |item|
         version = item["version"]
         status = item["stack_status"]
         released_at = item["pretty_created_at"] || item["created_at"]
         message = item["message"] || "Deployed"
+        message = message[0..50]
 
         row = [version, status, format_time(released_at), message]
+        if @options[:sha]
+          sha = item["git_sha"].to_s[0..7] if item["git_sha"]
+          row << sha
+        end
         presenter.rows << row
       end
       presenter.show
@@ -67,6 +90,36 @@ module Jets::Command
       check_for_error_message!(resp)
     rescue Jets::Api::RequestError => e
       puts "ERROR: Unable to get release. #{e.class}: #{e.message}"
+    end
+
+    def show
+      release = get(@options[:version])
+      release_at = release['pretty_created_at'] || release['created_at']
+
+      data = [
+        ["Version", release['version']],
+        ["Status", release['stack_status']],
+        ["Released At", format_time(release_at)],
+        ["Message", release['message']],
+        ["User", release['deploy_user']],
+        ["Git Branch", release['git_branch']],
+        ["Git Sha", release['git_sha']],
+        ["Git Message", release['git_message']],
+        ["Git Url", release['git_url']],
+        ["Git Dirty", release['git_dirty']],
+        ["Jets Env", release['jets_env']],
+        ["Jets Extra", release['jets_extra']],
+        ["Jets Version", release['jets_version']],
+        ["Ruby Version", release['ruby_version']],
+        ["Region", release['region']],
+      ]
+      column1_width = data.map { |row| row[1].nil? ? 0 : row[0].to_s.length }.max
+      column2_width = data.map { |row| row[1].nil? ? 0 : row[1].to_s.length }.max
+
+      puts Jets.project_namespace
+      data.each do |row|
+        puts "#{row[0].ljust(column1_width)}   #{row[1]}" unless row[1].nil?
+      end
     end
   end
 end

@@ -18,6 +18,7 @@ module Jets
           $stderr.puts "ERROR: #{resp["error"]}"
           exit 1
         end
+        resp
       end
 
       def paging_params

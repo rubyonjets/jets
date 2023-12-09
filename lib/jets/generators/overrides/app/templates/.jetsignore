@@ -1,0 +1,6 @@
+# Additional files not to add to the zip file that jets creates for code deploy.
+# .gitignore files are also not added.
+# This adds additional files.
+#
+# Ignoring /public/files since should be served by s3 when using asset_path helper
+/public/files

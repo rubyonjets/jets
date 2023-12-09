@@ -4,7 +4,7 @@ module Jets::AwsServices
     @@stack_exists_cache = [] # helps with CloudFormation rate limit
     def stack_exists?(stack_name)
       return false if Jets.env.test?
-      return true if ENV['JETS_BUILD_NO_INTERNET']
+      return true if ENV['JETS_NO_INTERNET']
       return true if @@stack_exists_cache.include?(stack_name)
 
       exist = nil

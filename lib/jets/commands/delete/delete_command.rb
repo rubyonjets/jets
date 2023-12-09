@@ -33,14 +33,13 @@ module Jets::Command
       cfn.delete_stack(stack_name: parent_stack_name)
       puts "Deleting #{Jets.project_namespace.color(:green)}..."
 
+      stack = find_stack(parent_stack_name)
       if @options[:wait]
-        stack = find_stack(parent_stack_name)
         wait_for_stack
-        Jets::Cfn::Deployment.new(stack_name: stack.stack_id, message: "Deleted").create
       end
+      Jets::Cfn::Deployment.new(stack_name: stack.stack_id).delete
 
       delete_logs
-
       puts "Project #{Jets.project_namespace.color(:green)} deleted!"
     end
 
