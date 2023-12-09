@@ -38,7 +38,7 @@ module Jets::Job
           call = Jets::Commands::Call::Caller.new(function_name, JSON.dump(event), invocation_type: "Event")
           call.run
         else
-          puts "INFO: Not on AWS Lambda. In local mode perform_later executes the job with perform_now instead."
+          Jets.logger.info "INFO: Not on AWS Lambda. In local mode perform_later executes the job with perform_now instead."
           perform_now(meth, event, context)
         end
       end
