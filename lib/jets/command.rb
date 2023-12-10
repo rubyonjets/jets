@@ -31,6 +31,7 @@ module Jets
       # Receives a namespace, arguments, and the behavior to invoke the command.
       def invoke(full_namespace, args = [], **config)
         namespace = full_namespace = full_namespace.to_s
+        Jets::Command.original_cli_command = full_namespace
 
         if char = namespace =~ /:(\w+)$/
           command_name, namespace = $1, namespace.slice(0, char)
@@ -49,6 +50,12 @@ module Jets
         if command && command.all_commands[command_name]
           command.perform(full_namespace, command_name, args, config)
         else
+          # Decorate the rake [] method in order to rescue the error and print out
+          # a user friendly message. This works to catch rake errors but
+          # unsure why cannot just rescue RuntimeError here.
+          # More details in the RakeDecorate module.
+          require "rake/application"
+          Rake::Application.send(:include, RakeDecorate)
           args = ["--describe", full_namespace] if HELP_MAPPINGS.include?(args[0])
           find_by_namespace("rake").perform(full_namespace, args, config)
         end
@@ -91,7 +98,6 @@ module Jets
         commands.each { |command| puts("  #{command}") }
       end
 
-      private
         COMMANDS_IN_USAGE = %w(
           generate
           console
@@ -119,6 +125,7 @@ module Jets
           (visible_commands - COMMANDS_IN_USAGE - PRO_COMMANDS).sort
         end
 
+      private
         def command_type # :doc:
           @command_type ||= "command"
         end

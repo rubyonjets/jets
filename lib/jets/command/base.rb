@@ -98,8 +98,12 @@ module Jets
             self.full_namespace = full_namespace # store for help. clean:log => log
           end
 
-          Jets::Command.original_cli_command = command
           dispatch(command, args.dup, nil, config)
+        rescue Thor::InvocationError => e
+          puts e.message.color(:red) # message already has ERROR prefix
+          self.full_namespace = full_namespace # store for help. clean:log => log
+          dispatch("help", [], nil, config)
+          exit 1
         end
 
         def printing_commands
