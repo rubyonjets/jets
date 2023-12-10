@@ -131,6 +131,7 @@ module Jets::Builders
     # We do not want to grab this as part of the live request because it is slow.
     def store_s3_base_url
       return if Jets.config.mode == "job"
+      return unless gemfile_include?("sprockets-jets")
       write_s3_base_url("#{stage_area}/code/config/s3_base_url.txt")
     end
 
@@ -192,9 +193,7 @@ module Jets::Builders
         puts "Skip compiling assets".color(:yellow) # useful for debugging
         return true
       end
-      return true if Jets.config.mode == "job"
-      return true unless Jets.config.respond_to?(:assets)
-      Jets.config.assets.enable_webpack
+      Jets.config.mode == "job"
     end
 
     # Different url for these. Examples:
