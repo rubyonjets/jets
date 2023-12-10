@@ -4,7 +4,7 @@ module Jets::Command
   class RollbackCommand < Base # :nodoc:
     desc "rollback", "Rollback to a previous release"
     long_desc Help.text(:rollback)
-    def perform(version=nil)
+    def perform(version)
       Rollback.new(options.merge(version: version)).run
     end
   end
@@ -15,14 +15,6 @@ module Jets::Command
     def initialize(options={})
       @options = options
       @version = options[:version]
-      # Handle more gracefully than the way Jets does it currently
-      if @version.nil?
-        puts <<~EOL
-          ERROR: version required
-          Usage: jets rollback VERSION
-        EOL
-        exit 1
-      end
     end
 
     def run
