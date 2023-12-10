@@ -1,1 +1,1 @@
-http://rubyonjets.com/docs/contributing/
+https://rubyonjets.com/docs/more/contributing/
