@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.1] - 2023-12-11
+- [#680](https://github.com/rubyonjets/jets/pull/680) fix apigw gateway replacement warning prompt
+- [#682](https://github.com/rubyonjets/jets/pull/682) Replace puts with Jets.logger.info in jobs
+- [#683](https://github.com/rubyonjets/jets/pull/683) Fix broken links in README and CONTRIBUTING
+- [#684](https://github.com/rubyonjets/jets/pull/684) improve cli usage invalid command and options handling
+- [#685](https://github.com/rubyonjets/jets/pull/685) rollback usage cleanup
+- [#686](https://github.com/rubyonjets/jets/pull/686) remove need for sprockets-jets dependency
+- [#687](https://github.com/rubyonjets/jets/pull/687) jets releases:info command
+- default logging.event to false for generated production
+
 ## [5.0.0] - 2023-12-05
 Single Lambda Function for Controllers
 * For controllers, a single Lambda function is deployed going forward.
