@@ -102,21 +102,20 @@ module Jets::Command
         ["Released At", format_time(release_at)],
         ["Message", release['message']],
         ["User", release['deploy_user']],
-        ["Git Branch", release['git_branch']],
-        ["Git Sha", release['git_sha']],
-        ["Git Message", release['git_message']],
-        ["Git Url", release['git_url']],
-        ["Git Dirty", release['git_dirty']],
         ["Jets Env", release['jets_env']],
         ["Jets Extra", release['jets_extra']],
         ["Jets Version", release['jets_version']],
         ["Ruby Version", release['ruby_version']],
         ["Region", release['region']],
+        ["Git Branch", release['git_branch']],
+        ["Git Sha", release['git_sha']],
+        ["Git Url", release['git_url']],
+        ["Git Message", release['git_message']],
       ]
       column1_width = data.map { |row| row[1].nil? ? 0 : row[0].to_s.length }.max
       column2_width = data.map { |row| row[1].nil? ? 0 : row[1].to_s.length }.max
 
-      puts Jets.project_namespace
+      puts Jets.project_namespace.color(:green)
       data.each do |row|
         puts "#{row[0].ljust(column1_width)}   #{row[1]}" unless row[1].nil?
       end
