@@ -330,7 +330,7 @@ Breaking Changes:
 - #424 md5 fix subtle bug when code doesnt get uploaded from newly generated shims
 - #425 add hosted zone id support
 - #426 use headers origin for actual host in case of cloudfront in front
-- #428 fixes to JETS_BUILD_NO_INTERNET env var option
+- #428 fixes to JETS_NO_INTERNET env var option
 - #429 fix simple function tmp_loader
 
 ## [2.3.11]

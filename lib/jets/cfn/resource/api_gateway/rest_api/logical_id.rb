@@ -4,7 +4,7 @@ class Jets::Cfn::Resource::ApiGateway::RestApi
     include Jets::AwsServices
 
     def get
-      return default if ENV['JETS_BUILD_NO_INTERNET']
+      return default if ENV['JETS_NO_INTERNET']
       return default unless stack_exists?(parent_stack_name) && api_gateway_exists?
 
       if changed?

@@ -1,7 +1,7 @@
 module Jets::Job::Dsl
   module DynamodbEvent
     def dynamodb_event(table_name_without_namespace, options={})
-      return if ENV['JETS_BUILD_NO_INTERNET'] # Disable during build since jets build tries to init this
+      return if ENV['JETS_NO_INTERNET'] # Disable during build since jets build tries to init this
 
       table_name = add_dynamodb_table_namespace(table_name_without_namespace)
       stream_arn = full_dynamodb_stream_arn(table_name)

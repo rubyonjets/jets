@@ -76,7 +76,7 @@ module Jets::Builders
     end
 
     def exist_on_s3?(filename)
-      return false if ENV['JETS_BUILD_NO_INTERNET']
+      return false if ENV['JETS_NO_INTERNET']
       s3_key = "jets/code/#{filename}"
       begin
         Jets.logger.debug "Checking s3://#{s3_bucket}/#{s3_key}"

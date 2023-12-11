@@ -37,7 +37,7 @@ class Jets::Dotenv
     end
 
     def fetch_ssm_value(key, value)
-      return "fake-ssm-value" if ENV['JETS_BUILD_NO_INTERNET']
+      return "fake-ssm-value" if ENV['JETS_NO_INTERNET']
 
       name = ssm_name(key, value)
       response = ssm.get_parameter(name: name, with_decryption: true)

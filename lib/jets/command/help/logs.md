@@ -7,7 +7,7 @@ This defaults to the controller Lambda function in the `one_lambda_for_all_contr
 
 If you want to follow the logs use the `-f` flag.
 
-    ❯ jets logs
+    ❯ jets logs -f
     Tailing logs for /aws/lambda/demo-dev-controller
 
 If you want to see the production logs:

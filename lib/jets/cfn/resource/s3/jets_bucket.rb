@@ -47,7 +47,7 @@ module Jets::Cfn::Resource::S3
       @@name = nil
       def name
         return @@name if @@name
-        return "fake-bucket" if ENV['JETS_BUILD_NO_INTERNET'] || ENV['JETS_TEMPLATES']
+        return "fake-bucket" if ENV['JETS_NO_INTERNET'] || ENV['JETS_TEMPLATES']
 
         resp = nil
         begin
