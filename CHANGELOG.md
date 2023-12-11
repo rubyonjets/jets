@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.2] - 2023-12-11
+- [#688](https://github.com/rubyonjets/jets/pull/688) improve releases:info output
+
 ## [5.0.1] - 2023-12-11
 - [#680](https://github.com/rubyonjets/jets/pull/680) fix apigw gateway replacement warning prompt
 - [#682](https://github.com/rubyonjets/jets/pull/682) Replace puts with Jets.logger.info in jobs
