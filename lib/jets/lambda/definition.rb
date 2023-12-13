@@ -3,13 +3,17 @@ module Jets::Lambda
     include Jets::Util::Camelize
 
     attr_accessor :class_name, :type
-    attr_reader :meth, :properties, :iam_policy, :managed_iam_policy, :lang, :associated_resources
-    def initialize(class_name, meth, options={})
+    attr_reader(
+      :meth, :properties, :provisioned_concurrency, :iam_policy, :managed_iam_policy,
+      :lang, :associated_resources
+    )
+    def initialize(class_name, meth, options = {})
       @class_name = class_name.to_s
       @meth = meth
       @options = options
-      @type = options[:type] || get_type  # controller, job, or function
+      @type = options[:type] || get_type  # controller, event, or function
       @properties = camelize(options[:properties]) || {}
+      @provisioned_concurrency = options[:provisioned_concurrency]
       @iam_policy = options[:iam_policy]
       @managed_iam_policy = options[:managed_iam_policy]
       @lang = options[:lang] || :ruby
@@ -25,7 +29,7 @@ module Jets::Lambda
       # For anonymous classes (app/functions/hello.rb) the class name will be blank.
       # These types of classes are treated specially and has only one handler method
       # that is registered. So we know it is public.
-      return true if @class_name.nil? || @class_name == ''
+      return true if @class_name.nil? || @class_name == ""
 
       # Consider all polymorphic methods public for now
       return true if @lang != :ruby
@@ -40,20 +44,20 @@ module Jets::Lambda
     end
 
     @@lang_exts = {
-      ruby: '.rb',
-      python: '.py',
-      node: '.js',
+      ruby: ".rb",
+      python: ".py",
+      node: ".js"
     }
     def lang_ext
       @@lang_exts[@lang]
     end
 
-    # The get_type method works for controller and job classes.
+    # The get_type method works for controller and event classes.
     #
     # Usually able to get the type from the class name. Examples:
     #
     #   PostsController => controller
-    #   HardJob => job
+    #   CoolEvent => event
     #
     # However, for function types, we are not able to get the type for multiple of
     # reasons.  First, function types are allowed to be named with or without
@@ -69,16 +73,16 @@ module Jets::Lambda
     # We add the class_type to the task later on as we are constructing the class
     # as part of the Class.new logic.
     #
-    # For controller and job standard ruby classes though it can easily be
+    # For controller and event standard ruby classes though it can easily be
     # determinated as part of initialization. So we get the type for convenience then.
     #
     # For anonymous function classes, we just set to nil and will later fix in
     # FunctionConstructor.
     #
-    # Returns: "controller", "job" or nil
+    # Returns: "controller", "event" or nil
     def get_type
       unless @class_name.empty? # when anonymous class is created with Class.new
-        @class_name.underscore.split('_').last # controller, job or rule
+        @class_name.underscore.split("_").last # controller, event or rule
       end
     end
 
@@ -106,13 +110,15 @@ module Jets::Lambda
     end
 
     def base_replacements
-      { namespace: namespace }
+      {namespace: namespace}
     end
 
     def namespace
-      ns = @class_name.gsub('::','').camelize
-      ns += @meth.to_s.camelize if @meth
-      ns
+      if @meth
+        @meth.to_s.camelize
+      else
+        @class_name.gsub("::", "").camelize
+      end
     end
   end
 end

@@ -1,0 +1,13 @@
+class <%= class_name %>Event < ApplicationEvent
+  # Please read the Considerations section before using s3_event
+  s3_event "my-bucket" # <= CHANGE ME: new or existing bucket
+  def <%= options[:method] %>
+    puts "event #{JSON.dump(event)}"
+    puts "s3_events #{JSON.dump(s3_events)}"
+    puts "s3_objects #{JSON.dump(s3_objects)}"
+    # s3_files.each do |file|
+    #   puts "file.filename #{file.filename}"
+    #   puts "file.content #{file.content}"
+    # end
+  end
+end

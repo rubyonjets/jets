@@ -1,0 +1,50 @@
+HTTPS on
+HTTP_ACCEPT text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8
+HTTP_ACCEPT_ENCODING gzip, deflate, br
+HTTP_ACCEPT_LANGUAGE en-US,en;q=0.9
+HTTP_CLOUDFRONT_FORWARDED_PROTO https
+HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER true
+HTTP_CLOUDFRONT_IS_MOBILE_VIEWER false
+HTTP_CLOUDFRONT_IS_SMARTTV_VIEWER false
+HTTP_CLOUDFRONT_IS_TABLET_VIEWER false
+HTTP_CLOUDFRONT_VIEWER_ASN 11404
+HTTP_CLOUDFRONT_VIEWER_COUNTRY US
+HTTP_COOKIE _demo_session=qKCCflFJN2itGPma2LbkNnjseYUnT8vXhKnE%2B6luZORpwWZrElgpNQkDZefjoOFp7haoiaHpKU58QF6EguUS%2BMNT11mf%2BJmuBkelAAMpyM%2FPf%2BZ%2BXrrbdhhd%2BWXpjmYzaYMThuNoyEObsMt8tjJoCpUpW5C0%2FgEQ8BnxzeKrBiz3a%2FgNriBR5T2%2Fi6N%2BFZgYxOhWCGT%2Blo1Hhz%2FbVR0ornzwmROkXhR97GLSP0GIBBt4tcuRcofGroExuDYiPxkCozG1Xz4pZl39tBykan5i%2FJa0EKev--C%2F5%2B%2BeuaXCEcfAtU--zgK2m8At7jF8cclNVfeUGQ%3D%3D
+HTTP_HOST xra2cmx6kc.execute-api.us-west-2.amazonaws.com
+HTTP_IF_NONE_MATCH W/"3a3aa83ef1c91de47cc00ca3f6345401"
+HTTP_PORT 443
+HTTP_SEC_CH_UA "Not_A Brand";v="8", "Chromium";v="120", "Brave";v="120"
+HTTP_SEC_CH_UA_MOBILE ?0
+HTTP_SEC_CH_UA_PLATFORM "macOS"
+HTTP_SEC_FETCH_DEST document
+HTTP_SEC_FETCH_MODE navigate
+HTTP_SEC_FETCH_SITE none
+HTTP_SEC_FETCH_USER ?1
+HTTP_SEC_GPC 1
+HTTP_UPGRADE_INSECURE_REQUESTS 1
+HTTP_USER_AGENT Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+HTTP_VIA 2.0 38eecd3ca21bf068d69a2f9cfe668d14.cloudfront.net (CloudFront)
+HTTP_X_AMZN_TRACE_ID Root=1-657bd820-29c6575c257446bc69880090
+HTTP_X_AMZ_CF_ID wjp63PuZtU3Ha2ag67DaIntwryd6DBs5jeQKo6BIulX9NwFCP9ny1A==
+HTTP_X_FORWARDED_FOR 66.234.208.210, 15.158.0.115
+HTTP_X_FORWARDED_PORT 443
+HTTP_X_FORWARDED_PROTO https
+ORIGINAL_FULLPATH /posts
+ORIGINAL_SCRIPT_NAME
+PATH_INFO /posts
+QUERY_STRING
+REQUEST_METHOD GET
+REQUEST_PATH /posts
+ROUTES_12180_SCRIPT_NAME
+SCRIPT_NAME
+SERVER_NAME xra2cmx6kc.execute-api.us-west-2.amazonaws.com
+SERVER_PORT 443
+SERVER_PROTOCOL HTTP/1.1
+action_controller.instance #<PostsController:0x00007fbc831a97e8>
+rack.request.form_hash {}
+rack.request.form_input
+rack.request.query_hash {}
+rack.request.query_string
+rack.session #<ActionDispatch::Request::Session:0x00007fbc831aee78>
+rack.session.options #<ActionDispatch::Request::Session::Options:0x00007fbc82c55738>
+rack.tempfiles []

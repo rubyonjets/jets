@@ -2,7 +2,7 @@ class Jets::Cfn::Resource
   class Replacer
     extend Memoist
 
-    def initialize(replacements={})
+    def initialize(replacements = {})
       @replacements = replacements
     end
 
@@ -45,7 +45,7 @@ class Jets::Cfn::Resource
       # return value unless value.is_a?(String) or value.is_a?(Symbol)
 
       value = value.to_s # normalize to String
-      @replacements.each do |k,v|
+      @replacements.each do |k, v|
         # IE: Replaces {namespace} => SecurityJobCheck
         value = value.gsub("{#{k}}", v)
       end
@@ -58,7 +58,7 @@ class Jets::Cfn::Resource
     #   "AWS::Config::ConfigRule" => "config.amazonaws.com",
     #   "AWS::ApiGateway::Method" => "apigateway.amazonaws.com"
     def principal_map(type)
-      service = type.split('::')[1].downcase
+      service = type.split("::")[1].downcase
       service = special_principal_map(service)
       "#{service}.amazonaws.com"
     end
@@ -66,7 +66,7 @@ class Jets::Cfn::Resource
     def special_principal_map(service)
       # special map
       # s3_event actually uses sns topic events to trigger a Lambda function
-      map = { s3: "sns" }
+      map = {s3: "sns"}
       map[service.to_sym] || service
     end
 
@@ -76,7 +76,7 @@ class Jets::Cfn::Resource
     # When it is not available the resource definition should add it.
     def source_arn_map(type)
       map = {
-        "AWS::ApiGateway::Method" => "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*",
+        "AWS::ApiGateway::Method" => "!Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${RestApi}/*/*"
       }
       map[type.to_s]
     end

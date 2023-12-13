@@ -1,0 +1,9 @@
+class <%= class_name %>Event < ApplicationEvent
+  class_timeout 30 # Lambda Function timeout must be less than or equal to the SQS Visibility timeout
+  sqs_event "hello-queue"
+  def <%= options[:method] %>
+    puts "event #{JSON.dump(event)}"
+    puts "sqs_events #{JSON.dump(sqs_events)}"
+    puts "sqs_events? #{JSON.dump(sqs_events?)}"
+  end
+end

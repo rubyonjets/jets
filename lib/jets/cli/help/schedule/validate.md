@@ -1,0 +1,1 @@
+Validate config/jets/schedule.yml by creating and deleting live event rules.

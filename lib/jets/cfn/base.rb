@@ -6,11 +6,12 @@
 #   attributes
 #
 # These are computed methods that derive their values from the resource definition itself.
-# Overriding these methods will remove the computed logical which handles things
+# Overriding these methods will remove the computed logic which handles things
 # like camelizing and replacements.
 module Jets::Cfn
   class Base
     extend Memoist
+    include Jets::Util::Logging
     include Jets::Util::Camelize
 
     # interface method
@@ -61,13 +62,23 @@ module Jets::Cfn
       {}
     end
 
-    def permission
-      Resource::Lambda::Permission.new(replacements, self)
+    def normalize_tags(tags)
+      if tags.is_a?(Hash)
+        tags.map do |k, v|
+          {Key: k.to_s, Value: v.to_s}
+        end
+      else # Array passthrough
+        tags
+      end
     end
-    memoize :permission
+
+    # interface method
+    def config
+      Jets.bootstrap.config
+    end
 
     class << self
-      def truncate_id(id, postfix = '')
+      def truncate_id(id, postfix = "")
         # Api Gateway resource name has a limit of 64 characters.
         # Yet it throws not found when ID is longer than 62 characters and I don't know why.
         # To keep it safe, let's stick to the 62 characters limit.

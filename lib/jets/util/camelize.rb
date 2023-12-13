@@ -1,4 +1,4 @@
-class Jets::Util
+module Jets::Util
   module Camelize
     # Not named camelize! because it conflicts with zeitwerk's camelize!
     def camelize(object)

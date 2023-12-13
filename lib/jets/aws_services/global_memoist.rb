@@ -21,15 +21,20 @@
 #
 module Jets::AwsServices
   module GlobalMemoist
+    def reset_cache!
+      $__memo_methods = {}
+    end
+    extend self
+
     def self.included(klass)
       klass.extend(Macros)
     end
 
     module Macros
       def global_memoize(*methods)
-        const_defined?(:"GlobalMemoist#{self.object_id}") ?
-          const_get(:"GlobalMemoist#{self.object_id}") : const_set(:"GlobalMemoist#{self.object_id}", Module.new)
-        mod = const_get(:"GlobalMemoist#{self.object_id}")
+        const_defined?(:"GlobalMemoist#{object_id}") ?
+          const_get(:"GlobalMemoist#{object_id}") : const_set(:"GlobalMemoist#{object_id}", Module.new)
+        mod = const_get(:"GlobalMemoist#{object_id}")
 
         mod.class_eval do
           methods.each do |method|

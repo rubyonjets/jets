@@ -1,0 +1,6 @@
+class <%= class_name %>Event < ApplicationEvent
+  rate "10 hours"
+  def <%= options[:method] %>
+    puts "Do something with event #{JSON.dump(event)}"
+  end
+end

@@ -1,0 +1,55 @@
+GATEWAY_INTERFACE CGI/1.2
+HTTP_ACCEPT text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8
+HTTP_ACCEPT_ENCODING gzip, deflate, br
+HTTP_ACCEPT_LANGUAGE en-US,en
+HTTP_CACHE_CONTROL max-age=0
+HTTP_CONNECTION keep-alive
+HTTP_COOKIE _demo_session=neOyAXfU3CuRufr%2BJlbDctDTVaWKqXuss7C4vHCes7weRojCn7lfIg0dtQRN2C2HgPIKgr6yCbXLbGaApsz3lRvRLvVANWJj9kAn2s%2BVuq4vLNiLAHR7NcnPjmm0xRnA2fL%2FenYkloy%2FbybuXxDpZ19BYSWmo3fDGcKMo92vIl0qop2xHp%2F4Btlr7vF4tfoJlBhL%2FICS%2BfjDp%2Ft%2BKAua2Qa1o7IpBEO78rO3Y0mSv6HVsgPZ02LDBU1rRoinFOgo4HIEDaXtpRKM5FgBFuJhZ1doP334--FABmCY1bcX14UCWN--00x2l2sFbPId96j0kNhxug%3D%3D
+HTTP_HOST localhost:3000
+HTTP_IF_NONE_MATCH W/"46fc5c0d5a9fc802fee89d5b9d16c3b8"
+HTTP_SEC_CH_UA "Not_A Brand";v="8", "Chromium";v="120", "Brave";v="120"
+HTTP_SEC_CH_UA_MOBILE ?0
+HTTP_SEC_CH_UA_PLATFORM "macOS"
+HTTP_SEC_FETCH_DEST document
+HTTP_SEC_FETCH_MODE navigate
+HTTP_SEC_FETCH_SITE same-origin
+HTTP_SEC_FETCH_USER ?1
+HTTP_SEC_GPC 1
+HTTP_UPGRADE_INSECURE_REQUESTS 1
+HTTP_USER_AGENT Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+HTTP_VERSION HTTP/1.1
+ORIGINAL_FULLPATH /posts?foo=bar
+ORIGINAL_SCRIPT_NAME
+PATH_INFO /posts
+QUERY_STRING foo=bar
+REMOTE_ADDR 127.0.0.1
+REQUEST_METHOD GET
+REQUEST_PATH /posts
+REQUEST_URI /posts?foo=bar
+ROUTES_11800_SCRIPT_NAME
+SCRIPT_NAME
+SERVER_NAME localhost
+SERVER_PORT 3000
+SERVER_PROTOCOL HTTP/1.1
+SERVER_SOFTWARE puma 6.4.0 The Eagle of Durango
+action_controller.instance #<PostsController:0x00007fc4bb370c80>
+puma.config #<Puma::Configuration:0x00007fc4bb4d9fb8>
+puma.request_body_wait 0.004851005971431732
+puma.socket #<TCPSocket:0x00007fc4baa4bf88>
+rack.after_reply []
+rack.errors #<IO:0x00007fc4c1278f70>
+rack.hijack #<Puma::Client:0x00007fc4b8b18c10>
+rack.hijack? true
+rack.input #<Puma::NullIO:0x00007fc4ba8fca60>
+rack.multiprocess false
+rack.multithread true
+rack.request.form_hash {}
+rack.request.form_input #<Puma::NullIO:0x00007fc4ba8fca60>
+rack.request.query_hash {"foo"=>"bar"}
+rack.request.query_string foo=bar
+rack.run_once false
+rack.session #<ActionDispatch::Request::Session:0x00007fc4b8ba8b80>
+rack.session.options #<ActionDispatch::Request::Session::Options:0x00007fc4ba800918>
+rack.tempfiles []
+rack.url_scheme http
+rack.version [1, 6]

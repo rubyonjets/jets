@@ -1,0 +1,21 @@
+class <%= class_name %>Event < ApplicationEvent
+  rule_event(
+    description: "Checks for security group changes",
+    detail_type: ["AWS API Call via CloudTrail"],
+    detail: {
+      event_source: ["ec2.amazonaws.com"],
+      event_name: [
+        "AuthorizeSecurityGroupIngress",
+        "AuthorizeSecurityGroupEgress",
+        "RevokeSecurityGroupIngress",
+        "RevokeSecurityGroupEgress",
+        "CreateSecurityGroup",
+        "DeleteSecurityGroup"
+      ]
+    }
+  )
+  def <%= options[:method] %>
+    puts "event: #{JSON.dump(event)}" # event is available
+    # your logic
+  end
+end

@@ -22,7 +22,7 @@ module Jets
         Rakefile
         bin
       ]
-      exclude = exclude.map { |word| ['-x', word] }.flatten
+      exclude = exclude.map { |word| ["-x", word] }.flatten
       ["-m", "README.md", "--markup", "tomdoc"] + exclude
     end
     extend self

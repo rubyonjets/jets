@@ -1,0 +1,43 @@
+Jets.deploy.configure do
+<% unless framework == "rails" -%>
+  # https://docs.rubyonjets.com/docs/config/package-type/
+  # config.package_type = "image" # default: image IE: image or zip
+
+<% end -%>
+<% if framework == "rails" -%>
+  # https://docs.rubyonjets.com/docs/jobs/
+  # config.job.enable = true
+
+<% end -%>
+  # Docker https://docs.rubyonjets.com/docs/docker/dockerfile/managed/
+  # config.dockerfile.packages.apt.build_stage = ["default-libmysqlclient-dev"]
+  # config.dockerfile.packages.apt.deployment_stage = ["default-mysql-client"]
+
+  # CloudFront Lambda URL https://docs.rubyonjets.com/docs/routing/lambda/cloudfront/distribution/
+  # config.lambda.url.cloudfront.enable = true
+  # config.lambda.url.cloudfront.cert.arn = acm_cert_arn("domain.com", region: "us-east-1")
+  # config.lambda.url.cloudfront.route53.enable = true
+
+  # WAF https://docs.rubyonjets.com/docs/routing/lambda/cloudfront/waf/
+  # config.lambda.url.cloudfront.web_acl_id = web_acl_arn(ssm_env, scope: "CLOUDFRONT")
+  # config.waf.rules = ["AWSManagedRulesSQLiRuleSet"]
+
+  # Scaling https://docs.rubyonjets.com/docs/config/provisioned-concurrency/
+  # config.lambda.controller.provisioned_concurrency = 1  # costs money, no cold start
+  # config.lambda.controller.reserved_concurrency = 10    # free and limits scaling
+
+  # Release phase https://docs.rubyonjets.com/docs/hooks/remote/release/
+  # config.release.phase.command = "bundle exec rails db:migrate"
+
+  # CI https://docs.rubyonjets.com/docs/ci/getting-started/
+  # use jets ci:init to add these settings automatically
+  # config.ci.source = {
+  #   Type: "GITHUB",
+  #   Location: "https://github.com/ORG/REPO"
+  # }
+  # config.ci.source_version = "main"
+  # config.ci.env.vars = {
+  #   BUNDLE_GITHUB__COM: "SSM:/#{ssm_env}/BUNDLE_GITHUB__COM",
+  #   JETS_API_KEY: "SSM:/#{ssm_env}/JETS_API_KEY"
+  # }
+end

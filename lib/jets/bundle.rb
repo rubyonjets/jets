@@ -10,7 +10,7 @@ module Jets
     #
     # Note, this is called super early right before require "zeitwerk"
     # The initially Bundler.setup does not include the Jets.env group.
-    # Later in Jets::Booter, Bundle.require is called and includes the Jets.env group.
+    # Later in Jets::Core::Booter, Bundle.require is called and includes the Jets.env group.
     #
     def setup
       return unless jets_project?
@@ -24,7 +24,7 @@ module Jets
     # Bundler.require called when environment boots up via Jets.boot.  This will eagerly require all gems in the
     # Gemfile. This means the user will not have to explictly require dependencies.
     #
-    # It also useful for when to loading Rake tasks in Jets::Commands::RakeTasks.load! For example, some gems like
+    # It also useful for when to loading Rake tasks in Jets::Thor::RakeTasks.load! For example, some gems like
     # webpacker that load rake tasks are specified with a git based source:
     #
     #   gem "webpacker", git: "https://github.com/tongueroo/webpacker.git"
@@ -34,7 +34,7 @@ module Jets
     # user. So the rake tasks show up when calling jets help.
     #
     # When the user calls jets help from outside the project folder, bundler is not used and the load errors get
-    # rescued gracefully.  This is done in Jets::Commands::RakeTasks.load!  In the case when user is in another
+    # rescued gracefully.  This is done in Jets::Thor::RakeTasks.load!  In the case when user is in another
     # project with another Gemfile, the load errors will also be rescued.
     def require
       return unless jets_project?
@@ -52,20 +52,22 @@ module Jets
         There may be something funny with your ruby and bundler setup.
         You can try upgrading bundler and rubygems:
 
+            gem install --default bundler
             gem update --system
-            gem install bundler
+            bundle update --bundler
 
         Here are some links that may be helpful:
 
         * https://bundler.io/blog/2019/01/03/announcing-bundler-2.html
-        * https://community.rubyonjets.com/t/jets-1-9-8-install-issue-bundler-setup-missing/185/2
+        * https://community.boltops.com/t/jets-1-9-8-issue-cannot-load-such-file-bundler-setup-loaderror/185/2
+        * https://community.boltops.com/t/could-not-find-timeout-0-3-1-in-any-of-the-sources/996
 
         Also, running bundle exec in front of your command may remove this message.
       EOL
     end
 
     def gemfile?
-      ENV['BUNDLE_GEMFILE'] || File.exist?("Gemfile")
+      ENV["BUNDLE_GEMFILE"] || File.exist?("Gemfile")
     end
 
     def bundler_groups
@@ -73,7 +75,7 @@ module Jets
     end
 
     def jets_project?
-      File.exist?("config/application.rb")
+      File.exist?("config/jets")
     end
 
     extend self

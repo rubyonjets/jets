@@ -1,0 +1,6 @@
+class <%= class_name %>Event < ApplicationEvent
+  dynamodb_event "test-table" # existing namespaced table: IE: demo-dev-test-table
+  def <%= options[:method] %>
+    puts "event #{JSON.dump(event)}"
+  end
+end

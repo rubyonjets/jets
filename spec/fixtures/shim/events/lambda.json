@@ -1,0 +1,52 @@
+{
+  "version": "2.0",
+  "routeKey": "$default",
+  "rawPath": "/path/to/resource",
+  "rawQueryString": "foo=bar",
+  "cookies": [
+    "yummy1=value1",
+		"yummy2=value2"
+  ],
+  "headers": {
+    "sec-fetch-mode": "navigate",
+    "x-amzn-tls-version": "TLSv1.2",
+    "sec-fetch-site": "none",
+    "accept-language": "en-US,en;q=0.5",
+    "cookie": "yummy1=value1; yummy2=value2",
+    "x-forwarded-proto": "https",
+    "x-forwarded-port": "443",
+    "x-forwarded-for": "66.234.208.210",
+    "sec-fetch-user": "?1",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+    "sec-gpc": "1",
+    "x-amzn-tls-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+    "sec-ch-ua": "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Brave\";v=\"120\"",
+    "sec-ch-ua-mobile": "?0",
+    "x-amzn-trace-id": "Root=1-657bdbd2-32c6a1c85618ccec4dd7feb7",
+    "sec-ch-ua-platform": "\"macOS\"",
+    "host": "w2g5utchkk6rgaky66qu4yzwoy0cslvm.lambda-url.us-west-2.on.aws",
+    "upgrade-insecure-requests": "1",
+    "accept-encoding": "gzip, deflate, br",
+    "sec-fetch-dest": "document",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  },
+  "requestContext": {
+    "accountId": "anonymous",
+    "apiId": "w2g5utchkk6rgaky66qu4yzwoy0cslvm",
+    "domainName": "w2g5utchkk6rgaky66qu4yzwoy0cslvm.lambda-url.us-west-2.on.aws",
+    "domainPrefix": "w2g5utchkk6rgaky66qu4yzwoy0cslvm",
+    "http": {
+      "method": "GET",
+      "path": "/path/to/resource",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "66.234.208.210",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    },
+    "requestId": "3fca3afe-2fb7-4e93-ac3b-949519408c39",
+    "routeKey": "$default",
+    "stage": "$default",
+    "time": "15/Dec/2023:04:53:38 +0000",
+    "timeEpoch": 1702616018863
+  },
+  "isBase64Encoded": false
+}
