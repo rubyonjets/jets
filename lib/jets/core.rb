@@ -207,6 +207,10 @@ module Jets::Core
     Jets.config.cfn.build.controllers == "one_lambda_for_all_controllers"
   end
 
+  def build_gem_layer?
+    !Jets.poly_only? || Jets.one_lambda_for_all_controllers?
+  end
+
   # Do not memoize here. The JetsBucket.name does it's own special memoization.
   def s3_bucket
     Jets::Cfn::Resource::S3::JetsBucket.name
