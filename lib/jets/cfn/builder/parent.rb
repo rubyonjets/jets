@@ -44,7 +44,7 @@ class Jets::Cfn::Builder
       add_resource(resource)
       add_outputs(resource.outputs)
 
-      return if Jets.poly_only?
+      return unless Jets.build_gem_layer?
       resource = Jets::Cfn::Resource::Lambda::GemLayer.new
       add_resource(resource)
       add_outputs(resource.outputs)
