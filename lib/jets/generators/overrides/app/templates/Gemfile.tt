@@ -2,9 +2,12 @@ source "https://rubygems.org"
 
 gem "jets", "~> <%= Jets::VERSION %>"
 
+<%- if options[:mode] == 'html'-%>
+gem "sprockets-jets"
+<% end -%>
+
 <%- if options[:mode] != 'job' && !options[:database].nil? -%>
 <%= database_gemfile_entry %>
-gem "sprockets-jets"
 <%- end -%>
 <%- if options[:mode] == 'html' -%>
 gem "importmap-jets"

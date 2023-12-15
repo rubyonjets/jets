@@ -138,6 +138,9 @@ module Jets::Cfn
     # If only max_age is provided, then we'll generate a cache_control header.
     # Using max_age is the shorter and simply way of setting the cache_control header.
     def cache_control
+      # default when sprockets-jets not installed
+      return "public, max-age=3600" unless Jets.config.respond_to?(:assets)
+
       cache_control = Jets.config.assets.cache_control
       unless cache_control
         max_age = Jets.config.assets.max_age # defaults to 3600 in jets/application.rb
