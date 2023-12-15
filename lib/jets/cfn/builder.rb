@@ -86,8 +86,8 @@ module Jets::Cfn
       builder_class = "Jets::Cfn::Builder::#{app_class}".constantize
 
       app_class = Jets::Klass.from_path(path)
-      if Jets.poly_only? && app_class == Jets::PreheatJob
-        return # No prewarm when there's only poly functions
+      if !Jets.gem_layer? && app_class == Jets::PreheatJob
+        return # No prewarm when there's only poly functions and no gem layer
       end
 
       # Builder class fully qualified name:

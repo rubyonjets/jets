@@ -207,7 +207,7 @@ module Jets::Core
     Jets.config.cfn.build.controllers == "one_lambda_for_all_controllers"
   end
 
-  def build_gem_layer?
+  def gem_layer?
     !Jets.poly_only? || Jets.one_lambda_for_all_controllers?
   end
 

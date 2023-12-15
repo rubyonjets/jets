@@ -116,7 +116,7 @@ module Jets::Cfn
       end
       return unless @options[:stack_type] == :full # s3 bucket is available
       return unless Jets.config.prewarm.enable
-      return if Jets.poly_only?
+      return unless Jets.gem_layer?
 
       puts "Prewarming application."
       Jets::PreheatJob.prewarm!

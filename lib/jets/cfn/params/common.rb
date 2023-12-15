@@ -5,7 +5,7 @@ module Jets::Cfn::Params
         IamRole: "!GetAtt IamRole.Arn",
         S3Bucket: "!Ref S3Bucket",
       }
-      parameters[:GemLayer] = "!Ref GemLayer" if Jets.build_gem_layer?
+      parameters[:GemLayer] = "!Ref GemLayer" if Jets.gem_layer?
       parameters
     end
 
