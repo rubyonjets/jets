@@ -232,7 +232,7 @@ module Jets::Builders
       # Checking this way because when using jets standalone for Afterburner mode we don't want to run into
       # bundler gem collisions.  TODO: figure out the a better way to handle the collisions.
       lines = IO.readlines("#{Jets.root}/Gemfile")
-      lines.detect { |l| l =~ /#{name}/ && l !~ /\s.*#/ }
+      lines.detect { |l| l =~ /gem ['"]#{name}/ && l !~ /^\s*?#/ }
     end
 
     # Cleans out non-cached files like code-*.zip in Jets.build_root
