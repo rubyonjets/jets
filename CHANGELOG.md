@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.3] - 2023-12-15
+- [#691](https://github.com/rubyonjets/jets/pull/691) jets deploy fix for empty project
+- [#692](https://github.com/rubyonjets/jets/pull/692) fix jets deploy for empty project
+- [#693](https://github.com/rubyonjets/jets/pull/693) do not include sprockets-jets in new app generator for api mode
+- [#694](https://github.com/rubyonjets/jets/pull/694) fix jets deploy for empty project
+
 ## [5.0.2] - 2023-12-11
 - [#688](https://github.com/rubyonjets/jets/pull/688) improve releases:info output
 
