@@ -279,6 +279,7 @@ module Jets::Builders
     # when they deploy a jets project in development mode
     def reconfigure_development_webpacker
       return unless Jets.env.development?
+      return unless gemfile_include?("jetpacker")
       headline "Reconfiguring webpacker development settings for AWS Lambda."
 
       webpacker_yml = "#{"#{stage_area}/code"}/config/webpacker.yml"
