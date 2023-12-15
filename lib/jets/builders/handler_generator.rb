@@ -45,6 +45,14 @@ module Jets::Builders
           generate_handler(vars)
         end
       end
+
+      if app_files.empty? && Jets.gem_layer?
+        # When there are no app files, still need to generate a shim for JetsController
+        lib = File.expand_path('../../..', __dir__)
+        path = "#{lib}/engines/internal/app/controllers/jets/public_controller.rb"
+        vars = Jets::Builders::ShimVars::App.new(path)
+        generate_handler(vars)
+      end
     end
 
     def generate_handler(vars)
