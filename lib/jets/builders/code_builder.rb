@@ -305,7 +305,7 @@ module Jets::Builders
         puts "Skip packaging ruby".color(:yellow) # useful for developing handlers
         return
       end
-      return if Jets.poly_only?
+      return unless Jets.gem_layer?
 
       check_agree
       ruby_packager.install
@@ -322,7 +322,7 @@ module Jets::Builders
     end
 
     def build_lambda_layer
-      return if Jets.poly_only?
+      return unless Jets.gem_layer?
       lambda_layer = LambdaLayer.new
       lambda_layer.build
     end

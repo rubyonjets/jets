@@ -21,7 +21,7 @@ class Jets::Stack
       return unless elements
 
       if section == :parameters
-        elements[:GemLayer] = {Type: "String"} unless Jets.poly_only?
+        elements[:GemLayer] = {Type: "String"} if Jets.gem_layer?
       end
       @template[section] = elements
     end
