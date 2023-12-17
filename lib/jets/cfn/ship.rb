@@ -31,16 +31,11 @@ module Jets::Cfn
         end
       end
 
-      success = wait_for_stack
+      # waits for /(_COMPLETE|_FAILED)$/ status
+      cfn_status = Jets::Cfn::Status.new
+      success = cfn_status.wait
       unless success
-        puts <<~EOL
-          The Jets application failed to deploy. Jets creates a few CloudFormation stacks to deploy your application.
-          The logs above show the CloudFormation parent stack events and points to the stack with the error.
-          Please go to the CloudFormation console and look for the specific stack with the error.
-          The specific child stack usually shows more detailed information and can be used to resolve the issue.
-          Example of checking the CloudFormation console: https://rubyonjets.com/docs/debugging/cloudformation/
-        EOL
-        exit 1
+        cfn_status.failure_message!
       end
 
       save_apigw_state
@@ -98,11 +93,6 @@ module Jets::Cfn
 
     def template
       @template ||= Template.new(Jets::Names.parent_template_path, @options)
-    end
-
-    # check for /(_COMPLETE|_FAILED)$/ status
-    def wait_for_stack
-      Jets::Cfn::Status.new(@options).wait
     end
 
     def save_apigw_state

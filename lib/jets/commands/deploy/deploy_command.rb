@@ -44,8 +44,8 @@ module Jets::Command
     def delete_minimal_stack
       puts "Existing stack is in ROLLBACK_COMPLETE state from a previous failed minimal deploy. Deleting stack and continuing."
       cfn.delete_stack(stack_name: stack_name)
-      status.wait
-      status.reset
+      cfn_status.wait
+      cfn_status.reset
     end
 
     def check_dev_mode
@@ -69,8 +69,8 @@ module Jets::Command
       Jets::Cfn::Ship.new(options).run
     end
 
-    def status
-      @status ||= Jets::Cfn::Status.new(stack_name)
+    def cfn_status
+      @cfn_status ||= Jets::Cfn::Status.new(stack_name)
     end
 
     def stack_name

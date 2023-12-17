@@ -44,7 +44,7 @@ module Jets::Command
     end
 
     def wait_for_stack
-      status = Jets::Cfn::Status.new(@options)
+      status = Jets::Cfn::Status.new
       start_time = Time.now
       status.wait
       took = Time.now - start_time
