@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.4] - 2023-12-17
+- [#695](https://github.com/rubyonjets/jets/pull/695) dont run reconfigure webpacker unless using
+- [#696](https://github.com/rubyonjets/jets/pull/696) improve deploy failure message by showing nested stack failure message
+- update delete error messaging to stack
+
 ## [5.0.3] - 2023-12-15
 - [#691](https://github.com/rubyonjets/jets/pull/691) jets deploy fix for empty project
 - [#692](https://github.com/rubyonjets/jets/pull/692) fix jets deploy for empty project
