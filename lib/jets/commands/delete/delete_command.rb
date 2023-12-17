@@ -60,7 +60,7 @@ module Jets::Command
     def confirm_project_exists
       stack = find_stack(parent_stack_name)
       return if stack
-      puts "ERROR: Project #{parent_stack_name} does not exist".color(:red)
+      puts "ERROR: Stack #{parent_stack_name} does not exist".color(:red)
       exit 1
     end
 
