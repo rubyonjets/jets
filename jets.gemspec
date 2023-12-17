@@ -48,7 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-ssm"
   spec.add_dependency "cfn_camelizer", ">= 0.4.9"
   spec.add_dependency "cfn_response"
-  spec.add_dependency "cfn-status"
+  spec.add_dependency "cfn-status", ">= 0.5.0"
   spec.add_dependency "cli-format", ">= 0.4.0"
   spec.add_dependency "dotenv"
   spec.add_dependency "dsl_evaluator", ">= 0.3.0" # for DslEvaluator.print_code
