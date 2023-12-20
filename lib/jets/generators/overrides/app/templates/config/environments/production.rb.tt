@@ -7,7 +7,9 @@ Jets.application.configure do
 <%- unless options[:mode] == 'job' -%>
   config.consider_all_requests_local       = false
   # Do not fallback to assets pipeline if a precompiled asset is missed.
+<%- if options[:mode] == 'html' -%>
   config.assets.compile = false
+<%- end -%>
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
