@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.6] - 2023-12-21
+- [#698](https://github.com/rubyonjets/jets/pull/698) make iam_policy additive to default_iam_policy for event
+- jets new environments/production.rb dont include assets.compile for api mode
+
 ## [5.0.5] - 2023-12-19
 - [#697](https://github.com/rubyonjets/jets/pull/697) fix sqs_queue output url camelcase name
 
