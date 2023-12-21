@@ -51,9 +51,10 @@ module Jets::Job::Dsl
       end
 
       # Create iam policy allows access to queue
-      # Allow disabling in case use wants to add permission application-wide and not have extra IAM policy
-      iam_policy_props = options.delete(:iam_policy) || @iam_policy || default_iam_policy
-      iam_policy(iam_policy_props) unless iam_policy_props == :disable
+      iam_policy_option = [options.delete(:iam_policy)].compact.flatten
+      user_iam_policy = [@iam_policy].compact.flatten
+      iam_policy_props = iam_policy_option + user_iam_policy + [default_iam_policy]
+      iam_policy(iam_policy_props)
 
       props = options # by this time options only has EventSourceMapping properties
       default = {
