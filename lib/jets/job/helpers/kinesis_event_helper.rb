@@ -9,5 +9,9 @@ module Jets::Job::Helpers
         Base64.decode64(encoded) # data
       end
     end
+
+    def kinesis_data?
+      event["Records"]&.any? { |r| r.dig("kinesis", "data") }
+    end
   end
 end
