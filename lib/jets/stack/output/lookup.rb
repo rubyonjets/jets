@@ -6,7 +6,11 @@ class Jets::Stack::Output
       @stack_subclass = stack_subclass
     end
 
+    @@cache = {}
     def output(logical_id)
+      cache_key = "#{@stack_subclass}-#{logical_id}"
+      return @@cache[cache_key] if @@cache[cache_key]
+
       child_stack_id = @stack_subclass.to_s.camelize
 
       stack_arn = shared_stack_arn(child_stack_id)
@@ -14,7 +18,7 @@ class Jets::Stack::Output
       child = resp.stacks.first
       return unless child
 
-      output_value(child, logical_id)
+      @@cache[cache_key] = output_value(child, logical_id)
     end
 
     # Shared child stack arn
