@@ -13,5 +13,9 @@ module Jets::Job::Helpers
       data = JSON.load(uncompressed_string)
       ActiveSupport::HashWithIndifferentAccess.new(data)
     end
+
+    def log_event?
+      !!event.dig("awslogs", "data")
+    end
   end
 end

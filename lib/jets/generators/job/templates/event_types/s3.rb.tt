@@ -4,8 +4,8 @@ class <%= class_name %>Job < ApplicationJob
   s3_event "my-bucket" # new or existing bucket
   def <%= options[:name] %>
     puts "event #{JSON.dump(event)}"
-    puts "s3_event #{JSON.dump(s3_event)}"
-    puts "s3_object #{JSON.dump(s3_object)}"
+    puts "s3_events #{JSON.dump(s3_events)}"
+    puts "s3_objects #{JSON.dump(s3_objects)}"
   end
 end
 <% end -%>
