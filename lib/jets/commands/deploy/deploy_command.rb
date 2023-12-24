@@ -35,7 +35,7 @@ module Jets::Command
 
   private
     def create_s3_event_buckets
-      buckets = Jets::Job::Base.s3_events.keys
+      buckets = Jets::Job::Base._s3_events.keys
       buckets.each do |bucket|
         Jets::AwsServices::S3Bucket.ensure_exists(bucket)
       end

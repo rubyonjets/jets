@@ -45,31 +45,34 @@ describe Jets::Job::Base do
   end
 
   context "s3 upload" do
-    it "s3_event" do
+    it "s3_events" do
       event = json_file("spec/fixtures/dumps/sns/s3_upload.json")
       job = HardJob.new(event, {}, :dig)
-      expect(job.s3_event_payloads.first).to include("Records")
+      expect(job.s3_events.first).to include("eventName")
+      expect(job.s3_events.first[:eventName]).to eq "ObjectCreated:Put"
+      expect(job.s3_events?).to eq true
 
       expect(job.s3_objects.first.key?("key")).to be true
       expect(job.s3_objects.first[:key]).to eq "myfolder/subfolder/test.txt"
+      expect(job.s3_objects?).to eq true
     end
   end
 
   context 'sns_event' do
-    it 'sns_event_payloads' do
+    it 'sns_events' do
       event = json_file("spec/fixtures/dumps/sns/sns_event.json")
       job = HardJob.new(event, {}, :dig)
-      expect(job.sns_event_payloads.first.key?("body")).to be true
-      expect(job.sns_event_payloads.first[:body]).to eq "This is a sns hard job"
+      expect(job.sns_events.first.key?("body")).to be true
+      expect(job.sns_events.first[:body]).to eq "This is a sns hard job"
     end
   end
 
   context 'sqs_event' do
-    it 'sqs_event_payloads' do
+    it 'sqs_events' do
       event = json_file("spec/fixtures/dumps/sqs/sqs_event.json")
       job = HardJob.new(event, {}, :dig)
-      expect(job.sqs_event_payloads.first.key?("message")).to be true
-      expect(job.sqs_event_payloads.first[:message]).to eq "This is a hard job"
+      expect(job.sqs_events.first.key?("message")).to be true
+      expect(job.sqs_events.first[:message]).to eq "This is a hard job"
     end
   end
 

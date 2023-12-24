@@ -4,6 +4,8 @@ class <%= class_name %>Job < ApplicationJob
   sqs_event "hello-queue"
   def <%= options[:name] %>
     puts "event #{JSON.dump(event)}"
+    puts "sqs_events #{JSON.dump(sqs_events)}"
+    puts "sqs_events? #{JSON.dump(sqs_events?)}"
   end
 end
 <% end -%>

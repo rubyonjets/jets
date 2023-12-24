@@ -56,6 +56,8 @@ class Jets::Stack
 
     # Internal flag is mainly used to disable WARN messages
     def internal?
+      return true if internal_search_expression.include?("jets/base_path")
+      return true if internal_search_expression.include?("jets/s3_bucket_config")
       !!Dir.glob(internal_search_expression).first
     end
 

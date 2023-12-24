@@ -1,6 +1,6 @@
 module Jets::Job::Helpers
-  module SnsEventHelper
-    def sns_event_payloads
+  module SnsEvent
+    def sns_events
       records = event["Records"]
       return [] unless records
       records.map do |record|
@@ -8,17 +8,19 @@ module Jets::Job::Helpers
         ActiveSupport::HashWithIndifferentAccess.new(JSON.load(message))
       end
     end
+    alias sns_event_payloads sns_events
 
-    def sns_event_payloads?
+    def sns_events?
       event["Records"]&.any? { |r| r.dig("Sns", "Message") }
     end
+    alias sns_event_payloads? sns_events?
 
     # Deprecated methods below
     def sns_event_payload
       puts "WARN: sns_event_payload is deprecated".color(:yellow)
-      puts "It can possibly drop events when come in extremely fast."
-      puts "Use sns_event_payloads instead"
-      sns_event_payloads.first
+      puts "It can possibly drop events when they come in extremely fast."
+      puts "Use sns_events instead"
+      sns_events.first
     end
   end
 end
