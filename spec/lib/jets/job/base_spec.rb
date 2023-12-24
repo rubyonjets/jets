@@ -48,43 +48,28 @@ describe Jets::Job::Base do
     it "s3_event" do
       event = json_file("spec/fixtures/dumps/sns/s3_upload.json")
       job = HardJob.new(event, {}, :dig)
-      # uncomment to debug
-      # puts JSON.pretty_generate(job.event)
-      # puts JSON.pretty_generate(job.s3_event)
-      # puts JSON.pretty_generate(job.s3_object)
+      expect(job.s3_event_payloads.first).to include("Records")
 
-      expect(job.s3_event.key?("Records")).to be true
-
-      expect(job.s3_object.key?("key")).to be true
-      expect(job.s3_object[:key]).to eq "myfolder/subfolder/test.txt"
+      expect(job.s3_objects.first.key?("key")).to be true
+      expect(job.s3_objects.first[:key]).to eq "myfolder/subfolder/test.txt"
     end
   end
 
   context 'sns_event' do
-    it 'sns_event_payload' do
+    it 'sns_event_payloads' do
       event = json_file("spec/fixtures/dumps/sns/sns_event.json")
       job = HardJob.new(event, {}, :dig)
-      # uncomment to debug
-      # puts JSON.pretty_generate(job.event)
-      # puts JSON.pretty_generate(job.sns_event_payload)
-
-
-      expect(job.sns_event_payload.key?("body")).to be true
-      expect(job.sns_event_payload[:body]).to eq "This is a sns hard job"
+      expect(job.sns_event_payloads.first.key?("body")).to be true
+      expect(job.sns_event_payloads.first[:body]).to eq "This is a sns hard job"
     end
   end
 
   context 'sqs_event' do
-    it 'sns_event_payload' do
+    it 'sqs_event_payloads' do
       event = json_file("spec/fixtures/dumps/sqs/sqs_event.json")
       job = HardJob.new(event, {}, :dig)
-      # uncomment to debug
-      # puts JSON.pretty_generate(job.event)
-      # puts JSON.pretty_generate(job.sqs_event_payload)
-
-
-      expect(job.sqs_event_payload.key?("message")).to be true
-      expect(job.sqs_event_payload[:message]).to eq "This is a hard job"
+      expect(job.sqs_event_payloads.first.key?("message")).to be true
+      expect(job.sqs_event_payloads.first[:message]).to eq "This is a hard job"
     end
   end
 
