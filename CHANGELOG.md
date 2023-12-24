@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.8] - 2023-12-24
+- [#702](https://github.com/rubyonjets/jets/pull/702) prettier event helpers IE: s3_events vs s3_event_payloads
+
 ## [5.0.7] - 2023-12-24
 - [#699](https://github.com/rubyonjets/jets/pull/699) cache Stack.lookup output in class memory
 - [#700](https://github.com/rubyonjets/jets/pull/700) update s3 sns and sqs event helpers to return all events
