@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.7] - 2023-12-24
+- [#699](https://github.com/rubyonjets/jets/pull/699) cache Stack.lookup output in class memory
+- [#700](https://github.com/rubyonjets/jets/pull/700) update s3 sns and sqs event helpers to return all events
+- [#701](https://github.com/rubyonjets/jets/pull/701) fix s3_event and change method to s3_event_payloads
+
 ## [5.0.6] - 2023-12-21
 - [#698](https://github.com/rubyonjets/jets/pull/698) make iam_policy additive to default_iam_policy for event
 - jets new environments/production.rb dont include assets.compile for api mode
