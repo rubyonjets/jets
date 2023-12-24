@@ -10,17 +10,17 @@ module Jets::Job
     include Dsl
 
     # non-DSL methods
-    include Helpers::KinesisEventHelper
-    include Helpers::LogEventHelper
-    include Helpers::S3EventHelper
-    include Helpers::SnsEventHelper
-    include Helpers::SqsEventHelper
+    include Helpers::KinesisEvent
+    include Helpers::LogEvent
+    include Helpers::S3Event
+    include Helpers::SnsEvent
+    include Helpers::SqsEvent
     prepend Jets::ExceptionReporting::Process
 
     # Tracks bucket each time an s3_event is declared
     # Map of bucket_name => stack_name (nested part)
-    cattr_accessor :s3_events # dont want this to be inheritable intentionally
-    self.s3_events = {}
+    cattr_accessor :_s3_events # dont want this to be inheritable intentionally
+    self._s3_events = {}
 
     class << self
       def process(event, context, meth)

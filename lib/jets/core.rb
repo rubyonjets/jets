@@ -158,8 +158,8 @@ module Jets::Core
     Jets.config.domain.hosted_zone_name
   end
 
-  def s3_event?
-    !Jets::Job::Base.s3_events.empty?
+  def s3_events?
+    !Jets::Job::Base._s3_events.empty?
   end
 
   def process(event, context, handler)

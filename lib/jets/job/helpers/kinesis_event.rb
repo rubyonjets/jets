@@ -1,7 +1,7 @@
 require 'base64'
 
 module Jets::Job::Helpers
-  module KinesisEventHelper
+  module KinesisEvent
     def kinesis_data
       records = event["Records"]
       records.map do |record|

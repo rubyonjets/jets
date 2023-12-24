@@ -4,7 +4,7 @@ require 'stringio'
 require 'zlib'
 
 module Jets::Job::Helpers
-  module LogEventHelper
+  module LogEvent
     def log_event
       encoded = event["awslogs"]["data"]
       compressed_string = Base64.decode64(encoded)

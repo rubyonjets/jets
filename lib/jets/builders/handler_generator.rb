@@ -130,7 +130,7 @@ module Jets::Builders
 
     def internal_shims
       jets_base_path if Jets.custom_domain?
-      s3_bucket_config if Jets.s3_event?
+      s3_bucket_config if Jets.s3_events?
     end
 
     def jets_base_path
