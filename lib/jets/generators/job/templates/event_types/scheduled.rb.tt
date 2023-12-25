@@ -2,7 +2,7 @@
 class <%= class_name %>Job < ApplicationJob
   rate "10 hours"
   def <%= options[:name] %>
-    puts "Do something with event #{event}"
+    puts "Do something with event #{JSON.dump(event)}"
   end
 end
 <% end -%>
