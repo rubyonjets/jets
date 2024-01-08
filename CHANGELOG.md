@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.9] - 2024-01-08
+- [#704](https://github.com/rubyonjets/jets/pull/704) fix jets --version outside of jets project
+- update jets generate job scheduled template JSON.dump
+
 ## [5.0.8] - 2023-12-24
 - [#702](https://github.com/rubyonjets/jets/pull/702) prettier event helpers IE: s3_events vs s3_event_payloads
 
