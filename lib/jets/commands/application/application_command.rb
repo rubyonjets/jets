@@ -17,6 +17,12 @@ module Jets
       #   bundle exec jets application      => jets new --help
       #
       def perform(*args)
+        version_flags = %w[-v --version] & args
+        unless version_flags.empty?
+          puts "Jets #{Jets::VERSION}"
+          return
+        end
+
         # require lazily so that Rails constant is only defined within generators
         require "jets/generators/overrides/app/app_generator"
         override_exit_on_failure?
