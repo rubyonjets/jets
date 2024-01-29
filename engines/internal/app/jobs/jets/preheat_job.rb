@@ -22,6 +22,7 @@ class Jets::PreheatJob < Jets::Job::Base
     }
   ])
 
+  rate(Jets.config.prewarm.rate) if Jets.config.prewarm.enable
   def warm
     options = call_options(event[:quiet])
     Jets::Preheat.warm_all(options)
@@ -31,7 +32,7 @@ class Jets::PreheatJob < Jets::Job::Base
   class << self
     # Can use this to prewarm post deploy
     def prewarm!
-      perform_now(:warn, quiet: true)
+      perform_now(:warm, quiet: true)
     end
   end
 

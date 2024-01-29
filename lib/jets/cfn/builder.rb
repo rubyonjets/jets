@@ -136,6 +136,12 @@ module Jets::Cfn
           relative_path = path.sub("#{Jets.root}/", '') # rid of the Jets.root at beginning
           paths << relative_path
         end
+
+        if Jets.config.prewarm.enable
+          internal = File.expand_path("../internal", __dir__)
+          paths << "#{internal}/app/jobs/jets/preheat_job.rb"
+        end
+
         paths
       end
 
