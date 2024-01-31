@@ -23,7 +23,7 @@ module Jets::Lambda::Dsl
     def class_iam_policy_unused_warning(managed=false)
       return unless Jets.config.cfn.build.controllers == "one_lambda_for_all_controllers"
       return if self.to_s == "ApplicationController" # ApplicationController not defined in job mode
-      return if self == Jets::PreheatJob
+      return if self.ancestors.include?(Jets::Job::Base)
 
       managed_prefix = managed ? "managed_" : ""
       puts <<~EOL.color(:yellow)
