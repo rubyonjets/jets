@@ -32,7 +32,8 @@ class Jets::Application::Configuration < ::Jets::Engine::Configuration
                   :pro,
                   :routes,
                   :s3_event,
-                  :webpacker # deprecated
+                  :webpacker, # deprecated
+                  :stage
 
     def initialize(*)
       Jets::Dotenv.load!
@@ -170,6 +171,9 @@ class Jets::Application::Configuration < ::Jets::Engine::Configuration
       @default_iam_policy = self.class.default_iam_policy
       @managed_policy_definitions = []
       @managed_iam_policy = []
+
+      @stage = ActiveSupport::OrderedOptions.new
+      @client_certificate = false
     end
 
     # IAM policies must run lazily because they depend on @function.vpc_config

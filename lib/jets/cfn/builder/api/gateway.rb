@@ -4,6 +4,7 @@ module Jets::Cfn::Builder::Api
     def compose
       add_gateway_rest_api # changes parent template
       add_custom_domain    # changes parent template
+      add_client_certificate   # changes parent template
     end
 
     # interface method
@@ -45,12 +46,33 @@ module Jets::Cfn::Builder::Api
       end
     end
 
+    def add_client_certificate
+      p Jets.config.class
+      return unless Jets.config.stage.client_certificate
+
+      unless Jets.config.stage.client_certificate.kind_of?(String)
+        add_outputs(create_client_certificate)
+        Jets.config.stage.client_certificate = "!Ref ClientCertificate"
+      end
+
+      stage = Jets::Cfn::Resource::ApiGateway::Stage.new
+      add_resource(stage)
+      add_outputs(stage.outputs)
+    end
+
     def create_domain_name
       resource = Jets::Cfn::Resource::ApiGateway::DomainName.new
 
       return {
         DomainName: resource.domain_name
       } if (existing_domain_name?(resource) and !existing_domain_name_on_stack?)
+
+      add_resource(resource)
+      return resource.outputs
+    end
+
+    def create_client_certificate
+      resource = Jets::Cfn::Resource::ApiGateway::ClientCertificate.new
 
       add_resource(resource)
       return resource.outputs
