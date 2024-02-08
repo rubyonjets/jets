@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.10] - 2024-02-08
+- [#706](https://github.com/rubyonjets/jets/pull/706) permit YAML load of Date class
+- [#708](https://github.com/rubyonjets/jets/pull/708) Fix Prewarming
+- [#709](https://github.com/rubyonjets/jets/pull/709) Remove iam_class_policy warning from Jobs
+
 ## [5.0.9] - 2024-01-08
 - [#704](https://github.com/rubyonjets/jets/pull/704) fix jets --version outside of jets project
 - update jets generate job scheduled template JSON.dump
