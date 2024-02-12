@@ -16,19 +16,18 @@ module Jets::SpecHelpers
     attr_reader :request, :response
     def http_call(method:, path:, **options)
       headers = options.delete(:headers) || {}
+      params_hash = options.delete(:params) || options
       md = path.match(/\?(.*)/)
-      query_string = md ? md[1] : ''
-      query = Rack::Utils.parse_nested_query(query_string)
+      path = path.gsub("?#{md[1]}", '') if md
+      query = md ? Rack::Utils.parse_nested_query(md[1]).merge(params_hash) : params_hash
 
       params = Params.new
       if method.to_sym == :get
         params.body_params = {}
-        params.query_params ||= options.delete(:params) || options
+        params.query_params = query || {}
       else
-        params.body_params = options.delete(:body) || options.delete(:params) || options
+        params.body_params = options.delete(:body) || query
       end
-      params.path_params = params.path_params
-      params.query_params = query
 
       # Note: Do not cache the request object.  Otherwise, it cannot be reused between specs.
       # See: https://community.rubyonjets.com/t/is-jets-spechelpers-controllers-request-being-cached/244/2
