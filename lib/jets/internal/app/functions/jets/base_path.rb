@@ -1,5 +1,5 @@
 puts "debug 1"
-60.times do |i|
+180.times do |i|
   puts "delay #{i}"
   sleep 1
 end
