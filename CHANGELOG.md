@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.11] - 2024-03-20
+- [#711](https://github.com/rubyonjets/jets/pull/711) Fix controller testing in jets 5 - handling of params and query
+- [#715](https://github.com/rubyonjets/jets/pull/715) remove force_encoding that causes issues for international characters
+
 ## [5.0.10] - 2024-02-08
 - [#706](https://github.com/rubyonjets/jets/pull/706) permit YAML load of Date class
 - [#708](https://github.com/rubyonjets/jets/pull/708) Fix Prewarming
