@@ -1,4 +1,4 @@
-require 'json'
+require "json"
 
 # Hack AwsLambda Ruby Runtime to fix .to_json issue collision with ActiveSupport.
 # To reproduce:
@@ -18,24 +18,14 @@ module AwsLambda
       def marshall_response(method_response)
         case method_response
         when StringIO, IO
-          [method_response, 'application/unknown']
+          [method_response, "application/unknown"]
         else
-          # Orignal method calls .to_json but this collides with ActiveSupport's to_json
-          # method_response.to_json # application/json is assumed
-          # https://stackoverflow.com/questions/18067203/ruby-to-json-issue-with-error-illegal-malformed-utf-8
-          if method_response.is_a?(Hash)
-            method_response.deep_transform_values! do |v|
-              if v.respond_to?(:force_encoding) && !v.frozen?
-                v.force_encoding("ISO-8859-1").encode("UTF-8")
-              else
-                v # IE: Integer
-              end
-            end
-          end
+          # Note: Removed previous code which did force_encoding("ISO-8859-1").encode("UTF-8")
+          # It caused issues with international characters.
+          # It does not seem like we need the force_encoding anymore.
           JSON.dump(method_response)
         end
       end
-
     end
   end
 end
