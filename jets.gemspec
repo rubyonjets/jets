@@ -50,7 +50,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "cfn_response"
   spec.add_dependency "cfn-status", ">= 0.5.0"
   spec.add_dependency "cli-format", ">= 0.4.0"
-  spec.add_dependency "dotenv"
+  spec.add_dependency "dotenv", '< 3'
   spec.add_dependency "dsl_evaluator", ">= 0.3.0" # for DslEvaluator.print_code
   spec.add_dependency "gems"
   spec.add_dependency "hashie"
