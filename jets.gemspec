@@ -1,30 +1,28 @@
-# coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "jets/version"
 require "jets/rdoc"
 
 Gem::Specification.new do |spec|
-  spec.name          = "jets"
-  spec.version       = Jets::VERSION
-  spec.author        = "Tung Nguyen"
-  spec.email         = "tongueroo@gmail.com"
-  spec.summary       = "Ruby Serverless Framework"
-  spec.description   = "Jets is a framework that allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build and deploy an application.  Jets leverages the power of Ruby to make serverless joyful for everyone."
-  spec.homepage      = "https://rubyonjets.com"
-  spec.license       = "MIT"
+  spec.name = "jets"
+  spec.version = Jets::VERSION
+  spec.author = "Tung Nguyen"
+  spec.email = "tongueroo@gmail.com"
+  spec.summary = "Ruby Serverless Framework"
+  spec.description = "Jets is a framework that allows you to create serverless applications with a beautiful language: Ruby. It includes everything required to build and deploy an application.  Jets leverages the power of Ruby to make serverless joyful for everyone."
+  spec.homepage = "https://rubyonjets.com"
+  spec.license = "MIT"
 
-  spec.required_ruby_version = ['>= 2.7.0']
+  spec.required_ruby_version = [">= 2.7.0"]
   spec.rdoc_options += Jets::Rdoc.options
 
-  vendor_files       = Dir.glob("vendor/**/*")
-  gem_files          = `git -C "#{File.dirname(__FILE__)}" ls-files -z`.split("\x0").reject do |f|
+  vendor_files = Dir.glob("vendor/**/*")
+  gem_files = `git -C "#{File.dirname(__FILE__)}" ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features|docs)/})
   end
-  spec.files         = gem_files + vendor_files
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.files = gem_files + vendor_files
+  spec.bindir = "exe"
+  spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
   spec.add_dependency "actionmailer", "~> 7.0.8"
@@ -50,7 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "cfn_response"
   spec.add_dependency "cfn-status", ">= 0.5.0"
   spec.add_dependency "cli-format", ">= 0.4.0"
-  spec.add_dependency "dotenv"
+  spec.add_dependency "dotenv", ">= 3.1"
   spec.add_dependency "dsl_evaluator", ">= 0.3.0" # for DslEvaluator.print_code
   spec.add_dependency "gems"
   spec.add_dependency "hashie"
