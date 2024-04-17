@@ -2,16 +2,30 @@ module Jets::Job::Dsl
   module S3Event
     # Register an S3 event.
     # Allow custom sns_subscription_properties to be passed in.
-    # Example:
+    #
+    #  Examples
     #
     #   props = { 
     #     sns_subscription_properties: {
+    #       FilterPolicyScope: "MessageBody",
     #       FilterPolicy: {
-    #         field: [{ "prefix": "some_value" }]
+    #         Records: {
+    #           s3: {
+    #             object: {
+    #               key: [
+    #                 { prefix: "test-prefix/" }
+    #               ]
+    #             }
+    #           }
+    #         }
     #       }.to_json
     #     }
     #   }
+    #
     #   s3_event("s3-bucket", props)
+    #   def process_s3_event
+    #     ...
+    #   end
     #
     # The S3 event is set up with the following resources:
     #
