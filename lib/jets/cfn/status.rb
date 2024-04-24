@@ -17,7 +17,7 @@ module Jets::Cfn
         and can be used to resolve the issue.
         Example of checking the CloudFormation console:
 
-            https://rubyonjets.com/docs/debugging/cloudformation/
+            https://docs.rubyonjets.com/docs/debug/cloudformation/
 
       EOL
 
