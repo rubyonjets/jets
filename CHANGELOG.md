@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.13] - 2024-04-26
+- [#720](https://github.com/rubyonjets/jets/pull/720) Update docs link in status.rb
+- [#723](https://github.com/rubyonjets/jets/pull/723) fix prewarming post deploy
+
 ## [5.0.12] - 2024-04-15
 - [#718](https://github.com/rubyonjets/jets/pull/718) fixes for dotenv 3.1
 
