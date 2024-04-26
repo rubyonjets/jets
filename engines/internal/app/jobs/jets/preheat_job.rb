@@ -36,11 +36,12 @@ class Jets::PreheatJob < Jets::Job::Base
     end
   end
 
-private
+  private
+
   # Usually: jets-preheat_job-warm unless JETS_RESET=1, in that case need to lookup the function name
   def warm_function_name
     # Return early to avoid lookup call normally
-    return "jets-preheat_job-warm" unless ENV['JETS_RESET'] == "1"
+    return "jets-preheat_job-warm" unless ENV["JETS_RESET"] == "1"
 
     parent_stack = cfn.describe_stack_resources(stack_name: Jets::Names.parent_stack_name)
     preheat_stack = parent_stack.stack_resources.find do |resource|
@@ -58,11 +59,6 @@ private
   def call_options(quiet)
     options = {}
     options.merge!(mute: true, mute_output: true) if quiet
-    # All the methods in this Job class leads to Jets::Commands::Call.
-    # This is true for the Jets::Preheat.warm_all also.
-    # These jobs delegate out to Lambda function calls. We do not need/want
-    # the invocation type: RequestResponse in this case.
-    options.merge!(invocation_type: "Event")
     options
   end
 end
