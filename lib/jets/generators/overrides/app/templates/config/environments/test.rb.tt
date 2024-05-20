@@ -1,5 +1,5 @@
 Jets.application.configure do
-  config.cache_classes = false
+  config.cache_classes = true
   config.eager_load = ENV["CI"].present?
   config.cache_store = :null_store
 
