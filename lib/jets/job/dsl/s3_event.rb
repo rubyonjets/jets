@@ -1,8 +1,49 @@
 module Jets::Job::Dsl
   module S3Event
+    # Register an S3 event.
+    # Allow custom sns_subscription_properties to be passed in.
+    #
+    #  Examples
+    #
+    #   props = { 
+    #     sns_subscription_properties: {
+    #       FilterPolicyScope: "MessageBody",
+    #       FilterPolicy: {
+    #         Records: {
+    #           s3: {
+    #             object: {
+    #               key: [
+    #                 { prefix: "test-prefix/" }
+    #               ]
+    #             }
+    #           }
+    #         }
+    #       }.to_json
+    #     }
+    #   }
+    #
+    #   s3_event("s3-bucket", props)
+    #   def process_s3_event
+    #     ...
+    #   end
+    #
+    # The S3 event is set up with the following resources:
+    #
+    #   - S3 Bucket
+    #   - S3 Bucket Notification Configuration
+    #   - SNS Topic
+    #   - SNS Subscription
+    #
+    # @param [String] bucket_name
+    # @param [Hash] props
     def s3_event(bucket_name, props={})
       stack_name = declare_s3_bucket_resources(bucket_name) # only set up once per bucket
-      declare_sns_subscription(TopicArn: "!Ref #{stack_name}SnsTopic") # set up subscription every time
+      sns_subscription_properties = {
+        **props[:sns_subscription_properties] || {},
+        TopicArn: "!Ref #{stack_name}SnsTopic"
+      }
+
+      declare_sns_subscription(sns_subscription_properties) # set up subscription every time
     end
 
     # Returns stack_name

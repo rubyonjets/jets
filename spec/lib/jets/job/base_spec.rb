@@ -44,17 +44,40 @@ describe Jets::Job::Base do
     end
   end
 
-  context "s3 upload" do
-    it "s3_events" do
-      event = json_file("spec/fixtures/dumps/sns/s3_upload.json")
-      job = HardJob.new(event, {}, :dig)
-      expect(job.s3_events.first).to include("eventName")
-      expect(job.s3_events.first[:eventName]).to eq "ObjectCreated:Put"
-      expect(job.s3_events?).to eq true
+  describe "s3_event" do
+    context 'configuration' do
+      it "allows custom sns subscription properties" do
+        class HardJob
+          s3_event("s3-bucket", sns_subscription_properties: { FilterPolicy: { field: [{ "prefix": "some_value" }] }.to_json })
+          def process_s3_event;end
+        end
 
-      expect(job.s3_objects.first.key?("key")).to be true
-      expect(job.s3_objects.first[:key]).to eq "myfolder/subfolder/test.txt"
-      expect(job.s3_objects?).to eq true
+        process_s3_event    = HardJob.all_public_definitions[:process_s3_event]
+        definition          = process_s3_event.associated_resources.first.definition.detect { |d| d.try(:dig, "{namespace}SnsSubscription", :Type) == "AWS::SNS::Subscription" }
+        expected_properties = {
+          :Endpoint=>"!GetAtt {namespace}LambdaFunction.Arn",
+          :Protocol=>"lambda",
+          :FilterPolicy=>"{\"field\":[{\"prefix\":\"some_value\"}]}",
+          :TopicArn=>"!Ref S3BucketSnsTopic"
+        }
+
+        expect(definition.dig("{namespace}SnsSubscription", :Type)).to eq("AWS::SNS::Subscription")
+        expect(definition.dig("{namespace}SnsSubscription", :Properties)).to eq(expected_properties)
+      end
+    end
+
+    context "s3 upload" do
+      it "s3_events" do
+        event = json_file("spec/fixtures/dumps/sns/s3_upload.json")
+        job = HardJob.new(event, {}, :dig)
+        expect(job.s3_events.first).to include("eventName")
+        expect(job.s3_events.first[:eventName]).to eq "ObjectCreated:Put"
+        expect(job.s3_events?).to eq true
+
+        expect(job.s3_objects.first.key?("key")).to be true
+        expect(job.s3_objects.first[:key]).to eq "myfolder/subfolder/test.txt"
+        expect(job.s3_objects?).to eq true
+      end
     end
   end
 
