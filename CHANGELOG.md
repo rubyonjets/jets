@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.14] - 2024-05-20
+- [#719](https://github.com/rubyonjets/jets/pull/719) Support for s3 event sns configuration
+- [#722](https://github.com/rubyonjets/jets/pull/722) Sets config.cache_classes to true in test env
+
 ## [5.0.13] - 2024-04-26
 - [#720](https://github.com/rubyonjets/jets/pull/720) Update docs link in status.rb
 - [#723](https://github.com/rubyonjets/jets/pull/723) fix prewarming post deploy
