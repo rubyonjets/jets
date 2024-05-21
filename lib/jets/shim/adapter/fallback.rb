@@ -11,18 +11,22 @@ module Jets::Shim::Adapter
 
     class << self
       def handler(event, context = nil, target = nil)
-        puts "The default fallback handler is being called because a handler for it could not be found"
-        puts "For debugging, here is the"
+        puts <<~EOL
+          WARN: handler for it could not be found. The default fallback handler is being used.
+          The default fallback handler simply prints out the event payload for debugging, it will be printed below.
+          Usually the default handler is not what you want.
+          You might be using a test event payload for testing which does not represent a real event.
+          Please double check the event payload.
+        EOL
         if ENV["_HANDLER"] # on AWS Lambda
           puts "event: #{JSON.dump(event)}"
         else
           puts "event:"
           puts JSON.pretty_generate(event)
         end
-        puts "Please double check the event payload.\n\n"
 
         if target
-          puts "ERROR: event handler target not found: #{target}".color(:red)
+          puts "WARN: Event handler target not found: #{target}".color(:red)
           target_class, target_method = target.split(".")
           target_class = target_class.camelize
           target_method ||= "perform"
@@ -40,7 +44,8 @@ module Jets::Shim::Adapter
 
         else
           puts <<~EOL
-            You can also configure a custom fallback handler in the config/jets/shim.rb file.
+            You can also configure a custom fallback handler with a config/jets/shim.rb file.
+            Though custom handlers rarely needed and you should double check the event payload.
             Example:
 
             config/jets/shim.rb
@@ -55,7 +60,7 @@ module Jets::Shim::Adapter
         end
         # Custom Jets error message
         {
-          errorMessage: "event handler not found. Look at logs for details",
+          errorMessage: "Event handler not found. Look at logs for details",
           errorType: "JetsEventHandlerNotFound"
         }
       end

@@ -14,16 +14,13 @@ module Jets
         memoize :loader
 
         def configure(root = Jets.root)
-          all_loaders = Zeitwerk::Registry.loaders
-          already_configured_dirs = all_loaders.map(&:dirs).flatten
-
           full_path = proc { |path| "#{root}/#{path}" }
           autoload_paths = config.autoload_paths.map(&full_path)
           extension_paths = config.extension_paths.map(&full_path)
           load_paths = autoload_paths + extension_paths
 
           load_paths.each do |path|
-            next if already_configured_dirs.include?(path)
+            next if already_configured_dir?(path)
             next unless File.directory?(path)
             loader.push_dir(path)
           end
@@ -32,6 +29,23 @@ module Jets
           ignore_paths.each do |path|
             loader.ignore(path)
           end
+        end
+
+        def already_configured_dir?(path)
+          all_loaders = Zeitwerk::Registry.loaders
+          already_configured_dirs = all_loaders.map(&:dirs).flatten
+
+          # Normalize the path to avoid trailing slashes issues
+          normalized_path = File.expand_path(path)
+
+          # Check the path and its parent directories
+          while normalized_path != "/"
+            return true if already_configured_dirs.include?(normalized_path)
+            normalized_path = File.dirname(normalized_path)
+          end
+
+          # Check the root directory explicitly
+          already_configured_dirs.include?("/")
         end
 
         # Call at end

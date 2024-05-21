@@ -14,7 +14,7 @@ class Jets::CLI
         resources = cfn.describe_stack_resources(stack_name: stack_name).stack_resources
         resources.each do |r|
           if r.resource_type == "AWS::Lambda::Function"
-            functions << r.physical_resource_id
+            functions << r.physical_resource_id if r.physical_resource_id # race condition. can be nil for a brief moment while provisioning
           end
         end
       end

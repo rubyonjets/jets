@@ -8,8 +8,8 @@ class Jets::CLI
         if stopped
           log.info <<~EOL
             Deploy has been stopped: #{build_id}
-            Note: If the deploy has already started the CloudFormation update,
-            it will continue. Please check the logs.
+            If the deploy has already started the CloudFormation update it will continue.
+            Please check the logs.
 
           EOL
           show_console_log_url(build_id)

@@ -23,7 +23,7 @@ module Jets::Git
     end
 
     def git_url
-      "#{host}/#{full_repo}"
+      "#{host}/#{full_repo}" if host && full_repo
     end
 
     def host

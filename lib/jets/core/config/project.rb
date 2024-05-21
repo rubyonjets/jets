@@ -62,12 +62,23 @@ module Jets::Core::Config
       Jets::Core::Booter.require_config(:project)
       return @name if @name
 
-      if jets_info_project_name
-        jets_info_project_name
-      else
-        # when not set, conventionally infer app name from current directory
-        @name_inferred = true
-        Dir.pwd.split("/").last.gsub(/[^a-zA-Z0-9_]/, "-").squeeze("-")
+      project_name = jets_info_project_name
+      unless project_name
+        puts "ERROR: Jets project name not set".color(:red)
+        abort <<~EOL
+          Please set config.name in config/jets/project.rb or the JETS_PROJECT environment variable
+          Example:
+
+          config/jets/project.rb
+
+              Jets.project.configure do
+                config.name = "demo"
+              end
+
+          Or set the JETS_PROJECT environment variable:
+
+              export JETS_PROJECT=demo
+        EOL
       end
     end
     memoize :name

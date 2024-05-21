@@ -9,18 +9,18 @@ Jets.deploy.configure do
   # config.waf.rules = []
 
   # Jets WAF Managed Rules
-  # config.waf.managed_rules.blanket_rate_limiter.enable = true # default: true
-  # config.waf.managed_rules.blanket_rate_limiter.limit = 1000
-  # config.waf.managed_rules.blanket_rate_limiter.evaluation_window_sec = 300
-  # config.waf.managed_rules.blanket_rate_limiter.aggregate_key_type = "IP"
+  # config.waf.custom_rules.blanket_rate_limiter.enable = true # default: true
+  # config.waf.custom_rules.blanket_rate_limiter.limit = 1000
+  # config.waf.custom_rules.blanket_rate_limiter.evaluation_window_sec = 300
+  # config.waf.custom_rules.blanket_rate_limiter.aggregate_key_type = "IP"
 
-  # config.waf.managed_rules.uri_rate_limiter.enable = true # default: false
-  # config.waf.managed_rules.uri_rate_limiter.limit = 100
-  # config.waf.managed_rules.uri_rate_limiter.logical_statement = "Or"
-  # config.waf.managed_rules.uri_rate_limiter.paths = ["/login", "/signup"] # default: ["/"]
-  # config.waf.managed_rules.uri_rate_limiter.evaluation_window_sec = 300
-  # config.waf.managed_rules.uri_rate_limiter.aggregate_key_type = "IP"
-  # config.waf.managed_rules.uri_rate_limiter.string_match_condition = "STARTS_WITH"
+  # config.waf.custom_rules.uri_rate_limiter.enable = true # default: false
+  # config.waf.custom_rules.uri_rate_limiter.limit = 100
+  # config.waf.custom_rules.uri_rate_limiter.logical_statement = "Or"
+  # config.waf.custom_rules.uri_rate_limiter.paths = ["/login", "/signup"] # default: ["/"]
+  # config.waf.custom_rules.uri_rate_limiter.evaluation_window_sec = 300
+  # config.waf.custom_rules.uri_rate_limiter.aggregate_key_type = "IP"
+  # config.waf.custom_rules.uri_rate_limiter.string_match_condition = "STARTS_WITH"
 
   # Docs: https://docs.rubyonjets.com/docs/routing/lambda/cloudfront/waf/
 end

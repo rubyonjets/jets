@@ -8,7 +8,11 @@ class Jets::CLI
 
     def are_you_sure?
       stack_name = Jets.project.namespace
-      message = "Will delete #{stack_name.color(:green)}"
+      message = <<~EOL
+        Will delete #{stack_name.color(:green)}
+
+        Uses remote runner to delete the stack and resources.
+      EOL
       unless stack_exists?(stack_name)
         message << <<~EOL
 

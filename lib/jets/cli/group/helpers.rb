@@ -11,13 +11,13 @@ module Jets::CLI::Group
     end
 
     def init_project_name
-      Jets.project.name # inferred from the folder name
+      # inferred from the folder name
+      Dir.pwd.split("/").last.gsub(/[^a-zA-Z0-9_]/, "-").squeeze("-")
     end
 
     def framework
-      Jets::CLI::Init::Detect.new.framework
+      Jets::Framework.name
     end
-    memoize :framework
 
     def package_type
       (framework == "rails") ? "image" : "zip"

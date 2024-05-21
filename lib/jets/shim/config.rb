@@ -21,23 +21,35 @@ module Jets::Shim
       elsif @rack_app
         @rack_app
       else
-        boot_path = @boot_path || infer_boot_path
-        # Possible that boot_path is nil.
-        # Case: Jets events app only.
-        if boot_path
-          require_boot_path(boot_path) if boot_path # in case boot_path is not set
-          infer_rack_app(boot_path) # IE: Rails.application or App
-        end
+        framework_app
       end
     end
     alias_method :app, :rack_app
     alias_method :app=, :rack_app=
 
-    def infer_boot_path
-      if rails?
-        "config/environment"
-      elsif File.exist?("app.rb")
-        "app"
+    def framework_app
+      # Explicitly set boot_path takes precedence
+      # IE: my_app.rb => MyApp
+      if @boot_path && File.exist?(@boot_path)
+        app_class = @boot_path.sub(/\.rb$/, "").camelize.constantize
+        return app_class
+      end
+
+      # Infer app.rb boot_path
+      # IE: app.rb => App
+      if File.exist?("app.rb")
+        require_boot_path("app")
+        return App
+      end
+
+      # Infer rack app from config.ru
+      case framework
+      when "rails"
+        require_boot_path "config/environment"
+        Rails.application
+      when "hanami"
+        require "hanami/boot"
+        Hanami.app
       end
     end
 
@@ -47,25 +59,8 @@ module Jets::Shim
       require path # IE: config/environment.rb (Rails) or app.rb (generic rack app)
     end
 
-    def infer_rack_app(boot_path)
-      if rails?
-        Rails.application
-      else
-        boot_path.sub!(/\.rb$/, "") # remove .rb extension
-        boot_path.camelize.constantize
-      end
+    def framework
+      Jets::Framework.name
     end
-
-    def rails?
-      framework?(:rails)
-    end
-
-    def framework?(name)
-      if File.exist?("config.ru")
-        # IE: Jets.application or Rails.application
-        IO.readlines("config.ru").any? { |l| l.include?("#{name.to_s.camelize}.application") }
-      end
-    end
-    memoize :framework?
   end
 end
