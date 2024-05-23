@@ -1,0 +1,1 @@
+Build the package and CloudFormation templates but does not deploy it. This can be helpful for development.

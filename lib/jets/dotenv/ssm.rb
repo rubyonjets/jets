@@ -1,67 +1,90 @@
-require 'aws-sdk-ssm'
-
 class Jets::Dotenv
   class Ssm
-    SSM_VARIABLE_REGEXP = /^ssm:(.*)/i
+    include Jets::AwsServices
+    include Jets::Util::Logging
 
-    def initialize(variables={})
+    def initialize(variables)
       @variables = variables
       @missing = []
     end
 
     def interpolate!
-      interpolated_variables = @variables.map do |key, value|
-        if value[SSM_VARIABLE_REGEXP]
-          value = fetch_ssm_value(key, $1)
-        elsif value == "SSM"
-          value = fetch_ssm_value(key, "SSM")
-        end
-
-        [key, value]
+      interpolated_vars = merged_variables.map do |key, value|
+        var = Var.new(key, value)
+        @missing << var if var.ssm_missing?
+        var
       end
 
-      interpolated_variables.each do |key, value|
-        ENV[key] = value
+      interpolated_vars.each do |var|
+        ENV[var.name] = var.value
       end
 
       if @missing.empty?
-        interpolated_variables.to_h.sort_by { |k,_| k }.to_h # success
+        interpolated_vars.map { |var| [var.name, var.value] }.sort.to_h # success
       else
         message = "Error loading .env variables. No matching SSM parameters found for:\n".color(:red)
-        message += @missing.map do |k,v,n|
-          value = v == "SSM" ? v : "ssm:#{v}"
-          "  #{k}=#{value} # ssm name: #{n}"
+        message += @missing.map do |var|
+          "    #{var.name}=#{var.raw_value} # ssm name: #{var.ssm_name}"
         end.join("\n")
         abort message
       end
     end
 
-    def fetch_ssm_value(key, value)
-      return "fake-ssm-value" if ENV['JETS_NO_INTERNET']
+    # Merges the variables from the dotenv files with the conventional ssm variables
+    # inferred by path, IE: /demo/dev/
+    # User defined config/jets/env files values win over inferred ssm variables.
+    def merged_variables
+      if Jets.project.dotenv.ssm.autoload.enable
+        ssm_vars = get_ssm_parameters_path(Convention.ssm_path) # IE: /demo/dev/
+        if Convention.jets_env_path != Convention.ssm_path
+          jets_env_vars = get_ssm_parameters_path(Convention.jets_env_path) # IE: /demo/sbx/
+          ssm_vars = ssm_vars.merge(jets_env_vars)
+        end
 
-      name = ssm_name(key, value)
-      response = ssm.get_parameter(name: name, with_decryption: true)
-      response.parameter.value
-    rescue Aws::SSM::Errors::ParameterNotFound
-      @missing << [key, value, name]
-      ''
-    rescue Aws::SSM::Errors::ValidationException
-      puts "ERROR: Invalid SSM parameter name: #{name.inspect}".color(:red)
-      raise
-    end
+        # skip list
+        ssm_vars = ssm_vars.delete_if { |k, v| skip_list?(k) }
 
-    def ssm_name(key, value)
-      if value == "SSM"
-        "/#{Jets.project_name}/#{Jets.env}/#{key}"
+        # optimization: no need to get vars with SSM values since they are already in ssm_vars
+        vars = @variables.dup.delete_if { |k, v| v == "SSM" && ssm_vars.key?(k) }
+        ssm_vars.merge(vars)
       else
-        value.start_with?("/") ?
-          value :
-          "/#{Jets.project_name}/#{Jets.env}/#{value}"
+        @variables
       end
     end
 
-    def ssm
-      @ssm ||= Aws::SSM::Client.new
+    def skip_list?(key)
+      key = key.to_s
+      a = Jets.project.dotenv.ssm.autoload
+      skip_list = a.default_skip + a.skip
+      skip_list.detect do |i|
+        if i.is_a?(Regexp)
+          key.match(i)
+        else
+          key == i
+        end
+      end
+    end
+
+    def get_ssm_parameters_path(path)
+      if ARGV.include?("dotenv") && ARGV.include?("list")
+        warn "# Autoloading SSM parameters within path #{path}"
+      end
+      parameters = {}
+      next_token = nil
+
+      loop do
+        resp = ssm.get_parameters_by_path(path: path, with_decryption: true, next_token: next_token)
+
+        resp.parameters.each do |param|
+          key = param.name.sub(path, "")
+          parameters[key] = param.value
+        end
+
+        next_token = resp.next_token
+        break unless next_token
+      end
+
+      parameters
     end
   end
 end

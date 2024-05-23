@@ -1,8 +1,0 @@
-<% module_namespacing do -%>
-class <%= class_name %>Job < ApplicationJob
-  dynamodb_event "test-table" # existing table
-  def <%= options[:name] %>
-    puts "event #{JSON.dump(event)}"
-  end
-end
-<% end -%>

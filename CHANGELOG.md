@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [6.0.0] - Unrelease
+
+* Rails Support
+* Hooks Support
+* Docker Support
+* CloudFront CDN
+* Lambda Function URL
+* Prewarm and Provisioned Concurrency
+* Reserved Concurrency
+* Jets Job Support
+* CI Support
+* WAF
+* Remote Runner
+* Jets Exec REPL
+* Release History and Rollback Ability
+* Events
+
 ## [5.0.14] - 2024-05-20
 - [#719](https://github.com/rubyonjets/jets/pull/719) Support for s3 event sns configuration
 - [#722](https://github.com/rubyonjets/jets/pull/722) Sets config.cache_classes to true in test env
@@ -1223,7 +1240,7 @@ Breaking Changes:
 - add versions to gemspec dependencies
 
 ## [0.6.1]
-- only prewarm if Jets::PreheatJob.warm available
+- only prewarm if Jets::PreheatEvent.warm available
 
 ## [0.6.0]
 - fine grain iam policy abilities: pull request #13 from tongueroo/iam-policy

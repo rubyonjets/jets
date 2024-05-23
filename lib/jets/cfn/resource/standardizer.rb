@@ -15,21 +15,23 @@ class Jets::Cfn::Resource
       definition = camelize(definition)
       first, second, third, _ = definition
       if definition.size == 1 && first.is_a?(Hash) # long form
+        attrs = first.values.first
+        attrs.delete(:Properties) if attrs[:Properties].blank?
         first # pass through
       elsif definition.size == 2 && second.is_a?(Hash) # medium form
         logical_id, attributes = first, second
-        attributes.delete(:Properties) if attributes[:Properties].nil? || attributes[:Properties].empty?
-        { logical_id => attributes }
+        attributes.delete(:Properties) if attributes[:Properties].blank?
+        {logical_id => attributes}
       elsif definition.size == 2 && second.is_a?(String) # short form
         logical_id, type = first, second
-        { logical_id => {
-            Type: type
+        {logical_id => {
+          Type: type
         }}
-      elsif definition.size == 3 && (second.is_a?(String) || second.is_a?(NilClass))# short form
+      elsif definition.size == 3 && (second.is_a?(String) || second.is_a?(NilClass)) # short form
         logical_id, type, properties = first, second, third
-        template = { logical_id => {
-                       Type: type
-                    }}
+        template = {logical_id => {
+          Type: type
+        }}
         attributes = template.values.first
         attributes[:Properties] = properties unless properties.empty?
         template

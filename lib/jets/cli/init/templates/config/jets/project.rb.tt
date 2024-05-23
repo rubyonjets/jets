@@ -1,0 +1,3 @@
+Jets.project.configure do
+  config.name = "<%= init_project_name %>"
+end

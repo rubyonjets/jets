@@ -1,2 +1,0 @@
-class Toy < ApplicationRecord
-end

@@ -1,0 +1,7 @@
+class <%= class_name %>Event < ApplicationEvent
+  kinesis_event "my-stream" # existing stream
+  def <%= options[:method] %>
+    puts "event #{JSON.dump(event)}"
+    puts "kinesis_data #{JSON.dump(kinesis_data)}"
+  end
+end

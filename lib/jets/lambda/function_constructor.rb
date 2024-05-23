@@ -43,7 +43,7 @@ module Jets::Lambda
     # For anonymous classes method_added during definition registration contains ""
     # for the class name.  We adjust it here.
     def adjust_definitions(klass)
-      class_name = @code_path.to_s.sub(/.*\/functions\//,'').sub(/\.rb$/, '')
+      class_name = @code_path.to_s.sub(/.*\/functions\//, "").sub(/\.rb$/, "")
       class_name = class_name.camelize
       klass.definitions.each do |definition|
         definition.class_name = class_name
@@ -52,4 +52,3 @@ module Jets::Lambda
     end
   end
 end
-

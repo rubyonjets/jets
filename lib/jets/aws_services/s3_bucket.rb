@@ -19,16 +19,14 @@ module Jets::AwsServices
     end
 
     def exists?
-      begin
-        s3.head_bucket(bucket: @name)
-        true
-      rescue Aws::S3::Errors::BucketAlreadyOwnedByYou, Aws::S3::Errors::Http301Error => e
-        # These exceptions indicate bucket already exists
-        # Aws::S3::Errors::Http301Error could be inaccurate but compromising for simplicity
-        true
-      rescue
-        false
-      end
+      s3.head_bucket(bucket: @name)
+      true
+    rescue Aws::S3::Errors::BucketAlreadyOwnedByYou, Aws::S3::Errors::Http301Error => e
+      # These exceptions indicate bucket already exists
+      # Aws::S3::Errors::Http301Error could be inaccurate but compromising for simplicity
+      true
+    rescue
+      false
     end
   end
 end

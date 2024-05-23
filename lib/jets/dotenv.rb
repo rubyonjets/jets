@@ -1,54 +1,59 @@
 require "dotenv"
 
-class Jets::Dotenv
-  def self.load!(remote = false)
-    new(remote).load!
-  end
+module Jets
+  class Dotenv
+    include Jets::AwsServices
+    include Jets::Util::Logging
 
-  def initialize(remote = false)
-    @remote = ENV["JETS_ENV_REMOTE"] || remote
-  end
+    def load!
+      return unless load?
+      variables = ::Dotenv.load(*dotenv_files)
+      Ssm.new(variables).interpolate!
+    end
 
-  # @@vars cache to prevent multiple calls to Ssm
-  # Tricky note: The cache also prevents the second call to Dotenv.load from
-  # returning {} vars. Dotenv 3.0 will not return the vars if it has already been loaded
-  # in the ENV. We want this side-effect due to the new way Dotenv 3.0 works.
-  @@vars = nil
-  def load!
-    return @@vars if @@vars
-    return if on_aws? # this prevents ssm calls if used in dotenv files
-    vars = ::Dotenv.load(*dotenv_files)
-    @@vars = Ssm.new(vars).interpolate!
-  end
+    def parse
+      return {} unless load?
+      variables = ::Dotenv.parse(*dotenv_files)
+      Ssm.new(variables).interpolate!
+    end
 
-  def on_aws?
-    return true if ENV["ON_AWS"]
-    !!ENV["_HANDLER"] # https://docs.aws.amazon.com/lambda/latest/dg/lambda-environment-variables.html
-  end
+    def load?
+      enabled = ENV["JETS_DOTENV"] != "0" # allow to disable with JETS_DOTENV=0
+      # Prevent ssm calls when on AWS Lambda but will call if on AWS CodeBuild
+      on_aws = (ENV["ON_AWS"] || ENV["_HANDLER"]) && !ENV["CODEBUILD_CI"]
+      enabled && !on_aws
+    end
 
-  # dotenv files with the following precedence:
-  #
-  # - .env.development.jets_extra (highest)
-  # - .env.development.remote (2nd highest, only if JETS_ENV_REMOTE=1)
-  # - .env.development.local (unless JETS_ENV_REMOTE=1)
-  # - .env.development
-  # - .env.local - This file is loaded for all environments _except_ `test` or unless JETS_ENV_REMOTE=1
-  # - .env - The original (lowest)
-  #
-  def dotenv_files
-    files = []
+    # dotenv files with the following precedence:
+    #
+    # - config/jets/env/.env.dev.extra (highest)
+    # - config/jets/env/.env.dev
+    # - config/jets/env/.env - The original (lowest)
+    #
+    def dotenv_files
+      files = []
 
-    files << files << root.join(".env.#{Jets.env}.#{Jets.extra}") if Jets.extra
-    files << root.join(".env.#{Jets.env}.remote") if @remote
-    files << root.join(".env.#{Jets.env}.local") unless @remote
-    files << root.join(".env.#{Jets.env}")
-    files << root.join(".env.local") unless Jets.env.test? || @remote
-    files << root.join(".env")
+      files << ".env.#{Jets.env}.#{Jets.extra}" if Jets.extra
+      files << ".env.#{Jets.env}"
+      files << ".env"
 
-    files.compact.map(&:to_s)
-  end
+      files.map! { |f| Jets.root.join("config/jets/env", f) }.compact
+      files.map(&:to_s)
+    end
 
-  def root
-    Jets.root || Pathname.new(ENV["JETS_ROOT"] || Dir.pwd)
+    class << self
+      extend Memoist
+      @@load = nil
+      def load!
+        @@load ||= new.load!
+      end
+      memoize :load!
+
+      @@parse = nil
+      def parse
+        @@parse ||= new.parse
+      end
+      memoize :parse
+    end
   end
 end

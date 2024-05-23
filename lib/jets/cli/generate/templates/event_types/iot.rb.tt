@@ -1,0 +1,6 @@
+class <%= class_name %>Event < ApplicationEvent
+  iot_event "SELECT * FROM 'my/topic'"
+  def <%= options[:method] %>
+    puts "event #{JSON.dump(event)}"
+  end
+end

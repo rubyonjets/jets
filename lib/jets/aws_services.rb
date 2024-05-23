@@ -1,13 +1,15 @@
 require "aws-sdk-apigateway"
 require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
+require "aws-sdk-codebuild"
 require "aws-sdk-dynamodb"
 require "aws-sdk-lambda"
 require "aws-sdk-s3"
-require "aws-sdk-sts"
-# Not used in Jets internally but convenient for shared resources
 require "aws-sdk-sns"
 require "aws-sdk-sqs"
+require "aws-sdk-ssm"
+require "aws-sdk-sts"
+require "aws-sdk-wafv2"
 
 require "aws_mfa_secure/ext/aws" # add MFA support
 
@@ -20,20 +22,26 @@ module Jets::AwsServices
   end
   global_memoize :apigateway
 
+  def lambda_client
+    Aws::Lambda::Client.new(aws_options)
+  end
+  global_memoize :lambda_client
+  alias_method :aws_lambda, :lambda_client
+
   def cfn
     Aws::CloudFormation::Client.new(aws_options)
   end
   global_memoize :cfn
 
+  def codebuild
+    Aws::CodeBuild::Client.new(aws_options)
+  end
+  global_memoize :codebuild
+
   def dynamodb
     Aws::DynamoDB::Client.new(aws_options)
   end
   global_memoize :dynamodb
-
-  def aws_lambda
-    Aws::Lambda::Client.new(aws_options)
-  end
-  global_memoize :aws_lambda
 
   def logs
     Aws::CloudWatchLogs::Client.new(aws_options)
@@ -55,15 +63,25 @@ module Jets::AwsServices
   end
   global_memoize :sns
 
-  def sqs
-    Aws::SQS::Client.new(aws_options)
+  def ssm
+    Aws::SSM::Client.new(aws_options)
   end
-  global_memoize :sqs
+  global_memoize :ssm
 
   def sts
     Aws::STS::Client.new(aws_options)
   end
   global_memoize :sts
+
+  def sqs
+    Aws::SQS::Client.new(aws_options)
+  end
+  global_memoize :sqs
+
+  def wafv2
+    Aws::WAFV2::Client.new(aws_options)
+  end
+  global_memoize :wafv2
 
   # Override the AWS retry settings with Jets AWS clients.
   #
@@ -85,19 +103,20 @@ module Jets::AwsServices
     options = {
       retry_limit: 7, # default: 3
       retry_base_delay: 0.6, # default: 0.3
+      log_level: :info
     }
     # See debug logger. Noisy.
     # Example:
     #     D, [2022-12-02T13:18:55.298788 #26182] DEBUG -- : [Aws::APIGateway::Client 200 0.030837 0 retries] get_method(rest_api_id:"mke40eh6l0",resource_id:"zf8w2m",http_method:"GET")
-    options.merge!(
-      log_level: :debug,
-      logger: Logger.new($stdout),
-    ) if ENV['JETS_DEBUG_AWS_SDK']
+    if ENV["JETS_DEBUG_AWS_SDK"]
+      options[:log_level] = :debug
+      options[:logger] = Logger.new($stdout)
+    end
     # https://docs.aws.amazon.com/sdk-for-ruby/v3/developer-guide/debugging.html to enable http_wire_trace
     # See the HTTP headers and JSON responses. Super noisy.
-    options.merge!(
-      http_wire_trace: true,
-    ) if ENV['JETS_DEBUG_AWS_SDK_HTTP_WIRE_TRACE']
+    if ENV["JETS_DEBUG_AWS_SDK_HTTP_WIRE_TRACE"]
+      options[:http_wire_trace] = true
+    end
     options
   end
 end

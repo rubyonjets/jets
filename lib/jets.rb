@@ -9,21 +9,19 @@ require "active_support/ordered_hash"
 require "active_support/ordered_options"
 require "cfn_camelizer"
 require "cfn_status"
+require "cli-format"
 require "fileutils"
 require "json"
 require "memoist"
 require "rainbow/ext/string"
-require "jets-api"
-require "jets-git"
+
+CliFormat.default_format = "table"
 
 require "jets/core_ext"
 require "jets/autoloaders"
-loader = Jets::Autoloaders.for_gem
-loader.setup
+Jets::Autoloaders.gem.setup
 
 module Jets
   class Error < StandardError; end
   extend Core # root, logger, etc
 end
-
-loader.eager_load if Jets.eager_load_gem?

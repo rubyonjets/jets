@@ -1,0 +1,19 @@
+Jets.deploy.configure do
+  # CI Docs: https://docs.rubyonjets.com/docs/ci/getting-started/
+  config.ci.source = {
+    Type: "<%= repo_type %>",
+    Location: "<%= repo_location %>"
+  }
+  config.ci.source_version = "<%= git_default_branch %>"
+  # triggers means that the CI git push to these branches
+  config.ci.triggers = ["<%= git_default_branch %>"]
+
+  # Note: JETS_API_KEY is required. The CI runner needs it to run: jets deploy
+  config.ci.env.vars = {
+    # BUNDLE_GITHUB__COM: "SSM:/#{ssm_env}/BUNDLE_GITHUB__COM",
+    JETS_API_KEY: "SSM:/#{ssm_env}/JETS_API_KEY"
+  }
+  # config.ci.schedule.enable = true
+  # config.ci.schedule.rate = "1d"
+  # config.ci.schedule.cron = "8 0 * * ? *" # every day at 12:08am UTC
+end

@@ -11,7 +11,7 @@ class Jets::Names
     end
 
     def one_controller_template_path
-      "#{templates_folder}/jets-controller.yml"
+      "#{templates_folder}/controller.yml"
     end
 
     def app_template_path(app_class)
@@ -34,18 +34,6 @@ class Jets::Names
       "#{templates_folder}/api-gateway.yml"
     end
 
-    def api_resources_template_path(page_number)
-      "#{templates_folder}/api-resources-#{page_number}.yml"
-    end
-
-    def api_cors_template_path(page_number)
-      "#{templates_folder}/api-cors-#{page_number}.yml"
-    end
-
-    def api_methods_template_path(page_number)
-      "#{templates_folder}/api-methods-#{page_number}.yml"
-    end
-
     def api_deployment_template_path
       "#{templates_folder}/api-deployment.yml"
     end
@@ -59,21 +47,21 @@ class Jets::Names
     end
 
     def parent_stack_name
-      Jets.project_namespace
+      Jets.project.namespace
     end
 
     def gateway_api_name
-      Jets.project_namespace
+      Jets.project.namespace
     end
 
     def authorizer_template_path(path)
       underscored = underscore(path)
-      underscored.sub!(/^app-/, '')
+      underscored.sub!(/^app-/, "")
       "#{templates_folder}/#{underscored}.yml"
     end
 
     def underscore(s)
-      s.to_s.underscore.sub(/\.rb$/,'').gsub('/','-')
+      s.to_s.underscore.sub(/\.rb$/, "").tr("/", "-")
     end
   end
 end
