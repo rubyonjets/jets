@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
-## [6.0.0] - Unrelease
+## [6.0.0] - 2024-05-23
 
 * Rails Support
 * Hooks Support
