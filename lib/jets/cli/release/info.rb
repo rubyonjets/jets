@@ -27,8 +27,7 @@ class Jets::CLI::Release
       data = release_fields.map do |field|
         # special cases for values
         value = if field == :created_at
-          time_string = release[:pretty_created_at] || release[:created_at]
-          format_time(time_string)
+          pretty_time(release[:created_at])
         else
           release[field]
         end
