@@ -1,11 +1,14 @@
 class Jets::CLI::Ci
   class Status < Base
+    include Jets::Util::FormatTime
+
     def run
       check_build_id!
       run_with_exception_handling do
         puts "Build id: #{build_id}"
         resp = codebuild.batch_get_builds(ids: [build_id])
         build = resp.builds.first
+        puts "Build end time: #{pretty_time(build.end_time)}"
         puts "Build status: #{colored(build.build_status)}"
       end
     end

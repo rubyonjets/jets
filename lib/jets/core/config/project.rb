@@ -7,6 +7,7 @@ module Jets::Core::Config
       :ignore_paths,
       :base64_encode,
       :dotenv,
+      :git,
       :tips
     )
     def initialize(*)
@@ -39,6 +40,10 @@ module Jets::Core::Config
       @dotenv.ssm.long_env_name = false     # helps with Jets 5 legacy
 
       @base64_encode = true
+
+      @git = ActiveSupport::OrderedOptions.new
+      @git.push = ActiveSupport::OrderedOptions.new
+      @git.push.branch = ActiveSupport::OrderedOptions.new
 
       @tips = ActiveSupport::OrderedOptions.new
       @tips.enable = true

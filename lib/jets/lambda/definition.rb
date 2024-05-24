@@ -5,7 +5,7 @@ module Jets::Lambda
     attr_accessor :class_name, :type
     attr_reader(
       :meth, :properties, :provisioned_concurrency, :iam_policy, :managed_iam_policy,
-      :lang, :associated_resources
+      :lang, :associated_resources, :associated_outputs
     )
     def initialize(class_name, meth, options = {})
       @class_name = class_name.to_s
@@ -18,6 +18,7 @@ module Jets::Lambda
       @managed_iam_policy = options[:managed_iam_policy]
       @lang = options[:lang] || :ruby
       @associated_resources = options[:associated_resources] || {}
+      @associated_outputs = options[:associated_outputs] || {}
       @replacements = options[:replacements] || {} # added to baseline replacements
     end
 

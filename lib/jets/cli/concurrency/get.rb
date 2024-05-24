@@ -9,7 +9,7 @@ class Jets::CLI::Concurrency
     def run
       puts <<~EOL
         Settings for Function: #{@lambda_function.name}
-        Reserved concurreny: #{reserved_concurrency}
+        Reserved concurrency: #{reserved_concurrency}
         Provisioned concurrency: #{provisioned_concurrency}
       EOL
     end

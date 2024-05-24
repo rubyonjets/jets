@@ -65,5 +65,9 @@ module Jets::Git
       end
       default
     end
+
+    def git_current_branch
+      `rev-parse --abbrev-ref HEAD`.strip
+    end
   end
 end
