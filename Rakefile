@@ -12,7 +12,7 @@ require_relative "lib/jets"
 desc "Generates cli reference docs as markdown"
 task :docs do
   require "cli_markdown"
-  CliMarkdown::Creator.new.create_all
+  CliMarkdown::Creator.create_all(cli_class: Jets::CLI, cli_name: "jets")
 end
 
 # Thanks: https://docs.ruby-lang.org/en/2.1.0/RDoc/Task.html
