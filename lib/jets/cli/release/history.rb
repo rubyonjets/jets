@@ -30,7 +30,7 @@ class Jets::CLI::Release
       items.each do |item|
         version = item[:version]
         status = item[:stack_status]
-        released_at = item[:pretty_created_at] || item[:created_at]
+        released_at = item[:created_at]
         message = item[:message] || "Deployed"
         message = message[0..50]
 
