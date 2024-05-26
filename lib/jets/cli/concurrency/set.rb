@@ -1,8 +1,8 @@
 class Jets::CLI::Concurrency
   class Set < Get
     def run
-      sure? "Will update the concurrency settings for #{Jets.project.namespace}"
-      puts "Updating concurrency settings for #{Jets.project.namespace}"
+      sure? "Will update the concurrency settings for #{@lambda_function.name}"
+      puts "Updating concurrency settings for #{@lambda_function.name}"
 
       if @options[:reserved]
         @lambda_function.reserved_concurrency = @options[:reserved]
