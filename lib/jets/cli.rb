@@ -15,6 +15,9 @@ module Jets
     desc "generate SUBCOMMAND", "generate subcommands"
     subcommand "generate", Generate
 
+    desc "git SUBCOMMAND", "git subcommands"
+    subcommand "git", Git
+
     desc "maintenance SUBCOMMAND", "maintenance subcommands"
     subcommand "maintenance", Maintenance
 
