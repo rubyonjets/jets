@@ -1,8 +1,8 @@
 class Jets::CLI::Concurrency
   class Unset < Set
     def run
-      sure? "Will unset the concurrency settings for #{Jets.project.namespace}"
-      puts "Unsetting concurrency settings for #{Jets.project.namespace}"
+      sure? "Will unset the concurrency settings for #{@lambda_function.name}"
+      puts "Unsetting concurrency settings for #{@lambda_function.name}"
 
       if @options[:reserved]
         @lambda_function.reserved_concurrency = nil

@@ -169,6 +169,11 @@ module Jets::Lambda::Dsl
     # User-friendly short resource method. Users will use this.
     alias_method :resource, :associated_resources
 
+    def associated_outputs(outputs = {})
+      @associated_outputs ||= []
+      @associated_outputs << outputs
+    end
+
     # Using this odd way of setting these properties so we can keep the
     # resource(*definitions) signature simple. Using keyword arguments at the end
     # interfere with being able to pass in any keys for the properties hash at the end.
@@ -282,6 +287,7 @@ module Jets::Lambda::Dsl
         iam_policy: @iam_policy,
         managed_iam_policy: @managed_iam_policy,
         associated_resources: @associated_resources,
+        associated_outputs: @associated_outputs,
         lang: lang,
         replacements: replacements(meth))
 
