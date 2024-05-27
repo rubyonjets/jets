@@ -1,17 +1,24 @@
 module Jets::Util
   module FormatTime
-    def pretty_time(utc)
-      utc = DateTime.parse(utc) if utc.is_a?(String)
+    def pretty_time(time)
+      datetime = case time
+      when Time
+        time.to_datetime
+      when String
+        DateTime.parse(time)
+      else
+        time
+      end
 
-      if utc > 1.day.ago.utc
-        time_ago_in_words(utc) + " ago"
+      if datetime > 1.day.ago.utc
+        time_ago_in_words(datetime) + " ago"
       else
         tz_override = ENV["JETS_TZ"] # IE: America/Los_Angeles
         local = if tz_override
           tz = TZInfo::Timezone.get(tz_override)
-          tz.utc_to_local(utc)
+          tz.time_to_local(datetime)
         else
-          utc.new_offset(DateTime.now.offset) # local time
+          datetime.new_offset(DateTime.now.offset) # local time
         end
 
         if tz_override
