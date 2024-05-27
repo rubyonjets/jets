@@ -19,17 +19,17 @@ class Jets::CLI::Git
 
       return unless $?.success?
 
-      set_env_vars!
-      sleep 2 # wait ci to start
-      Jets::CLI::Ci::Logs.new(options).run
+      command = [env_vars, "jets ci:logs"].compact.join(" ")
+      Kernel.exec(command)
     end
 
-    def set_env_vars!
-      env_vars = Jets.project.config.git.push.branch[push_branch] || {}
+    def env_vars
+      env_vars = Jets.project.config.git.push.branch[push_branch]
+      return unless env_vars
       # IE: branch_name = {JETS_ENV: "xxx", AWS_PROFILE: "xxx"}
-      env_vars.each do |k, v|
-        ENV[k.to_s] = v
-      end
+      env_vars.map do |k, v|
+        "#{k}=#{v}"
+      end.sort.join(" ")
     end
 
     # man git-push
