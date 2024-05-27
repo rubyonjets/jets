@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [6.0.1] - 2024-05-27
+- [#727](https://github.com/rubyonjets/jets/pull/727) small fixes
+- associated outputs concept
+- jets concurrency show lambda function name
+- jets git:push command
+- pretty time helper
+- update github issue template bug report
+
 ## [6.0.0] - 2024-05-23
 
 * Rails Support
