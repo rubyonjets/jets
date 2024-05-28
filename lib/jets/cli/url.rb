@@ -34,6 +34,7 @@ class Jets::CLI
         acc.merge!(endpoint[:name] => endpoint[:url])
       end
       data.delete_if { |k, v| v.nil? } # remove nil values
+      data.delete_if { |k| k.include?("queue_url") } unless @options[:all]
       data
     end
     memoize :data
