@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [6.0.3] - 2024-05-30
+- [#730](https://github.com/rubyonjets/jets/pull/730) scheduler translate scheduler.schedule key
+
 ## [6.0.2] - 2024-05-30
 - [#728](https://github.com/rubyonjets/jets/pull/728) jets git:push
 - [#729](https://github.com/rubyonjets/jets/pull/729) dont show queue url by default
