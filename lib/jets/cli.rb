@@ -176,6 +176,7 @@ module Jets
 
     desc "url", "App url"
     format_option(default: "space")
+    option :all, type: :boolean, desc: "Show all urls including queue urls"
     def url
       Url.new(options).run
     end
