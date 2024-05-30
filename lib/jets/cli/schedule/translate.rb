@@ -17,9 +17,9 @@ class Jets::CLI::Schedule
       # Currently only sidekiq is supported
       sidekiq = YAML.load_file("config/sidekiq.yml")
       sidekiq = ActiveSupport::HashWithIndifferentAccess.new(sidekiq)
-      schedule = sidekiq[:schedule]
+      schedule = sidekiq.dig(:scheduler, :schedule) || sidekiq[:schedule]
       unless schedule
-        log.error "config/sidekiq.yml does not have a schedule key. Nothing to translate."
+        log.error "config/sidekiq.yml does not have a scheduler.schedule key. Nothing to translate."
         return false
       end
 
