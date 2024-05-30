@@ -102,7 +102,13 @@ module Jets::Cfn
     def update_stack
       cfn.update_stack(stack_options)
     rescue Aws::CloudFormation::Errors::ValidationError => e
-      log.debug "DEBUG bootstrap/deploy.rb update_stack #{e.message}" # ERROR: No updates are to be performed.
+      if e.message.include?("No updates are to be performed")
+        log.debug "DEBUG bootstrap sync update_stack #{e.message}" # ERROR: No updates are to be performed.
+      else
+        # Always show the some other error message
+        log.info "ERROR bootstrap sync update_stack #{e.message}" # Some other error
+        raise
+      end
       true
     end
 

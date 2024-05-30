@@ -41,6 +41,7 @@ module Jets::Core::Config
 
       @base64_encode = true
 
+      # Not yet documented because the config interface may change.
       @git = ActiveSupport::OrderedOptions.new
       @git.push = ActiveSupport::OrderedOptions.new
       @git.push.branch = ActiveSupport::OrderedOptions.new
