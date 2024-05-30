@@ -43,6 +43,7 @@ module Jets::Core::Config
 
       # Not yet documented because the config interface may change.
       @git = ActiveSupport::OrderedOptions.new
+      @git.bin = "/usr/bin/git"
       @git.push = ActiveSupport::OrderedOptions.new
       @git.push.branch = ActiveSupport::OrderedOptions.new
 

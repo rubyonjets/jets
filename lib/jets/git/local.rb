@@ -67,7 +67,7 @@ module Jets::Git
     end
 
     def git_current_branch
-      `rev-parse --abbrev-ref HEAD`.strip
+      `git rev-parse --abbrev-ref HEAD`.strip
     end
   end
 end

@@ -15,9 +15,6 @@ module Jets
     desc "generate SUBCOMMAND", "generate subcommands"
     subcommand "generate", Generate
 
-    desc "git SUBCOMMAND", "git subcommands"
-    subcommand "git", Git
-
     desc "maintenance SUBCOMMAND", "maintenance subcommands"
     subcommand "maintenance", Maintenance
 
@@ -70,6 +67,11 @@ module Jets
     end
     map "funs" => :functions
     # use string "funs", otherwise `jets fun` results in Thor sort error
+
+    desc "git", "Git wrapper. Runs git push and jets ci:logs"
+    def git(*args)
+      Git.new(options.merge(args: args)).run
+    end
 
     Init.cli_options.each { |args| option(*args) }
     register(Init, "init", "init", "Initialize project for Jets")
