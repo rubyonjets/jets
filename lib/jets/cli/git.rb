@@ -9,7 +9,7 @@ class Jets::CLI
     end
 
     def run
-      if @command == "push" && ProjectCheck.new(@args).project?
+      if @command == "push" && Jets::Thor::ProjectCheck.new(@args).project?
         git_push
         jets_ci_logs
       else

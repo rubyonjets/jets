@@ -38,6 +38,7 @@ module Jets::Thor
       commands = %w[
         delete
         generate
+        git
         init
         login
         logout
