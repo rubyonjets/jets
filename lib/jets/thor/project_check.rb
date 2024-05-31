@@ -7,7 +7,7 @@ module Jets::Thor
     end
 
     def check!
-      return if no_project_command? || project?
+      return if project? || no_project_command?
       raise NotProjectError, "Not a Jets project. Please run this command from a Jets project folder."
     end
 
