@@ -64,11 +64,11 @@ class Jets::CLI
     def push_branch
       args = @args.reject { |arg| arg.start_with?("-") } # remove options
       case args.size
-      when 0
+      when 1 # git push
         local.git_default_branch
-      when 1
+      when 2 # git push origin
         local.git_current_branch
-      when 2
+      when 3 # git push origin master
         args.last
       else
         raise "ERROR: Too many arguments. Usage: jets git:push [REMOTE] [BRANCH]"
