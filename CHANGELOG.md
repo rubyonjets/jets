@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.11] - 2024-06-13
+- fix prewarming error post deploy
+
 ## [4.0.10] - 2023-12-04
 - [#678](https://github.com/boltops-tools/jets/pull/678) handle option method or http_method from route state
 
