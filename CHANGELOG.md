@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.12] - 2024-06-13
+- revert loosen rails gem dependencies
+
 ## [4.0.11] - 2024-06-13
 - fix prewarming error post deploy
 
