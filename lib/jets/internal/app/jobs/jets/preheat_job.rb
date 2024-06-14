@@ -47,11 +47,6 @@ private
   def call_options(quiet)
     options = {}
     options.merge!(mute: true, mute_output: true) if quiet
-    # All the methods in this Job class leads to Jets::Commands::Call.
-    # This is true for the Jets::Preheat.warm_all also.
-    # These jobs delegate out to Lambda function calls. We do not need/want
-    # the invocation type: RequestResponse in this case.
-    options.merge!(invocation_type: "Event")
     options
   end
 end
