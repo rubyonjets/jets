@@ -18,6 +18,7 @@ class Jets::CLI
       presenter = CliFormat::Presenter.new(@options)
       presenter.empty_message = "No url info found"
       presenter.header = ["Name", "Value"] if @options[:header] # default: false
+      puts "data #{data}".color(:purple)
       data.keys.sort.each do |name|
         next if name.to_s == "queue_url" # dont show Queue Url
         name_url = name.to_s.titleize
