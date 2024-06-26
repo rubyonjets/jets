@@ -73,6 +73,9 @@ class Jets::Core::Config::Bootstrap
         dynamodb
         ecr
         ecr-public
+        ecs
+        elb
+        elbv2
         events
         iam
         lambda
