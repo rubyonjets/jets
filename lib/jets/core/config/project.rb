@@ -51,7 +51,7 @@ module Jets::Core::Config
       @tips.enable = true
       @tips.concurrency_change = true
       @tips.env_change = true
-      @tips.faster_deploy = true
+      @tips.faster_deploy = false
       @tips.remote_run = true
       @tips.ssm_change = true
     end

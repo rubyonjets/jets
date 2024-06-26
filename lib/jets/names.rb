@@ -14,6 +14,10 @@ class Jets::Names
       "#{templates_folder}/controller.yml"
     end
 
+    def ecs_template_path
+      "#{templates_folder}/ecs.yml"
+    end
+
     def app_template_path(app_class)
       underscored = underscore(app_class)
       "#{templates_folder}/app-#{underscored}.yml"
