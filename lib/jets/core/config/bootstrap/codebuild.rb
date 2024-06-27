@@ -74,8 +74,7 @@ class Jets::Core::Config::Bootstrap
         ecr
         ecr-public
         ecs
-        elb
-        elbv2
+        elasticloadbalancing
         events
         iam
         lambda
