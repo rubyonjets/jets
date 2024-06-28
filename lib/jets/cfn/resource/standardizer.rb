@@ -16,12 +16,12 @@ class Jets::Cfn::Resource
       first, second, third, _ = definition
       if definition.size == 1 && first.is_a?(Hash) # long form
         attrs = first.values.first
-        attrs.delete(:Properties) if attrs[:Properties].blank?
+        remove_nil_properties!(attrs)
         first # pass through
       elsif definition.size == 2 && second.is_a?(Hash) # medium form
-        logical_id, attributes = first, second
-        attributes.delete(:Properties) if attributes[:Properties].blank?
-        {logical_id => attributes}
+        logical_id, attrs = first, second
+        remove_nil_properties!(attrs)
+        {logical_id => attrs}
       elsif definition.size == 2 && second.is_a?(String) # short form
         logical_id, type = first, second
         {logical_id => {
@@ -32,12 +32,23 @@ class Jets::Cfn::Resource
         template = {logical_id => {
           Type: type
         }}
-        attributes = template.values.first
-        attributes[:Properties] = properties unless properties.empty?
+        attrs = template.values.first
+        attrs[:Properties] = properties unless properties.empty?
+        remove_nil_properties!(attrs)
         template
       else # Dont understand this form
         raise "Invalid form provided. definition #{definition.inspect}"
       end
+    end
+
+    def remove_nil_properties!(attrs)
+      return attrs unless attrs[:Properties]
+      if attrs[:Properties].blank?
+        attrs.delete(:Properties) # remove empty Properties
+      else
+        attrs[:Properties].delete_if { |k, v| v.nil? } # remove nil values
+      end
+      attrs
     end
   end
 end
