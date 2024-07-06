@@ -152,6 +152,14 @@ module Jets
       Jets::CLI::Release::Rollback.new(options.merge(version: version)).run
     end
 
+    desc "scale", "Scale ECS service"
+    option :desired, type: :numeric, desc: "Desired count"
+    option :min, type: :numeric, desc: "Minimum capacity"
+    option :max, type: :numeric, desc: "Maximum capacity"
+    def scale
+      Scale.new(options).update
+    end
+
     desc "stacks", "List deployed stacks"
     paging_options
     option :all_projects, desc: "Show all stacks across all projects", type: :boolean, default: false

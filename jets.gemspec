@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-sdk-cloudwatchlogs"
   spec.add_dependency "aws-sdk-codebuild"
   spec.add_dependency "aws-sdk-dynamodb"
+  spec.add_dependency "aws-sdk-ecs"
   spec.add_dependency "aws-sdk-iam"
   spec.add_dependency "aws-sdk-kinesis"
   spec.add_dependency "aws-sdk-lambda"

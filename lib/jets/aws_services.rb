@@ -3,6 +3,7 @@ require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
 require "aws-sdk-codebuild"
 require "aws-sdk-dynamodb"
+require "aws-sdk-ecs"
 require "aws-sdk-lambda"
 require "aws-sdk-s3"
 require "aws-sdk-sns"
@@ -42,6 +43,11 @@ module Jets::AwsServices
     Aws::DynamoDB::Client.new(aws_options)
   end
   global_memoize :dynamodb
+
+  def ecs
+    Aws::ECS::Client.new(aws_options)
+  end
+  global_memoize :codebuild
 
   def logs
     Aws::CloudWatchLogs::Client.new(aws_options)
