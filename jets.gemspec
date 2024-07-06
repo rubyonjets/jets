@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "aws-logs", ">= 1.0"
   spec.add_dependency "aws-mfa-secure", ">= 0.4.0"
   spec.add_dependency "aws-sdk-apigateway"
+  spec.add_dependency "aws-sdk-applicationautoscaling"
   spec.add_dependency "aws-sdk-cloudformation"
   spec.add_dependency "aws-sdk-cloudwatchevents"
   spec.add_dependency "aws-sdk-cloudwatchlogs"

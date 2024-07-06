@@ -1,4 +1,5 @@
 require "aws-sdk-apigateway"
+require "aws-sdk-applicationautoscaling"
 require "aws-sdk-cloudformation"
 require "aws-sdk-cloudwatchlogs"
 require "aws-sdk-codebuild"
@@ -22,6 +23,11 @@ module Jets::AwsServices
     Aws::APIGateway::Client.new(aws_options)
   end
   global_memoize :apigateway
+
+  def applicationautoscaling
+    Aws::ApplicationAutoScaling::Client.new(aws_options)
+  end
+  global_memoize :applicationautoscaling
 
   def lambda_client
     Aws::Lambda::Client.new(aws_options)

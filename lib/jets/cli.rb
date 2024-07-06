@@ -145,6 +145,16 @@ module Jets
       Exec.new(options.merge(command: command)).run
     end
 
+    desc "ps", "Show process info on ECS service"
+    option :status, default: "all", desc: "Status filter: all, pending, stopped, running."
+    # not setting format default so we can use Ufo.config.ps.format and dont want to trigger a config load this early
+    formats = CliFormat.formats + ["auto"]
+    option :format, desc: "Output formats: #{formats.sort.join(", ")}"
+    option :summary, type: :boolean, desc: "Show summary"
+    def ps
+      Ps.new(options).run
+    end
+
     # Shorthand command for jets release:rollback which works too but is hidden
     desc "rollback VERSION", "Rollback to a previous release"
     option :yes, aliases: :y, type: :boolean, desc: "Skip are you sure prompt"

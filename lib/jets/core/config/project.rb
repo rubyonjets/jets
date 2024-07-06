@@ -8,6 +8,8 @@ module Jets::Core::Config
       :base64_encode,
       :dotenv,
       :git,
+      :ps,
+      :scale,
       :tips
     )
     def initialize(*)
@@ -46,6 +48,14 @@ module Jets::Core::Config
       @git.bin = "/usr/bin/git"
       @git.push = ActiveSupport::OrderedOptions.new
       @git.push.branch = ActiveSupport::OrderedOptions.new
+
+      @ps = ActiveSupport::OrderedOptions.new
+      @ps.format = "auto"
+
+      @scale = ActiveSupport::OrderedOptions.new
+      @scale.manual_changes = ActiveSupport::OrderedOptions.new
+      @scale.manual_changes.warning = false
+      @scale.manual_changes.retain = false
 
       @tips = ActiveSupport::OrderedOptions.new
       @tips.enable = true
