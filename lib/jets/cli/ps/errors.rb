@@ -23,16 +23,16 @@ class Jets::CLI::Ps
     # And see was unable to place a task
     # Probably not enough capacity
     def scale
-      return if service.running_count >= service.desired_count
+      return if ecs_service.running_count >= ecs_service.desired_count
 
       error_event = recent_events.find do |e|
         e.message =~ /was unable to place a task/
       end
       return unless error_event
 
-      logger.info "There is an issue scaling the #{@stack_name.color(:green)} service to #{service.desired_count}.  Here's the error:"
+      logger.info "There is an issue scaling the #{ecs_service.service_name} to #{ecs_service.desired_count}.  Here's the error:"
       logger.info error_event.message.color(:red)
-      if service.launch_type == "EC2"
+      if ecs_service.launch_type == "EC2"
         logger.info <<~EOL
           If AutoScaling is set up for the container instances,
           it can take a little time to add additional instances.
@@ -139,25 +139,12 @@ class Jets::CLI::Ps
       logger.error "ERROR: #{message}".color(:red)
 
       logger.error <<~EOL
-        You might have to #{cancel_actions[:cfn]} the stack with:
-
-            ufo #{cancel_actions[:ufo]}
-
-        And try again after fixing the issue.
+        You might have to cancel the stack with th CloudFormation console and
+        try again after fixing the issue.
       EOL
     end
 
     private
-
-    def cancel_actions
-      stack = find_stack(@stack_name)
-      if stack && stack.stack_status == "CREATE_COMPLETE"
-        {cfn: "delete", ufo: "destroy"}
-      else
-        {cfn: "cancel", ufo: "cancel"}
-      end
-    end
-    memoize :cancel_actions
 
     # only check a few most recent
     def recent_events

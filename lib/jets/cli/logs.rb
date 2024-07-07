@@ -29,10 +29,6 @@ class Jets::CLI
       end
     end
 
-    def deployment_type
-      "ecs" # TODO: implement
-    end
-
     def log_group_name_ecs
       log_group_name_ecs_params["awslogs-group"]
     end
