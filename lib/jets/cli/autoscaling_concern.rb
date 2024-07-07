@@ -3,24 +3,33 @@ class Jets::CLI
     extend Memoist
     include Jets::AwsServices::AwsHelpers
 
+    # TODO: move to release and use api to reduce AWS calls and make faster
     def autoscaling_enabled?
-      false
-      # describe cfn to see if autoscaling is enabled
-      # config.ecs.autoscaling.enabled &&
-      #   config.ecs.autoscaling.min_capacity &&
-      #   config.ecs.autoscaling.max_capacity
+      return unless ecs_stack_name
+      ecs_stack_resources.detect do |r|
+        r.resource_type == "AWS::ApplicationAutoScaling::ScalableTarget"
+      end
     end
 
-    # TODO: move to release and use api to reduce AWS calls and make faster
-    def service
+    def ecs_stack_resources
+      return [] unless ecs_stack_name
+      cfn.describe_stack_resources(stack_name: ecs_stack_name).stack_resources
+    end
+    memoize :ecs_stack_resources
+
+    def ecs_stack_name
       parent_stack = find_stack(Jets.project.namespace)
       return unless parent_stack
       output = parent_stack.outputs.find do |o|
         o.output_key == "Ecs"
       end
-      return unless output
+      output&.output_value
+    end
+    memoize :ecs_stack_name
 
-      ecs_stack_resources = cfn.describe_stack_resources(stack_name: output.output_value).stack_resources
+    # TODO: move to release and use api to reduce AWS calls and make faster
+    def service
+      return unless ecs_stack_name
       resource = ecs_stack_resources.find do |r|
         r.resource_type == "AWS::ECS::Service"
       end

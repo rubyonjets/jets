@@ -123,11 +123,11 @@ class Jets::CLI
       tasks.each do |row|
         columns = row.to_a
         width = columns.inject(0) do |total, column|
-          total += column.to_s.length
+          total + column.to_s.length
         end
         max = width if width >= max
       end
-      padding = Task.header.size * 3 + 4
+      padding = Task.header.size * 3 + 1
       # max full column width. accounts for all the rows plus the padding from the table output
       max + padding
     end

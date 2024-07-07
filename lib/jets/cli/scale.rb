@@ -43,7 +43,7 @@ class Jets::CLI
 
     def set_autoscaling
       return unless @min || @max
-      scalable_target = stack_resources.find do |r|
+      scalable_target = ecs_stack_resources.find do |r|
         r.logical_resource_id == "ScalingTarget"
       end
       register_scalable_target(scalable_target)

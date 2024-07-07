@@ -80,7 +80,7 @@ class Jets::CLI::Ps
       # Seems like stopped_at is better as when ECS is trying to scale it leaves a lot of tasks
       stopped_at = time(@task["stopped_at"])
       return false unless stopped_at
-      time = Time.now - 60 * Ufo.config.ps.hide_age
+      time = Time.now - 60 * Jets.project.config.ps.hide_age
       status == "STOPPED" && stopped_at < time
     end
 
@@ -91,12 +91,12 @@ class Jets::CLI::Ps
     # Grab all the reasons and surface to user.
     # Even though will make the table output ugly, debugging info merits it.
     #
-    #     ufo ps --format json
+    #     jets ps --format json
     #
     def notes
       return unless @task["stopped_reason"]
       notes = []
-      notes << "Task Stopped Reason: #{@task["stopped_reason"]}."
+      notes << "Reason: #{@task["stopped_reason"]}."
       @task.containers.each do |container|
         notes << "Container #{container.name} reason: #{container.reason}" unless container.reason.blank?
       end
