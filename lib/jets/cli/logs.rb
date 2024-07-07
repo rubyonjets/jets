@@ -2,7 +2,7 @@ require "aws-logs"
 
 class Jets::CLI
   class Logs < Base
-    include Jets::AwsServices::AwsHelpers
+    include EcsConcern
 
     def run
       options = @options.dup # so it can be modified
@@ -34,18 +34,22 @@ class Jets::CLI
     end
 
     def log_group_name_ecs
+      log_group_name_ecs_params["awslogs-group"]
+    end
+
+    def log_group_name_ecs_params
       unless ecs_service
-        logger.info "Cannot find stack: #{namespace}"
+        log.info "Cannot find stack: #{parent_stack_name}"
         exit 1
       end
-      task_definition = info.service.task_definition
+      task_definition = ecs_service.task_definition
       resp = ecs.describe_task_definition(task_definition: task_definition)
 
       container_definitions = resp.task_definition.container_definitions
 
       if container_definitions.size > 1 && !@options[:container]
-        logger.info "Multiple containers found. ufo logs will use the first container."
-        logger.info "You can also use the --container option to set the container to use."
+        log.info "Multiple containers found. ufo logs will use the first container."
+        log.info "You can also use the --container option to set the container to use."
       end
 
       definition = if @options[:container]
@@ -57,15 +61,15 @@ class Jets::CLI
       end
 
       unless definition
-        logger.error "ERROR: unable to find a container".color(:red)
-        logger.error "You specified --container #{@options[:container]}" if @options[:container]
-        exit
+        log.error "ERROR: unable to find a container".color(:red)
+        log.error "You specified --container #{@options[:container]}" if @options[:container]
+        exit 1
       end
 
       log_conf = definition.log_configuration
       unless log_conf
-        logger.error "ERROR: Unable to find a log_configuration for container: #{definition.name}".color(:red)
-        logger.error "You specified --container #{@options[:container]}" if @options[:container]
+        log.error "ERROR: Unable to find a log_configuration for container: #{definition.name}".color(:red)
+        log.error "You specified --container #{@options[:container]}" if @options[:container]
         exit 1
       end
 
@@ -75,8 +79,8 @@ class Jets::CLI
         # options["awslogs-stream-prefix"]
         log_conf.options
       else
-        logger.error "ERROR: Only supports awslogs driver. Detected log_driver: #{log_conf.log_driver}".color(:red)
-        exit 1 unless ENV["UFO_TEST"]
+        log.error "ERROR: Only supports awslogs driver. Detected log_driver: #{log_conf.log_driver}".color(:red)
+        exit 1 unless ENV["JETS_TEST"]
       end
     end
 
@@ -88,8 +92,8 @@ class Jets::CLI
         abort "Unable to determine log group name by looking it up. Can you double check it?"
       end
 
-      unless log_group_name.include?(Jets.project.namespace)
-        log_group_name = "#{Jets.project.namespace}-#{log_group_name}"
+      unless log_group_name.include?(parent_stack_name)
+        log_group_name = "#{parent_stack_name}-#{log_group_name}"
       end
 
       unless log_group_name.include?("aws/lambda")

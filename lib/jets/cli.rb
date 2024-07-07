@@ -107,6 +107,9 @@ module Jets
     option :log_group_name, aliases: :n, desc: "The log group name.  Default: /aws/lambda/NAMESPACE-controller"
     option :refresh_rate, default: 1, type: :numeric, desc: "How often to refresh the logs in seconds."
     option :wait_exists, default: true, type: :boolean, desc: "Whether to wait until the log group exists.  By default, it will wait."
+    # ECS only options
+    # For future: ECS multiple containers in task definition suppport
+    # option :container, aliases: :c, desc: "Container name to show logs for. ECS only option. Only needed when ECS task multiple containers"
     def logs
       Logs.new(options).run
     end
