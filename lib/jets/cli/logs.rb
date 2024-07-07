@@ -2,8 +2,6 @@ require "aws-logs"
 
 class Jets::CLI
   class Logs < Base
-    include DeployType
-
     def run
       options = @options.dup # so it can be modified
       options[:log_group_name] = log_group_name
@@ -21,12 +19,10 @@ class Jets::CLI
     def log_group_name
       log_group_name = @options[:log_group_name] # can be nil
       return log_group_name if log_group_name
-      strategy.log_group_name
-    end
 
-    def strategy
       klass = "Jets::CLI::Logs::#{deploy_type.to_s.camelize}".constantize
-      klass.new(options)
+      strategy = klass.new(options)
+      strategy.log_group_name
     end
   end
 end

@@ -1,4 +1,4 @@
-class Jets::CLI::Exec::Repl
+class Jets::CLI::Exec::Lambda::Repl
   class History
     MAX_SIZE = 10_000
 

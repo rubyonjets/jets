@@ -2,7 +2,7 @@ require "fileutils"
 require "open3"
 require "readline"
 
-class Jets::CLI::Exec
+class Jets::CLI::Exec::Lambda
   class Repl
     extend Memoist
     include Jets::Util::Logging

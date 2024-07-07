@@ -1,14 +1,9 @@
 class Jets::CLI
   class Exec < Base
     def run
-      if @options[:command].empty?
-        Repl.new(options).start
-      else
-        Command.new(options).run
-      end
-    rescue Jets::CLI::Call::Error => e
-      puts "ERROR: #{e.message}".color(:red)
-      abort "Unable to find the function.  Please check the function name and try again."
+      klass = "Jets::CLI::Exec::#{deploy_type.to_s.camelize}".constantize
+      strategy = klass.new(options)
+      strategy.execute
     end
   end
 end

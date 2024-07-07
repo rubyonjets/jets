@@ -1,4 +1,4 @@
-class Jets::CLI::Exec
+class Jets::CLI::Exec::Lambda
   class Command < Jets::CLI::Call
     # override behavior
     def run

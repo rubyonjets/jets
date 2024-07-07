@@ -2,7 +2,7 @@ class Jets::CLI
   class Base
     extend Memoist
     include Jets::Api
-    include Jets::AwsServices
+    include Jets::AwsServices::AwsHelpers
     include Jets::Util::Logging
     include Jets::Util::Sure
 
@@ -11,6 +11,20 @@ class Jets::CLI
       @options = options
       Jets.boot
     end
+
+    def deploy_type
+      parent_stack = find_stack(parent_stack_name)
+      return unless parent_stack
+      parent_stack.outputs.find do |o|
+        case o.output_key
+        when "Ecs"
+          return "ecs"
+        when "Controller"
+          return "lambda"
+        end
+      end
+    end
+    memoize :deploy_type
 
     def paging_params
       params = {}
