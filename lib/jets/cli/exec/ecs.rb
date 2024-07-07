@@ -1,6 +1,7 @@
 class Jets::CLI::Exec
   class Ecs < Jets::CLI::Base
     include Jets::CLI::EcsConcern
+    delegate :config, to: "Jets.project"
 
     def execute
       check_install!
@@ -37,6 +38,10 @@ class Jets::CLI::Exec
       )
     end
 
+    def command
+      @options[:command].empty? ? config.exec.ecs.command : @options[:command].join(" ")
+    end
+
     def container(task)
       return @options[:container] if @options[:container]
       containers = task.containers
@@ -44,7 +49,7 @@ class Jets::CLI::Exec
         c.name == @options[:role]
       end
       container ||= containers.first  # assume first task if not roles match
-      container.name if container
+      container&.name
     end
 
     def execute_command(options = {})
@@ -65,10 +70,6 @@ class Jets::CLI::Exec
     def sh(command)
       puts "=> #{command}"
       Kernel.exec command
-    end
-
-    def command
-      @options[:command]
     end
 
     def check_install!

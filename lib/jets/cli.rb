@@ -144,6 +144,8 @@ module Jets
     desc "exec", "REPL or execute commands on AWS Lambda"
     function_name_option
     verbose_option
+    # ecs only
+    option :container, desc: "Container name to exec into. Ecs only option. Default first container"
     def exec(*command)
       Exec.new(options.merge(command: command)).run
     end

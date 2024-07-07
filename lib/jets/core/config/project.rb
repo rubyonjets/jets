@@ -7,6 +7,7 @@ module Jets::Core::Config
       :ignore_paths,
       :base64_encode,
       :dotenv,
+      :exec,
       :git,
       :ps,
       :scale,
@@ -42,6 +43,10 @@ module Jets::Core::Config
       @dotenv.ssm.long_env_name = false     # helps with Jets 5 legacy
 
       @base64_encode = true
+
+      @exec = ActiveSupport::OrderedOptions.new
+      @exec.ecs = ActiveSupport::OrderedOptions.new
+      @exec.ecs.command = "/bin/bash" # aws ecs execute-command cli
 
       # Not yet documented because the config interface may change.
       @git = ActiveSupport::OrderedOptions.new
