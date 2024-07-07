@@ -67,6 +67,7 @@ class Jets::Core::Config::Bootstrap
       @codebuild.iam.managed_policy = []
       @codebuild.iam.default_policy = %w[
         apigateway
+        application-autoscaling
         cloudformation
         cloudfront
         codebuild
