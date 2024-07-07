@@ -1,7 +1,7 @@
 class Jets::CLI
   class Scale < Jets::CLI::Base
-    include AutoscalingConcern
-    delegate :config, :namespace, to: "Jets.project"
+    include EcsConcern
+    delegate :config, to: "Jets.project"
 
     def initialize(options = {})
       super
@@ -12,7 +12,7 @@ class Jets::CLI
 
     def update
       unless service
-        log.error "ERROR: Unable to find ECS service for #{namespace}".color(:red)
+        log.error "ERROR: Unable to find ECS service for #{parent_stack_name}".color(:red)
         log.error "Are you sure you it's deployed?"
         exit 1
       end
@@ -25,7 +25,7 @@ class Jets::CLI
         return
       end
 
-      log.info "Configuring ECS scaling settings for #{namespace}"
+      log.info "Configuring ECS scaling settings for #{parent_stack_name}"
       set_desired_count
       set_autoscaling
       warning
@@ -34,8 +34,8 @@ class Jets::CLI
     def set_desired_count
       return unless @desired
       ecs.update_service(
-        service: service.service_name,
-        cluster: @cluster,
+        service: ecs_service.service_name,
+        cluster: ecs_cluster_name,
         desired_count: @desired
       )
       log.info "Configured desired count to #{@desired}"
@@ -56,13 +56,13 @@ class Jets::CLI
     def register_scalable_target(scalable_target)
       # service/dev/app1-web-dev-EcsService-Q0XkN6VtxGWv|ecs:service:DesiredCount|ecs
       return unless scalable_target&.physical_resource_id # stack still creating
-      resource_id, scalable_dimension, service_namespace = scalable_target.physical_resource_id.split("|")
+      resource_id, scalable_dimension, service_parent_stack_name = scalable_target.physical_resource_id.split("|")
       applicationautoscaling.register_scalable_target(
         max_capacity: @max,
         min_capacity: @min,
         resource_id: resource_id,
         scalable_dimension: scalable_dimension,
-        service_namespace: service_namespace
+        service_parent_stack_name: service_parent_stack_name
       )
     rescue Aws::ApplicationAutoScaling::Errors::ValidationException => e
       log.error "ERROR: #{e.class} #{e.message}".color(:red)

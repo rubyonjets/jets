@@ -3,16 +3,16 @@ require "tty-screen"
 
 class Jets::CLI
   class Ps < Jets::CLI::Base
-    include AutoscalingConcern
-    delegate :config, :namespace, to: "Jets.project"
+    include EcsConcern
+    delegate :config, to: "Jets.project"
 
     def run
-      unless service
-        parent_stack = find_stack(namespace)
+      unless ecs_service
+        parent_stack = find_stack(parent_stack_name)
         if parent_stack && parent_stack.stack_status == "CREATE_IN_PROGRESS"
           log.info "Stack is still creating. Try again after it completes"
         else
-          "No stack #{namespace} found"
+          "No stack #{parent_stack_name} found"
         end
         nil
       end
@@ -25,7 +25,7 @@ class Jets::CLI
       end
 
       all_task_arns = task_arns.each_slice(100).map do |arns|
-        resp = ecs.describe_tasks(tasks: arns, cluster: @cluster)
+        resp = ecs.describe_tasks(tasks: arns, cluster: ecs_cluster_name)
         resp["tasks"]
       end.flatten
 
@@ -36,14 +36,14 @@ class Jets::CLI
     def summary
       return unless Jets.project.ps.summary
 
-      cluster_name = service.cluster_arn.split("/").last
+      cluster_name = ecs_service.cluster_arn.split("/").last
       data = [
-        ["Stack", namespace],
-        ["Service", service.service_name],
+        ["Stack", parent_stack_name],
+        ["Service", ecs_service.service_name],
         ["Cluster", cluster_name],
-        ["Status", service.status],
+        ["Status", ecs_service.status],
         ["Tasks", tasks_counts],
-        ["Launch type", service.launch_type]
+        ["Launch type", ecs_service.launch_type]
       ]
 
       presenter = CliFormat::Presenter.new(format: "info")
@@ -54,7 +54,7 @@ class Jets::CLI
     end
 
     def tasks_counts
-      message = "Running: #{service.running_count} Desired: #{service.desired_count}"
+      message = "Running: #{ecs_service.running_count} Desired: #{ecs_service.desired_count}"
       if scalable_target
         message += " Min: #{scalable_target.min_capacity} Max: #{scalable_target.max_capacity}"
       end
@@ -62,10 +62,10 @@ class Jets::CLI
     end
 
     def scalable_target
-      return unless autoscaling_enabled?
+      return unless ecs_autoscaling?
       # Docs: https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/ApplicationAutoScaling/Client.html#describe_scalable_targets-instance_method
       # ECS service - The resource type is service and the unique identifier is the cluster name and service name. Example: service/default/sample-webapp.
-      resource_id = "service/#{@cluster}/#{service.service_name}"
+      resource_id = "service/#{ecs_cluster_name}/#{ecs_service.service_name}"
       resp = applicationautoscaling.describe_scalable_targets(
         service_namespace: "ecs",
         resource_ids: [resource_id]
@@ -153,8 +153,8 @@ class Jets::CLI
       statuses.each do |status|
         threads << Thread.new do
           options = {
-            service_name: service.service_name,
-            cluster: @cluster,
+            service_name: ecs_service.service_name,
+            cluster: ecs_cluster_name,
             desired_status: status
           }
           # Limit display of too many stopped tasks

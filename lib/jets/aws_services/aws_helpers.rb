@@ -2,6 +2,10 @@ module Jets::AwsServices
   module AwsHelpers # :nodoc:
     include Jets::AwsServices
 
+    def parent_stack_name
+      Jets.project.namespace
+    end
+
     def find_stack(stack_name)
       resp = cfn.describe_stacks(stack_name: stack_name)
       resp.stacks.first

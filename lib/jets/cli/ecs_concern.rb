@@ -1,10 +1,9 @@
 class Jets::CLI
-  module AutoscalingConcern
+  module EcsConcern
     extend Memoist
     include Jets::AwsServices::AwsHelpers
 
-    # TODO: move to release and use api to reduce AWS calls and make faster
-    def autoscaling_enabled?
+    def ecs_autoscaling?
       return unless ecs_stack_name
       ecs_stack_resources.detect do |r|
         r.resource_type == "AWS::ApplicationAutoScaling::ScalableTarget"
@@ -27,25 +26,27 @@ class Jets::CLI
     end
     memoize :ecs_stack_name
 
-    # TODO: move to release and use api to reduce AWS calls and make faster
-    def service
+    def ecs_service
       return unless ecs_stack_name
       resource = ecs_stack_resources.find do |r|
         r.resource_type == "AWS::ECS::Service"
       end
       service = resource.physical_resource_id.split("/").last
 
-      resource = ecs_stack_resources.find do |r|
-        r.resource_type == "AWS::ECS::Cluster"
-      end
-      @cluster = resource.physical_resource_id.split("/").last
-
       services = ecs.describe_services(
-        cluster: @cluster,
+        cluster: ecs_cluster_name,
         services: [service]
       ).services
       @service = services.first
     end
-    memoize :service
+    memoize :ecs_service
+
+    def ecs_cluster_name
+      resource = ecs_stack_resources.find do |r|
+        r.resource_type == "AWS::ECS::Cluster"
+      end
+      resource.physical_resource_id.split("/").last
+    end
+    memoize :ecs_cluster_name
   end
 end

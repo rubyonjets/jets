@@ -161,7 +161,7 @@ class Jets::CLI::Ps
 
     # only check a few most recent
     def recent_events
-      service["events"][0..4]
+      ecs_service["events"][0..4]
     end
 
     def recent_message
