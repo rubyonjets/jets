@@ -34,7 +34,7 @@ class Jets::CLI
     end
 
     def summary
-      return unless @options[:summary]
+      return unless Jets.project.ps.summary
 
       data = [
         ["Stack", namespace],

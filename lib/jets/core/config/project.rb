@@ -51,6 +51,7 @@ module Jets::Core::Config
 
       @ps = ActiveSupport::OrderedOptions.new
       @ps.format = "auto"
+      @ps.summary = true
 
       @scale = ActiveSupport::OrderedOptions.new
       @scale.manual_changes = ActiveSupport::OrderedOptions.new

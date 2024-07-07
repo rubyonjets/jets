@@ -6,11 +6,11 @@ class Jets::CLI::Ps
     end
 
     def to_a
-      [id, name, release, started, status, notes]
+      [task_arn, name, definition_arn, started, status, notes]
     end
 
-    def id
-      @task["task_arn"].split("/").last.split("-").first
+    def task_arn
+      arn = @task["task_arn"].split("/").last.split("-").first
     end
 
     def name
@@ -25,9 +25,16 @@ class Jets::CLI::Ps
       container_names
     end
 
+    def definition_arn
+      arn = @task["task_definition_arn"].split("/").last
+      # sinatra-dev-Ecs-1PB6MIQ6U9URV-TaskDefinitionWeb-YpjsPjMp8Hho:1
+      # => YpjsPjMp8Hho:1
+      arn.split("-").last
+    end
+
     # PENDING wont yet have any containers yet but since using task definition we're ok
     def container_names
-      task_definition = task_definition(@task.task_definition_arn)
+      task_definition = task_definition(@task.definition_arn)
       names = task_definition.container_definitions.map do |container_definition|
         container_definition.name
       end
@@ -38,9 +45,9 @@ class Jets::CLI::Ps
     # Look up the names from the task definition to try and get right order
     # This still seems to return inconsistently.
     # IE: Not the order that was defined in the task definition originally
-    def task_definition(task_definition_arn)
+    def task_definition(definition_arn)
       resp = ecs.describe_task_definition(
-        task_definition: task_definition_arn
+        task_definition: definition_arn
       )
       resp.task_definition
     end
@@ -48,10 +55,6 @@ class Jets::CLI::Ps
 
     def container_instance_arn
       @task["container_instance_arn"].split("/").last
-    end
-
-    def release
-      @task["task_definition_arn"].split("/").last
     end
 
     def started
@@ -119,7 +122,7 @@ class Jets::CLI::Ps
 
     class << self
       def header
-        %w[Task Name Release Started Status Notes]
+        %w[Task Name Definition Started Status Notes]
       end
     end
   end
