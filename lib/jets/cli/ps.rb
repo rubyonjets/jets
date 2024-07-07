@@ -36,9 +36,11 @@ class Jets::CLI
     def summary
       return unless Jets.project.ps.summary
 
+      cluster_name = service.cluster_arn.split("/").last
       data = [
         ["Stack", namespace],
         ["Service", service.service_name],
+        ["Cluster", cluster_name],
         ["Status", service.status],
         ["Tasks", tasks_counts],
         ["Launch type", service.launch_type]

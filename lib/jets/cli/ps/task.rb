@@ -6,7 +6,7 @@ class Jets::CLI::Ps
     end
 
     def to_a
-      [task_arn, name, definition_arn, started, status, notes]
+      [task_arn, name, definition_info, started, status, notes]
     end
 
     def task_arn
@@ -25,11 +25,12 @@ class Jets::CLI::Ps
       container_names
     end
 
-    def definition_arn
+    def definition_info
       arn = @task["task_definition_arn"].split("/").last
       # sinatra-dev-Ecs-1PB6MIQ6U9URV-TaskDefinitionWeb-YpjsPjMp8Hho:1
       # => YpjsPjMp8Hho:1
-      arn.split("-").last
+      # => YpjsPjMp8Hho
+      arn.split("-").last.split(":").first
     end
 
     # PENDING wont yet have any containers yet but since using task definition we're ok
