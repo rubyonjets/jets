@@ -1,4 +1,4 @@
-class Jets::CLI::DeployType
+class Jets::CLI::Logs
   class Ecs < Base
     include Jets::CLI::EcsConcern
 

@@ -1,4 +1,4 @@
-class Jets::CLI::DeployType
+class Jets::CLI::Logs
   class Lambda < Base
     def log_group_name
       begin
