@@ -2,19 +2,6 @@ module Jets::AwsServices
   module AwsHelpers # :nodoc:
     include Jets::AwsServices
 
-    def deployment_type
-      parent_stack = find_stack(parent_stack_name)
-      return unless parent_stack
-      parent_stack.outputs.find do |o|
-        case o.output_key
-        when "Ecs"
-          return "ecs"
-        when "Controller"
-          return "lambda"
-        end
-      end
-    end
-
     def parent_stack_name
       Jets.project.namespace
     end
