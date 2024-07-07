@@ -6,11 +6,11 @@ class Jets::CLI::Ps
     end
 
     def to_a
-      [task_arn, name, definition_info, started, status, notes]
+      [task_info, name, definition_info, started, status, notes]
     end
 
-    def task_arn
-      arn = @task["task_arn"].split("/").last.split("-").first
+    def task_info
+      @task["task_arn"].split("/").last.split("-").first
     end
 
     def name

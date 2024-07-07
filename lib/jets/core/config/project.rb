@@ -52,12 +52,12 @@ module Jets::Core::Config
       @ps = ActiveSupport::OrderedOptions.new
       @ps.format = "auto"
       @ps.summary = true
-      @ps.hide_age = 5 # in minutes. IE: hide tasks that are older than 5 minutes
+      @ps.hide_age = 2 # in minutes. IE: hide tasks that are older than this in minutes
 
       @scale = ActiveSupport::OrderedOptions.new
       @scale.manual_changes = ActiveSupport::OrderedOptions.new
       @scale.manual_changes.warning = false
-      @scale.manual_changes.retain = false
+      @scale.manual_changes.retain = true
 
       @tips = ActiveSupport::OrderedOptions.new
       @tips.enable = true
