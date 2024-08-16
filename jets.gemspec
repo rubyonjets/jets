@@ -46,7 +46,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "cli-format", ">= 0.6.1"
   spec.add_dependency "dotenv", ">= 3.1"
   spec.add_dependency "dsl_evaluator", ">= 0.3.0" # for DslEvaluator.print_code
-  spec.add_dependency "fugit"
+  spec.add_dependency "fugit", "~> 1.11", ">= 1.11.1"
   spec.add_dependency "gems"
   spec.add_dependency "hashie"
   spec.add_dependency "kramdown"
