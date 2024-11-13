@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [6.0.4] - 2024-11-13
+- [#735](https://github.com/rubyonjets/jets/pull/735) fix du check for macosx
+- [#736](https://github.com/rubyonjets/jets/pull/736) git commit check
+
 ## [6.0.3] - 2024-05-30
 - [#730](https://github.com/rubyonjets/jets/pull/730) scheduler translate scheduler.schedule key
 
