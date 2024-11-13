@@ -104,7 +104,11 @@ class Jets::Code
     def warn_large_codebase
       return unless Jets.bootstrap.code.copy.warn_large
       return unless system("type du > /dev/null 2>&1")
-      bytes = `du -bs #{Jets.root}`.split("\t").first.to_i
+
+      # Use -k for cross-platform compatibility, multiply by 1024 to get bytes
+      # Works for both macOS and Linux
+      bytes = `du -ks #{Jets.root}`.split("\t").first.to_i * 1024
+
       if bytes > 1024 * 1024 * 1024 # 1GB
         size = ActiveSupport::NumberHelper.number_to_human_size(bytes)
         log.info <<~EOL
