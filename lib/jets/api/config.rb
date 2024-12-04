@@ -46,7 +46,17 @@ module Jets::Api
         You can get an api key from www.rubyonjets.com
       EOL
       print "Please provide your api key: "
-      $stdin.gets.strip
+      input = $stdin.gets
+      if input.nil?
+        # puts "No input provided. Exiting. Are you running this in a non-TTY environment?"
+        puts <<~EOL
+          Error: No input provided. Exiting.
+          This might be running inside a non-TTY environment like a script or a CI/CD pipeline.
+          Are you sure the API key was set?
+        EOL
+        exit 1
+      end
+      input.strip
     end
 
     # interface method: do not remove
