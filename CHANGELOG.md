@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [6.0.5] - 2024-12-04
+- [#737](https://github.com/rubyonjets/jets/pull/737) jets login prompt message when likely ci env
+
 ## [6.0.4] - 2024-11-13
 - [#735](https://github.com/rubyonjets/jets/pull/735) fix du check for macosx
 - [#736](https://github.com/rubyonjets/jets/pull/736) git commit check
