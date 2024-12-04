@@ -48,7 +48,6 @@ module Jets::Api
       print "Please provide your api key: "
       input = $stdin.gets
       if input.nil?
-        # puts "No input provided. Exiting. Are you running this in a non-TTY environment?"
         puts <<~EOL
           Error: No input provided. Exiting.
           This might be running inside a non-TTY environment like a script or a CI/CD pipeline.
