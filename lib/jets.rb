@@ -2,6 +2,7 @@ $stdout.sync = true unless ENV["JETS_STDOUT_SYNC"] == "0"
 
 $:.unshift(File.expand_path("../", __FILE__))
 
+require "logger" # must require logger before bundler
 require "jets/core_ext/bundler"
 require "jets/core_ext/file"
 require "jets/autoloaders"
