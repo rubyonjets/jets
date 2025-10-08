@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.14] - 2025-10-08
+- require logger before bundler in bin/webpack
+
 ## [4.0.13] - 2025-10-08
 - require logger and pin activemodel 6.1.7
 
