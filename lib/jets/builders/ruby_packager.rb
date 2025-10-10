@@ -4,7 +4,7 @@ module Jets::Builders
   class RubyPackager
     include Util
 
-    GEM_REGEXP = /-(arm|x)\d+.*-(darwin|linux)/
+    GEM_REGEXP = /-(arm|x)\d+.*-(darwin|linux|gnu)|-(aarch64|x86_64|arm64|i386|powerpc|sparc|mips|riscv|loongarch|sw_64|hppa|ia64|s390).*-(darwin|linux|gnu)/
 
     attr_reader :full_app_root
     def initialize(relative_app_root)
@@ -76,7 +76,7 @@ module Jets::Builders
       # For example we add the jets-rails to the Gemfile.
       copy_back_gemfile_lock
 
-      puts 'Bundle install completed'
+      puts "Bundle install completed"
     end
 
     # Example `bundle check` error:
@@ -91,7 +91,7 @@ module Jets::Builders
     #     The Gemfile's dependencies are satisfied
     #
     def bundle_check
-      out = ''
+      out = ""
       Bundler.with_unbundled_env do
         out = `cd #{cache_area} && bundle check 2>&1`
       end
@@ -123,7 +123,7 @@ module Jets::Builders
       puts "Tidying project: removing ignored files to reduce package size."
       tidy_project(@full_app_root)
       # The rack sub project has it's own gitignore.
-      tidy_project(@full_app_root+"/rack")
+      tidy_project(@full_app_root + "/rack")
     end
 
     def tidy_project(path)
@@ -157,7 +157,7 @@ module Jets::Builders
 
       # IE: /tmp/jets/demo/cache/vendor/gems/ruby/2.5.0/bundler/gems/webpacker-a8c46614c675
       Dir.glob("#{cache_area}/vendor/gems/ruby/2.5.0/bundler/gems/*").each do |path|
-        sha = path.split('-').last[0..6] # only first 7 chars of the git sha
+        sha = path.split("-").last[0..6] # only first 7 chars of the git sha
         unless git_shas.include?(sha)
           # puts "Removing old submoduled gem: #{path}" # uncomment to see and debug
           FileUtils.rm_rf(path) # REMOVE old submodule directory
@@ -191,7 +191,7 @@ module Jets::Builders
       # amount is the number of lines to remove
       new_lines, capture, count, amount = [], true, 0, 2
       lines.each do |l|
-        capture = false if l.include?('BUNDLED WITH')
+        capture = false if l.include?("BUNDLED WITH")
         if capture
           new_lines << l
         end
@@ -204,7 +204,7 @@ module Jets::Builders
       # Replace things like nokogiri (1.11.1-x86_64-darwin) => nokogiri (1.11.1)
       lines, new_lines = new_lines, []
       lines.each do |l|
-        l.sub!(GEM_REGEXP, '') if l =~ GEM_REGEXP
+        l.sub!(GEM_REGEXP, "") if GEM_REGEXP.match?(l)
         new_lines << l
       end
 
@@ -225,11 +225,11 @@ module Jets::Builders
           next
         end
 
-        in_platforms_section = l.include?('PLATFORMS')
+        in_platforms_section = l.include?("PLATFORMS")
         new_lines << l
       end
 
-      content = new_lines.join('')
+      content = new_lines.join("")
       IO.write(gemfile_lock, content)
     end
 
@@ -250,12 +250,12 @@ module Jets::Builders
     # Dont know why this is the case.
     def create_bundle_config(frozen: false)
       FileUtils.rm_rf("#{cache_area}/.bundle")
-      frozen_line = %Q|BUNDLE_FROZEN: "true"\n| if frozen
-      text =<<-EOL
----
-#{frozen_line}BUNDLE_PATH: "vendor/gems"
-BUNDLE_WITHOUT: "development:test"
-EOL
+      frozen_line = %(BUNDLE_FROZEN: "true"\n) if frozen
+      text = <<~EOL
+        ---
+        #{frozen_line}BUNDLE_PATH: "vendor/gems"
+        BUNDLE_WITHOUT: "development:test"
+      EOL
       bundle_config = "#{cache_area}/.bundle/config"
       FileUtils.mkdir_p(File.dirname(bundle_config))
       IO.write(bundle_config, text)
