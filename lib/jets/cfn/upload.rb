@@ -1,6 +1,6 @@
-require 'action_view'
-require 'digest'
-require 'rack/mime'
+require "action_view"
+require "digest"
+require "rack/mime"
 
 module Jets::Cfn
   class Upload
@@ -11,6 +11,10 @@ module Jets::Cfn
 
     def initialize(bucket_name)
       @bucket_name = bucket_name
+    end
+
+    def transfer_manager
+      @transfer_manager ||= Aws::S3::TransferManager.new
     end
 
     def upload
@@ -26,8 +30,7 @@ module Jets::Cfn
         next unless File.file?(path)
 
         key = "jets/cfn-templates/#{File.basename(path)}"
-        obj = s3_resource.bucket(bucket_name).object(key)
-        obj.upload_file(path)
+        transfer_manager.upload_file(path, bucket: bucket_name, key: key)
       end
     end
 
@@ -45,17 +48,16 @@ module Jets::Cfn
       puts "Uploading #{path} (#{file_size}) to S3"
       start_time = Time.now
       s3_key = "jets/code/#{File.basename(path)}"
-      obj = s3_resource.bucket(bucket_name).object(s3_key)
-      obj.upload_file(path)
+      transfer_manager.upload_file(path, bucket: bucket_name, key: s3_key)
       puts "Uploaded to s3://#{bucket_name}/#{s3_key}".color(:green)
-      puts "Time to upload code to s3: #{pretty_time(Time.now-start_time).color(:green)}"
+      puts "Time to upload code to s3: #{pretty_time(Time.now - start_time).color(:green)}"
     end
 
     def upload_assets
       puts "Checking for modified public assets and uploading to S3."
       start_time = Time.now
       upload_public_assets
-      puts "Time for public assets to s3: #{pretty_time(Time.now-start_time).color(:green)}"
+      puts "Time for public assets to s3: #{pretty_time(Time.now - start_time).color(:green)}"
     end
 
     def upload_public_assets
@@ -88,32 +90,31 @@ module Jets::Cfn
     end
 
     def upload_to_s3(full_path)
-      return if identical_on_s3?(full_path) && !ENV['JETS_ASSET_UPLOAD_FORCE']
+      return if identical_on_s3?(full_path) && !ENV["JETS_ASSET_UPLOAD_FORCE"]
 
       key = s3_key(full_path)
-      obj = s3_resource.bucket(bucket_name).object(key)
       content_type = content_type_headers(full_path)
       Jets.logger.debug "Uploading and setting content type for s3://#{bucket_name}/#{key} content_type #{content_type[:content_type].inspect}"
-      obj.upload_file(full_path, { acl: "public-read", cache_control: cache_control }.merge(content_type))
+      transfer_manager.upload_file(full_path, bucket: bucket_name, key: key, acl: "public-read", cache_control: cache_control, **content_type)
     end
 
     CONTENT_TYPES_BY_EXTENSION = {
-      '.css'  => 'text/css',
-      '.html' => 'text/html',
-      '.js'   => 'application/javascript',
+      ".css" => "text/css",
+      ".html" => "text/html",
+      ".js" => "application/javascript"
     }
     def content_type_headers(full_path)
       ext = File.extname(full_path)
       content_type = CONTENT_TYPES_BY_EXTENSION[ext] || Rack::Mime.mime_type(ext)
       if content_type
-        { content_type: content_type }
+        {content_type: content_type}
       else
         {}
       end
     end
 
     def s3_key(full_path)
-      relative_path = full_path.sub("#{Jets.root}/", '')
+      relative_path = full_path.sub("#{Jets.root}/", "")
       "jets/#{relative_path}"
     end
 
@@ -152,6 +153,5 @@ module Jets::Cfn
         "#{minutes.to_i}m #{seconds.to_i}s"
       end
     end
-
   end
 end

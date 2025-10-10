@@ -44,8 +44,7 @@ module Jets::Cfn
     end
 
     def upload_file_to_s3
-      obj = s3_resource.bucket(bucket_name).object(s3_key)
-      obj.upload_file(path)
+      transfer_manager.upload_file(path, bucket: bucket_name, key: s3_key)
 
       "https://s3.amazonaws.com/#{bucket_name}/#{s3_key}"
     end
@@ -56,6 +55,10 @@ module Jets::Cfn
 
     def s3_key
       @s3_key ||= "jets/cfn-templates/#{File.basename(path)}"
+    end
+
+    def transfer_manager
+      @transfer_manager ||= Aws::S3::TransferManager.new
     end
   end
 end
