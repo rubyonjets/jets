@@ -3,8 +3,11 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.16] - 2025-10-11
+- update serverlessgems dependency to 0.4.2
+
 ## [4.0.15] - 2025-10-10
-- clean up remove comment
+- update GEM_REGEXP match -gnu for Gemfile.lock rewrite
 
 ## [4.0.14] - 2025-10-08
 - require logger before bundler in bin/webpack
