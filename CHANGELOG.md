@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [4.0.17] - 2025-10-11
+- update dependency serverlessgems 0.4.3
+
 ## [4.0.16] - 2025-10-11
 - update serverlessgems dependency to 0.4.2
 
