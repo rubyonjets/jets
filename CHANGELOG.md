@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [6.0.6] - 2025-11-06
+- Fix Zeitwerk 2.7 compatibility and add Ruby 3.4+ dependencies
+
 ## [6.0.5] - 2024-12-04
 - [#737](https://github.com/rubyonjets/jets/pull/737) jets login prompt message when likely ci env
 
