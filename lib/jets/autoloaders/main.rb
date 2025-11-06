@@ -4,6 +4,7 @@ module Jets
     class Main
       class << self
         extend Memoist
+
         delegate :config, to: "Jets.project"
 
         def loader
@@ -32,7 +33,9 @@ module Jets
         end
 
         def already_configured_dir?(path)
-          all_loaders = Zeitwerk::Registry.loaders
+          # Zeitwerk::Registry.loaders changed from Array to Zeitwerk::Registry::Loaders in 2.7
+          # It has an each method that iterates over loader instances, so we use each.to_a
+          all_loaders = Zeitwerk::Registry.loaders.each.to_a
           already_configured_dirs = all_loaders.map(&:dirs).flatten
 
           # Normalize the path to avoid trailing slashes issues

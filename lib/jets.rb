@@ -1,6 +1,10 @@
 $stdout.sync = true unless ENV["JETS_STDOUT_SYNC"] == "0"
 $:.unshift(File.expand_path("../", __FILE__))
 
+# Must require super early to avoid issues ruby 3.4+ changes
+require "logger"
+require "mutex_m"
+
 require "active_support"
 require "active_support/concern"
 require "active_support/core_ext"
