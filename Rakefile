@@ -7,10 +7,9 @@ task :default => :spec
 
 RSpec::Core::RakeTask.new
 
-require_relative "lib/jets"
-
 desc "Generates cli reference docs as markdown"
 task :docs do
+  require_relative "lib/jets"
   require "cli_markdown_jets"
   CliMarkdown::Creator.new.create_all
 end

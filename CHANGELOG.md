@@ -6,6 +6,7 @@ This project *loosely tries* to adhere to [Semantic Versioning](http://semver.or
 ## [5.0.18] - 2026-10-29
 
 - require jets-api 0.2.4 or newer to check only resolved application gems
+- allow gem releases on Ruby 4 without loading the Jets runtime
 
 ## [5.0.17] - 2025-10-11
 

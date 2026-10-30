@@ -71,6 +71,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rdoc"
   spec.add_development_dependency "render_me_pretty"
   spec.add_development_dependency "rspec"
 end
