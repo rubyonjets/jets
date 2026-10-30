@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project *loosely tries* to adhere to [Semantic Versioning](http://semver.org/).
 
+## [5.0.18] - 2026-10-29
+
+- require jets-api 0.2.4 or newer to check only resolved application gems
+
 ## [5.0.17] - 2025-10-11
 
 - fix crash on deploy if parent stack exists but ApiGateway does not exist yet

@@ -54,7 +54,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "gems"
   spec.add_dependency "hashie"
   spec.add_dependency "logger"
-  spec.add_dependency "jets-api", ">= 0.2.2"
+  spec.add_dependency "jets-api", ">= 0.2.4"
   spec.add_dependency "jets-git"
   spec.add_dependency "jets-html-sanitizer"
   spec.add_dependency "kramdown"
